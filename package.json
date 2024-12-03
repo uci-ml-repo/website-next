@@ -1,0 +1,130 @@
+{
+  "name": "uci-ml-repo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UCI Machine Learning Repository's website",
+  "homepage": "https://archive.ics.uci.edu",
+  "bugs": {
+    "url": "https://github.com/uci-ml-repo/ucimlrepo-feedback",
+    "email": "ucirepository@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uci-ml-repo/website"
+  },
+  "license": "UNLICENSED",
+  "contributors": [
+    {
+      "name": "Andrew Wang",
+      "email": "awwang3@uci.edu",
+      "url": "https://github.com/andrew-wang0"
+    },
+    {
+      "name": "John Lorenzini",
+      "email": "jlorenzi@uci.edu",
+      "url": "https://github.com/johnlorenzini"
+    },
+    {
+      "name": "Brian Vo",
+      "email": "brianmv@uci.edu",
+      "url": "https://github.com/bevm0"
+    },
+    {
+      "name": "Philip Truong",
+      "email": "pctruong@uci.edu",
+      "url": "https://github.com/ptruong0"
+    }
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "dev": "next dev --turbopack",
+    "format": "prettier --write .",
+    "postinstall": "prisma generate",
+    "lint": "eslint --fix",
+    "prepare": "husky",
+    "start": "next start",
+    "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "dependencies": {
+    "@auth/core": "0.37.2",
+    "@auth/prisma-adapter": "2.7.2",
+    "@hookform/resolvers": "3.9.1",
+    "@prisma/client": "6.0.1",
+    "@radix-ui/react-avatar": "1.1.1",
+    "@radix-ui/react-dialog": "1.1.2",
+    "@radix-ui/react-dropdown-menu": "2.1.2",
+    "@radix-ui/react-label": "2.1.0",
+    "@radix-ui/react-select": "2.1.2",
+    "@radix-ui/react-separator": "1.1.0",
+    "@radix-ui/react-slot": "1.1.0",
+    "@radix-ui/react-tabs": "1.1.1",
+    "@radix-ui/react-toast": "1.2.2",
+    "@radix-ui/react-tooltip": "1.1.4",
+    "@tanstack/react-query": "5.62.7",
+    "@trpc/client": "11.0.0-rc.660",
+    "@trpc/react-query": "11.0.0-rc.660",
+    "@trpc/server": "11.0.0-rc.660",
+    "bcryptjs": "2.4.3",
+    "class-variance-authority": "0.7.1",
+    "client-only": "0.0.1",
+    "clsx": "2.1.1",
+    "embla-carousel-react": "8.5.1",
+    "lucide-react": "0.465.0",
+    "motion": "11.13.1",
+    "next": "15.0.3",
+    "next-auth": "5.0.0-beta.25",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-hook-form": "7.54.0",
+    "server-only": "0.0.1",
+    "superjson": "2.2.2",
+    "tailwind-merge": "2.5.5",
+    "tailwindcss-animate": "1.0.7",
+    "uuid": "11.0.3",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.6.0",
+    "@commitlint/config-conventional": "19.6.0",
+    "@eslint/eslintrc": "3.2.0",
+    "@next/eslint-plugin-next": "15.0.3",
+    "@types/bcryptjs": "2.4.6",
+    "@types/node": "22.10.1",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@typescript-eslint/eslint-plugin": "8.17.0",
+    "@typescript-eslint/parser": "8.17.0",
+    "eslint": "9.16.0",
+    "eslint-config-next": "15.0.3",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "eslint-plugin-unused-imports": "4.1.4",
+    "husky": "9.1.7",
+    "lint-staged": "15.2.10",
+    "postcss": "8.4.49",
+    "prettier": "3.4.2",
+    "prettier-plugin-packagejson": "2.5.6",
+    "prettier-plugin-tailwindcss": "0.6.9",
+    "prisma": "6.0.1",
+    "tailwindcss": "3.4.16",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.17.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

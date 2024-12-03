@@ -1,0 +1,247 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id    String @id @default(cuid())
+  email String @unique @db.VarChar(255)
+
+  emailVerified DateTime? @map("email_verified")
+  password      String?   @db.VarChar(255)
+  image         String?
+  name          String
+
+  roleId UserRole  @default(BASIC) @map("role_id")
+  role   Role      @relation(fields: [roleId], references: [id], onDelete: SetDefault, onUpdate: Restrict)
+  data   UserData?
+
+  accounts Account[]
+  sessions Session[]
+  datasets Dataset[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model UserData {
+  id            String   @id @default(cuid())
+  userId        String   @unique @map("user_id")
+  searchHistory String[] @map("search_history")
+
+  viewHistory        DatasetView[]
+  bookmarkedDatasets DatasetBookmark[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_data")
+}
+
+model Role {
+  id UserRole @id
+
+  // TODO add permissions
+  canEditRoles Boolean @default(false) @map("can_edit_roles")
+
+  users User[]
+
+  @@map("roles")
+}
+
+model DatasetView {
+  userDataId String @map("user_data_id")
+  datasetId  Int    @map("dataset_id")
+
+  viewedAt DateTime @default(now()) @map("viewed_at")
+
+  userData UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
+  dataset  Dataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@id([userDataId, datasetId])
+  @@index([viewedAt])
+  @@map("dataset_views")
+}
+
+model DatasetBookmark {
+  userDataId String @map("user_data_id")
+  datasetId  Int    @map("dataset_id")
+
+  bookmarkedAt DateTime @default(now()) @map("bookmarked_at")
+
+  userData UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
+  dataset  Dataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@id([userDataId, datasetId])
+  @@index([bookmarkedAt])
+  @@map("dataset_bookmarks")
+}
+
+model Dataset {
+  id                Int                     @id @default(autoincrement())
+  status            DatasetStatus           @default(PENDING)
+  donatedAt         DateTime                @map("donated_at") @db.Date
+  yearCreated       Int                     @map("year_created")
+  title             String                  @db.VarChar(255)
+  abstract          String                  @db.Text
+  area              DatasetArea
+  characteristics   DatasetCharacteristic[]
+  tasks             DatasetTask[]
+  featureTypes      FeatureType[]           @map("feature_types")
+  isTabular         Boolean                 @map("is_tabular")
+  instanceCount     Int                     @map("instance_count")
+  featureCount      Int                     @map("feature_count")
+  hasGraphics       Boolean                 @default(false) @map("has_graphics")
+  isAvailablePython Boolean                 @default(false) @map("is_available_python")
+  viewCount         Int                     @default(0) @map("view_count")
+  downloadCount     Int                     @default(0) @map("download_count")
+  authors           DatasetAuthor[]
+  slug              String                  @unique @db.VarChar(255)
+
+  bookmarks DatasetBookmark[]
+  views     DatasetView[]
+
+  doi      String? @db.VarChar(255)
+  subtitle String? @db.VarChar(255)
+  userId   String? @map("user_id")
+  user     User?   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status, slug])
+  @@map("datasets")
+}
+
+model DatasetDraft {
+  id Int @id @default(autoincrement())
+
+  // TODO add fields
+
+  @@map("dataset_drafts")
+}
+
+model DatasetAuthor {
+  id        Int    @id @default(autoincrement())
+  datasetId Int    @map("dataset_id")
+  firstName String @db.VarChar(255)
+  lastName  String @db.VarChar(255)
+
+  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@map("dataset_authors")
+}
+
+model Account {
+  userId            String @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String @map("provider_account_id")
+
+  refresh_token String?
+  access_token  String?
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String?
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+enum UserRole {
+  ADMIN     @map("admin")
+  LIBRARIAN @map("librarian")
+  CURATOR   @map("curator")
+  BASIC     @map("basic")
+
+  @@map("user_role")
+}
+
+enum DatasetStatus {
+  PENDING  @map("pending")
+  APPROVED @map("approved")
+  REJECTED @map("rejected")
+
+  @@map("dataset_status")
+}
+
+enum DatasetArea {
+  BIOLOGY                 @map("biology")
+  BUSINESS                @map("business")
+  CLIMATE_AND_ENVIRONMENT @map("climate_and_environment")
+  COMPUTER_SCIENCE        @map("computer_science")
+  EDUCATION               @map("education")
+  ENGINEERING             @map("engineering")
+  GAMES                   @map("games")
+  HEALTH_AND_MEDICINE     @map("health_and_medicine")
+  LAW                     @map("law")
+  PHYSICS_AND_CHEMISTRY   @map("physics_and_chemistry")
+  SOCIAL_SCIENCE          @map("social_science")
+  OTHER                   @map("other")
+
+  @@map("dataset_area")
+}
+
+enum DatasetTask {
+  CLASSIFICATION @map("classification")
+  REGRESSION     @map("regression")
+  CLUSTERING     @map("clustering")
+
+  @@map("dataset_task")
+}
+
+enum DatasetCharacteristic {
+  TABULAR        @map("tabular")
+  SEQUENTIAL     @map("sequential")
+  MULTIVARIATE   @map("multivariate")
+  TIME_SERIES    @map("time_series")
+  TEXT           @map("text")
+  IMAGE          @map("image")
+  SPATIOTEMPORAL @map("spatiotemporal")
+
+  @@map("dataset_characteristic")
+}
+
+enum FeatureType {
+  CATEGORICAL @map("categorical")
+  INTEGER     @map("integer")
+  REAL        @map("real")
+
+  @@map("feature_type")
+}

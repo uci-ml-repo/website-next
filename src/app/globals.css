@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 9%;
+    --accent: 0 0% 84%;
+    --accent-foreground: 0 0% 9%;
+    --uci-blue: 209 100% 24%;
+    --uci-gold: 48 99% 51%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 46%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 4%;
+    --chart-1: 2 76% 61%;
+    --chart-2: 3 58% 39%;
+    --chart-3: 7 37% 24%;
+    --chart-4: 3 74% 66%;
+    --chart-5: 7 87% 67%;
+    --card: var(--background);
+    --card-foreground: var(--foreground);
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
+    --sidebar-background: var(--secondary);
+    --sidebar-foreground: 0 0% 25%;
+    --sidebar-primary: 0 0% 9%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 180 4% 90%;
+    --sidebar-ring: 217 91% 60%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.lift {
+  @apply cursor-pointer transition-all duration-150 ease-in-out hover:scale-[1.02] hover:shadow-md;
+}
+
+.hover-outline {
+  @apply outline-border hover:outline hover:outline-4;
+}
+
+.content {
+  @apply flex justify-center px-6 pb-10 sm:px-8 md:max-xl:ml-[3rem];
+}

@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: node:lts-alpine
+Includecmd: no
+
+%files
+    /extra/dataweb3/website
+
+%post
+    apk add --update --no-cache git libc6-compat
+    npm i -g pnpm pm2
+    cp -r /extra/dataweb3/website /website
+    mkdir -p /extra/dataweb3/static
+    mkdir -p /extra/dataweb3/datasets
+    mkdir -p /extra/dataweb2/public_html/ml/machine-learning-databases
+    cd /website
+    . .env
+    pnpm install --frozen-lockfile
+    pnpm build
+    find /opt -name 'yarn*' -perm 755 -exec chmod 777 {} \;
+    find /opt -name 'yarn*' -perm 644 -exec chmod 666 {} \;
+    chmod -R 0755 .
+
+%startscript
+    cd /website
+    # pnpm start
+    pm2-runtime start ecosystem.config.cjs
