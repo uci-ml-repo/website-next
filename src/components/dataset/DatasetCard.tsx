@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { datasetHref, datasetThumbnail } from "@/lib/utils";
+import { cn, datasetHref, datasetThumbnail } from "@/lib/utils";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -42,7 +42,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
           />
         </CardHeader>
         <CardContent className={"space-y-4"}>
-          <div className={"h-28 space-y-2"}>
+          <div className={"h-26 space-y-2"}>
             <CardTitle>
               <h3 className={"line-clamp-2 group-hover:underline"}>
                 {dataset.title}
@@ -54,19 +54,26 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
               </p>
             </CardDescription>
           </div>
-          <CardDescription>
-            <div className="space-y-1 [&>div]:flex [&>div]:items-center [&>div]:space-x-2 [&_svg]:size-4">
+          <CardDescription className="flex h-18 items-end">
+            <div
+              className={cn(
+                "w-full space-y-1",
+                "[&>div]:flex [&>div]:items-center [&>div]:space-x-2 [&_svg]:size-4",
+              )}
+            >
               <div>
                 <MicroscopeIcon />
-                <div className={"truncate"}>{formatEnum(dataset.tasks)}</div>
+                <span className={"truncate"}>{formatEnum(dataset.tasks)}</span>
               </div>
               <div>
                 <Columns3Icon />
-                <div>{abbreviateDecimal(dataset.featureCount)} Features</div>
+                <span>{abbreviateDecimal(dataset.featureCount)} Features</span>
               </div>
               <div>
                 <Rows3Icon />
-                <div>{abbreviateDecimal(dataset.instanceCount)} Instances</div>
+                <span>
+                  {abbreviateDecimal(dataset.instanceCount)} Instances
+                </span>
               </div>
             </div>
           </CardDescription>

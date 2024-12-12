@@ -46,7 +46,7 @@
     "postinstall": "prisma generate",
     "lint": "eslint --fix",
     "prepare": "husky",
-    "start": "next start",
+    "start": "dotenv -e .env -- next start",
     "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate"
   },
   "prisma": {
@@ -78,6 +78,7 @@
     "class-variance-authority": "0.7.1",
     "client-only": "0.0.1",
     "clsx": "2.1.1",
+    "dotenv-cli": "7.4.4",
     "embla-carousel-react": "8.5.1",
     "lucide-react": "0.465.0",
     "motion": "11.13.1",

@@ -19,6 +19,11 @@ const config = {
         "screen-lg": "1024px",
         "screen-xl": "1280px",
       },
+      height: {
+        18: "4.5rem",
+        22: "5.5rem",
+        26: "6.5rem",
+      },
       letterSpacing: {
         snug: "-0.015em",
       },

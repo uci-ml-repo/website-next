@@ -17,7 +17,7 @@ export default function NewDatasets() {
       icon={<SparklesIcon />}
       heading={"New Datasets"}
       seeAllHref={"#"}
-      datasets={datasetsQuery.data?.datasets ?? []}
+      datasets={datasetsQuery.data?.datasets}
     />
   );
 }

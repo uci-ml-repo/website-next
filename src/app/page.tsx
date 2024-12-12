@@ -8,21 +8,9 @@ import { Banner } from "@/components/icons";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { caller, HydrateClient, trpc } from "@/server/trpc/server";
+import { caller, HydrateClient } from "@/server/trpc/server";
 
 export default async function Page() {
-  void trpc.datasets.find.prefetch({
-    orderBy: "viewCount",
-    sort: "desc",
-    take: 4,
-  });
-
-  void trpc.datasets.find.prefetch({
-    orderBy: "donatedAt",
-    take: 4,
-    sort: "desc",
-  });
-
   const datasetFind = await caller.datasets.find({});
 
   return (

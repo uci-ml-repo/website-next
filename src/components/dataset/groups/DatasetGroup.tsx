@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import DatasetCard from "@/components/dataset/DatasetCard";
+import DatasetCardSkeleton from "@/components/dataset/DatasetCardSkeleton";
 import { Button } from "@/components/ui/button";
 import type { RouterOutput } from "@/server/trpc/routers";
 
@@ -9,7 +10,7 @@ interface DatasetGroupProps {
   heading: string;
   icon?: React.ReactNode;
   seeAllHref?: string;
-  datasets: RouterOutput["datasets"]["find"]["datasets"];
+  datasets: RouterOutput["datasets"]["find"]["datasets"] | undefined;
 }
 
 export default function DatasetGroup({
@@ -18,28 +19,31 @@ export default function DatasetGroup({
   seeAllHref,
   datasets,
 }: DatasetGroupProps) {
+  const CONTENT_WIDTH = 1250;
   const MIN_CARD_WIDTH = 225;
 
-  const ref = useRef<HTMLDivElement>(null);
-  const [numCols, setNumCols] = useState(0);
+  const calculateNumCols = useCallback(
+    () =>
+      Math.min(
+        Math.floor(Math.min(window.innerWidth, CONTENT_WIDTH) / MIN_CARD_WIDTH),
+        datasets ? datasets.length : 4,
+      ),
+    [datasets],
+  );
+
+  const [numCols, setNumCols] = useState(calculateNumCols);
 
   useEffect(() => {
-    const updateNumCols = () => {
-      if (ref.current) {
-        const width = ref.current.clientWidth;
-        setNumCols(
-          Math.min(Math.floor(width / MIN_CARD_WIDTH), datasets.length),
-        );
-      }
-    };
+    const handleResize = () => setNumCols(calculateNumCols());
 
-    updateNumCols();
+    window.addEventListener("resize", handleResize);
 
-    window.addEventListener("resize", updateNumCols);
+    handleResize();
+
     return () => {
-      window.removeEventListener("resize", updateNumCols);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [datasets.length]);
+  }, [calculateNumCols, datasets]);
 
   return (
     <div className={"space-y-4"}>
@@ -55,13 +59,21 @@ export default function DatasetGroup({
         )}
       </div>
       <div
-        className={`grid gap-4`}
-        style={{ gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))` }}
-        ref={ref}
+        className={`grid h-[360px] gap-4`}
+        style={{
+          gridTemplateColumns:
+            numCols > 0 ? `repeat(${numCols}, minmax(0, 1fr))` : undefined,
+        }}
       >
-        {datasets.slice(0, numCols).map((dataset, index) => (
-          <DatasetCard key={index} dataset={dataset} />
-        ))}
+        {datasets
+          ? datasets
+              .slice(0, numCols)
+              .map((dataset, index) => (
+                <DatasetCard key={index} dataset={dataset} />
+              ))
+          : Array(numCols)
+              .fill(null)
+              .map((_, index) => <DatasetCardSkeleton key={index} />)}
       </div>
     </div>
   );

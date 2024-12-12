@@ -17,7 +17,7 @@ export default function PopularDatasets() {
       icon={<TrendingUpIcon />}
       heading={"Popular Datasets"}
       seeAllHref={"#"}
-      datasets={datasetsQuery.data?.datasets ?? []}
+      datasets={datasetsQuery.data?.datasets}
     />
   );
 }
