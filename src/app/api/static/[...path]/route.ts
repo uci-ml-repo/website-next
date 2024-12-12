@@ -3,7 +3,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import path from "path";
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ path: string[] }> },
+) {
   if (!process.env.STATIC_FILES_ROOT) {
     return NextResponse.json(
       { error: "Storage root is not defined" },
@@ -13,10 +16,12 @@ export async function GET(req: NextRequest) {
 
   const filePath = path.join(
     process.env.STATIC_FILES_ROOT,
-    ...req.nextUrl.searchParams.getAll("path"),
+    ...(await params).path,
   );
 
   try {
+    console.log(filePath);
+
     const fileStat = await fs.stat(filePath);
 
     if (!fileStat.isFile()) {

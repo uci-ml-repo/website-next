@@ -22,7 +22,7 @@ export default function Page() {
       <Tabs value={tab} onValueChange={onTabChange} asChild>
         <Card className="flex w-[450px] flex-col items-center justify-self-center rounded-4xl p-4">
           <CardHeader className="py-6">
-            <Banner variant="logo" />
+            <Banner variant="logo" link />
           </CardHeader>
           <CardContent className="w-full py-0">
             <TabsList className="grid w-full grid-cols-2">

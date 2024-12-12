@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import DatasetCard from "@/components/dataset/DatasetCard";
 import DatasetCardSkeleton from "@/components/dataset/DatasetCardSkeleton";
@@ -21,19 +23,18 @@ export default function DatasetGroup({
 }: DatasetGroupProps) {
   const CONTENT_WIDTH = 1250;
   const MIN_CARD_WIDTH = 225;
+  const MAX_CARDS = 4;
 
-  const calculateNumCols = useCallback(
-    () =>
-      Math.min(
+  const [numCols, setNumCols] = useState<number | null>();
+
+  useLayoutEffect(() => {
+    const calculateNumCols = () => {
+      return Math.min(
         Math.floor(Math.min(window.innerWidth, CONTENT_WIDTH) / MIN_CARD_WIDTH),
-        datasets ? datasets.length : 4,
-      ),
-    [datasets],
-  );
+        MAX_CARDS,
+      );
+    };
 
-  const [numCols, setNumCols] = useState(calculateNumCols);
-
-  useEffect(() => {
     const handleResize = () => setNumCols(calculateNumCols());
 
     window.addEventListener("resize", handleResize);
@@ -43,7 +44,7 @@ export default function DatasetGroup({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [calculateNumCols, datasets]);
+  }, [datasets]);
 
   return (
     <div className={"space-y-4"}>
@@ -58,22 +59,34 @@ export default function DatasetGroup({
           </Button>
         )}
       </div>
-      <div
-        className={`grid h-[360px] gap-4`}
-        style={{
-          gridTemplateColumns:
-            numCols > 0 ? `repeat(${numCols}, minmax(0, 1fr))` : undefined,
-        }}
-      >
-        {datasets
-          ? datasets
-              .slice(0, numCols)
-              .map((dataset, index) => (
-                <DatasetCard key={index} dataset={dataset} />
-              ))
-          : Array(numCols)
-              .fill(null)
-              .map((_, index) => <DatasetCardSkeleton key={index} />)}
+      <div className={`h-[360px]`}>
+        {numCols && (
+          <div
+            className={"grid gap-4"}
+            style={{
+              gridTemplateColumns: numCols
+                ? `repeat(${numCols}, minmax(0, 1fr))`
+                : undefined,
+            }}
+          >
+            {datasets ? (
+              <>
+                {datasets.slice(0, numCols).map((dataset, index) => (
+                  <DatasetCard key={index} dataset={dataset} />
+                ))}
+
+                {numCols > datasets.length &&
+                  Array(numCols - datasets.length)
+                    .fill(null)
+                    .map((_, index) => <div key={index} />)}
+              </>
+            ) : (
+              Array(numCols)
+                .fill(null)
+                .map((_, index) => <DatasetCardSkeleton key={index} />)
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

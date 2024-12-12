@@ -64,10 +64,36 @@ body {
   @apply lift hover:shadow-lg;
 }
 
+.content-x {
+  @apply max-w-screen-xl px-6 sm:px-8;
+}
+
 .content {
-  @apply w-full max-w-screen-xl justify-self-center px-6 pb-20 sm:px-8 min-h-screen;
+  @apply content-x min-h-screen w-full justify-self-center pb-24;
 }
 
 main {
   @apply min-h-screen;
+}
+
+
+
+
+/**/
+
+.footer {
+  display: grid;
+  width: 100%;
+  grid-auto-flow: row;
+  place-items: start;
+}
+.footer > * {
+  display: grid;
+  place-items: start;
+}
+
+@media (min-width: 48rem) {
+  .footer {
+    grid-auto-flow: column;
+  }
 }

@@ -33,7 +33,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
         <CardHeader className={"p-0"}>
           <Image
             src={thumbnail}
-            alt={"thumbnail"}
+            alt={dataset.title}
             width={350}
             height={100}
             className={
