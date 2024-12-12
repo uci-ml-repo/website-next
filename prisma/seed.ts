@@ -29,6 +29,13 @@ const users: Prisma.UserCreateManyInput[] = [
     name: "test0",
     password: dummyPassword,
   },
+  {
+    id: "admin",
+    email: "ucirepository@uci.edu",
+    name: "admin",
+    password: bcryptjs.hashSync("password", 10),
+    roleId: "ADMIN",
+  },
 ];
 
 const datasets: Omit<

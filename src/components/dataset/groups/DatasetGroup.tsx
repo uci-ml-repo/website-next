@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 import DatasetCard from "@/components/dataset/DatasetCard";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,29 @@ export default function DatasetGroup({
   seeAllHref,
   datasets,
 }: DatasetGroupProps) {
+  const MIN_CARD_WIDTH = 225;
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [numCols, setNumCols] = useState(0);
+
+  useEffect(() => {
+    const updateNumCols = () => {
+      if (ref.current) {
+        const width = ref.current.clientWidth;
+        setNumCols(
+          Math.min(Math.floor(width / MIN_CARD_WIDTH), datasets.length),
+        );
+      }
+    };
+
+    updateNumCols();
+
+    window.addEventListener("resize", updateNumCols);
+    return () => {
+      window.removeEventListener("resize", updateNumCols);
+    };
+  }, [datasets.length]);
+
   return (
     <div className={"space-y-4"}>
       <div className={"flex items-center justify-between"}>
@@ -30,9 +54,13 @@ export default function DatasetGroup({
           </Button>
         )}
       </div>
-      <div className={"flex gap-4"}>
-        {datasets.map((dataset) => (
-          <DatasetCard key={dataset.id} dataset={dataset} />
+      <div
+        className={`grid gap-4`}
+        style={{ gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))` }}
+        ref={ref}
+      >
+        {datasets.slice(0, numCols).map((dataset, index) => (
+          <DatasetCard key={index} dataset={dataset} />
         ))}
       </div>
     </div>

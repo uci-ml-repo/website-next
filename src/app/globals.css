@@ -19,7 +19,7 @@ body {
     --uci-blue: 209 100% 24%;
     --uci-gold: 48 99% 51%;
     --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 46%;
+    --muted-foreground: 0, 0%, 40%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 90%;
@@ -60,10 +60,10 @@ body {
   @apply cursor-pointer transition-all duration-150 ease-in-out hover:scale-[1.02] hover:shadow-md;
 }
 
-.hover-outline {
-  @apply outline-border hover:outline hover:outline-4;
+.lift-lg {
+  @apply lift hover:shadow-lg;
 }
 
 .content {
-  @apply flex justify-center px-6 pb-10 sm:px-8 md:max-xl:ml-[3rem];
+  @apply flex justify-center px-6 pb-10 sm:px-8;
 }

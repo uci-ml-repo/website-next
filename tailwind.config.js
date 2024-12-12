@@ -19,6 +19,9 @@ const config = {
         "screen-lg": "1024px",
         "screen-xl": "1280px",
       },
+      letterSpacing: {
+        snug: "-0.015em",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

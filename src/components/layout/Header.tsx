@@ -28,7 +28,11 @@ export default async function Header() {
         {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className={"hover-outline size-10 cursor-pointer"}>
+              <Avatar
+                className={
+                  "size-10 cursor-pointer outline-border hover:outline hover:outline-4"
+                }
+              >
                 {session?.user?.image && (
                   <AvatarImage src={session?.user?.image} />
                 )}
