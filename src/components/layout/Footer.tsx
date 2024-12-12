@@ -83,18 +83,20 @@ export default function Footer() {
             "grid grid-flow-row gap-10 max-sm:justify-center sm:grid-flow-col"
           }
         >
-          <Link href={HOME_PATH} className={"flex items-center"}>
-            <div className={"flex h-24 w-fit items-center"}>
-              <Anteater
-                className={"mr-4 h-1/2 fill-primary-foreground max-lg:hidden"}
-              />
-              <Banner
-                variant={"logo"}
-                textColor={"monoForeground"}
-                className={"w-56"}
-              />
-            </div>
-          </Link>
+          <div>
+            <Link href={HOME_PATH} className={"flex h-full w-fit items-center"}>
+              <div className={"flex h-24 w-fit items-center"}>
+                <Anteater
+                  className={"mr-4 h-1/2 fill-primary-foreground max-lg:hidden"}
+                />
+                <Banner
+                  variant={"logo"}
+                  textColor={"monoForeground"}
+                  className={"w-56"}
+                />
+              </div>
+            </Link>
+          </div>
 
           {linkGroups.map((group, index) => (
             <FooterLinkGroup key={index} {...group} />

@@ -26,6 +26,7 @@ interface DatasetCardProps {
 export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const thumbnail = datasetThumbnail(dataset);
   const href = datasetHref(dataset);
+  const fileCount = 1;
 
   return (
     <Card className="lift-lg group" ref={ref}>
@@ -84,7 +85,9 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
           <div>
-            {1} File &#183; {abbreviateFileSize(Math.pow(2.1, 34))}
+            <span>{fileCount === 1 ? "1 File" : `${fileCount} Files`}</span>
+            <span> &#183; </span>
+            <span>{abbreviateFileSize(Math.pow(2.1, 30))}</span>
           </div>
         </CardFooter>
       </Link>

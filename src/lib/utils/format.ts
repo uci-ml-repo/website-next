@@ -1,4 +1,4 @@
-export function abbreviateDecimal(value: number): string {
+export function abbreviateDecimal(value: number) {
   const abbreviateDecimal = new Intl.NumberFormat("en-US", {
     style: "decimal",
     notation: "compact",
@@ -9,7 +9,7 @@ export function abbreviateDecimal(value: number): string {
   return abbreviateDecimal.format(value);
 }
 
-export function abbreviateFileSize(bytes: number): string {
+export function abbreviateFileSize(bytes: number) {
   if (bytes === 0) return "0 Bytes";
 
   const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
@@ -19,7 +19,7 @@ export function abbreviateFileSize(bytes: number): string {
   return `${formattedSize} ${sizes[i]}`;
 }
 
-export function formatEnum(strings: string[]): string {
+export function formatEnum(strings: string[]) {
   return strings
     .map((str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
     .join(", ");
