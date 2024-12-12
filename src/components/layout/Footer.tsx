@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { HTMLAttributeAnchorTarget } from "react";
 
 import { Banner } from "@/components/icons";
 import Anteater from "@/components/icons/Anteater";
@@ -12,7 +11,7 @@ import {
 
 interface FooterLinkGroupProps {
   title: string;
-  links: { name: string; href: string; target?: HTMLAttributeAnchorTarget }[];
+  links: { name: string; href: string }[];
 }
 
 function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
@@ -25,7 +24,7 @@ function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
             <Link
               href={link.href}
               className={"hover:underline"}
-              target={link.target}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
             >
               {link.name}
             </Link>
@@ -45,12 +44,10 @@ export default function Footer() {
         {
           name: "Center for Machine Learning",
           href: "https://cml.ics.uci.edu/",
-          target: "_blank",
         },
         {
           name: "National Science Foundation",
           href: "https://www.nsf.gov/",
-          target: "_blank",
         },
       ],
     },

@@ -6,9 +6,9 @@
 const config = {
   darkMode: ["class"],
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/mdx-components.tsx",
   ],
   theme: {
     extend: {
@@ -82,6 +82,7 @@ const config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        link: "hsl(var(--link))",
       },
       borderRadius: {
         lg: "var(--radius)",
