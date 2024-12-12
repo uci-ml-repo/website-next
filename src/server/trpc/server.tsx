@@ -8,8 +8,10 @@ import { createContext } from "@/server/trpc/context";
 import { makeQueryClient } from "@/server/trpc/query-client";
 import { appRouter } from "@/server/trpc/routers";
 
-export const getQueryClient = cache(makeQueryClient);
-const caller = createCallerFactory(appRouter)(createContext);
+const getQueryClient = cache(makeQueryClient);
+
+export const caller = createCallerFactory(appRouter)(createContext);
+
 export const { trpc, HydrateClient } = createHydrationHelpers<typeof appRouter>(
   caller,
   getQueryClient,

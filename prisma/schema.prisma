@@ -101,6 +101,7 @@ model Dataset {
   viewCount         Int                     @default(0) @map("view_count")
   downloadCount     Int                     @default(0) @map("download_count")
   authors           DatasetAuthor[]
+  DatasetFile       DatasetFile[]
   slug              String                  @unique @db.VarChar(255)
 
   bookmarks DatasetBookmark[]
@@ -118,16 +119,16 @@ model Dataset {
   @@map("datasets")
 }
 
-model DatasetDraft {
-  id Int @id @default(autoincrement())
+model DraftDataset {
+  id String @id @default(cuid())
 
   // TODO add fields
 
-  @@map("dataset_drafts")
+  @@map("draft_datasets")
 }
 
 model DatasetAuthor {
-  id        Int    @id @default(autoincrement())
+  id        String @id @default(cuid())
   datasetId Int    @map("dataset_id")
   firstName String @db.VarChar(255)
   lastName  String @db.VarChar(255)
@@ -135,6 +136,20 @@ model DatasetAuthor {
   dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
 
   @@map("dataset_authors")
+}
+
+model DatasetFile {
+  id          String  @id @default(cuid())
+  datasetId   Int     @map("dataset_id")
+  isDirectory Boolean @default(false) @map("is_directory")
+  name        String
+  path        String
+  size        Int
+
+  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@index([size])
+  @@map("dataset_files")
 }
 
 model Account {

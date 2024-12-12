@@ -1,7 +1,7 @@
 export default function NotFound() {
   return (
-    <div>
+    <main className={"content"}>
       <h1>Not Found</h1>
-    </div>
+    </main>
   );
 }

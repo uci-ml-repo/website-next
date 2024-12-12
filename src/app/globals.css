@@ -65,5 +65,5 @@ body {
 }
 
 .content {
-  @apply flex justify-center px-6 pb-10 sm:px-8;
+  @apply w-full max-w-screen-xl justify-self-center px-6 pb-10 sm:px-8 min-h-screen;
 }

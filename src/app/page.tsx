@@ -8,9 +8,9 @@ import { Banner } from "@/components/icons";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { HydrateClient, trpc } from "@/server/trpc/server";
+import { caller, HydrateClient, trpc } from "@/server/trpc/server";
 
-export default function Page() {
+export default async function Page() {
   void trpc.datasets.find.prefetch({
     orderBy: "viewCount",
     sort: "desc",
@@ -23,36 +23,36 @@ export default function Page() {
     sort: "desc",
   });
 
+  const datasetFind = await caller.datasets.find({});
+
   return (
-    <div className={"content"}>
-      <div className={"w-full max-w-screen-xl space-y-8"}>
-        <div className={"space-y-6"}>
-          <div className={"space-y-4"}>
-            <Banner variant={"hero"} />
-            <p className={"text-lg sm:text-xl"}>
-              We currently maintain X datasets used by millions in the machine
-              learning community.
-            </p>
-          </div>
-          <NavButtons />
+    <main className={"content space-y-8"}>
+      <div className={"space-y-6"}>
+        <div className={"space-y-4"}>
+          <Banner variant={"hero"} />
+          <p className={"text-lg sm:text-xl"}>
+            We currently maintain {datasetFind.count} datasets used by millions
+            in the machine learning community.
+          </p>
         </div>
-
-        <Input
-          placeholder={"Search for a dataset"}
-          variantSize={"lg"}
-          icon={SearchIcon}
-          pill
-        />
-
-        <div className={"space-y-10"}>
-          <HydrateClient>
-            <PopularDatasets />
-            <hr />
-            <NewDatasets />
-          </HydrateClient>
-        </div>
+        <NavButtons />
       </div>
-    </div>
+
+      <Input
+        placeholder={"Search for a dataset"}
+        variantSize={"lg"}
+        icon={SearchIcon}
+        pill
+      />
+
+      <div className={"space-y-10"}>
+        <HydrateClient>
+          <PopularDatasets />
+          <hr />
+          <NewDatasets />
+        </HydrateClient>
+      </div>
+    </main>
   );
 }
 

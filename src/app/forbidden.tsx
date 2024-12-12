@@ -1,7 +1,7 @@
 export default function Forbidden() {
   return (
-    <div>
+    <main className={"content"}>
       <h1>Forbidden</h1>
-    </div>
+    </main>
   );
 }

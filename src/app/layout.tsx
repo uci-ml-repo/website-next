@@ -27,7 +27,8 @@ export default function RootLayout({
         <TRPCProvider>
           <body className={inter.className}>
             <Header />
-            <main className={"min-h-screen"}>{children}</main>
+
+            {children}
 
             <Toaster />
             <Footer />

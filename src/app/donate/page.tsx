@@ -1,3 +1,3 @@
-export default function Donate() {
-  return <> </>;
+export default function Page() {
+  return <main> </main>;
 }
