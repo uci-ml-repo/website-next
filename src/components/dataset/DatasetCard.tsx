@@ -37,7 +37,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             width={350}
             height={100}
             className={
-              "h-[100px] w-full rounded-t-xl object-cover object-center"
+              "h-[100px] w-full rounded-t-2xl object-cover object-center"
             }
           />
         </CardHeader>

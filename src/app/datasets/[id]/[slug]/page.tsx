@@ -16,9 +16,9 @@ export default async function Page({
   }
 
   return (
-    <div>
+    <main className={"content"}>
       <h1>{dataset.title}</h1>
       <p>{dataset.abstract}</p>
-    </div>
+    </main>
   );
 }

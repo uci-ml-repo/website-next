@@ -65,5 +65,9 @@ body {
 }
 
 .content {
-  @apply w-full max-w-screen-xl justify-self-center px-6 pb-10 sm:px-8 min-h-screen;
+  @apply w-full max-w-screen-xl justify-self-center px-6 pb-20 sm:px-8 min-h-screen;
+}
+
+main {
+  @apply min-h-screen;
 }

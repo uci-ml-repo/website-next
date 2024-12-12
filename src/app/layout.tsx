@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/client";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <SessionProvider>
         <TRPCProvider>
-          <body className={inter.className}>
+          <body className={cn(inter.className)}>
             <Header />
 
             {children}
