@@ -1,7 +1,9 @@
+import Main from "@/components/layout/Main";
+
 export default function Unauthorized() {
   return (
-    <main className={"content"}>
+    <Main>
       <h1>Unauthorized</h1>
-    </main>
+    </Main>
   );
 }

@@ -1,3 +1,5 @@
+import Main from "@/components/layout/Main";
+
 export default function Page() {
-  return <main className={"content"}>ADMIN</main>;
+  return <Main>ADMIN</Main>;
 }

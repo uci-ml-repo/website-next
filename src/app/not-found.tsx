@@ -1,7 +1,9 @@
+import Main from "@/components/layout/Main";
+
 export default function NotFound() {
   return (
-    <main className={"content"}>
+    <Main>
       <h1>Not Found</h1>
-    </main>
+    </Main>
   );
 }

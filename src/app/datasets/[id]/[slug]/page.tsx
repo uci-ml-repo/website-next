@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import Main from "@/components/layout/Main";
 import { datasetThumbnail } from "@/lib/utils";
 import { caller } from "@/server/trpc/server";
 
@@ -20,12 +21,12 @@ export default async function Page({
   const thumbnail = datasetThumbnail(dataset);
 
   return (
-    <main className={"content"}>
+    <Main className={"content"}>
       <div className={"space-y-2"}>
         <h1 className={"text-4xl font-bold"}>{dataset.title}</h1>
         <h2 className={"text-xl"}>{dataset.subtitle}</h2>
       </div>
       <Image src={thumbnail} width={10} height={10} alt={dataset.title} />
-    </main>
+    </Main>
   );
 }

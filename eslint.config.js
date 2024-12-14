@@ -1,6 +1,7 @@
 import { FlatCompat } from "@eslint/eslintrc";
-import parser from "@typescript-eslint/parser";
 import * as typescriptESLintPlugin from "@typescript-eslint/eslint-plugin";
+import parser from "@typescript-eslint/parser";
+import * as mdx from "eslint-plugin-mdx";
 import prettierPlugin from "eslint-plugin-prettier";
 import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
@@ -73,7 +74,10 @@ const config = [
     },
   },
   {
-    ignores: ["*.config.*", ".next/*"],
+    ...mdx.flat,
+  },
+  {
+    ignores: [".next/*"],
   },
 ];
 

@@ -5,6 +5,7 @@ import React from "react";
 import NewDatasets from "@/components/dataset/groups/NewDatasets";
 import PopularDatasets from "@/components/dataset/groups/PopularDatasets";
 import { Banner } from "@/components/icons";
+import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ export default async function Page() {
   const datasetFind = await caller.datasets.find({});
 
   return (
-    <main className={"content space-y-8"}>
+    <Main className={"space-y-8"}>
       <div className={"space-y-6"}>
         <div className={"space-y-4"}>
           <Banner variant={"hero"} />
@@ -40,7 +41,7 @@ export default async function Page() {
           <NewDatasets />
         </HydrateClient>
       </div>
-    </main>
+    </Main>
   );
 }
 

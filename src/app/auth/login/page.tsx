@@ -5,6 +5,7 @@ import { useState } from "react";
 import Login from "@/components/auth/Login";
 import Register from "@/components/auth/Register";
 import { Banner } from "@/components/icons";
+import Main from "@/components/layout/Main";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -18,7 +19,7 @@ export default function Page() {
   };
 
   return (
-    <main className="content">
+    <Main>
       <Tabs value={tab} onValueChange={onTabChange} asChild>
         <Card className="flex w-[450px] flex-col items-center justify-self-center rounded-4xl p-4">
           <CardHeader className="py-6">
@@ -42,6 +43,6 @@ export default function Page() {
           </TabsContent>
         </Card>
       </Tabs>
-    </main>
+    </Main>
   );
 }

@@ -40,20 +40,20 @@
     "build": "next build",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate",
     "db:studio": "prisma studio",
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
     "postinstall": "prisma generate",
     "lint": "eslint --fix",
     "prepare": "husky",
-    "start": "dotenv -e .env -- next start",
-    "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "start": "dotenv -e .env -- next start"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "**/*": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "@auth/core": "0.37.2",
@@ -113,6 +113,7 @@
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-mdx": "3.1.5",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react-hooks": "5.1.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
@@ -131,5 +132,8 @@
   "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=22.0.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

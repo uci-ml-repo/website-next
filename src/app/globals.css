@@ -70,7 +70,7 @@ body {
 }
 
 .content {
-  @apply content-x min-h-screen w-full justify-self-center pb-24;
+  @apply content-x min-h-screen w-full pb-24;
 }
 
 main {

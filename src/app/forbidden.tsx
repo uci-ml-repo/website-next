@@ -1,7 +1,9 @@
+import Main from "@/components/layout/Main";
+
 export default function Forbidden() {
   return (
-    <main className={"content"}>
+    <Main>
       <h1>Forbidden</h1>
-    </main>
+    </Main>
   );
 }

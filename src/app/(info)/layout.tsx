@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import Main from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
 import { HOME_PATH } from "@/globals";
 
@@ -13,7 +14,7 @@ export default function MdxLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className={"content space-y-12"}>
+    <Main className={"space-y-12"}>
       <div>{children}</div>
       <div className={"space-y-8"}>
         <hr />
@@ -30,6 +31,6 @@ export default function MdxLayout({
           </Link>
         </Button>
       </div>
-    </main>
+    </Main>
   );
 }

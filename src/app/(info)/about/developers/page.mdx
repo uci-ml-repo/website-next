@@ -1,0 +1,93 @@
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { MailIcon } from "lucide-react";
+import { GithubIcon } from "@/components/icons";
+
+export function Developer({ name, subTitle, avatar, email, github }) {
+  return (
+    <div className={"flex items-center justify-between space-x-4"}>
+      <div className={"flex items-center"}>
+        <Avatar className={"mr-4 size-16 max-sm:hidden"}>
+          <AvatarImage src={avatar} />
+        </Avatar>
+        <div>
+          <div className={"text-2xl text-primary"}>{name}</div>
+          <div className={"text-muted-foreground"}>{subTitle}</div>
+        </div>
+      </div>
+      <div className={"flex items-center space-x-6 [&_svg]:size-8"}>
+        {email && (
+          <Link
+            href={"mailto:" + email}
+            className={"transition-transform ease-in-out hover:scale-110"}
+          >
+            <MailIcon />
+          </Link>
+        )}
+        {github && (
+          <Link
+            href={"https://github.com/" + github}
+            target={"_blank"}
+            className={"transition-transform ease-in-out hover:scale-110"}
+          >
+            <GithubIcon />
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
+# Developers
+
+## Current
+
+<div className={"my-6 space-y-4"}>
+  <Developer
+    name={"Andrew Wang"}
+    subTitle={"UCI 2027"}
+    avatar={"https://avatars.githubusercontent.com/u/143981491"}
+    email={"awwang3@uci.edu"}
+    github={"andrew-wang0"}
+  />
+  <hr />
+  <Developer
+    name={"John Lorenzini"}
+    subTitle={"UCI 2025"}
+    avatar={"https://avatars.githubusercontent.com/u/71615006"}
+    github={"johnlorenzini"}
+  />
+  <hr />
+</div>
+
+## Previous
+
+<div className={"my-6 space-y-4"}>
+  <Developer
+    name={"Brian Vo"}
+    subTitle={"UCI 2023"}
+    avatar={"https://avatars.githubusercontent.com/u/66761366"}
+    github={"ap0nia"}
+  />
+  <hr />
+  <Developer
+    name={"Philip Truong"}
+    subTitle={"UCI 2023"}
+    avatar={"https://avatars.githubusercontent.com/u/71199572"}
+    github={"ptruong0"}
+  />
+  <hr />
+  <Developer
+    name={"Parmik Mehra"}
+    subTitle={"UCI 2021"}
+    avatar={"https://avatars.githubusercontent.com/u/29420490"}
+    github={"parmikmehra"}
+  />
+  <hr />
+  <Developer
+    name={"Daniel Jiang"}
+    subTitle={"UCI 2021"}
+    avatar={"https://avatars.githubusercontent.com/u/17039633"}
+    github={"dwjiang"}
+  />
+</div>
