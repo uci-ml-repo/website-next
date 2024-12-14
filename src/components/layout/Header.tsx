@@ -40,7 +40,7 @@ export default async function Header() {
 
                 <AvatarFallback>
                   <CircleUserRoundIcon
-                    className={"size-8 text-muted-foreground"}
+                    className={"size-4/5 text-muted-foreground"}
                   />
                 </AvatarFallback>
               </Avatar>

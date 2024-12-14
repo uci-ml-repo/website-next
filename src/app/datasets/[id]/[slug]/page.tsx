@@ -22,11 +22,27 @@ export default async function Page({
 
   return (
     <Main className={"content"}>
-      <div className={"space-y-2"}>
-        <h1 className={"text-4xl font-bold"}>{dataset.title}</h1>
-        <h2 className={"text-xl"}>{dataset.subtitle}</h2>
+      <div className={"flex items-center justify-between"}>
+        <div className={"space-y-2"}>
+          <h1 className={"text-4xl font-bold text-foreground"}>
+            {dataset.title}
+          </h1>
+          {dataset.subtitle && (
+            <p className={"text-xl text-muted-foreground"}>
+              {dataset.subtitle}
+            </p>
+          )}
+        </div>
+        <Image
+          src={thumbnail}
+          width={300}
+          height={120}
+          alt={"thumbnail"}
+          className={
+            "ml-8 h-[120px] w-[300px] shrink-0 rounded-2xl object-cover object-center"
+          }
+        />
       </div>
-      <Image src={thumbnail} width={10} height={10} alt={dataset.title} />
     </Main>
   );
 }

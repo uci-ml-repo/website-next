@@ -1,6 +1,6 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-import { MailIcon } from "lucide-react";
+import { CircleUserRoundIcon, MailIcon } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
 export function Developer({ name, subTitle, avatar, email, github }) {
@@ -9,6 +9,9 @@ export function Developer({ name, subTitle, avatar, email, github }) {
       <div className={"flex items-center"}>
         <Avatar className={"mr-4 size-16 max-sm:hidden"}>
           <AvatarImage src={avatar} />
+          <AvatarFallback>
+            <CircleUserRoundIcon className={"size-4/5 text-muted-foreground"} />
+          </AvatarFallback>
         </Avatar>
         <div>
           <div className={"text-2xl text-primary"}>{name}</div>
