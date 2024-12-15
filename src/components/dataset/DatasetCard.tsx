@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn, datasetHref, datasetThumbnail } from "@/lib/utils";
+import { cn, datasetPage, datasetThumbnail } from "@/lib/utils";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -24,16 +24,15 @@ interface DatasetCardProps {
 }
 
 export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
-  const thumbnail = datasetThumbnail(dataset);
-  const href = datasetHref(dataset);
-  const fileCount = 1;
+  const fileCount = 1; // TODO
+  const fileSize = Math.pow(2.1, 30); // TODO
 
   return (
     <Card className="lift-lg group" ref={ref}>
-      <Link href={href}>
+      <Link href={datasetPage(dataset)}>
         <CardHeader className={"p-0"}>
           <Image
-            src={thumbnail}
+            src={datasetThumbnail(dataset)}
             alt={"thumbnail"}
             width={350}
             height={100}
@@ -87,7 +86,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
           <div>
             <span>{fileCount === 1 ? "1 File" : `${fileCount} Files`}</span>
             <span> &#183; </span>
-            <span>{abbreviateFileSize(Math.pow(2.1, 30))}</span>
+            <span>{abbreviateFileSize(fileSize)}</span>
           </div>
         </CardFooter>
       </Link>

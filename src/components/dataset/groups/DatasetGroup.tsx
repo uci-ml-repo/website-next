@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import DatasetCard from "@/components/dataset/DatasetCard";
 import DatasetCardSkeleton from "@/components/dataset/DatasetCardSkeleton";
@@ -27,7 +27,7 @@ export default function DatasetGroup({
 
   const [numCols, setNumCols] = useState<number | null>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const calculateNumCols = () => {
       return Math.min(
         Math.floor(Math.min(window.innerWidth, CONTENT_WIDTH) / MIN_CARD_WIDTH),
@@ -76,14 +76,15 @@ export default function DatasetGroup({
                 ))}
 
                 {numCols > datasets.length &&
-                  Array(numCols - datasets.length)
-                    .fill(null)
-                    .map((_, index) => <div key={index} />)}
+                  Array.from(
+                    { length: numCols - datasets.length },
+                    (_, index) => <div key={index} />,
+                  )}
               </>
             ) : (
-              Array(numCols)
-                .fill(null)
-                .map((_, index) => <DatasetCardSkeleton key={index} />)
+              Array.from({ length: numCols }, (_, index) => (
+                <DatasetCardSkeleton key={index} />
+              ))
             )}
           </div>
         )}

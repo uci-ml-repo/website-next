@@ -20,7 +20,18 @@ export function abbreviateFileSize(bytes: number) {
 }
 
 export function formatEnum(strings: string[]) {
+  const lowercaseWords = new Set(["THE", "AND", "OR"]);
+
   return strings
-    .map((str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
+    .map((str) =>
+      str
+        .split("_")
+        .map((word, index) =>
+          !(index === 0) && lowercaseWords.has(word)
+            ? word.toLowerCase()
+            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+        )
+        .join(" "),
+    )
     .join(", ");
 }

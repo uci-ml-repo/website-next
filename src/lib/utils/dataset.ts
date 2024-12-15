@@ -14,7 +14,10 @@ export function datasetThumbnail({
   );
 }
 
-export function datasetHref({ id, slug }: { id: number; slug?: string }) {
-  const baseHref = `/datasets/${id}`;
-  return slug ? `${baseHref}/${slug}` : baseHref;
+export function datasetPage({ id, slug }: { id: number; slug: string }) {
+  return `/datasets/${id}/${slug}`;
+}
+
+export function datasetZip({ id, slug }: { id: number; slug: string }) {
+  return `${STATIC_FILES_ROUTE}/${id}/${slug}.zip`;
 }

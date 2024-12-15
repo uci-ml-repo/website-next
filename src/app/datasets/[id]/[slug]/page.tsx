@@ -1,8 +1,11 @@
+import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import Main from "@/components/layout/Main";
-import { datasetThumbnail } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { datasetThumbnail, datasetZip } from "@/lib/utils";
 import { caller } from "@/server/trpc/server";
 
 export default async function Page({
@@ -42,6 +45,51 @@ export default async function Page({
             "ml-8 h-[120px] w-[300px] shrink-0 rounded-2xl object-cover object-center"
           }
         />
+      </div>
+      <div className={"w-80 space-y-2"}>
+        <Button
+          pill
+          variant={"blue"}
+          className={"lift w-full"}
+          size={"lg"}
+          asChild
+        >
+          {dataset.externalLink ? (
+            <Link href={dataset.externalLink}>
+              <ExternalLinkIcon />
+              <div>View Dataset</div>
+            </Link>
+          ) : (
+            <a href={datasetZip(dataset)} download>
+              <DownloadIcon />
+              <div>Download (4.3 GB)</div>
+            </a>
+          )}
+        </Button>
+        <Button
+          pill
+          variant={"secondary"}
+          className={"lift w-full"}
+          size={"lg"}
+          asChild
+        >
+          <div>
+            <DownloadIcon />
+            <div>Import Python</div>
+          </div>
+        </Button>
+        <Button
+          pill
+          variant={"secondary"}
+          className={"lift w-full"}
+          size={"lg"}
+          asChild
+        >
+          <div>
+            <DownloadIcon />
+            <div>Cite Dataset</div>
+          </div>
+        </Button>
       </div>
     </Main>
   );

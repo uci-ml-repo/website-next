@@ -18,11 +18,15 @@ const components = {
     <p className="mb-6 text-lg text-foreground" {...props} />
   ),
   a: ({ href, children, ...props }: AnchorProps) => {
+    if (!href) {
+      return <a>{children}</a>;
+    }
+
     return (
       <Link
-        href={href!}
+        href={href}
         className={cn("text-nowrap text-link hover:underline", props.className)}
-        target={href?.startsWith("/") ? "_self" : "_blank"}
+        target={href.startsWith("http") ? "_blank" : undefined}
         {...props}
       >
         {children}

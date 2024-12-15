@@ -1,18 +1,33 @@
-import { ListIcon, PlusIcon, SearchIcon } from "lucide-react";
+import {
+  ListIcon,
+  PlusIcon,
+  SearchIcon,
+  SparklesIcon,
+  TrendingUpIcon,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import NewDatasets from "@/components/dataset/groups/NewDatasets";
-import PopularDatasets from "@/components/dataset/groups/PopularDatasets";
+import DatasetGroup from "@/components/dataset/groups/DatasetGroup";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { caller, HydrateClient } from "@/server/trpc/server";
+import { caller } from "@/server/trpc/server";
 
 export default async function Page() {
   const datasetFind = await caller.datasets.find({});
+  const popularDatasets = await caller.datasets.find({
+    orderBy: "viewCount",
+    sort: "desc",
+    take: 4,
+  });
+  const newDatasets = await caller.datasets.find({
+    orderBy: "donatedAt",
+    take: 4,
+    sort: "desc",
+  });
 
   return (
     <Main className={"space-y-8"}>
@@ -35,11 +50,19 @@ export default async function Page() {
       />
 
       <div className={"space-y-10"}>
-        <HydrateClient>
-          <PopularDatasets />
-          <hr />
-          <NewDatasets />
-        </HydrateClient>
+        <DatasetGroup
+          icon={<TrendingUpIcon />}
+          heading={"Popular Datasets"}
+          seeAllHref={"#"}
+          datasets={popularDatasets.datasets}
+        />
+        <hr />
+        <DatasetGroup
+          icon={<SparklesIcon />}
+          heading={"New Datasets"}
+          seeAllHref={"#"}
+          datasets={newDatasets.datasets}
+        />
       </div>
     </Main>
   );
