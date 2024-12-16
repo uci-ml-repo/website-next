@@ -1,3 +1,5 @@
+"use client";
+
 import { UserRole } from "@prisma/client";
 import {
   CircleUserRoundIcon,
@@ -6,8 +8,8 @@ import {
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
-import { auth, signOut } from "@/auth";
 import SignInButton from "@/components/auth/SignInButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,15 +18,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/lib/routes";
 
-export default async function Header() {
-  const session = await auth();
+export default function Header() {
+  const session = useSession().data;
+
+  const isMobile = useIsMobile();
 
   return (
     <header className={"relative"}>
       <div className={"flex h-20 items-center justify-between p-4 sm:px-6"}>
-        <div />
+        {isMobile ? <SidebarTrigger /> : <div />}
         {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -65,8 +71,10 @@ export default async function Header() {
               )}
               <DropdownMenuItem
                 onClick={async () => {
-                  "use server";
-                  await signOut({ redirect: true, redirectTo: HOME_PATH });
+                  await signOut({
+                    redirect: true,
+                    redirectTo: HOME_PATH,
+                  });
                 }}
               >
                 <LogOutIcon />

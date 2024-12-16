@@ -14,6 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 interface DatasetGroupProps {
   heading: string;
@@ -28,6 +29,10 @@ export default function DatasetGroup({
   seeAllHref,
   datasets,
 }: DatasetGroupProps) {
+  const cardBreakpoints = cn(
+    "basis-full sm:basis-1/2 md:basis-1/3 xl:basis-1/4",
+  );
+
   return (
     <div className={"space-y-4"}>
       <div className={"flex items-center justify-between"}>
@@ -41,21 +46,16 @@ export default function DatasetGroup({
           </Button>
         )}
       </div>
-      <div className={"max-[1350px]:mx-10"}>
+      <div className={"max-[1600px]:mx-10"}>
         <Carousel opts={{ align: "start", skipSnaps: true, duration: 20 }}>
           <CarouselContent allowPadding>
             {datasets.map((dataset, index) => (
-              <CarouselItem
-                key={index}
-                className={"basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"}
-              >
+              <CarouselItem key={index} className={cardBreakpoints}>
                 <DatasetCard dataset={dataset} />
               </CarouselItem>
             ))}
             {seeAllHref && (
-              <CarouselItem
-                className={"basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"}
-              >
+              <CarouselItem className={cardBreakpoints}>
                 <DatasetCardSkeleton className={"bg-muted"}>
                   <Button asChild pill className={"lift"}>
                     <Link href={seeAllHref}>

@@ -18,8 +18,8 @@ export default function Page() {
   const [tab, setTab] = useState<Tab>("signin");
 
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
 
+  const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
   const redirectTo = callbackUrl ? getPath(callbackUrl) : HOME_PATH;
 
   const onTabChange = (tab: string) => {
@@ -28,8 +28,24 @@ export default function Page() {
 
   return (
     <Main>
-      <Tabs value={tab} onValueChange={onTabChange} asChild>
-        <Card className="flex w-[450px] flex-col items-center justify-self-center rounded-4xl p-4">
+      <Tabs value={tab} onValueChange={onTabChange}>
+        {/* Mobile View */}
+        <div className={"flex flex-col items-center space-y-4 sm:hidden"}>
+          <Banner variant="logo" link className={"px-4"} />
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="signin">Sign In</TabsTrigger>
+            <TabsTrigger value="register">Register</TabsTrigger>
+          </TabsList>
+          <TabsContent value="signin">
+            <Login setTab={setTab} redirectTo={redirectTo} />
+          </TabsContent>
+          <TabsContent value="register">
+            <Register setTab={setTab} redirectTo={redirectTo} />
+          </TabsContent>
+        </div>
+
+        {/* Desktop View */}
+        <Card className="hidden max-w-[450px] flex-col items-center justify-self-center rounded-4xl p-4 sm:flex">
           <CardHeader className="py-6">
             <Banner variant="logo" link />
           </CardHeader>
@@ -39,13 +55,13 @@ export default function Page() {
               <TabsTrigger value="register">Register</TabsTrigger>
             </TabsList>
           </CardContent>
-          <TabsContent value="signin" className="w-full">
+          <TabsContent value="signin">
             <CardContent>
               <Login setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>
-          <TabsContent value="register" className="w-full overflow-visible">
-            <CardContent className={"overflow-visible"}>
+          <TabsContent value="register">
+            <CardContent>
               <Register setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>

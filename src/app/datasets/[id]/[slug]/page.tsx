@@ -1,11 +1,10 @@
-import { BookMarkedIcon } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import DatasetCitation from "@/components/dataset/interactions/DatasetCitation";
 import DatasetDownload from "@/components/dataset/interactions/DatasetDownload";
 import DatasetPython from "@/components/dataset/interactions/DatasetPython";
 import Main from "@/components/layout/Main";
-import { Button } from "@/components/ui/button";
 import { datasetThumbnail } from "@/lib/utils";
 import { caller } from "@/server/trpc/server";
 
@@ -51,15 +50,7 @@ export default async function Page({
       <div className={"w-80 space-y-2"}>
         <DatasetDownload dataset={dataset} />
         {dataset.isAvailablePython && <DatasetPython dataset={dataset} />}
-        <Button
-          pill
-          variant={"secondary"}
-          className={"lift w-full"}
-          size={"lg"}
-        >
-          <BookMarkedIcon />
-          <div>Cite Dataset</div>
-        </Button>
+        <DatasetCitation dataset={dataset} />
       </div>
     </Main>
   );

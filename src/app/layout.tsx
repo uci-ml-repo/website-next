@@ -4,8 +4,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
+import { AppSidebar } from "@/components/layout/AppSidebar";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/client";
@@ -27,12 +29,17 @@ export default function Layout({
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
-            <Header />
+            <SidebarProvider defaultOpen={false}>
+              <AppSidebar />
+              <div className={"w-full"}>
+                <Header />
 
-            {children}
+                {children}
 
-            <Toaster />
-            <Footer />
+                <Footer />
+              </div>
+              <Toaster />
+            </SidebarProvider>
           </body>
         </TRPCProvider>
       </SessionProvider>

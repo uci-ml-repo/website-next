@@ -1,7 +1,4 @@
-"use client";
-
-import { DatabaseIcon, HomeIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { DatabaseIcon, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -13,65 +10,47 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { HOME_PATH } from "@/lib/routes";
+import { DATASETS_PATH, HOME_PATH } from "@/lib/routes";
 
+// Menu items.
 const items = [
   {
     title: "Home",
     url: HOME_PATH,
-    icon: HomeIcon,
+    icon: Home,
   },
   {
     title: "Datasets",
-    url: "/datasets",
+    url: DATASETS_PATH,
     icon: DatabaseIcon,
   },
 ];
 
 export function AppSidebar() {
-  const [currentUrl, setCurrentUrl] = useState("");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCurrentUrl(window.location.pathname);
-    }
-  }, []);
-
   return (
-    <div className={"absolute xl:static"}>
-      <Sidebar collapsible={"icon"}>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuButton asChild className={"w-fit"}>
-                  <SidebarTrigger />
-                </SidebarMenuButton>
-                {items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={currentUrl === item.url}
-                    >
-                      <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                        {currentUrl === item.url && (
-                          <span
-                            className={
-                              "absolute right-3 size-1.5 rounded-full bg-foreground"
-                            }
-                          />
-                        )}
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-    </div>
+    <Sidebar collapsible={"icon"}>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarTrigger />
+              </SidebarMenuItem>
+
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }

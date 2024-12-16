@@ -82,7 +82,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
   }
 
   return (
-    <div className={"space-y-4 overflow-visible"}>
+    <div className={"space-y-4"}>
       {emailFormIsOpen ? (
         <motion.div
           initial={{ height: 0 }}
@@ -98,10 +98,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                 </div>
               </Alert>
             )}
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 overflow-visible"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className={"space-y-2"}>
                 <FormField
                   control={form.control}
