@@ -152,12 +152,18 @@ Carousel.displayName = "Carousel";
 
 const CarouselContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { allowPadding?: boolean }
+>(({ className, allowPadding, ...props }, ref) => {
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className="overflow-hidden">
+    <div
+      ref={carouselRef}
+      className={cn(
+        "overflow-hidden",
+        allowPadding ? "-m-3 -mb-6 p-3 pb-6" : "",
+      )}
+    >
       <div
         ref={ref}
         className={cn(
