@@ -18,6 +18,7 @@ const config = {
       width: {
         "screen-lg": "1024px",
         "screen-xl": "1280px",
+        "screen-2xl": "1536px",
       },
       height: {
         18: "4.5rem",
