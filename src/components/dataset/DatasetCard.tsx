@@ -38,10 +38,10 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             src={thumbnail}
             alt={"thumbnail"}
             width={350}
-            height={100}
+            height={350}
             priority
             className={
-              "h-[100px] w-full rounded-t-2xl object-cover object-center"
+              "h-[100px] w-auto rounded-t-2xl object-cover object-center"
             }
           />
         </CardHeader>

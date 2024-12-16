@@ -1,9 +1,10 @@
 "use client";
 
-import "highlight.js/styles/github-dark.css";
+import "highlight.js/styles/github-dark.min.css";
 
 import hljs from "highlight.js";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, ExternalLinkIcon } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { PythonIcon } from "@/components/icons";
@@ -22,6 +23,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Dataset } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface DatasetPythonProps {
   dataset: Dataset;
@@ -36,11 +38,8 @@ const CodeBlock = ({
   copy?: boolean;
   language?: string;
 }) => {
-  useEffect(() => {
-    hljs.highlightAll();
-  }, []);
-
   const [copied, setCopied] = useState(false);
+  const triggerRef = useRef(null);
 
   const copyCode = () => {
     navigator.clipboard.writeText(code).then(() => {
@@ -49,12 +48,16 @@ const CodeBlock = ({
     });
   };
 
-  const triggerRef = useRef(null);
+  useEffect(() => {
+    hljs.highlightAll();
+  }, []);
 
   return (
-    <div className={"dark relative overflow-hidden rounded-lg"}>
+    <div className={"relative overflow-hidden rounded-lg"}>
       <pre>
-        <code className={language}>{code}</code>
+        <code className={cn("text-sm", copy ? "!pr-12" : "", language)}>
+          {code}
+        </code>
       </pre>
       {copy && (
         <TooltipProvider>
@@ -67,7 +70,7 @@ const CodeBlock = ({
               <Button
                 variant={"outline"}
                 size={"icon"}
-                className={"absolute right-2 top-2.5 text-primary"}
+                className={"dark absolute right-1.5 top-1.5 text-primary"}
                 onClick={copyCode}
               >
                 {copied ? <CheckIcon /> : <CopyIcon />}
@@ -118,15 +121,32 @@ print(iris.variables) `;
           <div>Import Python</div>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Import Python</DialogTitle>
         </DialogHeader>
         <div className={"space-y-4 text-left"}>
-          <div className={"text-lg"}>Install the ucimlrepo package</div>
-          <CodeBlock code={pipInstallCommand} language={"language-bash"} copy />
-          <div className={"text-lg"}>Import the dataset into your code</div>
-          <CodeBlock code={pythonCode} language={"language-python"} copy />
+          <div className={"space-y-2"}>
+            <div>Install the ucimlrepo package</div>
+            <CodeBlock
+              code={pipInstallCommand}
+              language={"language-bash"}
+              copy
+            />
+          </div>
+          <div className={"space-y-2"}>
+            <div>Import the dataset into your code</div>
+            <CodeBlock code={pythonCode} language={"language-python"} copy />
+          </div>
+          <Button variant={"secondary"} size={"sm"} asChild>
+            <Link
+              href={"https://github.com/uci-ml-repo/ucimlrepo"}
+              target={"_blank"}
+            >
+              <div>View Docs</div>
+              <ExternalLinkIcon />
+            </Link>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

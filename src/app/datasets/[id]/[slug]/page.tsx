@@ -45,11 +45,12 @@ export default async function Page({
           className={
             "ml-8 h-[120px] w-[300px] shrink-0 rounded-2xl object-cover object-center"
           }
+          priority
         />
       </div>
       <div className={"w-80 space-y-2"}>
         <DatasetDownload dataset={dataset} />
-        <DatasetPython dataset={dataset} />
+        {dataset.isAvailablePython && <DatasetPython dataset={dataset} />}
         <Button
           pill
           variant={"secondary"}

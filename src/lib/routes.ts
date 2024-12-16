@@ -8,6 +8,3 @@ export const PROFILE_PATH = "/profile";
 export const DATASETS_PATH = "/datasets";
 export const DONATE_PATH = "/donate";
 export const STATIC_FILES_ROUTE = "/api/static";
-
-export const PROTECTED_ROUTES = new Set([PROFILE_PATH]);
-export const ADMIN_ROUTES = new Set([ADMIN_PATH]);
