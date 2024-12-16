@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/globals";
+import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/lib/routes";
 
 export default async function Header() {
   const session = await auth();
@@ -34,7 +34,7 @@ export default async function Header() {
                   "size-10 cursor-pointer outline-border hover:outline hover:outline-4"
                 }
               >
-                {session?.user?.image && (
+                {session.user.image && (
                   <AvatarImage src={session?.user?.image} alt={"avatar"} />
                 )}
 
@@ -55,7 +55,7 @@ export default async function Header() {
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
-              {session?.user?.role === UserRole.ADMIN && (
+              {session.user.role === UserRole.ADMIN && (
                 <DropdownMenuItem destructive asChild>
                   <Link href={ADMIN_PATH}>
                     <LayoutDashboardIcon />

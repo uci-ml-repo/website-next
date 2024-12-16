@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import UCIrvine from "@/components/icons/UCIrvine";
-import { HOME_PATH } from "@/globals";
+import { HOME_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 const logoVariants = cva(cn(), {

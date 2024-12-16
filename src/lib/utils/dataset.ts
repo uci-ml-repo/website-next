@@ -1,4 +1,4 @@
-import { STATIC_FILES_ROUTE } from "@/globals";
+import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
 export function datasetThumbnail({
   hasGraphics,

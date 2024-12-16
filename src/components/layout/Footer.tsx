@@ -7,7 +7,7 @@ import {
   CONTACT_PATH,
   HOME_PATH,
   PRIVACY_POLICY_PATH,
-} from "@/globals";
+} from "@/lib/routes";
 
 interface FooterLinkGroupProps {
   title: string;

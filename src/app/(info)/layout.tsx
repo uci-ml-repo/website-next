@@ -6,7 +6,7 @@ import React from "react";
 
 import Main from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
-import { HOME_PATH } from "@/globals";
+import { HOME_PATH } from "@/lib/routes";
 
 export default function MdxLayout({
   children,

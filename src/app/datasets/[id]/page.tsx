@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 
-import { DATASETS_PATH } from "@/globals";
+import { DATASETS_PATH } from "@/lib/routes";
 import service from "@/server/service";
 
 export default async function Page({

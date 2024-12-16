@@ -1,18 +1,25 @@
 "use client";
 
+import { SearchIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import DatasetCard from "@/components/dataset/DatasetCard";
 import DatasetCardSkeleton from "@/components/dataset/DatasetCardSkeleton";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import type { RouterOutput } from "@/server/trpc/routers";
 
 interface DatasetGroupProps {
   heading: string;
   icon?: React.ReactNode;
   seeAllHref?: string;
-  datasets: RouterOutput["datasets"]["find"]["datasets"] | undefined;
+  datasets: RouterOutput["datasets"]["find"]["datasets"];
 }
 
 export default function DatasetGroup({
@@ -21,31 +28,6 @@ export default function DatasetGroup({
   seeAllHref,
   datasets,
 }: DatasetGroupProps) {
-  const CONTENT_WIDTH = 1250;
-  const MIN_CARD_WIDTH = 225;
-  const MAX_CARDS = 4;
-
-  const [numCols, setNumCols] = useState<number | null>();
-
-  useEffect(() => {
-    const calculateNumCols = () => {
-      return Math.min(
-        Math.floor(Math.min(window.innerWidth, CONTENT_WIDTH) / MIN_CARD_WIDTH),
-        MAX_CARDS,
-      );
-    };
-
-    const handleResize = () => setNumCols(calculateNumCols());
-
-    window.addEventListener("resize", handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [datasets]);
-
   return (
     <div className={"space-y-4"}>
       <div className={"flex items-center justify-between"}>
@@ -59,35 +41,35 @@ export default function DatasetGroup({
           </Button>
         )}
       </div>
-      <div className={`h-[360px]`}>
-        {numCols && (
-          <div
-            className={"grid gap-4"}
-            style={{
-              gridTemplateColumns: numCols
-                ? `repeat(${numCols}, minmax(0, 1fr))`
-                : undefined,
-            }}
-          >
-            {datasets ? (
-              <>
-                {datasets.slice(0, numCols).map((dataset, index) => (
-                  <DatasetCard key={index} dataset={dataset} />
-                ))}
-
-                {numCols > datasets.length &&
-                  Array.from(
-                    { length: numCols - datasets.length },
-                    (_, index) => <div key={index} />,
-                  )}
-              </>
-            ) : (
-              Array.from({ length: numCols }, (_, index) => (
-                <DatasetCardSkeleton key={index} />
-              ))
+      <div className={"max-[1350px]:mx-10"}>
+        <Carousel opts={{ align: "start", skipSnaps: true }}>
+          <CarouselContent>
+            {datasets.map((dataset, index) => (
+              <CarouselItem
+                key={index}
+                className={"basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"}
+              >
+                <DatasetCard dataset={dataset} />
+              </CarouselItem>
+            ))}
+            {seeAllHref && (
+              <CarouselItem
+                className={"basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"}
+              >
+                <DatasetCardSkeleton className={"bg-muted"}>
+                  <Button asChild pill className={"lift"}>
+                    <Link href={seeAllHref}>
+                      <SearchIcon />
+                      <div>See All</div>
+                    </Link>
+                  </Button>
+                </DatasetCardSkeleton>
+              </CarouselItem>
             )}
-          </div>
-        )}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </div>
   );

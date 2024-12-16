@@ -9,10 +9,31 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
-export default function DatasetCardSkeleton() {
+interface DatasetCardSkeletonProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export default function DatasetCardSkeleton({
+  children,
+  className,
+}: DatasetCardSkeletonProps) {
+  if (children) {
+    return (
+      <Card
+        className={cn(
+          "flex h-full w-full items-center justify-center",
+          className,
+        )}
+      >
+        {children}
+      </Card>
+    );
+  }
+
   return (
     <Card>
-      <CardHeader className={"p-0"}>
+      <CardHeader className={cn("p-0", className)}>
         <Skeleton
           className={
             "h-[100px] w-full rounded-b-none rounded-t-2xl object-cover object-center"

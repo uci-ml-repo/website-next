@@ -7,8 +7,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { v4 as uuid } from "uuid";
 
 import authConfig from "@/auth.config";
-import { SIGN_IN_PATH } from "@/globals";
 import { prisma } from "@/lib/db/prisma";
+import { SIGN_IN_PATH } from "@/lib/routes";
 
 const adapter = PrismaAdapter(prisma);
 

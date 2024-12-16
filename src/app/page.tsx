@@ -14,18 +14,20 @@ import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DATASETS_PATH, DONATE_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/server";
 
 export default async function Page() {
   const datasetFind = await caller.datasets.find({});
+
   const popularDatasets = await caller.datasets.find({
     orderBy: "viewCount",
     sort: "desc",
-    take: 4,
+    take: 10,
   });
   const newDatasets = await caller.datasets.find({
     orderBy: "donatedAt",
-    take: 4,
+    take: 10,
     sort: "desc",
   });
 
@@ -39,68 +41,84 @@ export default async function Page() {
             in the machine learning community.
           </p>
         </div>
-        <NavButtons />
+        <div className={"flex flex-wrap gap-4"}>
+          <NavButton
+            label={"Explore All Datasets"}
+            variant={"blue"}
+            icon={<ListIcon />}
+            href={DATASETS_PATH} // TODO
+          />
+          <NavButton
+            label={"Donate Dataset"}
+            variant={"secondary"}
+            icon={<PlusIcon />}
+            href={DONATE_PATH} // TODO
+          />
+        </div>
+        <Input
+          placeholder={"Search for a dataset"}
+          variantSize={"lg"}
+          icon={SearchIcon}
+          pill
+        />
       </div>
-
-      <Input
-        placeholder={"Search for a dataset"}
-        variantSize={"lg"}
-        icon={SearchIcon}
-        pill
-      />
 
       <div className={"space-y-10"}>
         <DatasetGroup
           icon={<TrendingUpIcon />}
           heading={"Popular Datasets"}
-          seeAllHref={"#"}
+          seeAllHref={DATASETS_PATH} // TODO
           datasets={popularDatasets.datasets}
         />
         <hr />
         <DatasetGroup
           icon={<SparklesIcon />}
           heading={"New Datasets"}
-          seeAllHref={"#"}
+          seeAllHref={DATASETS_PATH} // TODO
           datasets={newDatasets.datasets}
         />
+        <hr />
+        <div className={"space-y-8"}>
+          <div className={"flex flex-col items-center space-y-4"}>
+            <p className={"text-xl font-bold"}>
+              Didn't find what you were looking for?
+            </p>
+            <Button asChild pill className={"lift"} size={"lg"}>
+              <div>
+                <SearchIcon />
+                <Link href={DATASETS_PATH}>Explore All Datasets</Link>
+              </div>
+            </Button>
+          </div>
+        </div>
       </div>
     </Main>
   );
 }
 
-function NavButtons() {
-  const buttons = [
-    {
-      label: "View All Datasets",
-      variant: "blue",
-      icon: <ListIcon />,
-      href: "/datasets",
-    },
-    {
-      label: "Donate Dataset",
-      variant: "secondary",
-      icon: <PlusIcon />,
-      href: "/donate",
-    },
-  ];
-
+function NavButton({
+  label,
+  variant,
+  icon,
+  href,
+}: {
+  label: string;
+  variant: ButtonProps["variant"];
+  icon: React.ReactNode;
+  href: string;
+}) {
   return (
-    <div className={"flex flex-wrap gap-4"}>
-      {buttons.map((button, index) => (
-        <Button
-          key={index}
-          variant={button.variant as ButtonProps["variant"]}
-          size={"lg"}
-          className={"lift w-full sm:w-fit"}
-          asChild
-          pill
-        >
-          <Link href={button.href}>
-            {button.icon}
-            {button.label}
-          </Link>
-        </Button>
-      ))}
-    </div>
+    <Button
+      variant={variant}
+      size={"lg"}
+      className={"lift w-full sm:w-fit"}
+      asChild
+      pill
+    >
+      <Link href={href}>
+        {icon}
+        {label}
+      </Link>
+    </Button>
   );
 }

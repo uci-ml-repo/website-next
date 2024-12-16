@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "UCI Repository for Machine Learning Datasets",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

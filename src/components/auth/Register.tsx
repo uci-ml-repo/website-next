@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
-import { PROFILE_PATH } from "@/globals";
 
 const formSchema = z
   .object({
@@ -46,11 +45,12 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-interface AuthLoginProps {
+interface RegisterProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
+  redirectTo: string;
 }
 
-export default function Register({ setTab }: AuthLoginProps) {
+export default function Register({ setTab, redirectTo }: RegisterProps) {
   const router = useRouter();
 
   const [emailFormIsOpen, setEmailFormIsOpen] = useState(false);
@@ -73,7 +73,7 @@ export default function Register({ setTab }: AuthLoginProps) {
     startTransition(async () => {
       const res = await credentialsRegister(values);
       if (res.success) {
-        router.replace(PROFILE_PATH);
+        router.replace(redirectTo);
       } else {
         setError(res.message);
       }
@@ -175,14 +175,14 @@ export default function Register({ setTab }: AuthLoginProps) {
         icon={<GoogleIcon />}
         label={`Register with Google`}
         onClick={async () => {
-          await providerLogin("google");
+          await providerLogin({ provider: "google", redirectTo });
         }}
       />
       <AuthButton
         icon={<GithubIcon />}
         label={`Register with Github`}
         onClick={async () => {
-          await providerLogin("github");
+          await providerLogin({ provider: "github", redirectTo });
         }}
       />
       <p

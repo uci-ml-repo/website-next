@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       { hostname: "lh3.googleusercontent.com" },
     ],
   },
+  experimental: {
+    mdxRs: true,
+    authInterrupts: true,
+  },
   async redirects() {
     return [
       {
@@ -23,9 +27,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
-  },
-  experimental: {
-    mdxRs: true,
   },
 };
 

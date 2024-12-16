@@ -3,16 +3,18 @@
 import bcryptjs from "bcryptjs";
 
 import { signIn } from "@/auth";
-import { HOME_PATH } from "@/globals";
 import { prisma } from "@/lib/db/prisma";
 
 type Provider = "google" | "github";
 
-export async function providerLogin(provider: Provider) {
-  await signIn(provider, {
-    redirect: true,
-    redirectTo: HOME_PATH,
-  });
+export async function providerLogin({
+  provider,
+  redirectTo,
+}: {
+  provider: Provider;
+  redirectTo: string;
+}) {
+  await signIn(provider, { redirect: true, redirectTo: redirectTo });
 }
 
 export async function credentialsLogin({
@@ -63,6 +65,7 @@ export async function credentialsLogin({
       data: res,
     };
   } catch (error: any) {
+    console.error(error);
     return {
       success: false,
       message: error.message,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import Login from "@/components/auth/Login";
@@ -8,11 +9,18 @@ import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HOME_PATH } from "@/lib/routes";
+import { getPath } from "@/lib/utils/url";
 
 export type Tab = "signin" | "register";
 
 export default function Page() {
   const [tab, setTab] = useState<Tab>("signin");
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
+
+  const redirectTo = callbackUrl ? getPath(callbackUrl) : HOME_PATH;
 
   const onTabChange = (tab: string) => {
     setTab(tab as Tab);
@@ -33,12 +41,12 @@ export default function Page() {
           </CardContent>
           <TabsContent value="signin" className="w-full">
             <CardContent>
-              <Login setTab={setTab} />
+              <Login setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>
           <TabsContent value="register" className="w-full">
             <CardContent>
-              <Register setTab={setTab} />
+              <Register setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>
         </Card>

@@ -30,7 +30,7 @@ export const users: Prisma.UserCreateManyInput[] = [
   {
     id: "admin",
     email: "ucirepository@gmail.com",
-    name: "admin",
+    name: "UCI ML Repository",
     password: bcryptjs.hashSync("password", 10),
     roleId: "ADMIN",
   },

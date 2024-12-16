@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { HOME_PATH } from "@/globals";
+import { HOME_PATH } from "@/lib/routes";
 
 const items = [
   {

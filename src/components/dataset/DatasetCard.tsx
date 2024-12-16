@@ -27,15 +27,19 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const fileCount = 1; // TODO
   const fileSize = Math.pow(2.1, 30); // TODO
 
+  const thumbnail = datasetThumbnail(dataset);
+  const href = datasetPage(dataset);
+
   return (
     <Card className="lift-lg group" ref={ref}>
-      <Link href={datasetPage(dataset)}>
+      <Link href={href}>
         <CardHeader className={"p-0"}>
           <Image
-            src={datasetThumbnail(dataset)}
+            src={thumbnail}
             alt={"thumbnail"}
             width={350}
             height={100}
+            priority
             className={
               "h-[100px] w-full rounded-t-2xl object-cover object-center"
             }

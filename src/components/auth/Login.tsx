@@ -21,18 +21,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
-import { HOME_PATH } from "@/globals";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-interface AuthLoginProps {
+interface LoginProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
+  redirectTo: string;
 }
 
-export default function Login({ setTab }: AuthLoginProps) {
+export default function Login({ setTab, redirectTo }: LoginProps) {
   const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export default function Login({ setTab }: AuthLoginProps) {
     startTransition(async () => {
       const res = await credentialsLogin(values);
       if (res.success) {
-        router.replace(HOME_PATH);
+        router.replace(redirectTo);
       } else {
         setError(res.message);
       }
@@ -78,7 +78,12 @@ export default function Login({ setTab }: AuthLoginProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} pill type={"email"} />
+                    <Input
+                      {...field}
+                      pill
+                      type={"email"}
+                      autoComplete={"username"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +96,11 @@ export default function Login({ setTab }: AuthLoginProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} pill />
+                    <PasswordInput
+                      {...field}
+                      pill
+                      autoComplete={"current-password"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,14 +121,14 @@ export default function Login({ setTab }: AuthLoginProps) {
         icon={<GoogleIcon />}
         label={`Sign in with Google`}
         onClick={async () => {
-          await providerLogin("google");
+          await providerLogin({ provider: "google", redirectTo });
         }}
       />
       <AuthButton
         icon={<GithubIcon />}
         label={`Sign in with Github`}
         onClick={async () => {
-          await providerLogin("github");
+          await providerLogin({ provider: "github", redirectTo });
         }}
       />
       <p
