@@ -10,16 +10,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Dataset } from "@/lib/types";
 import { cn, datasetPage, datasetThumbnail } from "@/lib/utils";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
   formatEnum,
 } from "@/lib/utils/format";
-import type { RouterOutput } from "@/server/trpc/routers";
 
 interface DatasetCardProps {
-  dataset: RouterOutput["datasets"]["find"]["datasets"][number];
+  dataset: Dataset;
   ref?: React.Ref<HTMLDivElement>;
 }
 

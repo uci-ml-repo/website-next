@@ -1,12 +1,12 @@
-import { BookMarkedIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
+import { BookMarkedIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PythonIcon } from "@/components/icons";
+import DatasetDownload from "@/components/dataset/interactions/DatasetDownload";
+import DatasetPython from "@/components/dataset/interactions/DatasetPython";
 import Main from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
-import { datasetThumbnail, datasetZip } from "@/lib/utils";
+import { datasetThumbnail } from "@/lib/utils";
 import { caller } from "@/server/trpc/server";
 
 export default async function Page({
@@ -48,48 +48,16 @@ export default async function Page({
         />
       </div>
       <div className={"w-80 space-y-2"}>
-        <Button
-          pill
-          variant={"blue"}
-          className={"lift w-full"}
-          size={"lg"}
-          asChild
-        >
-          {dataset.externalLink ? (
-            <Link href={dataset.externalLink}>
-              <ExternalLinkIcon />
-              <div>View Dataset</div>
-            </Link>
-          ) : (
-            <a href={datasetZip(dataset)} download>
-              <DownloadIcon />
-              <div>Download (4.3 GB)</div>
-            </a>
-          )}
-        </Button>
+        <DatasetDownload dataset={dataset} />
+        <DatasetPython dataset={dataset} />
         <Button
           pill
           variant={"secondary"}
           className={"lift w-full"}
           size={"lg"}
-          asChild
         >
-          <div>
-            <PythonIcon />
-            <div>Import Python</div>
-          </div>
-        </Button>
-        <Button
-          pill
-          variant={"secondary"}
-          className={"lift w-full"}
-          size={"lg"}
-          asChild
-        >
-          <div>
-            <BookMarkedIcon />
-            <div>Cite Dataset</div>
-          </div>
+          <BookMarkedIcon />
+          <div>Cite Dataset</div>
         </Button>
       </div>
     </Main>

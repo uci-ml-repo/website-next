@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "@/lib/prisma";
 import DatasetsService from "@/server/service/datasets";
 
 class RepositoryService {

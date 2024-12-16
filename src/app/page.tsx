@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
-import DatasetGroup from "@/components/dataset/groups/DatasetGroup";
+import DatasetGroup from "@/components/dataset/DatasetGroup";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "@/lib/prisma";
 
 import { datasets, roles, users } from "./seed-data";
 

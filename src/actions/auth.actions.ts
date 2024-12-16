@@ -3,7 +3,7 @@
 import bcryptjs from "bcryptjs";
 
 import { signIn } from "@/auth";
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "@/lib/prisma";
 
 type Provider = "google" | "github";
 

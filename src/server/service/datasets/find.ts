@@ -6,7 +6,7 @@ export default class DatasetsFindService {
   constructor(readonly prisma: PrismaClient) {}
 
   async byId(id: number) {
-    return this.prisma.dataset.findFirst({
+    return this.prisma.dataset.findUnique({
       where: { id },
     });
   }

@@ -13,13 +13,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import type { RouterOutput } from "@/server/trpc/routers";
+import type { Dataset } from "@/lib/types";
 
 interface DatasetGroupProps {
   heading: string;
   icon?: React.ReactNode;
   seeAllHref?: string;
-  datasets: RouterOutput["datasets"]["find"]["datasets"];
+  datasets: Dataset[];
 }
 
 export default function DatasetGroup({
