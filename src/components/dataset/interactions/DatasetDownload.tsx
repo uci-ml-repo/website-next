@@ -1,8 +1,8 @@
+import type { Dataset } from "@prisma/client";
 import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import type { Dataset } from "@/lib/types";
 import { datasetZip } from "@/lib/utils";
 
 interface DatasetDownloadProps {

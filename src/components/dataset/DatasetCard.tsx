@@ -1,3 +1,4 @@
+import type { Dataset } from "@prisma/client";
 import { Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { Dataset } from "@/lib/types";
 import { cn, datasetPage, datasetThumbnail } from "@/lib/utils";
 import {
   abbreviateDecimal,

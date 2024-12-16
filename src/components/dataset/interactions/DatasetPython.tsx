@@ -2,6 +2,7 @@
 
 import "highlight.js/styles/github-dark.min.css";
 
+import type { Dataset } from "@prisma/client";
 import hljs from "highlight.js";
 import { CheckIcon, CopyIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -22,8 +23,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { Dataset } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getPythonSnippet } from "@/lib/utils/python";
 
 interface DatasetPythonProps {
   dataset: Dataset;
@@ -73,7 +74,11 @@ const CodeBlock = ({
                 className={"dark absolute right-1.5 top-1.5 text-primary"}
                 onClick={copyCode}
               >
-                {copied ? <CheckIcon /> : <CopyIcon />}
+                {copied ? (
+                  <CheckIcon className={"text-positive"} />
+                ) : (
+                  <CopyIcon />
+                )}
               </Button>
             </TooltipTrigger>
             <TooltipContent
@@ -93,20 +98,7 @@ const CodeBlock = ({
 export default function DatasetPython({ dataset }: DatasetPythonProps) {
   const pipInstallCommand = `pip install ucimlrepo`;
 
-  const pythonCode = `from ucimlrepo import fetch_ucirepo 
-  
-# fetch dataset 
-iris = fetch_ucirepo(id=${dataset.id}) 
-  
-# data (as pandas dataframes) 
-X = iris.data.features 
-y = iris.data.targets 
-  
-# metadata 
-print(iris.metadata) 
-  
-# variable information 
-print(iris.variables) `;
+  const pythonCode = getPythonSnippet(dataset);
 
   return (
     <Dialog>
@@ -125,7 +117,7 @@ print(iris.variables) `;
         <DialogHeader>
           <DialogTitle>Import Python</DialogTitle>
         </DialogHeader>
-        <div className={"space-y-4 text-left"}>
+        <div className={"space-y-4 overflow-x-auto text-left"}>
           <div className={"space-y-2"}>
             <div>Install the ucimlrepo package</div>
             <CodeBlock

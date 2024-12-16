@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dataset } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -13,7 +14,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import type { Dataset } from "@/lib/types";
 
 interface DatasetGroupProps {
   heading: string;
