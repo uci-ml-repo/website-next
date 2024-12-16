@@ -2,13 +2,7 @@ interface GoogleIconProps extends React.SVGProps<SVGSVGElement> {}
 
 export function GithubIcon(props: GoogleIconProps) {
   return (
-    <svg
-      width="98"
-      height="96"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 100 100"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

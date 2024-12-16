@@ -10,6 +10,10 @@ import { SIGN_IN_PATH } from "@/lib/routes";
 export default function SignInButton() {
   const pathname = usePathname();
 
+  if (pathname === SIGN_IN_PATH) {
+    return null;
+  }
+
   return (
     <Button variant={"ghost"} size={"lg"} asChild pill>
       <Link href={SIGN_IN_PATH + `?callbackUrl=${pathname}`}>

@@ -1,8 +1,9 @@
-import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
+import { BookMarkedIcon, DownloadIcon, ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { PythonIcon } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
 import { datasetThumbnail, datasetZip } from "@/lib/utils";
@@ -74,7 +75,7 @@ export default async function Page({
           asChild
         >
           <div>
-            <DownloadIcon />
+            <PythonIcon />
             <div>Import Python</div>
           </div>
         </Button>
@@ -86,7 +87,7 @@ export default async function Page({
           asChild
         >
           <div>
-            <DownloadIcon />
+            <BookMarkedIcon />
             <div>Cite Dataset</div>
           </div>
         </Button>

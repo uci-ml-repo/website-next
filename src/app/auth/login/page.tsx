@@ -44,8 +44,8 @@ export default function Page() {
               <Login setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>
-          <TabsContent value="register" className="w-full">
-            <CardContent>
+          <TabsContent value="register" className="w-full overflow-visible">
+            <CardContent className={"overflow-visible"}>
               <Register setTab={setTab} redirectTo={redirectTo} />
             </CardContent>
           </TabsContent>

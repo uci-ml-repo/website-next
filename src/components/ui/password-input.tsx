@@ -19,7 +19,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         ref={ref}
         {...props}
         type={showPassword ? "text" : "password"}
-        icon={showPassword ? EyeIcon : EyeOffIcon}
+        icon={showPassword ? EyeOffIcon : EyeIcon}
         iconPosition="right"
         onIconClick={handleToggle}
       />

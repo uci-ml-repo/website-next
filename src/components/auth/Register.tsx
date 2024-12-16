@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
+import { cn } from "@/lib/utils";
 
 const formSchema = z
   .object({
@@ -81,12 +82,12 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
   }
 
   return (
-    <div className={"space-y-4"}>
+    <div className={"space-y-4 overflow-visible"}>
       {emailFormIsOpen ? (
         <motion.div
           initial={{ height: 0 }}
           animate={{ height: "fit-content" }}
-          className={"space-y-4 overflow-y-hidden"}
+          className={cn("space-y-4 overflow-y-hidden", "-mx-1 px-1")}
         >
           <Form {...form}>
             {error && (
@@ -97,7 +98,10 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                 </div>
               </Alert>
             )}
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 overflow-visible"
+            >
               <div className={"space-y-2"}>
                 <FormField
                   control={form.control}
