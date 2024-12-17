@@ -79,6 +79,7 @@ model Dataset {
   tasks             DatasetTask[]
   featureTypes      FeatureType[]           @map("feature_types")
   isTabular         Boolean                 @map("is_tabular")
+  hasMissingValues  Boolean                 @map("has_missing_values")
   instanceCount     Int                     @map("instance_count")
   featureCount      Int                     @map("feature_count")
   hasGraphics       Boolean                 @default(false) @map("has_graphics")
@@ -127,16 +128,15 @@ model DatasetAuthor {
 }
 
 model DatasetFile {
-  id          String  @id @default(cuid())
-  datasetId   Int     @map("dataset_id")
-  isDirectory Boolean @default(false) @map("is_directory")
-  name        String
-  path        String
-  size        Int
+  id        String @id @default(cuid())
+  datasetId Int    @map("dataset_id")
+  name      String
+  path      String
+  size      Int
 
   dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
 
-  @@index([size])
+  @@index([name, size])
   @@map("dataset_files")
 }
 
