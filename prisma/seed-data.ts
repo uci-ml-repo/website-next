@@ -78,6 +78,7 @@ export const datasets: Omit<
     downloadCount: 191103,
     slug: "iris",
     externalLink: null,
+    hasMissingValues: false,
   },
   {
     id: 45,
@@ -103,6 +104,7 @@ export const datasets: Omit<
     downloadCount: 125605,
     slug: "heart+disease",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 186,
@@ -128,6 +130,7 @@ export const datasets: Omit<
     downloadCount: 105932,
     slug: "wine+quality",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 2,
@@ -153,6 +156,7 @@ export const datasets: Omit<
     downloadCount: 80360,
     slug: "adult",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 17,
@@ -177,6 +181,7 @@ export const datasets: Omit<
     downloadCount: 78091,
     slug: "breast+cancer+wisconsin+diagnostic",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 1031,
@@ -202,6 +207,7 @@ export const datasets: Omit<
     downloadCount: 3459,
     slug: "dataset+for+assessing+mathematics+learning+in+higher+education",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 1074,
@@ -227,6 +233,7 @@ export const datasets: Omit<
     downloadCount: 0,
     slug: "nvidia+market+customer+segmentation+data",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 388,
@@ -252,6 +259,7 @@ export const datasets: Omit<
     downloadCount: 2032,
     slug: "epileptic+seizure+recognition",
     externalLink: null,
+    hasMissingValues: true,
   },
   {
     id: 939,
@@ -277,6 +285,7 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "test+pending",
     externalLink: "https://zenodo.org/records/7669442",
+    hasMissingValues: true,
   },
   {
     id: 938,
@@ -302,5 +311,6 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "regensburg+pediatric+appendicitis",
     externalLink: "https://zenodo.org/records/7669442",
+    hasMissingValues: true,
   },
 ];
