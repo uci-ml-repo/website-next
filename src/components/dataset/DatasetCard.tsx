@@ -54,7 +54,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             </CardTitle>
             <CardDescription>
               <p className={"line-clamp-3"}>
-                {dataset.subtitle ?? dataset.abstract}
+                {dataset.subtitle ?? dataset.description}
               </p>
             </CardDescription>
           </div>

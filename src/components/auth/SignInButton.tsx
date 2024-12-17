@@ -15,7 +15,7 @@ export default function SignInButton() {
   }
 
   return (
-    <Button variant={"ghost"} size={"lg"} asChild pill>
+    <Button variant={"outline"} asChild pill>
       <Link href={SIGN_IN_PATH + `?callbackUrl=${pathname}`}>
         <LogInIcon className={"size-6"} />
         <p>Sign In</p>

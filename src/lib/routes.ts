@@ -6,5 +6,5 @@ export const CONTACT_PATH = "/contact";
 export const PRIVACY_POLICY_PATH = "/privacy";
 export const PROFILE_PATH = "/profile";
 export const DATASETS_PATH = "/datasets";
-export const DONATE_PATH = "/donate";
+export const CONTRIBUTE_PATH = "/contribute";
 export const STATIC_FILES_ROUTE = "/api/static";

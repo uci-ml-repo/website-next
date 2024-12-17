@@ -35,7 +35,6 @@ model UserData {
   userId        String   @unique @map("user_id")
   searchHistory String[] @map("search_history")
 
-  viewHistory        DatasetView[]
   bookmarkedDatasets DatasetBookmark[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -54,20 +53,6 @@ model Role {
   @@map("roles")
 }
 
-model DatasetView {
-  userDataId String @map("user_data_id")
-  datasetId  Int    @map("dataset_id")
-
-  viewedAt DateTime @default(now()) @map("viewed_at")
-
-  userData UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
-  dataset  Dataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
-
-  @@id([userDataId, datasetId])
-  @@index([viewedAt])
-  @@map("dataset_views")
-}
-
 model DatasetBookmark {
   userDataId String @map("user_data_id")
   datasetId  Int    @map("dataset_id")
@@ -84,11 +69,11 @@ model DatasetBookmark {
 
 model Dataset {
   id                Int                     @id @default(autoincrement())
-  status            DatasetStatus           @default(PENDING)
+  status            ApprovalStatus          @default(PENDING)
   donatedAt         DateTime                @map("donated_at") @db.Date
   yearCreated       Int                     @map("year_created")
   title             String                  @db.VarChar(255)
-  abstract          String                  @db.Text
+  description       String                  @db.Text
   area              DatasetArea
   characteristics   DatasetCharacteristic[]
   tasks             DatasetTask[]
@@ -102,16 +87,16 @@ model Dataset {
   downloadCount     Int                     @default(0) @map("download_count")
   authors           DatasetAuthor[]
   files             DatasetFile[]
+  keywords          DatasetKeyword[]
   slug              String                  @unique @db.VarChar(255)
-
-  bookmarks DatasetBookmark[]
-  views     DatasetView[]
 
   externalLink String? @db.VarChar(255)
   doi          String? @db.VarChar(255)
   subtitle     String? @db.VarChar(255)
   userId       String? @map("user_id")
   user         User?   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  bookmarks DatasetBookmark[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -129,10 +114,12 @@ model DraftDataset {
 }
 
 model DatasetAuthor {
-  id        String @id @default(cuid())
-  datasetId Int    @map("dataset_id")
-  firstName String @db.VarChar(255)
-  lastName  String @db.VarChar(255)
+  id          String  @id @default(cuid())
+  datasetId   Int     @map("dataset_id")
+  firstName   String  @db.VarChar(255)
+  lastName    String  @db.VarChar(255)
+  institution String? @db.VarChar(255)
+  email       String? @db.VarChar(255)
 
   dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
 
@@ -151,6 +138,27 @@ model DatasetFile {
 
   @@index([size])
   @@map("dataset_files")
+}
+
+model Keyword {
+  id     String         @id @default(cuid())
+  name   String         @db.VarChar(255)
+  status ApprovalStatus @default(PENDING)
+
+  datasets DatasetKeyword[]
+
+  @@map("keywords")
+}
+
+model DatasetKeyword {
+  datasetId Int    @map("dataset_id")
+  keywordId String @map("keyword_id")
+
+  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+
+  @@id([datasetId, keywordId])
+  @@map("dataset_keywords")
 }
 
 model Account {
@@ -209,12 +217,12 @@ enum UserRole {
   @@map("user_role")
 }
 
-enum DatasetStatus {
+enum ApprovalStatus {
   PENDING  @map("pending")
   APPROVED @map("approved")
   REJECTED @map("rejected")
 
-  @@map("dataset_status")
+  @@map("approval_status")
 }
 
 enum DatasetArea {

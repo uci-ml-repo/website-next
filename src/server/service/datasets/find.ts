@@ -8,6 +8,14 @@ export default class DatasetsFindService {
   async byId(id: number) {
     return this.prisma.dataset.findUnique({
       where: { id },
+      include: {
+        keywords: {
+          include: {
+            keyword: true,
+          },
+        },
+        authors: true,
+      },
     });
   }
 
@@ -15,7 +23,7 @@ export default class DatasetsFindService {
     const [datasets, count] = await this.prisma.$transaction([
       this.prisma.dataset.findMany({
         where: {
-          status: $Enums.DatasetStatus.APPROVED,
+          status: $Enums.ApprovalStatus.APPROVED,
         },
         orderBy: query.orderBy ? { [query.orderBy]: query.sort } : undefined,
         cursor: query.cursor ? { id: query.cursor } : undefined,
@@ -24,7 +32,7 @@ export default class DatasetsFindService {
       }),
 
       this.prisma.dataset.count({
-        where: { status: $Enums.DatasetStatus.APPROVED },
+        where: { status: $Enums.ApprovalStatus.APPROVED },
       }),
     ]);
 

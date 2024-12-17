@@ -38,12 +38,12 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate",
     "db:studio": "prisma studio",
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
-    "generate": "prisma generate",
     "postinstall": "prisma generate",
     "lint": "eslint --fix",
     "prepare": "husky",

@@ -110,7 +110,7 @@ export default function DatasetPython({ dataset }: DatasetPythonProps) {
           size={"lg"}
         >
           <PythonIcon />
-          <div>Import Python</div>
+          <div>Import</div>
         </Button>
       </DialogTrigger>
       <DialogContent aria-describedby={undefined}>

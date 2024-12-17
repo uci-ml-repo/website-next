@@ -14,7 +14,7 @@ import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DATASETS_PATH, DONATE_PATH } from "@/lib/routes";
+import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/server";
 
 export default async function Page() {
@@ -49,10 +49,10 @@ export default async function Page() {
             href={DATASETS_PATH} // TODO
           />
           <NavButton
-            label={"Donate Dataset"}
+            label={"Contribute Dataset"}
             variant={"secondary"}
             icon={<PlusIcon />}
-            href={DONATE_PATH} // TODO
+            href={CONTRIBUTE_PATH} // TODO
           />
         </div>
         <Input

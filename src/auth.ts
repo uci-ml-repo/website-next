@@ -25,7 +25,7 @@ declare module "next-auth" {
 
 declare module "@auth/core/adapters" {
   interface AdapterUser {
-    role: UserRole;
+    roleId: UserRole;
     permissions: Permissions;
   }
 }
@@ -68,13 +68,13 @@ export const authOptions = NextAuth({
       return token;
     },
     async session({ session, user }) {
-      session.user.role = user.role;
-
       const permissions = await prisma.role.findFirst({
-        where: { id: user.role },
+        where: { id: user.roleId },
       });
 
       session.user.permissions = permissions as Permissions;
+      session.user.role = user.roleId;
+
       return session;
     },
   },

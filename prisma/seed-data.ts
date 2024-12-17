@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma/client";
 import bcryptjs from "bcryptjs";
 
 const dummyUserId = "0";
-const dummyPassword = bcryptjs.hashSync("password", 10);
+const password = bcryptjs.hashSync("p", 10);
 
 export const roles: Prisma.RoleCreateManyInput[] = [
   {
@@ -23,16 +23,30 @@ export const roles: Prisma.RoleCreateManyInput[] = [
 export const users: Prisma.UserCreateManyInput[] = [
   {
     id: dummyUserId,
-    email: "test0@uci.edu",
-    name: "test0",
-    password: dummyPassword,
+    email: "dummy@guci.edu",
+    name: "dummy",
+    password,
   },
   {
     id: "admin",
-    email: "ucirepository@gmail.com",
-    name: "UCI ML Repository",
-    password: bcryptjs.hashSync("password", 10),
+    email: "admin@uci.edu",
+    name: "Admin",
     roleId: "ADMIN",
+    password,
+  },
+  {
+    id: "librarian",
+    email: "librarian@uci.edu",
+    name: "Librarian",
+    roleId: "LIBRARIAN",
+    password,
+  },
+  {
+    id: "curator",
+    email: "curator@uci.edu",
+    name: "Curator",
+    roleId: "CURATOR",
+    password,
   },
 ];
 
@@ -47,9 +61,9 @@ export const datasets: Omit<
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1936,
     title: "Iris",
-    subtitle: null,
+    subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
     doi: "10.24432/C56C76",
-    abstract:
+    description:
       "A small classic dataset from Fisher, 1936. One of the earliest known datasets used for evaluating classification methods.",
     area: "BIOLOGY",
     characteristics: ["TABULAR"],
@@ -72,9 +86,9 @@ export const datasets: Omit<
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1989,
     title: "Heart Disease",
-    subtitle: null,
+    subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
     doi: "10.24432/C5DW2B",
-    abstract:
+    description:
       "4 databases: Cleveland, Hungary, Switzerland, and the VA Long Beach.",
     area: "BIOLOGY",
     characteristics: ["MULTIVARIATE"],
@@ -99,7 +113,7 @@ export const datasets: Omit<
     title: "Wine Quality",
     subtitle: null,
     doi: "10.24432/C56S3T",
-    abstract:
+    description:
       "Two datasets are included, related to red and white vinho verde wine samples, from the north of Portugal. The goal is to model wine quality based on physicochemical tests (see [Cortez et al., 2009], http://www3.dsi.uminho.pt/pcortez/wine/).",
     characteristics: ["MULTIVARIATE"],
     area: "BUSINESS",
@@ -124,7 +138,7 @@ export const datasets: Omit<
     title: "Adult",
     subtitle: null,
     doi: "10.24432/C56S3T",
-    abstract:
+    description:
       'Predict whether annual income of an individual exceeds $50K/yr based on census data. Also known as "Census Income" dataset.',
     characteristics: ["MULTIVARIATE"],
     area: "SOCIAL_SCIENCE",
@@ -149,7 +163,7 @@ export const datasets: Omit<
     title: "Breast Cancer Wisconsin (Diagnostic)",
     subtitle: null,
     doi: "10.24432/C5DW2B",
-    abstract: "Diagnostic Wisconsin Breast Cancer Database.",
+    description: "Diagnostic Wisconsin Breast Cancer Database.",
     characteristics: ["MULTIVARIATE"],
     area: "HEALTH_AND_MEDICINE",
     tasks: ["CLASSIFICATION"],
@@ -171,9 +185,9 @@ export const datasets: Omit<
     donatedAt: new Date("2024-07-11"),
     yearCreated: 2024,
     title: "Dataset for Assessing Mathematics Learning in Higher Education",
-    subtitle: null,
-    doi: " https://doi.org/10.34620/dadosipb/PW3OWY",
-    abstract:
+    subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
+    doi: "10.34620/dadosipb/PW3OWY",
+    description:
       "MathE is a mathematical platform developed under the MathE project (mathe.pixel-online.org). The dataset has 9546 answers to questions in the Mathematical topics taught in higher education. The file has eight features, named: Student ID, Student Country, Question ID, Type of answer (correct or incorrect), Question level (basic or advanced), Math Topic, Math Subtopic, and Question Keywords. The question level was associated with the professor who submitted the question. The data was obtained from February 2019 until December 2023.",
     characteristics: ["TABULAR"],
     area: "EDUCATION",
@@ -198,7 +212,7 @@ export const datasets: Omit<
     title: "Nvidia Market Customer segmentation data",
     subtitle: null,
     doi: null,
-    abstract:
+    description:
       "The Nvidia Market Customer Segmentation dataset provides a comprehensive analysis of sales and market dynamics for Nvidia's product offerings across various global regions from 1993 to 2024. This synthetic dataset includes over 39,000 entries, capturing key variables such as product categories (Gaming, AI, Data Center, OEM), specific product names (e.g., RTX 3080, Tesla V100), customer segments (Gamers, AI Researchers, Cloud Providers, Educational Institutions), and regions (North America, Europe, APAC, and more). It details customer purchasing behavior, including revenue data, units sold, marketing expenditures, customer satisfaction scores, and customer retention rates.",
     characteristics: ["TABULAR"],
     area: "BUSINESS",
@@ -223,7 +237,7 @@ export const datasets: Omit<
     title: "Epileptic Seizure Recognition",
     subtitle: null,
     doi: "10.24432/C5G308",
-    abstract:
+    description:
       "This dataset is a pre-processed and re-structured/reshaped version of a very commonly used dataset featuring epileptic seizure detection.",
     characteristics: ["MULTIVARIATE", "TIME_SERIES"],
     area: "HEALTH_AND_MEDICINE",
@@ -248,7 +262,7 @@ export const datasets: Omit<
     title: "My Pending Externally Linked Dataset",
     subtitle: null,
     doi: "10.5281/zenodo.7669442",
-    abstract:
+    description:
       "This is a test dataset to see if the website can handle pending external links",
     characteristics: ["TABULAR", "IMAGE"],
     area: "HEALTH_AND_MEDICINE",
@@ -273,7 +287,7 @@ export const datasets: Omit<
     title: "Regensburg Pediatric Appendicitis",
     subtitle: null,
     doi: "10.5281/zenodo.7669442",
-    abstract:
+    description:
       "This repository holds the data from a cohort of pediatric patients with suspected appendicitis admitted with abdominal pain to Children’s Hospital St. Hedwig in Regensburg, Germany, between 2016 and 2021. Each patient has (potentially multiple) ultrasound (US) images, aka views, tabular data comprising laboratory, physical examination, scoring results and ultrasonographic findings extracted manually by the experts, and three target variables, namely, diagnosis, management and severity.",
     characteristics: ["TABULAR", "IMAGE"],
     area: "HEALTH_AND_MEDICINE",

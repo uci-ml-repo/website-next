@@ -13,7 +13,7 @@ export default function DatasetDownload({ dataset }: DatasetDownloadProps) {
   return (
     <Button pill variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
       {dataset.externalLink ? (
-        <Link href={dataset.externalLink}>
+        <Link href={dataset.externalLink} target={"_blank"}>
           <ExternalLinkIcon />
           <div>View Dataset</div>
         </Link>
