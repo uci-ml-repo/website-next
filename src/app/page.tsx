@@ -36,7 +36,7 @@ export default async function Page() {
       <div className={"space-y-6"}>
         <div className={"space-y-4"}>
           <Banner variant={"hero"} />
-          <p className={"text-lg sm:text-xl"}>
+          <p className={"text-pretty text-lg sm:text-xl"}>
             We currently maintain {datasetFind.count} datasets used by millions
             in the machine learning community.
           </p>

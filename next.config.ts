@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
         destination: "/datasets/:id/:slug",
         permanent: true,
       },
+      {
+        source: "/api/dataset",
+        destination: "/api/datasets",
+        permanent: true,
+      },
     ];
   },
 };

@@ -52,7 +52,7 @@ export const users: Prisma.UserCreateManyInput[] = [
 
 export const datasets: Omit<
   Required<Prisma.DatasetCreateManyInput>,
-  "createdAt" | "updatedAt"
+  "createdAt" | "updatedAt" | "zipFileId"
 >[] = [
   {
     id: 53,

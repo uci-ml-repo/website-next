@@ -75,9 +75,6 @@ model Dataset {
   title             String                  @db.VarChar(255)
   description       String                  @db.Text
   area              DatasetArea
-  characteristics   DatasetCharacteristic[]
-  tasks             DatasetTask[]
-  featureTypes      FeatureType[]           @map("feature_types")
   isTabular         Boolean                 @map("is_tabular")
   hasMissingValues  Boolean                 @map("has_missing_values")
   instanceCount     Int                     @map("instance_count")
@@ -86,16 +83,21 @@ model Dataset {
   isAvailablePython Boolean                 @default(false) @map("is_available_python")
   viewCount         Int                     @default(0) @map("view_count")
   downloadCount     Int                     @default(0) @map("download_count")
-  authors           DatasetAuthor[]
-  files             DatasetFile[]
-  keywords          DatasetKeyword[]
   slug              String                  @unique @db.VarChar(255)
+  characteristics   DatasetCharacteristic[]
+  tasks             DatasetTask[]
+  featureTypes      FeatureType[]           @map("feature_types")
+  authors           DatasetAuthor[]
+  files             DatasetFile[]           @relation("Files")
+  keywords          DatasetKeyword[]
 
-  externalLink String? @db.VarChar(255)
-  doi          String? @db.VarChar(255)
-  subtitle     String? @db.VarChar(255)
-  userId       String? @map("user_id")
-  user         User?   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  subtitle     String?      @db.VarChar(255)
+  doi          String?      @db.VarChar(255)
+  externalLink String?      @db.VarChar(255)
+  userId       String?      @map("user_id")
+  user         User?        @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  zipFile      DatasetFile? @relation("ZipFile", fields: [zipFileId], references: [id])
+  zipFileId    String?      @unique @map("zip_file_id")
 
   bookmarks DatasetBookmark[]
 
@@ -134,7 +136,8 @@ model DatasetFile {
   path      String
   size      Int
 
-  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  dataset  Dataset  @relation("Files", fields: [datasetId], references: [id], onDelete: Cascade)
+  zipOwner Dataset? @relation("ZipFile")
 
   @@index([name, size])
   @@map("dataset_files")

@@ -53,7 +53,7 @@ services:
   pgloader:
     container_name: pgloader
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     depends_on:
       mysql:
