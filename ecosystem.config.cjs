@@ -5,9 +5,12 @@
  */
 module.exports = [
   {
-    name: "website",
-    script: "./build/index.js",
-    node_args: "-r dotenv/config",
+    name: "uci-ml-repo",
+    script: "npm",
+    args: "start",
     autorestart: true,
+    env: {
+      NODE_ENV: "production",
+    },
   },
 ];

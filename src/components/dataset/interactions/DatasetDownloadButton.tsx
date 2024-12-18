@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { datasetZip } from "@/lib/utils";
 
-interface DatasetDownloadProps {
+interface DatasetDownloadButtonProps {
   dataset: Dataset;
 }
 
-export default function DatasetDownload({ dataset }: DatasetDownloadProps) {
+export default function DatasetDownloadButton({
+  dataset,
+}: DatasetDownloadButtonProps) {
   return (
     <Button pill variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
       {dataset.externalLink ? (
@@ -20,7 +22,9 @@ export default function DatasetDownload({ dataset }: DatasetDownloadProps) {
       ) : (
         <a href={datasetZip(dataset)} download>
           <DownloadIcon />
-          <div>Download (4.3 GB)</div>
+          <div>
+            Download <span className={"text-sm"}>{"(4.3 GB)"}</span>
+          </div>
         </a>
       )}
     </Button>

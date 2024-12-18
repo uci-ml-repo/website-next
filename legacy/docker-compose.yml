@@ -78,7 +78,7 @@ services:
         psql -h postgres -U postgres -c \"DROP DATABASE IF EXISTS mlrepo;\";
         psql -h postgres -U postgres -c \"CREATE DATABASE mlrepo;\";
 
-        pg_restore -h postgres -U postgres -d mlrepo /tmp/legacy.sql;
+        pg_restore -h postgres -U postgres -d mlrepo -v /tmp/legacy.sql;
       "
 
   migrator:
@@ -96,7 +96,7 @@ services:
     command: >
       sh -c "
         psql -h postgres -U postgres -d mlrepo -f /migrate.sql &&
-        pg_dump -h postgres -U postgres -d mlrepo -F c -b -f /output/out.sql
+        pg_dump -h postgres -U postgres -d mlrepo -F c -b -f -v /output/out.sql
       "
     volumes:
       - ./migrate.sql:/migrate.sql

@@ -26,7 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { getPythonSnippet } from "@/lib/utils/python";
 
-interface DatasetPythonProps {
+interface DatasetPythonButtonProps {
   dataset: Dataset;
 }
 
@@ -95,7 +95,9 @@ const CodeBlock = ({
   );
 };
 
-export default function DatasetPython({ dataset }: DatasetPythonProps) {
+export default function DatasetPythonButton({
+  dataset,
+}: DatasetPythonButtonProps) {
   const pipInstallCommand = `pip install ucimlrepo`;
 
   const pythonCode = getPythonSnippet(dataset);

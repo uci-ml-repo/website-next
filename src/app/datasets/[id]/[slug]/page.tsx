@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import DatasetCitation from "@/components/dataset/interactions/DatasetCitation";
-import DatasetDownload from "@/components/dataset/interactions/DatasetDownload";
-import DatasetPython from "@/components/dataset/interactions/DatasetPython";
+import DatasetCitationButton from "@/components/dataset/interactions/DatasetCitationButton";
+import DatasetDownloadButton from "@/components/dataset/interactions/DatasetDownloadButton";
+import DatasetPythonButton from "@/components/dataset/interactions/DatasetPythonButton";
 import Main from "@/components/layout/Main";
 import { Badge } from "@/components/ui/badge";
 import { datasetThumbnail } from "@/lib/utils";
@@ -30,7 +30,11 @@ export default async function Page({
       <div className={"flex items-center justify-between"}>
         <div className={"w-full space-y-6"}>
           <div className={"space-y-4"}>
-            <h1 className={"text-pretty text-4xl font-bold text-foreground"}>
+            <h1
+              className={
+                "text-pretty text-3xl font-bold text-foreground sm:text-4xl"
+              }
+            >
               {dataset.title}
             </h1>
             {dataset.subtitle && (
@@ -40,9 +44,11 @@ export default async function Page({
             )}
           </div>
           <div className={"flex w-fit gap-2 max-sm:w-full max-sm:flex-col"}>
-            <DatasetDownload dataset={dataset} />
-            {dataset.isAvailablePython && <DatasetPython dataset={dataset} />}
-            <DatasetCitation dataset={dataset} />
+            <DatasetDownloadButton dataset={dataset} />
+            {dataset.isAvailablePython && (
+              <DatasetPythonButton dataset={dataset} />
+            )}
+            <DatasetCitationButton dataset={dataset} />
           </div>
         </div>
         <Image
@@ -51,33 +57,31 @@ export default async function Page({
           height={120}
           alt={"thumbnail"}
           className={
-            "ml-10 h-[120px] w-1/4 min-w-64 shrink-0 rounded-2xl object-cover object-center max-lg:hidden"
+            "ml-14 h-[120px] w-[250px] min-w-64 shrink-0 rounded-2xl object-cover object-center max-lg:hidden"
           }
           priority
         />
       </div>
       <hr />
-      <div className={"flex justify-between space-x-10"}>
-        <div className={"w-3/4 space-y-8"}>
+      <div className={"flex justify-between gap-x-14 gap-y-10 max-lg:flex-col"}>
+        <div className={"space-y-8"}>
           <div className={"space-y-2"}>
             <div className={"text-2xl font-bold"}>About Dataset</div>
-            <div>{dataset.description}</div>
+            <div className={"break-words"}>{dataset.description}</div>
           </div>
         </div>
-        <div className={"w-1/4 min-w-64 space-y-4"}>
+        <div className={"min-w-[250px] space-y-4"}>
           {/* Keywords */}
           <div className={"space-y-2"}>
             <div className={"text-lg font-bold"}>Keywords</div>
             {dataset.keywords.length === 0 ? (
               <p className={"text-muted-foreground"}>&ndash;</p>
             ) : (
-              <>
-                {dataset.keywords.map((datasetKeyword, index) => (
-                  <Badge variant={"outline"} key={index}>
-                    {datasetKeyword.keyword.name}
-                  </Badge>
-                ))}
-              </>
+              dataset.keywords.map((datasetKeyword, index) => (
+                <Badge variant={"outline"} key={index}>
+                  {datasetKeyword.keyword.name}
+                </Badge>
+              ))
             )}
           </div>
 

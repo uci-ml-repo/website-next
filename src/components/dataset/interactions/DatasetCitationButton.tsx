@@ -14,11 +14,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-interface DatasetCitationProps {
+interface DatasetCitationButtonProps {
   dataset: Dataset;
 }
 
-export default function DatasetCitation({ dataset }: DatasetCitationProps) {
+export default function DatasetCitationButton({
+  dataset,
+}: DatasetCitationButtonProps) {
   console.log(dataset);
 
   return (

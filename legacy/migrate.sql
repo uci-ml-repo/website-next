@@ -11,8 +11,14 @@ CREATE TYPE "dataset_characteristic" AS ENUM ('tabular', 'sequential', 'multivar
 CREATE TYPE "feature_type" AS ENUM ('categorical', 'integer', 'real');
 
 -- TODO
+DROP TABLE edits;
+DROP TABLE columns;
+DROP TABLE tables;
+DROP TABLE edit_actions;
+
 DROP TABLE evals;
 DROP TABLE models;
+
 DROP TABLE dataset_papers;
 DROP TABLE native_papers;
 DROP TABLE foreign_papers;
@@ -24,4 +30,5 @@ DROP TABLE tabular;
 DROP TABLE variables;
 DROP TABLE variable_info;
 
-DELETE FROM auth_session;
+DELETE
+FROM auth_session;
