@@ -6,6 +6,7 @@ import path from "path";
 
 import { auth } from "@/auth";
 import { PRIVILEGED_ROLES } from "@/lib/utils/roles";
+import { toStringArray } from "@/lib/utils/string";
 
 async function fileExists(filePath: string) {
   try {
@@ -33,7 +34,7 @@ export async function GET(
         return NextResponse.json({ error: "Bad request" }, { status: 400 });
       }
 
-      const relativePath = (await params).path;
+      const relativePath = toStringArray((await params).path);
       const filePath = path.join(
         process.env.STATIC_FILES_ROOT,
         ...relativePath,
@@ -44,7 +45,7 @@ export async function GET(
       }
 
       // Check if the file is protected
-      if (relativePath[0].startsWith("_")) {
+      if (relativePath.some((part) => part.startsWith("_"))) {
         if (!req.auth) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
