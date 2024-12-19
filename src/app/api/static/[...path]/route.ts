@@ -1,40 +1,70 @@
 import fs from "fs/promises";
+import mime from "mime";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import path from "path";
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
-  if (!process.env.STATIC_FILES_ROOT) {
-    return NextResponse.json(
-      { error: "Storage root is not defined" },
-      { status: 500 },
-    );
-  }
+import { auth } from "@/auth";
+import { PRIVILEGED_ROLES } from "@/lib/utils/roles";
 
-  const filePath = path.join(
-    process.env.STATIC_FILES_ROOT,
-    ...(await params).path,
-  );
-
+async function fileExists(filePath: string) {
   try {
-    console.log(filePath);
-
     const fileStat = await fs.stat(filePath);
-
-    if (!fileStat.isFile()) {
-      return NextResponse.json({ error: "File not found" }, { status: 404 });
-    }
-
-    const fileContent = await fs.readFile(filePath);
-
-    return new NextResponse(fileContent);
+    return fileStat.isFile();
   } catch {
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return false;
   }
+}
+
+export async function GET(
+  req: NextRequest,
+  ctx: { params: Promise<{ path: string[] }> },
+) {
+  return auth(async (req, { params }) => {
+    try {
+      if (!process.env.STATIC_FILES_ROOT) {
+        return NextResponse.json(
+          { error: "Storage root is not defined" },
+          { status: 500 },
+        );
+      }
+
+      if (!params) {
+        return NextResponse.json({ error: "Bad request" }, { status: 400 });
+      }
+
+      const relativePath = (await params).path;
+      const filePath = path.join(
+        process.env.STATIC_FILES_ROOT,
+        ...relativePath,
+      );
+
+      if (!(await fileExists(filePath))) {
+        return NextResponse.json({ error: "File not found" }, { status: 404 });
+      }
+
+      // Check if the file is protected
+      if (relativePath[0].startsWith("_")) {
+        if (!req.auth) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        if (!PRIVILEGED_ROLES.has(req.auth.user.role)) {
+          return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+      }
+
+      const fileContent = await fs.readFile(filePath);
+      const contentType = mime.getType(filePath) || "application/octet-stream";
+
+      return new NextResponse(fileContent, {
+        headers: {
+          "Content-Type": contentType,
+        },
+      });
+    } catch (err: any) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+  })(req, {
+    params: { path: (await ctx.params).path },
+  });
 }

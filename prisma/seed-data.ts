@@ -20,6 +20,18 @@ export const roles: Prisma.RoleCreateManyInput[] = [
   },
 ];
 
+export const introductoryPapers: Prisma.DatasetPaperCreateManyInput[] =
+  Array.from({ length: 10 }, (_, i) => {
+    return {
+      id: `${i + 1}`,
+      title: `Very Scientific Paper Number ${i + 1}`,
+      authors: ["John Lorenzini", "Andrew Wang"],
+      venue: "Journal of Science",
+      year: 2024,
+      url: "https://example.com",
+    };
+  });
+
 export const users: Prisma.UserCreateManyInput[] = [
   {
     id: dummyUserId,
@@ -79,6 +91,7 @@ export const datasets: Omit<
     slug: "iris",
     externalLink: null,
     hasMissingValues: false,
+    introductoryPaperId: "1",
   },
   {
     id: 45,
@@ -105,6 +118,7 @@ export const datasets: Omit<
     slug: "heart+disease",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "2",
   },
   {
     id: 186,
@@ -131,6 +145,7 @@ export const datasets: Omit<
     slug: "wine+quality",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "3",
   },
   {
     id: 2,
@@ -157,6 +172,7 @@ export const datasets: Omit<
     slug: "adult",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "4",
   },
   {
     id: 17,
@@ -182,6 +198,7 @@ export const datasets: Omit<
     slug: "breast+cancer+wisconsin+diagnostic",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "5",
   },
   {
     id: 1031,
@@ -208,6 +225,7 @@ export const datasets: Omit<
     slug: "dataset+for+assessing+mathematics+learning+in+higher+education",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "6",
   },
   {
     id: 1074,
@@ -234,6 +252,7 @@ export const datasets: Omit<
     slug: "nvidia+market+customer+segmentation+data",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "7",
   },
   {
     id: 388,
@@ -260,6 +279,7 @@ export const datasets: Omit<
     slug: "epileptic+seizure+recognition",
     externalLink: null,
     hasMissingValues: true,
+    introductoryPaperId: "8",
   },
   {
     id: 939,
@@ -286,6 +306,7 @@ export const datasets: Omit<
     slug: "test+pending",
     externalLink: "https://zenodo.org/records/7669442",
     hasMissingValues: true,
+    introductoryPaperId: "9",
   },
   {
     id: 938,
@@ -312,5 +333,6 @@ export const datasets: Omit<
     slug: "regensburg+pediatric+appendicitis",
     externalLink: "https://zenodo.org/records/7669442",
     hasMissingValues: true,
+    introductoryPaperId: "10",
   },
 ];
