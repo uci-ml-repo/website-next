@@ -31,8 +31,13 @@ const nextConfig: NextConfig = {
         destination: "/api/datasets",
         permanent: true,
       },
+      {
+        source: "/static/public/:path*",
+        destination: "/api/static/:path*",
+        permanent: true,
+      },
     ];
   },
 };
 
-export default createMDX({})(nextConfig);
+export default createMDX()(nextConfig);
