@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Prisma, UserRole } from "@prisma/client";
+import type { UserRole } from "@prisma/client";
 import bcryptjs from "bcryptjs";
 import NextAuth, { type DefaultSession, type User } from "next-auth";
 import { encode } from "next-auth/jwt";
@@ -12,21 +12,17 @@ import { SIGN_IN_PATH } from "@/lib/routes";
 
 const adapter = PrismaAdapter(prisma);
 
-type Permissions = Prisma.RoleGetPayload<{}>;
-
 declare module "next-auth" {
   interface Session {
     user: {
       role: UserRole;
-      permissions: Permissions;
     } & DefaultSession["user"];
   }
 }
 
 declare module "@auth/core/adapters" {
   interface AdapterUser {
-    roleId: UserRole;
-    permissions: Permissions;
+    role: UserRole;
   }
 }
 
@@ -68,13 +64,7 @@ export const authOptions = NextAuth({
       return token;
     },
     async session({ session, user }) {
-      const permissions = await prisma.role.findFirst({
-        where: { id: user.roleId },
-      });
-
-      session.user.permissions = permissions as Permissions;
-      session.user.role = user.roleId;
-
+      session.user.role = user.role;
       return session;
     },
   },

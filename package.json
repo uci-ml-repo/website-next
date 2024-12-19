@@ -43,7 +43,7 @@
     "db:reset": "prisma db push --force-reset && prisma db seed && prisma generate",
     "db:studio": "prisma studio",
     "dev": "next dev --turbopack",
-    "format": "prettier --write .",
+    "format": "prettier --write --ignore-unknown .",
     "postinstall": "prisma generate",
     "lint": "eslint --fix",
     "prepare": "husky",
@@ -51,7 +51,7 @@
   },
   "lint-staged": {
     "**/*": [
-      "prettier --write -u",
+      "prettier --write --ignore-unknown",
       "eslint --fix"
     ]
   },

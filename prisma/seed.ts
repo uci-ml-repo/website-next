@@ -1,12 +1,9 @@
 import { prisma } from "@/lib/prisma";
 
-import { datasets, introductoryPapers, roles, users } from "./seed-data";
+import { datasets, introductoryPapers, users } from "./seed-data";
 
 async function seed() {
   await prisma.$transaction([
-    prisma.role.createMany({
-      data: roles,
-    }),
     prisma.user.createMany({
       data: users,
     }),

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 
 import { auth } from "@/auth";
-import { PRIVILEGED_ROLES } from "@/lib/utils/roles";
+import { PRIVILEGED_ROLES } from "@/lib/utils/permissions";
 import { toStringArray } from "@/lib/utils/string";
 
 async function fileExists(filePath: string) {

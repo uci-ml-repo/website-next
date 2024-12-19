@@ -16,9 +16,8 @@ model User {
   image         String?
   name          String
 
-  roleId UserRole  @default(BASIC) @map("role_id")
-  role   Role      @relation(fields: [roleId], references: [id], onUpdate: Restrict, onDelete: SetDefault)
-  data   UserData?
+  role UserRole  @default(BASIC) @map("role_id")
+  data UserData?
 
   accounts Account[]
   sessions Session[]
@@ -42,17 +41,6 @@ model UserData {
   @@map("user_data")
 }
 
-model Role {
-  id UserRole @id
-
-  // TODO add permissions
-  canEditRoles Boolean @default(false) @map("can_edit_roles")
-
-  users User[]
-
-  @@map("roles")
-}
-
 model DatasetBookmark {
   userDataId String @map("user_data_id")
   datasetId  Int    @map("dataset_id")
@@ -70,7 +58,7 @@ model DatasetBookmark {
 model Dataset {
   id                  Int                     @id @default(autoincrement())
   status              ApprovalStatus          @default(PENDING)
-  donatedAt           DateTime                @map("donated_at") @db.Date
+  donatedAt           DateTime                @default(now()) @map("donated_at") @db.Date
   yearCreated         Int                     @map("year_created")
   title               String                  @db.VarChar(255)
   description         String                  @db.Text

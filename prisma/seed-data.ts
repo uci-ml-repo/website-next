@@ -4,22 +4,6 @@ import bcryptjs from "bcryptjs";
 const dummyUserId = "0";
 const password = bcryptjs.hashSync("p", 10);
 
-export const roles: Prisma.RoleCreateManyInput[] = [
-  {
-    id: "ADMIN",
-    canEditRoles: true,
-  },
-  {
-    id: "LIBRARIAN",
-  },
-  {
-    id: "CURATOR",
-  },
-  {
-    id: "BASIC",
-  },
-];
-
 export const introductoryPapers: Prisma.DatasetPaperCreateManyInput[] =
   Array.from({ length: 10 }, (_, i) => {
     return {
@@ -43,21 +27,21 @@ export const users: Prisma.UserCreateManyInput[] = [
     id: "admin",
     email: "admin@uci.edu",
     name: "Admin",
-    roleId: "ADMIN",
+    role: "ADMIN",
     password,
   },
   {
     id: "librarian",
     email: "librarian@uci.edu",
     name: "Librarian",
-    roleId: "LIBRARIAN",
+    role: "LIBRARIAN",
     password,
   },
   {
     id: "curator",
     email: "curator@uci.edu",
     name: "Curator",
-    roleId: "CURATOR",
+    role: "CURATOR",
     password,
   },
 ];
