@@ -81,7 +81,7 @@ export default async function Page({
           height={120}
           alt={"thumbnail"}
           className={
-            "ml-14 h-[120px] w-[250px] min-w-64 shrink-0 rounded-2xl object-cover object-center max-lg:hidden"
+            "ml-14 h-[120px] w-[275px] min-w-64 shrink-0 rounded-2xl object-cover object-center max-lg:hidden"
           }
           priority
         />
@@ -93,8 +93,9 @@ export default async function Page({
             <div className={"text-2xl font-bold"}>About Dataset</div>
             <div className={"break-words"}>{dataset.description}</div>
           </div>
+          <div className={"text-2xl font-bold"}>Metadata</div>
         </div>
-        <div className={"min-w-[250px] space-y-4"}>
+        <div className={"min-w-[275px] space-y-4"}>
           {/* Keywords */}
           <div className={"space-y-2"}>
             <div className={"text-lg font-bold"}>Keywords</div>

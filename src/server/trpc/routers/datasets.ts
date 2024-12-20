@@ -6,13 +6,15 @@ import { procedure, router } from "@/server/trpc";
 
 const datasetsRouter = router({
   find: procedure.input(datasetQuery).query(async ({ input }) => {
-    const datasets = service.datasets.find.byQuery(input);
-    return datasets;
+    return service.datasets.find.byQuery(input);
   }),
 
   findById: procedure.input(z.number()).query(async ({ input }) => {
-    const dataset = service.datasets.find.byId(input);
-    return dataset;
+    return service.datasets.find.byId(input);
+  }),
+
+  citeById: procedure.input(z.number()).query(async ({ input }) => {
+    return service.datasets.cite.byId(input);
   }),
 });
 
