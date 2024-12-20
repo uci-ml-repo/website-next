@@ -55,22 +55,22 @@ model DatasetBookmark {
 }
 
 model Dataset {
-  id                Int            @id @default(autoincrement())
-  status            ApprovalStatus @default(PENDING)
-  donatedAt         DateTime       @default(now()) @map("donated_at") @db.Date
-  yearCreated       Int            @map("year_created")
-  title             String         @db.VarChar(255)
-  description       String         @db.Text
-  area              DatasetArea
-  isTabular         Boolean        @map("is_tabular")
-  hasMissingValues  Boolean        @map("has_missing_values")
-  instanceCount     Int            @map("instance_count")
-  featureCount      Int            @map("feature_count")
-  hasGraphics       Boolean        @default(false) @map("has_graphics")
-  isAvailablePython Boolean        @default(false) @map("is_available_python")
-  viewCount         Int            @default(0) @map("view_count")
-  downloadCount     Int            @default(0) @map("download_count")
-  slug              String         @unique @db.VarChar(255)
+  id                Int                @id @default(autoincrement())
+  status            ApprovalStatus     @default(PENDING)
+  donatedAt         DateTime           @default(now()) @map("donated_at") @db.Date
+  yearCreated       Int                @map("year_created")
+  title             String             @db.VarChar(255)
+  description       String             @db.Text
+  subjectArea       DatasetSubjectArea @map("subject_area")
+  isTabular         Boolean            @map("is_tabular")
+  hasMissingValues  Boolean            @map("has_missing_values")
+  instanceCount     Int                @map("instance_count")
+  featureCount      Int                @map("feature_count")
+  hasGraphics       Boolean            @default(false) @map("has_graphics")
+  isAvailablePython Boolean            @default(false) @map("is_available_python")
+  viewCount         Int                @default(0) @map("view_count")
+  downloadCount     Int                @default(0) @map("download_count")
+  slug              String             @unique @db.VarChar(255)
 
   characteristics DatasetCharacteristic[]
   tasks           DatasetTask[]
@@ -235,7 +235,7 @@ enum ApprovalStatus {
   @@map("approval_status")
 }
 
-enum DatasetArea {
+enum DatasetSubjectArea {
   BIOLOGY                 @map("biology")
   BUSINESS                @map("business")
   CLIMATE_AND_ENVIRONMENT @map("climate_and_environment")
