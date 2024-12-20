@@ -30,9 +30,8 @@ model User {
 }
 
 model UserData {
-  id            String   @id @default(cuid())
-  userId        String   @unique @map("user_id")
-  searchHistory String[] @map("search_history")
+  id     String @id @default(cuid())
+  userId String @unique @map("user_id")
 
   bookmarkedDatasets DatasetBookmark[]
 
@@ -56,38 +55,41 @@ model DatasetBookmark {
 }
 
 model Dataset {
-  id                  Int                     @id @default(autoincrement())
-  status              ApprovalStatus          @default(PENDING)
-  donatedAt           DateTime                @default(now()) @map("donated_at") @db.Date
-  yearCreated         Int                     @map("year_created")
-  title               String                  @db.VarChar(255)
-  description         String                  @db.Text
-  introductoryPaperId String                  @unique @map("introductory_paper_id")
-  introductoryPaper   DatasetPaper            @relation(fields: [introductoryPaperId], references: [id], onUpdate: Restrict, onDelete: Restrict)
-  area                DatasetArea
-  isTabular           Boolean                 @map("is_tabular")
-  hasMissingValues    Boolean                 @map("has_missing_values")
-  instanceCount       Int                     @map("instance_count")
-  featureCount        Int                     @map("feature_count")
-  hasGraphics         Boolean                 @default(false) @map("has_graphics")
-  isAvailablePython   Boolean                 @default(false) @map("is_available_python")
-  viewCount           Int                     @default(0) @map("view_count")
-  downloadCount       Int                     @default(0) @map("download_count")
-  slug                String                  @unique @db.VarChar(255)
-  characteristics     DatasetCharacteristic[]
-  tasks               DatasetTask[]
-  featureTypes        FeatureType[]           @map("feature_types")
-  authors             DatasetAuthor[]
-  files               DatasetFile[]           @relation("Files")
-  keywords            DatasetKeyword[]
+  id                Int            @id @default(autoincrement())
+  status            ApprovalStatus @default(PENDING)
+  donatedAt         DateTime       @default(now()) @map("donated_at") @db.Date
+  yearCreated       Int            @map("year_created")
+  title             String         @db.VarChar(255)
+  description       String         @db.Text
+  area              DatasetArea
+  isTabular         Boolean        @map("is_tabular")
+  hasMissingValues  Boolean        @map("has_missing_values")
+  instanceCount     Int            @map("instance_count")
+  featureCount      Int            @map("feature_count")
+  hasGraphics       Boolean        @default(false) @map("has_graphics")
+  isAvailablePython Boolean        @default(false) @map("is_available_python")
+  viewCount         Int            @default(0) @map("view_count")
+  downloadCount     Int            @default(0) @map("download_count")
+  slug              String         @unique @db.VarChar(255)
 
-  subtitle     String?      @db.VarChar(255)
-  doi          String?      @db.VarChar(255)
-  externalLink String?      @db.VarChar(255)
-  userId       String?      @map("user_id")
-  user         User?        @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  zipFile      DatasetFile? @relation("ZipFile", fields: [zipFileId], references: [id])
-  zipFileId    String?      @unique @map("zip_file_id")
+  characteristics DatasetCharacteristic[]
+  tasks           DatasetTask[]
+  featureTypes    FeatureType[]           @map("feature_types")
+  authors         DatasetAuthor[]
+  keywords        DatasetKeyword[]
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  files   DatasetFile[]
+  zipFile DatasetFile?  @relation("ZipFile")
+
+  citedIn           DatasetPaper[]
+  introductoryPaper DatasetPaper?  @relation("IntroductoryPaper")
+
+  subtitle     String? @db.VarChar(255)
+  doi          String? @db.VarChar(255)
+  externalLink String? @db.VarChar(255)
 
   bookmarks DatasetBookmark[]
 
@@ -121,21 +123,20 @@ model DatasetAuthor {
 
 model DatasetFile {
   id        String @id @default(cuid())
-  datasetId Int    @map("dataset_id")
-  name      String
   path      String
-  size      Int
+  sizeBytes Int    @map("size_bytes")
 
-  dataset  Dataset  @relation("Files", fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-  zipOwner Dataset? @relation("ZipFile")
+  datasetId       Int?     @map("dataset_id")
+  dataset         Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  zipForDatasetId Int?     @unique
+  zipForDataset   Dataset? @relation("ZipFile", fields: [zipForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
 
-  @@index([name, size])
+  @@index([sizeBytes])
   @@map("dataset_files")
 }
 
 model DatasetPaper {
-  id      String   @id @default(cuid())
-  dataset Dataset?
+  id String @id @default(cuid())
 
   title   String   @db.VarChar(255)
   authors String[] @db.VarChar(255)
@@ -143,7 +144,10 @@ model DatasetPaper {
   year    Int
   url     String   @db.VarChar(255)
 
-  @@map("dataset_papers")
+  datasetId                Int?     @map("dataset_id")
+  dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  introductoryForDatasetId Int?     @unique
+  introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
 }
 
 model Keyword {
