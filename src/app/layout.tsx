@@ -1,6 +1,6 @@
 import "@/app/globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
@@ -15,8 +15,20 @@ import { TRPCProvider } from "@/server/trpc/client";
 const inter = Inter({ subsets: ["latin"], fallback: ["sans-serif"] });
 
 export const metadata: Metadata = {
-  title: "UCI Machine Learning Repository",
+  title: {
+    template: "%s - UCI Machine Learning Repository",
+    default: "UCI Machine Learning Repository",
+  },
   description: "UCI Repository for Machine Learning Datasets",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000" },
+    { media: "(prefers-color-scheme: light)", color: "#fff" },
+  ],
+  initialScale: 1,
+  width: "device-width",
 };
 
 export default function Layout({

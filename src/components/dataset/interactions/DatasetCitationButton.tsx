@@ -21,8 +21,6 @@ interface DatasetCitationButtonProps {
 export default function DatasetCitationButton({
   dataset,
 }: DatasetCitationButtonProps) {
-  console.log(dataset);
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -41,6 +39,7 @@ export default function DatasetCitationButton({
           <DialogTitle>Cite Dataset</DialogTitle>
         </DialogHeader>
         <div>TODO</div>
+        <div>{dataset.title}</div>
       </DialogContent>
     </Dialog>
   );

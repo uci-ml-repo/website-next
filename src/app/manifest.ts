@@ -6,8 +6,6 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "UCI ML Repo",
     description: "UCI Repository for Machine Learning Datasets",
     display: "standalone",
-    background_color: "#fff",
-    theme_color: "#fff",
     icons: [
       { src: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       {

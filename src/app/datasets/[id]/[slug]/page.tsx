@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
 import DatasetCitationButton from "@/components/dataset/interactions/DatasetCitationButton";
 import DatasetDownloadButton from "@/components/dataset/interactions/DatasetDownloadButton";
@@ -10,6 +13,24 @@ import { Badge } from "@/components/ui/badge";
 import { datasetThumbnail } from "@/lib/utils";
 import { caller } from "@/server/trpc/server";
 
+const getDataset = cache(async (id: number) => {
+  return caller.datasets.findById(id);
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string; slug: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  const dataset = await getDataset(Number(id));
+
+  return {
+    title: dataset?.title,
+  };
+}
+
 export default async function Page({
   params,
 }: {
@@ -17,7 +38,7 @@ export default async function Page({
 }) {
   const { id, slug } = await params;
 
-  const dataset = await caller.datasets.findById(Number(id));
+  const dataset = await getDataset(Number(id));
 
   if (!dataset || dataset.slug !== decodeURIComponent(slug)) {
     return notFound();
@@ -27,6 +48,9 @@ export default async function Page({
 
   return (
     <Main className={"content space-y-6"}>
+      <Head>
+        <title>My page title</title>
+      </Head>
       <div className={"flex items-center justify-between"}>
         <div className={"w-full space-y-6"}>
           <div className={"space-y-4"}>

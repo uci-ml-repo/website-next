@@ -3,6 +3,8 @@ import Link from "next/link";
 import { CircleUserRoundIcon, MailIcon } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
+export const metadata = { title: "Developers" };
+
 export function Developer({ name, subTitle, avatar, email, github }) {
   return (
     <div className={"flex items-center justify-between space-x-4"}>

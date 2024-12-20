@@ -1,5 +1,6 @@
 import type { UserRole } from "@prisma/client";
 import { CircleUserRoundIcon } from "lucide-react";
+import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
 import Main from "@/components/layout/Main";
@@ -7,17 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { PROFILE_PATH } from "@/lib/routes";
 
-function RoleBadge({ role }: { role: UserRole }) {
-  if (role === "BASIC") {
-    return <div></div>;
-  }
-
-  return (
-    <Badge variant={role === "ADMIN" ? "destructive" : "blue"} size={"lg"}>
-      {role}
-    </Badge>
-  );
-}
+export const metadata: Metadata = { title: "Profile" };
 
 export default async function Page() {
   const session = await auth();
@@ -48,5 +39,17 @@ export default async function Page() {
         <RoleBadge role={session.user.role} />
       </div>
     </Main>
+  );
+}
+
+function RoleBadge({ role }: { role: UserRole }) {
+  if (role === "BASIC") {
+    return <div></div>;
+  }
+
+  return (
+    <Badge variant={role === "ADMIN" ? "destructive" : "blue"} size={"lg"}>
+      {role}
+    </Badge>
   );
 }
