@@ -14,7 +14,7 @@ services:
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 25s
+      interval: 30s
       timeout: 5s
       retries: 10
 
@@ -96,7 +96,7 @@ services:
     command: >
       sh -c "
         psql -h postgres -U postgres -d mlrepo -f /migrate.sql &&
-        pg_dump -h postgres -U postgres -d mlrepo -F c -b -f -v /output/out.sql
+        pg_dump -h postgres -U postgres -d mlrepo --format=c --large-objects --file=/output/out.sql
       "
     volumes:
       - ./migrate.sql:/migrate.sql

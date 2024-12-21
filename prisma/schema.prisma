@@ -16,7 +16,7 @@ model User {
   image         String?
   name          String
 
-  role UserRole  @default(BASIC) @map("role_id")
+  role UserRole  @default(BASIC)
   data UserData?
 
   accounts Account[]
@@ -148,6 +148,8 @@ model DatasetPaper {
   dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
   introductoryForDatasetId Int?     @unique
   introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+
+  @@map("dataset_papers")
 }
 
 model Keyword {
