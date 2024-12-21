@@ -5,7 +5,7 @@ import { GithubIcon } from "@/components/icons";
 
 export const metadata = { title: "Developers" };
 
-export function Developer({ name, subTitle, avatar, email, github }) {
+export function Developer({ name, subTitle, avatar, github }) {
   return (
     <div className={"flex items-center justify-between space-x-4"}>
       <div className={"flex items-center"}>
@@ -21,14 +21,6 @@ export function Developer({ name, subTitle, avatar, email, github }) {
         </div>
       </div>
       <div className={"flex items-center space-x-6 [&_svg]:size-8"}>
-        {email && (
-          <Link
-            href={"mailto:" + email}
-            className={"transition-transform ease-in-out hover:scale-110"}
-          >
-            <MailIcon />
-          </Link>
-        )}
         {github && (
           <Link
             href={"https://github.com/" + github}
@@ -52,7 +44,6 @@ export function Developer({ name, subTitle, avatar, email, github }) {
     name={"Andrew Wang"}
     subTitle={"UCI 2027"}
     avatar={"https://avatars.githubusercontent.com/u/143981491"}
-    email={"awwang3@uci.edu"}
     github={"andrew-wang0"}
   />
   <hr />
