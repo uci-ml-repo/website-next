@@ -13,7 +13,7 @@ const config = {
   theme: {
     extend: {
       screens: {
-        xs: "500px",
+        xs: "480px",
       },
       width: {
         "screen-lg": "1024px",

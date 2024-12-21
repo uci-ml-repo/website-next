@@ -307,6 +307,5 @@ export const introductoryPapers: Prisma.DatasetPaperCreateManyInput[] =
     venue: "Journal of Science",
     year: 2024,
     url: "https://example.com",
-    datasetId: dataset.id,
     introductoryForDatasetId: dataset.id,
   }));

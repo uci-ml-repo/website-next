@@ -15,6 +15,8 @@ export default class DatasetsFindService {
           },
         },
         authors: true,
+        introductoryPaper: true,
+        citedIn: true,
       },
     });
   }

@@ -3,6 +3,7 @@ import { Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -87,11 +88,15 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             <EyeIcon />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
-          <div>
-            <span>{fileCount === 1 ? "1 File" : `${fileCount} Files`}</span>
-            <span> &#183; </span>
-            <span>{abbreviateFileSize(fileSize)}</span>
-          </div>
+          {dataset.externalLink ? (
+            <Badge variant={"secondary"}>External</Badge>
+          ) : (
+            <div>
+              <span>{fileCount === 1 ? "1 File" : `${fileCount} Files`}</span>
+              <span> &#183; </span>
+              <span>{abbreviateFileSize(fileSize)}</span>
+            </div>
+          )}
         </CardFooter>
       </Link>
     </Card>

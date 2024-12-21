@@ -10,6 +10,7 @@ const inputVariants = cva(
       variantSize: {
         default: "h-10 text-sm",
         lg: "h-11 px-6 text-lg",
+        xl: "h-12 px-6 text-lg",
       },
       pill: {
         true: "rounded-full",
@@ -45,6 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const iconSize = {
       default: "*:size-4",
       lg: "*:size-6",
+      xl: "*:size-6",
     };
 
     const iconOffset = {
@@ -55,6 +57,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const iconInputPadding = {
       default: iconPosition === "left" ? "pl-10" : "pr-10",
       lg: iconPosition === "left" ? "pl-12" : "pr-12",
+      xl: iconPosition === "left" ? "pl-12" : "pr-12",
     };
 
     return (

@@ -57,7 +57,7 @@ export default async function Page() {
         </div>
         <Input
           placeholder={"Search for a dataset"}
-          variantSize={"lg"}
+          variantSize={"xl"}
           icon={SearchIcon}
           pill
         />
