@@ -1,3 +1,24 @@
+CREATE OR REPLACE FUNCTION generate_cuid()
+    RETURNS TEXT AS $$
+DECLARE
+    timestamp_part TEXT;
+    random_part TEXT;
+    cuid TEXT;
+BEGIN
+    timestamp_part := to_char(EXTRACT(EPOCH FROM clock_timestamp()) * 1000, 'FM999999999999999999')::BIGINT::TEXT;
+    timestamp_part := to_char(to_number(timestamp_part, '999999999999999999'), 'FM0000000000');
+
+    random_part := (
+        SELECT string_agg(substr('0123456789abcdefghijklmnopqrstuvwxyz', trunc(random() * 36 + 1)::int, 1), '')
+        FROM generate_series(1, 16)
+    );
+
+    cuid := 'c' || timestamp_part || random_part;
+
+    RETURN cuid;
+END;
+$$ LANGUAGE plpgsql;
+
 ALTER TYPE users_role RENAME TO user_role;
 
 CREATE TYPE "approval_status" AS ENUM ('pending', 'approved', 'rejected');

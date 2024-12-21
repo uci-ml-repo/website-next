@@ -35,7 +35,7 @@ model UserData {
 
   bookmarkedDatasets DatasetBookmark[]
 
-  user User @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("user_data")
 }
@@ -46,8 +46,8 @@ model DatasetBookmark {
 
   bookmarkedAt DateTime @default(now()) @map("bookmarked_at")
 
-  userData UserData @relation(fields: [userDataId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-  dataset  Dataset  @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  userData UserData @relation(fields: [userDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  dataset  Dataset  @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([userDataId, datasetId])
   @@index([bookmarkedAt])
@@ -79,7 +79,7 @@ model Dataset {
   keywords        DatasetKeyword[]
 
   userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
 
   files   DatasetFile[]
   zipFile DatasetFile?  @relation("ZipFile")
@@ -116,7 +116,7 @@ model DatasetAuthor {
   institution String? @db.VarChar(255)
   email       String? @db.VarChar(255)
 
-  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("dataset_authors")
 }
@@ -127,9 +127,9 @@ model DatasetFile {
   sizeBytes Int    @map("size_bytes")
 
   datasetId       Int?     @map("dataset_id")
-  dataset         Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  dataset         Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   zipForDatasetId Int?     @unique
-  zipForDataset   Dataset? @relation("ZipFile", fields: [zipForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  zipForDataset   Dataset? @relation("ZipFile", fields: [zipForDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@index([sizeBytes])
   @@map("dataset_files")
@@ -145,7 +145,7 @@ model DatasetPaper {
   url     String   @db.VarChar(255)
 
   datasetId                Int?     @map("dataset_id")
-  dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   introductoryForDatasetId Int?     @unique
   introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
 
@@ -166,58 +166,11 @@ model DatasetKeyword {
   datasetId Int    @map("dataset_id")
   keywordId String @map("keyword_id")
 
-  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-  keyword Keyword @relation(fields: [keywordId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  keyword Keyword @relation(fields: [keywordId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([datasetId, keywordId])
   @@map("dataset_keywords")
-}
-
-model Account {
-  userId            String @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String @map("provider_account_id")
-
-  refresh_token String?
-  access_token  String?
-  expires_at    Int?
-  token_type    String?
-  scope         String?
-  id_token      String?
-  session_state String?
-
-  user User @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@id([provider, providerAccountId])
-  @@map("accounts")
-}
-
-model Session {
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("sessions")
-}
-
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@id([identifier, token])
-  @@map("verification_tokens")
 }
 
 enum UserRole {
@@ -280,4 +233,54 @@ enum FeatureType {
   REAL        @map("real")
 
   @@map("feature_type")
+}
+
+// ============================================================================
+// Auth
+// ============================================================================
+model Account {
+  userId            String @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String @map("provider_account_id")
+
+  refresh_token String?
+  access_token  String?
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String?
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
 }
