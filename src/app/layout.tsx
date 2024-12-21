@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import Footer from "@/components/layout/Footer";
+import Graph from "@/components/layout/graph/Graph";
 import Header from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
@@ -41,6 +42,8 @@ export default function Layout({
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
+            <Graph />
+
             <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <div className={"w-full"}>

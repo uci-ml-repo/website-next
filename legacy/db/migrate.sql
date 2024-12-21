@@ -31,6 +31,38 @@ DROP TABLE variables;
 DROP TABLE variable_info;
 
 -------------------------------------------------------------------------------
+-- accounts, verification_tokens
+-------------------------------------------------------------------------------
+CREATE TABLE "accounts"
+(
+    "user_id"             TEXT         NOT NULL,
+    "type"                TEXT         NOT NULL,
+    "provider"            TEXT         NOT NULL,
+    "provider_account_id" TEXT         NOT NULL,
+    "refresh_token"       TEXT,
+    "access_token"        TEXT,
+    "expires_at"          INTEGER,
+    "token_type"          TEXT,
+    "scope"               TEXT,
+    "id_token"            TEXT,
+    "session_state"       TEXT,
+    "created_at"          TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at"          TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "accounts_pkey" PRIMARY KEY ("provider", "provider_account_id")
+);
+
+CREATE TABLE "verification_tokens"
+(
+    "identifier" TEXT         NOT NULL,
+    "token"      TEXT         NOT NULL,
+    "expires"    TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "verification_tokens_pkey" PRIMARY KEY ("identifier", "token")
+);
+
+-------------------------------------------------------------------------------
 -- users
 -------------------------------------------------------------------------------
 ALTER TABLE users
@@ -53,7 +85,10 @@ ALTER TABLE users
     ADD COLUMN updated_at     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 UPDATE users
-SET name = concat(firstname, ' ', lastname);
+SET name = trim(concat(firstname, ' ', lastname));
+
+UPDATE users
+SET email_verified = CURRENT_TIMESTAMP;
 
 ALTER TABLE users
     ALTER COLUMN name SET NOT NULL,
@@ -88,34 +123,3 @@ CREATE TABLE "sessions"
 -- dataset_creators JOIN creators -> dataset_authors
 -------------------------------------------------------------------------------
 
--------------------------------------------------------------------------------
--- accounts, verification_tokens
--------------------------------------------------------------------------------
-CREATE TABLE "accounts"
-(
-    "user_id"             TEXT         NOT NULL,
-    "type"                TEXT         NOT NULL,
-    "provider"            TEXT         NOT NULL,
-    "provider_account_id" TEXT         NOT NULL,
-    "refresh_token"       TEXT,
-    "access_token"        TEXT,
-    "expires_at"          INTEGER,
-    "token_type"          TEXT,
-    "scope"               TEXT,
-    "id_token"            TEXT,
-    "session_state"       TEXT,
-    "created_at"          TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at"          TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "accounts_pkey" PRIMARY KEY ("provider", "provider_account_id")
-);
-
-CREATE TABLE "verification_tokens"
-(
-    "identifier" TEXT         NOT NULL,
-    "token"      TEXT         NOT NULL,
-    "expires"    TIMESTAMP(3) NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "verification_tokens_pkey" PRIMARY KEY ("identifier", "token")
-);
