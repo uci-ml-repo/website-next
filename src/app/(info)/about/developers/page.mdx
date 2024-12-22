@@ -9,14 +9,14 @@ export function Developer({ name, subTitle, avatar, github }) {
   return (
     <div className={"flex items-center justify-between space-x-4"}>
       <div className={"flex items-center"}>
-        <Avatar className={"mr-4 size-16 max-sm:hidden"}>
+        <Avatar className={"mr-4 size-14 sm:size-16"}>
           <AvatarImage src={avatar} />
           <AvatarFallback>
             <CircleUserRoundIcon className={"size-4/5 text-muted-foreground"} />
           </AvatarFallback>
         </Avatar>
         <div>
-          <div className={"text-2xl text-primary"}>{name}</div>
+          <div className={"text-xl text-primary sm:text-2xl"}>{name}</div>
           <div className={"text-muted-foreground"}>{subTitle}</div>
         </div>
       </div>

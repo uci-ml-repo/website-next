@@ -1,4 +1,5 @@
 import { DatabaseIcon, Home } from "lucide-react";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -12,7 +13,6 @@ import {
 } from "@/components/ui/sidebar";
 import { DATASETS_PATH, HOME_PATH } from "@/lib/routes";
 
-// Menu items.
 const items = [
   {
     title: "Home",
@@ -40,10 +40,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -80,7 +80,7 @@ export default async function Page() {
         <hr />
         <div className={"space-y-8"}>
           <div className={"flex flex-col items-center space-y-4"}>
-            <p className={"text-xl font-bold"}>
+            <p className={"text-pretty text-center text-xl font-bold"}>
               Didn't find what you were looking for?
             </p>
             <Button asChild pill className={"lift"} size={"lg"}>

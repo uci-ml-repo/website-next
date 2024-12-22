@@ -6,16 +6,18 @@ import { useEffect, useState } from "react";
 import type {
   GraphEdge,
   GraphNode,
-} from "@/components/layout/graph/graphWorker";
+} from "@/components/layout/graph/backgroundGraphWorker";
 
-const Graph = () => {
+const BackgroundGraph = () => {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
 
   const TRANSITION_DELAY = 0.005;
 
   useEffect(() => {
-    const worker = new Worker(new URL("./graphWorker.ts", import.meta.url));
+    const worker = new Worker(
+      new URL("./backgroundGraphWorker.ts", import.meta.url),
+    );
 
     worker.onmessage = (event: MessageEvent) => {
       const { nodes, edges } = event.data;
@@ -68,4 +70,4 @@ const Graph = () => {
   );
 };
 
-export default Graph;
+export default BackgroundGraph;
