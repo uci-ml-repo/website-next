@@ -1,23 +1,69 @@
-CREATE OR REPLACE FUNCTION generate_cuid()
-    RETURNS TEXT AS $$
+-------------------------------------------------------------------------------
+-- UTILS
+-------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION base36_encode(num bigint)
+    RETURNS text AS
+$$
 DECLARE
-    timestamp_part TEXT;
-    random_part TEXT;
-    cuid TEXT;
+    base36 CONSTANT text   := '0123456789abcdefghijklmnopqrstuvwxyz';
+    encoded         text   := '';
+    remainder       int;
+    digit           char(1);
+    value           bigint := abs(num);
 BEGIN
-    timestamp_part := to_char(EXTRACT(EPOCH FROM clock_timestamp()) * 1000, 'FM999999999999999999')::BIGINT::TEXT;
-    timestamp_part := to_char(to_number(timestamp_part, '999999999999999999'), 'FM0000000000');
+    IF num = 0 THEN
+        RETURN '0';
+    END IF;
 
-    random_part := (
-        SELECT string_agg(substr('0123456789abcdefghijklmnopqrstuvwxyz', trunc(random() * 36 + 1)::int, 1), '')
-        FROM generate_series(1, 16)
-    );
+    WHILE value > 0
+        LOOP
+            remainder := (value % 36);
+            digit := substr(base36, remainder + 1, 1);
+            encoded := digit || encoded;
+            value := value / 36;
+        END LOOP;
 
-    cuid := 'c' || timestamp_part || random_part;
-
-    RETURN cuid;
+    RETURN encoded;
 END;
-$$ LANGUAGE plpgsql;
+$$
+    LANGUAGE plpgsql
+    IMMUTABLE;
+
+CREATE SEQUENCE IF NOT EXISTS cuid_counter_seq
+    START 1
+    MINVALUE 1
+    MAXVALUE 999999999999999999
+    CYCLE;
+
+CREATE OR REPLACE FUNCTION generate_cuid()
+    RETURNS text AS
+$$
+DECLARE
+    "current_time" bigint;
+    time_block     text;
+    counter_value  bigint;
+    count_block    text;
+    fingerprint    text;
+    random_block   text;
+    result_cuid    text;
+BEGIN
+    "current_time" := floor(extract(epoch FROM clock_timestamp()) * 1000)::bigint;
+    time_block := base36_encode("current_time");
+    counter_value := nextval('cuid_counter_seq');
+    count_block := lpad(base36_encode(counter_value), 4, '0');
+    fingerprint := substring(md5(inet_server_addr()::text || inet_server_port()::text) for 4);
+    random_block := substring(md5(random()::text || random()::text), 1, 6);
+    result_cuid := 'c'
+                       || time_block
+                       || count_block
+                       || fingerprint
+        || random_block;
+
+    RETURN result_cuid;
+END;
+$$
+    LANGUAGE plpgsql;
+
 
 ALTER TYPE users_role RENAME TO user_role;
 
@@ -52,6 +98,20 @@ DROP TABLE variables;
 DROP TABLE variable_info;
 
 -------------------------------------------------------------------------------
+-- auth_session -> sessions
+-------------------------------------------------------------------------------
+DROP TABLE auth_session;
+
+CREATE TABLE "sessions"
+(
+    "session_token" TEXT         NOT NULL,
+    "user_id"       TEXT         NOT NULL,
+    "expires"       TIMESTAMP(3) NOT NULL,
+    "createdAt"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt"     TIMESTAMP(3) NOT NULL
+);
+
+-------------------------------------------------------------------------------
 -- accounts, verification_tokens
 -------------------------------------------------------------------------------
 CREATE TABLE "accounts"
@@ -84,6 +144,25 @@ CREATE TABLE "verification_tokens"
 );
 
 -------------------------------------------------------------------------------
+-- datasets + donated_datasets -> datasets
+-- users.id -> donated_datasets.userid
+-------------------------------------------------------------------------------
+ALTER TABLE donated_datasets
+    DROP CONSTRAINT donated_datasets_ibfk_1;
+
+ALTER TABLE donated_datasets
+    RENAME COLUMN userid TO user_id;
+
+ALTER TABLE donated_datasets
+    ALTER COLUMN user_id TYPE TEXT using user_id::TEXT;
+
+ALTER TABLE users
+    ALTER COLUMN id TYPE TEXT using id::TEXT;
+
+ALTER TABLE donated_datasets
+    ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-------------------------------------------------------------------------------
 -- users
 -------------------------------------------------------------------------------
 ALTER TABLE users
@@ -108,11 +187,13 @@ ALTER TABLE users
 UPDATE users
 SET name = trim(concat(firstname, ' ', lastname));
 
+ALTER TABLE users
+    ALTER COLUMN name SET NOT NULL;
+
 UPDATE users
 SET email_verified = CURRENT_TIMESTAMP;
 
 ALTER TABLE users
-    ALTER COLUMN name SET NOT NULL,
     DROP COLUMN firstname,
     DROP COLUMN lastname,
     DROP COLUMN institution,
@@ -120,27 +201,23 @@ ALTER TABLE users
     DROP COLUMN resetpasswordexpiration,
     DROP COLUMN resetpasswordtoken,
     DROP COLUMN status,
-    DROP COLUMN deletedat;
+    DROP COLUMN deletedat,
+    DROP COLUMN accesstoken,
+    DROP COLUMN google,
+    DROP COLUMN github,
+    DROP COLUMN googleid,
+    DROP COLUMN githubid;
 
--------------------------------------------------------------------------------
--- datasets + donated_datasets -> datasets
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
--- auth_session -> sessions
--------------------------------------------------------------------------------
-DROP TABLE auth_session;
-
-CREATE TABLE "sessions"
-(
-    "session_token" TEXT         NOT NULL,
-    "user_id"       TEXT         NOT NULL,
-    "expires"       TIMESTAMP(3) NOT NULL,
-    "createdAt"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt"     TIMESTAMP(3) NOT NULL
-);
+UPDATE users
+SET id = generate_cuid();
 
 -------------------------------------------------------------------------------
 -- dataset_creators JOIN creators -> dataset_authors
 -------------------------------------------------------------------------------
 
+
+
+-------------------------------------------------------------------------------
+-- CLEANUP
+-------------------------------------------------------------------------------
+DROP SEQUENCE cuid_counter_seq;

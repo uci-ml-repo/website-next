@@ -37,8 +37,7 @@ export async function credentialsLogin({
     if (!existingUser.password) {
       return {
         success: false,
-        message:
-          "User is registered with a provider. Try signing in with Google or Github",
+        message: `${existingUser.email} is registered with a provider. Try signing in with Google or Github`,
       };
     }
 
@@ -88,7 +87,7 @@ export async function credentialsRegister({
     if (existingUser) {
       return {
         success: false,
-        message: "An account with this email already exists",
+        message: "An account with this email already exists. Try signing in.",
       };
     }
 

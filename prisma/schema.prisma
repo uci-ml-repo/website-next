@@ -50,7 +50,6 @@ model DatasetBookmark {
   dataset  Dataset  @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([userDataId, datasetId])
-  @@index([bookmarkedAt])
   @@map("dataset_bookmarks")
 }
 
@@ -96,7 +95,6 @@ model Dataset {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@index([status, slug])
   @@map("datasets")
 }
 
