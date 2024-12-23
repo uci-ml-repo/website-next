@@ -236,6 +236,25 @@ CREATE TABLE "datasets"
     CONSTRAINT "datasets_pkey" PRIMARY KEY ("id")
 );
 
+INSERT INTO descriptive_questions (
+    datasetid,
+    purpose,
+    funding,
+    represent,
+    datasplits,
+    sensitiveinfo,
+    preprocessingdescription,
+    softwareavailable,
+    used,
+    otherinfo,
+    datasetcitation
+)
+SELECT dd.id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+FROM donated_datasets dd
+         LEFT JOIN descriptive_questions dq ON dd.id = dq.datasetid
+WHERE dq.datasetid IS NULL;
+
+
 INSERT INTO datasets (id,
                       status,
                       donated_at,
@@ -305,6 +324,7 @@ WHERE slug NOTNULL;
 
 ALTER TABLE "datasets"
     ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 UPDATE users
 SET id = generate_cuid();
 
@@ -343,36 +363,40 @@ DROP TABLE creators;
 -- dataset_keywords + keywords
 -------------------------------------------------------------------------------
 
--- ALTER TABLE dataset_keywords
---     DROP CONSTRAINT dataset_keywords_ibfk_1,
---     DROP CONSTRAINT dataset_keywords_ibfk_2;
---
--- ALTER TABLE dataset_keywords
---     RENAME COLUMN datasetid TO dataset_id;
---
--- ALTER TABLE dataset_keywords
---     ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES datasets (id) ON DELETE CASCADE ON UPDATE CASCADE;
---
--- ALTER TABLE dataset_keywords
---     RENAME COLUMN keywordsid TO keyword_id;
---
--- ALTER TABLE dataset_keywords
---     ALTER COLUMN keyword_id TYPE TEXT using keyword_id::TEXT;
---
--- UPDATE dataset_keywords
--- SET keyword_id = generate_cuid();
---
--- ALTER TABLE dataset_keywords
---     ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords (id) ON DELETE CASCADE ON UPDATE CASCADE;
---
--- ALTER TABLE keywords
---     RENAME COLUMN keyword TO name;
+ALTER TABLE dataset_keywords
+    DROP CONSTRAINT dataset_keywords_ibfk_1,
+    DROP CONSTRAINT dataset_keywords_ibfk_2;
+
+ALTER TABLE dataset_keywords
+    RENAME COLUMN datasetid TO dataset_id;
+
+ALTER TABLE dataset_keywords
+    ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES datasets (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE dataset_keywords
+    RENAME COLUMN keywordsid TO keyword_id;
+
+ALTER TABLE dataset_keywords
+    ALTER COLUMN keyword_id TYPE TEXT using keyword_id::TEXT;
+
+ALTER TABLE keywords
+    ALTER COLUMN id TYPE TEXT using id::TEXT;
+
+ALTER TABLE dataset_keywords
+    ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+UPDATE keywords
+SET id = generate_cuid(), keyword = lower(keyword);
+
+ALTER TABLE keywords
+    RENAME COLUMN keyword TO name;
 
 -------------------------------------------------------------------------------
 -- dataset_files
 -------------------------------------------------------------------------------
 
--- DROP TABLE donated_datasets;
+DROP TABLE dataset_notes;
+DROP TABLE donated_datasets;
 DROP TABLE datasets_legacy;
 
 -------------------------------------------------------------------------------
