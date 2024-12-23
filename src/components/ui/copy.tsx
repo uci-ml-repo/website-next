@@ -1,3 +1,5 @@
+"use client";
+
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -23,6 +25,8 @@ export default function Copy({ text }: CopyProps) {
       setTimeout(() => setCopied(false), 1000);
     });
   };
+
+  if (typeof navigator.clipboard === "undefined") return <div />;
 
   return (
     <TooltipProvider>
