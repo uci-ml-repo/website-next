@@ -70,10 +70,14 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
                 <MicroscopeIcon />
                 <span className={"truncate"}>{formatEnum(dataset.tasks)}</span>
               </div>
-              <div>
-                <Columns3Icon />
-                <span>{abbreviateDecimal(dataset.featureCount)} Features</span>
-              </div>
+              {dataset.featureCount && (
+                <div>
+                  <Columns3Icon />
+                  <span>
+                    {abbreviateDecimal(dataset.featureCount)} Features
+                  </span>
+                </div>
+              )}
               <div>
                 <Rows3Icon />
                 <span>
