@@ -1,3 +1,5 @@
+--  npx prisma migrate diff --from-empty --to-schema-datasource prisma/schema.prisma --script > prisma/generated.sql
+
 -------------------------------------------------------------------------------
 -- UTILS
 -------------------------------------------------------------------------------
@@ -69,13 +71,13 @@ ALTER TYPE users_role RENAME TO user_role;
 
 CREATE TYPE "approval_status" AS ENUM ('pending', 'approved', 'rejected');
 
-CREATE TYPE "dataset_area" AS ENUM ('biology', 'business', 'climate_and_environment', 'computer_science', 'education', 'engineering', 'games', 'health_and_medicine', 'law', 'physics_and_chemistry', 'social_science', 'other');
+CREATE TYPE "dataset_subject_area" AS ENUM ('biology', 'business', 'climate_and_environment', 'computer_science', 'education', 'engineering', 'games', 'health_and_medicine', 'law', 'physics_and_chemistry', 'social_science', 'other');
 
 CREATE TYPE "dataset_task" AS ENUM ('classification', 'regression', 'clustering');
 
 CREATE TYPE "dataset_characteristic" AS ENUM ('tabular', 'sequential', 'multivariate', 'time_series', 'text', 'image', 'spatiotemporal');
 
-CREATE TYPE "feature_type" AS ENUM ('categorical', 'integer', 'real');
+CREATE TYPE "dataset_feature_type" AS ENUM ('categorical', 'integer', 'real');
 
 -- TODO
 DROP TABLE edits;
@@ -144,27 +146,13 @@ CREATE TABLE "verification_tokens"
 );
 
 -------------------------------------------------------------------------------
--- datasets + donated_datasets -> datasets
--- users.id -> donated_datasets.userid
+-- users
 -------------------------------------------------------------------------------
 ALTER TABLE donated_datasets
     DROP CONSTRAINT donated_datasets_ibfk_1;
-
-ALTER TABLE donated_datasets
-    RENAME COLUMN userid TO user_id;
-
-ALTER TABLE donated_datasets
-    ALTER COLUMN user_id TYPE TEXT using user_id::TEXT;
-
 ALTER TABLE users
     ALTER COLUMN id TYPE TEXT using id::TEXT;
 
-ALTER TABLE donated_datasets
-    ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--------------------------------------------------------------------------------
--- users
--------------------------------------------------------------------------------
 ALTER TABLE users
     RENAME COLUMN "user" TO email;
 
@@ -190,9 +178,6 @@ SET name = trim(concat(firstname, ' ', lastname));
 ALTER TABLE users
     ALTER COLUMN name SET NOT NULL;
 
-UPDATE users
-SET email_verified = CURRENT_TIMESTAMP;
-
 ALTER TABLE users
     DROP COLUMN firstname,
     DROP COLUMN lastname,
@@ -209,15 +194,196 @@ ALTER TABLE users
     DROP COLUMN githubid;
 
 UPDATE users
+SET email    = 'ucirepository@uci.edu',
+    password = '$2a$10$Khz876l72GFYpQ1SbmanZezcH5Ug3lNc2kBLV7pmd/o7/ZaFrLGrG',
+    name     = 'UCI ML Repository Root User',
+    role     = 'librarian'
+WHERE id = '1';
+
+-------------------------------------------------------------------------------
+-- datasets + donated_datasets -> datasets
+-- users.id -> donated_datasets.userid
+-------------------------------------------------------------------------------
+CREATE TABLE "datasets"
+(
+    "id"                  SERIAL                 NOT NULL,
+    "status"              "approval_status"      NOT NULL DEFAULT 'pending',
+    "donated_at"          DATE                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "year_created"        INTEGER                NOT NULL,
+    "title"               VARCHAR(255)           NOT NULL,
+    "description"         TEXT                   NOT NULL,
+    "subject_area"        "dataset_subject_area" NOT NULL,
+    "is_tabular"          BOOLEAN                NOT NULL,
+    "instance_count"      INTEGER                NOT NULL,
+    "feature_count"       INTEGER,
+    "has_graphics"        BOOLEAN                NOT NULL DEFAULT false,
+    "is_available_python" BOOLEAN                NOT NULL DEFAULT false,
+    "view_count"          INTEGER                NOT NULL DEFAULT 0,
+    "download_count"      INTEGER                NOT NULL DEFAULT 0,
+    "slug"                VARCHAR(255)           NOT NULL,
+    "user_id"             TEXT                   NOT NULL,
+    "created_at"          TIMESTAMP(3)           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at"          TIMESTAMP(3)           NOT NULL,
+
+    "characteristics"     "dataset_characteristic"[],
+    "tasks"               "dataset_task"[],
+    "feature_types"       "dataset_feature_type"[],
+    "subtitle"            VARCHAR(255),
+    "doi"                 VARCHAR(255),
+    "external_link"       VARCHAR(255),
+
+
+    CONSTRAINT "datasets_pkey" PRIMARY KEY ("id")
+);
+
+INSERT INTO datasets (id,
+                      status,
+                      donated_at,
+                      year_created,
+                      title,
+                      description,
+                      subject_area,
+                      is_tabular,
+                      instance_count,
+                      feature_count,
+                      has_graphics,
+                      is_available_python,
+                      view_count,
+                      download_count,
+                      slug,
+                      user_id,
+                      updated_at,
+                      characteristics,
+                      tasks,
+                      feature_types,
+                      doi,
+                      external_link)
+SELECT id,
+       lower(replace(status, 'FAILED', 'REJECTED'))::approval_status                       AS status,
+       coalesce(datedonated, CURRENT_TIMESTAMP)                                            AS donated_at,   -- TODO populate null data
+       coalesce(yearcreated, extract(YEAR FROM CURRENT_TIMESTAMP)::INTEGER)                AS year_created, -- TODO populate null data
+       name                                                                                AS title,
+       trim(concat(abstract, E'\n\n', dq.otherinfo, E'\n\n', dq.preprocessingdescription)) AS description,
+       replace(replace(lower(area), ' ', '_'), 'physical_science',
+               'physics_and_chemistry')::dataset_subject_area                              AS subject_area,
+       coalesce(istabular, false)                                                          AS is_tabular,
+       numinstances                                                                        AS instance_count,
+       numfeatures                                                                         AS feature_count,
+       coalesce(graphics, '') <> ''                                                        AS has_graphics,
+       coalesce(isavailablepython, false)                                                  AS is_available_python,
+       numhits                                                                             AS view_count,
+       numdownloads                                                                        AS download_count,
+       slug,
+       userid                                                                              AS user_id,
+       CURRENT_TIMESTAMP                                                                   AS updated_at,
+       COALESCE(
+               (SELECT array_agg(x::dataset_characteristic)
+                FROM unnest(string_to_array(LOWER(dd.types), ', ')) x
+                WHERE x = ANY (enum_range(NULL::dataset_characteristic)::text[])),
+               '{}'
+       )                                                                                   AS characteristics,
+
+       COALESCE(
+               (SELECT array_agg(x::dataset_task)
+                FROM unnest(string_to_array(LOWER(dd.task), ', ')) x
+                WHERE x = ANY (enum_range(NULL::dataset_task)::text[])),
+               '{}'
+       )                                                                                   AS tasks,
+
+       COALESCE(
+               (SELECT array_agg(x::dataset_feature_type)
+                FROM unnest(string_to_array(LOWER(dd.featuretypes), ', ')) x
+                WHERE x = ANY (enum_range(NULL::dataset_feature_type)::text[])),
+               '{}'
+       )                                                                                   AS feature_types,
+       regexp_replace(trim(doi), '^https?://doi.org/', '')                                 AS doi,
+       urllink                                                                             AS external_link
+
+FROM donated_datasets dd
+         INNER JOIN descriptive_questions dq on dd.id = dq.datasetid
+WHERE slug NOTNULL;
+
+ALTER TABLE "datasets"
+    ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+UPDATE users
 SET id = generate_cuid();
+
+DROP TABLE descriptive_questions;
+
+-------------------------------------------------------------------------------
+-- creators + dataset_creators -> dataset_authors
+-------------------------------------------------------------------------------
+CREATE TABLE "dataset_authors"
+(
+    "id"          TEXT         NOT NULL,
+    "dataset_id"  INTEGER      NOT NULL,
+    "first_name"  VARCHAR(255) NOT NULL,
+    "last_name"   VARCHAR(255) NOT NULL,
+    "institution" VARCHAR(255),
+    "email"       VARCHAR(255),
+
+    CONSTRAINT "dataset_authors_pkey" PRIMARY KEY ("id")
+);
+
+INSERT INTO dataset_authors (id, dataset_id, first_name, last_name, institution, email)
+SELECT generate_cuid(),
+       dd.id,
+       firstname,
+       lastname,
+       institution,
+       email
+FROM donated_datasets dd
+         INNER JOIN dataset_creators dc on dd.id = dc.datasetid
+         INNER JOIN creators c on dc.creatorid = c.id;
+
+DROP TABLE dataset_creators;
+DROP TABLE creators;
+
+-------------------------------------------------------------------------------
+-- dataset_keywords + keywords
+-------------------------------------------------------------------------------
+
+-- ALTER TABLE dataset_keywords
+--     DROP CONSTRAINT dataset_keywords_ibfk_1,
+--     DROP CONSTRAINT dataset_keywords_ibfk_2;
+--
+-- ALTER TABLE dataset_keywords
+--     RENAME COLUMN datasetid TO dataset_id;
+--
+-- ALTER TABLE dataset_keywords
+--     ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES datasets (id) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- ALTER TABLE dataset_keywords
+--     RENAME COLUMN keywordsid TO keyword_id;
+--
+-- ALTER TABLE dataset_keywords
+--     ALTER COLUMN keyword_id TYPE TEXT using keyword_id::TEXT;
+--
+-- UPDATE dataset_keywords
+-- SET keyword_id = generate_cuid();
+--
+-- ALTER TABLE dataset_keywords
+--     ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords (id) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- ALTER TABLE keywords
+--     RENAME COLUMN keyword TO name;
+
+-------------------------------------------------------------------------------
+-- dataset_files
+-------------------------------------------------------------------------------
+
+-- DROP TABLE donated_datasets;
+DROP TABLE datasets_legacy;
 
 -------------------------------------------------------------------------------
 -- dataset_creators JOIN creators -> dataset_authors
 -------------------------------------------------------------------------------
 
 
-
 -------------------------------------------------------------------------------
 -- CLEANUP
 -------------------------------------------------------------------------------
 DROP SEQUENCE cuid_counter_seq;
+
+DROP ROUTINE base36_encode;
+DROP ROUTINE generate_cuid;

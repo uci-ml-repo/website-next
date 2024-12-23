@@ -16,12 +16,13 @@ model User {
   image         String?
   name          String
 
-  role UserRole  @default(BASIC)
-  data UserData?
+  role UserRole @default(BASIC)
 
   accounts Account[]
   sessions Session[]
   datasets Dataset[]
+
+  bookmarks DatasetBookmark[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -29,27 +30,16 @@ model User {
   @@map("users")
 }
 
-model UserData {
-  id     String @id @default(cuid())
-  userId String @unique @map("user_id")
-
-  bookmarkedDatasets DatasetBookmark[]
-
-  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-
-  @@map("user_data")
-}
-
 model DatasetBookmark {
-  userDataId String @map("user_data_id")
-  datasetId  Int    @map("dataset_id")
+  userId    String @map("user_id")
+  datasetId Int    @map("dataset_id")
 
   bookmarkedAt DateTime @default(now()) @map("bookmarked_at")
 
-  userData UserData @relation(fields: [userDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  dataset  Dataset  @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  @@id([userDataId, datasetId])
+  @@id([userId, datasetId])
   @@map("dataset_bookmarks")
 }
 
@@ -62,18 +52,21 @@ model Dataset {
   description       String             @db.Text
   subjectArea       DatasetSubjectArea @map("subject_area")
   isTabular         Boolean            @map("is_tabular")
-  hasMissingValues  Boolean            @map("has_missing_values")
   instanceCount     Int                @map("instance_count")
-  featureCount      Int                @map("feature_count")
   hasGraphics       Boolean            @default(false) @map("has_graphics")
   isAvailablePython Boolean            @default(false) @map("is_available_python")
   viewCount         Int                @default(0) @map("view_count")
   downloadCount     Int                @default(0) @map("download_count")
   slug              String             @unique @db.VarChar(255)
 
+  featureCount Int?    @map("feature_count")
+  subtitle     String? @db.VarChar(255)
+  doi          String? @db.VarChar(255)
+  externalLink String? @map("external_link") @db.VarChar(255)
+
   characteristics DatasetCharacteristic[]
   tasks           DatasetTask[]
-  featureTypes    FeatureType[]           @map("feature_types")
+  featureTypes    DatasetFeatureType[]    @map("feature_types")
   authors         DatasetAuthor[]
   keywords        DatasetKeyword[]
 
@@ -85,10 +78,6 @@ model Dataset {
 
   citedIn           DatasetPaper[]
   introductoryPaper DatasetPaper?  @relation("IntroductoryPaper")
-
-  subtitle     String? @db.VarChar(255)
-  doi          String? @db.VarChar(255)
-  externalLink String? @db.VarChar(255)
 
   bookmarks DatasetBookmark[]
 
@@ -202,7 +191,7 @@ enum DatasetSubjectArea {
   SOCIAL_SCIENCE          @map("social_science")
   OTHER                   @map("other")
 
-  @@map("dataset_area")
+  @@map("dataset_subject_area")
 }
 
 enum DatasetTask {
@@ -225,12 +214,12 @@ enum DatasetCharacteristic {
   @@map("dataset_characteristic")
 }
 
-enum FeatureType {
+enum DatasetFeatureType {
   CATEGORICAL @map("categorical")
   INTEGER     @map("integer")
   REAL        @map("real")
 
-  @@map("feature_type")
+  @@map("dataset_feature_type")
 }
 
 // ============================================================================
