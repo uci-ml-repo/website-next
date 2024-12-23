@@ -42,7 +42,15 @@ export default function DatasetQuickStats({
       {stats.map((stat, index) => (
         <div key={index}>
           <div className={"text-sm text-muted-foreground"}>{stat.name}</div>
-          <div className={"font-semibold"}>{stat.value}</div>
+          {stat.value ? (
+            <div className={"font-semibold"}>
+              {typeof stat.value === "number"
+                ? stat.value.toLocaleString("en")
+                : stat.value}
+            </div>
+          ) : (
+            <div className={"text-muted-foreground"}>&ndash;</div>
+          )}
         </div>
       ))}
     </div>
