@@ -1,9 +1,11 @@
 import { DatabaseIcon, Home } from "lucide-react";
 import Link from "next/link";
 
+import { ThemeToggle } from "@/components/layout/sidebar/ThemeToggle";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -51,6 +53,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <ThemeToggle />
+      </SidebarFooter>
     </Sidebar>
   );
 }

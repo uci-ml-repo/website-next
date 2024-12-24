@@ -156,7 +156,7 @@ function PaperPreview({ paper }: { paper: DatasetPaper }) {
       <Link
         href={`https://www.semanticscholar.org/paper/${paper.semanticScholarId}`}
         target={"_blank"}
-        className={"text-lg text-uci-blue underline underline-offset-2"}
+        className={"text-lg text-link underline underline-offset-2"}
       >
         {paper.title}
       </Link>

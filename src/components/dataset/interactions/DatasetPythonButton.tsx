@@ -77,6 +77,7 @@ export default function DatasetPythonButton({
             <Link
               href={"https://github.com/uci-ml-repo/ucimlrepo"}
               target={"_blank"}
+              className={"underline-offset-1 hover:underline"}
             >
               <div>View Docs</div>
               <ExternalLinkIcon />

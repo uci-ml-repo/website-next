@@ -4,7 +4,7 @@
  * @type {import('tailwindcss').Config}
  */
 const config = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -56,7 +56,10 @@ const config = {
           foreground: "hsl(var(--accent-foreground))",
         },
         uci: {
-          blue: "hsl(var(--uci-blue))",
+          blue: {
+            DEFAULT: "hsl(var(--uci-blue))",
+            foreground: "hsl(var(--uci-blue-foreground))",
+          },
           gold: "hsl(var(--uci-gold))",
         },
         destructive: {

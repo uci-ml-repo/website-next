@@ -4,11 +4,12 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
-import { AppSidebar } from "@/components/layout/AppSidebar";
 import Footer from "@/components/layout/Footer";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/client";
@@ -38,23 +39,30 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
-            <BackgroundGraph />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <BackgroundGraph />
 
-            <SidebarProvider defaultOpen={false}>
-              <AppSidebar />
-              <div className={"w-full"}>
-                <Header />
+              <SidebarProvider defaultOpen={false}>
+                <AppSidebar />
+                <div className={"w-full"}>
+                  <Header />
 
-                {children}
+                  {children}
 
-                <Footer />
-              </div>
-              <Toaster />
-            </SidebarProvider>
+                  <Footer />
+                </div>
+                <Toaster />
+              </SidebarProvider>
+            </ThemeProvider>
           </body>
         </TRPCProvider>
       </SessionProvider>
