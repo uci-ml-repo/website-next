@@ -97,7 +97,7 @@ services:
       PGPASSWORD: postgres
     command: >
       sh -c "
-        psql -h postgres -U postgres -d mlrepo -f /migrate.sql &&
+        psql -h postgres -U postgres -d mlrepo -q -f /migrate.sql &&
         pg_dump -h postgres -U postgres -d mlrepo --format=c --large-objects --file=/output/out.sql
       "
     volumes:

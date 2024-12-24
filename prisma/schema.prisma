@@ -68,7 +68,7 @@ model Dataset {
 
   characteristics DatasetCharacteristic[]
   tasks           DatasetTask[]
-  featureTypes    DatasetVariableType[]   @map("feature_types")
+  featureTypes    DatasetFeatureType[]    @map("feature_types")
   authors         DatasetAuthor[]
   keywords        DatasetKeyword[]
 
@@ -101,7 +101,7 @@ model DatasetVariables {
   id            String              @id @default(cuid())
   name          String              @db.VarChar(255)
   role          DatasetVariableRole
-  type          DatasetVariableType
+  type          DatasetFeatureType
   description   String?             @db.Text
   units         String?             @db.VarChar(255)
   missingValues Boolean
@@ -227,7 +227,7 @@ enum DatasetVariableRole {
   @@map("dataset_variable_role")
 }
 
-enum DatasetVariableType {
+enum DatasetFeatureType {
   CATEGORICAL @map("categorical")
   INTEGER     @map("integer")
   CONTINUOUS  @map("continuous")
@@ -236,7 +236,7 @@ enum DatasetVariableType {
   DATE        @map("date")
   OTHER       @map("other")
 
-  @@map("dataset_variable_type")
+  @@map("dataset_feature_type")
 }
 
 // ============================================================================

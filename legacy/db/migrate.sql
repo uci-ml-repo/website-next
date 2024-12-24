@@ -71,13 +71,15 @@ ALTER TYPE users_role RENAME TO user_role;
 
 CREATE TYPE "approval_status" AS ENUM ('pending', 'approved', 'rejected');
 
+CREATE TYPE "dataset_characteristic" AS ENUM ('tabular', 'sequential', 'multivariate', 'time_series', 'text', 'image', 'spatiotemporal');
+
 CREATE TYPE "dataset_subject_area" AS ENUM ('biology', 'business', 'climate_and_environment', 'computer_science', 'education', 'engineering', 'games', 'health_and_medicine', 'law', 'physics_and_chemistry', 'social_science', 'other');
 
 CREATE TYPE "dataset_task" AS ENUM ('classification', 'regression', 'clustering');
 
-CREATE TYPE "dataset_characteristic" AS ENUM ('tabular', 'sequential', 'multivariate', 'time_series', 'text', 'image', 'spatiotemporal');
+CREATE TYPE "dataset_variable_role" AS ENUM ('id', 'feature', 'target', 'other');
 
-CREATE TYPE "dataset_feature_type" AS ENUM ('categorical', 'integer', 'real');
+CREATE TYPE "dataset_feature_type" AS ENUM ('categorical', 'integer', 'continuous', 'binary', 'text', 'date', 'other');
 
 -- TODO
 DROP TABLE edits;
@@ -303,21 +305,21 @@ SELECT id,
        CURRENT_TIMESTAMP                                                                   AS updated_at,
        COALESCE(
                (SELECT array_agg(x::dataset_characteristic)
-                FROM unnest(string_to_array(LOWER(dd.types), ', ')) x
+                FROM unnest(string_to_array(lower(dd.types), ', ')) x
                 WHERE x = ANY (enum_range(NULL::dataset_characteristic)::text[])),
                '{}'
        )                                                                                   AS characteristics,
 
        COALESCE(
                (SELECT array_agg(x::dataset_task)
-                FROM unnest(string_to_array(LOWER(dd.task), ', ')) x
+                FROM unnest(string_to_array(lower(dd.task), ', ')) x
                 WHERE x = ANY (enum_range(NULL::dataset_task)::text[])),
                '{}'
        )                                                                                   AS tasks,
 
        COALESCE(
                (SELECT array_agg(x::dataset_feature_type)
-                FROM unnest(string_to_array(LOWER(dd.featuretypes), ', ')) x
+                FROM unnest(string_to_array(lower(replace(dd.featuretypes, 'Real', 'Continuous')), ', ')) x
                 WHERE x = ANY (enum_range(NULL::dataset_feature_type)::text[])),
                '{}'
        )                                                                                   AS feature_types,
@@ -423,14 +425,17 @@ CREATE TABLE "dataset_papers"
 
 INSERT INTO dataset_papers (id, title, authors, venue, year, url, dataset_id, introductory_for_dataset_id)
 SELECT generate_cuid(),
-       fp.title,
-       string_to_array(fp.authors, ', '),
-       fp.venue,
-       fp.year,
+       np.title,
+       string_to_array(np.authors, ', '),
+       np.venue,
+       np.year,
        url,
        datasetid,
-       NULL
-FROM dataset_papers_legacy dpl INNER JOIN foreign_papers fp on dpl.foreignpaperid = fp.id;
+       dd.id
+FROM dataset_papers_legacy dpl
+         INNER JOIN native_papers np on dpl.foreignpaperid = np.id
+         INNER JOIN donated_datasets dd ON dd.intropaperid = dpl.datasetpapersid
+WHERE dd.status = 'APPROVED';
 
 -------------------------------------------------------------------------------
 -- dataset bookmarks
