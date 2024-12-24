@@ -15,10 +15,18 @@ export default async function DatasetDownloadButton({
 }: DatasetDownloadButtonProps) {
   if (dataset.externalLink) {
     return (
-      <Link href={dataset.externalLink} target={"_blank"}>
-        <ExternalLinkIcon />
-        <div>View Dataset</div>
-      </Link>
+      <Button
+        pill
+        variant={"blue"}
+        className={"lift w-full"}
+        size={"lg"}
+        asChild
+      >
+        <Link href={dataset.externalLink} target={"_blank"}>
+          <ExternalLinkIcon />
+          <div>View Dataset</div>
+        </Link>
+      </Button>
     );
   }
 

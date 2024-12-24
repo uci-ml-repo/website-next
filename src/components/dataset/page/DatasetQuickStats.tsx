@@ -36,7 +36,7 @@ export default function DatasetQuickStats({
   return (
     <div
       className={
-        "grid max-w-4xl grid-cols-1 grid-rows-3 gap-8 xs:grid-cols-2 xs:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
+        "grid max-w-4xl grid-cols-1 gap-8 min-[360px]:grid-cols-2 md:grid-cols-3"
       }
     >
       {stats.map((stat, index) => (

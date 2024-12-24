@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
 export default async function Header() {
   const session = await auth();
@@ -30,9 +31,10 @@ export default async function Header() {
             <DropdownMenuTrigger asChild>
               <Avatar
                 role={"button"}
-                className={
-                  "size-10 cursor-pointer outline-border hover:outline hover:outline-4"
-                }
+                className={cn(
+                  "size-10 cursor-pointer outline outline-4 outline-border",
+                  "transition-all duration-100 ease-out hover:scale-105",
+                )}
               >
                 {session.user.image && (
                   <AvatarImage
