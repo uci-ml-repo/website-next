@@ -36,7 +36,7 @@ export const users: Prisma.UserCreateManyInput[] = [
 
 export const datasets: Omit<
   Required<Prisma.DatasetCreateManyInput>,
-  "createdAt" | "updatedAt"
+  "createdAt" | "updatedAt" | "variablesDescription"
 >[] = [
   {
     id: 53,
@@ -53,7 +53,6 @@ export const datasets: Omit<
     characteristics: ["TABULAR"],
     tasks: ["CLASSIFICATION"],
     featureTypes: ["REAL"],
-    isTabular: true,
     instanceCount: 150,
     featureCount: 4,
     hasGraphics: true,
@@ -78,7 +77,6 @@ export const datasets: Omit<
     characteristics: ["MULTIVARIATE"],
     tasks: ["CLASSIFICATION"],
     featureTypes: ["CATEGORICAL", "INTEGER", "REAL"],
-    isTabular: false,
     instanceCount: 303,
     featureCount: 13,
     hasGraphics: false,
@@ -103,7 +101,6 @@ export const datasets: Omit<
     subjectArea: "BUSINESS",
     tasks: ["CLASSIFICATION", "REGRESSION"],
     featureTypes: ["REAL"],
-    isTabular: true,
     instanceCount: 4898,
     featureCount: 12,
     hasGraphics: false,
@@ -128,7 +125,6 @@ export const datasets: Omit<
     subjectArea: "SOCIAL_SCIENCE",
     tasks: ["CLASSIFICATION"],
     featureTypes: ["CATEGORICAL", "INTEGER"],
-    isTabular: true,
     instanceCount: 48842,
     featureCount: 14,
     hasGraphics: false,
@@ -152,7 +148,6 @@ export const datasets: Omit<
     subjectArea: "HEALTH_AND_MEDICINE",
     tasks: ["CLASSIFICATION"],
     featureTypes: ["REAL"],
-    isTabular: true,
     instanceCount: 569,
     featureCount: 30,
     hasGraphics: false,
@@ -177,7 +172,6 @@ export const datasets: Omit<
     subjectArea: "EDUCATION",
     tasks: ["CLASSIFICATION", "REGRESSION", "CLUSTERING"],
     featureTypes: ["REAL", "CATEGORICAL", "INTEGER"],
-    isTabular: false,
     instanceCount: 10375,
     featureCount: 8,
     hasGraphics: false,
@@ -202,7 +196,6 @@ export const datasets: Omit<
     subjectArea: "BUSINESS",
     tasks: ["CLASSIFICATION", "REGRESSION", "CLUSTERING"],
     featureTypes: ["REAL", "CATEGORICAL", "INTEGER"],
-    isTabular: false,
     instanceCount: 39298,
     featureCount: 19,
     hasGraphics: false,
@@ -227,7 +220,6 @@ export const datasets: Omit<
     subjectArea: "HEALTH_AND_MEDICINE",
     tasks: ["CLASSIFICATION", "CLUSTERING"],
     featureTypes: ["INTEGER", "REAL"],
-    isTabular: true,
     instanceCount: 11500,
     featureCount: 1,
     hasGraphics: false,
@@ -252,7 +244,6 @@ export const datasets: Omit<
     subjectArea: "HEALTH_AND_MEDICINE",
     tasks: ["CLASSIFICATION"],
     featureTypes: ["REAL", "CATEGORICAL", "INTEGER"],
-    isTabular: false,
     instanceCount: 782,
     featureCount: 59,
     hasGraphics: false,
@@ -277,7 +268,6 @@ export const datasets: Omit<
     subjectArea: "HEALTH_AND_MEDICINE",
     tasks: ["CLASSIFICATION"],
     featureTypes: ["REAL", "CATEGORICAL", "INTEGER"],
-    isTabular: false,
     instanceCount: 782,
     featureCount: 59,
     hasGraphics: false,
