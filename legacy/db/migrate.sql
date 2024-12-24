@@ -204,6 +204,8 @@ WHERE id = '1';
 -- datasets + donated_datasets -> datasets
 -- users.id -> donated_datasets.userid
 -------------------------------------------------------------------------------
+DROP SEQUENCE datasets_id_seq CASCADE;
+
 CREATE TABLE "datasets"
 (
     "id"                  SERIAL                 NOT NULL,
@@ -236,20 +238,28 @@ CREATE TABLE "datasets"
     CONSTRAINT "datasets_pkey" PRIMARY KEY ("id")
 );
 
-INSERT INTO descriptive_questions (
-    datasetid,
-    purpose,
-    funding,
-    represent,
-    datasplits,
-    sensitiveinfo,
-    preprocessingdescription,
-    softwareavailable,
-    used,
-    otherinfo,
-    datasetcitation
-)
-SELECT dd.id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+INSERT INTO descriptive_questions (datasetid,
+                                   purpose,
+                                   funding,
+                                   represent,
+                                   datasplits,
+                                   sensitiveinfo,
+                                   preprocessingdescription,
+                                   softwareavailable,
+                                   used,
+                                   otherinfo,
+                                   datasetcitation)
+SELECT dd.id,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL
 FROM donated_datasets dd
          LEFT JOIN descriptive_questions dq ON dd.id = dq.datasetid
 WHERE dq.datasetid IS NULL;
@@ -386,28 +396,57 @@ ALTER TABLE dataset_keywords
     ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 UPDATE keywords
-SET id = generate_cuid(), keyword = lower(keyword);
+SET id      = generate_cuid(),
+    keyword = lower(keyword);
+
+ALTER TABLE keywords
+    ALTER COLUMN status DROP DEFAULT,
+    ALTER COLUMN status TYPE approval_status USING replace(lower(status), 'accepted', 'approved')::approval_status,
+    ALTER COLUMN status SET DEFAULT 'pending'::approval_status;
+
 
 ALTER TABLE keywords
     RENAME COLUMN keyword TO name;
 
 -------------------------------------------------------------------------------
--- dataset_files
+-- dataset_papers
 -------------------------------------------------------------------------------
 
-DROP TABLE dataset_notes;
-DROP TABLE donated_datasets;
-DROP TABLE datasets_legacy;
 
 -------------------------------------------------------------------------------
--- dataset_creators JOIN creators -> dataset_authors
+-- dataset bookmarks
 -------------------------------------------------------------------------------
+CREATE TABLE "dataset_bookmarks"
+(
+    "user_id"       TEXT         NOT NULL,
+    "dataset_id"    INTEGER      NOT NULL,
+    "bookmarked_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+    CONSTRAINT "dataset_bookmarks_pkey" PRIMARY KEY ("user_id", "dataset_id")
+);
 
 -------------------------------------------------------------------------------
 -- CLEANUP
 -------------------------------------------------------------------------------
+
+DROP TABLE dataset_notes;
+DROP TABLE dataset_file;
+DROP TABLE file_info;
+DROP TABLE donated_datasets;
+DROP TABLE datasets_legacy;
+
 DROP SEQUENCE cuid_counter_seq;
+
+DROP SEQUENCE dataset_keywords_datasetkeywordsid_seq CASCADE;
+DROP SEQUENCE dataset_papers_datasetpapersid_seq CASCADE;
+DROP SEQUENCE keywords_id_seq CASCADE;
+DROP SEQUENCE native_papers_id_seq CASCADE;
+DROP SEQUENCE papers_id_seq CASCADE;
+DROP SEQUENCE users_id_seq CASCADE;
 
 DROP ROUTINE base36_encode;
 DROP ROUTINE generate_cuid;
+
+DROP TYPE dataset_papers_type CASCADE;
+DROP TYPE edits_status CASCADE;
+DROP TYPE user_role CASCADE;

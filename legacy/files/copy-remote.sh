@@ -13,4 +13,4 @@ echo "$HOST:$STATIC_FILES_PATH => $COPY_TO_PATH"
 
 # Find and exclude files larger than 512MB
 ssh "$HOST" "cd \"$STATIC_FILES_PATH\" && find . -type f -size +512M" > ignored
-rsync -az --info=progress2 --exclude-from=ignored "$HOST:$STATIC_FILES_PATH/" "$COPY_TO_PATH/"
+rsync -az --info=progress2 --max-size=512M "$HOST:$STATIC_FILES_PATH/" "$COPY_TO_PATH/"

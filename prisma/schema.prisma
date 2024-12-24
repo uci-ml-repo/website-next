@@ -73,9 +73,6 @@ model Dataset {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
 
-  files   DatasetFile[]
-  zipFile DatasetFile?  @relation("ZipFile")
-
   citedIn           DatasetPaper[]
   introductoryPaper DatasetPaper?  @relation("IntroductoryPaper")
 
@@ -106,20 +103,6 @@ model DatasetAuthor {
   dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("dataset_authors")
-}
-
-model DatasetFile {
-  id        String @id @default(cuid())
-  path      String
-  sizeBytes Int    @map("size_bytes")
-
-  datasetId       Int?     @map("dataset_id")
-  dataset         Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  zipForDatasetId Int?     @unique
-  zipForDataset   Dataset? @relation("ZipFile", fields: [zipForDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-
-  @@index([sizeBytes])
-  @@map("dataset_files")
 }
 
 model DatasetPaper {
