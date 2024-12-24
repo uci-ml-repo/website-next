@@ -296,6 +296,6 @@ export const introductoryPapers: Prisma.DatasetPaperCreateManyInput[] =
     authors: ["John Lorenzini", "Andrew Wang"],
     venue: "Journal of Science",
     year: 2024,
-    url: "https://example.com",
+    semanticScholarId: "a7d714f8f87bfc41351eb5ae1e5472f0ebbe0574",
     introductoryForDatasetId: dataset.id,
   }));

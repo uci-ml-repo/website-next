@@ -112,11 +112,12 @@ model DatasetPaper {
   authors String[] @db.VarChar(255)
   venue   String   @db.VarChar(255)
   year    Int
-  url     String   @db.VarChar(255)
+
+  semanticScholarId String @map("semantic_scholar_id") // sha ID, see https://api.semanticscholar.org/api-docs
 
   datasetId                Int?     @map("dataset_id")
   dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  introductoryForDatasetId Int?     @unique
+  introductoryForDatasetId Int?     @unique @map("introductory_for_dataset_id")
   introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
 
   @@map("dataset_papers")
