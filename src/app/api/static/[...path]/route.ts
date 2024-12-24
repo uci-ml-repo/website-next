@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "fs-extra";
 import mime from "mime";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -7,15 +7,6 @@ import path from "path";
 import { auth } from "@/auth";
 import { PRIVILEGED_ROLES } from "@/lib/utils/permissions";
 import { toStringArray } from "@/lib/utils/string";
-
-async function fileExists(filePath: string) {
-  try {
-    const fileStat = await fs.stat(filePath);
-    return fileStat.isFile();
-  } catch {
-    return false;
-  }
-}
 
 export async function GET(
   req: NextRequest,
@@ -40,7 +31,7 @@ export async function GET(
         ...relativePath,
       );
 
-      if (!(await fileExists(filePath))) {
+      if (!(await fs.pathExists(filePath))) {
         return NextResponse.json({ error: "File not found" }, { status: 404 });
       }
 

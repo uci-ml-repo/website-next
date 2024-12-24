@@ -25,9 +25,6 @@ interface DatasetCardProps {
 }
 
 export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
-  const fileCount = 1; // TODO
-  const fileSize = Math.pow(2.1, 30); // TODO
-
   const thumbnail = datasetThumbnail(dataset);
   const href = datasetPage(dataset);
 
@@ -95,11 +92,19 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
           {dataset.externalLink ? (
             <Badge variant={"secondary"}>External</Badge>
           ) : (
-            <div>
-              <span>{fileCount === 1 ? "1 File" : `${fileCount} Files`}</span>
-              <span> &#183; </span>
-              <span>{abbreviateFileSize(fileSize)}</span>
-            </div>
+            <>
+              {dataset.fileCount && dataset.zipSize && (
+                <div>
+                  <span>
+                    {dataset.fileCount === 1
+                      ? "1 File"
+                      : `${dataset.fileCount} Files`}
+                  </span>
+                  <span> &#183; </span>
+                  <span>{abbreviateFileSize(dataset.zipSize)}</span>
+                </div>
+              )}
+            </>
           )}
         </CardFooter>
       </Link>

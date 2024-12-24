@@ -1,8 +1,17 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  // TODO
-  console.log(req);
-  return NextResponse.json({});
+import { caller } from "@/server/trpc/server";
+
+export async function GET(_req: NextRequest) {
+  const datasets = (await caller.datasets.find({})).datasets;
+
+  return NextResponse.json({
+    status: 200,
+    statusText: "OK",
+    data: datasets.map((dataset) => ({
+      id: dataset.id,
+      name: dataset.title,
+    })),
+  });
 }

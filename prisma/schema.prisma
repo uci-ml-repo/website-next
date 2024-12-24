@@ -68,7 +68,7 @@ model Dataset {
 
   characteristics DatasetCharacteristic[]
   tasks           DatasetTask[]
-  featureTypes    DatasetFeatureType[]    @map("feature_types")
+  featureTypes    DatasetVariableType[]   @map("feature_types")
   authors         DatasetAuthor[]
   keywords        DatasetKeyword[]
 
@@ -77,6 +77,9 @@ model Dataset {
 
   citedIn           DatasetPaper[]
   introductoryPaper DatasetPaper?  @relation("IntroductoryPaper")
+
+  fileCount Int? @map("file_count")
+  zipSize   Int? @map("zip_size")
 
   bookmarks DatasetBookmark[]
 
@@ -95,14 +98,13 @@ model DraftDataset {
 }
 
 model DatasetVariables {
-  id            String   @id @default(cuid())
-  name          String   @db.VarChar(255)
-  role          String?  @db.VarChar(255)
-  type          String   @db.VarChar(255)
-  demographic   String?  @db.VarChar(255)
-  description   String?  @db.Text
-  units         String?  @db.VarChar(255)
-  missingValues Boolean?
+  id            String              @id @default(cuid())
+  name          String              @db.VarChar(255)
+  role          DatasetVariableRole
+  type          DatasetVariableType
+  description   String?             @db.Text
+  units         String?             @db.VarChar(255)
+  missingValues Boolean
 
   datasetId Int     @map("dataset_id")
   dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -131,7 +133,7 @@ model DatasetPaper {
   venue   String   @db.VarChar(255)
   year    Int
 
-  semanticScholarId String @map("semantic_scholar_id") // sha ID, see https://api.semanticscholar.org/api-docs
+  semanticScholarId Int @map("semantic_scholar_id") // Corpus ID, see https://api.semanticscholar.org/api-docs
 
   datasetId                Int?     @map("dataset_id")
   dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -216,12 +218,25 @@ enum DatasetCharacteristic {
   @@map("dataset_characteristic")
 }
 
-enum DatasetFeatureType {
+enum DatasetVariableRole {
+  ID      @map("id")
+  FEATURE @map("feature")
+  TARGET  @map("target")
+  OTHER   @map("other")
+
+  @@map("dataset_variable_role")
+}
+
+enum DatasetVariableType {
   CATEGORICAL @map("categorical")
   INTEGER     @map("integer")
-  REAL        @map("real")
+  CONTINUOUS  @map("continuous")
+  BINARY      @map("binary")
+  TEXT        @map("text")
+  DATE        @map("date")
+  OTHER       @map("other")
 
-  @@map("dataset_feature_type")
+  @@map("dataset_variable_type")
 }
 
 // ============================================================================

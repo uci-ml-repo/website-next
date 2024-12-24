@@ -2,7 +2,6 @@
 
 import "highlight.js/styles/github-dark.min.css";
 
-import type { Dataset } from "@prisma/client";
 import { BookMarkedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -23,10 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/client";
 
 interface DatasetCitationButtonProps {
-  dataset: Dataset;
+  dataset: DatasetResponse;
 }
 
 export default function DatasetCitationButton({

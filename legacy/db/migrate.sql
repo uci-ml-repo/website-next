@@ -89,10 +89,6 @@ DROP TABLE evals;
 DROP table metrics;
 DROP TABLE models;
 
--- DROP TABLE dataset_papers;
--- DROP TABLE native_papers;
--- DROP TABLE foreign_papers;
--- DROP TABLE papers;
 DROP TABLE reviews;
 DROP TABLE requests;
 DROP TABLE tabular;
@@ -411,7 +407,30 @@ ALTER TABLE keywords
 -------------------------------------------------------------------------------
 -- dataset_papers
 -------------------------------------------------------------------------------
+CREATE TABLE "dataset_papers"
+(
+    "id"                          TEXT         NOT NULL,
+    "title"                       VARCHAR(255) NOT NULL,
+    "authors"                     VARCHAR(255)[],
+    "venue"                       VARCHAR(255) NOT NULL,
+    "year"                        INTEGER      NOT NULL,
+    "url"                         VARCHAR(255) NOT NULL,
+    "dataset_id"                  INTEGER,
+    "introductory_for_dataset_id" INTEGER,
 
+    CONSTRAINT "dataset_papers_pkey" PRIMARY KEY ("id")
+);
+
+INSERT INTO dataset_papers (id, title, authors, venue, year, url, dataset_id, introductory_for_dataset_id)
+SELECT generate_cuid(),
+       fp.title,
+       string_to_array(fp.authors, ', '),
+       fp.venue,
+       fp.year,
+       url,
+       datasetid,
+       NULL
+FROM dataset_papers_legacy dpl INNER JOIN foreign_papers fp on dpl.foreignpaperid = fp.id;
 
 -------------------------------------------------------------------------------
 -- dataset bookmarks
@@ -424,6 +443,17 @@ CREATE TABLE "dataset_bookmarks"
 
     CONSTRAINT "dataset_bookmarks_pkey" PRIMARY KEY ("user_id", "dataset_id")
 );
+
+-------------------------------------------------------------------------------
+-- draft datasets
+-------------------------------------------------------------------------------
+CREATE TABLE "draft_datasets"
+(
+    "id" TEXT NOT NULL,
+
+    CONSTRAINT "draft_datasets_pkey" PRIMARY KEY ("id")
+);
+
 
 -------------------------------------------------------------------------------
 -- CLEANUP

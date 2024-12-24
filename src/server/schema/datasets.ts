@@ -1,10 +1,10 @@
 import type { Prisma } from "@prisma/client";
 import z from "zod";
 
-const orderByEnum = ["viewCount", "donatedAt"] satisfies [
+const orderByEnum: [
   Prisma.DatasetScalarFieldEnum,
   ...Prisma.DatasetScalarFieldEnum[],
-];
+] = ["viewCount", "donatedAt"];
 
 export const datasetQuery = z.object({
   sort: z.enum(["asc", "desc"]).optional(),

@@ -2,7 +2,6 @@
 
 import "highlight.js/styles/github-dark.min.css";
 
-import type { Dataset } from "@prisma/client";
 import hljs from "highlight.js";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -18,11 +17,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { getPythonSnippet } from "@/lib/utils/python";
 
 interface DatasetPythonButtonProps {
-  dataset: Dataset;
+  dataset: DatasetResponse;
 }
 
 const CodeBlock = ({ code, language }: { code: string; language?: string }) => {

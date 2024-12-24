@@ -71,6 +71,7 @@ services:
             DROP SCHEMA IF EXISTS public CASCADE;
             ALTER SCHEMA mlrepo RENAME TO public;
             ALTER TABLE datasets RENAME TO datasets_legacy;
+            ALTER TABLE dataset_papers RENAME TO dataset_papers_legacy;
           \";
 
           pg_dump -h postgres-legacy -U postgres -d mlrepo -F c -b -f /tmp/legacy.sql;

@@ -1,4 +1,4 @@
-import { $Enums, type PrismaClient } from "@prisma/client";
+import { ApprovalStatus, type PrismaClient } from "@prisma/client";
 
 import type { DatasetQuery } from "@/server/schema/datasets";
 
@@ -18,6 +18,7 @@ export default class DatasetsFindService {
         introductoryPaper: true,
         citedIn: true,
         user: true,
+        variables: true,
       },
     });
   }
@@ -26,7 +27,7 @@ export default class DatasetsFindService {
     const [datasets, count] = await this.prisma.$transaction([
       this.prisma.dataset.findMany({
         where: {
-          status: $Enums.ApprovalStatus.APPROVED,
+          status: ApprovalStatus.APPROVED,
         },
         orderBy: query.orderBy ? { [query.orderBy]: query.sort } : undefined,
         cursor: query.cursor ? { id: query.cursor } : undefined,
@@ -35,7 +36,7 @@ export default class DatasetsFindService {
       }),
 
       this.prisma.dataset.count({
-        where: { status: $Enums.ApprovalStatus.APPROVED },
+        where: { status: ApprovalStatus.APPROVED },
       }),
     ]);
 
@@ -47,5 +48,31 @@ export default class DatasetsFindService {
     }
 
     return { datasets, count, nextCursor };
+  }
+
+  // TODO: Implement Fuzzy
+  async byTitle(name: string) {
+    const dataset = await this.prisma.dataset.findFirst({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: name,
+            },
+          },
+          {
+            slug: {
+              contains: name,
+            },
+          },
+        ],
+      },
+    });
+
+    if (dataset == null) {
+      return null;
+    }
+
+    return this.byId(dataset.id);
   }
 }

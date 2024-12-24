@@ -18,6 +18,22 @@ export function datasetPage({ id, slug }: { id: number; slug: string }) {
   return `/datasets/${id}/${slug}`;
 }
 
+export function datasetStaticFiles({ id }: { id: number }) {
+  return `${STATIC_FILES_ROUTE}/${id}`;
+}
+
+export function datasetStaticFilesAbsolute({ id }: { id: number }) {
+  return `${process.env.STATIC_FILES_ROOT}/${id}`;
+}
+
+export function datasetPythonData({ id }: { id: number }) {
+  return `${datasetStaticFiles({ id })}/data.csv`;
+}
+
 export function datasetZip({ id, slug }: { id: number; slug: string }) {
-  return `${STATIC_FILES_ROUTE}/${id}/${slug}.zip`;
+  return `${datasetStaticFiles({ id })}/${slug}.zip`;
+}
+
+export function datasetZipAbsolute({ id, slug }: { id: number; slug: string }) {
+  return `${datasetStaticFilesAbsolute({ id })}/${slug}.zip`;
 }

@@ -13,6 +13,10 @@ const datasetsRouter = router({
     return service.datasets.find.byId(input);
   }),
 
+  findByTitle: procedure.input(z.string()).query(async ({ input }) => {
+    return service.datasets.find.byTitle(input);
+  }),
+
   citeById: procedure.input(z.number()).query(async ({ input }) => {
     return service.datasets.cite.byId(input);
   }),
