@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import DatasetCitationButton from "@/components/dataset/interactions/DatasetCitationButton";
-import DatasetDownloadButton from "@/components/dataset/interactions/DatasetDownloadButton";
-import DatasetPythonButton from "@/components/dataset/interactions/DatasetPythonButton";
+import DatasetCitationButton from "@/components/dataset/page/interactions/DatasetCitationButton";
+import DatasetDownloadButton from "@/components/dataset/page/interactions/DatasetDownloadButton";
+import DatasetPythonButton from "@/components/dataset/page/interactions/DatasetPythonButton";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetThumbnail } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ export default function DatasetTitleGroup({
             {dataset.title}
           </h1>
           {dataset.subtitle && (
-            <p className={"text-lg text-muted-foreground"}>
+            <p className={"text-pretty text-lg text-muted-foreground"}>
               {dataset.subtitle}
             </p>
           )}

@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
-import { DatasetMetadata } from "@/components/dataset/page/DatasetMetadata";
-import DatasetQuickStats from "@/components/dataset/page/DatasetQuickStats";
-import DatasetSideData from "@/components/dataset/page/DatasetSideData";
 import DatasetTitleGroup from "@/components/dataset/page/DatasetTitleGroup";
+import DatasetTabs from "@/components/dataset/page/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
 import { caller } from "@/server/trpc/server";
 
@@ -51,27 +49,7 @@ export default async function Page({
       <div className={"space-y-8"}>
         <DatasetTitleGroup dataset={dataset} />
 
-        <hr />
-
-        <div className={"space-y-16"}>
-          <div
-            className={"flex justify-between gap-x-14 gap-y-10 max-lg:flex-col"}
-          >
-            <div className={"w-full space-y-8"}>
-              <div className={"space-y-2"}>
-                <h2 className={"text-2xl font-bold"}>About Dataset</h2>
-                <div className={"break-words"}>{dataset.description}</div>
-              </div>
-              <DatasetQuickStats dataset={dataset} />
-              <hr className={"lg:hidden"} />
-            </div>
-
-            <DatasetSideData dataset={dataset} />
-          </div>
-
-          {/* Metadata */}
-          <DatasetMetadata dataset={dataset} />
-        </div>
+        <DatasetTabs dataset={dataset} />
       </div>
     </Main>
   );
