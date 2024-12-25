@@ -98,12 +98,12 @@ model DraftDataset {
 }
 
 model DatasetVariables {
-  id            String              @id @default(cuid())
-  name          String              @db.VarChar(255)
-  role          DatasetVariableRole
+  id            String             @id @default(cuid())
+  name          String             @db.VarChar(255)
+  role          DatasetFeatureRole
   type          DatasetFeatureType
-  description   String?             @db.Text
-  units         String?             @db.VarChar(255)
+  description   String?            @db.Text
+  units         String?            @db.VarChar(255)
   missingValues Boolean
 
   datasetId Int     @map("dataset_id")
@@ -218,13 +218,13 @@ enum DatasetCharacteristic {
   @@map("dataset_characteristic")
 }
 
-enum DatasetVariableRole {
+enum DatasetFeatureRole {
   ID      @map("id")
   FEATURE @map("feature")
   TARGET  @map("target")
   OTHER   @map("other")
 
-  @@map("dataset_variable_role")
+  @@map("dataset_feature_role")
 }
 
 enum DatasetFeatureType {

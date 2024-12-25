@@ -77,7 +77,7 @@ CREATE TYPE "dataset_subject_area" AS ENUM ('biology', 'business', 'climate_and_
 
 CREATE TYPE "dataset_task" AS ENUM ('classification', 'regression', 'clustering');
 
-CREATE TYPE "dataset_variable_role" AS ENUM ('id', 'feature', 'target', 'other');
+CREATE TYPE "dataset_feature_role" AS ENUM ('id', 'feature', 'target', 'other');
 
 CREATE TYPE "dataset_feature_type" AS ENUM ('categorical', 'integer', 'continuous', 'binary', 'text', 'date', 'other');
 
@@ -232,6 +232,8 @@ CREATE TABLE "datasets"
     "doi"                 VARCHAR(255),
     "external_link"       VARCHAR(255),
 
+    "file_count"          INTEGER,
+    "zip_size"            INTEGER,
 
     CONSTRAINT "datasets_pkey" PRIMARY KEY ("id")
 );
@@ -285,7 +287,7 @@ INSERT INTO datasets (id,
                       feature_types,
                       doi,
                       external_link)
-SELECT id,
+SELECT dd.id,
        lower(replace(status, 'FAILED', 'REJECTED'))::approval_status                       AS status,
        coalesce(datedonated, CURRENT_TIMESTAMP)                                            AS donated_at,   -- TODO populate null data
        coalesce(yearcreated, extract(YEAR FROM CURRENT_TIMESTAMP)::INTEGER)                AS year_created, -- TODO populate null data
@@ -337,6 +339,23 @@ UPDATE users
 SET id = generate_cuid();
 
 DROP TABLE descriptive_questions;
+
+-------------------------------------------------------------------------------
+-- variables
+-------------------------------------------------------------------------------
+CREATE TABLE "dataset_variables"
+(
+    "id"            TEXT                   NOT NULL,
+    "name"          VARCHAR(255)           NOT NULL,
+    "role"          "dataset_feature_role" NOT NULL,
+    "type"          "dataset_feature_type" NOT NULL,
+    "description"   TEXT,
+    "units"         VARCHAR(255),
+    "missingValues" BOOLEAN                NOT NULL,
+    "dataset_id"    INTEGER                NOT NULL,
+
+    CONSTRAINT "dataset_variables_pkey" PRIMARY KEY ("id")
+);
 
 -------------------------------------------------------------------------------
 -- creators + dataset_creators -> dataset_authors
