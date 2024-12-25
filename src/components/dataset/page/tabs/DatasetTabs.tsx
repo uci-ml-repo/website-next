@@ -6,6 +6,7 @@ import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
 import DatasetActivity from "@/components/dataset/page/tabs/about/DatasetActivity";
 import DatasetDiscussion from "@/components/dataset/page/tabs/discussion/DatasetDiscussion";
 import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
+import { Badge } from "@/components/ui/badge";
 import {
   LinearTabsContent,
   LinearTabsList,
@@ -18,20 +19,22 @@ export default function DatasetTabs({ dataset }: { dataset: DatasetResponse }) {
   const [tab, setTab] = useState("about");
 
   return (
-    <LinearTabsRoot className={"space-y-6"} value={tab} onValueChange={setTab}>
-      <div>
-        <div className={"flex items-center justify-between space-x-8"}>
-          <LinearTabsList className={"space-x-10 overflow-x-auto"} value={tab}>
-            <LinearTabsTrigger value={"about"}>About</LinearTabsTrigger>
-            <LinearTabsTrigger value={"files"}>Files</LinearTabsTrigger>
-            <LinearTabsTrigger value={"discussion"}>
-              Discussion
-            </LinearTabsTrigger>
-          </LinearTabsList>
-          <DatasetActivity dataset={dataset} className={"max-sm:hidden"} />
-        </div>
-        <hr className={"-mt-[1px] border-[1px]"} />
+    <LinearTabsRoot value={tab} onValueChange={setTab}>
+      <div className={"flex items-center justify-between space-x-8"}>
+        <LinearTabsList className={"space-x-10 overflow-x-auto"} value={tab}>
+          <LinearTabsTrigger value={"about"}>About</LinearTabsTrigger>
+          <LinearTabsTrigger value={"files"}>Files</LinearTabsTrigger>
+          <LinearTabsTrigger
+            value={"discussion"}
+            className={"flex items-center space-x-2"}
+          >
+            <span>Discussion</span>
+            <Badge variant={"secondary"}>0</Badge>
+          </LinearTabsTrigger>
+        </LinearTabsList>
+        <DatasetActivity dataset={dataset} className={"max-md:hidden"} />
       </div>
+      <hr className={"-mt-[2px] mb-6 border-[1px]"} />
 
       <LinearTabsContent value={"about"}>
         <DatasetAbout dataset={dataset} />

@@ -1,5 +1,12 @@
-import { DownloadIcon, EyeIcon } from "lucide-react";
+import {
+  BookmarkIcon,
+  DownloadIcon,
+  EllipsisVerticalIcon,
+  EyeIcon,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
 
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +27,8 @@ export default function DatasetActivity({
   className,
   ...props
 }: DatasetActivityProps) {
+  const { data: session } = useSession();
+
   const activity = [
     {
       icon: EyeIcon,
@@ -34,24 +43,32 @@ export default function DatasetActivity({
   ];
 
   return (
-    <div className={cn("flex items-center space-x-6", className)} {...props}>
-      {activity.map((activityItem, index) => (
-        <TooltipProvider
-          key={index}
-          delayDuration={100}
-          disableHoverableContent
-        >
-          <Tooltip>
-            <TooltipTrigger className={"flex items-center space-x-1 text-sm"}>
-              <activityItem.icon className={"size-4"} />
-              <span>{activityItem.value}</span>
-            </TooltipTrigger>
-            <TooltipContent side={"bottom"} forceMount>
-              {activityItem.tooltip}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ))}
+    <div className={cn("flex items-center space-x-4", className)} {...props}>
+      <div className={"flex items-center space-x-6"}>
+        {activity.map((activityItem, index) => (
+          <TooltipProvider
+            key={index}
+            delayDuration={100}
+            disableHoverableContent
+          >
+            <Tooltip>
+              <TooltipTrigger className={"flex items-center space-x-1 text-sm"}>
+                <activityItem.icon className={"size-4"} />
+                <span>{activityItem.value}</span>
+              </TooltipTrigger>
+              <TooltipContent side={"bottom"} forceMount>
+                {activityItem.tooltip}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ))}
+
+        {session?.user && <BookmarkIcon className={"size-5"} />}
+      </div>
+
+      <Button pill variant={"ghost"} size={"icon"}>
+        <EllipsisVerticalIcon />
+      </Button>
     </div>
   );
 }

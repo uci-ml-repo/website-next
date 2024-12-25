@@ -61,7 +61,7 @@ const LinearTabsList = React.forwardRef<
       <motion.span
         animate={indicatorStyle}
         transition={{ ease: "easeOut", duration: 0.175 }}
-        className="absolute bottom-0 !ml-0 h-[3px] rounded-t-full bg-foreground"
+        className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full bg-foreground"
       />
     </TabsPrimitive.List>
   );
@@ -75,7 +75,7 @@ const LinearTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center whitespace-nowrap border-foreground px-1 py-2 text-xl font-medium ring-offset-background",
+      "inline-flex items-center whitespace-nowrap border-foreground px-2 py-2 text-xl font-medium ring-offset-background",
       "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
       "data-[state=active]:text-foreground",
       className,
