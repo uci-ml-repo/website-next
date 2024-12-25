@@ -5,7 +5,7 @@ import ServiceError from "@/server/service/errors";
 export default class DatasetsCiteService {
   constructor(readonly prisma: PrismaClient) {}
 
-  async byId(id: number) {
+  async byDatasetId(id: number) {
     const dataset = await this.prisma.dataset.findFirst({
       where: { id },
       include: {

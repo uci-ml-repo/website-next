@@ -15,6 +15,7 @@ const adapter = PrismaAdapter(prisma);
 declare module "next-auth" {
   interface Session {
     user: {
+      id: string;
       role: UserRole;
     } & DefaultSession["user"];
   }

@@ -6,8 +6,8 @@ import filesRouter from "@/server/trpc/routers/files";
 import { router } from "../index";
 
 export const appRouter = router({
-  datasets: datasetsRouter,
-  files: filesRouter,
+  dataset: datasetsRouter,
+  file: filesRouter,
 });
 
 export type AppRouter = typeof appRouter;

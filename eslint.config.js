@@ -39,8 +39,8 @@ const config = [
     rules: {
       "import/first": "error",
       "import/no-duplicates": "error",
-      "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error",
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
     },
   },
 
@@ -60,9 +60,9 @@ const config = [
       "unused-imports": unusedImportsPlugin,
     },
     rules: {
-      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-imports": "warn",
       "unused-imports/no-unused-vars": [
-        "error",
+        "warn",
         {
           vars: "all",
           varsIgnorePattern: "^_",

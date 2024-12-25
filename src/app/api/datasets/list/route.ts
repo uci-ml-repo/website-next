@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { caller } from "@/server/trpc/server";
 
 export async function GET(_req: NextRequest) {
-  const datasets = (await caller.datasets.find({})).datasets;
+  const datasets = (await caller.dataset.find.byQuery({})).datasets;
 
   return NextResponse.json({
     status: 200,

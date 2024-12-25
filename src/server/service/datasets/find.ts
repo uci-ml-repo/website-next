@@ -51,18 +51,18 @@ export default class DatasetsFindService {
   }
 
   // TODO: Implement Fuzzy
-  async byTitle(name: string) {
+  async byTitle(title: string) {
     const dataset = await this.prisma.dataset.findFirst({
       where: {
         OR: [
           {
             title: {
-              contains: name,
+              contains: title,
             },
           },
           {
             slug: {
-              contains: name,
+              contains: title,
             },
           },
         ],

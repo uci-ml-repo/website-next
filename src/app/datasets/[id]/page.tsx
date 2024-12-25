@@ -10,7 +10,7 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  const dataset = await caller.datasets.findById(Number(id));
+  const dataset = await caller.dataset.find.byId(Number(id));
 
   if (!dataset) {
     notFound();

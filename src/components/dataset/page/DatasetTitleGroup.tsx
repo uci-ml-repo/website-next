@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import DatasetCitationButton from "@/components/dataset/page/interactions/DatasetCitationButton";
-import DatasetDownloadButton from "@/components/dataset/page/interactions/DatasetDownloadButton";
-import DatasetPythonButton from "@/components/dataset/page/interactions/DatasetPythonButton";
+import DatasetCitationButton from "@/components/dataset/page/buttons/DatasetCitationButton";
+import DatasetDownloadButton from "@/components/dataset/page/buttons/DatasetDownloadButton";
+import DatasetPythonButton from "@/components/dataset/page/buttons/DatasetPythonButton";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetThumbnail } from "@/lib/utils";
 

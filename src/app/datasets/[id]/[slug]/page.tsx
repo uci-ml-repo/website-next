@@ -8,7 +8,7 @@ import Main from "@/components/layout/Main";
 import { caller } from "@/server/trpc/server";
 
 const getDataset = cache(async (id: number) => {
-  return caller.datasets.findById(id);
+  return caller.dataset.find.byId(id);
 });
 
 export async function generateMetadata({

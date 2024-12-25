@@ -32,7 +32,7 @@ interface DatasetCitationButtonProps {
 export default function DatasetCitationButton({
   dataset,
 }: DatasetCitationButtonProps) {
-  const citationsQuery = trpc.datasets.citeById.useQuery(dataset.id);
+  const citationsQuery = trpc.dataset.cite.byId.useQuery(dataset.id);
   const citations = citationsQuery.data;
 
   type CitationOption = keyof NonNullable<typeof citations>;

@@ -1,11 +1,6 @@
-import {
-  BookmarkIcon,
-  DownloadIcon,
-  EllipsisVerticalIcon,
-  EyeIcon,
-} from "lucide-react";
-import { useSession } from "next-auth/react";
+import { DownloadIcon, EllipsisVerticalIcon, EyeIcon } from "lucide-react";
 
+import DatasetBookmarkButton from "@/components/dataset/page/buttons/DatasetBookmarkButton";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -27,8 +22,6 @@ export default function DatasetActivity({
   className,
   ...props
 }: DatasetActivityProps) {
-  const { data: session } = useSession();
-
   const activity = [
     {
       icon: EyeIcon,
@@ -62,8 +55,7 @@ export default function DatasetActivity({
             </Tooltip>
           </TooltipProvider>
         ))}
-
-        {session?.user && <BookmarkIcon className={"size-5"} />}
+        <DatasetBookmarkButton dataset={dataset} />
       </div>
 
       <Button pill variant={"ghost"} size={"icon"}>

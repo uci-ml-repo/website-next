@@ -18,14 +18,14 @@ import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/server";
 
 export default async function Page() {
-  const datasetFind = await caller.datasets.find({});
+  const datasrtCount = await caller.dataset.count.approved();
 
-  const popularDatasets = await caller.datasets.find({
+  const popularDatasets = await caller.dataset.find.byQuery({
     orderBy: "viewCount",
     sort: "desc",
     take: 10,
   });
-  const newDatasets = await caller.datasets.find({
+  const newDatasets = await caller.dataset.find.byQuery({
     orderBy: "donatedAt",
     take: 10,
     sort: "desc",
@@ -37,8 +37,8 @@ export default async function Page() {
         <div className={"space-y-4"}>
           <Banner variant={"hero"} />
           <p className={"text-pretty text-lg sm:text-xl"}>
-            We currently maintain {datasetFind.count} datasets used by millions
-            in the machine learning community.
+            We currently maintain {datasrtCount} datasets used by millions in
+            the machine learning community.
           </p>
         </div>
         <div className={"flex flex-wrap gap-4"}>
