@@ -1,5 +1,5 @@
+import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
-import DatasetActivity from "@/components/dataset/page/tabs/DatasetActivity";
 import DatasetDiscussion from "@/components/dataset/page/tabs/discussion/DatasetDiscussion";
 import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ export default function DatasetTabs({ dataset }: { dataset: DatasetResponse }) {
             <Badge variant="secondary">0</Badge>
           </LinearTabsTrigger>
         </LinearTabsList>
-        <DatasetActivity dataset={dataset} className="max-md:hidden" />
+        <DatasetInteractions dataset={dataset} className="max-md:hidden" />
       </div>
       <hr className="-mt-[2px] mb-6 border-[1px]" />
 

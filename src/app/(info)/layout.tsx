@@ -23,7 +23,6 @@ export default function MdxLayout({
           size={"lg"}
           className={"lift w-full sm:w-fit"}
           asChild
-          pill
         >
           <Link href={HOME_PATH}>
             <ArrowLeftIcon />

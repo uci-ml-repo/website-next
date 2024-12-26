@@ -1,5 +1,5 @@
 import type { DatasetResponse } from "@/lib/types";
-import { formatEnum } from "@/lib/utils/format";
+import { formatEnum } from "@/lib/utils";
 
 export default function DatasetQuickStats({
   dataset,

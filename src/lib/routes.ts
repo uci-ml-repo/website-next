@@ -1,5 +1,3 @@
-export const URL_ORIGIN = "https://archive.ics.uci.edu";
-
 export const HOME_PATH = "/";
 export const SIGN_IN_PATH = "/auth/login";
 export const ADMIN_PATH = "/admin";

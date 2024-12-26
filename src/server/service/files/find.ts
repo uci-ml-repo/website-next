@@ -1,7 +1,15 @@
 import { type PrismaClient } from "@prisma/client";
 import fs from "fs-extra";
 
-import { datasetZip, datasetZipAbsolute } from "@/lib/utils";
+import { datasetZip } from "@/lib/utils";
+
+function datasetStaticFilesAbsolute({ id }: { id: number }) {
+  return `${process.env.STATIC_FILES_ROOT}/${id}`;
+}
+
+function datasetZipAbsolute({ id, slug }: { id: number; slug: string }) {
+  return `${datasetStaticFilesAbsolute({ id })}/${slug}.zip`;
+}
 
 export default class FileFindService {
   constructor(readonly prisma: PrismaClient) {}

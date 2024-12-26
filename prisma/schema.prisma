@@ -24,6 +24,9 @@ model User {
 
   bookmarks DatasetBookmark[]
 
+  datasetReports           DatasetReport[]
+  datasetReportResolutions DatasetReportResolution[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -82,6 +85,7 @@ model Dataset {
   zipSize   Int? @map("zip_size")
 
   bookmarks DatasetBookmark[]
+  reports   DatasetReport[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -93,7 +97,6 @@ model DraftDataset {
   id String @id @default(cuid())
 
   // TODO add fields
-
   @@map("draft_datasets")
 }
 
@@ -162,6 +165,42 @@ model DatasetKeyword {
 
   @@id([datasetId, keywordId])
   @@map("dataset_keywords")
+}
+
+model DatasetReport {
+  id String @id @default(cuid())
+
+  reason  DatasetReportReason
+  details String              @db.Text
+
+  reportedAt DateTime @default(now()) @map("reported_at")
+
+  reportedByUserId String? @map("reported_by_user_id")
+  reportedBy       User?   @relation(fields: [reportedByUserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+
+  resolution DatasetReportResolution?
+
+  datasetId Int     @map("dataset_id")
+  dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("dataset_reports")
+}
+
+model DatasetReportResolution {
+  id String @id @default(cuid())
+
+  type    DatasetReportResolutionType
+  comment String?                     @db.Text
+
+  resolvedAt DateTime @default(now()) @map("resolved_at")
+
+  resolvedByUserId String @map("resolved_by_user_id")
+  resolvedBy       User   @relation(fields: [resolvedByUserId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  reportId String        @unique @map("report_id")
+  report   DatasetReport @relation(fields: [reportId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("dataset_report_resolutions")
 }
 
 enum UserRole {
@@ -237,6 +276,21 @@ enum DatasetFeatureType {
   OTHER       @map("other")
 
   @@map("dataset_feature_type")
+}
+
+enum DatasetReportReason {
+  MISSING_FILES_OR_DATA @map("missing_files_or_data")
+  INACCURATE_METADATA   @map("inaccurate_metadata")
+  OTHER                 @map("other")
+
+  @@map("dataset_report_reason")
+}
+
+enum DatasetReportResolutionType {
+  IGNORED  @map("ignored")
+  RESOLVED @map("resolved")
+
+  @@map("dataset_report_resolution_type")
 }
 
 // ============================================================================

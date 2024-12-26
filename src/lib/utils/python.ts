@@ -18,5 +18,3 @@ print(${variableName}.metadata)
 # variable information 
 print(${variableName}.variables) `;
 }
-
-// FOR LATER: helper function to generate/retrieve demo Jupyter notebook

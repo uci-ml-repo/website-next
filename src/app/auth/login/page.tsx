@@ -10,7 +10,7 @@ import Main from "@/components/layout/Main";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HOME_PATH } from "@/lib/routes";
-import { getPath } from "@/lib/utils/url";
+import { getPath } from "@/lib/utils";
 
 export type Tab = "signin" | "register";
 

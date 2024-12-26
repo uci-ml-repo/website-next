@@ -18,24 +18,3 @@ export function abbreviateFileSize(bytes: number) {
 
   return `${formattedSize} ${sizes[i]}`;
 }
-
-export function formatEnum(enumString: string | string[]) {
-  const lowercaseWords = new Set(["THE", "AND", "OR"]);
-
-  function formatSingleEnum(str: string) {
-    return str
-      .split("_")
-      .map((word, index) =>
-        !(index === 0) && lowercaseWords.has(word)
-          ? word.toLowerCase()
-          : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-      )
-      .join(" ");
-  }
-
-  if (typeof enumString === "string") {
-    return formatSingleEnum(enumString);
-  }
-
-  return enumString.map(formatSingleEnum).join(", ");
-}

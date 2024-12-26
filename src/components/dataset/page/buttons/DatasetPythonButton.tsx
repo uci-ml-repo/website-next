@@ -18,8 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { DatasetResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { getPythonSnippet } from "@/lib/utils/python";
+import { cn, getPythonSnippet } from "@/lib/utils";
 
 interface DatasetPythonButtonProps {
   dataset: DatasetResponse;
@@ -50,12 +49,7 @@ export default function DatasetPythonButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          pill
-          variant={"secondary"}
-          className={"lift w-full"}
-          size={"lg"}
-        >
+        <Button variant={"secondary"} className={"lift w-full"} size={"lg"}>
           <PythonIcon />
           <div>Import</div>
         </Button>

@@ -1,7 +1,7 @@
-import { DownloadIcon, EllipsisVerticalIcon, EyeIcon } from "lucide-react";
+import { DownloadIcon, EyeIcon } from "lucide-react";
 
-import DatasetBookmarkButton from "@/components/dataset/page/buttons/DatasetBookmarkButton";
-import { Button } from "@/components/ui/button";
+import DatasetBookmarkButton from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkButton";
+import DatasetExtendedOptionsDropdown from "@/components/dataset/page/interactions/extended/DatasetExtendedOptionsDropdown";
 import {
   Tooltip,
   TooltipContent,
@@ -9,15 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { DatasetResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { abbreviateDecimal } from "@/lib/utils/format";
+import { abbreviateDecimal, cn } from "@/lib/utils";
 
 export interface DatasetActivityProps
   extends React.HTMLAttributes<HTMLDivElement> {
   dataset: DatasetResponse;
 }
 
-export default function DatasetActivity({
+export default function DatasetInteractions({
   dataset,
   className,
   ...props
@@ -55,12 +54,10 @@ export default function DatasetActivity({
             </Tooltip>
           </TooltipProvider>
         ))}
+
         <DatasetBookmarkButton dataset={dataset} />
       </div>
-
-      <Button pill variant={"ghost"} size={"icon"}>
-        <EllipsisVerticalIcon />
-      </Button>
+      <DatasetExtendedOptionsDropdown dataset={dataset} />
     </div>
   );
 }

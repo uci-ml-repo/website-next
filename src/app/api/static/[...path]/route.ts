@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 import path from "path";
 
 import { auth } from "@/auth";
-import { PRIVILEGED_ROLES } from "@/lib/utils/permissions";
-import { toStringArray } from "@/lib/utils/string";
+import { PRIVILEGED_ROLES } from "@/lib/permissions";
+import { toStringArray } from "@/lib/utils";
 
 export async function GET(
   req: NextRequest,

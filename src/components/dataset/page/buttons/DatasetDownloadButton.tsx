@@ -3,8 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetZip } from "@/lib/utils";
-import { abbreviateFileSize } from "@/lib/utils/format";
+import { abbreviateFileSize, datasetZip } from "@/lib/utils";
 
 interface DatasetDownloadButtonProps {
   dataset: DatasetResponse;
@@ -15,13 +14,7 @@ export default async function DatasetDownloadButton({
 }: DatasetDownloadButtonProps) {
   if (dataset.externalLink) {
     return (
-      <Button
-        pill
-        variant={"blue"}
-        className={"lift w-full"}
-        size={"lg"}
-        asChild
-      >
+      <Button variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
         <Link href={dataset.externalLink} target={"_blank"}>
           <ExternalLinkIcon />
           <div>View Dataset</div>
@@ -31,7 +24,7 @@ export default async function DatasetDownloadButton({
   }
 
   return (
-    <Button pill variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
+    <Button variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
       <a href={datasetZip(dataset)} download>
         <DownloadIcon />
         <div>

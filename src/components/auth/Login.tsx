@@ -80,7 +80,6 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
                   <FormControl>
                     <Input
                       {...field}
-                      pill
                       type={"email"}
                       autoComplete={"username"}
                     />
@@ -98,7 +97,6 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
                   <FormControl>
                     <PasswordInput
                       {...field}
-                      pill
                       autoComplete={"current-password"}
                     />
                   </FormControl>

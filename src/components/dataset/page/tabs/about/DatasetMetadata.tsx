@@ -70,7 +70,6 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
         </div>
         <Button
           variant={"ghost"}
-          pill
           onClick={() => {
             setOpenStates([...openStates].fill(!isAnyOpen));
           }}

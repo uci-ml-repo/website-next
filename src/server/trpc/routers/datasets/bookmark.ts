@@ -10,7 +10,7 @@ const datasetBookmarkRouter = router({
 
   addBookmark: protectedProcedure
     .input(z.number())
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       return service.datasets.bookmark.addBookmark({
         datasetId: input,
         userId: ctx.user.id,
@@ -19,7 +19,7 @@ const datasetBookmarkRouter = router({
 
   removeBookmark: protectedProcedure
     .input(z.number())
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       return service.datasets.bookmark.removeBookmark({
         datasetId: input,
         userId: ctx.user.id,

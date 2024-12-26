@@ -35,9 +35,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       className,
       variantSize,
-      pill,
       icon: Icon,
       iconPosition = "left",
+      pill = true,
       onIconClick,
       ...props
     },

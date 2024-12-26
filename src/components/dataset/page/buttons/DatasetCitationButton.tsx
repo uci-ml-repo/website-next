@@ -49,12 +49,7 @@ export default function DatasetCitationButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          pill
-          variant={"secondary"}
-          className={"lift w-full"}
-          size={"lg"}
-        >
+        <Button variant={"secondary"} className={"lift w-full"} size={"lg"}>
           <BookMarkedIcon />
           <div>Cite</div>
         </Button>
@@ -74,11 +69,11 @@ export default function DatasetCitationButton({
             <div className={"flex items-center space-x-2"}>
               <div>Style:</div>
               <Select value={citationOption} onValueChange={setCitationOption}>
-                <SelectTrigger className="w-[140px]" pill>
+                <SelectTrigger className="w-[140px]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent pill>
-                  <SelectGroup pill>
+                <SelectContent>
+                  <SelectGroup>
                     <SelectItem value="apa">APA</SelectItem>
                     <SelectItem value="mla">MLA</SelectItem>
                     <SelectItem value="chicago">Chicago</SelectItem>

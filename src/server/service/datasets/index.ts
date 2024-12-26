@@ -4,6 +4,7 @@ import DatasetsBookmarkService from "@/server/service/datasets/bookmark";
 import DatasetsCiteService from "@/server/service/datasets/cite";
 import DatasetsCountService from "@/server/service/datasets/count";
 import DatasetsFindService from "@/server/service/datasets/find";
+import DatasetsReportService from "@/server/service/datasets/report";
 
 export default class DatasetsService {
   constructor(
@@ -12,5 +13,6 @@ export default class DatasetsService {
     readonly cite = new DatasetsCiteService(prisma),
     readonly count = new DatasetsCountService(prisma),
     readonly bookmark = new DatasetsBookmarkService(prisma),
+    readonly report = new DatasetsReportService(prisma),
   ) {}
 }

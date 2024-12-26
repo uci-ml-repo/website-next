@@ -12,12 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn, datasetPage, datasetThumbnail } from "@/lib/utils";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
+  cn,
+  datasetPage,
+  datasetThumbnail,
   formatEnum,
-} from "@/lib/utils/format";
+} from "@/lib/utils";
 
 interface DatasetCardProps {
   dataset: Dataset;

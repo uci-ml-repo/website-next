@@ -1,7 +1,5 @@
-import { URL_ORIGIN } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetPage, datasetPythonData } from "@/lib/utils";
-import { paperUrl } from "@/lib/utils/paper";
+import { datasetPage, datasetPythonData, paperUrl } from "@/lib/utils";
 
 export type IntroPaperMetadata = {
   title: string;
@@ -54,8 +52,8 @@ export function datasetToPythonMetadata(
   return {
     uci_id: dataset.id,
     name: dataset.title,
-    repository_url: URL_ORIGIN + datasetPage(dataset),
-    data_url: URL_ORIGIN + datasetPythonData(dataset),
+    repository_url: process.env.BASE_URL + datasetPage(dataset),
+    data_url: process.env.BASE_URL + datasetPythonData(dataset),
     abstract: dataset.description,
     area: dataset.subjectArea,
     tasks: dataset.tasks,

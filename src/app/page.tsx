@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
-import DatasetGroup from "@/components/dataset/DatasetGroup";
+import DatasetGroup from "@/components/dataset/summarized/DatasetGroup";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
@@ -59,7 +59,6 @@ export default async function Page() {
           placeholder={"Search for a dataset"}
           variantSize={"xl"}
           icon={SearchIcon}
-          pill
         />
       </div>
 
@@ -83,7 +82,7 @@ export default async function Page() {
             <p className={"text-pretty text-center text-xl font-bold"}>
               Didn't find what you were looking for?
             </p>
-            <Button asChild pill className={"lift"} size={"lg"}>
+            <Button asChild className={"lift"} size={"lg"}>
               <div>
                 <SearchIcon />
                 <Link href={DATASETS_PATH}>Explore All Datasets</Link>
@@ -113,7 +112,6 @@ function NavButton({
       size={"lg"}
       className={"lift w-full sm:w-fit"}
       asChild
-      pill
     >
       <Link href={href}>
         {icon}

@@ -107,7 +107,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} pill type={"email"} />
+                        <Input {...field} type={"email"} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -120,7 +120,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input {...field} pill />
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -133,7 +133,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <PasswordInput {...field} pill />
+                        <PasswordInput {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -146,7 +146,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <PasswordInput {...field} pill />
+                        <PasswordInput {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

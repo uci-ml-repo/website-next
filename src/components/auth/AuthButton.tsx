@@ -21,7 +21,6 @@ export default function AuthButton({
       variant="outline"
       size="lg"
       className="text-md w-full space-x-1"
-      pill
       {...props}
     >
       {isPending ? <Loader2 className="animate-spin" /> : icon}

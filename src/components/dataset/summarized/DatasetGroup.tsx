@@ -4,8 +4,8 @@ import type { Dataset } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 
-import DatasetCard from "@/components/dataset/DatasetCard";
-import DatasetCardSkeleton from "@/components/dataset/DatasetCardSkeleton";
+import DatasetCard from "@/components/dataset/summarized/DatasetCard";
+import DatasetCardSkeleton from "@/components/dataset/summarized/DatasetCardSkeleton";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -57,7 +57,7 @@ export default function DatasetGroup({
             {seeAllHref && (
               <CarouselItem className={cardBreakpoints}>
                 <DatasetCardSkeleton className={"bg-muted"}>
-                  <Button asChild pill className={"lift"}>
+                  <Button asChild className={"lift"}>
                     <Link href={seeAllHref}>
                       <SearchIcon />
                       <div>See All</div>

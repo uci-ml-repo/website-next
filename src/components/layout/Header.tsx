@@ -51,10 +51,7 @@ export default async function Header() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className={"w-48 *:cursor-pointer"}
-              align={"end"}
-            >
+            <DropdownMenuContent className={"w-40"} align={"end"}>
               <DropdownMenuItem asChild>
                 <Link href={PROFILE_PATH}>
                   <UserIcon />
