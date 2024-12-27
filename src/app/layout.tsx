@@ -22,6 +22,17 @@ export const metadata: Metadata = {
     default: "UCI Machine Learning Repository",
   },
   description: "UCI Repository for Machine Learning Datasets",
+  metadataBase: new URL(process.env.BASE_URL!),
+  openGraph: {
+    images: [
+      {
+        url: "/open-graph.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {

@@ -41,6 +41,7 @@ export default function Copy({ text }: CopyProps) {
             size={"icon"}
             className={"absolute right-1.5 top-1.5 text-primary"}
             onClick={copy}
+            pill={false}
           >
             {copied ? <CheckIcon className={"text-positive"} /> : <CopyIcon />}
           </Button>
