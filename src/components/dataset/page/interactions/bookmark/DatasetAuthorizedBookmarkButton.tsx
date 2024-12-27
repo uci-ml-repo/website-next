@@ -7,7 +7,7 @@ import Spinner from "@/components/ui/spinner";
 import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { trpc } from "@/server/trpc/client";
+import { trpc } from "@/server/trpc/query/client";
 
 export default function DatasetAuthorizedBookmarkButton({
   dataset,

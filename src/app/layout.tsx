@@ -12,7 +12,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
-import { TRPCProvider } from "@/server/trpc/client";
+import { TRPCProvider } from "@/server/trpc/query/client";
 
 const inter = Inter({ subsets: ["latin"], fallback: ["sans-serif"] });
 

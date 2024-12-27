@@ -75,4 +75,12 @@ export default class DatasetsFindService {
 
     return this.byId(dataset.id);
   }
+
+  async byUserId(userId: string) {
+    return this.prisma.dataset.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }

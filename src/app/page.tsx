@@ -15,7 +15,7 @@ import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
-import { caller } from "@/server/trpc/server";
+import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
   const datasrtCount = await caller.dataset.count.approved();

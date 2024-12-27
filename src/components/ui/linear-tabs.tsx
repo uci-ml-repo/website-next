@@ -1,9 +1,12 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import { type VariantProps } from "class-variance-authority";
 import { motion } from "motion/react";
 import * as React from "react";
 
+import type { badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const TabsValueContext = React.createContext<string | undefined>(undefined);
@@ -21,11 +24,7 @@ interface LinearTabsRootProps
   defaultValue: string;
 }
 
-function LinearTabsRoot({
-  defaultValue,
-  children,
-  ...props
-}: LinearTabsRootProps) {
+function LinearTabs({ defaultValue, children, ...props }: LinearTabsRootProps) {
   const [currentValue, setCurrentValue] = React.useState(defaultValue);
 
   return (
@@ -110,6 +109,10 @@ const LinearTabsList = React.forwardRef<
 });
 LinearTabsList.displayName = "LinearTabsList";
 
+export function TabsListBorder() {
+  return <hr className="-mt-[2px] mb-6 border-[1px]" />;
+}
+
 type TriggerElement = React.ReactElement<{
   "data-value": string;
   value: string;
@@ -117,19 +120,44 @@ type TriggerElement = React.ReactElement<{
 
 const LinearTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
-      "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      "data-[state=active]:text-foreground",
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
+    badge?: boolean;
+    badgeVariant?: VariantProps<typeof badgeVariants>["variant"];
+    badgeValue?: number | string;
+  }
+>(
+  (
+    {
       className,
-    )}
-    {...props}
-  />
-));
+      children,
+      badge,
+      badgeVariant = "secondary",
+      badgeValue,
+      ...props
+    },
+    ref,
+  ) => (
+    <TabsPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
+        "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "data-[state=active]:text-foreground",
+        className,
+      )}
+      {...props}
+    >
+      {badge ? (
+        <div className={"flex items-center space-x-2"}>
+          <span>{children}</span>
+          <Badge variant={badgeVariant}>{badgeValue}</Badge>
+        </div>
+      ) : (
+        children
+      )}
+    </TabsPrimitive.Trigger>
+  ),
+);
 LinearTabsTrigger.displayName = "LinearTabsTrigger";
 
 const LinearTabsContent = React.forwardRef<
@@ -147,4 +175,4 @@ const LinearTabsContent = React.forwardRef<
 ));
 LinearTabsContent.displayName = "LinearTabsContent";
 
-export { LinearTabsContent, LinearTabsList, LinearTabsRoot, LinearTabsTrigger };
+export { LinearTabs, LinearTabsContent, LinearTabsList, LinearTabsTrigger };

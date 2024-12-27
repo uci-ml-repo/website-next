@@ -1,0 +1,72 @@
+import { TRPCError } from "@trpc/server";
+
+import service from "@/server/service";
+
+export namespace AssertOwner {
+  export const dataset = async ({
+    datasetId,
+    userId,
+  }: {
+    datasetId: number | undefined;
+    userId: string;
+  }) => {
+    if (!datasetId) {
+      throw new TRPCError({ code: "BAD_REQUEST" });
+    }
+
+    const dataset = await service.datasets.find.byId(datasetId);
+
+    if (!dataset) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (dataset.userId !== userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+  };
+
+  export const draftDataset = async ({
+    draftDatasetId,
+    userId,
+  }: {
+    draftDatasetId: string | undefined;
+    userId: string;
+  }) => {
+    if (!draftDatasetId) {
+      throw new TRPCError({ code: "BAD_REQUEST" });
+    }
+
+    const draftDataset = await service.draftDatasets.find.byId(draftDatasetId);
+
+    if (!draftDataset) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (draftDataset.userId !== userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+  };
+
+  export const discussionPost = async ({
+    discussionPostId,
+    userId,
+  }: {
+    discussionPostId: string | undefined;
+    userId: string;
+  }) => {
+    if (!discussionPostId) {
+      throw new TRPCError({ code: "BAD_REQUEST" });
+    }
+
+    const discussionPost =
+      await service.discussions.find.byId(discussionPostId);
+
+    if (!discussionPost) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (discussionPost.userId !== userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+  };
+}

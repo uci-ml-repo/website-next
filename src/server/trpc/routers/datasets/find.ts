@@ -16,6 +16,10 @@ const datasetFindRouter = router({
   byTitle: procedure.input(z.string()).query(async ({ input }) => {
     return service.datasets.find.byTitle(input);
   }),
+
+  byUserId: procedure.input(z.string()).query(async ({ input }) => {
+    return service.datasets.find.byUserId(input);
+  }),
 });
 
 export default datasetFindRouter;

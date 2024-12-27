@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 import service from "@/server/service";
-import { protectedProcedure, router } from "@/server/trpc";
+import { procedure, protectedProcedure, router } from "@/server/trpc";
 
 const datasetBookmarkRouter = router({
-  bookmarks: protectedProcedure.query(async ({ ctx }) => {
-    return service.datasets.bookmark.bookmarks(ctx.user.id);
+  byUserId: procedure.input(z.string()).query(async ({ input }) => {
+    return service.datasets.bookmark.byUserId(input);
   }),
 
   addBookmark: protectedProcedure

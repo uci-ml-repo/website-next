@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { DatasetResponse } from "@/lib/types";
-import { trpc } from "@/server/trpc/client";
+import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetCitationButtonProps {
   dataset: DatasetResponse;

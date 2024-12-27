@@ -1,12 +1,17 @@
-import type { UserRole } from "@prisma/client";
-import { CircleUserRoundIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
 import Main from "@/components/layout/Main";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import {
+  LinearTabs,
+  LinearTabsContent,
+  LinearTabsList,
+  LinearTabsTrigger,
+  TabsListBorder,
+} from "@/components/ui/linear-tabs";
 import { PROFILE_PATH } from "@/lib/routes";
+import { caller } from "@/server/trpc/query/server";
 
 export const metadata: Metadata = { title: "Profile" };
 
@@ -17,39 +22,35 @@ export default async function Page() {
     return signIn(undefined, { redirectTo: PROFILE_PATH });
   }
 
+  const bookmarks = await caller.dataset.bookmarks.byUserId(session.user.id);
+  const datasets = await caller.dataset.find.byUserId(session.user.id);
+
   return (
-    <Main>
-      <div className={"flex items-center justify-between"}>
-        <div className={"flex items-center space-x-4"}>
-          <Avatar className={"size-20"}>
-            {session.user.image && <AvatarImage src={session.user.image} />}
-            <AvatarFallback>
-              <CircleUserRoundIcon
-                className={"size-4/5 text-muted-foreground"}
-              />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div className={"text-3xl font-semibold"}>{session.user.name}</div>
-            <div className={"text-xl text-muted-foreground"}>
-              {session.user.email}
-            </div>
-          </div>
-        </div>
-        <RoleBadge role={session.user.role} />
-      </div>
+    <Main className={"space-y-8"}>
+      <ProfileHeader session={session} />
+
+      <LinearTabs defaultValue={"bookmarks"}>
+        <LinearTabsList className="space-x-10 overflow-x-auto">
+          <LinearTabsTrigger
+            value="bookmarks"
+            badge
+            badgeValue={bookmarks.length}
+          >
+            Bookmarks
+          </LinearTabsTrigger>
+          <LinearTabsTrigger
+            value="datasets"
+            badge
+            badgeValue={datasets.length}
+          >
+            Datasets
+          </LinearTabsTrigger>
+        </LinearTabsList>
+        <TabsListBorder />
+
+        <LinearTabsContent value="bookmarks">BOOKMARKS</LinearTabsContent>
+        <LinearTabsContent value="datasets">DATASETS</LinearTabsContent>
+      </LinearTabs>
     </Main>
-  );
-}
-
-function RoleBadge({ role }: { role: UserRole }) {
-  if (role === "BASIC") {
-    return <div></div>;
-  }
-
-  return (
-    <Badge variant={role === "ADMIN" ? "destructive" : "blue"} size={"lg"}>
-      {role}
-    </Badge>
   );
 }

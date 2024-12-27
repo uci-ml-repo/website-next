@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
 import { DATASETS_PATH } from "@/lib/routes";
-import { caller } from "@/server/trpc/server";
+import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
   params,

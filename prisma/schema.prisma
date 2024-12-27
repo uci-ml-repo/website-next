@@ -18,11 +18,14 @@ model User {
 
   role UserRole @default(BASIC)
 
-  accounts Account[]
-  sessions Session[]
-  datasets Dataset[]
+  accounts      Account[]
+  sessions      Session[]
+  datasets      Dataset[]
+  draftDatasets DraftDataset[]
 
-  bookmarks DatasetBookmark[]
+  bookmarks               DatasetBookmark[]
+  discussionPosts         DatasetDiscussion[] @relation("DiscussionPost")
+  discussionPostDeletions DatasetDiscussion[] @relation("DiscussionPostDeletion")
 
   datasetReports           DatasetReport[]
   datasetReportResolutions DatasetReportResolution[]
@@ -84,8 +87,9 @@ model Dataset {
   fileCount Int? @map("file_count")
   zipSize   Int? @map("zip_size")
 
-  bookmarks DatasetBookmark[]
-  reports   DatasetReport[]
+  bookmarks       DatasetBookmark[]
+  discussionPosts DatasetDiscussion[]
+  reports         DatasetReport[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -94,9 +98,39 @@ model Dataset {
 }
 
 model DraftDataset {
-  id String @id @default(cuid())
+  id    String @id @default(cuid())
+  title String @db.VarChar(255)
 
-  // TODO add fields
+  yearCreated   Int?                @map("year_created")
+  description   String?             @db.Text
+  subjectArea   DatasetSubjectArea? @map("subject_area")
+  instanceCount Int?                @map("instance_count")
+  hasGraphics   Boolean?            @default(false) @map("has_graphics")
+  featureCount  Int?                @map("feature_count")
+  subtitle      String?             @db.VarChar(255)
+  doi           String?             @db.VarChar(255)
+  externalLink  String?             @map("external_link") @db.VarChar(255)
+
+  variablesDescription String?            @map("variables_description") @db.Text
+  variables            DatasetVariables[]
+
+  characteristics DatasetCharacteristic[]
+  tasks           DatasetTask[]
+  featureTypes    DatasetFeatureType[]    @map("feature_types")
+  authors         DatasetAuthor[]
+  keywords        DatasetKeyword[]
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  introductoryPaper DatasetPaper?
+
+  fileCount Int? @map("file_count")
+  zipSize   Int? @map("zip_size")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("draft_datasets")
 }
 
@@ -109,8 +143,11 @@ model DatasetVariables {
   units         String?            @db.VarChar(255)
   missingValues Boolean
 
-  datasetId Int     @map("dataset_id")
-  dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  datasetId Int?     @map("dataset_id")
+  dataset   Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  draftDatasetId String?       @map("draft_dataset_id")
+  draftDataset   DraftDataset? @relation(fields: [draftDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("dataset_variables")
 }
@@ -124,6 +161,9 @@ model DatasetAuthor {
 
   datasetId Int     @map("dataset_id")
   dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  draftDatasetId String?       @map("draft_dataset_id")
+  draftDataset   DraftDataset? @relation(fields: [draftDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("dataset_authors")
 }
@@ -141,7 +181,10 @@ model DatasetPaper {
   datasetId                Int?     @map("dataset_id")
   dataset                  Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   introductoryForDatasetId Int?     @unique @map("introductory_for_dataset_id")
-  introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  introductoryForDataset   Dataset? @relation("IntroductoryPaper", fields: [introductoryForDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  draftDatasetId String?       @unique @map("draft_dataset_id")
+  draftDataset   DraftDataset? @relation(fields: [draftDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("dataset_papers")
 }
@@ -157,14 +200,43 @@ model Keyword {
 }
 
 model DatasetKeyword {
-  datasetId Int    @map("dataset_id")
-  keywordId String @map("keyword_id")
+  id String @id @default(cuid())
 
-  dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  keyword Keyword @relation(fields: [keywordId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  keywordId String  @map("keyword_id")
+  keyword   Keyword @relation(fields: [keywordId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  @@id([datasetId, keywordId])
+  datasetId Int?     @map("dataset_id")
+  dataset   Dataset? @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  draftDatasetId String?       @map("draft_dataset_id")
+  draftDataset   DraftDataset? @relation(fields: [draftDatasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
   @@map("dataset_keywords")
+}
+
+model DatasetDiscussion {
+  id String @id @default(cuid())
+
+  content String @db.Text
+
+  replyToId String?             @map("reply_to_id")
+  replyTo   DatasetDiscussion?  @relation("Replies", fields: [replyToId], references: [id], onDelete: Cascade)
+  replies   DatasetDiscussion[] @relation("Replies")
+
+  userId String @map("user_id")
+  user   User   @relation("DiscussionPost", fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  datasetId Int     @map("dataset_id")
+  dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  editedAt  DateTime? @map("edited_at")
+
+  deletedByUserId String?   @map("deleted_by_user_id")
+  deletedBy       User?     @relation("DiscussionPostDeletion", fields: [deletedByUserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  deletedAt       DateTime? @map("deleted_at")
+
+  @@map("dataset_discussion")
 }
 
 model DatasetReport {
@@ -175,8 +247,8 @@ model DatasetReport {
 
   reportedAt DateTime @default(now()) @map("reported_at")
 
-  reportedByUserId String? @map("reported_by_user_id")
-  reportedBy       User?   @relation(fields: [reportedByUserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
 
   resolution DatasetReportResolution?
 
@@ -194,8 +266,8 @@ model DatasetReportResolution {
 
   resolvedAt DateTime @default(now()) @map("resolved_at")
 
-  resolvedByUserId String @map("resolved_by_user_id")
-  resolvedBy       User   @relation(fields: [resolvedByUserId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
 
   reportId String        @unique @map("report_id")
   report   DatasetReport @relation(fields: [reportId], references: [id], onUpdate: Cascade, onDelete: Cascade)

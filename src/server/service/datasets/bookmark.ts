@@ -1,9 +1,9 @@
 import { type PrismaClient } from "@prisma/client";
 
-export default class DatasetsBookmarkService {
+export default class BookmarksService {
   constructor(readonly prisma: PrismaClient) {}
 
-  async bookmarks(userId: string) {
+  async byUserId(userId: string) {
     const bookmarks = await this.prisma.datasetBookmark.findMany({
       where: {
         userId,

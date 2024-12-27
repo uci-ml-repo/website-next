@@ -5,7 +5,7 @@ import { cache } from "react";
 import DatasetTitleGroup from "@/components/dataset/page/DatasetTitleGroup";
 import DatasetTabs from "@/components/dataset/page/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
-import { caller } from "@/server/trpc/server";
+import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
   return caller.dataset.find.byId(id);

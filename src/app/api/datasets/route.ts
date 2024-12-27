@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { datasetToPythonMetadata } from "@/app/api/datasets/schema";
 import type { DatasetResponse } from "@/lib/types";
-import { caller } from "@/server/trpc/server";
+import { caller } from "@/server/trpc/query/server";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");

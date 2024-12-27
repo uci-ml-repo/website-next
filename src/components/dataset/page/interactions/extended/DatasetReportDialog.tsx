@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
-import { trpc } from "@/server/trpc/client";
+import { trpc } from "@/server/trpc/query/client";
 
 const datasetReportReasons = enumToArray(DatasetReportReason);
 
