@@ -18,9 +18,9 @@ export default function SignInButton(props: SignInButtonProps) {
   }
 
   return (
-    <Button variant={"outline"} asChild {...props}>
+    <Button variant="outline" asChild {...props}>
       <Link href={SIGN_IN_PATH + `?callbackUrl=${pathname}`}>
-        <LogInIcon className={"size-6"} />
+        <LogInIcon className="size-6" />
         <p>Sign In</p>
       </Link>
     </Button>

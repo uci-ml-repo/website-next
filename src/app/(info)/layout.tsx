@@ -14,14 +14,14 @@ export default function MdxLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Main className={"space-y-12"}>
+    <Main className="space-y-12">
       <div>{children}</div>
-      <div className={"space-y-8"}>
+      <div className="space-y-8">
         <hr />
         <Button
-          variant={"blue"}
-          size={"lg"}
-          className={"lift w-full sm:w-fit"}
+          variant="blue"
+          size="lg"
+          className="lift w-full sm:w-fit"
           asChild
         >
           <Link href={HOME_PATH}>

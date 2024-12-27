@@ -30,7 +30,7 @@ const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
   }, []);
 
   return (
-    <div className={"dark relative overflow-hidden rounded-lg"}>
+    <div className="dark relative overflow-hidden rounded-lg">
       <pre>
         <code className={cn("pr-12 text-sm", language)}>{code}</code>
       </pre>
@@ -49,7 +49,7 @@ export default function DatasetPythonButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"secondary"} className={"lift w-full"} size={"lg"}>
+        <Button variant="secondary" className="lift w-full" size="lg">
           <PythonIcon />
           <div>Import</div>
         </Button>
@@ -58,20 +58,20 @@ export default function DatasetPythonButton({
         <DialogHeader>
           <DialogTitle>Import Python</DialogTitle>
         </DialogHeader>
-        <div className={"space-y-4 overflow-x-auto text-left"}>
-          <div className={"space-y-2"}>
+        <div className="space-y-4 overflow-x-auto text-left">
+          <div className="space-y-2">
             <div>Install the ucimlrepo package</div>
-            <CodeBlock code={pipInstallCommand} language={"language-bash"} />
+            <CodeBlock code={pipInstallCommand} language="language-bash" />
           </div>
-          <div className={"space-y-2"}>
+          <div className="space-y-2">
             <div>Import the dataset into your code</div>
-            <CodeBlock code={pythonCode} language={"language-python"} />
+            <CodeBlock code={pythonCode} language="language-python" />
           </div>
-          <Button variant={"secondary"} size={"sm"} asChild>
+          <Button variant="secondary" size="sm" asChild>
             <Link
-              href={"https://github.com/uci-ml-repo/ucimlrepo"}
-              target={"_blank"}
-              className={"underline-offset-1 hover:underline"}
+              href="https://github.com/uci-ml-repo/ucimlrepo"
+              target="_blank"
+              className="underline-offset-1 hover:underline"
             >
               <div>View Docs</div>
               <ExternalLinkIcon />

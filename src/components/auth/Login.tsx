@@ -59,18 +59,18 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
   }
 
   return (
-    <div className={"space-y-4"}>
+    <div className="space-y-4">
       <Form {...form}>
         {error && (
           <Alert variant="destructive">
-            <div className={"flex items-center space-x-2"}>
+            <div className="flex items-center space-x-2">
               <AlertCircleIcon className="h-4 w-4" />
               <AlertDescription>{error}</AlertDescription>
             </div>
           </Alert>
         )}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className={"space-y-2"}>
+          <div className="space-y-2">
             <FormField
               control={form.control}
               name="email"
@@ -78,11 +78,7 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type={"email"}
-                      autoComplete={"username"}
-                    />
+                    <Input {...field} type="email" autoComplete="username" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,10 +91,7 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      {...field}
-                      autoComplete={"current-password"}
-                    />
+                    <PasswordInput {...field} autoComplete="current-password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,34 +100,32 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
           </div>
           <AuthButton
             icon={<MailIcon />}
-            label={`Sign in with Email`}
-            type={"submit"}
+            label="Sign in with Email"
+            type="submit"
             isPending={isPending}
           />
         </form>
       </Form>
 
-      <TextDivider text={"OR"} />
+      <TextDivider text="OR" />
       <AuthButton
         icon={<GoogleIcon />}
-        label={`Sign in with Google`}
+        label="Sign in with Google"
         onClick={async () => {
           await providerLogin({ provider: "google", redirectTo });
         }}
       />
       <AuthButton
         icon={<GithubIcon />}
-        label={`Sign in with Github`}
+        label="Sign in with Github"
         onClick={async () => {
           await providerLogin({ provider: "github", redirectTo });
         }}
       />
-      <p
-        className={"w-full space-x-1 text-center text-sm text-muted-foreground"}
-      >
+      <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Don't have an account?</span>
         <span
-          className={"cursor-pointer text-foreground underline"}
+          className="cursor-pointer text-foreground underline"
           onClick={() => setTab("register")}
         >
           Register

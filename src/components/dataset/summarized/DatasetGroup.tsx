@@ -34,19 +34,19 @@ export default function DatasetGroup({
   );
 
   return (
-    <div className={"space-y-4"}>
-      <div className={"flex items-center justify-between"}>
-        <div className={"flex items-center space-x-4"}>
-          {icon && <div className={"[&_svg]:size-8"}>{icon}</div>}
-          <h2 className={"text-2xl font-bold"}>{heading}</h2>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {icon && <div className="[&_svg]:size-8">{icon}</div>}
+          <h2 className="text-2xl font-bold">{heading}</h2>
         </div>
         {seeAllHref && (
-          <Button variant={"link"} asChild>
+          <Button variant="link" asChild>
             <Link href={seeAllHref}>See All</Link>
           </Button>
         )}
       </div>
-      <div className={"max-[1600px]:mx-10"}>
+      <div className="max-[1600px]:mx-10">
         <Carousel opts={{ align: "start", skipSnaps: true, duration: 20 }}>
           <CarouselContent allowPadding>
             {datasets.map((dataset, index) => (
@@ -56,8 +56,8 @@ export default function DatasetGroup({
             ))}
             {seeAllHref && (
               <CarouselItem className={cardBreakpoints}>
-                <DatasetCardSkeleton className={"bg-muted"}>
-                  <Button asChild className={"lift"}>
+                <DatasetCardSkeleton className="bg-muted">
+                  <Button asChild className="lift">
                     <Link href={seeAllHref}>
                       <SearchIcon />
                       <div>See All</div>

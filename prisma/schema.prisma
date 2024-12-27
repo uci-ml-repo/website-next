@@ -23,9 +23,10 @@ model User {
   datasets      Dataset[]
   draftDatasets DraftDataset[]
 
-  bookmarks               DatasetBookmark[]
-  discussionPosts         DatasetDiscussion[] @relation("DiscussionPost")
-  discussionPostDeletions DatasetDiscussion[] @relation("DiscussionPostDeletion")
+  bookmarks           DatasetBookmark[]
+  discussionPosts     DatasetDiscussion[]       @relation("DiscussionPost")
+  discussionDeletions DatasetDiscussion[]       @relation("DiscussionDeletion")
+  discussionUpvotes   DatasetDiscussionUpvote[]
 
   datasetReports           DatasetReport[]
   datasetReportResolutions DatasetReportResolution[]
@@ -87,9 +88,9 @@ model Dataset {
   fileCount Int? @map("file_count")
   zipSize   Int? @map("zip_size")
 
-  bookmarks       DatasetBookmark[]
-  discussionPosts DatasetDiscussion[]
-  reports         DatasetReport[]
+  bookmarks   DatasetBookmark[]
+  discussions DatasetDiscussion[]
+  reports     DatasetReport[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -217,7 +218,7 @@ model DatasetKeyword {
 model DatasetDiscussion {
   id String @id @default(cuid())
 
-  content String @db.Text
+  text String @db.Text
 
   replyToId String?             @map("reply_to_id")
   replyTo   DatasetDiscussion?  @relation("Replies", fields: [replyToId], references: [id], onDelete: Cascade)
@@ -229,14 +230,30 @@ model DatasetDiscussion {
   datasetId Int     @map("dataset_id")
   dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
+  upvote_count Int                       @default(0) @map("upvote_count")
+  upvotes      DatasetDiscussionUpvote[]
+
   createdAt DateTime  @default(now()) @map("created_at")
   editedAt  DateTime? @map("edited_at")
 
-  deletedByUserId String?   @map("deleted_by_user_id")
-  deletedBy       User?     @relation("DiscussionPostDeletion", fields: [deletedByUserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-  deletedAt       DateTime? @map("deleted_at")
+  deletedByUserId String?                 @map("deleted_by_user_id")
+  deletedBy       User?                   @relation("DiscussionDeletion", fields: [deletedByUserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  deletedAt       DateTime?               @map("deleted_at")
+  deletionReason  DiscussionReportReason? @map("deletion_reason")
 
   @@map("dataset_discussion")
+}
+
+model DatasetDiscussionUpvote {
+  userId       String   @map("user_id")
+  discussionId String   @map("discussion_id")
+  upvotedAt    DateTime @default(now()) @map("upvoted_at")
+
+  user       User              @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  discussion DatasetDiscussion @relation(fields: [discussionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@id([userId, discussionId])
+  @@map("dataset_discussion_upvotes")
 }
 
 model DatasetReport {
@@ -356,6 +373,15 @@ enum DatasetReportReason {
   OTHER                 @map("other")
 
   @@map("dataset_report_reason")
+}
+
+enum DiscussionReportReason {
+  SPAM           @map("spam")
+  UNPROFESSIONAL @map("unprofessional")
+  INAPPROPRIATE  @map("inappropriate")
+  OTHER          @map("other")
+
+  @@map("discussion_report_reason")
 }
 
 enum DatasetReportResolutionType {

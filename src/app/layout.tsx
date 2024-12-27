@@ -57,6 +57,8 @@ export default function Layout({
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
+              themes={["light", "dark"]}
+              storageKey="theme"
               enableSystem
               disableTransitionOnChange
             >
@@ -64,7 +66,7 @@ export default function Layout({
 
               <SidebarProvider defaultOpen={false}>
                 <AppSidebar />
-                <div className={"w-full"}>
+                <div className="w-full">
                   <Header />
 
                   {children}

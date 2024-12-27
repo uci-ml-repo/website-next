@@ -33,27 +33,25 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   return (
     <Card className="lift-lg group" ref={ref}>
       <Link href={href}>
-        <CardHeader className={"p-0"}>
+        <CardHeader className="p-0">
           <Image
             src={thumbnail}
-            alt={"thumbnail"}
+            alt="thumbnail"
             width={350}
             height={100}
             priority
-            className={
-              "h-[100px] w-auto rounded-t-2xl object-cover object-center"
-            }
+            className="h-[100px] w-auto rounded-t-2xl object-cover object-center"
           />
         </CardHeader>
-        <CardContent className={"space-y-4"}>
-          <div className={"h-26 space-y-2"}>
+        <CardContent className="space-y-4">
+          <div className="h-26 space-y-2">
             <CardTitle>
-              <h3 className={"line-clamp-2 group-hover:underline"}>
+              <h3 className="line-clamp-2 group-hover:underline">
                 {dataset.title}
               </h3>
             </CardTitle>
             <CardDescription>
-              <p className={"line-clamp-3"}>
+              <p className="line-clamp-3">
                 {dataset.subtitle ?? dataset.description}
               </p>
             </CardDescription>
@@ -67,7 +65,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             >
               <div>
                 <MicroscopeIcon />
-                <span className={"truncate"}>{formatEnum(dataset.tasks)}</span>
+                <span className="truncate">{formatEnum(dataset.tasks)}</span>
               </div>
               {dataset.featureCount && (
                 <div>
@@ -87,12 +85,12 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
           </CardDescription>
         </CardContent>
         <CardFooter className="h-10 justify-between border-t py-2.5">
-          <div className={"flex items-center space-x-1"}>
+          <div className="flex items-center space-x-1">
             <EyeIcon />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
           {dataset.externalLink ? (
-            <Badge variant={"secondary"}>External</Badge>
+            <Badge variant="secondary">External</Badge>
           ) : (
             <>
               {dataset.fileCount && dataset.zipSize && (

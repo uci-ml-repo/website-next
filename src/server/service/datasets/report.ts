@@ -22,8 +22,8 @@ export default class DatasetsReportService {
       data: {
         datasetId,
         reason,
-        details: details,
-        reportedByUserId: userId,
+        details,
+        userId,
       },
     });
   }
@@ -42,7 +42,7 @@ export default class DatasetsReportService {
     return this.prisma.datasetReportResolution.create({
       data: {
         reportId,
-        resolvedByUserId: userId,
+        userId,
         type,
         comment,
       },

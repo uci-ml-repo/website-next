@@ -37,7 +37,7 @@ export function Banner({ variant, textColor, className, link }: LogoProps) {
   const content = (
     <div className={cn(logoVariants({ variant, textColor }), className)}>
       <UCIrvine />
-      <div className={"font-semibold leading-none text-uci-blue"}>
+      <div className="font-semibold leading-none text-uci-blue">
         Machine Learning Repository
       </div>
     </div>

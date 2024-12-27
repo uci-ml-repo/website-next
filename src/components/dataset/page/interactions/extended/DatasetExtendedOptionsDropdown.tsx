@@ -30,11 +30,11 @@ export default function DatasetExtendedOptionsDropdown({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} size={"icon"}>
-            <EllipsisVerticalIcon className={"!size-5"} />
+          <Button variant="ghost" size="icon">
+            <EllipsisVerticalIcon className="!size-5" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align={"end"} className={"w-48"}>
+        <DropdownMenuContent align="end" className="w-48">
           {navigator.clipboard && (
             <DropdownMenuItem onClick={copyLink}>
               <Link2Icon />

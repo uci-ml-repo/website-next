@@ -8,16 +8,16 @@ export default function DatasetSideData({
 }: {
   dataset: DatasetResponse;
 }) {
-  const blank = <div className={"text-muted-foreground"}>&ndash;</div>;
+  const blank = <div className="text-muted-foreground">&ndash;</div>;
 
   return (
-    <div className={"min-w-[275px] space-y-4"}>
+    <div className="min-w-[275px] space-y-4">
       {/* Keywords */}
-      <div className={"space-y-2"}>
-        <div className={"text-lg font-bold"}>Keywords</div>
+      <div className="space-y-2">
+        <div className="text-lg font-bold">Keywords</div>
         {dataset.keywords.length > 0
           ? dataset.keywords.map((datasetKeyword, index) => (
-              <Badge variant={"outline"} key={index}>
+              <Badge variant="outline" key={index}>
                 {datasetKeyword.keyword.name}
               </Badge>
             ))
@@ -25,8 +25,8 @@ export default function DatasetSideData({
       </div>
 
       {/* Authors */}
-      <div className={"space-y-2"}>
-        <div className={"text-lg font-bold"}>Authors</div>
+      <div className="space-y-2">
+        <div className="text-lg font-bold">Authors</div>
         {dataset.authors.length > 0 ? (
           <>
             {dataset.authors.map((author, index) => (
@@ -41,13 +41,13 @@ export default function DatasetSideData({
       </div>
 
       {/* DOI */}
-      <div className={"space-y-2"}>
-        <div className={"text-lg font-bold"}>DOI</div>
+      <div className="space-y-2">
+        <div className="text-lg font-bold">DOI</div>
         {dataset.doi ? (
           <Link
             href={`https://doi.org/${dataset.doi}`}
-            target={"_blank"}
-            className={"text-muted-foreground underline underline-offset-2"}
+            target="_blank"
+            className="text-muted-foreground underline underline-offset-2"
           >
             {dataset.doi}
           </Link>
@@ -57,12 +57,12 @@ export default function DatasetSideData({
       </div>
 
       {/* License */}
-      <div className={"space-y-2"}>
-        <div className={"text-lg font-bold"}>License</div>
+      <div className="space-y-2">
+        <div className="text-lg font-bold">License</div>
         <Link
-          href={"https://creativecommons.org/licenses/by/4.0/"}
-          target={"_blank"}
-          className={"text-muted-foreground underline underline-offset-2"}
+          href="https://creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          className="text-muted-foreground underline underline-offset-2"
         >
           CC BY 4.0
         </Link>

@@ -32,7 +32,7 @@ interface DatasetCitationButtonProps {
 export default function DatasetCitationButton({
   dataset,
 }: DatasetCitationButtonProps) {
-  const citationsQuery = trpc.dataset.cite.byId.useQuery(dataset.id);
+  const citationsQuery = trpc.datasets.cite.byId.useQuery(dataset.id);
   const citations = citationsQuery.data;
 
   type CitationOption = keyof NonNullable<typeof citations>;
@@ -49,7 +49,7 @@ export default function DatasetCitationButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"secondary"} className={"lift w-full"} size={"lg"}>
+        <Button variant="secondary" className="lift w-full" size="lg">
           <BookMarkedIcon />
           <div>Cite</div>
         </Button>
@@ -59,14 +59,14 @@ export default function DatasetCitationButton({
           <DialogTitle>Cite Dataset</DialogTitle>
         </DialogHeader>
         {citations && (
-          <div className={"-m-1 space-y-4 overflow-hidden p-1"}>
-            <div className={"relative overflow-x-auto rounded-lg bg-muted p-2"}>
-              <pre className={"whitespace-pre-wrap pr-12 text-sm"}>
+          <div className="-m-1 space-y-4 overflow-hidden p-1">
+            <div className="relative overflow-x-auto rounded-lg bg-muted p-2">
+              <pre className="whitespace-pre-wrap pr-12 text-sm">
                 {citationText}
               </pre>
               <Copy text={citationText} />
             </div>
-            <div className={"flex items-center space-x-2"}>
+            <div className="flex items-center space-x-2">
               <div>Style:</div>
               <Select value={citationOption} onValueChange={setCitationOption}>
                 <SelectTrigger className="w-[140px]">

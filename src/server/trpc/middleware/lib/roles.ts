@@ -3,7 +3,7 @@ import { $Enums } from "@prisma/client";
 export const MiddlewareRoles = {
   DATASET_OWNER: "DATASET_OWNER",
   DATASET_DRAFT_OWNER: "DATASET_DRAFT_OWNER",
-  DISCUSSION_POST_OWNER: "DISCUSSION_POST_AUTHOR",
+  DISCUSSION_AUTHOR: "DISCUSSION_AUTHOR",
   ...$Enums.UserRole,
 } as const;
 

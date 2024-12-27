@@ -1,5 +1,9 @@
 import type { RouterOutput } from "@/server/trpc/routers";
 
 export type DatasetResponse = NonNullable<
-  RouterOutput["dataset"]["find"]["byId"]
+  RouterOutput["datasets"]["find"]["byId"]
+>;
+
+export type DatasetDiscussionResponse = NonNullable<
+  RouterOutput["discussions"]["find"]["byId"]
 >;

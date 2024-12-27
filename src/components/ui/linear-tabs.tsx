@@ -1,7 +1,7 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "motion/react";
 import * as React from "react";
 
@@ -40,10 +40,26 @@ function LinearTabs({ defaultValue, children, ...props }: LinearTabsRootProps) {
   );
 }
 
+const linearTabsListVariants = cva(
+  "relative inline-flex h-fit w-full items-center justify-start text-muted-foreground",
+  {
+    variants: {
+      variant: {
+        default: "[&>span]:bg-foreground",
+        destructive: "[&>span]:bg-destructive/90",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
 const LinearTabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, children, ...props }, forwardedRef) => {
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
+    VariantProps<typeof linearTabsListVariants>
+>(({ variant, className, children, ...props }, forwardedRef) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const activeValue = useTabsValue();
 
@@ -79,10 +95,7 @@ const LinearTabsList = React.forwardRef<
           ).current = node;
         }
       }}
-      className={cn(
-        "relative inline-flex h-fit w-full items-center justify-start text-muted-foreground",
-        className,
-      )}
+      className={cn(linearTabsListVariants({ variant }), className)}
       {...props}
     >
       {React.Children.map(
@@ -102,15 +115,19 @@ const LinearTabsList = React.forwardRef<
       <motion.span
         animate={indicatorStyle}
         transition={{ ease: "easeOut", duration: 0.2 }}
-        className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full bg-foreground"
+        className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
       />
     </TabsPrimitive.List>
   );
 });
 LinearTabsList.displayName = "LinearTabsList";
 
-export function TabsListBorder() {
-  return <hr className="-mt-[2px] mb-6 border-[1px]" />;
+interface LinearTabsBorderProps extends React.HTMLAttributes<HTMLHRElement> {}
+
+export function TabsListBorder({ className, ...props }: LinearTabsBorderProps) {
+  return (
+    <hr className={cn("-mt-[2px] mb-6 border-[1px]", className)} {...props} />
+  );
 }
 
 type TriggerElement = React.ReactElement<{
@@ -148,7 +165,7 @@ const LinearTabsTrigger = React.forwardRef<
       {...props}
     >
       {badge ? (
-        <div className={"flex items-center space-x-2"}>
+        <div className="flex items-center space-x-2">
           <span>{children}</span>
           <Badge variant={badgeVariant}>{badgeValue}</Badge>
         </div>

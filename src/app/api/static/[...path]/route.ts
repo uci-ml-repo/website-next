@@ -53,8 +53,8 @@ export async function GET(
           "Content-Type": contentType,
         },
       });
-    } catch (err: any) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (error: any) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   })(req, {
     params: { path: (await ctx.params).path },

@@ -8,7 +8,7 @@ import Main from "@/components/layout/Main";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return caller.dataset.find.byId(id);
+  return caller.datasets.find.byId(id);
 });
 
 export async function generateMetadata({
@@ -45,8 +45,8 @@ export default async function Page({
   }
 
   return (
-    <Main className={"content space-y-6"}>
-      <div className={"space-y-8"}>
+    <Main className="content space-y-6">
+      <div className="space-y-8">
         <DatasetTitleGroup dataset={dataset} />
 
         <DatasetTabs dataset={dataset} />

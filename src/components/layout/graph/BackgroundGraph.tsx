@@ -35,7 +35,7 @@ const BackgroundGraph = () => {
         `size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]`,
       )}
     >
-      <svg viewBox={`0 0 600 600`}>
+      <svg viewBox="0 0 600 600">
         {nodes.map((node, index) => (
           <g key={index}>
             <circle

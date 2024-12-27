@@ -34,22 +34,18 @@ export default function DatasetQuickStats({
   ];
 
   return (
-    <div
-      className={
-        "grid max-w-4xl grid-cols-1 gap-8 min-[360px]:grid-cols-2 md:grid-cols-3"
-      }
-    >
+    <div className="grid max-w-4xl grid-cols-1 gap-8 min-[360px]:grid-cols-2 md:grid-cols-3">
       {stats.map((stat, index) => (
         <div key={index}>
-          <div className={"text-sm text-muted-foreground"}>{stat.name}</div>
+          <div className="text-sm text-muted-foreground">{stat.name}</div>
           {stat.value ? (
-            <div className={"font-semibold"}>
+            <div className="font-semibold">
               {typeof stat.value === "number"
                 ? stat.value.toLocaleString("en")
                 : stat.value}
             </div>
           ) : (
-            <div className={"text-muted-foreground"}>&ndash;</div>
+            <div className="text-muted-foreground">&ndash;</div>
           )}
         </div>
       ))}

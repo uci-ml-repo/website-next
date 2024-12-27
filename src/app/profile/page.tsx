@@ -22,14 +22,14 @@ export default async function Page() {
     return signIn(undefined, { redirectTo: PROFILE_PATH });
   }
 
-  const bookmarks = await caller.dataset.bookmarks.byUserId(session.user.id);
-  const datasets = await caller.dataset.find.byUserId(session.user.id);
+  const bookmarks = await caller.datasets.bookmarks.byUserId(session.user.id);
+  const datasets = await caller.datasets.find.byUserId(session.user.id);
 
   return (
-    <Main className={"space-y-8"}>
+    <Main className="space-y-8">
       <ProfileHeader session={session} />
 
-      <LinearTabs defaultValue={"bookmarks"}>
+      <LinearTabs defaultValue="bookmarks">
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger
             value="bookmarks"

@@ -37,13 +37,13 @@ export default function Copy({ text }: CopyProps) {
           ref={triggerRef}
         >
           <Button
-            variant={"outline"}
-            size={"icon"}
-            className={"absolute right-1.5 top-1.5 text-primary"}
+            variant="outline"
+            size="icon"
+            className="absolute right-1.5 top-1.5 text-primary"
             onClick={copy}
             pill={false}
           >
-            {copied ? <CheckIcon className={"text-positive"} /> : <CopyIcon />}
+            {copied ? <CheckIcon className="text-positive" /> : <CopyIcon />}
           </Button>
         </TooltipTrigger>
         <TooltipContent

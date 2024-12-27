@@ -14,8 +14,8 @@ export default async function DatasetDownloadButton({
 }: DatasetDownloadButtonProps) {
   if (dataset.externalLink) {
     return (
-      <Button variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
-        <Link href={dataset.externalLink} target={"_blank"}>
+      <Button variant="blue" className="lift w-full" size="lg" asChild>
+        <Link href={dataset.externalLink} target="_blank">
           <ExternalLinkIcon />
           <div>View Dataset</div>
         </Link>
@@ -24,13 +24,13 @@ export default async function DatasetDownloadButton({
   }
 
   return (
-    <Button variant={"blue"} className={"lift w-full"} size={"lg"} asChild>
+    <Button variant="blue" className="lift w-full" size="lg" asChild>
       <a href={datasetZip(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>
           {dataset.zipSize && (
-            <span className={"ml-1 text-sm"}>
+            <span className="ml-1 text-sm">
               ({abbreviateFileSize(dataset.zipSize)})
             </span>
           )}

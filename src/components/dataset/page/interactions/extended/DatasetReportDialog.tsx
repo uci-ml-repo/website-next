@@ -47,7 +47,7 @@ export default function DatasetReportDialog({
 }) {
   const session = useSession();
 
-  const createReportMutation = trpc.dataset.report.create.useMutation();
+  const createReportMutation = trpc.datasets.report.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,14 +78,14 @@ export default function DatasetReportDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-6"}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
-              <DialogTitle className={"text-xl"}>Report an Issue</DialogTitle>
+              <DialogTitle className="text-xl">Report an Issue</DialogTitle>
             </DialogHeader>
 
             <FormField
               control={form.control}
-              name={"reason"}
+              name="reason"
               render={({ field }) => (
                 <FormItem className="space-y-4">
                   <FormControl>
@@ -97,7 +97,7 @@ export default function DatasetReportDialog({
                       {datasetReportReasons.map((reason, index) => (
                         <FormItem
                           key={index}
-                          className={"flex items-center space-x-3 space-y-0"}
+                          className="flex items-center space-x-3 space-y-0"
                         >
                           <FormControl>
                             <RadioGroupItem value={reason} />
@@ -115,17 +115,15 @@ export default function DatasetReportDialog({
             />
             <FormField
               control={form.control}
-              name={"details"}
+              name="details"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={"space-x-1 text-base"}>
-                    Details
-                  </FormLabel>
+                  <FormLabel className="space-x-1 text-base">Details</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      className={"max-h-[30dvh]"}
-                      placeholder={"Provide more details about the issue"}
+                      className="max-h-[30dvh]"
+                      placeholder="Provide more details about the issue"
                     />
                   </FormControl>
                   <FormMessage />
@@ -133,12 +131,12 @@ export default function DatasetReportDialog({
               )}
             />
 
-            <DialogFooter className={"!w-full !justify-between"}>
+            <DialogFooter className="!w-full !justify-between">
               <Button onClick={() => setOpen(false)} variant="secondary">
                 Cancel
               </Button>
               <Button
-                type={"submit"}
+                type="submit"
                 variant="destructive"
                 disabled={!(form.watch("reason") && form.watch("details"))}
               >

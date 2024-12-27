@@ -13,7 +13,7 @@ import type { DatasetResponse } from "@/lib/types";
 
 export default function DatasetTabs({ dataset }: { dataset: DatasetResponse }) {
   return (
-    <LinearTabs defaultValue={"about"}>
+    <LinearTabs defaultValue="about">
       <div className="flex items-center justify-between space-x-8">
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
@@ -26,15 +26,17 @@ export default function DatasetTabs({ dataset }: { dataset: DatasetResponse }) {
       </div>
       <TabsListBorder />
 
-      <LinearTabsContent value="about">
-        <DatasetAbout dataset={dataset} />
-      </LinearTabsContent>
-      <LinearTabsContent value="files">
-        <DatasetFiles dataset={dataset} />
-      </LinearTabsContent>
-      <LinearTabsContent value="discussion">
-        <DatasetDiscussion dataset={dataset} />
-      </LinearTabsContent>
+      <div className="hide-inactive">
+        <LinearTabsContent value="about">
+          <DatasetAbout dataset={dataset} />
+        </LinearTabsContent>
+        <LinearTabsContent value="files" forceMount>
+          <DatasetFiles dataset={dataset} />
+        </LinearTabsContent>
+        <LinearTabsContent value="discussion" forceMount>
+          <DatasetDiscussion dataset={dataset} />
+        </LinearTabsContent>
+      </div>
     </LinearTabs>
   );
 }

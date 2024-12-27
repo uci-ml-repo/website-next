@@ -1,15 +1,17 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import datasetsRouter from "@/server/trpc/routers/datasets";
+import discussionsRouter from "@/server/trpc/routers/discussions";
 import draftDatasetsRouter from "@/server/trpc/routers/drafts";
 import filesRouter from "@/server/trpc/routers/files";
 
 import { router } from "../index";
 
 export const appRouter = router({
-  dataset: datasetsRouter,
+  datasets: datasetsRouter,
   draftDatasets: draftDatasetsRouter,
-  file: filesRouter,
+  discussions: discussionsRouter,
+  files: filesRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -23,14 +23,14 @@ export default async function Header() {
   const session = await auth();
 
   return (
-    <header className={"relative"}>
-      <div className={"flex h-20 items-center justify-between p-4 sm:px-6"}>
+    <header className="relative">
+      <div className="flex h-20 items-center justify-between p-4 sm:px-6">
         <div />
         {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar
-                role={"button"}
+                role="button"
                 className={cn(
                   "size-10 cursor-pointer outline outline-4 outline-border",
                   "transition-all duration-100 ease-out hover:scale-105",
@@ -39,19 +39,17 @@ export default async function Header() {
                 {session.user.image && (
                   <AvatarImage
                     src={session?.user?.image}
-                    alt={"avatar"}
-                    fetchPriority={"high"}
+                    alt="avatar"
+                    fetchPriority="high"
                   />
                 )}
 
                 <AvatarFallback>
-                  <CircleUserRoundIcon
-                    className={"size-4/5 text-muted-foreground"}
-                  />
+                  <CircleUserRoundIcon className="size-4/5 text-muted-foreground" />
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className={"w-40"} align={"end"}>
+            <DropdownMenuContent className="w-44" align="end">
               <DropdownMenuItem asChild>
                 <Link href={PROFILE_PATH}>
                   <UserIcon />
@@ -62,7 +60,7 @@ export default async function Header() {
                 <DropdownMenuItem destructive asChild>
                   <Link href={ADMIN_PATH}>
                     <LayoutDashboardIcon />
-                    <span>Admin</span>
+                    <span>Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
               )}

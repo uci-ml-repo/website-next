@@ -18,18 +18,18 @@ export default function DatasetUnauthorizedBookmarkButton() {
   return (
     <Dialog>
       <DialogTrigger>
-        <BookmarkIcon className={"size-5 cursor-pointer"} />
+        <BookmarkIcon className="size-5 cursor-pointer" />
       </DialogTrigger>
       <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Sign in to bookmark datasets</DialogTitle>
         </DialogHeader>
         <p>To bookmark datasets and access others features, please sign in.</p>
-        <DialogFooter className={"items-center !justify-between"}>
+        <DialogFooter className="items-center !justify-between">
           <DialogClose asChild>
-            <Button variant={"secondary"}>Cancel</Button>
+            <Button variant="secondary">Cancel</Button>
           </DialogClose>
-          <SignInButton variant={"gold"} />
+          <SignInButton variant="gold" />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -9,8 +9,8 @@ const orderByEnum: [
 export const datasetQuery = z.object({
   sort: z.enum(["asc", "desc"]).optional(),
   orderBy: z.enum(orderByEnum).optional(),
-  skip: z.number().int().nonnegative().optional(),
-  take: z.number().int().nonnegative().optional(),
+  skip: z.number().optional(),
+  take: z.number().optional(),
   cursor: z.number().int().optional(),
 });
 

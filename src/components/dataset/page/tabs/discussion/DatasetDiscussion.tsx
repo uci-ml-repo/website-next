@@ -1,11 +1,27 @@
+import AddDatasetDiscussion from "@/components/dataset/page/tabs/discussion/add/AddDatasetDiscussion";
+import DatasetDiscussionPost from "@/components/dataset/page/tabs/discussion/DatasetDiscussionPost";
 import type { DatasetResponse } from "@/lib/types";
+import { caller } from "@/server/trpc/query/server";
 
-export default function DatasetDiscussion({
+export default async function DatasetDiscussion({
   dataset,
 }: {
   dataset: DatasetResponse;
 }) {
-  console.log(dataset);
+  const discussions = await caller.discussions.find.byQuery({
+    datasetId: dataset.id,
+    take: 10,
+    orderBy: "upvote_count",
+    sort: "desc",
+  });
 
-  return <>DISCUSSION</>;
+  return (
+    <>
+      <AddDatasetDiscussion dataset={dataset} discussions={discussions} />
+
+      {discussions.map((discussion, index) => (
+        <DatasetDiscussionPost key={index} discussion={discussion} />
+      ))}
+    </>
+  );
 }

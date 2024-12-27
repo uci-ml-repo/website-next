@@ -36,7 +36,7 @@ export default function DatasetInteractions({
 
   return (
     <div className={cn("flex items-center space-x-4", className)} {...props}>
-      <div className={"flex items-center space-x-6"}>
+      <div className="flex items-center space-x-6">
         {activity.map((activityItem, index) => (
           <TooltipProvider
             key={index}
@@ -44,11 +44,11 @@ export default function DatasetInteractions({
             disableHoverableContent
           >
             <Tooltip>
-              <TooltipTrigger className={"flex items-center space-x-1 text-sm"}>
-                <activityItem.icon className={"size-4"} />
+              <TooltipTrigger className="flex items-center space-x-1 text-sm">
+                <activityItem.icon className="size-4" />
                 <span>{activityItem.value}</span>
               </TooltipTrigger>
-              <TooltipContent side={"bottom"} forceMount>
+              <TooltipContent side="bottom" forceMount>
                 {activityItem.tooltip}
               </TooltipContent>
             </Tooltip>

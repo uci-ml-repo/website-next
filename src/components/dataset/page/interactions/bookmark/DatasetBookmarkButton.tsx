@@ -15,7 +15,7 @@ export default async function DatasetBookmarkButton({
     return <DatasetUnauthorizedBookmarkButton />;
   }
 
-  const bookmarked = await caller.dataset.bookmarks.isBookmarked(dataset.id);
+  const bookmarked = await caller.datasets.bookmarks.isBookmarked(dataset.id);
 
   return (
     <DatasetAuthorizedBookmarkButton

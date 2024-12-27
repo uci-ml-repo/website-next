@@ -19,8 +19,8 @@ export default function DatasetAuthorizedBookmarkButton({
   const [isBookmarked, setIsBookmarked] = useState(bookmarked);
   const [isPending, startTransition] = useTransition();
 
-  const addBookmark = trpc.dataset.bookmarks.addBookmark.useMutation();
-  const removeBookmark = trpc.dataset.bookmarks.removeBookmark.useMutation();
+  const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation();
+  const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation();
 
   const handleBookmark = async () => {
     startTransition(async () => {
@@ -45,7 +45,7 @@ export default function DatasetAuthorizedBookmarkButton({
   return (
     <>
       {isPending ? (
-        <Spinner className={"size-5 opacity-70"} />
+        <Spinner className="size-5 opacity-70" />
       ) : (
         <BookmarkIcon
           className={cn(

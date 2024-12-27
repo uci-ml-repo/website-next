@@ -82,7 +82,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
   }
 
   return (
-    <div className={"space-y-4"}>
+    <div className="space-y-4">
       {emailFormIsOpen ? (
         <motion.div
           initial={{ height: 0 }}
@@ -92,14 +92,14 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
           <Form {...form}>
             {error && (
               <Alert variant="destructive">
-                <div className={"flex items-center space-x-2"}>
+                <div className="flex items-center space-x-2">
                   <AlertCircleIcon className="h-4 w-4" />
                   <AlertDescription>{error}</AlertDescription>
                 </div>
               </Alert>
             )}
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className={"space-y-2"}>
+              <div className="space-y-2">
                 <FormField
                   control={form.control}
                   name="email"
@@ -107,7 +107,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} type={"email"} />
+                        <Input {...field} type="email" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -155,18 +155,18 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
               </div>
               <AuthButton
                 icon={<MailIcon />}
-                label={`Register with Email`}
-                type={"submit"}
+                label="Register with Email"
+                type="submit"
                 isPending={isPending}
               />
             </form>
           </Form>
-          <TextDivider text={"OR"} />
+          <TextDivider text="OR" />
         </motion.div>
       ) : (
         <AuthButton
           icon={<MailIcon />}
-          label={`Register with Email`}
+          label="Register with Email"
           isPending={isPending}
           onClick={() => setEmailFormIsOpen(true)}
         />
@@ -174,24 +174,22 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
 
       <AuthButton
         icon={<GoogleIcon />}
-        label={`Register with Google`}
+        label="Register with Google"
         onClick={async () => {
           await providerLogin({ provider: "google", redirectTo });
         }}
       />
       <AuthButton
         icon={<GithubIcon />}
-        label={`Register with Github`}
+        label="Register with Github"
         onClick={async () => {
           await providerLogin({ provider: "github", redirectTo });
         }}
       />
-      <p
-        className={"w-full space-x-1 text-center text-sm text-muted-foreground"}
-      >
+      <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Have an account?</span>
         <span
-          className={"cursor-pointer text-foreground underline"}
+          className="cursor-pointer text-foreground underline"
           onClick={() => setTab("signin")}
         >
           Sign In

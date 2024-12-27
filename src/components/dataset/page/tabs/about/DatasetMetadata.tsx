@@ -17,7 +17,7 @@ import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
-  const blank = <div className={"text-muted-foreground"}>&ndash;</div>;
+  const blank = <div className="text-muted-foreground">&ndash;</div>;
 
   const datasetMetadataContent: { title: string; children: React.ReactNode }[] =
     [
@@ -36,8 +36,8 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
       {
         title: "Papers Citing this Dataset",
         children: (
-          <div className={"space-y-4"}>
-            <div className={"text-sm text-muted-foreground"}>
+          <div className="space-y-4">
+            <div className="text-sm text-muted-foreground">
               This list may be incomplete
             </div>
             {dataset.citedIn.length > 0
@@ -62,27 +62,27 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
   };
 
   return (
-    <div className={"space-y-6"}>
-      <div className={"flex items-center justify-between space-x-4"}>
-        <div className={"flex items-center space-x-2"}>
-          <FileChartColumnIcon className={"size-6"} />
-          <h2 className={"text-2xl font-bold"}>Metadata</h2>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between space-x-4">
+        <div className="flex items-center space-x-2">
+          <FileChartColumnIcon className="size-6" />
+          <h2 className="text-2xl font-bold">Metadata</h2>
         </div>
         <Button
-          variant={"ghost"}
+          variant="ghost"
           onClick={() => {
             setOpenStates([...openStates].fill(!isAnyOpen));
           }}
-          className={"max-xxs:hidden"}
+          className="max-xxs:hidden"
         >
           {isAnyOpen ? (
             <>
-              <ChevronsDownUpIcon className={"size-6"} />
+              <ChevronsDownUpIcon className="size-6" />
               Collapse All
             </>
           ) : (
             <>
-              <ChevronsUpDownIcon className={"size-6"} />
+              <ChevronsUpDownIcon className="size-6" />
               Expand All
             </>
           )}
@@ -121,12 +121,8 @@ function MetadataCollapsible({
   return (
     <Collapsible open={isOpen} onOpenChange={onOpenChange}>
       <CollapsibleTrigger asChild>
-        <div
-          className={
-            "group flex cursor-pointer items-center justify-between space-x-6 px-2 py-6"
-          }
-        >
-          <div className={"text-xl font-semibold"}>{title}</div>
+        <div className="group flex cursor-pointer items-center justify-between space-x-6 px-2 py-6">
+          <div className="text-xl font-semibold">{title}</div>
           <div
             className={cn(
               "transition-transform group-hover:scale-125",
@@ -141,7 +137,7 @@ function MetadataCollapsible({
       <motion.div
         initial={{ height: 0, paddingBottom: 0 }}
         animate={isOpen ? { height: "fit-content", paddingBottom: 24 } : {}}
-        className={"overflow-y-hidden px-2"}
+        className="overflow-y-hidden px-2"
         transition={{ duration: 0.15, ease: "easeInOut" }}
       >
         {children}
@@ -155,8 +151,8 @@ function PaperPreview({ paper }: { paper: DatasetPaper }) {
     <div>
       <Link
         href={`https://www.semanticscholar.org/paper/${paper.semanticScholarId}`}
-        target={"_blank"}
-        className={"text-lg text-link underline underline-offset-2"}
+        target="_blank"
+        className="text-lg text-link underline underline-offset-2"
       >
         {paper.title}
       </Link>

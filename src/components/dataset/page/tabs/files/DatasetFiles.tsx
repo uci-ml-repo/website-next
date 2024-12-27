@@ -5,7 +5,5 @@ export default function DatasetFiles({
 }: {
   dataset: DatasetResponse;
 }) {
-  console.log(dataset);
-
-  return <>FILES</>;
+  return <>{dataset.fileCount} FILES</>;
 }

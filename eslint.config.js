@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 const config = [
   ...compat.extends("next", "prettier"),
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser,
       parserOptions: {
@@ -30,36 +30,19 @@ const config = [
       "@typescript-eslint/consistent-type-imports": "error",
     },
   },
-
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       "simple-import-sort": simpleImportSortPlugin,
-    },
-    rules: {
-      "import/first": "error",
-      "import/no-duplicates": "error",
-      "simple-import-sort/imports": "warn",
-      "simple-import-sort/exports": "warn",
-    },
-  },
-
-  {
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    plugins: {
+      "unused-imports": unusedImportsPlugin,
       prettier: prettierPlugin,
     },
     rules: {
       "prettier/prettier": "warn",
-      "react/no-unescaped-entities": "off",
-    },
-  },
-  {
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    plugins: {
-      "unused-imports": unusedImportsPlugin,
-    },
-    rules: {
+      "import/first": "error",
+      "import/no-duplicates": "error",
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
       "unused-imports/no-unused-imports": "warn",
       "unused-imports/no-unused-vars": [
         "warn",
@@ -70,6 +53,12 @@ const config = [
           argsIgnorePattern: "^_",
         },
       ],
+      "react/no-unescaped-entities": "off",
+      "react/jsx-curly-brace-presence": [
+        "warn",
+        { props: "never", children: "never" },
+      ],
+      "react/self-closing-comp": "warn",
     },
   },
   {

@@ -1,6 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import transformer from "superjson";
-import z from "zod";
 
 import type { createContext } from "@/server/trpc/context";
 import { AssertOwner } from "@/server/trpc/middleware/lib/owner";
@@ -12,9 +11,8 @@ const t = initTRPC
   .meta<{ requireRoles?: MiddlewareRole[] }>()
   .create({ transformer });
 
-export const protectedProcedure = t.procedure
-  .input(z.any())
-  .use(async ({ ctx, meta, input, next }) => {
+export const protectedProcedure = t.procedure.use(
+  async ({ ctx, meta, input, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
@@ -29,12 +27,18 @@ export const protectedProcedure = t.procedure
       return nextCtx;
     }
 
+    const inputCast = input as unknown as {
+      datasetId?: number;
+      draftDatasetId?: string;
+      discussionPostId?: string;
+    };
+
     const requireRoles = new Set<MiddlewareRole>(meta.requireRoles);
     const userRoles = new Set<MiddlewareRole>([ctx.session.user.role]);
 
     if (requireRoles.has(MiddlewareRoles.DATASET_OWNER)) {
       await AssertOwner.dataset({
-        datasetId: input.datasetId,
+        datasetId: inputCast.datasetId,
         userId: ctx.session.user.id,
       });
 
@@ -43,20 +47,20 @@ export const protectedProcedure = t.procedure
 
     if (requireRoles.has(MiddlewareRoles.DATASET_DRAFT_OWNER)) {
       await AssertOwner.draftDataset({
-        draftDatasetId: input.draftDatasetId,
+        draftDatasetId: inputCast.draftDatasetId,
         userId: ctx.session.user.id,
       });
 
       userRoles.add(MiddlewareRoles.DATASET_DRAFT_OWNER);
     }
 
-    if (requireRoles.has(MiddlewareRoles.DISCUSSION_POST_OWNER)) {
+    if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
       await AssertOwner.discussionPost({
-        discussionPostId: input.discussionPostId,
+        discussionPostId: inputCast.discussionPostId,
         userId: ctx.session.user.id,
       });
 
-      userRoles.add(MiddlewareRoles.DISCUSSION_POST_OWNER);
+      userRoles.add(MiddlewareRoles.DISCUSSION_AUTHOR);
     }
 
     if (requireRoles.isDisjointFrom(userRoles)) {
@@ -64,4 +68,5 @@ export const protectedProcedure = t.procedure
     }
 
     return nextCtx;
-  });
+  },
+);

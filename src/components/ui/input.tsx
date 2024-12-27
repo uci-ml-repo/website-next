@@ -61,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className={cn("relative flex items-center")}>
+      <div className="relative flex items-center">
         {Icon && (
           <span
             className={cn(

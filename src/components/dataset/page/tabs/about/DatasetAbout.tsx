@@ -10,15 +10,15 @@ export default function DatasetAbout({
   dataset: DatasetResponse;
 }) {
   return (
-    <div className={"space-y-16"}>
-      <div className={"flex justify-between gap-x-14 gap-y-10 max-lg:flex-col"}>
-        <div className={"w-full space-y-8"}>
-          <div className={"space-y-2"}>
-            <h2 className={"text-2xl font-bold"}>About Dataset</h2>
-            <div className={"break-words"}>{dataset.description}</div>
+    <div className="space-y-16">
+      <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
+        <div className="w-full space-y-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold">About Dataset</h2>
+            <div className="break-words">{dataset.description}</div>
           </div>
           <DatasetQuickStats dataset={dataset} />
-          <hr className={"lg:hidden"} />
+          <hr className="lg:hidden" />
         </div>
 
         <DatasetSideData dataset={dataset} />

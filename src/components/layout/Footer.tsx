@@ -16,14 +16,14 @@ interface FooterLinkGroupProps {
 
 function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
   return (
-    <div className={"space-y-4 text-uci-blue-foreground"}>
-      <div className={"font-bold"}>{title}</div>
-      <div className={"space-y-2"}>
+    <div className="space-y-4 text-uci-blue-foreground">
+      <div className="font-bold">{title}</div>
+      <div className="space-y-3">
         {links.map((link, index) => (
           <div key={index}>
             <Link
               href={link.href}
-              className={"hover:underline"}
+              className="hover:underline"
               target={link.href.startsWith("http") ? "_blank" : undefined}
             >
               {link.name}
@@ -63,7 +63,7 @@ export default function Footer() {
           href: PRIVACY_POLICY_PATH,
         },
         {
-          name: "Report an Issue",
+          name: "Feature Request / Bug Report",
           href: "#", // TODO
         },
       ],
@@ -71,29 +71,17 @@ export default function Footer() {
   ];
 
   return (
-    <footer
-      className={
-        "flex justify-center bg-uci-blue py-8 text-primary-foreground dark:bg-uci-blue/40"
-      }
-    >
-      <div className={"content-x w-full"}>
-        <div
-          className={
-            "grid grid-flow-row gap-10 max-sm:justify-center sm:grid-flow-col"
-          }
-        >
+    <footer className="flex justify-center bg-uci-blue py-8 text-primary-foreground dark:bg-uci-blue/40">
+      <div className="content-x w-full">
+        <div className="grid grid-flow-row gap-10 max-sm:justify-center sm:grid-flow-col">
           <div>
-            <Link href={HOME_PATH} className={"flex h-full w-fit items-center"}>
-              <div className={"flex h-24 w-fit items-center"}>
-                <Anteater
-                  className={
-                    "mr-4 h-1/2 fill-uci-blue-foreground max-lg:hidden"
-                  }
-                />
+            <Link href={HOME_PATH} className="flex h-full w-fit items-center">
+              <div className="flex h-24 w-fit items-center">
+                <Anteater className="mr-4 h-1/2 fill-uci-blue-foreground max-lg:hidden" />
                 <Banner
-                  variant={"logo"}
-                  textColor={"monoUciBlueForeground"}
-                  className={"w-56"}
+                  variant="logo"
+                  textColor="monoUciBlueForeground"
+                  className="w-56"
                 />
               </div>
             </Link>
