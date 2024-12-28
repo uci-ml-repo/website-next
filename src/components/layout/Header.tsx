@@ -1,9 +1,10 @@
 import { UserRole } from "@prisma/client";
-import { LayoutDashboardIcon, LogOutIcon, UserIcon } from "lucide-react";
+import { LayoutDashboardIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import SignInButton from "@/components/auth/SignInButton";
+import SignOut from "@/components/auth/SignOut";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/lib/routes";
+import { ADMIN_PATH, PROFILE_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export default async function Header() {
@@ -48,18 +49,7 @@ export default async function Header() {
                   </Link>
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem
-                onClick={async () => {
-                  "use server";
-                  await signOut({
-                    redirect: true,
-                    redirectTo: HOME_PATH,
-                  });
-                }}
-              >
-                <LogOutIcon />
-                <span>Logout</span>
-              </DropdownMenuItem>
+              <SignOut />
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
