@@ -8,7 +8,8 @@ const inputVariants = cva(
   {
     variants: {
       variantSize: {
-        default: "h-10 text-sm",
+        sm: "h-9 text-sm",
+        default: "h-10 text-base",
         lg: "h-11 px-6 text-lg",
         xl: "h-12 px-6 text-lg",
       },
@@ -44,17 +45,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref,
   ) => {
     const iconSize = {
-      default: "*:size-4",
+      sm: "*:size-4",
+      default: "*:size-5",
       lg: "*:size-6",
       xl: "*:size-6",
     };
 
     const iconOffset = {
-      left: variantSize === "lg" ? "left-3" : "left-4",
-      right: variantSize === "lg" ? "right-3" : "right-4",
+      left: {
+        sm: "left-2",
+        default: "left-3",
+        lg: "left-3",
+        xl: "left-4",
+      },
+      right: {
+        sm: "right-2",
+        default: "right-3",
+        lg: "right-3",
+        xl: "right-4",
+      },
     };
 
     const iconInputPadding = {
+      sm: iconPosition === "left" ? "pl-8" : "pr-8",
       default: iconPosition === "left" ? "pl-10" : "pr-10",
       lg: iconPosition === "left" ? "pl-12" : "pr-12",
       xl: iconPosition === "left" ? "pl-12" : "pr-12",
@@ -67,8 +80,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               "absolute flex size-6 items-center justify-center text-muted-foreground",
               onIconClick ? "z-20 cursor-pointer" : "pointer-events-none",
-              iconSize[variantSize || "default"],
-              iconOffset[iconPosition],
+              iconSize[variantSize ?? "default"],
+              iconOffset[iconPosition][variantSize ?? "default"],
             )}
             onClick={onIconClick}
           >

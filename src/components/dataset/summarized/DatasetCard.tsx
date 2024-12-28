@@ -100,7 +100,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
                       ? "1 File"
                       : `${dataset.fileCount} Files`}
                   </span>
-                  <span> &#183; </span>
+                  <span> &middot; </span>
                   <span>{abbreviateFileSize(dataset.zipSize)}</span>
                 </div>
               )}

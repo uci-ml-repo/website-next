@@ -62,4 +62,21 @@ export default class DiscussionsUpvoteService {
 
     return upvote;
   }
+
+  async find({
+    userId,
+    discussionId,
+  }: {
+    userId: string;
+    discussionId: string;
+  }) {
+    return this.prisma.datasetDiscussionUpvote.findUnique({
+      where: {
+        userId_discussionId: {
+          userId,
+          discussionId,
+        },
+      },
+    });
+  }
 }

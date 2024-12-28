@@ -24,6 +24,7 @@ body {
     --uci-blue: 209 100% 24%;
     --uci-blue-foreground: 0 0% 98%;
     --uci-gold: 48 99% 51%;
+    --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 4%;
@@ -65,6 +66,7 @@ body {
     --uci-blue: 209 100% 32%;
     --uci-blue-foreground: 0 0% 90%;
     --uci-gold: 48 99% 51%;
+    --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 22%;
     --input: 0 0% 22%;
     --ring: 0 0% 83.1%;

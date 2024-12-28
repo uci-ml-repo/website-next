@@ -7,12 +7,13 @@ const discussionsUpvoteRouter = router({
   create: protectedProcedure
     .input(
       z.object({
+        userId: z.string(),
         discussionId: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       return service.discussions.upvote.create({
-        userId: ctx.user.id,
+        userId: input.userId,
         discussionId: input.discussionId,
       });
     }),
@@ -20,12 +21,27 @@ const discussionsUpvoteRouter = router({
   remove: protectedProcedure
     .input(
       z.object({
+        userId: z.string(),
         discussionId: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       return service.discussions.upvote.remove({
-        userId: ctx.user.id,
+        userId: input.userId,
+        discussionId: input.discussionId,
+      });
+    }),
+
+  find: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        discussionId: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      return service.discussions.upvote.find({
+        userId: input.userId,
         discussionId: input.discussionId,
       });
     }),

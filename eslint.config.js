@@ -28,6 +28,7 @@ const config = [
     },
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/no-explicit-any": "error",
     },
   },
   {
@@ -38,6 +39,7 @@ const config = [
       prettier: prettierPlugin,
     },
     rules: {
+      "no-unused-expressions": "warn",
       "prettier/prettier": "warn",
       "import/first": "error",
       "import/no-duplicates": "error",

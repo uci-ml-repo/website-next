@@ -11,7 +11,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,7 +28,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddDatasetDiscussionInput({
+export default function DatasetDiscussionCreateInput({
   dataset,
   setIsAuthoring,
 }: AddDatasetDiscussionInputProps) {
@@ -37,7 +36,6 @@ export default function AddDatasetDiscussionInput({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onSubmit",
   });
 
   const createMutation = trpc.discussions.create.fromData.useMutation();
@@ -62,7 +60,6 @@ export default function AddDatasetDiscussionInput({
                 name="text"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base">Comment</FormLabel>
                     <FormControl>
                       <Textarea {...field} className="min-h-[100px]" />
                     </FormControl>
@@ -73,11 +70,12 @@ export default function AddDatasetDiscussionInput({
               <div className="flex justify-end space-x-2">
                 <Button
                   variant="secondary"
-                  onClick={() => {
-                    !!form.watch("text")
+                  onClick={() =>
+                    form.watch("text")
                       ? setCancelDialogOpen(true)
-                      : setIsAuthoring(false);
-                  }}
+                      : setIsAuthoring(false)
+                  }
+                  type="button"
                 >
                   Cancel
                 </Button>
@@ -94,8 +92,29 @@ export default function AddDatasetDiscussionInput({
         </CardContent>
       </Card>
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard comment?</DialogTitle>
+          <p>
+            You have a comment in progress, are you sure you want to discard it?
+          </p>
+          <div className="flex justify-between">
+            <Button
+              variant="secondary"
+              onClick={() => setCancelDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                form.reset({ text: "" });
+                setCancelDialogOpen(false);
+                setIsAuthoring(false);
+              }}
+            >
+              Discard
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
 import Main from "@/components/layout/Main";
+import ProfileBookmarks from "@/components/profile/ProfileBookmarks";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import {
   LinearTabs,
@@ -48,7 +49,9 @@ export default async function Page() {
         </LinearTabsList>
         <TabsListBorder />
 
-        <LinearTabsContent value="bookmarks">BOOKMARKS</LinearTabsContent>
+        <LinearTabsContent value="bookmarks">
+          <ProfileBookmarks bookmarks={bookmarks} />
+        </LinearTabsContent>
         <LinearTabsContent value="datasets">DATASETS</LinearTabsContent>
       </LinearTabs>
     </Main>

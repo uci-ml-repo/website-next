@@ -25,7 +25,9 @@ export default class DiscussionsFindService {
         upvotes: true,
         user: true,
       },
-      orderBy: query.orderBy ? { [query.orderBy]: query.sort } : undefined,
+      orderBy: query.orderBy
+        ? { [query.orderBy]: query.sort }
+        : [{ upvoteCount: "desc" }, { createdAt: "desc" }],
       skip: query.skip,
       take: query.take,
       cursor: query.cursor ? { id: query.cursor } : undefined,

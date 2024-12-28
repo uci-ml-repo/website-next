@@ -11,6 +11,9 @@ export default class BookmarksService {
       include: {
         dataset: true,
       },
+      orderBy: {
+        bookmarkedAt: "desc",
+      },
     });
 
     return bookmarks;

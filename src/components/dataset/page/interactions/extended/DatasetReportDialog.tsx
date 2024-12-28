@@ -123,7 +123,7 @@ export default function DatasetReportDialog({
                     <Textarea
                       {...field}
                       className="max-h-[30dvh]"
-                      placeholder="Provide more details about the issue"
+                      placeholder="Provide details about the issue"
                     />
                   </FormControl>
                   <FormMessage />

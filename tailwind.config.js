@@ -61,7 +61,10 @@ const config = {
             DEFAULT: "hsl(var(--uci-blue))",
             foreground: "hsl(var(--uci-blue-foreground))",
           },
-          gold: "hsl(var(--uci-gold))",
+          gold: {
+            DEFAULT: "hsl(var(--uci-gold))",
+            foreground: "hsl(var(--uci-gold-foreground))",
+          },
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

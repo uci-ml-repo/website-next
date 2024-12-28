@@ -7,3 +7,7 @@ export type DatasetResponse = NonNullable<
 export type DatasetDiscussionResponse = NonNullable<
   RouterOutput["discussions"]["find"]["byId"]
 >;
+
+export type BookmarkResponse = NonNullable<
+  RouterOutput["datasets"]["bookmarks"]["byUserId"][number]
+>;

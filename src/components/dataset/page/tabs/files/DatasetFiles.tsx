@@ -5,5 +5,10 @@ export default function DatasetFiles({
 }: {
   dataset: DatasetResponse;
 }) {
-  return <>{dataset.fileCount} FILES</>;
+  return (
+    <div>
+      <h2 className="text-2xl font-bold">Files</h2>
+      <div>{dataset.fileCount}</div>
+    </div>
+  );
 }

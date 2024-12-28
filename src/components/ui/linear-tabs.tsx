@@ -20,17 +20,61 @@ function useTabsValue() {
 }
 
 interface LinearTabsRootProps
-  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>,
+    "value" | "onValueChange" | "defaultValue"
+  > {
   defaultValue: string;
+  urlStore?: boolean;
 }
 
-function LinearTabs({ defaultValue, children, ...props }: LinearTabsRootProps) {
-  const [currentValue, setCurrentValue] = React.useState(defaultValue);
+function LinearTabs({
+  defaultValue,
+  urlStore = false,
+  children,
+  ...props
+}: LinearTabsRootProps) {
+  const [currentValue, setCurrentValue] = React.useState<string>(defaultValue);
+
+  React.useEffect(() => {
+    if (!urlStore) return;
+    if (typeof window === "undefined") return;
+
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setCurrentValue(hash);
+    }
+  }, [defaultValue, urlStore]);
+
+  React.useEffect(() => {
+    if (!urlStore) return;
+    if (typeof window === "undefined") return;
+
+    function handleHashChange() {
+      const hash = window.location.hash.slice(1);
+
+      if (hash === currentValue) return;
+
+      setCurrentValue(hash);
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [urlStore, defaultValue, currentValue]);
+
+  function onValueChange(val: string) {
+    setCurrentValue(val);
+    if (urlStore && typeof window !== "undefined") {
+      window.location.hash = val;
+    }
+  }
 
   return (
     <TabsPrimitive.Root
-      defaultValue={defaultValue}
-      onValueChange={(val) => setCurrentValue(val)}
+      value={currentValue}
+      onValueChange={onValueChange}
       {...props}
     >
       <TabsValueContext.Provider value={currentValue}>

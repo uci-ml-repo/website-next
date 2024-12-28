@@ -145,12 +145,12 @@ const SelectItem = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
     pill?: boolean;
   }
->(({ className, children, pill, ...props }, ref) => (
+>(({ className, children, pill = true, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
       "relative flex w-full cursor-pointer select-none items-center py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      pill ? "rounded-full pl-3" : "rounded-sm",
+      pill ? "rounded-full pl-2" : "rounded-sm",
       className,
     )}
     {...props}
@@ -160,7 +160,9 @@ const SelectItem = React.forwardRef<
         <Check className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    <SelectPrimitive.ItemText>
+      <div className="flex items-center space-x-1.5">{children}</div>
+    </SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;

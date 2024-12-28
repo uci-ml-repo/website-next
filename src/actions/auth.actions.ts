@@ -63,11 +63,10 @@ export async function credentialsLogin({
       success: true,
       data: res,
     };
-  } catch (error: any) {
-    console.error(error);
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: (error as Error).message,
     };
   }
 }
@@ -111,10 +110,10 @@ export async function credentialsRegister({
       success: true,
       data: user,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: (error as Error).message,
     };
   }
 }

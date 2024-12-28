@@ -22,17 +22,17 @@ export default async function DatasetTabs({
   });
 
   return (
-    <LinearTabs defaultValue="about">
+    <LinearTabs defaultValue="about" urlStore={true}>
       <div className="flex items-center justify-between space-x-8">
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
           <LinearTabsTrigger value="files">Files</LinearTabsTrigger>
           <LinearTabsTrigger
-            value="discussion"
+            value="discussions"
             badge
             badgeValue={discussions.length}
           >
-            Discussion
+            Discussions
           </LinearTabsTrigger>
         </LinearTabsList>
         <DatasetInteractions dataset={dataset} className="max-md:hidden" />
@@ -46,7 +46,7 @@ export default async function DatasetTabs({
         <LinearTabsContent value="files" forceMount>
           <DatasetFiles dataset={dataset} />
         </LinearTabsContent>
-        <LinearTabsContent value="discussion" forceMount>
+        <LinearTabsContent value="discussions" forceMount>
           <DatasetDiscussion dataset={dataset} />
         </LinearTabsContent>
       </div>

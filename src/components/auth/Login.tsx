@@ -53,7 +53,7 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
       if (res.success) {
         router.replace(redirectTo);
       } else {
-        setError(res.message);
+        setError(res.message ?? "An unknown error occurred");
       }
     });
   }

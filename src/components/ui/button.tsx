@@ -20,7 +20,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         blue: "bg-uci-blue text-uci-blue-foreground shadow-sm",
-        gold: "bg-uci-gold text-primary shadow-sm",
+        gold: "bg-uci-gold text-uci-gold-foreground shadow-sm",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-2 hover:underline",
       },
