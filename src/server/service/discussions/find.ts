@@ -10,6 +10,7 @@ export default class DiscussionsFindService {
       where: { id },
       include: {
         upvotes: true,
+        user: true,
       },
     });
   }
@@ -22,6 +23,7 @@ export default class DiscussionsFindService {
       },
       include: {
         upvotes: true,
+        user: true,
       },
       orderBy: query.orderBy ? { [query.orderBy]: query.sort } : undefined,
       skip: query.skip,

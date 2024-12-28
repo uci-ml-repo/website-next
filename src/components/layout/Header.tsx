@@ -1,21 +1,16 @@
 import { UserRole } from "@prisma/client";
-import {
-  CircleUserRoundIcon,
-  LayoutDashboardIcon,
-  LogOutIcon,
-  UserIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
 import { auth, signOut } from "@/auth";
 import SignInButton from "@/components/auth/SignInButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ProfileAvatar from "@/components/ui/profile-avatar";
 import { ADMIN_PATH, HOME_PATH, PROFILE_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -29,25 +24,14 @@ export default async function Header() {
         {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar
+              <ProfileAvatar
+                src={session.user.image}
                 role="button"
                 className={cn(
-                  "size-10 cursor-pointer outline outline-4 outline-border",
+                  "cursor-pointer outline outline-4 outline-border",
                   "transition-all duration-100 ease-out hover:scale-105",
                 )}
-              >
-                {session.user.image && (
-                  <AvatarImage
-                    src={session?.user?.image}
-                    alt="avatar"
-                    fetchPriority="high"
-                  />
-                )}
-
-                <AvatarFallback>
-                  <CircleUserRoundIcon className="size-4/5 text-muted-foreground" />
-                </AvatarFallback>
-              </Avatar>
+              />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44" align="end">
               <DropdownMenuItem asChild>

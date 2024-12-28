@@ -1,20 +1,17 @@
 import type { UserRole } from "@prisma/client";
-import { CircleUserRoundIcon } from "lucide-react";
 import type { Session } from "next-auth";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import ProfileAvatar from "@/components/ui/profile-avatar";
 
 export default function ProfileHeader({ session }: { session: Session }) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        <Avatar className="size-16 sm:size-20">
-          {session.user.image && <AvatarImage src={session.user.image} />}
-          <AvatarFallback>
-            <CircleUserRoundIcon className="size-4/5 text-muted-foreground" />
-          </AvatarFallback>
-        </Avatar>
+        <ProfileAvatar
+          src={session.user.image}
+          className="size-16 sm:size-20"
+        />
         <div>
           <div className="text-xl font-semibold sm:text-3xl">
             {session.user.name}

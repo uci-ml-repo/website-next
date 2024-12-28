@@ -21,7 +21,7 @@ function quickDistance(node1: GraphNode, node2: GraphNode) {
   return Math.abs(node1.x - node2.x) + Math.abs(node1.y - node2.y);
 }
 
-const SIZE = 600;
+const TOTAL_SIZE = 600;
 const MIN_NUM_NODES = 60;
 const NUM_NODES_VARIANCE = 20;
 
@@ -29,6 +29,7 @@ const NODES_X_DEVIATION = 250;
 const NODES_Y_DEVIATION = 80;
 
 const BASE_SIZE = 3;
+const MIN_SIZE = 0.25;
 const SIZE_SCALE = 1.5;
 
 const MAX_DISTANCE = 100;
@@ -39,13 +40,16 @@ self.onmessage = () => {
     Math.floor(Math.random() * NUM_NODES_VARIANCE) + MIN_NUM_NODES;
 
   const nodes: GraphNode[] = Array.from({ length: nodeCount }, () => {
-    const x = randomHalfNormal(SIZE, -1, NODES_X_DEVIATION);
+    const x = randomHalfNormal(TOTAL_SIZE, -1, NODES_X_DEVIATION);
     const y = randomHalfNormal(0, 1, NODES_Y_DEVIATION);
 
     return {
       x,
       y,
-      size: BASE_SIZE + (Math.random() * (x - y) * SIZE_SCALE) / 100,
+      size: Math.max(
+        BASE_SIZE + (Math.random() * (x - y) * SIZE_SCALE) / 100,
+        MIN_SIZE,
+      ),
       edgesTo: [],
     };
   });

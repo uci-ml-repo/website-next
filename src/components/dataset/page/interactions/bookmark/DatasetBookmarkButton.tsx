@@ -1,26 +1,80 @@
-import { auth } from "@/auth";
-import DatasetAuthorizedBookmarkButton from "@/components/dataset/page/interactions/bookmark/DatasetAuthorizedBookmarkButton";
-import DatasetUnauthorizedBookmarkButton from "@/components/dataset/page/interactions/bookmark/DatasetUnauthorizedBookmarkButton";
+"use client";
+
+import { BookmarkIcon } from "lucide-react";
+import type { Session } from "next-auth";
+import { useState, useTransition } from "react";
+
+import SignInRequired from "@/components/auth/SignInRequired";
+import Spinner from "@/components/ui/spinner";
+import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
-import { caller } from "@/server/trpc/query/server";
+import { cn } from "@/lib/utils";
+import { trpc } from "@/server/trpc/query/client";
 
-export default async function DatasetBookmarkButton({
-  dataset,
-}: {
+interface DatasetBookmarkButtonProps {
   dataset: DatasetResponse;
-}) {
-  const session = await auth();
+  session: Session | null;
+  isBookmarked: boolean;
+}
 
-  if (!session?.user) {
-    return <DatasetUnauthorizedBookmarkButton />;
-  }
+export default function DatasetBookmarkButton({
+  dataset,
+  session,
+  isBookmarked,
+}: DatasetBookmarkButtonProps) {
+  const [bookmarkFilled, setBookmarkFilled] = useState(isBookmarked);
+  const [isPending, startTransition] = useTransition();
 
-  const bookmarked = await caller.datasets.bookmarks.isBookmarked(dataset.id);
+  const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation();
+  const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation();
+
+  const handleBookmark = async () => {
+    startTransition(async () => {
+      if (!session?.user) return;
+
+      if (bookmarkFilled) {
+        await removeBookmark.mutateAsync({
+          datasetId: dataset.id,
+          userId: session.user.id,
+        });
+      } else {
+        await addBookmark.mutateAsync({
+          datasetId: dataset.id,
+          userId: session.user.id,
+        });
+      }
+
+      toast({
+        title: bookmarkFilled ? "Bookmark removed" : "Bookmark added",
+        description: bookmarkFilled
+          ? undefined
+          : "View bookmarked datasets from your profile",
+        duration: 3000,
+      });
+
+      setBookmarkFilled(!bookmarkFilled);
+    });
+  };
 
   return (
-    <DatasetAuthorizedBookmarkButton
-      dataset={dataset}
-      bookmarked={bookmarked}
-    />
+    <>
+      {isPending ? (
+        <Spinner className="size-5 opacity-70" />
+      ) : (
+        <SignInRequired
+          title="Sign in to bookmark datasets"
+          body="To bookmark datasets and access other features, please sign in."
+          authedAction={handleBookmark}
+          session={session}
+        >
+          <BookmarkIcon
+            className={cn(
+              "size-5 cursor-pointer",
+              bookmarkFilled ? "fill-uci-gold" : "fill-background",
+            )}
+          />
+        </SignInRequired>
+      )}
+    </>
   );
 }

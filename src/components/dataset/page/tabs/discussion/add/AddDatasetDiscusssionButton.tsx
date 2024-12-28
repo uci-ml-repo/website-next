@@ -1,5 +1,8 @@
 import { PlusIcon } from "lucide-react";
+import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
+import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -12,6 +15,10 @@ export default function AddDatasetDiscussionButton({
   hasDiscussions,
   setIsAuthoring,
 }: AddDatasetDiscussionProps) {
+  const { data: session } = useSession();
+
+  console.log(session);
+
   return (
     <div>
       {hasDiscussions ? (
@@ -21,29 +28,45 @@ export default function AddDatasetDiscussionButton({
               <div className="text-muted-foreground">
                 There are no comments yet
               </div>
-              <Button
-                variant="gold"
-                size="md"
-                className="lift"
-                onClick={() => setIsAuthoring(true)}
-              >
-                <PlusIcon />
-                <span>Start the Discussion</span>
-              </Button>
+              <CreateDiscussionButton
+                text="Start the discussion"
+                session={session}
+                authAction={() => setIsAuthoring(true)}
+              />
             </div>
           </CardContent>
         </Card>
       ) : (
-        <Button
-          variant="gold"
-          size="md"
-          className="lift"
-          onClick={() => setIsAuthoring(true)}
-        >
-          <PlusIcon />
-          <span>Add Comment</span>
-        </Button>
+        <CreateDiscussionButton
+          text="Add Discussion"
+          session={session}
+          authAction={() => setIsAuthoring(true)}
+        />
       )}
     </div>
+  );
+}
+
+function CreateDiscussionButton({
+  text,
+  session,
+  authAction,
+}: {
+  text: string;
+  session: Session | null;
+  authAction: () => void;
+}) {
+  return (
+    <SignInRequired
+      title="Sign in to comment"
+      body="To comment and access other features, please sign in."
+      authedAction={authAction}
+      session={session}
+    >
+      <Button variant="gold" size="md" className="lift">
+        <PlusIcon />
+        <span>{text}</span>
+      </Button>
+    </SignInRequired>
   );
 }

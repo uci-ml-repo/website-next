@@ -4,7 +4,7 @@ import z from "zod";
 const orderByEnum: [
   Prisma.DatasetDiscussionScalarFieldEnum,
   ...Prisma.DatasetDiscussionScalarFieldEnum[],
-] = ["createdAt", "upvote_count"];
+] = ["createdAt", "upvoteCount"];
 
 export const discussionQuery = z.object({
   datasetId: z.number().optional(),

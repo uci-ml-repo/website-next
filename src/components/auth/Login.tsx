@@ -78,7 +78,7 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" autoComplete="username" />
+                    <Input {...field} autoComplete="username" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

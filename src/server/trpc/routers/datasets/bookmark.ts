@@ -9,29 +9,29 @@ const datasetBookmarkRouter = router({
   }),
 
   addBookmark: protectedProcedure
-    .input(z.number())
-    .mutation(async ({ input, ctx }) => {
+    .input(z.object({ datasetId: z.number(), userId: z.string() }))
+    .mutation(async ({ input }) => {
       return service.datasets.bookmark.addBookmark({
-        datasetId: input,
-        userId: ctx.user.id,
+        datasetId: input.datasetId,
+        userId: input.userId,
       });
     }),
 
   removeBookmark: protectedProcedure
-    .input(z.number())
-    .mutation(async ({ input, ctx }) => {
+    .input(z.object({ datasetId: z.number(), userId: z.string() }))
+    .mutation(async ({ input }) => {
       return service.datasets.bookmark.removeBookmark({
-        datasetId: input,
-        userId: ctx.user.id,
+        datasetId: input.datasetId,
+        userId: input.userId,
       });
     }),
 
   isBookmarked: protectedProcedure
-    .input(z.number())
-    .query(async ({ input, ctx }) => {
+    .input(z.object({ datasetId: z.number(), userId: z.string() }))
+    .query(async ({ input }) => {
       return service.datasets.bookmark.isBookmarked({
-        datasetId: input,
-        userId: ctx.user.id,
+        datasetId: input.datasetId,
+        userId: input.userId,
       });
     }),
 });

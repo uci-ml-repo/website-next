@@ -230,8 +230,8 @@ model DatasetDiscussion {
   datasetId Int     @map("dataset_id")
   dataset   Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  upvote_count Int                       @default(0) @map("upvote_count")
-  upvotes      DatasetDiscussionUpvote[]
+  upvoteCount Int                       @default(0) @map("upvote_count")
+  upvotes     DatasetDiscussionUpvote[]
 
   createdAt DateTime  @default(now()) @map("created_at")
   editedAt  DateTime? @map("edited_at")

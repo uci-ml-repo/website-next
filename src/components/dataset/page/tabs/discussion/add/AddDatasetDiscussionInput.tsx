@@ -12,6 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import type { DatasetResponse } from "@/lib/types";
@@ -36,13 +37,18 @@ export default function AddDatasetDiscussionInput({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit",
   });
 
+  const createMutation = trpc.discussions.create.fromData.useMutation();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    trpc.discussions.create.fromData.useMutation().mutate({
+    createMutation.mutate({
       datasetId: dataset.id,
       text: values.text,
     });
+
+    setIsAuthoring(false);
   }
 
   return (
@@ -56,10 +62,11 @@ export default function AddDatasetDiscussionInput({
                 name="text"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Comment</FormLabel>
+                    <FormLabel className="text-base">Comment</FormLabel>
                     <FormControl>
                       <Textarea {...field} className="min-h-[100px]" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -77,7 +84,7 @@ export default function AddDatasetDiscussionInput({
                 <Button
                   variant="gold"
                   type="submit"
-                  disabled={!!form.watch("text")}
+                  disabled={!form.watch("text")}
                 >
                   Submit
                 </Button>

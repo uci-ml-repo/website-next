@@ -4,6 +4,7 @@ import DiscussionsCreateService from "@/server/service/discussions/create";
 import DiscussionsEditService from "@/server/service/discussions/edit";
 import DiscussionsFindService from "@/server/service/discussions/find";
 import DiscussionsRemoveService from "@/server/service/discussions/remove";
+import DiscussionsUpvoteService from "@/server/service/discussions/upvote";
 
 export default class DiscussionsService {
   constructor(
@@ -12,5 +13,6 @@ export default class DiscussionsService {
     readonly edit = new DiscussionsEditService(prisma),
     readonly create = new DiscussionsCreateService(prisma),
     readonly remove = new DiscussionsRemoveService(prisma),
+    readonly upvote = new DiscussionsUpvoteService(prisma),
   ) {}
 }
