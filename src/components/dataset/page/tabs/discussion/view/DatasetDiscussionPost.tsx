@@ -2,7 +2,7 @@ import DatasetDiscussionPostUpvotes from "@/components/dataset/page/tabs/discuss
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DatasetDiscussionResponse } from "@/lib/types";
-import { timeSince } from "@/lib/utils/date";
+import { timeSince } from "@/lib/utils";
 
 export default function DatasetDiscussionPost({
   discussion,

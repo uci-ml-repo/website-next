@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import RichTextEditor from "@/components/rich-text/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -13,7 +14,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -61,7 +61,8 @@ export default function DatasetDiscussionCreateInput({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea {...field} className="min-h-[100px]" />
+                      {/*<Textarea {...field} className="min-h-[100px]" />*/}
+                      <RichTextEditor {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -84,7 +85,7 @@ export default function DatasetDiscussionCreateInput({
                   type="submit"
                   disabled={!form.watch("text")}
                 >
-                  Submit
+                  Post
                 </Button>
               </div>
             </form>

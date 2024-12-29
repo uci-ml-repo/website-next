@@ -44,21 +44,22 @@ export default function DatasetDiscussion({
       <h2 className="text-2xl font-bold">Discussions</h2>
 
       <div>
-        <motion.div
-          initial={{ height: 0, marginBottom: 0 }}
-          animate={{
-            height: isAuthoring ? "auto" : 0,
-            marginBottom: isAuthoring ? 24 : 0,
-          }}
-          transition={{ duration: 0.2 }}
-          className="overflow-hidden"
-        >
-          <DatasetDiscussionCreateInput
-            dataset={dataset}
-            setIsAuthoring={setIsAuthoring}
-          />
-        </motion.div>
-
+        {isAuthoring && (
+          <motion.div
+            initial={{ height: 0, marginBottom: 0 }}
+            animate={{
+              height: "auto",
+              marginBottom: 24,
+            }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <DatasetDiscussionCreateInput
+              dataset={dataset}
+              setIsAuthoring={setIsAuthoring}
+            />
+          </motion.div>
+        )}
         <div className="flex items-center space-x-6">
           {!isAuthoring &&
             (discussions.length === 0 ? (

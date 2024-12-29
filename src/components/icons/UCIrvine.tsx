@@ -2,7 +2,7 @@ import React from "react";
 
 interface UCIrvineProps extends React.SVGProps<SVGSVGElement> {}
 
-export default function UCIrvine(props: UCIrvineProps) {
+export function UCIrvine(props: UCIrvineProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

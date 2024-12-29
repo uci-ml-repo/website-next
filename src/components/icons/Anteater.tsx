@@ -2,7 +2,7 @@ import React from "react";
 
 interface AnteaterProps extends React.SVGProps<SVGSVGElement> {}
 
-export default function Anteater(props: AnteaterProps) {
+export function Anteater(props: AnteaterProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 5 100 50" {...props}>
       <g>

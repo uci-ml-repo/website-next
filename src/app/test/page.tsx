@@ -21,6 +21,14 @@ export default function TestPage() {
         spellCheck
         initialValue={value}
         onValueChange={setValue}
+        allowedFormats={[
+          "bold",
+          "italic",
+          "underline",
+          "block-quote",
+          "bulleted-list",
+          "numbered-list",
+        ]}
       />
     </Main>
   );

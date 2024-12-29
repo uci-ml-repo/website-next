@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { Banner } from "@/components/icons";
-import Anteater from "@/components/icons/Anteater";
+import { Anteater, Banner } from "@/components/icons";
 import {
   ABOUT_PATH,
   CONTACT_PATH,

@@ -4,100 +4,125 @@ import isHotkey from "is-hotkey";
 import {
   BoldIcon,
   Code2Icon,
+  Heading1Icon,
+  Heading2Icon,
   ItalicIcon,
   ListIcon,
   ListOrderedIcon,
   QuoteIcon,
   UnderlineIcon,
 } from "lucide-react";
-import type { KeyboardEvent, MouseEvent } from "react";
+import type { KeyboardEvent } from "react";
 import React, { useCallback, useMemo } from "react";
 import type { BaseEditor, Descendant } from "slate";
-import {
-  createEditor,
-  Editor,
-  Element as SlateElement,
-  Transforms,
-} from "slate";
+import { createEditor, Editor } from "slate";
+import type { HistoryEditor } from "slate-history";
 import { withHistory } from "slate-history";
 import type {
   ReactEditor,
   RenderElementProps,
   RenderLeafProps,
 } from "slate-react";
-import { Editable, Slate, useSlate, withReact } from "slate-react";
+import { Editable, Slate, withReact } from "slate-react";
 
-import { Button } from "@/components/ui/button";
+import RichTextEditorBlockButton from "@/components/rich-text/buttons/RichTextEditorBlockButton";
+import RichTextEditorMarkButton, {
+  toggleMark,
+} from "@/components/rich-text/buttons/RichTextEditorMarkButton";
+import RichTextEditorRedoButton from "@/components/rich-text/buttons/RichTextEditorRedoButton";
+import RichTextEditorUndoButton from "@/components/rich-text/buttons/RichTextEditorUndoButton";
+import type {
+  ElementFormat,
+  LeafFormat,
+  RichTextBlockFormat,
+  RichTextFormat,
+  RichTextMarkFormat,
+} from "@/components/rich-text/RichText";
+import { allRichTextFormats } from "@/components/rich-text/RichText";
 import { Separator } from "@/components/ui/separator";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 import styles from "./RichText.module.css";
 
-type CustomText = {
-  text: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-  code?: boolean;
-};
-
-type ParagraphElement = { type: "paragraph"; children: CustomText[] };
-type HeadingOneElement = { type: "heading-one"; children: CustomText[] };
-type HeadingTwoElement = { type: "heading-two"; children: CustomText[] };
-type BlockQuoteElement = { type: "block-quote"; children: CustomText[] };
-type BulletedListElement = { type: "bulleted-list"; children: CustomText[] };
-type NumberedListElement = { type: "numbered-list"; children: CustomText[] };
-type ListItemElement = { type: "list-item"; children: CustomText[] };
-
-type CustomElement =
-  | ParagraphElement
-  | HeadingOneElement
-  | HeadingTwoElement
-  | BlockQuoteElement
-  | BulletedListElement
-  | NumberedListElement
-  | ListItemElement;
-
 declare module "slate" {
   interface CustomTypes {
-    Editor: BaseEditor & ReactEditor;
-    Element: CustomElement;
-    Text: CustomText;
+    Editor: BaseEditor & ReactEditor & HistoryEditor;
+    Element: ElementFormat;
+    Text: LeafFormat;
   }
 }
 
-const HOTKEYS: Record<string, MarkFormat> = {
+const HOTKEYS: Record<string, RichTextMarkFormat> = {
   "mod+b": "bold",
   "mod+i": "italic",
   "mod+u": "underline",
   "mod+`": "code",
 };
 
-type MarkFormat = "bold" | "italic" | "underline" | "code";
-type BlockFormat =
-  | "block-quote"
-  | "list-item"
-  | "bulleted-list"
-  | "numbered-list";
+const formatOptions: {
+  type: "mark" | "block";
+  format: RichTextFormat;
+  name: string;
+  icon: React.ReactNode;
+}[] = [
+  { type: "mark", format: "bold", name: "Bold", icon: <BoldIcon /> },
+  { type: "mark", format: "italic", name: "Italic", icon: <ItalicIcon /> },
+  {
+    type: "mark",
+    format: "underline",
+    name: "Underline",
+    icon: <UnderlineIcon />,
+  },
+  { type: "mark", format: "code", name: "Code", icon: <Code2Icon /> },
+  {
+    type: "block",
+    format: "heading-one",
+    name: "Heading 1",
+    icon: <Heading1Icon />,
+  },
+  {
+    type: "block",
+    format: "heading-two",
+    name: "Heading 2",
+    icon: <Heading2Icon />,
+  },
+  {
+    type: "block",
+    format: "block-quote",
+    name: "Block Quote",
+    icon: <QuoteIcon className="!size-3 fill-foreground" />,
+  },
+  {
+    type: "block",
+    format: "numbered-list",
+    name: "Numbered List",
+    icon: <ListOrderedIcon />,
+  },
+  {
+    type: "block",
+    format: "bulleted-list",
+    name: "Bulleted List",
+    icon: <ListIcon />,
+  },
+];
 
-const LIST_TYPES = ["numbered-list", "bulleted-list"];
-
-interface RichTextEditorProps {
-  spellCheck?: boolean;
-  autoFocus?: boolean;
+interface RichTextEditorProps
+  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+  allowedFormats?: RichTextFormat[];
   initialValue?: Descendant[];
-  placeholder?: string;
-  className?: string;
+  autoFocus?: boolean;
   onValueChange?: (value: Descendant[]) => void;
 }
 
 export default function RichTextEditor({
-  placeholder,
-  className,
-  spellCheck = false,
-  autoFocus = false,
+  allowedFormats = allRichTextFormats,
   initialValue = [{ type: "paragraph", children: [{ text: "" }] }],
+  autoFocus,
   onValueChange,
+  spellCheck,
+  className,
+  placeholder,
 }: RichTextEditorProps) {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
@@ -113,56 +138,80 @@ export default function RichTextEditor({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     for (const hotkey in HOTKEYS) {
-      if (isHotkey(hotkey, event)) {
+      if (isHotkey(hotkey, event) && allowedFormats.includes(HOTKEYS[hotkey])) {
         event.preventDefault();
         const mark = HOTKEYS[hotkey];
         toggleMark(editor, mark);
+        return;
       }
+    }
+
+    if (event.key === "Tab") {
+      event.preventDefault();
+      Editor.insertText(editor, "\t");
     }
   };
 
-  return (
-    <Slate
-      editor={editor}
-      initialValue={initialValue}
-      onValueChange={onValueChange}
-    >
-      <div className="space-y-2">
-        <div className="mb-2 flex items-center space-x-1">
-          <MarkButton format="bold" icon={<BoldIcon />} />
-          <ButtonSeparator />
-          <MarkButton format="italic" icon={<ItalicIcon />} />
-          <ButtonSeparator />
-          <MarkButton format="underline" icon={<UnderlineIcon />} />
-          <ButtonSeparator />
-          <MarkButton format="code" icon={<Code2Icon />} />
-          <ButtonSeparator />
-          <BlockButton
-            format="block-quote"
-            icon={<QuoteIcon className="!size-3 fill-foreground" />}
-          />
-          <ButtonSeparator />
-          <BlockButton format="numbered-list" icon={<ListOrderedIcon />} />
-          <ButtonSeparator />
-          <BlockButton format="bulleted-list" icon={<ListIcon />} />
-        </div>
-        <Separator />
+  const filteredFormatOptions = useMemo(() => {
+    return formatOptions.filter(({ format }) =>
+      allowedFormats.includes(format),
+    );
+  }, [allowedFormats]);
 
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          placeholder={placeholder}
-          spellCheck={spellCheck}
-          autoFocus={autoFocus}
-          onKeyDown={handleKeyDown}
-          className={cn(
-            styles.rich,
-            "w-full rounded-xl border border-input bg-transparent px-3 py-2 text-base shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-            className,
-          )}
-        />
-      </div>
-    </Slate>
+  return (
+    <TooltipProvider>
+      <Slate
+        editor={editor}
+        initialValue={initialValue}
+        onChange={onValueChange}
+      >
+        <div className="space-y-2">
+          <div className="flex items-center space-x-1.5">
+            <div className="flex items-center">
+              <RichTextEditorUndoButton />
+              <RichTextEditorRedoButton />
+            </div>
+            <ButtonSeparator />
+            {filteredFormatOptions.map(
+              ({ type, format, icon, name }, index) => (
+                <React.Fragment key={format}>
+                  {index !== 0 && <ButtonSeparator />}
+
+                  {type === "mark" ? (
+                    <RichTextEditorMarkButton
+                      format={format as RichTextMarkFormat}
+                      icon={icon}
+                      name={name}
+                    />
+                  ) : (
+                    <RichTextEditorBlockButton
+                      format={format as RichTextBlockFormat}
+                      icon={icon}
+                      name={name}
+                    />
+                  )}
+                </React.Fragment>
+              ),
+            )}
+          </div>
+          <Separator />
+
+          <Editable
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            placeholder={placeholder}
+            spellCheck={spellCheck}
+            autoFocus={autoFocus}
+            onKeyDown={handleKeyDown}
+            className={cn(
+              styles.rich,
+              "w-full rounded-xl border border-input bg-transparent px-3 py-2 text-base shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+              className,
+            )}
+          />
+        </div>
+      </Slate>
+    </TooltipProvider>
   );
 }
 
@@ -170,72 +219,16 @@ const ButtonSeparator = () => (
   <Separator orientation="vertical" className="h-6" />
 );
 
-const toggleBlock = (editor: Editor, format: string) => {
-  const isActive = isBlockActive(editor, format);
-  const isList = LIST_TYPES.includes(format);
-
-  Transforms.unwrapNodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) &&
-      SlateElement.isElement(n) &&
-      LIST_TYPES.includes(n.type),
-    split: true,
-  });
-
-  const newProperties: Partial<SlateElement> = {
-    type: isActive
-      ? "paragraph"
-      : isList
-        ? "list-item"
-        : (format as "block-quote" | "heading-one" | "heading-two"),
-  };
-
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-
-  if (!isActive && isList) {
-    const block: SlateElement = {
-      type: format as "bulleted-list" | "numbered-list",
-      children: [],
-    };
-    Transforms.wrapNodes(editor, block);
-  }
-};
-
-const toggleMark = (editor: Editor, format: MarkFormat) => {
-  const isActive = isMarkActive(editor, format);
-  if (isActive) {
-    Editor.removeMark(editor, format);
-  } else {
-    Editor.addMark(editor, format, true);
-  }
-};
-
-const isBlockActive = (editor: Editor, format: string): boolean => {
-  const { selection } = editor;
-  if (!selection) return false;
-
-  const [match] = Array.from(
-    Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, selection),
-      match: (n) =>
-        !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
-    }),
-  );
-
-  return !!match;
-};
-
-const isMarkActive = (editor: Editor, format: MarkFormat): boolean => {
-  const marks = Editor.marks(editor);
-  return marks ? marks[format] === true : false;
-};
-
 const Element: React.FC<RenderElementProps> = (props) => {
   const { attributes, children, element } = props;
 
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;
+    case "heading-one":
+      return <h1 {...attributes}>{children}</h1>;
+    case "heading-two":
+      return <h2 {...attributes}>{children}</h2>;
     case "bulleted-list":
       return <ul {...attributes}>{children}</ul>;
     case "list-item":
@@ -265,60 +258,4 @@ const Leaf: React.FC<RenderLeafProps> = (props) => {
   }
 
   return <span {...attributes}>{children}</span>;
-};
-
-const BlockButton = ({
-  format,
-  icon,
-}: {
-  format: BlockFormat;
-  icon: React.ReactNode;
-}) => {
-  const editor = useSlate();
-
-  const handleMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleBlock(editor, format);
-  };
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onMouseDown={handleMouseDown}
-      className={
-        isBlockActive(editor, format) ? "bg-uci-gold hover:bg-uci-gold" : ""
-      }
-    >
-      {icon}
-    </Button>
-  );
-};
-
-const MarkButton = ({
-  format,
-  icon,
-}: {
-  format: MarkFormat;
-  icon: React.ReactNode;
-}) => {
-  const editor = useSlate();
-
-  const handleMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleMark(editor, format);
-  };
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onMouseDown={handleMouseDown}
-      className={
-        isMarkActive(editor, format) ? "bg-uci-gold hover:bg-uci-gold" : ""
-      }
-    >
-      {icon}
-    </Button>
-  );
 };

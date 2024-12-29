@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import React from "react";
 
-import UCIrvine from "@/components/icons/UCIrvine";
+import { UCIrvine } from "@/components/icons";
 import { HOME_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
