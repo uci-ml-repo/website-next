@@ -218,7 +218,7 @@ model DatasetKeyword {
 model DatasetDiscussion {
   id String @id @default(cuid())
 
-  text String @db.Text
+  content String @db.Text
 
   replyToId String?             @map("reply_to_id")
   replyTo   DatasetDiscussion?  @relation("Replies", fields: [replyToId], references: [id], onDelete: Cascade)

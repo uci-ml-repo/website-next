@@ -5,7 +5,7 @@ import { procedure, router } from "@/server/trpc";
 
 const discussionsEditRouter = router({
   byId: procedure
-    .input(z.object({ id: z.string(), text: z.string() }))
+    .input(z.object({ id: z.string(), content: z.string() }))
     .mutation(async ({ input }) => {
       return service.discussions.edit.byId(input);
     }),

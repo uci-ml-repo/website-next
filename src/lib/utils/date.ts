@@ -10,24 +10,24 @@ export function timeSince(date: Date) {
 
   const yearDiff = Math.floor(seconds / SECONDS_IN_YEAR);
   if (yearDiff >= 1) {
-    return yearDiff + ` year${yearDiff > 1 ? "s" : ""}`;
+    return yearDiff + ` year${yearDiff === 1 ? "" : "s"}`;
   }
 
   const monthDiff = Math.floor(seconds / SECONDS_IN_MONTH);
   if (monthDiff >= 1) {
-    return monthDiff + ` month${monthDiff > 1 ? "s" : ""}`;
+    return monthDiff + ` month${monthDiff === 1 ? "" : "s"}`;
   }
 
   const dayDiff = Math.floor(seconds / SECONDS_IN_DAY);
   if (dayDiff >= 1) {
-    return dayDiff + ` day${dayDiff > 1 ? "s" : ""}`;
+    return dayDiff + ` day${dayDiff === 1 ? "" : "s"}`;
   }
 
   const hourDiff = Math.floor(seconds / SECONDS_IN_HOUR);
   if (hourDiff >= 1) {
-    return hourDiff + ` hour${hourDiff > 1 ? "s" : ""}`;
+    return hourDiff + ` hour${hourDiff === 1 ? "" : "s"}`;
   }
 
   const minuteDiff = Math.floor(seconds / SECONDS_IN_MINUTE);
-  return minuteDiff + ` minute${minuteDiff > 1 ? "s" : ""}`;
+  return minuteDiff + ` minute${minuteDiff === 1 ? "" : "s"}`;
 }

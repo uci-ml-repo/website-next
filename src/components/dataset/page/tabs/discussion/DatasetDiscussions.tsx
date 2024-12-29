@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import type { DatasetDiscussionResponse, DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DatasetDiscussion({
+export default function DatasetDiscussions({
   dataset,
 }: {
   dataset: DatasetResponse;
@@ -39,8 +39,12 @@ export default function DatasetDiscussion({
     return <div>Loading...</div>;
   }
 
+  function insertDiscussion(discussion: DatasetDiscussionResponse) {
+    setDiscussions((prev) => [discussion, ...prev]);
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <h2 className="text-2xl font-bold">Discussions</h2>
 
       <div>
@@ -57,6 +61,7 @@ export default function DatasetDiscussion({
             <DatasetDiscussionCreateInput
               dataset={dataset}
               setIsAuthoring={setIsAuthoring}
+              insertDiscussion={insertDiscussion}
             />
           </motion.div>
         )}

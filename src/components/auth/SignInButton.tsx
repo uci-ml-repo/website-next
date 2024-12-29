@@ -10,12 +10,14 @@ import { SIGN_IN_PATH } from "@/lib/routes";
 interface SignInButtonProps extends React.ComponentProps<typeof Button> {}
 
 export default function SignInButton(props: SignInButtonProps) {
-  const pathname = usePathname(); // Reactive pathname
-  const searchParams = useSearchParams(); // Reactive search params
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const [hash, setHash] = useState<string>(window.location.hash);
+  const [hash, setHash] = useState<string>();
 
   useEffect(() => {
+    setHash(window.location.hash);
+
     const handleHashChange = () => {
       setHash(window.location.hash);
     };

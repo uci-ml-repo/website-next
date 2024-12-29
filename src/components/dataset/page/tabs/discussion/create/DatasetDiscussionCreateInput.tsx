@@ -15,12 +15,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import type { DatasetResponse } from "@/lib/types";
+import Spinner from "@/components/ui/spinner";
+import type { DatasetDiscussionResponse, DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface AddDatasetDiscussionInputProps {
   dataset: DatasetResponse;
   setIsAuthoring: React.Dispatch<React.SetStateAction<boolean>>;
+  insertDiscussion: (discussion: DatasetDiscussionResponse) => void;
 }
 
 const formSchema = z.object({
@@ -30,6 +32,7 @@ const formSchema = z.object({
 export default function DatasetDiscussionCreateInput({
   dataset,
   setIsAuthoring,
+  insertDiscussion,
 }: AddDatasetDiscussionInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -44,12 +47,13 @@ export default function DatasetDiscussionCreateInput({
 
   const createMutation = trpc.discussions.create.fromData.useMutation();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createMutation.mutate({
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const newDiscussion = await createMutation.mutateAsync({
       datasetId: dataset.id,
-      text: serialize(values.nodes),
+      content: serialize(values.nodes),
     });
 
+    insertDiscussion(newDiscussion);
     setIsAuthoring(false);
   }
 
@@ -88,7 +92,14 @@ export default function DatasetDiscussionCreateInput({
                 >
                   Cancel
                 </Button>
-                <Button variant="gold" type="submit" disabled={isTextEmpty}>
+                <Button
+                  variant="gold"
+                  type="submit"
+                  disabled={isTextEmpty || createMutation.isPending}
+                >
+                  <Spinner
+                    className={!createMutation.isPending ? "hidden" : ""}
+                  />
                   Post
                 </Button>
               </div>

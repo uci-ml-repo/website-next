@@ -18,7 +18,7 @@ const discussionsRemoveRouter = router({
       return service.discussions.remove.byId({
         id: input.id,
         userId: ctx.user.id,
-        reason: input.reason,
+        deletionReason: input.reason,
       });
     }),
 });

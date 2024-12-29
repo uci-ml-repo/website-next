@@ -1,4 +1,5 @@
 import DatasetDiscussionPostUpvotes from "@/components/dataset/page/tabs/discussion/view/upvote/DatasetDiscussionPostUpvotes";
+import styles from "@/components/rich-text/RichText.module.css";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DatasetDiscussionResponse } from "@/lib/types";
@@ -30,7 +31,10 @@ export default function DatasetDiscussionPost({
           <DatasetDiscussionPostUpvotes discussion={discussion} />
         </div>
 
-        <p>{discussion.text}</p>
+        <div
+          className={styles.rich}
+          dangerouslySetInnerHTML={{ __html: discussion.content }}
+        />
       </CardContent>
     </Card>
   );

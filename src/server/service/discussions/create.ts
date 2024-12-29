@@ -4,19 +4,23 @@ export default class DiscussionsCreateService {
   constructor(readonly prisma: PrismaClient) {}
 
   async fromData({
-    text,
+    content,
     userId,
     datasetId,
   }: {
-    text: string;
+    content: string;
     userId: string;
     datasetId: number;
   }) {
     return this.prisma.datasetDiscussion.create({
       data: {
-        text,
+        content,
         userId,
         datasetId,
+      },
+      include: {
+        user: true,
+        upvotes: true,
       },
     });
   }

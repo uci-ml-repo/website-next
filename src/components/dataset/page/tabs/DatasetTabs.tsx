@@ -1,6 +1,6 @@
 import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
-import DatasetDiscussion from "@/components/dataset/page/tabs/discussion/DatasetDiscussion";
+import DatasetDiscussions from "@/components/dataset/page/tabs/discussion/DatasetDiscussions";
 import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
 import {
   LinearTabs,
@@ -27,9 +27,7 @@ export default async function DatasetTabs({
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
           {dataset.fileCount && (
-            <LinearTabsTrigger value="files" badgeValue={dataset.fileCount}>
-              Files
-            </LinearTabsTrigger>
+            <LinearTabsTrigger value="files">Files</LinearTabsTrigger>
           )}
           <LinearTabsTrigger
             value="discussions"
@@ -52,7 +50,7 @@ export default async function DatasetTabs({
           </LinearTabsContent>
         )}
         <LinearTabsContent value="discussions" forceMount>
-          <DatasetDiscussion dataset={dataset} />
+          <DatasetDiscussions dataset={dataset} />
         </LinearTabsContent>
       </div>
     </LinearTabs>

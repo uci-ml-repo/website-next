@@ -5,7 +5,7 @@ import { protectedProcedure, router } from "@/server/trpc";
 
 const discussionsCreateRouter = router({
   fromData: protectedProcedure
-    .input(z.object({ datasetId: z.number(), text: z.string() }))
+    .input(z.object({ datasetId: z.number(), content: z.string() }))
     .mutation(async ({ input, ctx }) => {
       return service.discussions.create.fromData({
         userId: ctx.user.id,

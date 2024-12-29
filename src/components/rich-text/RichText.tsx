@@ -79,13 +79,11 @@ export function serializeLeaf(leaf: LeafNode) {
     children = <u>{children}</u>;
   }
 
-  return <span key={0}>{children}</span>;
+  return <span>{children}</span>;
 }
 
 export function serializeElement(element: ElementNode) {
-  const children = element.children.map((n) => serializeNode(n));
-
-  console.log(children);
+  const children = keySafe(element.children.map((n) => serializeNode(n)));
 
   switch (element.type) {
     case "block-quote":
@@ -122,4 +120,16 @@ export function serialize(nodes: (LeafNode | ElementNode)[]) {
 
 export function serializeText(nodes: (LeafNode | ElementNode)[]) {
   return nodes.map((n) => Node.string(n)).join("\n");
+}
+
+function keySafe(
+  element: Iterable<React.ReactNode> | React.ReactElement | string,
+) {
+  if (Array.isArray(element)) {
+    return element.map((node, i) => (
+      <React.Fragment key={i}>{node}</React.Fragment>
+    ));
+  }
+
+  return element;
 }
