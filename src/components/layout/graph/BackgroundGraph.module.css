@@ -106,7 +106,7 @@
   }
 }
 
-.animate-spring {
+.spring {
   transform-box: fill-box;
   transform-origin: center;
 
@@ -114,7 +114,7 @@
   animation-fill-mode: backwards;
 }
 
-.animate-draw {
+.draw {
   animation: draw 4s ease-out forwards;
   animation-fill-mode: backwards;
   stroke-dasharray: 100% 0;

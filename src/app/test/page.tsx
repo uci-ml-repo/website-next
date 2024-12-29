@@ -1,12 +1,27 @@
-// TODO
-
 "use client";
-import Main from "@/components/layout/Main";
+import { useEffect, useState } from "react";
+import type { Descendant } from "slate";
 
-export default function Test() {
+import Main from "@/components/layout/Main";
+import RichTextEditor from "@/components/rich-text/RichTextEditor";
+
+export default function TestPage() {
+  const [value, setValue] = useState<Descendant[]>([
+    { type: "paragraph", children: [{ text: "" }] },
+  ]);
+
+  useEffect(() => {
+    console.log(JSON.stringify(value));
+  }, [value]);
+
   return (
     <Main>
-      <div>TEST</div>
+      <RichTextEditor
+        placeholder="Type here..."
+        spellCheck
+        initialValue={value}
+        onValueChange={setValue}
+      />
     </Main>
   );
 }

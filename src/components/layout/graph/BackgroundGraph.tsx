@@ -1,11 +1,11 @@
 "use client";
 
-import "./BackgroundGraph.css";
-
 import { startTransition, useEffect, useState } from "react";
 
 import type { GraphNode } from "@/components/layout/graph/backgroundGraphWorker";
 import { cn } from "@/lib/utils";
+
+import styles from "./BackgroundGraph.module.css";
 
 const BackgroundGraph = () => {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
@@ -42,7 +42,7 @@ const BackgroundGraph = () => {
               cx={node.x}
               cy={node.y}
               r={node.size}
-              className="animate-spring fill-uci-gold/65"
+              className={cn(styles.spring, "fill-uci-gold/65")}
               style={{
                 animationDelay: `${index * ANIMATION_DELAY}s`,
               }}
@@ -56,7 +56,7 @@ const BackgroundGraph = () => {
                   x2={adjacentNode.x}
                   y2={adjacentNode.y}
                   strokeWidth="2"
-                  className="animate-draw stroke-uci-gold/30"
+                  className={cn(styles.draw, "stroke-uci-gold/30")}
                   style={{
                     animationDelay: `${index * ANIMATION_DELAY}s`,
                   }}

@@ -1,0 +1,43 @@
+.rich {
+  &:focus {
+    outline: none;
+  }
+
+  [contenteditable="false"] {
+    top: 8px !important;
+  }
+
+  code {
+    font-family: monospace;
+    background-color: #eee;
+    padding: 3px;
+  }
+
+  blockquote {
+    border-left: 2px solid #ddd;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 10px;
+    border: 2px solid #ddd;
+  }
+
+  ol {
+    list-style-type: decimal;
+    padding-inline-start: 40px;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-inline-start: 40px;
+  }
+}

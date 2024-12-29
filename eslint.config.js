@@ -27,7 +27,7 @@ const config = [
       "@typescript-eslint": typescriptESLintPlugin,
     },
     rules: {
-      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/consistent-type-imports": "warn",
       "@typescript-eslint/no-explicit-any": "error",
     },
   },
