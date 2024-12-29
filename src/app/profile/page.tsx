@@ -32,18 +32,10 @@ export default async function Page() {
 
       <LinearTabs defaultValue="bookmarks">
         <LinearTabsList className="space-x-10 overflow-x-auto">
-          <LinearTabsTrigger
-            value="bookmarks"
-            badge
-            badgeValue={bookmarks.length}
-          >
+          <LinearTabsTrigger value="bookmarks" badgeValue={bookmarks.length}>
             Bookmarks
           </LinearTabsTrigger>
-          <LinearTabsTrigger
-            value="datasets"
-            badge
-            badgeValue={datasets.length}
-          >
+          <LinearTabsTrigger value="datasets" badgeValue={datasets.length}>
             Datasets
           </LinearTabsTrigger>
         </LinearTabsList>

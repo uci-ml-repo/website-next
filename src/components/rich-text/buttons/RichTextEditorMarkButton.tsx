@@ -4,6 +4,7 @@ import { useSlate } from "slate-react";
 import RichTextEditorFormatTooltip from "@/components/rich-text/buttons/RichTextEditorFormatTooltip";
 import type { RichTextMarkFormat } from "@/components/rich-text/RichText";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const toggleMark = (editor: Editor, format: RichTextMarkFormat) => {
   const isActive = isMarkActive(editor, format);
@@ -40,10 +41,12 @@ export default function RichTextEditorMarkButton({
       <Button
         variant="ghost"
         size="icon"
+        type="button"
         onMouseDown={handleMouseDown}
-        className={
-          isMarkActive(editor, format) ? "bg-uci-gold hover:bg-uci-gold" : ""
-        }
+        className={cn(
+          "shrink-0",
+          isMarkActive(editor, format) ? "bg-uci-gold hover:bg-uci-gold" : "",
+        )}
       >
         {icon}
       </Button>

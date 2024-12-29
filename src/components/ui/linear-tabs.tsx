@@ -182,20 +182,12 @@ type TriggerElement = React.ReactElement<{
 const LinearTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
-    badge?: boolean;
     badgeVariant?: VariantProps<typeof badgeVariants>["variant"];
     badgeValue?: number | string;
   }
 >(
   (
-    {
-      className,
-      children,
-      badge,
-      badgeVariant = "secondary",
-      badgeValue,
-      ...props
-    },
+    { className, children, badgeVariant = "secondary", badgeValue, ...props },
     ref,
   ) => (
     <TabsPrimitive.Trigger
@@ -208,7 +200,7 @@ const LinearTabsTrigger = React.forwardRef<
       )}
       {...props}
     >
-      {badge ? (
+      {badgeValue !== undefined ? (
         <div className="flex items-center space-x-2">
           <span>{children}</span>
           <Badge variant={badgeVariant}>{badgeValue}</Badge>

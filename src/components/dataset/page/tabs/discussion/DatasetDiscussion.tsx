@@ -67,10 +67,10 @@ export default function DatasetDiscussion({
                 <CardContent className="flex h-[130px] items-center justify-center">
                   <div className="space-y-4 text-center">
                     <div className="text-muted-foreground">
-                      There are no comments yet
+                      There are no discussions yet
                     </div>
                     <CreateDiscussionButton
-                      text="Start the discussion"
+                      text="Start a discussion"
                       session={session}
                       authAction={() => setIsAuthoring(true)}
                     />

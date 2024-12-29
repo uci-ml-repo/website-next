@@ -1,5 +1,8 @@
-export function getPath(url: string) {
-  return url.startsWith("http")
-    ? new URL(url).pathname + new URL(url).search
-    : url;
+export function getFullPath(url: string) {
+  if (url.startsWith("http")) {
+    const urlObject = new URL(url);
+    return urlObject.pathname + urlObject.search + urlObject.hash;
+  }
+
+  return url;
 }

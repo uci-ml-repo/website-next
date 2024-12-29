@@ -23,7 +23,7 @@ export default function Page() {
           variant="destructive"
         >
           <LinearTabsTrigger value="overview">Overview</LinearTabsTrigger>
-          <LinearTabsTrigger value="datasets" badge badgeValue={0}>
+          <LinearTabsTrigger value="datasets" badgeValue={0}>
             Datasets
           </LinearTabsTrigger>
         </LinearTabsList>

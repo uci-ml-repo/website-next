@@ -1,9 +1,8 @@
 "use client";
 
 import { LogInIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import * as React from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SIGN_IN_PATH } from "@/lib/routes";
@@ -11,18 +10,36 @@ import { SIGN_IN_PATH } from "@/lib/routes";
 interface SignInButtonProps extends React.ComponentProps<typeof Button> {}
 
 export default function SignInButton(props: SignInButtonProps) {
-  const pathname = usePathname();
+  const pathname = usePathname(); // Reactive pathname
+  const searchParams = useSearchParams(); // Reactive search params
+
+  const [hash, setHash] = useState<string>(window.location.hash);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   if (pathname === SIGN_IN_PATH) {
     return null;
   }
 
+  const callbackUrl = `${pathname || ""}${searchParams.toString() ? `?${searchParams.toString()}` : ""}${hash}`;
+
   return (
     <Button variant="outline" asChild {...props}>
-      <Link href={SIGN_IN_PATH + `?callbackUrl=${pathname}`}>
+      <a
+        href={`${SIGN_IN_PATH}?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+      >
         <LogInIcon className="size-6" />
         <p>Sign In</p>
-      </Link>
+      </a>
     </Button>
   );
 }

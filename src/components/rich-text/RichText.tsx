@@ -1,5 +1,10 @@
 import escapeHtml from "escape-html";
-import { Text } from "slate";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import type { BaseEditor } from "slate";
+import { Node, Text } from "slate";
+import type { HistoryEditor } from "slate-history";
+import type { ReactEditor } from "slate-react";
 
 export type RichTextMarkFormat = "bold" | "italic" | "underline" | "code";
 export type RichTextBlockFormat =
@@ -25,7 +30,7 @@ export const allRichTextFormats: RichTextFormat[] = [
   "numbered-list",
 ];
 
-export type LeafFormat = {
+export type LeafNode = {
   text: string;
   bold?: boolean;
   italic?: boolean;
@@ -33,15 +38,15 @@ export type LeafFormat = {
   code?: boolean;
 };
 
-type ParagraphElement = { type: "paragraph"; children: LeafFormat[] };
-type HeadingOneElement = { type: "heading-one"; children: LeafFormat[] };
-type HeadingTwoElement = { type: "heading-two"; children: LeafFormat[] };
-type BlockQuoteElement = { type: "block-quote"; children: LeafFormat[] };
-type BulletedListElement = { type: "bulleted-list"; children: LeafFormat[] };
-type NumberedListElement = { type: "numbered-list"; children: LeafFormat[] };
-type ListItemElement = { type: "list-item"; children: LeafFormat[] };
+type ParagraphElement = { type: "paragraph"; children: LeafNode[] };
+type HeadingOneElement = { type: "heading-one"; children: LeafNode[] };
+type HeadingTwoElement = { type: "heading-two"; children: LeafNode[] };
+type BlockQuoteElement = { type: "block-quote"; children: LeafNode[] };
+type BulletedListElement = { type: "bulleted-list"; children: LeafNode[] };
+type NumberedListElement = { type: "numbered-list"; children: LeafNode[] };
+type ListItemElement = { type: "list-item"; children: LeafNode[] };
 
-export type ElementFormat =
+export type ElementNode =
   | ParagraphElement
   | HeadingOneElement
   | HeadingTwoElement
@@ -50,18 +55,39 @@ export type ElementFormat =
   | NumberedListElement
   | ListItemElement;
 
-export function serialize(node: LeafFormat | ElementFormat) {
-  if (Text.isText(node)) {
-    let string = escapeHtml(node.text);
-    if (node.bold) {
-      return <strong>${string}</strong>;
-    }
-    return string;
+declare module "slate" {
+  interface CustomTypes {
+    Editor: BaseEditor & ReactEditor & HistoryEditor;
+    Element: ElementNode;
+    Text: LeafNode;
+  }
+}
+
+export function serializeLeaf(leaf: LeafNode) {
+  let children: React.ReactNode | string = escapeHtml(leaf.text);
+
+  if (leaf.bold) {
+    children = <strong>{children}</strong>;
+  }
+  if (leaf.code) {
+    children = <code>{children}</code>;
+  }
+  if (leaf.italic) {
+    children = <em>{children}</em>;
+  }
+  if (leaf.underline) {
+    children = <u>{children}</u>;
   }
 
-  const children = node.children.map((n) => serialize(n)).join("");
+  return <span key={0}>{children}</span>;
+}
 
-  switch (node.type) {
+export function serializeElement(element: ElementNode) {
+  const children = element.children.map((n) => serializeNode(n));
+
+  console.log(children);
+
+  switch (element.type) {
     case "block-quote":
       return <blockquote>{children}</blockquote>;
     case "heading-one":
@@ -77,4 +103,23 @@ export function serialize(node: LeafFormat | ElementFormat) {
     default:
       return <p>{children}</p>;
   }
+}
+
+export function serializeNode(node: LeafNode | ElementNode) {
+  if (Text.isText(node)) {
+    return serializeLeaf(node);
+  }
+
+  return serializeElement(node);
+}
+
+export function serialize(nodes: (LeafNode | ElementNode)[]) {
+  return nodes
+    .map((n) => serializeNode(n))
+    .map((n) => ReactDOMServer.renderToStaticMarkup(n))
+    .join("");
+}
+
+export function serializeText(nodes: (LeafNode | ElementNode)[]) {
+  return nodes.map((n) => Node.string(n)).join("\n");
 }

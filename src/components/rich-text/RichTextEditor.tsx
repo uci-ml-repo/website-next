@@ -1,5 +1,3 @@
-"use client";
-
 import isHotkey from "is-hotkey";
 import {
   BoldIcon,
@@ -14,15 +12,10 @@ import {
 } from "lucide-react";
 import type { KeyboardEvent } from "react";
 import React, { useCallback, useMemo } from "react";
-import type { BaseEditor, Descendant } from "slate";
+import type { Descendant } from "slate";
 import { createEditor, Editor } from "slate";
-import type { HistoryEditor } from "slate-history";
 import { withHistory } from "slate-history";
-import type {
-  ReactEditor,
-  RenderElementProps,
-  RenderLeafProps,
-} from "slate-react";
+import type { RenderElementProps, RenderLeafProps } from "slate-react";
 import { Editable, Slate, withReact } from "slate-react";
 
 import RichTextEditorBlockButton from "@/components/rich-text/buttons/RichTextEditorBlockButton";
@@ -32,8 +25,6 @@ import RichTextEditorMarkButton, {
 import RichTextEditorRedoButton from "@/components/rich-text/buttons/RichTextEditorRedoButton";
 import RichTextEditorUndoButton from "@/components/rich-text/buttons/RichTextEditorUndoButton";
 import type {
-  ElementFormat,
-  LeafFormat,
   RichTextBlockFormat,
   RichTextFormat,
   RichTextMarkFormat,
@@ -44,14 +35,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 import styles from "./RichText.module.css";
-
-declare module "slate" {
-  interface CustomTypes {
-    Editor: BaseEditor & ReactEditor & HistoryEditor;
-    Element: ElementFormat;
-    Text: LeafFormat;
-  }
-}
 
 const HOTKEYS: Record<string, RichTextMarkFormat> = {
   "mod+b": "bold",
@@ -107,22 +90,24 @@ const formatOptions: {
   },
 ];
 
-interface RichTextEditorProps
-  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+interface RichTextEditorProps {
   allowedFormats?: RichTextFormat[];
-  initialValue?: Descendant[];
+  disallowedFormats?: RichTextFormat[];
+  value?: Descendant[];
+  onChange?: (value: Descendant[]) => void;
+  placeholder?: string;
   autoFocus?: boolean;
-  onValueChange?: (value: Descendant[]) => void;
+  spellCheck?: boolean;
+  className?: string;
 }
 
 export default function RichTextEditor({
   allowedFormats = allRichTextFormats,
-  initialValue = [{ type: "paragraph", children: [{ text: "" }] }],
-  autoFocus,
-  onValueChange,
-  spellCheck,
+  disallowedFormats = [],
+  value = [{ type: "paragraph", children: [{ text: "" }] }],
+  onChange,
   className,
-  placeholder,
+  ...props
 }: RichTextEditorProps) {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
@@ -138,7 +123,11 @@ export default function RichTextEditor({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     for (const hotkey in HOTKEYS) {
-      if (isHotkey(hotkey, event) && allowedFormats.includes(HOTKEYS[hotkey])) {
+      if (
+        isHotkey(hotkey, event) &&
+        allowedFormats.includes(HOTKEYS[hotkey]) &&
+        !disallowedFormats.includes(HOTKEYS[hotkey])
+      ) {
         event.preventDefault();
         const mark = HOTKEYS[hotkey];
         toggleMark(editor, mark);
@@ -153,20 +142,16 @@ export default function RichTextEditor({
   };
 
   const filteredFormatOptions = useMemo(() => {
-    return formatOptions.filter(({ format }) =>
-      allowedFormats.includes(format),
-    );
-  }, [allowedFormats]);
+    return formatOptions
+      .filter(({ format }) => allowedFormats.includes(format))
+      .filter(({ format }) => !disallowedFormats.includes(format));
+  }, [allowedFormats, disallowedFormats]);
 
   return (
     <TooltipProvider>
-      <Slate
-        editor={editor}
-        initialValue={initialValue}
-        onChange={onValueChange}
-      >
+      <Slate editor={editor} initialValue={value} onChange={onChange}>
         <div className="space-y-2">
-          <div className="flex items-center space-x-1.5">
+          <div className="flex items-center space-x-1.5 overflow-x-auto">
             <div className="flex items-center">
               <RichTextEditorUndoButton />
               <RichTextEditorRedoButton />
@@ -199,15 +184,13 @@ export default function RichTextEditor({
           <Editable
             renderElement={renderElement}
             renderLeaf={renderLeaf}
-            placeholder={placeholder}
-            spellCheck={spellCheck}
-            autoFocus={autoFocus}
             onKeyDown={handleKeyDown}
             className={cn(
               styles.rich,
               "w-full rounded-xl border border-input bg-transparent px-3 py-2 text-base shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
               className,
             )}
+            {...props}
           />
         </div>
       </Slate>

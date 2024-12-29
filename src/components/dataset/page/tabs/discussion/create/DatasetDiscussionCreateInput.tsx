@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { serialize, serializeText } from "@/components/rich-text/RichText";
 import RichTextEditor from "@/components/rich-text/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,9 +24,7 @@ interface AddDatasetDiscussionInputProps {
 }
 
 const formSchema = z.object({
-  text: z.string().min(1, { message: "Comment is required" }).max(9999, {
-    message: "Comment must be less than 10,000 characters",
-  }),
+  nodes: z.array(z.any()),
 });
 
 export default function DatasetDiscussionCreateInput({
@@ -36,14 +35,19 @@ export default function DatasetDiscussionCreateInput({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      nodes: [{ type: "paragraph", children: [{ text: "" }] }],
+    },
   });
+
+  const isTextEmpty = serializeText(form.watch("nodes")).length === 0;
 
   const createMutation = trpc.discussions.create.fromData.useMutation();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createMutation.mutate({
       datasetId: dataset.id,
-      text: values.text,
+      text: serialize(values.nodes),
     });
 
     setIsAuthoring(false);
@@ -57,12 +61,16 @@ export default function DatasetDiscussionCreateInput({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="text"
+                name="nodes"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      {/*<Textarea {...field} className="min-h-[100px]" />*/}
-                      <RichTextEditor {...field} />
+                      <RichTextEditor
+                        {...field}
+                        disallowedFormats={["heading-one", "heading-two"]}
+                        spellCheck
+                        placeholder="Write a comment..."
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -72,19 +80,15 @@ export default function DatasetDiscussionCreateInput({
                 <Button
                   variant="secondary"
                   onClick={() =>
-                    form.watch("text")
-                      ? setCancelDialogOpen(true)
-                      : setIsAuthoring(false)
+                    isTextEmpty
+                      ? setIsAuthoring(false)
+                      : setCancelDialogOpen(true)
                   }
                   type="button"
                 >
                   Cancel
                 </Button>
-                <Button
-                  variant="gold"
-                  type="submit"
-                  disabled={!form.watch("text")}
-                >
+                <Button variant="gold" type="submit" disabled={isTextEmpty}>
                   Post
                 </Button>
               </div>
@@ -95,9 +99,7 @@ export default function DatasetDiscussionCreateInput({
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard comment?</DialogTitle>
-          <p>
-            You have a comment in progress, are you sure you want to discard it?
-          </p>
+          <p>You have a comment in progress, discard it?</p>
           <div className="flex justify-between">
             <Button
               variant="secondary"
@@ -108,7 +110,7 @@ export default function DatasetDiscussionCreateInput({
             <Button
               variant="destructive"
               onClick={() => {
-                form.reset({ text: "" });
+                form.reset();
                 setCancelDialogOpen(false);
                 setIsAuthoring(false);
               }}
