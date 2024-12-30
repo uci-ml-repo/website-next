@@ -4,19 +4,15 @@ import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import CreateDiscussionButton from "@/components/dataset/page/tabs/discussion/create/DatasetDiscussionCreateButton";
-import DatasetDiscussionCreateInput from "@/components/dataset/page/tabs/discussion/create/DatasetDiscussionCreateInput";
-import DatasetDiscussionPost from "@/components/dataset/page/tabs/discussion/view/DatasetDiscussionPost";
-import DatasetDiscussionSortBy from "@/components/dataset/page/tabs/discussion/view/DatasetDiscussionSortBy";
+import DiscussionCreateButton from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateButton";
+import DiscussionCreateInput from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateInput";
+import DiscussionsSortBy from "@/components/dataset/page/tabs/discussions/DiscussionsSortBy";
+import Discussion from "@/components/dataset/page/tabs/discussions/view/Discussion";
 import { Card, CardContent } from "@/components/ui/card";
 import type { DatasetDiscussionResponse, DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DatasetDiscussions({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session } = useSession();
 
   const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
@@ -58,7 +54,7 @@ export default function DatasetDiscussions({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <DatasetDiscussionCreateInput
+            <DiscussionCreateInput
               dataset={dataset}
               setIsAuthoring={setIsAuthoring}
               insertDiscussion={insertDiscussion}
@@ -74,7 +70,7 @@ export default function DatasetDiscussions({
                     <div className="text-muted-foreground">
                       There are no discussions yet
                     </div>
-                    <CreateDiscussionButton
+                    <DiscussionCreateButton
                       text="Start a discussion"
                       session={session}
                       authAction={() => setIsAuthoring(true)}
@@ -83,7 +79,7 @@ export default function DatasetDiscussions({
                 </CardContent>
               </Card>
             ) : (
-              <CreateDiscussionButton
+              <DiscussionCreateButton
                 text="Add discussion"
                 session={session}
                 authAction={() => setIsAuthoring(true)}
@@ -91,14 +87,14 @@ export default function DatasetDiscussions({
             ))}
 
           {discussions.length > 0 && (
-            <DatasetDiscussionSortBy sortBy={sortBy} setSortBy={setSortBy} />
+            <DiscussionsSortBy sortBy={sortBy} setSortBy={setSortBy} />
           )}
         </div>
       </div>
 
       <div className="space-y-4">
         {discussions.map((discussion, index) => (
-          <DatasetDiscussionPost key={index} discussion={discussion} />
+          <Discussion key={index} discussion={discussion} />
         ))}
       </div>
     </div>

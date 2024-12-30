@@ -2,8 +2,8 @@ import type { Prisma } from "@prisma/client";
 import z from "zod";
 
 const orderByEnum: [
-  Prisma.DatasetDiscussionScalarFieldEnum,
-  ...Prisma.DatasetDiscussionScalarFieldEnum[],
+  Prisma.DiscussionScalarFieldEnum,
+  ...Prisma.DiscussionScalarFieldEnum[],
 ] = ["createdAt", "upvoteCount"];
 
 export const discussionQuery = z.object({

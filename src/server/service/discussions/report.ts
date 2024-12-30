@@ -1,26 +1,26 @@
 import type {
-  DatasetReportReason,
+  DiscussionReportReason,
   PrismaClient,
   ReportResolutionType,
 } from "@prisma/client";
 
-export default class DatasetsReportService {
+export default class DiscussionsReportService {
   constructor(readonly prisma: PrismaClient) {}
 
   async create({
-    datasetId,
+    discussionId,
     reason,
     details,
     userId,
   }: {
-    datasetId: number;
-    reason: DatasetReportReason;
-    details: string;
+    discussionId: string;
+    reason: DiscussionReportReason;
+    details?: string;
     userId?: string;
   }) {
-    return this.prisma.datasetReport.create({
+    return this.prisma.discussionReport.create({
       data: {
-        datasetId,
+        discussionId,
         reason,
         details,
         userId,
@@ -39,7 +39,7 @@ export default class DatasetsReportService {
     type: ReportResolutionType;
     comment: string;
   }) {
-    return this.prisma.datasetReportResolution.create({
+    return this.prisma.discussionReportResolution.create({
       data: {
         reportId,
         userId,

@@ -10,13 +10,13 @@ const discussionsRemoveRouter = router({
     .meta({ requireRoles: ["ADMIN", "DISCUSSION_AUTHOR"] })
     .input(
       z.object({
-        id: z.string(),
+        discussionId: z.string(),
         reason: z.enum(enumToArray(DiscussionReportReason)).optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
       return service.discussions.remove.byId({
-        id: input.id,
+        discussionId: input.discussionId,
         userId: ctx.user.id,
         deletionReason: input.reason,
       });

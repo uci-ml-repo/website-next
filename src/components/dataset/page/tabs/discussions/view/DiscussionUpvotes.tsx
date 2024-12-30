@@ -14,7 +14,7 @@ interface DatasetDiscussionPostUpvotesProps {
   discussion: DatasetDiscussionResponse;
 }
 
-export default function DatasetDiscussionPostUpvotes({
+export default function DiscussionUpvotes({
   discussion,
 }: DatasetDiscussionPostUpvotesProps) {
   const { data: session } = useSession();

@@ -12,7 +12,7 @@ export default class DiscussionsCreateService {
     userId: string;
     datasetId: number;
   }) {
-    return this.prisma.datasetDiscussion.create({
+    return this.prisma.discussion.create({
       data: {
         content,
         userId,
@@ -21,6 +21,7 @@ export default class DiscussionsCreateService {
       include: {
         user: true,
         upvotes: true,
+        replies: true,
       },
     });
   }

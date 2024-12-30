@@ -1,22 +1,22 @@
-import { DatasetReportReason, ReportResolutionType } from "@prisma/client";
+import { DiscussionReportReason, ReportResolutionType } from "@prisma/client";
 import { z } from "zod";
 
 import { enumToArray } from "@/lib/utils";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const datasetReportRouter = router({
+const discussionsReportRouter = router({
   create: procedure
     .input(
       z.object({
-        datasetId: z.number(),
-        reason: z.enum(enumToArray(DatasetReportReason)),
-        details: z.string(),
+        discussionId: z.string(),
+        reason: z.enum(enumToArray(DiscussionReportReason)),
+        details: z.string().optional(),
         userId: z.string().optional(),
       }),
     )
     .mutation(async ({ input }) => {
-      return service.datasets.report.create(input);
+      return service.discussions.report.create(input);
     }),
 
   resolve: procedure
@@ -29,8 +29,8 @@ const datasetReportRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      return service.datasets.report.resolve(input);
+      return service.discussions.report.resolve(input);
     }),
 });
 
-export default datasetReportRouter;
+export default discussionsReportRouter;

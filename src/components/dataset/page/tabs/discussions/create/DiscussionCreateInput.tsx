@@ -29,7 +29,7 @@ const formSchema = z.object({
   nodes: z.array(z.any()),
 });
 
-export default function DatasetDiscussionCreateInput({
+export default function DiscussionCreateInput({
   dataset,
   setIsAuthoring,
   insertDiscussion,
@@ -97,9 +97,7 @@ export default function DatasetDiscussionCreateInput({
                   type="submit"
                   disabled={isTextEmpty || createMutation.isPending}
                 >
-                  <Spinner
-                    className={!createMutation.isPending ? "hidden" : ""}
-                  />
+                  {createMutation.isPending && <Spinner />}
                   Post
                 </Button>
               </div>

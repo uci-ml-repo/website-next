@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { DatasetResponse } from "@/lib/types";
 
-export default function DatasetExtendedOptionsDropdown({
+export default function DatasetExtendedOptions({
   dataset,
 }: {
   dataset: DatasetResponse;

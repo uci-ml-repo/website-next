@@ -11,13 +11,13 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     const [upvote] = await this.prisma.$transaction([
-      this.prisma.datasetDiscussionUpvote.create({
+      this.prisma.discussionUpvote.create({
         data: {
           discussionId,
           userId,
         },
       }),
-      this.prisma.datasetDiscussion.update({
+      this.prisma.discussion.update({
         where: {
           id: discussionId,
         },
@@ -40,7 +40,7 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     const [upvote] = await this.prisma.$transaction([
-      this.prisma.datasetDiscussionUpvote.delete({
+      this.prisma.discussionUpvote.delete({
         where: {
           userId_discussionId: {
             userId,
@@ -48,7 +48,7 @@ export default class DiscussionsUpvoteService {
           },
         },
       }),
-      this.prisma.datasetDiscussion.update({
+      this.prisma.discussion.update({
         where: {
           id: discussionId,
         },
@@ -70,7 +70,7 @@ export default class DiscussionsUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    return this.prisma.datasetDiscussionUpvote.findUnique({
+    return this.prisma.discussionUpvote.findUnique({
       where: {
         userId_discussionId: {
           userId,

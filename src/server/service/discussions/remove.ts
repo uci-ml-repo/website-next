@@ -6,16 +6,16 @@ export default class DiscussionsRemoveService {
   constructor(readonly prisma: PrismaClient) {}
 
   async byId({
-    id,
+    discussionId,
     userId,
     deletionReason,
   }: {
-    id: string;
+    discussionId: string;
     userId: string;
     deletionReason?: DiscussionReportReason;
   }) {
-    const discussion = await this.prisma.datasetDiscussion.findUnique({
-      where: { id },
+    const discussion = await this.prisma.discussion.findUnique({
+      where: { id: discussionId },
       include: {
         replies: true,
       },
@@ -29,8 +29,8 @@ export default class DiscussionsRemoveService {
     }
 
     if (discussion.replies.length > 0) {
-      return this.prisma.datasetDiscussion.update({
-        where: { id },
+      return this.prisma.discussion.update({
+        where: { id: discussionId },
         data: {
           content: "[Deleted]",
           deletedAt: new Date(),
@@ -40,8 +40,8 @@ export default class DiscussionsRemoveService {
       });
     }
 
-    return this.prisma.datasetDiscussion.delete({
-      where: { id },
+    return this.prisma.discussion.delete({
+      where: { id: discussionId },
     });
   }
 }

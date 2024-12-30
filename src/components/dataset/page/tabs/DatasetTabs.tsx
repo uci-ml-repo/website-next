@@ -1,6 +1,6 @@
 import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
-import DatasetDiscussions from "@/components/dataset/page/tabs/discussion/DatasetDiscussions";
+import DatasetDiscussions from "@/components/dataset/page/tabs/discussions/Discussions";
 import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
 import {
   LinearTabs,

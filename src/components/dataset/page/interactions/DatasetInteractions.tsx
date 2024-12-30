@@ -2,7 +2,7 @@ import { DownloadIcon, EyeIcon } from "lucide-react";
 
 import { auth } from "@/auth";
 import DatasetBookmarkButton from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkButton";
-import DatasetExtendedOptionsDropdown from "@/components/dataset/page/interactions/extended/DatasetExtendedOptionsDropdown";
+import DatasetExtendedOptions from "@/components/dataset/page/interactions/extended/DatasetExtendedOptions";
 import {
   Tooltip,
   TooltipContent,
@@ -68,7 +68,7 @@ export default async function DatasetInteractions({
           isBookmarked={isBookmarked}
         />
       </div>
-      <DatasetExtendedOptionsDropdown dataset={dataset} />
+      <DatasetExtendedOptions dataset={dataset} />
     </div>
   );
 }

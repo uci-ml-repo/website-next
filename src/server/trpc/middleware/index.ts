@@ -1,5 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import transformer from "superjson";
+import { z } from "zod";
 
 import type { createContext } from "@/server/trpc/context";
 import { AssertOwner } from "@/server/trpc/middleware/lib/owner";
@@ -11,26 +12,31 @@ const t = initTRPC
   .meta<{ requireRoles?: MiddlewareRole[] }>()
   .create({ transformer });
 
-export const protectedProcedure = t.procedure.use(
-  async ({ ctx, meta, input, next }) => {
+export const protectedProcedure = t.procedure
+  .input(
+    z.object({
+      datasetId: z.number().optional(),
+      draftDatasetId: z.string().optional(),
+      discussionId: z.string().optional(),
+    }),
+  )
+  .use(async ({ ctx, meta, input, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
 
-    const nextCtx = next({
-      ctx: {
-        user: ctx.session.user,
-      },
-    });
-
     if (!meta?.requireRoles) {
-      return nextCtx;
+      return next({
+        ctx: {
+          user: ctx.session.user,
+        },
+      });
     }
 
     const inputCast = input as unknown as {
       datasetId?: number;
       draftDatasetId?: string;
-      discussionPostId?: string;
+      discussionId?: string;
     };
 
     const requireRoles = new Set<MiddlewareRole>(meta.requireRoles);
@@ -55,8 +61,8 @@ export const protectedProcedure = t.procedure.use(
     }
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
-      await AssertOwner.discussionPost({
-        discussionPostId: inputCast.discussionPostId,
+      await AssertOwner.discussion({
+        discussionId: inputCast.discussionId,
         userId: ctx.session.user.id,
       });
 
@@ -67,6 +73,9 @@ export const protectedProcedure = t.procedure.use(
       throw new TRPCError({ code: "FORBIDDEN" });
     }
 
-    return nextCtx;
-  },
-);
+    return next({
+      ctx: {
+        user: ctx.session.user,
+      },
+    });
+  });

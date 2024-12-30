@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DatasetReportReason } from "@prisma/client";
+import { DiscussionReportReason } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,31 +23,31 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import type { DatasetResponse } from "@/lib/types";
+import type { DatasetDiscussionResponse } from "@/lib/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-const datasetReportReasons = enumToArray(DatasetReportReason);
+const discussionReportReasons = enumToArray(DiscussionReportReason);
 
 const formSchema = z.object({
-  reason: z.enum(datasetReportReasons, {
+  reason: z.enum(discussionReportReasons, {
     message: "Report reason is required",
   }),
-  details: z.string().min(1, { message: "Details are required" }),
+  details: z.string().optional(),
 });
 
-export default function DatasetReportDialog({
-  dataset,
+export default function DiscussionReportDialog({
+  discussion,
   open,
   setOpen,
 }: {
-  dataset: DatasetResponse;
+  discussion: DatasetDiscussionResponse;
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const session = useSession();
 
-  const createReportMutation = trpc.datasets.report.create.useMutation();
+  const createReportMutation = trpc.discussions.report.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,7 +59,7 @@ export default function DatasetReportDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createReportMutation.mutate({
-      datasetId: dataset.id,
+      discussionId: discussion.id,
       userId: session.data?.user?.id,
       ...values,
     });
@@ -80,9 +80,7 @@ export default function DatasetReportDialog({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
-              <DialogTitle className="text-xl">
-                Report Dataset Issue
-              </DialogTitle>
+              <DialogTitle className="text-xl">Report Comment</DialogTitle>
             </DialogHeader>
 
             <FormField
@@ -96,7 +94,7 @@ export default function DatasetReportDialog({
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      {datasetReportReasons.map((reason, index) => (
+                      {discussionReportReasons.map((reason, index) => (
                         <FormItem
                           key={index}
                           className="flex items-center space-x-3 space-y-0"
@@ -120,9 +118,11 @@ export default function DatasetReportDialog({
               name="details"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <FormLabel className="space-x-1">
                     <span>Details</span>
-                    <span className="text-destructive">*</span>
+                    <span className="text-sm text-muted-foreground">
+                      (optional)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -147,7 +147,7 @@ export default function DatasetReportDialog({
               <Button
                 type="submit"
                 variant="destructive"
-                disabled={!(form.watch("reason") && form.watch("details"))}
+                disabled={!form.watch("reason")}
               >
                 Submit
               </Button>

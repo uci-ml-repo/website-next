@@ -4,7 +4,7 @@ import type { Session } from "next-auth";
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
 
-export default function CreateDiscussionButton({
+export default function DiscussionCreateButton({
   text,
   session,
   authAction,
@@ -20,7 +20,7 @@ export default function CreateDiscussionButton({
       authedAction={authAction}
       session={session}
     >
-      <Button variant="gold" size="md" className="lift">
+      <Button variant="gold" className="lift">
         <PlusIcon />
         <span>{text}</span>
       </Button>

@@ -13,7 +13,7 @@ interface DatasetDiscussionSortByProps {
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function DatasetDiscussionSortBy({
+export default function DiscussionsSortBy({
   sortBy,
   setSortBy,
 }: DatasetDiscussionSortByProps) {
