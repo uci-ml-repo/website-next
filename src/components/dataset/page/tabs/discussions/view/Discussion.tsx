@@ -1,16 +1,16 @@
 import DatasetDiscussionReply from "@/components/dataset/page/tabs/discussions/view/DiscussionReply";
-import DiscussionUpvotes from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvotes";
+import DiscussionUpvote from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussions/view/extended/DiscussionExtendedOptions";
 import styles from "@/components/rich-text/RichText.module.css";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import type { DatasetDiscussionResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 import { cn, timeSince } from "@/lib/utils";
 
 export default function Discussion({
   discussion,
 }: {
-  discussion: DatasetDiscussionResponse;
+  discussion: DiscussionResponse;
 }) {
   return (
     <Card>
@@ -36,7 +36,7 @@ export default function Discussion({
             </div>
           </div>
           <div className="flex items-center space-x-1">
-            <DiscussionUpvotes discussion={discussion} />
+            <DiscussionUpvote discussion={discussion} />
             <DiscussionExtendedOptions discussion={discussion} />
           </div>
         </div>

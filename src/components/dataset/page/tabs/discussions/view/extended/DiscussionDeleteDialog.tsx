@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Spinner from "@/components/ui/spinner";
-import type { DatasetDiscussionResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionDeleteDialogProps {
-  discussion: DatasetDiscussionResponse;
+  discussion: DiscussionResponse;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

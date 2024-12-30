@@ -1,5 +1,3 @@
-// Discussions.tsx
-
 "use client";
 
 import { motion } from "motion/react";
@@ -28,10 +26,6 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
 
   if (discussionsQuery.isLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (discussionsQuery.isError) {
-    return <div>Error loading discussions.</div>;
   }
 
   const discussions = discussionsQuery.data!;

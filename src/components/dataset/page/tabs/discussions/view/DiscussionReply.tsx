@@ -1,12 +1,12 @@
 import { MessageCircleIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import type { DatasetDiscussionResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 
 export default function DiscussionReply({
   discussion,
 }: {
-  discussion: DatasetDiscussionResponse;
+  discussion: DiscussionResponse;
 }) {
   return (
     <Button variant="ghost" size="sm">

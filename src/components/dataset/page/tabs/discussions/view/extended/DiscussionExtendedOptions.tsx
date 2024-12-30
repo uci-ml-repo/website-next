@@ -16,12 +16,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { DatasetDiscussionResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 
 export default function DiscussionExtendedOptions({
   discussion,
 }: {
-  discussion: DatasetDiscussionResponse;
+  discussion: DiscussionResponse;
 }) {
   const { data: session } = useSession();
 

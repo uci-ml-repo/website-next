@@ -24,7 +24,9 @@ export default function DatasetExtendedOptions({
   async function copyLink() {
     if (typeof navigator.clipboard === "undefined") return;
 
-    await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(
+      window.location.origin + window.location.pathname,
+    );
 
     toast({
       title: "Dataset Link Copied",

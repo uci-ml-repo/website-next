@@ -23,7 +23,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import type { DatasetDiscussionResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -41,7 +41,7 @@ export default function DiscussionReportDialog({
   open,
   setOpen,
 }: {
-  discussion: DatasetDiscussionResponse;
+  discussion: DiscussionResponse;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
