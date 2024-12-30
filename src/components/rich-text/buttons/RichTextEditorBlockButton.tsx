@@ -4,7 +4,6 @@ import { useSlate } from "slate-react";
 import RichTextEditorFormatTooltip from "@/components/rich-text/buttons/RichTextEditorFormatTooltip";
 import type { RichTextBlockFormat } from "@/components/rich-text/RichText";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
@@ -27,14 +26,11 @@ export default function RichTextEditorBlockButton({
   return (
     <RichTextEditorFormatTooltip name={name}>
       <Button
-        variant="ghost"
+        variant={isBlockActive(editor, format) ? "gold" : "ghost"}
         size="icon"
         type="button"
         onMouseDown={handleMouseDown}
-        className={cn(
-          "shrink-0",
-          isBlockActive(editor, format) ? "bg-uci-gold hover:bg-uci-gold" : "",
-        )}
+        className="shrink-0"
       >
         {icon}
       </Button>

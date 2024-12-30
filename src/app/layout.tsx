@@ -73,8 +73,8 @@ export default function Layout({
 
                   <Footer />
                 </div>
-                <Toaster />
               </SidebarProvider>
+              <Toaster />
             </ThemeProvider>
           </body>
         </TRPCProvider>

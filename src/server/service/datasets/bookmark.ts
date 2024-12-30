@@ -69,6 +69,6 @@ export default class BookmarksService {
       },
     });
 
-    return !!bookmark;
+    return bookmark !== null;
   }
 }

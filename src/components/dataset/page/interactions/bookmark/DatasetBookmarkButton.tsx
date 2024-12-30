@@ -1,10 +1,10 @@
 "use client";
 
 import { BookmarkIcon } from "lucide-react";
-import type { Session } from "next-auth";
-import { useState, useTransition } from "react";
+import { useSession } from "next-auth/react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
+import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
@@ -13,53 +13,91 @@ import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetBookmarkButtonProps {
   dataset: DatasetResponse;
-  session: Session | null;
-  isBookmarked: boolean;
 }
 
 export default function DatasetBookmarkButton({
   dataset,
-  session,
-  isBookmarked,
 }: DatasetBookmarkButtonProps) {
-  const [bookmarkFilled, setBookmarkFilled] = useState(isBookmarked);
-  const [isPending, startTransition] = useTransition();
+  const { data: session, status: sessionStatus } = useSession();
 
-  const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation();
-  const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation();
+  const isBookmarkedQuery = trpc.datasets.bookmarks.isBookmarked.useQuery(
+    {
+      datasetId: dataset.id,
+      userId: session?.user.id!,
+    },
+    {
+      enabled: !!session?.user.id,
+    },
+  );
 
-  const handleBookmark = async () => {
-    startTransition(async () => {
-      if (!session?.user) return;
+  const util = trpc.useUtils();
 
-      if (bookmarkFilled) {
-        await removeBookmark.mutateAsync({
-          datasetId: dataset.id,
-          userId: session.user.id,
-        });
-      } else {
-        await addBookmark.mutateAsync({
-          datasetId: dataset.id,
-          userId: session.user.id,
-        });
-      }
-
-      toast({
-        title: bookmarkFilled ? "Bookmark removed" : "Bookmark added",
-        description: bookmarkFilled
-          ? undefined
-          : "View bookmarked datasets from your profile",
-        duration: 3000,
+  const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation({
+    onSuccess: async () => {
+      await util.datasets.bookmarks.isBookmarked.invalidate({
+        datasetId: dataset.id,
+        userId: session?.user.id!,
       });
 
-      setBookmarkFilled(!bookmarkFilled);
-    });
+      toast({
+        title: "Bookmark added",
+        description: "View bookmarked datasets from your profile",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error adding bookmark",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation({
+    onSuccess: async () => {
+      await util.datasets.bookmarks.isBookmarked.invalidate({
+        datasetId: dataset.id,
+        userId: session?.user.id!,
+      });
+
+      toast({
+        title: "Bookmark removed",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error removing bookmark",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleBookmark = async () => {
+    if (!session?.user) return;
+
+    if (isBookmarkedQuery.data) {
+      await removeBookmark.mutateAsync({
+        datasetId: dataset.id,
+        userId: session.user.id,
+      });
+    } else {
+      await addBookmark.mutateAsync({
+        datasetId: dataset.id,
+        userId: session.user.id,
+      });
+    }
   };
 
   return (
     <>
-      {isPending ? (
-        <Spinner className="size-5 opacity-70" />
+      {addBookmark.isPending ||
+      removeBookmark.isPending ||
+      isBookmarkedQuery.isPending ||
+      sessionStatus === "loading" ? (
+        <Button size="icon" variant="ghost" disabled>
+          <Spinner className="!size-5 opacity-70" />
+        </Button>
       ) : (
         <SignInRequired
           title="Sign in to bookmark datasets"
@@ -67,12 +105,14 @@ export default function DatasetBookmarkButton({
           authedAction={handleBookmark}
           session={session}
         >
-          <BookmarkIcon
-            className={cn(
-              "size-5 cursor-pointer",
-              bookmarkFilled ? "fill-uci-gold" : "fill-background",
-            )}
-          />
+          <Button size="icon" variant="ghost">
+            <BookmarkIcon
+              className={cn(
+                "!size-5 cursor-pointer",
+                isBookmarkedQuery.data ? "fill-uci-gold" : "fill-background",
+              )}
+            />
+          </Button>
         </SignInRequired>
       )}
     </>

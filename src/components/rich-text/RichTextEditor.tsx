@@ -15,7 +15,11 @@ import React, { useCallback, useMemo } from "react";
 import type { Descendant } from "slate";
 import { createEditor, Editor } from "slate";
 import { withHistory } from "slate-history";
-import type { RenderElementProps, RenderLeafProps } from "slate-react";
+import {
+  ReactEditor,
+  type RenderElementProps,
+  type RenderLeafProps,
+} from "slate-react";
 import { Editable, Slate, withReact } from "slate-react";
 
 import RichTextEditorBlockButton from "@/components/rich-text/buttons/RichTextEditorBlockButton";
@@ -122,6 +126,12 @@ export default function RichTextEditor({
   );
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      ReactEditor.blur(editor);
+      return;
+    }
+
     for (const hotkey in HOTKEYS) {
       if (
         isHotkey(hotkey, event) &&
@@ -138,6 +148,7 @@ export default function RichTextEditor({
     if (event.key === "Tab") {
       event.preventDefault();
       Editor.insertText(editor, "\t");
+      return;
     }
   };
 

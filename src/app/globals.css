@@ -56,9 +56,9 @@ body {
     --primary-foreground: 0 0% 12%;
     --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 90%;
-    --accent: 0 0% 14.9%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 90%;
-    --muted: 0 0% 14.9%;
+    --muted: 0 0% 20%;
     --muted-foreground: 0 0% 67%;
     --destructive: 0 62.8% 52%;
     --destructive-foreground: 0 0% 90%;
@@ -75,7 +75,7 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --card: 0 0% 9%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 90%;
     --popover: 0 0% 8%;
     --popover-foreground: 0 0% 90%;

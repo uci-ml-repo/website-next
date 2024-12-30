@@ -2,52 +2,56 @@
   &:focus {
     outline: none;
   }
+}
 
-  [contenteditable="false"] {
-    top: 8px !important;
-  }
+.rich code {
+  font-family: monospace;
+  padding: 3px;
+  display: flex;
+  width: 100%;
 
-  code {
-    font-family: monospace;
-    background-color: #eee;
-    padding: 3px;
-    display: flex;
-    width: 100%;
-  }
+  @apply bg-muted;
+}
 
-  blockquote {
-    border-left: 2px solid #ddd;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 10px;
-    color: #aaa;
-    font-style: italic;
-  }
+.rich blockquote {
+  border-left: 2px solid;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 10px;
+  font-style: italic;
 
-  table {
-    border-collapse: collapse;
-  }
+  @apply border-border text-muted-foreground;
+}
 
-  td {
-    padding: 10px;
-    border: 2px solid #ddd;
-  }
+.rich table {
+  border-collapse: collapse;
+}
 
-  ol {
-    list-style-type: decimal;
-    padding-inline-start: 40px;
-  }
+.rich td {
+  padding: 10px;
+  border: 2px solid;
 
-  ul {
-    list-style-type: disc;
-    padding-inline-start: 40px;
-  }
+  @apply border-border;
+}
 
-  h1 {
-    @apply text-xl font-bold;
-  }
+.rich ol {
+  list-style-type: decimal;
+  padding-inline-start: 40px;
+}
 
-  h2 {
-    @apply text-lg font-bold;
-  }
+.rich ul {
+  list-style-type: disc;
+  padding-inline-start: 40px;
+}
+
+.rich h1 {
+  @apply text-xl font-bold;
+}
+
+.rich h2 {
+  @apply text-lg font-bold;
+}
+
+.rich [contenteditable="false"] {
+  top: 8px !important;
 }
