@@ -15,7 +15,15 @@ export default function DiscussionDeleteDialog({
   open,
   setOpen,
 }: DiscussionDeleteDialogProps) {
-  const removeMutation = trpc.discussions.remove.byId.useMutation();
+  const utils = trpc.useUtils();
+
+  const removeMutation = trpc.discussions.remove.byId.useMutation({
+    onSuccess: () => {
+      utils.discussions.find.byQuery.invalidate({
+        datasetId: discussion.datasetId,
+      });
+    },
+  });
 
   async function removeDiscussion() {
     await removeMutation.mutateAsync({ discussionId: discussion.id });

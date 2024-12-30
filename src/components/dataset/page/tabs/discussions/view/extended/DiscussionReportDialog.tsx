@@ -136,7 +136,7 @@ export default function DiscussionReportDialog({
               )}
             />
 
-            <DialogFooter className="!w-full !justify-between">
+            <DialogFooter className="!w-full !justify-between gap-2">
               <Button
                 onClick={() => setOpen(false)}
                 variant="secondary"

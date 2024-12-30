@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import DatasetTitleGroup from "@/components/dataset/page/DatasetTitleGroup";
+import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetTabs from "@/components/dataset/page/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
+import { Card } from "@/components/ui/card";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
@@ -49,7 +51,16 @@ export default async function Page({
       <div className="space-y-8">
         <DatasetTitleGroup dataset={dataset} />
 
-        <DatasetTabs dataset={dataset} />
+        <Card className="rounded-full md:hidden">
+          <DatasetInteractions
+            dataset={dataset}
+            className="w-full justify-around"
+          />
+        </Card>
+
+        <DatasetTabs dataset={dataset}>
+          <DatasetInteractions dataset={dataset} className="max-md:hidden" />
+        </DatasetTabs>
       </div>
     </Main>
   );

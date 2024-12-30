@@ -1,4 +1,3 @@
-import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
 import DatasetDiscussions from "@/components/dataset/page/tabs/discussions/Discussions";
 import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
@@ -14,8 +13,10 @@ import { caller } from "@/server/trpc/query/server";
 
 export default async function DatasetTabs({
   dataset,
+  children,
 }: {
   dataset: DatasetResponse;
+  children?: React.ReactNode;
 }) {
   const discussions = await caller.discussions.find.byQuery({
     datasetId: dataset.id,
@@ -23,8 +24,8 @@ export default async function DatasetTabs({
 
   return (
     <LinearTabs defaultValue="about" urlStore={true}>
-      <div className="flex items-center justify-between space-x-8">
-        <LinearTabsList className="space-x-10 overflow-x-auto">
+      <div className="flex items-center justify-between space-x-6 overflow-x-auto">
+        <LinearTabsList className="space-x-8">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
           {dataset.fileCount && (
             <LinearTabsTrigger value="files">Files</LinearTabsTrigger>
@@ -36,7 +37,7 @@ export default async function DatasetTabs({
             Discussions
           </LinearTabsTrigger>
         </LinearTabsList>
-        <DatasetInteractions dataset={dataset} className="max-md:hidden" />
+        {children}
       </div>
       <TabsListBorder />
 

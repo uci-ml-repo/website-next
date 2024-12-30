@@ -16,13 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Spinner from "@/components/ui/spinner";
-import type { DatasetDiscussionResponse, DatasetResponse } from "@/lib/types";
+import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface AddDatasetDiscussionInputProps {
   dataset: DatasetResponse;
   setIsAuthoring: React.Dispatch<React.SetStateAction<boolean>>;
-  insertDiscussion: (discussion: DatasetDiscussionResponse) => void;
 }
 
 const formSchema = z.object({
@@ -32,7 +31,6 @@ const formSchema = z.object({
 export default function DiscussionCreateInput({
   dataset,
   setIsAuthoring,
-  insertDiscussion,
 }: AddDatasetDiscussionInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -45,15 +43,23 @@ export default function DiscussionCreateInput({
 
   const isTextEmpty = serializeText(form.watch("nodes")).length === 0;
 
-  const createMutation = trpc.discussions.create.fromData.useMutation();
+  const utils = trpc.useUtils();
+
+  const createMutation = trpc.discussions.create.fromData.useMutation({
+    onSuccess: () => {
+      utils.discussions.find.byQuery.invalidate({
+        datasetId: dataset.id,
+        orderBy: "upvoteCount",
+      });
+    },
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const newDiscussion = await createMutation.mutateAsync({
+    await createMutation.mutateAsync({
       datasetId: dataset.id,
       content: serialize(values.nodes),
     });
-
-    insertDiscussion(newDiscussion);
+    form.reset();
     setIsAuthoring(false);
   }
 

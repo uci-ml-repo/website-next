@@ -46,28 +46,29 @@ export default async function DatasetInteractions({
     : false;
 
   return (
-    <div className={cn("flex items-center space-x-4", className)} {...props}>
-      <div className="flex items-center space-x-6">
-        <TooltipProvider delayDuration={300} disableHoverableContent>
-          {activity.map((activityItem, index) => (
-            <Tooltip key={index}>
-              <TooltipTrigger className="flex items-center space-x-1 text-sm">
-                <activityItem.icon className="size-4" />
-                <span>{activityItem.value}</span>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" forceMount>
-                {activityItem.tooltip}
-              </TooltipContent>
-            </Tooltip>
-          ))}
-        </TooltipProvider>
-
+    <div
+      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+      {...props}
+    >
+      <TooltipProvider delayDuration={300} disableHoverableContent>
+        {activity.map((activityItem, index) => (
+          <Tooltip key={index}>
+            <TooltipTrigger className="flex items-center space-x-1 text-sm">
+              <activityItem.icon className="size-4" />
+              <span>{activityItem.value}</span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              {activityItem.tooltip}
+            </TooltipContent>
+          </Tooltip>
+        ))}
         <DatasetBookmarkButton
           dataset={dataset}
           session={session}
           isBookmarked={isBookmarked}
         />
-      </div>
+      </TooltipProvider>
+
       <DatasetExtendedOptions dataset={dataset} />
     </div>
   );

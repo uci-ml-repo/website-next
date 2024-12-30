@@ -26,7 +26,7 @@ export default function DatasetTitleGroup({
             </p>
           )}
         </div>
-        <div className="flex w-fit gap-2 max-sm:w-full max-sm:flex-col">
+        <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton dataset={dataset} />
           {dataset.isAvailablePython && (
             <DatasetPythonButton dataset={dataset} />

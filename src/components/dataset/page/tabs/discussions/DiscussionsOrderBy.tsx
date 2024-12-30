@@ -7,20 +7,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface DatasetDiscussionSortByProps {
-  sortBy: string;
-  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  orderBy: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
 }
 
-export default function DiscussionsSortBy({
-  sortBy,
-  setSortBy,
+export default function DiscussionsOrderBy({
+  orderBy,
+  setOrderBy,
+  className,
 }: DatasetDiscussionSortByProps) {
   return (
-    <div className="flex w-full items-center justify-end space-x-2">
+    <div className={cn("flex items-center space-x-2", className)}>
       <div className="text-nowrap text-sm text-muted-foreground">Sort by:</div>
-      <Select value={sortBy} onValueChange={setSortBy}>
+      <Select value={orderBy} onValueChange={setOrderBy}>
         <SelectTrigger className="w-32">
           <SelectValue />
         </SelectTrigger>

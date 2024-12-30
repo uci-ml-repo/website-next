@@ -47,11 +47,13 @@ export default function SignInRequired({
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <p>{body}</p>
-        <DialogFooter className="items-center !justify-between">
+        <DialogFooter className="items-center !justify-between gap-4">
           <DialogClose asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary" className="max-sm:w-full">
+              Cancel
+            </Button>
           </DialogClose>
-          <SignInButton variant="gold" />
+          <SignInButton className="max-sm:w-full" variant="gold" />
         </DialogFooter>
       </DialogContent>
     </Dialog>

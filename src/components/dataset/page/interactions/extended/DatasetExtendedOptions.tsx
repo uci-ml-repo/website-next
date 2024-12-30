@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
 
 export default function DatasetExtendedOptions({
@@ -24,6 +25,10 @@ export default function DatasetExtendedOptions({
     if (typeof navigator.clipboard === "undefined") return;
 
     await navigator.clipboard.writeText(window.location.href);
+
+    toast({
+      title: "Dataset Link Copied",
+    });
   }
 
   return (

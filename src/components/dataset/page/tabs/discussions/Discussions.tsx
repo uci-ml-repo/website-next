@@ -1,43 +1,40 @@
+// Discussions.tsx
+
 "use client";
 
 import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import DiscussionCreateButton from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateButton";
 import DiscussionCreateInput from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateInput";
-import DiscussionsSortBy from "@/components/dataset/page/tabs/discussions/DiscussionsSortBy";
+import DiscussionsOrderBy from "@/components/dataset/page/tabs/discussions/DiscussionsOrderBy";
 import Discussion from "@/components/dataset/page/tabs/discussions/view/Discussion";
 import { Card, CardContent } from "@/components/ui/card";
-import type { DatasetDiscussionResponse, DatasetResponse } from "@/lib/types";
+import type { DatasetResponse } from "@/lib/types";
+import type { DiscussionQuery } from "@/server/schema/discussions";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session } = useSession();
 
   const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<string>("top");
-  const [discussions, setDiscussions] = useState<DatasetDiscussionResponse[]>(
-    [],
-  );
+  const [orderBy, setOrderBy] = useState<string>("upvoteCount");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery({
     datasetId: dataset.id,
+    orderBy: orderBy as DiscussionQuery["orderBy"],
   });
-
-  useEffect(() => {
-    if (discussionsQuery.data) {
-      setDiscussions(discussionsQuery.data);
-    }
-  }, [discussionsQuery.data]);
 
   if (discussionsQuery.isLoading) {
     return <div>Loading...</div>;
   }
 
-  function insertDiscussion(discussion: DatasetDiscussionResponse) {
-    setDiscussions((prev) => [discussion, ...prev]);
+  if (discussionsQuery.isError) {
+    return <div>Error loading discussions.</div>;
   }
+
+  const discussions = discussionsQuery.data!;
 
   return (
     <div className="space-y-6">
@@ -57,11 +54,10 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
             <DiscussionCreateInput
               dataset={dataset}
               setIsAuthoring={setIsAuthoring}
-              insertDiscussion={insertDiscussion}
             />
           </motion.div>
         )}
-        <div className="flex items-center space-x-6">
+        <div className="items-center space-y-6 sm:flex">
           {!isAuthoring &&
             (discussions.length === 0 ? (
               <Card className="w-full">
@@ -87,14 +83,18 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
             ))}
 
           {discussions.length > 0 && (
-            <DiscussionsSortBy sortBy={sortBy} setSortBy={setSortBy} />
+            <DiscussionsOrderBy
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
+              className="sm:flex sm:w-full sm:justify-end"
+            />
           )}
         </div>
       </div>
 
       <div className="space-y-4">
-        {discussions.map((discussion, index) => (
-          <Discussion key={index} discussion={discussion} />
+        {discussions.map((discussion) => (
+          <Discussion key={discussion.id} discussion={discussion} />
         ))}
       </div>
     </div>
