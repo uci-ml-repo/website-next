@@ -1,14 +1,17 @@
 import * as process from "node:process";
 
-import { TRPCError } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import fs from "fs-extra";
 import path from "path";
+import transformer from "superjson";
 import { z } from "zod";
 
-import { procedure } from "@/server/trpc";
+import type { createContext } from "@/server/trpc/context";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-export const fileAccessProcedure = procedure
+const t = initTRPC.context<typeof createContext>().create({ transformer });
+
+export const fileAccessProcedure = t.procedure
   .input(z.object({ path: z.string().optional() }))
   .use(async ({ ctx, input, next }) => {
     if (!input.path) {

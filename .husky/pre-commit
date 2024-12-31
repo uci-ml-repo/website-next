@@ -2,3 +2,4 @@
 
 pnpm lint-staged
 pnpm tsc --noEmit --incremental false  --excludeDirectories '.next'
+pnpm build
