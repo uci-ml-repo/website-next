@@ -10,7 +10,7 @@ class RepositoryService {
   constructor(
     readonly prisma: PrismaClient,
     readonly datasets = new DatasetsService(prisma),
-    readonly draftDatasets = new DraftDatasetsService(prisma),
+    readonly drafts = new DraftDatasetsService(prisma),
     readonly discussions = new DiscussionsService(prisma),
     readonly files = new FilesService(prisma),
   ) {}

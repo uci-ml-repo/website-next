@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { auth, signIn } from "@/auth";
 import Main from "@/components/layout/Main";
 import ProfileBookmarks from "@/components/profile/ProfileBookmarks";
+import ProfileDatasets from "@/components/profile/ProfileDatasets";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import {
   LinearTabs,
@@ -25,6 +26,7 @@ export default async function Page() {
 
   const bookmarks = await caller.datasets.bookmarks.byUserId(session.user.id);
   const datasets = await caller.datasets.find.byUserId(session.user.id);
+  const draftDatasets = await caller.drafts.find.byUserId(session.user.id);
 
   return (
     <Main className="space-y-8">
@@ -44,7 +46,9 @@ export default async function Page() {
         <LinearTabsContent value="bookmarks">
           <ProfileBookmarks bookmarks={bookmarks} />
         </LinearTabsContent>
-        <LinearTabsContent value="datasets">DATASETS</LinearTabsContent>
+        <LinearTabsContent value="datasets">
+          <ProfileDatasets datasets={datasets} draftDatasets={draftDatasets} />
+        </LinearTabsContent>
       </LinearTabs>
     </Main>
   );

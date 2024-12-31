@@ -19,4 +19,21 @@ export default class DraftDatasetsFindService {
       },
     });
   }
+
+  async byUserId(userId: string) {
+    return this.prisma.draftDataset.findMany({
+      where: { userId },
+      include: {
+        keywords: {
+          include: {
+            keyword: true,
+          },
+        },
+        authors: true,
+        introductoryPaper: true,
+        user: true,
+        variables: true,
+      },
+    });
+  }
 }

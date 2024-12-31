@@ -3,6 +3,7 @@
 import FilesBrowseDirectory from "@/components/dataset/page/tabs/files/browse/FilesBrowseDirectory";
 import FilesBrowseFile from "@/components/dataset/page/tabs/files/browse/FilesBrowseFile";
 import { Alert } from "@/components/ui/alert";
+import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetFilesDirectory } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -24,9 +25,11 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
     <div className="space-y-2">
       <div>Browse</div>
       {rootDirectoryQuery.isPending ? (
-        <div>Loading</div>
+        <div className="flex items-center justify-center">
+          <Spinner />
+        </div>
       ) : (
-        <div className="space-y-2">
+        <div>
           {rootDirectoryQuery.data &&
             rootDirectoryQuery.data.map((node, index) => {
               if (node.isDirectory) {

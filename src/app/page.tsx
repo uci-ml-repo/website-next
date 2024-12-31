@@ -18,7 +18,7 @@ import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
-  const datasrtCount = await caller.datasets.count.approved();
+  const datasetCount = await caller.datasets.count.approved();
 
   const popularDatasets = await caller.datasets.find.byQuery({
     orderBy: "viewCount",
@@ -37,7 +37,7 @@ export default async function Page() {
         <div className="space-y-4">
           <Banner variant="hero" />
           <p className="text-pretty text-lg sm:text-xl">
-            We currently maintain {datasrtCount} datasets used by millions in
+            We currently maintain {datasetCount} datasets used by millions in
             the machine learning community.
           </p>
         </div>
@@ -64,14 +64,14 @@ export default async function Page() {
 
       <div className="space-y-10">
         <DatasetGroup
-          icon={<TrendingUpIcon />}
+          icon={<TrendingUpIcon className="size-8" />}
           heading="Popular Datasets"
           seeAllHref={DATASETS_PATH} // TODO
           datasets={popularDatasets.datasets}
         />
         <hr />
         <DatasetGroup
-          icon={<SparklesIcon />}
+          icon={<SparklesIcon className="size-8" />}
           heading="New Datasets"
           seeAllHref={DATASETS_PATH} // TODO
           datasets={newDatasets.datasets}

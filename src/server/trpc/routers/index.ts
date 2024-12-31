@@ -9,7 +9,7 @@ import { router } from "../index";
 
 export const appRouter = router({
   datasets: datasetsRouter,
-  draftDatasets: draftDatasetsRouter,
+  drafts: draftDatasetsRouter,
   discussions: discussionsRouter,
   files: filesRouter,
 });

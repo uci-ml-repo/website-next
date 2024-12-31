@@ -37,7 +37,7 @@ export default function DatasetGroup({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          {icon && <div className="[&_svg]:size-8">{icon}</div>}
+          {icon}
           <h2 className="text-2xl font-bold">{heading}</h2>
         </div>
         {seeAllHref && (

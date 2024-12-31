@@ -9,7 +9,17 @@ import {
   FileVideoIcon,
 } from "lucide-react";
 
+import FileBrowseButton from "@/components/dataset/page/tabs/files/browse/FileBrowseButton";
 import type { FileResponse } from "@/lib/types";
+
+export default function FilesBrowseFile({ node }: { node: FileResponse }) {
+  return (
+    <FileBrowseButton className="ml-7">
+      {extensionToIcon(node.extension)}
+      <span className="text-nowrap">{node.name}</span>
+    </FileBrowseButton>
+  );
+}
 
 function extensionToIcon(extension: string | undefined) {
   switch (extension) {
@@ -17,6 +27,7 @@ function extensionToIcon(extension: string | undefined) {
     case "doc":
     case "docx":
     case "pdf":
+    case "names":
       return <FileTextIcon />;
     case "csv":
     case "tsv":
@@ -55,13 +66,4 @@ function extensionToIcon(extension: string | undefined) {
     default:
       return <FileIcon />;
   }
-}
-
-export default function FilesBrowseFile({ node }: { node: FileResponse }) {
-  return (
-    <div className="flex space-x-2">
-      {extensionToIcon(node.extension)}
-      <div>{node.name}</div>
-    </div>
-  );
 }

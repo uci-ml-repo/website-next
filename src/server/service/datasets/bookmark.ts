@@ -26,8 +26,15 @@ export default class BookmarksService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await this.prisma.datasetBookmark.create({
-      data: {
+    const bookmark = await this.prisma.datasetBookmark.upsert({
+      where: {
+        userId_datasetId: {
+          userId,
+          datasetId,
+        },
+      },
+      update: {},
+      create: {
         datasetId,
         userId,
       },
@@ -43,16 +50,19 @@ export default class BookmarksService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await this.prisma.datasetBookmark.delete({
-      where: {
-        userId_datasetId: {
-          userId,
-          datasetId,
+    try {
+      const bookmark = await this.prisma.datasetBookmark.delete({
+        where: {
+          userId_datasetId: {
+            userId,
+            datasetId,
+          },
         },
-      },
-    });
-
-    return bookmark;
+      });
+      return bookmark;
+    } catch {
+      return null;
+    }
   }
 
   async isBookmarked({

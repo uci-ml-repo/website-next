@@ -1,5 +1,6 @@
 import { DownloadIcon, EyeIcon } from "lucide-react";
 
+import { auth } from "@/auth";
 import DatasetBookmarkButton from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkButton";
 import DatasetExtendedOptions from "@/components/dataset/page/interactions/extended/DatasetExtendedOptions";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
+import { caller } from "@/server/trpc/query/server";
 
 export interface DatasetActivityProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,6 +36,15 @@ export default async function DatasetInteractions({
     },
   ];
 
+  const session = await auth();
+
+  const isBookmarked = session?.user.id
+    ? await caller.datasets.bookmarks.isBookmarked({
+        datasetId: dataset.id,
+        userId: session?.user.id,
+      })
+    : false;
+
   return (
     <div
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
@@ -51,7 +62,10 @@ export default async function DatasetInteractions({
             </TooltipContent>
           </Tooltip>
         ))}
-        <DatasetBookmarkButton dataset={dataset} />
+        <DatasetBookmarkButton
+          dataset={dataset}
+          initialBookmarked={isBookmarked}
+        />
       </TooltipProvider>
 
       <DatasetExtendedOptions dataset={dataset} />

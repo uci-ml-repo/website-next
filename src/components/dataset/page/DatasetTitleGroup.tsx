@@ -4,7 +4,7 @@ import DatasetCitationButton from "@/components/dataset/page/buttons/DatasetCita
 import DatasetDownloadButton from "@/components/dataset/page/buttons/DatasetDownloadButton";
 import DatasetPythonButton from "@/components/dataset/page/buttons/DatasetPythonButton";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetThumbnailURL } from "@/lib/utils";
+import { cn, datasetThumbnailURL } from "@/lib/utils";
 
 export default function DatasetTitleGroup({
   dataset,
@@ -40,7 +40,10 @@ export default function DatasetTitleGroup({
           width={300}
           height={120}
           alt="thumbnail"
-          className="ml-14 h-[120px] w-[275px] min-w-64 shrink-0 rounded-2xl object-cover object-center max-lg:hidden"
+          className={cn(
+            "ml-14 h-[120px] w-[275px] min-w-64 shrink-0",
+            "rounded-2xl border-2 object-cover object-center max-lg:hidden",
+          )}
           priority
         />
       )}

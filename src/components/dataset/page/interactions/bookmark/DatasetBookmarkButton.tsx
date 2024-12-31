@@ -2,6 +2,7 @@
 
 import { BookmarkIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
@@ -13,62 +14,34 @@ import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetBookmarkButtonProps {
   dataset: DatasetResponse;
+  initialBookmarked: boolean;
 }
 
 export default function DatasetBookmarkButton({
   dataset,
+  initialBookmarked,
 }: DatasetBookmarkButtonProps) {
-  const { data: session, status: sessionStatus } = useSession();
+  const { data: session } = useSession();
 
-  const isBookmarkedQuery = trpc.datasets.bookmarks.isBookmarked.useQuery(
-    {
-      datasetId: dataset.id,
-      userId: session?.user.id!,
-    },
-    {
-      enabled: !!session?.user.id,
-    },
-  );
-
-  const util = trpc.useUtils();
+  const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
 
   const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation({
     onSuccess: async () => {
-      await util.datasets.bookmarks.isBookmarked.invalidate({
-        datasetId: dataset.id,
-        userId: session?.user.id!,
-      });
+      setIsBookmarked(true);
 
       toast({
         title: "Bookmark added",
         description: "View bookmarked datasets from your profile",
       });
     },
-    onError: (error) => {
-      toast({
-        title: "Error adding bookmark",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
   });
 
   const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation({
-    onSuccess: async () => {
-      await util.datasets.bookmarks.isBookmarked.invalidate({
-        datasetId: dataset.id,
-        userId: session?.user.id!,
-      });
+    onSuccess: () => {
+      setIsBookmarked(false);
 
       toast({
         title: "Bookmark removed",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error removing bookmark",
-        description: error.message,
-        variant: "destructive",
       });
     },
   });
@@ -76,7 +49,7 @@ export default function DatasetBookmarkButton({
   const handleBookmark = async () => {
     if (!session?.user) return;
 
-    if (isBookmarkedQuery.data) {
+    if (isBookmarked) {
       await removeBookmark.mutateAsync({
         datasetId: dataset.id,
         userId: session.user.id,
@@ -91,10 +64,7 @@ export default function DatasetBookmarkButton({
 
   return (
     <>
-      {addBookmark.isPending ||
-      removeBookmark.isPending ||
-      isBookmarkedQuery.isPending ||
-      sessionStatus === "loading" ? (
+      {addBookmark.isPending || removeBookmark.isPending ? (
         <Button size="icon" variant="ghost" disabled>
           <Spinner className="!size-5 opacity-70" />
         </Button>
@@ -109,7 +79,7 @@ export default function DatasetBookmarkButton({
             <BookmarkIcon
               className={cn(
                 "!size-5 cursor-pointer",
-                isBookmarkedQuery.data ? "fill-uci-gold" : "fill-background",
+                isBookmarked ? "fill-uci-gold" : "",
               )}
             />
           </Button>

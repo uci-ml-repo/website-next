@@ -5,7 +5,11 @@ import { procedure, router } from "@/server/trpc";
 
 const draftDatasetFindRouter = router({
   byId: procedure.input(z.string()).query(async ({ input }) => {
-    return service.draftDatasets.find.byId(input);
+    return service.drafts.find.byId(input);
+  }),
+
+  byUserId: procedure.input(z.string()).query(async ({ input }) => {
+    return service.drafts.find.byUserId(input);
   }),
 });
 

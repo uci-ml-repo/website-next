@@ -4,6 +4,10 @@ export type DatasetResponse = NonNullable<
   RouterOutput["datasets"]["find"]["byId"]
 >;
 
+export type DraftDatasetResponse = NonNullable<
+  RouterOutput["drafts"]["find"]["byId"]
+>;
+
 export type DiscussionResponse = NonNullable<
   RouterOutput["discussions"]["find"]["byId"]
 >;

@@ -80,7 +80,7 @@ export const datasets: Omit<
     featureTypes: ["CATEGORICAL", "INTEGER", "CONTINUOUS"],
     instanceCount: 303,
     featureCount: 13,
-    hasGraphics: false,
+    hasGraphics: true,
     isAvailablePython: true,
     viewCount: 497006,
     downloadCount: 125605,
