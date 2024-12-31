@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import { auth } from "@/auth";
 import DatasetTitleGroup from "@/components/dataset/page/DatasetTitleGroup";
+import { DatasetBookmarkProvider } from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkedContext";
 import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
 import DatasetTabs from "@/components/dataset/page/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
@@ -46,21 +48,32 @@ export default async function Page({
     return notFound();
   }
 
+  const session = await auth();
+
+  const initialBookmarked = session?.user.id
+    ? await caller.datasets.bookmarks.isBookmarked({
+        datasetId: dataset.id,
+        userId: session?.user.id,
+      })
+    : false;
+
   return (
     <Main className="content space-y-6">
       <div className="space-y-8">
         <DatasetTitleGroup dataset={dataset} />
 
-        <Card className="rounded-full md:hidden">
-          <DatasetInteractions
-            dataset={dataset}
-            className="w-full justify-around"
-          />
-        </Card>
+        <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
+          <Card className="rounded-full md:hidden">
+            <DatasetInteractions
+              dataset={dataset}
+              className="w-full justify-around"
+            />
+          </Card>
 
-        <DatasetTabs dataset={dataset}>
-          <DatasetInteractions dataset={dataset} className="max-md:hidden" />
-        </DatasetTabs>
+          <DatasetTabs dataset={dataset}>
+            <DatasetInteractions dataset={dataset} className="max-md:hidden" />
+          </DatasetTabs>
+        </DatasetBookmarkProvider>
       </div>
     </Main>
   );

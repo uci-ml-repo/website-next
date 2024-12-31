@@ -2,9 +2,9 @@
 
 import { BookmarkIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
+import { useBookmark } from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkedContext";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import { toast } from "@/hooks/use-toast";
@@ -14,21 +14,17 @@ import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetBookmarkButtonProps {
   dataset: DatasetResponse;
-  initialBookmarked: boolean;
 }
 
 export default function DatasetBookmarkButton({
   dataset,
-  initialBookmarked,
 }: DatasetBookmarkButtonProps) {
   const { data: session } = useSession();
-
-  const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
+  const { isBookmarked, setIsBookmarked } = useBookmark();
 
   const addBookmark = trpc.datasets.bookmarks.addBookmark.useMutation({
     onSuccess: async () => {
       setIsBookmarked(true);
-
       toast({
         title: "Bookmark added",
         description: "View bookmarked datasets from your profile",
@@ -39,7 +35,6 @@ export default function DatasetBookmarkButton({
   const removeBookmark = trpc.datasets.bookmarks.removeBookmark.useMutation({
     onSuccess: () => {
       setIsBookmarked(false);
-
       toast({
         title: "Bookmark removed",
       });
