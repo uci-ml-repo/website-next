@@ -9,6 +9,7 @@ import DiscussionCreateInput from "@/components/dataset/page/tabs/discussions/cr
 import DiscussionsOrderBy from "@/components/dataset/page/tabs/discussions/DiscussionsOrderBy";
 import Discussion from "@/components/dataset/page/tabs/discussions/view/Discussion";
 import { Card, CardContent } from "@/components/ui/card";
+import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import type { DiscussionQuery } from "@/server/schema/discussions";
 import { trpc } from "@/server/trpc/query/client";
@@ -25,7 +26,11 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   });
 
   if (discussionsQuery.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-20 w-full items-center justify-center">
+        <Spinner className="size-10" />
+      </div>
+    );
   }
 
   const discussions = discussionsQuery.data!;

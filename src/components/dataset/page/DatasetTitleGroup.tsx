@@ -4,14 +4,14 @@ import DatasetCitationButton from "@/components/dataset/page/buttons/DatasetCita
 import DatasetDownloadButton from "@/components/dataset/page/buttons/DatasetDownloadButton";
 import DatasetPythonButton from "@/components/dataset/page/buttons/DatasetPythonButton";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetThumbnail } from "@/lib/utils";
+import { datasetThumbnailURL } from "@/lib/utils";
 
 export default function DatasetTitleGroup({
   dataset,
 }: {
   dataset: DatasetResponse;
 }) {
-  const thumbnail = datasetThumbnail(dataset);
+  const thumbnail = datasetThumbnailURL(dataset);
 
   return (
     <div className="flex items-center justify-between">

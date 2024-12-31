@@ -25,8 +25,8 @@ export default function DiscussionDeleteDialog({
     },
   });
 
-  async function removeDiscussion() {
-    await removeMutation.mutateAsync({ discussionId: discussion.id });
+  function removeDiscussion() {
+    removeMutation.mutate({ discussionId: discussion.id });
     setOpen(false);
   }
 

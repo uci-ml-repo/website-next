@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
-import { abbreviateFileSize, datasetZip } from "@/lib/utils";
+import { abbreviateFileSize, datasetZipURL } from "@/lib/utils";
 
 interface DatasetDownloadButtonProps {
   dataset: DatasetResponse;
@@ -25,7 +25,7 @@ export default async function DatasetDownloadButton({
 
   return (
     <Button variant="blue" className="lift w-full" size="lg" asChild>
-      <a href={datasetZip(dataset)} download>
+      <a href={datasetZipURL(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>

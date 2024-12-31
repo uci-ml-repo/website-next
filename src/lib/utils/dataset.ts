@@ -1,29 +1,63 @@
+import type { ApprovalStatus } from "@prisma/client";
+
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
-export function datasetThumbnail({
+export function datasetFilesDirectory({
+  id,
+  status,
+}: {
+  id: number;
+  status: ApprovalStatus;
+}) {
+  return `/${status === "APPROVED" ? "public" : "private"}/${id}`;
+}
+
+export function datasetThumbnailURL({
+  status,
   hasGraphics,
   id,
 }: {
+  status: ApprovalStatus;
   hasGraphics: boolean;
   id: number;
 }) {
   return (
-    STATIC_FILES_ROUTE +
-    (hasGraphics ? `/${id}` : "/default") +
-    "/thumbnail.png"
+    (hasGraphics
+      ? datasetFilesURL({ id, status })
+      : `${STATIC_FILES_ROUTE}/default`) + "/thumbnail.png"
   );
 }
 
-export function datasetStaticFiles({ id }: { id: number }) {
-  return `${STATIC_FILES_ROUTE}/${id}`;
+export function datasetFilesURL({
+  id,
+  status,
+}: {
+  id: number;
+  status: ApprovalStatus;
+}) {
+  return `${STATIC_FILES_ROUTE}/${status === "APPROVED" ? "public" : "private"}/${id}`;
 }
 
-export function datasetPythonData({ id }: { id: number }) {
-  return `${datasetStaticFiles({ id })}/data.csv`;
+export function datasetPythonDataURL({
+  id,
+  status,
+}: {
+  id: number;
+  status: ApprovalStatus;
+}) {
+  return `${datasetFilesURL({ id, status })}/data.csv`;
 }
 
-export function datasetZip({ id, slug }: { id: number; slug: string }) {
-  return `${datasetStaticFiles({ id })}/${slug}.zip`;
+export function datasetZipURL({
+  id,
+  slug,
+  status,
+}: {
+  id: number;
+  slug: string;
+  status: ApprovalStatus;
+}) {
+  return `${datasetFilesURL({ id, status })}/${slug}.zip`;
 }
 
 export function datasetPage({ id, slug }: { id: number; slug: string }) {

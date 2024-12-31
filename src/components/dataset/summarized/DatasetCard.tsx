@@ -17,7 +17,7 @@ import {
   abbreviateFileSize,
   cn,
   datasetPage,
-  datasetThumbnail,
+  datasetThumbnailURL,
   formatEnum,
 } from "@/lib/utils";
 
@@ -27,7 +27,7 @@ interface DatasetCardProps {
 }
 
 export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
-  const thumbnail = datasetThumbnail(dataset);
+  const thumbnail = datasetThumbnailURL(dataset);
   const href = datasetPage(dataset);
 
   return (

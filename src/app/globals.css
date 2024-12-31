@@ -56,12 +56,12 @@ body {
     --primary-foreground: 0 0% 12%;
     --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 90%;
-    --accent: 0 0% 20%;
+    --accent: 0 0% 18%;
     --accent-foreground: 0 0% 90%;
     --muted: 0 0% 20%;
     --muted-foreground: 0 0% 67%;
     --destructive: 0 62.8% 52%;
-    --destructive-foreground: 0 0% 90%;
+    --destructive-foreground: 0 0% 98%;
     --positive: 114 49% 41%;
     --uci-blue: 209 100% 32%;
     --uci-blue-foreground: 0 0% 90%;

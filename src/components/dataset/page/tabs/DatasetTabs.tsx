@@ -1,6 +1,6 @@
 import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
 import DatasetDiscussions from "@/components/dataset/page/tabs/discussions/Discussions";
-import DatasetFiles from "@/components/dataset/page/tabs/files/DatasetFiles";
+import Files from "@/components/dataset/page/tabs/files/Files";
 import {
   LinearTabs,
   LinearTabsContent,
@@ -47,7 +47,7 @@ export default async function DatasetTabs({
         </LinearTabsContent>
         {dataset.fileCount && (
           <LinearTabsContent value="files" forceMount>
-            <DatasetFiles dataset={dataset} />
+            <Files dataset={dataset} />
           </LinearTabsContent>
         )}
         <LinearTabsContent value="discussions" forceMount>

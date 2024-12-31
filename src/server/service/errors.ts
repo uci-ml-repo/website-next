@@ -4,9 +4,9 @@
  * Used to distinguish tRPC and Next errors from service errors.
  */
 
-export type ServiceErrorReason = "Dataset Not Found";
+export type ServiceErrorReason = "Dataset Not Found" | "Invalid File";
 
-export type ServiceErrorOrigin = "Dataset";
+export type ServiceErrorOrigin = "Dataset" | "File";
 
 interface ServiceErrorInterface {
   reason: ServiceErrorReason;

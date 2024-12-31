@@ -7,4 +7,5 @@ const t = initTRPC.context<typeof createContext>().create({ transformer });
 
 export const { procedure, router, middleware, createCallerFactory } = t;
 
-export { protectedProcedure } from "./middleware";
+export { fileAccessProcedure } from "./middleware/file";
+export { protectedProcedure } from "./middleware/protected";

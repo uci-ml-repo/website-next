@@ -102,6 +102,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "7.54.2",
+    "react-split": "2.0.14",
     "server-only": "0.0.1",
     "slate": "0.112.0",
     "slate-history": "0.110.3",

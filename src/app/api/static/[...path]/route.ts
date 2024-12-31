@@ -14,7 +14,7 @@ export async function GET(
 ) {
   return auth(async (req, { params }) => {
     try {
-      if (!process.env.STATIC_FILES_ROOT) {
+      if (!process.env.STATIC_FILES_DIRECTORY) {
         return NextResponse.json(
           { error: "Storage root is not defined" },
           { status: 500 },
@@ -27,7 +27,7 @@ export async function GET(
 
       const relativePath = toStringArray((await params).path);
       const filePath = path.join(
-        process.env.STATIC_FILES_ROOT,
+        process.env.STATIC_FILES_DIRECTORY,
         ...relativePath,
       );
 
@@ -35,8 +35,7 @@ export async function GET(
         return NextResponse.json({ error: "File not found" }, { status: 404 });
       }
 
-      // Check if the file is protected
-      if (relativePath.some((part) => part.startsWith("_"))) {
+      if (relativePath[0] === "private") {
         if (!req.auth) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
