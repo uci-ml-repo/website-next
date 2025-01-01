@@ -4,7 +4,7 @@ import { datasetQuery } from "@/server/schema/datasets";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const datasetFindRouter = router({
+const datasetsFindRouter = router({
   byId: procedure.input(z.number()).query(async ({ input }) => {
     return service.datasets.find.byId(input);
   }),
@@ -22,4 +22,4 @@ const datasetFindRouter = router({
   }),
 });
 
-export default datasetFindRouter;
+export default datasetsFindRouter;

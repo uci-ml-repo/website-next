@@ -13,7 +13,7 @@ export type DiscussionResponse = NonNullable<
 >;
 
 export type BookmarkResponse = NonNullable<
-  RouterOutput["datasets"]["bookmarks"]["byUserId"][number]
+  RouterOutput["bookmarks"]["find"]["byUserId"][number]
 >;
 
 export type FileResponse = RouterOutput["files"]["find"]["list"][number];

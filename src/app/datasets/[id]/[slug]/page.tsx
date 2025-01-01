@@ -51,7 +51,7 @@ export default async function Page({
   const session = await auth();
 
   const initialBookmarked = session?.user.id
-    ? await caller.datasets.bookmarks.isBookmarked({
+    ? await caller.bookmarks.find.isBookmarked({
         datasetId: dataset.id,
         userId: session?.user.id,
       })

@@ -35,4 +35,16 @@ export default class DiscussionsFindService {
       cursor: query.cursor ? { id: query.cursor } : undefined,
     });
   }
+
+  async byUserId(userId: string) {
+    return this.prisma.discussion.findMany({
+      where: { userId },
+      include: {
+        upvotes: true,
+        user: true,
+        replies: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
 }

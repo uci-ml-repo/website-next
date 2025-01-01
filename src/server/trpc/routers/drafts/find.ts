@@ -3,7 +3,7 @@ import { z } from "zod";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const draftDatasetFindRouter = router({
+const draftDatasetsFindRouter = router({
   byId: procedure.input(z.string()).query(async ({ input }) => {
     return service.drafts.find.byId(input);
   }),
@@ -13,4 +13,4 @@ const draftDatasetFindRouter = router({
   }),
 });
 
-export default draftDatasetFindRouter;
+export default draftDatasetsFindRouter;

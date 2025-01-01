@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import BookmarksService from "@/server/service/bookmarks";
 import DatasetsService from "@/server/service/datasets";
 import DiscussionsService from "@/server/service/discussions";
 import DraftDatasetsService from "@/server/service/drafts";
@@ -13,6 +14,7 @@ class RepositoryService {
     readonly drafts = new DraftDatasetsService(prisma),
     readonly discussions = new DiscussionsService(prisma),
     readonly files = new FilesService(prisma),
+    readonly bookmarks = new BookmarksService(prisma),
   ) {}
 }
 

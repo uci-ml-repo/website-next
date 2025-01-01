@@ -23,10 +23,12 @@ export default function ProfileBookmarks({
         </div>
       ) : (
         <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
-          <CardContent className="flex items-center text-pretty text-center">
-            <span>Visit a dataset and click the bookmark button (</span>
-            <BookmarkIcon className="size-5" />
-            <span>) to save it here.</span>
+          <CardContent className="text-pretty text-center">
+            <span>
+              Visit a dataset and click the bookmark button (
+              <BookmarkIcon className="mb-0.5 inline size-5" />) to save it
+              here.
+            </span>
           </CardContent>
         </Card>
       )}

@@ -5,7 +5,7 @@ import { enumToArray } from "@/lib/utils";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const datasetReportRouter = router({
+const datasetsReportRouter = router({
   create: procedure
     .input(
       z.object({
@@ -33,4 +33,4 @@ const datasetReportRouter = router({
     }),
 });
 
-export default datasetReportRouter;
+export default datasetsReportRouter;

@@ -26,7 +26,7 @@ model User {
   datasets      Dataset[]
   draftDatasets DraftDataset[]
 
-  bookmarks           DatasetBookmark[]
+  bookmarks           Bookmark[]
   discussionPosts     Discussion[]       @relation("DiscussionPost")
   discussionDeletions Discussion[]       @relation("DiscussionDeletion")
   discussionUpvotes   DiscussionUpvote[]
@@ -45,7 +45,7 @@ model User {
 // ============================================================================
 // User Data
 // ============================================================================
-model DatasetBookmark {
+model Bookmark {
   userId    String @map("user_id")
   datasetId Int    @map("dataset_id")
 
@@ -55,7 +55,7 @@ model DatasetBookmark {
   dataset Dataset @relation(fields: [datasetId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([userId, datasetId])
-  @@map("dataset_bookmarks")
+  @@map("bookmarks")
 }
 
 // ============================================================================
@@ -99,7 +99,7 @@ model Dataset {
   fileCount Int? @map("file_count")
   zipSize   Int? @map("zip_size")
 
-  bookmarks   DatasetBookmark[]
+  bookmarks   Bookmark[]
   discussions Discussion[]
   reports     DatasetReport[]
 

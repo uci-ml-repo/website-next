@@ -12,6 +12,10 @@ const discussionsFindRouter = router({
   byQuery: procedure.input(discussionQuery).query(async ({ input }) => {
     return service.discussions.find.byQuery(input);
   }),
+
+  byUserId: procedure.input(z.string()).query(async ({ input }) => {
+    return service.discussions.find.byUserId(input);
+  }),
 });
 
 export default discussionsFindRouter;
