@@ -29,25 +29,28 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   }
 
   return (
-    <div className="w-full overflow-auto bg-muted p-2">
-      <div className="space-y-2">
+    <>
+      <div className="sticky left-0 top-0 flex h-12 shrink-0 items-center justify-center border-b-2 bg-muted px-2">
         <Input
           variantSize="sm"
           icon={SearchIcon}
           placeholder="Search files"
-          className="rounded-lg bg-background"
+          className="h-8 rounded-lg bg-background"
+          containerClassName="w-full"
         />
-        <div className="min-w-fit">
+      </div>
+      <div className="h-full w-full overflow-auto bg-muted">
+        <div className="min-w-fit p-2">
           {rootDirectoryQuery.data &&
             rootDirectoryQuery.data.map((node, index) => {
-              if (node.isDirectory) {
+              if (node.type === "directory") {
                 return <FilesBrowseDirectory key={index} node={node} />;
-              } else if (node.isFile) {
+              } else if (node.type === "file") {
                 return <FilesBrowseFile node={node} key={index} />;
               }
             })}
         </div>
       </div>
-    </div>
+    </>
   );
 }

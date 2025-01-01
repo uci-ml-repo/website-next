@@ -29,12 +29,14 @@ export interface InputProps
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   iconPosition?: "left" | "right";
   onIconClick?: () => void;
+  containerClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
+      containerClassName,
       variantSize,
       icon: Icon,
       iconPosition = "left",
@@ -74,7 +76,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="relative flex items-center">
+      <div className={cn("relative flex items-center", containerClassName)}>
         {Icon && (
           <span
             className={cn(

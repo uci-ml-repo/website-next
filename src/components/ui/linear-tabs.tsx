@@ -90,7 +90,8 @@ const linearTabsListVariants = cva(
     variants: {
       variant: {
         default: "[&>span]:bg-foreground",
-        destructive: "[&>span]:bg-destructive/90",
+        destructive: "[&>span]:bg-destructive",
+        gold: "[&>span]:bg-uci-gold",
       },
     },
     defaultVariants: {

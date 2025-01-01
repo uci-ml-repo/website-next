@@ -70,9 +70,7 @@ export default async function Page({
             />
           </Card>
 
-          <DatasetTabs dataset={dataset}>
-            <DatasetInteractions dataset={dataset} className="max-md:hidden" />
-          </DatasetTabs>
+          <DatasetTabs dataset={dataset} />
         </DatasetBookmarkProvider>
       </div>
     </Main>

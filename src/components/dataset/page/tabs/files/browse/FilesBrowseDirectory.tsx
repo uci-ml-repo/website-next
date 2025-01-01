@@ -34,7 +34,13 @@ export default function FilesBrowseDirectory({
         setIsExpanded(false);
       }
     }
-  }, [parentExpanded, isExpanded]);
+  }, [
+    parentExpanded,
+    isExpanded,
+    currentPath?.path,
+    node.path,
+    setParentExpanded,
+  ]);
 
   const directoryQuery = trpc.files.find.list.useQuery(
     {
@@ -70,7 +76,7 @@ export default function FilesBrowseDirectory({
             <div className={cn("w-full", isExpanded ? "" : "hidden")}>
               {directoryQuery.data &&
                 directoryQuery.data.map((node, index) => {
-                  if (node.isDirectory) {
+                  if (node.type === "directory") {
                     return (
                       <FilesBrowseDirectory
                         key={index}
@@ -79,7 +85,7 @@ export default function FilesBrowseDirectory({
                         setParentExpanded={setParentExpanded}
                       />
                     );
-                  } else if (node.isFile) {
+                  } else if (node.type === "file") {
                     return <FilesBrowseFile node={node} key={index} />;
                   }
                 })}

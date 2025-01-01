@@ -1,3 +1,4 @@
+import path from "path";
 import React from "react";
 
 import { useCurrentPath } from "@/components/dataset/page/tabs/files/FilesContext";
@@ -11,24 +12,47 @@ export default function FilesViewLinkGroups({
 }) {
   const { currentPath, setCurrentPath } = useCurrentPath();
 
-  const pathParts = currentPath?.path
-    .slice(datasetFilesDirectory(dataset).length - dataset.slug.length)
-    .split("/");
+  const basePath = datasetFilesDirectory(dataset);
+
+  const relativePath = currentPath?.path.startsWith(basePath)
+    ? currentPath.path.slice(basePath.length + 1)
+    : "";
+
+  const pathParts = relativePath ? relativePath.split("/") : [];
 
   return (
-    <div>
-      {pathParts ? (
-        <div className="flex space-x-1 font-medium">
-          {pathParts.map((path, index) => (
-            <React.Fragment key={index}>
-              <div>/</div>
-              <div>{path}</div>
-            </React.Fragment>
-          ))}
-        </div>
-      ) : (
-        <div>/</div>
-      )}
+    <div className="ml-1 flex space-x-1 text-lg font-medium">
+      {pathParts.map((part, index) => {
+        const cumulativePath = path.join(
+          basePath,
+          ...pathParts.slice(0, index + 1),
+        );
+
+        const isLast = index === pathParts.length - 1;
+
+        return (
+          <React.Fragment key={index}>
+            <span>/</span>
+            {isLast ? (
+              <span>{part}</span>
+            ) : (
+              <button
+                className="text-link hover:underline"
+                onClick={() => {
+                  setCurrentPath({
+                    path: cumulativePath,
+                    name: part,
+                    type: "directory",
+                  });
+                }}
+              >
+                {part}
+              </button>
+            )}
+          </React.Fragment>
+        );
+      })}
+      {pathParts.length === 0 && <span>/</span>}
     </div>
   );
 }
