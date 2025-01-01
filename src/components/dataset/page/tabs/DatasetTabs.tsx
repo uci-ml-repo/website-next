@@ -23,7 +23,7 @@ export default async function DatasetTabs({
   });
 
   return (
-    <LinearTabs defaultValue="about" urlStore={true}>
+    <LinearTabs defaultValue="about">
       <div className="flex items-center justify-between space-x-6 overflow-x-auto">
         <LinearTabsList className="space-x-8">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>

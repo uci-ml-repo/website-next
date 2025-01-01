@@ -54,11 +54,11 @@ body {
     --foreground: 0 0% 90%;
     --primary: 0 0% 90%;
     --primary-foreground: 0 0% 12%;
-    --secondary: 0 0% 20%;
+    --secondary: 0 0% 16%;
     --secondary-foreground: 0 0% 90%;
-    --accent: 0 0% 18%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 90%;
-    --muted: 0 0% 20%;
+    --muted: 0 0% 16%;
     --muted-foreground: 0 0% 67%;
     --destructive: 0 62.8% 52%;
     --destructive-foreground: 0 0% 98%;

@@ -5,7 +5,7 @@
 .gutter::before {
   content: "⋮";
 
-  @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-lg text-muted-foreground;
+  @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-xl text-muted-foreground;
 }
 
 .gutter::before {

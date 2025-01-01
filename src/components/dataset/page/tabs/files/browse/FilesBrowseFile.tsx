@@ -9,15 +9,23 @@ import {
   FileVideoIcon,
 } from "lucide-react";
 
-import FileBrowseButton from "@/components/dataset/page/tabs/files/browse/FileBrowseButton";
+import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
+import { useCurrentPath } from "@/components/dataset/page/tabs/files/FilesContext";
 import type { FileResponse } from "@/lib/types";
 
 export default function FilesBrowseFile({ node }: { node: FileResponse }) {
+  const { currentPath, setCurrentPath } = useCurrentPath();
+
   return (
-    <FileBrowseButton className="ml-7">
-      {extensionToIcon(node.extension)}
-      <span className="text-nowrap">{node.name}</span>
-    </FileBrowseButton>
+    <FilesBrowseButton
+      onClick={() => setCurrentPath(node)}
+      className={currentPath?.path === node.path ? "bg-accent/50" : ""}
+    >
+      <div className="ic flex space-x-2">
+        {extensionToIcon(node.extension)}
+        <span className="text-nowrap">{node.name}</span>
+      </div>
+    </FilesBrowseButton>
   );
 }
 
@@ -28,6 +36,7 @@ function extensionToIcon(extension: string | undefined) {
     case "docx":
     case "pdf":
     case "names":
+    case "md":
       return <FileTextIcon />;
     case "csv":
     case "tsv":

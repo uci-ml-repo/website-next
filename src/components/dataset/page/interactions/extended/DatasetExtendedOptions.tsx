@@ -30,6 +30,7 @@ export default function DatasetExtendedOptions({
 
     toast({
       title: "Dataset Link Copied",
+      description: window.location.origin + window.location.pathname,
     });
   }
 
