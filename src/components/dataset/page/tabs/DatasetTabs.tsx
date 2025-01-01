@@ -1,4 +1,4 @@
-import DatasetAbout from "@/components/dataset/page/tabs/about/DatasetAbout";
+import About from "@/components/dataset/page/tabs/about/About";
 import DatasetDiscussions from "@/components/dataset/page/tabs/discussions/Discussions";
 import Files from "@/components/dataset/page/tabs/files/Files";
 import {
@@ -24,7 +24,7 @@ export default async function DatasetTabs({
 
   return (
     <LinearTabs defaultValue="about">
-      <div className="flex items-center justify-between space-x-6 overflow-x-auto">
+      <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
         <LinearTabsList className="space-x-8">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
           {dataset.fileCount && (
@@ -43,7 +43,7 @@ export default async function DatasetTabs({
 
       <div className="hide-inactive">
         <LinearTabsContent value="about">
-          <DatasetAbout dataset={dataset} />
+          <About dataset={dataset} />
         </LinearTabsContent>
         {dataset.fileCount && (
           <LinearTabsContent value="files" forceMount>
