@@ -18,7 +18,7 @@ export default function FilesBrowseButton({
   return (
     <button
       className={cn(
-        "flex min-w-full items-center space-x-1 rounded-full py-1 pl-1 pr-4 hover:bg-accent",
+        "flex min-w-full items-center space-x-1 rounded-lg py-1 pl-1 pr-4 hover:bg-accent",
         "[&>svg]:size-5 [&>svg]:shrink-0",
         className,
       )}

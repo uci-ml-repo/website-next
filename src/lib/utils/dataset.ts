@@ -4,12 +4,14 @@ import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
 export function datasetFilesDirectory({
   id,
+  slug,
   status,
 }: {
   id: number;
+  slug: string;
   status: ApprovalStatus;
 }) {
-  return `/${status === "APPROVED" ? "public" : "private"}/${id}`;
+  return `/${status === "APPROVED" ? "public" : "private"}/${id}/${slug}`;
 }
 
 export function datasetThumbnailURL({

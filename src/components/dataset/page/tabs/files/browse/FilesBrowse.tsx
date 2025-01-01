@@ -13,7 +13,7 @@ import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const rootDirectoryQuery = trpc.files.find.list.useQuery({
-    path: `${datasetFilesDirectory(dataset)}/${dataset.slug}`,
+    path: datasetFilesDirectory(dataset),
   });
 
   if (rootDirectoryQuery.isError) {
@@ -29,7 +29,7 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   }
 
   return (
-    <div className="w-full bg-muted/40 p-2 pb-6">
+    <div className="w-full overflow-auto bg-muted p-2">
       <div className="space-y-2">
         <Input
           variantSize="sm"
@@ -37,7 +37,7 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
           placeholder="Search files"
           className="rounded-lg bg-background"
         />
-        <div className="overflow-auto">
+        <div className="min-w-fit">
           {rootDirectoryQuery.data &&
             rootDirectoryQuery.data.map((node, index) => {
               if (node.isDirectory) {
