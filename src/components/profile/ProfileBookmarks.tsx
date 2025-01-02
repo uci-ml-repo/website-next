@@ -17,8 +17,8 @@ export default function ProfileBookmarks({
       </div>
       {bookmarks.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {bookmarks.map((bookmark, index) => (
-            <DatasetCard key={index} dataset={bookmark.dataset} />
+          {bookmarks.map((bookmark) => (
+            <DatasetCard key={bookmark.dataset.id} dataset={bookmark.dataset} />
           ))}
         </div>
       ) : (

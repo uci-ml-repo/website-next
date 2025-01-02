@@ -24,11 +24,7 @@ export default function FilesBrowseDirectory({
 
   useEffect(() => {
     if (!parentExpanded && isExpanded) {
-      if (
-        currentPath?.path === node.path &&
-        !parentExpanded &&
-        setParentExpanded
-      ) {
+      if (currentPath?.path === node.path && setParentExpanded) {
         setParentExpanded(true);
       } else {
         setIsExpanded(false);
@@ -75,18 +71,18 @@ export default function FilesBrowseDirectory({
           ) : (
             <div className={cn("w-full", isExpanded ? "" : "hidden")}>
               {directoryQuery.data &&
-                directoryQuery.data.map((node, index) => {
+                directoryQuery.data.map((node) => {
                   if (node.type === "directory") {
                     return (
                       <FilesBrowseDirectory
-                        key={index}
+                        key={node.path}
                         node={node}
                         parentExpanded={isExpanded}
                         setParentExpanded={setParentExpanded}
                       />
                     );
                   } else if (node.type === "file") {
-                    return <FilesBrowseFile node={node} key={index} />;
+                    return <FilesBrowseFile node={node} key={node.path} />;
                   }
                 })}
             </div>

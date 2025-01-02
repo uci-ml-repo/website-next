@@ -8,6 +8,7 @@ import {
   FileTextIcon,
   FileVideoIcon,
 } from "lucide-react";
+import { useMemo } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
 import { useCurrentPath } from "@/components/dataset/page/tabs/files/FilesContext";
@@ -16,13 +17,15 @@ import type { FileResponse } from "@/lib/types";
 export default function FilesBrowseFile({ node }: { node: FileResponse }) {
   const { currentPath, setCurrentPath } = useCurrentPath();
 
+  const icon = useMemo(() => extensionToIcon(node.extension), [node.extension]);
+
   return (
     <FilesBrowseButton
       onClick={() => setCurrentPath(node)}
       className={currentPath?.path === node.path ? "bg-accent/50" : ""}
     >
       <div className="ic flex space-x-2">
-        {extensionToIcon(node.extension)}
+        {icon}
         <span className="text-nowrap">{node.name}</span>
       </div>
     </FilesBrowseButton>

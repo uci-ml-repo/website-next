@@ -41,8 +41,8 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
               This list may be incomplete
             </div>
             {dataset.citedIn.length > 0
-              ? dataset.citedIn.map((paper, index) => (
-                  <PaperPreview key={index} paper={paper} />
+              ? dataset.citedIn.map((paper) => (
+                  <PaperPreview key={paper.id} paper={paper} />
                 ))
               : blank}
           </div>

@@ -49,8 +49,8 @@ export default function DatasetGroup({
       <div className="max-[1600px]:mx-10">
         <Carousel opts={{ align: "start", skipSnaps: true, duration: 20 }}>
           <CarouselContent allowPadding>
-            {datasets.map((dataset, index) => (
-              <CarouselItem key={index} className={cardBreakpoints}>
+            {datasets.map((dataset) => (
+              <CarouselItem key={dataset.id} className={cardBreakpoints}>
                 <DatasetCard dataset={dataset} />
               </CarouselItem>
             ))}

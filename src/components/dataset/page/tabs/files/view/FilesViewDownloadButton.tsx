@@ -1,0 +1,32 @@
+import { DownloadIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export default function FilesViewDownloadButton({ path }: { path: string }) {
+  return (
+    <TooltipProvider delayDuration={300}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            pill={false}
+            variant="outline"
+            size="icon"
+            className="size-8"
+            asChild
+          >
+            <a href={path} download>
+              <DownloadIcon />
+            </a>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Download</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}

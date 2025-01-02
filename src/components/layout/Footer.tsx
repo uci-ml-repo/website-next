@@ -18,8 +18,8 @@ function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
     <div className="space-y-4 text-uci-blue-foreground">
       <div className="font-bold">{title}</div>
       <div className="space-y-3">
-        {links.map((link, index) => (
-          <div key={index}>
+        {links.map((link) => (
+          <div key={link.href}>
             <Link
               href={link.href}
               className="hover:underline"
@@ -86,8 +86,8 @@ export default function Footer() {
             </Link>
           </div>
 
-          {linkGroups.map((group, index) => (
-            <FooterLinkGroup key={index} {...group} />
+          {linkGroups.map((group) => (
+            <FooterLinkGroup key={group.title} {...group} />
           ))}
         </div>
       </div>

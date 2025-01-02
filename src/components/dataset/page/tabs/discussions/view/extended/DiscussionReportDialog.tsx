@@ -94,9 +94,9 @@ export default function DiscussionReportDialog({
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      {discussionReportReasons.map((reason, index) => (
+                      {discussionReportReasons.map((reason) => (
                         <FormItem
-                          key={index}
+                          key={reason}
                           className="flex items-center space-x-3 space-y-0"
                         >
                           <FormControl>

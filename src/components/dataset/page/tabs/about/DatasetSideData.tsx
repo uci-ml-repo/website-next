@@ -16,8 +16,8 @@ export default function DatasetSideData({
       <div className="space-y-2">
         <div className="text-lg font-bold">Keywords</div>
         {dataset.keywords.length > 0
-          ? dataset.keywords.map((datasetKeyword, index) => (
-              <Badge variant="outline" key={index}>
+          ? dataset.keywords.map((datasetKeyword) => (
+              <Badge variant="outline" key={datasetKeyword.keyword.id}>
                 {datasetKeyword.keyword.name}
               </Badge>
             ))
@@ -29,8 +29,8 @@ export default function DatasetSideData({
         <div className="text-lg font-bold">Authors</div>
         {dataset.authors.length > 0 ? (
           <>
-            {dataset.authors.map((author, index) => (
-              <div key={index}>
+            {dataset.authors.map((author) => (
+              <div key={author.id}>
                 {author.firstName} {author.lastName}
               </div>
             ))}

@@ -35,8 +35,8 @@ export default function DatasetQuickStats({
 
   return (
     <div className="grid max-w-4xl grid-cols-1 gap-8 min-[360px]:grid-cols-2 md:grid-cols-3">
-      {stats.map((stat, index) => (
-        <div key={index}>
+      {stats.map((stat) => (
+        <div key={stat.name}>
           <div className="text-sm text-muted-foreground">{stat.name}</div>
           {stat.value ? (
             <div className="font-semibold">

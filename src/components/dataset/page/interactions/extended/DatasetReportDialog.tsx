@@ -96,9 +96,9 @@ export default function DatasetReportDialog({
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      {datasetReportReasons.map((reason, index) => (
+                      {datasetReportReasons.map((reason) => (
                         <FormItem
-                          key={index}
+                          key={reason}
                           className="flex items-center space-x-3 space-y-0"
                         >
                           <FormControl>

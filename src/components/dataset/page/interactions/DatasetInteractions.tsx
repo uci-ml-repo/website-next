@@ -40,8 +40,8 @@ export default async function DatasetInteractions({
       {...props}
     >
       <TooltipProvider delayDuration={300} disableHoverableContent>
-        {activity.map((activityItem, index) => (
-          <Tooltip key={index}>
+        {activity.map((activityItem) => (
+          <Tooltip key={activityItem.tooltip}>
             <TooltipTrigger className="flex items-center space-x-1 text-sm">
               <activityItem.icon className="size-4" />
               <span>{activityItem.value}</span>
