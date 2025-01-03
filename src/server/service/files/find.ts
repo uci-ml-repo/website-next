@@ -4,7 +4,7 @@ import path from "path";
 
 type DirectoryEntityType = "directory" | "file" | null;
 
-interface DirectoryEntity {
+export interface DirectoryEntity {
   name: string;
   path: string;
   type: DirectoryEntityType;

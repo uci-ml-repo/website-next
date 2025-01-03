@@ -16,4 +16,6 @@ export type BookmarkResponse = NonNullable<
   RouterOutput["bookmarks"]["find"]["byUserId"][number]
 >;
 
-export type FileResponse = RouterOutput["files"]["find"]["list"][number];
+export type FileResponse = NonNullable<
+  RouterOutput["files"]["find"]["list"][number]
+>;

@@ -23,7 +23,7 @@ export default function Split({
   className,
   gutterSize = 6,
   sizes = [20, 80],
-  minSize = 150,
+  minSize = 0,
   children,
 }: CustomSplitProps) {
   const minSizes = useMemo<[number, number]>(() => {

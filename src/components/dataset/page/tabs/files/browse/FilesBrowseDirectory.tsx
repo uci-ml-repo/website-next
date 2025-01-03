@@ -1,65 +1,55 @@
-import { FolderIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
 import FilesBrowseFile from "@/components/dataset/page/tabs/files/browse/FilesBrowseFile";
-import { useCurrentPath } from "@/components/dataset/page/tabs/files/FilesContext";
+import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
+import directoryEntityToIcon from "@/components/dataset/page/tabs/files/lib/DirectoryEntityToIcon";
 import Spinner from "@/components/ui/spinner";
 import type { FileResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesBrowseDirectory({
-  node,
-  parentExpanded = true,
-  setParentExpanded,
+  directory,
 }: {
-  node: FileResponse;
-  parentExpanded?: boolean;
-  setParentExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
+  directory: FileResponse;
 }) {
-  const { currentPath, setCurrentPath } = useCurrentPath();
+  const { currentDirectoryEntity, setCurrentDirectoryEntity } =
+    useCurrentDirectoryEntity();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    if (!parentExpanded && isExpanded) {
-      if (currentPath?.path === node.path && setParentExpanded) {
-        setParentExpanded(true);
-      } else {
-        setIsExpanded(false);
-      }
+    if (currentDirectoryEntity.path.startsWith(directory.path + "/")) {
+      setIsExpanded(true);
     }
-  }, [
-    parentExpanded,
-    isExpanded,
-    currentPath?.path,
-    node.path,
-    setParentExpanded,
-  ]);
+  }, [currentDirectoryEntity.path, directory.path, isExpanded]);
 
   const directoryQuery = trpc.files.find.list.useQuery(
     {
-      path: node.path,
+      path: directory.path,
     },
     {
       enabled: isExpanded,
     },
   );
 
+  const icon = useMemo(() => directoryEntityToIcon(directory), [directory]);
+
   return (
     <div>
       <FilesBrowseButton
         chevron
         chevronDown={isExpanded}
-        className={currentPath?.path === node.path ? "bg-accent/50" : ""}
+        className={
+          currentDirectoryEntity.path === directory.path ? "bg-accent/50" : ""
+        }
         onClick={() => {
-          setCurrentPath(node);
-          setIsExpanded(!isExpanded);
+          setCurrentDirectoryEntity(directory);
+          setIsExpanded((prev) => !prev);
         }}
       >
-        <FolderIcon className="fill-foreground" />
-        <span>{node.name}</span>
+        {icon}
+        <span>{directory.name}</span>
       </FilesBrowseButton>
 
       {isExpanded && (
@@ -69,20 +59,23 @@ export default function FilesBrowseDirectory({
           {directoryQuery.isLoading ? (
             <Spinner className="ml-6" />
           ) : (
-            <div className={cn("w-full", isExpanded ? "" : "hidden")}>
+            <div className="w-full">
               {directoryQuery.data &&
-                directoryQuery.data.map((node) => {
-                  if (node.type === "directory") {
+                directoryQuery.data.map((directoryEntity) => {
+                  if (directoryEntity.type === "directory") {
                     return (
                       <FilesBrowseDirectory
-                        key={node.path}
-                        node={node}
-                        parentExpanded={isExpanded}
-                        setParentExpanded={setParentExpanded}
+                        key={directoryEntity.path}
+                        directory={directoryEntity}
                       />
                     );
-                  } else if (node.type === "file") {
-                    return <FilesBrowseFile node={node} key={node.path} />;
+                  } else if (directoryEntity.type === "file") {
+                    return (
+                      <FilesBrowseFile
+                        file={directoryEntity}
+                        key={directoryEntity.path}
+                      />
+                    );
                   }
                 })}
             </div>

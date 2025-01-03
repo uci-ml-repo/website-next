@@ -1,25 +1,35 @@
 import path from "path";
 
-import { useCurrentPath } from "@/components/dataset/page/tabs/files/FilesContext";
+import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
+import FilesViewDirectory from "@/components/dataset/page/tabs/files/view/FilesViewDirectory";
 import FilesViewDownloadButton from "@/components/dataset/page/tabs/files/view/FilesViewDownloadButton";
+import FilesViewFile from "@/components/dataset/page/tabs/files/view/FilesViewFile";
 import FilesViewLinkGroups from "@/components/dataset/page/tabs/files/view/FilesViewLinkGroups";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 
 export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
-  const { currentPath } = useCurrentPath();
+  const { currentDirectoryEntity } = useCurrentDirectoryEntity();
 
   return (
-    <div>
-      <div className="flex h-12 items-center justify-between border-b-2 bg-muted p-2">
+    <>
+      <div className="sticky top-0 flex h-12 items-center justify-between border-b-2 bg-muted p-2">
         <FilesViewLinkGroups dataset={dataset} />
-        {currentPath?.type === "file" && (
+        {currentDirectoryEntity.type === "file" && (
           <FilesViewDownloadButton
-            path={path.join(STATIC_FILES_ROUTE, currentPath.path)}
+            path={path.join(STATIC_FILES_ROUTE, currentDirectoryEntity.path)}
           />
         )}
       </div>
-      <div>FILE DATA HERE</div>
-    </div>
+      <>
+        {currentDirectoryEntity.type === "directory" ? (
+          <FilesViewDirectory directoryPath={currentDirectoryEntity.path} />
+        ) : currentDirectoryEntity.type === "file" ? (
+          <FilesViewFile file={currentDirectoryEntity} />
+        ) : (
+          <div>Unknown file type</div>
+        )}
+      </>
+    </>
   );
 }

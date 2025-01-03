@@ -4,7 +4,7 @@
  * Used to distinguish tRPC and Next errors from service errors.
  */
 
-export type ServiceErrorReason = "Dataset Not Found" | "Invalid File";
+export type ServiceErrorReason = "Dataset Not Found" | "Invalid File Path";
 
 export type ServiceErrorOrigin = "Dataset" | "File";
 

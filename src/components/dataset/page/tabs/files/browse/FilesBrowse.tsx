@@ -42,11 +42,21 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
       <div className="h-full w-full overflow-auto bg-muted">
         <div className="min-w-fit p-2">
           {rootDirectoryQuery.data &&
-            rootDirectoryQuery.data.map((node) => {
-              if (node.type === "directory") {
-                return <FilesBrowseDirectory key={node.path} node={node} />;
-              } else if (node.type === "file") {
-                return <FilesBrowseFile node={node} key={node.path} />;
+            rootDirectoryQuery.data.map((directoryEntity) => {
+              if (directoryEntity.type === "directory") {
+                return (
+                  <FilesBrowseDirectory
+                    key={directoryEntity.path}
+                    directory={directoryEntity}
+                  />
+                );
+              } else if (directoryEntity.type === "file") {
+                return (
+                  <FilesBrowseFile
+                    file={directoryEntity}
+                    key={directoryEntity.path}
+                  />
+                );
               }
             })}
         </div>
