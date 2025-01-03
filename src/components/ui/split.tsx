@@ -1,6 +1,11 @@
 "use client";
 
-import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
+import { motion } from "motion/react";
+import type {
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
+  TouchEvent as ReactTouchEvent,
+} from "react";
 import React, {
   useCallback,
   useEffect,
@@ -15,6 +20,7 @@ interface CustomSplitProps {
   className?: string;
   gutterSize?: number;
   sizes?: [number, number];
+  setSizes?: React.Dispatch<React.SetStateAction<[number, number]>>;
   minSize?: number | [number, number];
   snapThreshold?: number;
   children: [ReactNode, ReactNode];
@@ -24,8 +30,9 @@ export default function Split({
   className,
   gutterSize = 6,
   sizes = [20, 80],
+  setSizes,
   minSize = 0,
-  snapThreshold = 40,
+  snapThreshold = 20,
   children,
 }: CustomSplitProps) {
   const minSizes = useMemo<[number, number]>(() => {
@@ -39,26 +46,17 @@ export default function Split({
   const containerRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
 
-  const onMouseDown = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
-    setDragging(true);
-    e.preventDefault();
-  }, []);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
-  const onMouseUp = useCallback(() => {
-    if (dragging) {
-      setDragging(false);
-    }
-  }, [dragging]);
-
-  const onMouseMove = useCallback(
-    (e: globalThis.MouseEvent) => {
-      if (!dragging || !containerRef.current) return;
+  const calculatePosition = useCallback(
+    (clientX: number) => {
+      if (!containerRef.current) return;
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
       const availableWidth = containerWidth - gutterSize;
 
-      const offsetX = e.clientX - containerRect.left;
+      const offsetX = clientX - containerRect.left;
 
       if (offsetX <= snapThreshold) {
         setLeftPercent(0);
@@ -82,69 +80,141 @@ export default function Split({
       } else {
         setLeftPercent(newLeftPercent);
       }
+
+      if (setSizes) {
+        setSizes([newLeftPercent, 100 - newLeftPercent]);
+      }
     },
-    [dragging, minSizes, gutterSize, snapThreshold],
+    [gutterSize, snapThreshold, minSizes, setSizes],
+  );
+
+  useEffect(() => {
+    if (dragging) {
+      document.body.style.userSelect = "none";
+    } else {
+      document.body.style.userSelect = "";
+    }
+    return () => {
+      document.body.style.userSelect = "";
+    };
+  }, [dragging]);
+
+  const onMouseDown = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
+    setDragging(true);
+    setShouldAnimate(false);
+    e.preventDefault();
+  }, []);
+
+  const onTouchStart = useCallback((e: ReactTouchEvent<HTMLDivElement>) => {
+    setDragging(true);
+    setShouldAnimate(false);
+    e.preventDefault();
+  }, []);
+
+  const onMouseUp = useCallback(() => {
+    if (dragging) {
+      setDragging(false);
+    }
+  }, [dragging]);
+
+  const onTouchEnd = useCallback(() => {
+    if (dragging) {
+      setDragging(false);
+    }
+  }, [dragging]);
+
+  const onMouseMove = useCallback(
+    (e: globalThis.MouseEvent) => {
+      if (!dragging) return;
+      calculatePosition(e.clientX);
+    },
+    [dragging, calculatePosition],
+  );
+
+  const onTouchMove = useCallback(
+    (e: globalThis.TouchEvent) => {
+      if (!dragging) return;
+      if (e.touches.length > 0) {
+        calculatePosition(e.touches[0].clientX);
+      }
+    },
+    [dragging, calculatePosition],
   );
 
   useEffect(() => {
     if (dragging) {
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("touchmove", onTouchMove, { passive: false });
+      document.addEventListener("touchend", onTouchEnd);
     } else {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
     }
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
     };
-  }, [dragging, onMouseMove, onMouseUp]);
+  }, [dragging, onMouseMove, onMouseUp, onTouchMove, onTouchEnd]);
 
   useEffect(() => {
+    setShouldAnimate(true);
     setLeftPercent(sizes[0]);
   }, [sizes]);
+
+  const handleAnimationComplete = useCallback(() => {
+    setShouldAnimate(false);
+  }, []);
 
   return (
     <div
       ref={containerRef}
       className={cn("flex h-full w-full flex-row", className)}
     >
-      <div
-        style={{
+      <motion.div
+        animate={{
           width:
             leftPercent === 0
               ? `${minSizes[0]}px`
               : `calc(${leftPercent}% - ${gutterSize / 2}px)`,
-          minWidth: leftPercent === 0 ? `${minSizes[0]}px` : `${minSizes[0]}px`,
+          minWidth: `${minSizes[0]}px`,
         }}
+        transition={{ duration: shouldAnimate ? 0.3 : 0 }}
+        onAnimationComplete={handleAnimationComplete}
       >
         {children[0]}
-      </div>
+      </motion.div>
 
       <div
-        className="relative shrink-0 cursor-col-resize bg-border hover:bg-accent"
+        className="relative shrink-0 cursor-col-resize touch-none bg-border hover:bg-accent"
         style={{
           width: `${gutterSize}px`,
         }}
         onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
       >
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform select-none text-xl text-muted-foreground">
           &#8942;
         </div>
       </div>
 
-      <div
-        style={{
+      <motion.div
+        animate={{
           width:
             leftPercent === 100
               ? `${minSizes[1]}px`
               : `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`,
-          minWidth:
-            leftPercent === 100 ? `${minSizes[1]}px` : `${minSizes[1]}px`,
+          minWidth: `${minSizes[1]}px`,
         }}
+        transition={{ duration: shouldAnimate && leftPercent !== 0 ? 0.3 : 0 }}
+        onAnimationComplete={handleAnimationComplete}
       >
         {children[1]}
-      </div>
+      </motion.div>
     </div>
   );
 }

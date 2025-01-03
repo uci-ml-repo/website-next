@@ -60,7 +60,7 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
     }
   };
 
-  if (readFileQuery.isLoading && cachedLines.length === 0) {
+  if (readFileQuery.isLoading) {
     return (
       <div className="flex min-w-fit items-center justify-center p-4">
         <Spinner />

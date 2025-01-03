@@ -2,6 +2,7 @@ import DatasetInteractions from "@/components/dataset/page/interactions/DatasetI
 import About from "@/components/dataset/page/tabs/about/About";
 import Discussions from "@/components/dataset/page/tabs/discussions/Discussions";
 import Files from "@/components/dataset/page/tabs/files/Files";
+import { FileProvider } from "@/components/dataset/page/tabs/files/FilesContext";
 import {
   LinearTabs,
   LinearTabsContent,
@@ -56,7 +57,14 @@ export default async function DatasetTabs({
         </LinearTabsContent>
         {zipStats && (
           <LinearTabsContent value="files" forceMount>
-            <Files dataset={dataset} />
+            <FileProvider
+              initialPath={{
+                path: datasetFilesPath(dataset),
+                type: "directory",
+              }}
+            >
+              <Files dataset={dataset} />
+            </FileProvider>
           </LinearTabsContent>
         )}
         <LinearTabsContent value="discussions" forceMount>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import path from "path";
 import { useEffect, useState } from "react";
 
 import Spinner from "@/components/ui/spinner";
@@ -34,9 +35,8 @@ export default function FilesViewFileImage({ source }: { source: string }) {
     <div className="relative flex-1">
       <Image
         src={source}
-        alt={source}
+        alt={path.basename(source)}
         fill
-        unoptimized
         className="object-contain"
       />
       <div className="absolute bottom-0 right-0 rounded-tl-lg bg-muted/70 px-1 py-0.5">
