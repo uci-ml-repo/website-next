@@ -36,23 +36,30 @@ export default function FilesViewDirectory({
   }
 
   return (
-    <div className="flex h-fit flex-wrap gap-2 overflow-auto p-4">
-      {data.map((directoryEntity) => {
-        return (
-          <button
-            key={directoryEntity.path}
-            onClick={() => setCurrentFile(directoryEntity)}
-            className="lift h-28 w-32 rounded-md border"
-          >
-            <div className="flex items-center justify-center [&>svg]:size-10">
-              {fileToIcon(directoryEntity, true)}
-            </div>
-            <div className="line-clamp-2 px-2 text-sm">
-              {path.basename(directoryEntity.path)}
-            </div>
-          </button>
-        );
-      })}
+    <div className="h-full overflow-auto">
+      <div className="flex flex-wrap gap-2 p-4">
+        {data.map((directoryEntity) => {
+          return (
+            <button
+              key={directoryEntity.path}
+              onClick={() => setCurrentFile(directoryEntity)}
+              className="lift h-28 w-32 shrink-0 rounded-md border"
+              title={path.basename(directoryEntity.path)}
+            >
+              <div className="flex h-full w-full flex-col p-2">
+                <div className="flex min-h-16 items-center justify-center [&>svg]:size-10">
+                  {fileToIcon(directoryEntity, true)}
+                </div>
+                <div className="flex h-full items-end">
+                  <div className="line-clamp-2 w-full overflow-hidden text-ellipsis break-all px-2 text-xs">
+                    {path.basename(directoryEntity.path)}
+                  </div>
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

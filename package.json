@@ -91,6 +91,7 @@
     "dotenv-cli": "8.0.0",
     "embla-carousel-react": "8.5.1",
     "escape-html": "1.0.3",
+    "fast-glob": "3.3.2",
     "fs-extra": "11.2.0",
     "highlight.js": "11.11.1",
     "ioredis": "5.4.2",

@@ -118,7 +118,7 @@ export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
                   </div>
                 )
               ) : (
-                <Badge variant="destructive">No Files</Badge>
+                <Badge variant="destructive">Missing Files</Badge>
               )}
             </>
           )}

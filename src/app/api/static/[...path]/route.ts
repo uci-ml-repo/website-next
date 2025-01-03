@@ -16,7 +16,7 @@ export async function GET(
     try {
       if (!process.env.STATIC_FILES_DIRECTORY) {
         return NextResponse.json(
-          { error: "Storage root is not defined" },
+          { error: "Storage path is not defined" },
           { status: 500 },
         );
       }
@@ -47,9 +47,13 @@ export async function GET(
       const fileContent = await fs.readFile(filePath);
       const contentType = mime.getType(filePath) || "application/octet-stream";
 
+      const fileSize = fs.statSync(filePath).size;
+
       return new NextResponse(fileContent, {
         headers: {
           "Content-Type": contentType,
+          "Content-Length": fileSize.toString(),
+          "Accept-Ranges": "bytes",
         },
       });
     } catch (error: unknown) {

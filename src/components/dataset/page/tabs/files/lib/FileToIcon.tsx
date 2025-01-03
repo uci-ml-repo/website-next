@@ -1,5 +1,5 @@
 import {
-  FileAudioIcon,
+  FileAudio2Icon,
   FileCodeIcon,
   FileIcon,
   FileImageIcon,
@@ -13,7 +13,11 @@ import Image from "next/image";
 import path from "path";
 
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import { imageExtensions } from "@/lib/utils/file";
+import {
+  audioExtensions,
+  imageExtensions,
+  videoExtensions,
+} from "@/lib/utils/file";
 import type { DirectoryEntity } from "@/server/service/files/find";
 
 export default function fileToIcon(
@@ -22,16 +26,28 @@ export default function fileToIcon(
 ) {
   const extension = path.extname(file.path);
 
-  if (renderImage && imageExtensions.includes(extension ?? "")) {
-    return (
-      <Image
-        src={path.join(STATIC_FILES_ROUTE, file.path)}
-        alt={file.path}
-        width={80}
-        height={80}
-        className="object-cover"
-      />
-    );
+  if (imageExtensions.includes(extension)) {
+    if (renderImage) {
+      return (
+        <Image
+          src={path.join(STATIC_FILES_ROUTE, file.path)}
+          alt={file.path}
+          width={80}
+          height={80}
+          className="max-h-full object-contain"
+        />
+      );
+    }
+
+    return <FileImageIcon />;
+  }
+
+  if (videoExtensions.includes(extension)) {
+    return <FileVideoIcon />;
+  }
+
+  if (audioExtensions.includes(extension)) {
+    return <FileAudio2Icon />;
   }
 
   if (file.type === "directory") {
@@ -39,47 +55,31 @@ export default function fileToIcon(
   }
 
   switch (extension) {
-    case "txt":
-    case "doc":
-    case "docx":
-    case "pdf":
-    case "names":
-    case "md":
+    case ".txt":
+    case ".doc":
+    case ".docx":
+    case ".pdf":
+    case ".names":
+    case ".md":
       return <FileTextIcon />;
-    case "csv":
-    case "tsv":
-    case "data":
-    case "xls":
-    case "xlsx":
+    case ".csv":
+    case ".tsv":
+    case ".data":
+    case ".xls":
+    case ".xlsx":
       return <FileSpreadsheetIcon />;
-    case "json":
-    case "yaml":
-    case "yml":
+    case ".json":
+    case ".yaml":
+    case ".yml":
       return <FileJsonIcon />;
-    case "ipynb":
-    case "py":
-    case "html":
-    case "xml":
-    case "r":
-    case "lisp":
-    case "mat":
+    case ".ipynb":
+    case ".py":
+    case ".html":
+    case ".xml":
+    case ".r":
+    case ".lisp":
+    case ".mat":
       return <FileCodeIcon />;
-    case "png":
-    case "jpg":
-    case "jpeg":
-    case "gif":
-    case "svg":
-    case "webp":
-    case "bmp":
-    case "tiff":
-      return <FileImageIcon />;
-    case "wav":
-    case "mp3":
-      return <FileAudioIcon />;
-    case "mp4":
-    case "avi":
-    case "mov":
-      return <FileVideoIcon />;
     default:
       return <FileIcon />;
   }

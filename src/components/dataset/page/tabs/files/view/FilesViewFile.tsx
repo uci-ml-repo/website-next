@@ -1,13 +1,20 @@
 import path from "path";
 import React, { useEffect, useRef, useState } from "react";
 
+import FilesViewFileAudio from "@/components/dataset/page/tabs/files/view/FilesViewFileAudio";
 import FilesViewFileImage from "@/components/dataset/page/tabs/files/view/FilesViewFileImage";
 import FilesViewFilesTabular from "@/components/dataset/page/tabs/files/view/FilesViewFileTabular";
 import FilesViewFileText from "@/components/dataset/page/tabs/files/view/FilesViewFileText";
+import FilesViewFileVideo from "@/components/dataset/page/tabs/files/view/FilesViewFileVideo";
 import { Alert } from "@/components/ui/alert";
 import Spinner from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import { imageExtensions, tabularToDelimiter } from "@/lib/utils/file";
+import {
+  audioExtensions,
+  imageExtensions,
+  tabularToDelimiter,
+  videoExtensions,
+} from "@/lib/utils/file";
 import type { DirectoryEntity } from "@/server/service/files/find";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -73,18 +80,25 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
     );
   }
 
-  return imageExtensions.includes(path.extname(file.path)) ? (
-    <FilesViewFileImage source={path.join(STATIC_FILES_ROUTE, file.path)} />
+  const extension = path.extname(file.path);
+  const contentPath = path.join(STATIC_FILES_ROUTE, file.path);
+
+  return imageExtensions.includes(extension) ? (
+    <FilesViewFileImage source={contentPath} />
+  ) : videoExtensions.includes(extension) ? (
+    <FilesViewFileVideo source={contentPath} />
+  ) : audioExtensions.includes(extension) ? (
+    <FilesViewFileAudio source={contentPath} />
   ) : (
     <div
       ref={containerRef}
       onScroll={handleScroll}
       className="h-full overflow-auto"
     >
-      {Object.keys(tabularToDelimiter).includes(path.extname(file.path)) ? (
+      {Object.keys(tabularToDelimiter).includes(extension) ? (
         <FilesViewFilesTabular
           lines={cachedLines}
-          delimiter={tabularToDelimiter[path.extname(file.path)]}
+          delimiter={tabularToDelimiter[extension]}
         />
       ) : (
         <FilesViewFileText lines={cachedLines} />
