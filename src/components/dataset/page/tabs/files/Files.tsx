@@ -32,25 +32,24 @@ export default function Files({ dataset }: { dataset: DatasetResponse }) {
 
   return (
     <div className="flex h-full flex-col space-y-2">
-      <div className="flex justify-between">
+      <div className="flex justify-between md:hidden">
         <button
           onClick={() => setSizes([100, 0])}
           className="flex disabled:invisible"
-          disabled={sizes[1] === 0}
+          disabled={sizes[1] < 50}
         >
           <ChevronLeftIcon />
           <span>Browse</span>
         </button>
         <button
           onClick={() => setSizes([0, 100])}
-          disabled={sizes[0] === 0}
+          disabled={sizes[0] < 50}
           className="flex disabled:invisible"
         >
           <span>View File</span>
           <ChevronRightIcon />
         </button>
       </div>
-
       <Split
         className="h-[75dvh]"
         gutterSize={12}
