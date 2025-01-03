@@ -21,7 +21,6 @@ export default function Files({ dataset }: { dataset: DatasetResponse }) {
           className="max-h-[75dvh] min-h-[400px]"
           gutterSize={6}
           sizes={[20, 80]}
-          minSize={150}
         >
           <div className="flex h-full flex-col overflow-hidden rounded-l-xl border-2 border-r-0">
             <FilesBrowse dataset={dataset} />

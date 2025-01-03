@@ -9,12 +9,42 @@ import {
   FileVideoIcon,
   FolderIcon,
 } from "lucide-react";
+import Image from "next/image";
+import path from "path";
 
+import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DirectoryEntity } from "@/server/service/files/find";
 
 export default function directoryEntityToIcon(
   directoryEntity: DirectoryEntity,
+  renderImage: boolean = false,
 ) {
+  if (
+    renderImage &&
+    [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "svg",
+      "webp",
+      "avif",
+      "bmp",
+      "ico",
+      "apng",
+    ].includes(directoryEntity.extension ?? "")
+  ) {
+    return (
+      <Image
+        src={path.join(STATIC_FILES_ROUTE, directoryEntity.path)}
+        alt={directoryEntity.path}
+        width={80}
+        height={80}
+        className="object-cover"
+      />
+    );
+  }
+
   if (directoryEntity.type === "directory") {
     return <FolderIcon className="fill-foreground" />;
   }

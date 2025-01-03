@@ -43,7 +43,7 @@ export default function FilesViewDirectory({
             className="h-28 w-32 rounded-md border"
           >
             <div className="flex items-center justify-center [&>svg]:size-10">
-              {directoryEntityToIcon(directoryEntity)}
+              {directoryEntityToIcon(directoryEntity, true)}
             </div>
             <div className="line-clamp-2 px-2 text-sm">
               {directoryEntity.name}

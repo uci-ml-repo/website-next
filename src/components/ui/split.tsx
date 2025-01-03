@@ -16,6 +16,7 @@ interface CustomSplitProps {
   gutterSize?: number;
   sizes?: [number, number];
   minSize?: number | [number, number];
+  snapThreshold?: number;
   children: [ReactNode, ReactNode];
 }
 
@@ -24,6 +25,7 @@ export default function Split({
   gutterSize = 6,
   sizes = [20, 80],
   minSize = 0,
+  snapThreshold = 40,
   children,
 }: CustomSplitProps) {
   const minSizes = useMemo<[number, number]>(() => {
@@ -57,6 +59,17 @@ export default function Split({
       const availableWidth = containerWidth - gutterSize;
 
       const offsetX = e.clientX - containerRect.left;
+
+      if (offsetX <= snapThreshold) {
+        setLeftPercent(0);
+        return;
+      }
+
+      if (availableWidth - offsetX <= snapThreshold) {
+        setLeftPercent(100);
+        return;
+      }
+
       const newLeftPercent = (offsetX / availableWidth) * 100;
 
       const minLeftPercent = (minSizes[0] / availableWidth) * 100;
@@ -70,7 +83,7 @@ export default function Split({
         setLeftPercent(newLeftPercent);
       }
     },
-    [dragging, minSizes, gutterSize],
+    [dragging, minSizes, gutterSize, snapThreshold],
   );
 
   useEffect(() => {
@@ -87,6 +100,10 @@ export default function Split({
     };
   }, [dragging, onMouseMove, onMouseUp]);
 
+  useEffect(() => {
+    setLeftPercent(sizes[0]);
+  }, [sizes]);
+
   return (
     <div
       ref={containerRef}
@@ -94,8 +111,11 @@ export default function Split({
     >
       <div
         style={{
-          width: `calc(${leftPercent}% - ${gutterSize / 2}px)`,
-          minWidth: minSizes[0],
+          width:
+            leftPercent === 0
+              ? `${minSizes[0]}px`
+              : `calc(${leftPercent}% - ${gutterSize / 2}px)`,
+          minWidth: leftPercent === 0 ? `${minSizes[0]}px` : `${minSizes[0]}px`,
         }}
       >
         {children[0]}
@@ -115,8 +135,12 @@ export default function Split({
 
       <div
         style={{
-          width: `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`,
-          minWidth: minSizes[1],
+          width:
+            leftPercent === 100
+              ? `${minSizes[1]}px`
+              : `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`,
+          minWidth:
+            leftPercent === 100 ? `${minSizes[1]}px` : `${minSizes[1]}px`,
         }}
       >
         {children[1]}
