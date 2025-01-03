@@ -23,10 +23,10 @@ export default function Files({ dataset }: { dataset: DatasetResponse }) {
           sizes={[20, 80]}
           minSize={150}
         >
-          <div className="flex h-full flex-col rounded-l-xl border-2 border-r-0">
+          <div className="flex h-full flex-col overflow-hidden rounded-l-xl border-2 border-r-0">
             <FilesBrowse dataset={dataset} />
           </div>
-          <div className="flex h-full flex-col rounded-r-xl border-2 border-l-0">
+          <div className="flex h-full flex-col overflow-hidden rounded-r-xl border-2 border-l-0">
             <FilesView dataset={dataset} />
           </div>
         </Split>

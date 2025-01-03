@@ -34,10 +34,7 @@ export default function Split({
   }, [minSize]);
 
   const [leftPercent, setLeftPercent] = useState(sizes[0]);
-  const rightPercent = 100 - leftPercent;
-
   const containerRef = useRef<HTMLDivElement>(null);
-
   const [dragging, setDragging] = useState(false);
 
   const onMouseDown = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
@@ -57,12 +54,13 @@ export default function Split({
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
+      const availableWidth = containerWidth - gutterSize;
 
       const offsetX = e.clientX - containerRect.left;
-      const newLeftPercent = (offsetX / containerWidth) * 100;
+      const newLeftPercent = (offsetX / availableWidth) * 100;
 
-      const minLeftPercent = (minSizes[0] / containerWidth) * 100;
-      const minRightPercent = (minSizes[1] / containerWidth) * 100;
+      const minLeftPercent = (minSizes[0] / availableWidth) * 100;
+      const minRightPercent = (minSizes[1] / availableWidth) * 100;
 
       if (newLeftPercent < minLeftPercent) {
         setLeftPercent(minLeftPercent);
@@ -72,7 +70,7 @@ export default function Split({
         setLeftPercent(newLeftPercent);
       }
     },
-    [dragging, minSizes],
+    [dragging, minSizes, gutterSize],
   );
 
   useEffect(() => {
@@ -96,14 +94,15 @@ export default function Split({
     >
       <div
         style={{
-          width: `${leftPercent}%`,
+          width: `calc(${leftPercent}% - ${gutterSize / 2}px)`,
+          minWidth: minSizes[0],
         }}
       >
         {children[0]}
       </div>
 
       <div
-        className="relative cursor-col-resize bg-border hover:bg-accent"
+        className="relative shrink-0 cursor-col-resize bg-border hover:bg-accent"
         style={{
           width: `${gutterSize}px`,
         }}
@@ -116,7 +115,8 @@ export default function Split({
 
       <div
         style={{
-          width: `${rightPercent}%`,
+          width: `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`,
+          minWidth: minSizes[1],
         }}
       >
         {children[1]}

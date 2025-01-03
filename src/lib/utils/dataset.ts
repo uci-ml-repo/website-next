@@ -11,7 +11,7 @@ import { STATIC_FILES_ROUTE } from "@/lib/routes";
  *
  * @returns the directory path
  *
- * @example `/public/43/iris`
+ * @example `/public/53/iris`
  */
 export function datasetFilesDirectory({
   id,

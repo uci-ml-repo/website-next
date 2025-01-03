@@ -42,10 +42,10 @@ export default function FilesViewDirectory({
             onClick={() => setCurrentDirectoryEntity(directoryEntity)}
             className="h-28 w-32 rounded-md border"
           >
-            <div className="flex items-center justify-center border-b [&>svg]:size-10">
+            <div className="flex items-center justify-center [&>svg]:size-10">
               {directoryEntityToIcon(directoryEntity)}
             </div>
-            <div className="truncate text-nowrap px-2 text-sm">
+            <div className="line-clamp-2 px-2 text-sm">
               {directoryEntity.name}
             </div>
           </button>

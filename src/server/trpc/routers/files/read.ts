@@ -18,6 +18,14 @@ const filesReadRouter = router({
         absolutePath: ctx.realPath,
       });
     }),
+
+  stats: fileAccessProcedure
+    .input(z.object({ path: z.string() }))
+    .query(async ({ ctx }) => {
+      return service.files.read.stats({
+        absolutePath: ctx.realPath,
+      });
+    }),
 });
 
 export default filesReadRouter;

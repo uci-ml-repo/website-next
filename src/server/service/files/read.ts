@@ -50,4 +50,12 @@ export default class FilesReadService {
       cursor: hasMoreLines ? cursor + takeLines : undefined,
     };
   }
+
+  async stats({ absolutePath }: { absolutePath: string }) {
+    if (!fs.pathExistsSync(absolutePath)) {
+      throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
+    }
+
+    return fs.stat(absolutePath);
+  }
 }
