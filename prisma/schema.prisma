@@ -96,8 +96,8 @@ model Dataset {
   citedIn           DatasetPaper[]
   introductoryPaper DatasetPaper?  @relation("IntroductoryPaper")
 
-  fileCount Int? @map("file_count")
-  zipSize   Int? @map("zip_size")
+  // fileCount Int? @map("file_count")
+  // zipSize   Int? @map("zip_size")
 
   bookmarks   Bookmark[]
   discussions Discussion[]

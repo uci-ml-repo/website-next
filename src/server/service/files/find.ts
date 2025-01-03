@@ -5,10 +5,8 @@ import path from "path";
 type DirectoryEntityType = "directory" | "file" | null;
 
 export interface DirectoryEntity {
-  name: string;
   path: string;
   type: DirectoryEntityType;
-  extension?: string;
 }
 
 function nodeToDirectoryEntity(
@@ -16,7 +14,6 @@ function nodeToDirectoryEntity(
   absolutePath: string,
 ): DirectoryEntity {
   return {
-    name: node.name,
     path: path.join(
       absolutePath.slice(
         fs.realpathSync(process.env.STATIC_FILES_DIRECTORY!).length,
@@ -24,10 +21,6 @@ function nodeToDirectoryEntity(
       node.name,
     ),
     type: node.isDirectory() ? "directory" : node.isFile() ? "file" : null,
-    extension:
-      node.isFile() && node.name.includes(".")
-        ? node.name.split(".").pop()
-        : undefined,
   };
 }
 
@@ -46,7 +39,7 @@ export default class FileFindService {
           return 1;
         }
 
-        return a.name.localeCompare(b.name);
+        return path.basename(a.path).localeCompare(path.basename(b.path));
       });
   }
 }

@@ -1,5 +1,3 @@
-"use client";
-
 import type { Dataset } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";

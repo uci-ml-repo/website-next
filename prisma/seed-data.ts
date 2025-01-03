@@ -36,7 +36,7 @@ export const users: Prisma.UserCreateManyInput[] = [
 
 export const datasets: Omit<
   Required<Prisma.DatasetCreateManyInput>,
-  "createdAt" | "updatedAt" | "variablesDescription" | "zipSize"
+  "createdAt" | "updatedAt" | "variablesDescription" | "zipSize" | "fileCount"
 >[] = [
   {
     id: 53,
@@ -61,7 +61,7 @@ export const datasets: Omit<
     downloadCount: 191103,
     slug: "iris",
     externalLink: null,
-    fileCount: 1,
+    // // filecount: 1
   },
   {
     id: 45,
@@ -86,7 +86,7 @@ export const datasets: Omit<
     downloadCount: 125605,
     slug: "heart+disease",
     externalLink: null,
-    fileCount: 1,
+    // // filecount: 1
   },
   {
     id: 186,
@@ -111,7 +111,7 @@ export const datasets: Omit<
     downloadCount: 105932,
     slug: "wine+quality",
     externalLink: null,
-    fileCount: 1,
+    // // filecount: 1
   },
   {
     id: 2,
@@ -136,7 +136,7 @@ export const datasets: Omit<
     downloadCount: 80360,
     slug: "adult",
     externalLink: null,
-    fileCount: 1,
+    // filecount: 1
   },
   {
     id: 17,
@@ -160,7 +160,7 @@ export const datasets: Omit<
     downloadCount: 78091,
     slug: "breast+cancer+wisconsin+diagnostic",
     externalLink: null,
-    fileCount: 1,
+    // filecount: 1
   },
   {
     id: 1031,
@@ -185,7 +185,7 @@ export const datasets: Omit<
     downloadCount: 3459,
     slug: "dataset+for+assessing+mathematics+learning+in+higher+education",
     externalLink: null,
-    fileCount: 1,
+    // filecount: 1
   },
   {
     id: 1074,
@@ -210,7 +210,7 @@ export const datasets: Omit<
     downloadCount: 0,
     slug: "nvidia+market+customer+segmentation+data",
     externalLink: null,
-    fileCount: 1,
+    // filecount: 1
   },
   {
     id: 388,
@@ -235,7 +235,7 @@ export const datasets: Omit<
     downloadCount: 2032,
     slug: "epileptic+seizure+recognition",
     externalLink: null,
-    fileCount: 1,
+    // filecount: 1
   },
   {
     id: 939,
@@ -260,7 +260,7 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "test+pending",
     externalLink: "https://zenodo.org/records/7669442",
-    fileCount: null,
+    // fileCount: null,
   },
   {
     id: 938,
@@ -285,7 +285,7 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "regensburg+pediatric+appendicitis",
     externalLink: "https://zenodo.org/records/7669442",
-    fileCount: null,
+    // fileCount: null,
   },
 ];
 

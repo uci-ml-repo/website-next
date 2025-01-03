@@ -16,19 +16,30 @@ import {
   abbreviateDecimal,
   abbreviateFileSize,
   cn,
+  datasetFilesPath,
   datasetPage,
   datasetThumbnailURL,
   formatEnum,
 } from "@/lib/utils";
+import { caller } from "@/server/trpc/query/server";
 
 interface DatasetCardProps {
   dataset: Dataset;
   ref?: React.Ref<HTMLDivElement>;
 }
 
-export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
+export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const thumbnail = datasetThumbnailURL(dataset);
   const href = datasetPage(dataset);
+
+  let zipStats;
+  try {
+    zipStats = await caller.files.read.zipStats({
+      path: datasetFilesPath(dataset) + ".zip",
+    });
+  } catch {
+    zipStats = null;
+  }
 
   return (
     <Card className="lift-lg group flex h-[360px] flex-col" ref={ref}>
@@ -93,16 +104,21 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             <Badge variant="secondary">External</Badge>
           ) : (
             <>
-              {dataset.fileCount && dataset.zipSize && (
-                <div>
-                  <span>
-                    {dataset.fileCount === 1
-                      ? "1 File"
-                      : `${dataset.fileCount} Files`}
-                  </span>
-                  <span> &middot; </span>
-                  <span>{abbreviateFileSize(dataset.zipSize)}</span>
-                </div>
+              {zipStats ? (
+                zipStats.fileCount &&
+                zipStats.size && (
+                  <div>
+                    <span>
+                      {zipStats.fileCount === 1
+                        ? "1 File"
+                        : `${zipStats.fileCount} Files`}
+                    </span>
+                    <span> &middot; </span>
+                    <span>{abbreviateFileSize(zipStats.size)}</span>
+                  </div>
+                )
+              ) : (
+                <Badge variant="destructive">No Files</Badge>
               )}
             </>
           )}

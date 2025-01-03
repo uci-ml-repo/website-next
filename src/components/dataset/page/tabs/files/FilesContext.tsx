@@ -21,7 +21,6 @@ const FileContext = createContext<FileContextProps>({
   currentFile: {
     path: STATIC_FILES_ROUTE,
     type: "directory",
-    name: "",
   },
   setCurrentFile: () => {},
   back: () => {},

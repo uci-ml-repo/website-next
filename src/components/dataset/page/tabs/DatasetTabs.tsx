@@ -10,6 +10,7 @@ import {
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
 import type { DatasetResponse } from "@/lib/types";
+import { datasetFilesPath } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function DatasetTabs({
@@ -21,12 +22,21 @@ export default async function DatasetTabs({
     datasetId: dataset.id,
   });
 
+  let zipStats;
+  try {
+    zipStats = await caller.files.read.zipStats({
+      path: datasetFilesPath(dataset) + ".zip",
+    });
+  } catch {
+    zipStats = null;
+  }
+
   return (
     <LinearTabs defaultValue="about">
       <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
         <LinearTabsList className="space-x-8">
           <LinearTabsTrigger value="about">About</LinearTabsTrigger>
-          {dataset.fileCount && (
+          {zipStats && (
             <LinearTabsTrigger value="files">Files</LinearTabsTrigger>
           )}
           <LinearTabsTrigger
@@ -44,7 +54,7 @@ export default async function DatasetTabs({
         <LinearTabsContent value="about">
           <About dataset={dataset} />
         </LinearTabsContent>
-        {dataset.fileCount && (
+        {zipStats && (
           <LinearTabsContent value="files" forceMount>
             <Files dataset={dataset} />
           </LinearTabsContent>

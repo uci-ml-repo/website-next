@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
+import AdmZip from "adm-zip";
 import fs from "fs-extra";
 import readline from "readline";
 
@@ -57,5 +58,21 @@ export default class FilesReadService {
     }
 
     return fs.stat(absolutePath);
+  }
+
+  async zipStats({ absolutePath }: { absolutePath: string }) {
+    if (!fs.pathExistsSync(absolutePath)) {
+      throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
+    }
+
+    const size = fs.statSync(absolutePath).size;
+    const fileCount = new AdmZip(absolutePath)
+      .getEntries()
+      .filter((entry) => !entry.isDirectory).length;
+
+    return {
+      size,
+      fileCount,
+    };
   }
 }

@@ -1,9 +1,10 @@
+import { HouseIcon } from "lucide-react";
 import path from "path";
 import React from "react";
 
 import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
 import type { DatasetResponse } from "@/lib/types";
-import { cn, datasetFilesDirectory } from "@/lib/utils";
+import { cn, datasetFilesPath } from "@/lib/utils";
 
 export default function FilesViewLinkGroups({
   dataset,
@@ -14,7 +15,7 @@ export default function FilesViewLinkGroups({
 }) {
   const { currentFile, setCurrentFile } = useFileContext();
 
-  const basePath = datasetFilesDirectory(dataset);
+  const basePath = datasetFilesPath(dataset);
 
   const relativePath = currentFile.path.startsWith(basePath)
     ? currentFile.path.slice(basePath.length + 1)
@@ -34,22 +35,20 @@ export default function FilesViewLinkGroups({
 
         return (
           <React.Fragment key={index}>
-            {index === 0 ? (
+            {index === 0 && (
               <button
-                className="text-link hover:underline"
+                className="text-link"
                 onClick={() => {
                   setCurrentFile({
                     path: basePath,
-                    name: dataset.slug,
                     type: "directory",
                   });
                 }}
               >
-                /
+                <HouseIcon className="size-4" />
               </button>
-            ) : (
-              <span>/</span>
             )}
+            <span>/</span>
             {isLast ? (
               <span className="text-nowrap">{part}</span>
             ) : (
@@ -58,7 +57,6 @@ export default function FilesViewLinkGroups({
                 onClick={() => {
                   setCurrentFile({
                     path: cumulativePath,
-                    name: part,
                     type: "directory",
                   });
                 }}
@@ -69,7 +67,7 @@ export default function FilesViewLinkGroups({
           </React.Fragment>
         );
       })}
-      {pathParts.length === 0 && <span>/</span>}
+      {pathParts.length === 0 && <HouseIcon className="size-4" />}
     </div>
   );
 }

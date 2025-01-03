@@ -5,16 +5,15 @@ import { FileProvider } from "@/components/dataset/page/tabs/files/FilesContext"
 import FilesView from "@/components/dataset/page/tabs/files/view/FilesView";
 import Split from "@/components/ui/split";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetFilesDirectory } from "@/lib/utils";
+import { datasetFilesPath } from "@/lib/utils";
 
 export default function Files({ dataset }: { dataset: DatasetResponse }) {
   return (
     <div className="flex h-full flex-col space-y-6">
       <FileProvider
         initialPath={{
-          path: datasetFilesDirectory(dataset),
+          path: datasetFilesPath(dataset),
           type: "directory",
-          name: dataset.slug,
         }}
       >
         <Split

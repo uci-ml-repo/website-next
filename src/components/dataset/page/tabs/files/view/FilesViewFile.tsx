@@ -73,7 +73,7 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
     );
   }
 
-  return imageExtensions.includes(file.extension!) ? (
+  return imageExtensions.includes(path.extname(file.path)) ? (
     <FilesViewFileImage source={path.join(STATIC_FILES_ROUTE, file.path)} />
   ) : (
     <div
@@ -81,10 +81,10 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
       onScroll={handleScroll}
       className="h-full overflow-auto"
     >
-      {Object.keys(tabularToDelimiter).includes(file.extension!) ? (
+      {Object.keys(tabularToDelimiter).includes(path.extname(file.path)) ? (
         <FilesViewFilesTabular
           lines={cachedLines}
-          delimiter={tabularToDelimiter[file.extension!]}
+          delimiter={tabularToDelimiter[path.extname(file.path)]}
         />
       ) : (
         <FilesViewFileText lines={cachedLines} />

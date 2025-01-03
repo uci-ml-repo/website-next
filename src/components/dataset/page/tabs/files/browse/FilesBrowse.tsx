@@ -8,12 +8,12 @@ import { Alert } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetFilesDirectory } from "@/lib/utils";
+import { datasetFilesPath } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const rootDirectoryQuery = trpc.files.find.list.useQuery({
-    path: datasetFilesDirectory(dataset),
+    path: datasetFilesPath(dataset),
   });
 
   if (rootDirectoryQuery.isError) {

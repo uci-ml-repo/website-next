@@ -1,3 +1,4 @@
+import path from "path";
 import { useEffect, useMemo, useState } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
@@ -46,7 +47,7 @@ export default function FilesBrowseDirectory({
         }}
       >
         {icon}
-        <span>{directory.name}</span>
+        <span>{path.basename(directory.path)}</span>
       </FilesBrowseButton>
 
       {isExpanded && (

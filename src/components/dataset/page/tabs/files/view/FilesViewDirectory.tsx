@@ -1,3 +1,5 @@
+import path from "path";
+
 import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
 import fileToIcon from "@/components/dataset/page/tabs/files/lib/FileToIcon";
 import Spinner from "@/components/ui/spinner";
@@ -46,7 +48,7 @@ export default function FilesViewDirectory({
               {fileToIcon(directoryEntity, true)}
             </div>
             <div className="line-clamp-2 px-2 text-sm">
-              {directoryEntity.name}
+              {path.basename(directoryEntity.path)}
             </div>
           </button>
         );

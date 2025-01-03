@@ -1,3 +1,4 @@
+import path from "path";
 import { useMemo } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
@@ -17,7 +18,7 @@ export default function FilesBrowseFile({ file }: { file: FileResponse }) {
     >
       <div className="ic flex space-x-2">
         {icon}
-        <span className="text-nowrap">{file.name}</span>
+        <span className="text-nowrap">{path.basename(file.path)}</span>
       </div>
     </FilesBrowseButton>
   );

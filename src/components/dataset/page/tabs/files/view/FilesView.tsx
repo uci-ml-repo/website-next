@@ -37,7 +37,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
 
   return (
     <>
-      <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1">
+      <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
         <div className="flex items-center space-x-2">
           <div className="flex">
             <Button

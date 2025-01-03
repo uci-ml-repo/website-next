@@ -3,7 +3,7 @@ import type { ApprovalStatus } from "@prisma/client";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
 /**
- * Get the directory for a dataset's data files
+ * Get the path for a dataset's data files
  *
  * @param id dataset id
  * @param slug dataset slug
@@ -13,7 +13,7 @@ import { STATIC_FILES_ROUTE } from "@/lib/routes";
  *
  * @example `/public/53/iris`
  */
-export function datasetFilesDirectory({
+export function datasetFilesPath({
   id,
   slug,
   status,

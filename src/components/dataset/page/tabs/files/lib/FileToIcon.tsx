@@ -20,7 +20,9 @@ export default function fileToIcon(
   file: DirectoryEntity,
   renderImage: boolean = false,
 ) {
-  if (renderImage && imageExtensions.includes(file.extension ?? "")) {
+  const extension = path.extname(file.path);
+
+  if (renderImage && imageExtensions.includes(extension ?? "")) {
     return (
       <Image
         src={path.join(STATIC_FILES_ROUTE, file.path)}
@@ -36,7 +38,7 @@ export default function fileToIcon(
     return <FolderIcon className="fill-foreground" />;
   }
 
-  switch (file.extension) {
+  switch (extension) {
     case "txt":
     case "doc":
     case "docx":

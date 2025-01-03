@@ -26,6 +26,14 @@ const filesReadRouter = router({
         absolutePath: ctx.realPath,
       });
     }),
+
+  zipStats: fileAccessProcedure
+    .input(z.object({ path: z.string() }))
+    .query(async ({ ctx }) => {
+      return service.files.read.zipStats({
+        absolutePath: ctx.realPath,
+      });
+    }),
 });
 
 export default filesReadRouter;

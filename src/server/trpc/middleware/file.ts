@@ -15,7 +15,7 @@ export const fileAccessProcedure = t.procedure
   .input(z.object({ path: z.string().optional() }))
   .use(async ({ ctx, input, next }) => {
     if (!input.path) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
+      throw new TRPCError({ code: "BAD_REQUEST", message: "No path provided" });
     }
 
     let realAccessPath: string;
@@ -24,7 +24,7 @@ export const fileAccessProcedure = t.procedure
         path.join(process.env.STATIC_FILES_DIRECTORY!, input.path),
       );
     } catch {
-      throw new TRPCError({ code: "NOT_FOUND" });
+      throw new TRPCError({ code: "NOT_FOUND", message: input.path });
     }
 
     const realStaticFilesRoot = fs.realpathSync(
@@ -32,16 +32,16 @@ export const fileAccessProcedure = t.procedure
     );
 
     if (!realAccessPath.startsWith(realStaticFilesRoot)) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
+      throw new TRPCError({ code: "BAD_REQUEST", message: input.path });
     }
 
     if (realAccessPath.startsWith(`${realStaticFilesRoot}/private`)) {
       if (!ctx.session?.user.role) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
+        throw new TRPCError({ code: "UNAUTHORIZED", message: input.path });
       }
 
       if (!isPriviliged(ctx.session.user.role)) {
-        throw new TRPCError({ code: "FORBIDDEN" });
+        throw new TRPCError({ code: "FORBIDDEN", message: input.path });
       }
     }
 

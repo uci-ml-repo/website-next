@@ -3,7 +3,12 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
-import { abbreviateFileSize, datasetZipURL } from "@/lib/utils";
+import {
+  abbreviateFileSize,
+  datasetFilesPath,
+  datasetZipURL,
+} from "@/lib/utils";
+import { caller } from "@/server/trpc/query/server";
 
 interface DatasetDownloadButtonProps {
   dataset: DatasetResponse;
@@ -23,15 +28,24 @@ export default async function DatasetDownloadButton({
     );
   }
 
+  let zipStats;
+  try {
+    zipStats = await caller.files.read.zipStats({
+      path: datasetFilesPath(dataset) + ".zip",
+    });
+  } catch {
+    zipStats = null;
+  }
+
   return (
     <Button variant="blue" className="lift w-full" size="lg" asChild>
       <a href={datasetZipURL(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>
-          {dataset.zipSize && (
+          {zipStats && zipStats.size && (
             <span className="ml-1 text-sm">
-              ({abbreviateFileSize(dataset.zipSize)})
+              ({abbreviateFileSize(zipStats.size)})
             </span>
           )}
         </div>
