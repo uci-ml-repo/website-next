@@ -24,7 +24,12 @@ export default function FilesViewLinkGroups({
   const pathParts = relativePath ? relativePath.split("/") : [];
 
   return (
-    <div className={cn("ml-1 flex space-x-1 text-lg font-medium", className)}>
+    <div
+      className={cn(
+        "ml-1 flex space-x-1 overflow-hidden text-lg font-medium",
+        className,
+      )}
+    >
       {pathParts.map((part, index) => {
         const cumulativePath = path.join(
           basePath,
@@ -37,7 +42,7 @@ export default function FilesViewLinkGroups({
           <React.Fragment key={index}>
             {index === 0 && (
               <button
-                className="text-link"
+                className="flex-shrink-0 text-link"
                 onClick={() => {
                   setCurrentFile({
                     path: basePath,
@@ -48,9 +53,9 @@ export default function FilesViewLinkGroups({
                 <HouseIcon className="size-4" />
               </button>
             )}
-            <span>/</span>
+            <span className="flex-shrink-0">/</span>
             {isLast ? (
-              <span className="text-nowrap">{part}</span>
+              <span className="truncate">{part}</span>
             ) : (
               <button
                 className="text-link hover:underline"

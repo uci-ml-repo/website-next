@@ -38,8 +38,8 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
   return (
     <>
       <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
-        <div className="flex items-center space-x-2">
-          <div className="flex">
+        <div className="flex w-full items-center space-x-2 truncate">
+          <div className="flex flex-shrink-0">
             <Button
               variant="ghost"
               size="icon"
@@ -57,8 +57,10 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
               <ChevronRightIcon className="size-6" />
             </Button>
           </div>
-          <FilesViewLinkGroups dataset={dataset} />
-          <div className="text-nowrap text-sm text-muted-foreground">
+          <div className="min-w-0 flex-1">
+            <FilesViewLinkGroups dataset={dataset} />
+          </div>
+          <div className="whitespace-nowrap text-sm text-muted-foreground">
             {currentFile.type === "directory" ? (
               directoryQuery.data ? (
                 <>({directoryQuery.data?.length} items)</>
