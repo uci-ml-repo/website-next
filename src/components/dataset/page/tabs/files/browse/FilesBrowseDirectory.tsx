@@ -22,7 +22,7 @@ export default function FilesBrowseDirectory({
     if (currentDirectoryEntity.path.startsWith(directory.path + "/")) {
       setIsExpanded(true);
     }
-  }, [currentDirectoryEntity.path, directory.path, isExpanded]);
+  }, [currentDirectoryEntity.path, directory.path]);
 
   const directoryQuery = trpc.files.find.list.useQuery(
     {

@@ -13,7 +13,11 @@ interface ReadFileParams {
 export default class FilesReadService {
   constructor(readonly prisma: PrismaClient) {}
 
-  async readFile({ absolutePath, cursor = 0, takeLines = 50 }: ReadFileParams) {
+  async readFileInfinite({
+    absolutePath,
+    cursor = 0,
+    takeLines = 50,
+  }: ReadFileParams) {
     if (!fs.pathExistsSync(absolutePath)) {
       throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
     }

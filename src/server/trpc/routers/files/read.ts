@@ -4,7 +4,7 @@ import service from "@/server/service";
 import { fileAccessProcedure, router } from "@/server/trpc";
 
 const filesReadRouter = router({
-  readFile: fileAccessProcedure
+  readFileInfinite: fileAccessProcedure
     .input(
       z.object({
         path: z.string(),
@@ -13,7 +13,7 @@ const filesReadRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      return service.files.read.readFile({
+      return service.files.read.readFileInfinite({
         ...input,
         absolutePath: ctx.realPath,
       });
