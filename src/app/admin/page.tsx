@@ -23,6 +23,9 @@ export default function Page() {
           <LinearTabsTrigger value="datasets" badgeValue={0}>
             Datasets
           </LinearTabsTrigger>
+          <LinearTabsTrigger value="edits" badgeValue={0}>
+            Edits
+          </LinearTabsTrigger>
           <LinearTabsTrigger value="reports" badgeValue={0}>
             Reports
           </LinearTabsTrigger>
@@ -31,6 +34,8 @@ export default function Page() {
 
         <LinearTabsContent value="overview">OVERVIEW</LinearTabsContent>
         <LinearTabsContent value="datasets">DATASETS</LinearTabsContent>
+        <LinearTabsContent value="edits">EDITS</LinearTabsContent>
+        <LinearTabsContent value="reports">REPORTS</LinearTabsContent>
       </LinearTabs>
     </Main>
   );

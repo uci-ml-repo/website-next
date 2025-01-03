@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
 import FilesBrowseFile from "@/components/dataset/page/tabs/files/browse/FilesBrowseFile";
-import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
-import directoryEntityToIcon from "@/components/dataset/page/tabs/files/lib/DirectoryEntityToIcon";
+import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
+import fileToIcon from "@/components/dataset/page/tabs/files/lib/FileToIcon";
 import Spinner from "@/components/ui/spinner";
 import type { FileResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -13,16 +13,15 @@ export default function FilesBrowseDirectory({
 }: {
   directory: FileResponse;
 }) {
-  const { currentDirectoryEntity, setCurrentDirectoryEntity } =
-    useCurrentDirectoryEntity();
+  const { currentFile, setCurrentFile } = useFileContext();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    if (currentDirectoryEntity.path.startsWith(directory.path + "/")) {
+    if (currentFile.path.startsWith(directory.path + "/")) {
       setIsExpanded(true);
     }
-  }, [currentDirectoryEntity.path, directory.path]);
+  }, [currentFile.path, directory.path]);
 
   const directoryQuery = trpc.files.find.list.useQuery(
     {
@@ -33,18 +32,16 @@ export default function FilesBrowseDirectory({
     },
   );
 
-  const icon = useMemo(() => directoryEntityToIcon(directory), [directory]);
+  const icon = useMemo(() => fileToIcon(directory), [directory]);
 
   return (
     <div>
       <FilesBrowseButton
         chevron
         chevronDown={isExpanded}
-        className={
-          currentDirectoryEntity.path === directory.path ? "bg-accent/50" : ""
-        }
+        className={currentFile.path === directory.path ? "bg-accent/50" : ""}
         onClick={() => {
-          setCurrentDirectoryEntity(directory);
+          setCurrentFile(directory);
           setIsExpanded((prev) => !prev);
         }}
       >

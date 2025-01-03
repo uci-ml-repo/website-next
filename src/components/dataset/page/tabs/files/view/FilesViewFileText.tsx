@@ -1,4 +1,4 @@
-export default function FilesViewFilesText({ lines }: { lines: string[] }) {
+export default function FilesViewFileText({ lines }: { lines: string[] }) {
   return (
     <div className="flex space-x-2 *:space-y-0.5">
       <div className="border-r bg-muted px-1 text-sm text-muted-foreground">

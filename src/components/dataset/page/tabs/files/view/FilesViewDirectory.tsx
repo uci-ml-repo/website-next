@@ -1,5 +1,5 @@
-import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
-import directoryEntityToIcon from "@/components/dataset/page/tabs/files/lib/DirectoryEntityToIcon";
+import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
+import fileToIcon from "@/components/dataset/page/tabs/files/lib/FileToIcon";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -8,7 +8,7 @@ export default function FilesViewDirectory({
 }: {
   directoryPath?: string;
 }) {
-  const { setCurrentDirectoryEntity } = useCurrentDirectoryEntity();
+  const { setCurrentFile } = useFileContext();
 
   const { data, isLoading, isError } = trpc.files.find.list.useQuery(
     { path: directoryPath ?? "" },
@@ -39,11 +39,11 @@ export default function FilesViewDirectory({
         return (
           <button
             key={directoryEntity.path}
-            onClick={() => setCurrentDirectoryEntity(directoryEntity)}
-            className="h-28 w-32 rounded-md border"
+            onClick={() => setCurrentFile(directoryEntity)}
+            className="lift h-28 w-32 rounded-md border"
           >
             <div className="flex items-center justify-center [&>svg]:size-10">
-              {directoryEntityToIcon(directoryEntity, true)}
+              {fileToIcon(directoryEntity, true)}
             </div>
             <div className="line-clamp-2 px-2 text-sm">
               {directoryEntity.name}

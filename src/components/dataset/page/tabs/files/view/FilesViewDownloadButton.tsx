@@ -17,7 +17,7 @@ export default function FilesViewDownloadButton({ path }: { path: string }) {
             pill={false}
             variant="outline"
             size="icon"
-            className="size-8"
+            className="size-8 shrink-0"
             asChild
           >
             <a href={path} download>

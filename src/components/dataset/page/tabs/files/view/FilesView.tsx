@@ -1,10 +1,12 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
-import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
+import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
 import FilesViewDirectory from "@/components/dataset/page/tabs/files/view/FilesViewDirectory";
 import FilesViewDownloadButton from "@/components/dataset/page/tabs/files/view/FilesViewDownloadButton";
 import FilesViewFile from "@/components/dataset/page/tabs/files/view/FilesViewFile";
 import FilesViewLinkGroups from "@/components/dataset/page/tabs/files/view/FilesViewLinkGroups";
+import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
@@ -12,40 +14,59 @@ import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
-  const { currentDirectoryEntity } = useCurrentDirectoryEntity();
+  const { currentFile, fileHistory, back, fileForwardHistory, forward } =
+    useFileContext();
 
   const directoryQuery = trpc.files.find.list.useQuery(
     {
-      path: currentDirectoryEntity.path,
+      path: currentFile.path,
     },
     {
-      enabled: currentDirectoryEntity.type === "directory",
+      enabled: currentFile.type === "directory",
     },
   );
 
   const fileStatsQuery = trpc.files.read.stats.useQuery(
     {
-      path: currentDirectoryEntity.path,
+      path: currentFile.path,
     },
     {
-      enabled: currentDirectoryEntity.type === "file",
+      enabled: currentFile.type === "file",
     },
   );
 
   return (
     <>
-      <div className="sticky top-0 flex h-12 items-center justify-between border-b-2 bg-muted p-2">
+      <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1">
         <div className="flex items-center space-x-2">
+          <div className="flex">
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={fileHistory.length === 0}
+              onClick={back}
+            >
+              <ChevronLeftIcon className="size-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={fileForwardHistory.length === 0}
+              onClick={forward}
+            >
+              <ChevronRightIcon className="size-6" />
+            </Button>
+          </div>
           <FilesViewLinkGroups dataset={dataset} />
-          <div className="text-sm text-muted-foreground">
-            {currentDirectoryEntity.type === "directory" ? (
+          <div className="text-nowrap text-sm text-muted-foreground">
+            {currentFile.type === "directory" ? (
               directoryQuery.data ? (
                 <>({directoryQuery.data?.length} items)</>
               ) : (
                 <Spinner className="size-4" />
               )
             ) : (
-              currentDirectoryEntity.type === "file" &&
+              currentFile.type === "file" &&
               (fileStatsQuery.data ? (
                 <>({abbreviateFileSize(fileStatsQuery.data?.size)})</>
               ) : (
@@ -55,17 +76,17 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
           </div>
         </div>
 
-        {currentDirectoryEntity.type === "file" && (
+        {currentFile.type === "file" && (
           <FilesViewDownloadButton
-            path={path.join(STATIC_FILES_ROUTE, currentDirectoryEntity.path)}
+            path={path.join(STATIC_FILES_ROUTE, currentFile.path)}
           />
         )}
       </div>
       <>
-        {currentDirectoryEntity.type === "directory" ? (
-          <FilesViewDirectory directoryPath={currentDirectoryEntity.path} />
-        ) : currentDirectoryEntity.type === "file" ? (
-          <FilesViewFile file={currentDirectoryEntity} />
+        {currentFile.type === "directory" ? (
+          <FilesViewDirectory directoryPath={currentFile.path} />
+        ) : currentFile.type === "file" ? (
+          <FilesViewFile file={currentFile} />
         ) : (
           <div>Unknown file type</div>
         )}

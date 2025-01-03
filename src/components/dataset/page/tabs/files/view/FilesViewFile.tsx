@@ -1,41 +1,18 @@
+import path from "path";
 import React, { useEffect, useRef, useState } from "react";
 
-import FilesViewFilesText from "@/components/dataset/page/tabs/files/view/FilesViewFilesText";
+import FilesViewFileImage from "@/components/dataset/page/tabs/files/view/FilesViewFileImage";
 import FilesViewFilesTabular from "@/components/dataset/page/tabs/files/view/FilesViewFileTabular";
+import FilesViewFileText from "@/components/dataset/page/tabs/files/view/FilesViewFileText";
 import { Alert } from "@/components/ui/alert";
 import Spinner from "@/components/ui/spinner";
+import { STATIC_FILES_ROUTE } from "@/lib/routes";
+import { imageExtensions, tabularToDelimiter } from "@/lib/utils/file";
 import type { DirectoryEntity } from "@/server/service/files/find";
 import { trpc } from "@/server/trpc/query/client";
 
-function getTabularInformation(extension?: string) {
-  switch (extension) {
-    case "csv":
-      return {
-        isTabular: true,
-        delimiter: ",",
-      };
-    case "tsv":
-      return {
-        isTabular: true,
-        delimiter: "\t",
-      };
-    case "data":
-      return {
-        isTabular: true,
-        delimiter: /[, ]/g,
-      };
-    default:
-      return {
-        isTabular: false,
-        delimiter: "",
-      };
-  }
-}
-
 export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const { isTabular, delimiter } = getTabularInformation(file.extension);
 
   const [cachedLines, setCachedLines] = useState<string[]>([]);
 
@@ -76,13 +53,9 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
     }
   };
 
-  if (!file) {
-    return <div className="p-4">No file selected</div>;
-  }
-
   if (readFileQuery.isLoading && cachedLines.length === 0) {
     return (
-      <div className="flex items-center justify-center p-4">
+      <div className="flex min-w-fit items-center justify-center p-4">
         <Spinner />
       </div>
     );
@@ -94,22 +67,27 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
 
   if (cachedLines.length === 0 && !readFileQuery.hasNextPage) {
     return (
-      <div className="p-4">
-        <Alert>File is empty</Alert>
+      <div className="min-w-fit p-4">
+        <Alert className="text-nowrap">File is empty</Alert>
       </div>
     );
   }
 
-  return (
+  return imageExtensions.includes(file.extension!) ? (
+    <FilesViewFileImage source={path.join(STATIC_FILES_ROUTE, file.path)} />
+  ) : (
     <div
       ref={containerRef}
       onScroll={handleScroll}
       className="h-full overflow-auto"
     >
-      {isTabular ? (
-        <FilesViewFilesTabular lines={cachedLines} delimiter={delimiter} />
+      {Object.keys(tabularToDelimiter).includes(file.extension!) ? (
+        <FilesViewFilesTabular
+          lines={cachedLines}
+          delimiter={tabularToDelimiter[file.extension!]}
+        />
       ) : (
-        <FilesViewFilesText lines={cachedLines} />
+        <FilesViewFileText lines={cachedLines} />
       )}
 
       {readFileQuery.isFetchingNextPage && (

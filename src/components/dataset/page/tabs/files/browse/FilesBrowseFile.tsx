@@ -1,22 +1,19 @@
 import { useMemo } from "react";
 
 import FilesBrowseButton from "@/components/dataset/page/tabs/files/browse/FilesBrowseButton";
-import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
-import directoryEntityToIcon from "@/components/dataset/page/tabs/files/lib/DirectoryEntityToIcon";
+import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
+import fileToIcon from "@/components/dataset/page/tabs/files/lib/FileToIcon";
 import type { FileResponse } from "@/lib/types";
 
 export default function FilesBrowseFile({ file }: { file: FileResponse }) {
-  const { currentDirectoryEntity, setCurrentDirectoryEntity } =
-    useCurrentDirectoryEntity();
+  const { currentFile, setCurrentFile } = useFileContext();
 
-  const icon = useMemo(() => directoryEntityToIcon(file), [file]);
+  const icon = useMemo(() => fileToIcon(file), [file]);
 
   return (
     <FilesBrowseButton
-      onClick={() => setCurrentDirectoryEntity(file)}
-      className={
-        currentDirectoryEntity.path === file.path ? "bg-accent/50" : ""
-      }
+      onClick={() => setCurrentFile(file)}
+      className={currentFile.path === file.path ? "bg-accent/50" : ""}
     >
       <div className="ic flex space-x-2">
         {icon}

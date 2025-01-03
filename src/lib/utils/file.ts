@@ -11,3 +11,22 @@ export function relativePathIsProtected(path: string): boolean {
   const segments = trimmedPath.split("/");
   return segments[0] === "private";
 }
+
+export const imageExtensions = [
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "svg",
+  "webp",
+  "avif",
+  "bmp",
+  "ico",
+  "apng",
+];
+
+export const tabularToDelimiter: Record<string, string | RegExp> = {
+  tsv: "\t",
+  csv: ",",
+  data: /[, ]/,
+};

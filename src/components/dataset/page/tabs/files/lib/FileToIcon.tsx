@@ -13,31 +13,18 @@ import Image from "next/image";
 import path from "path";
 
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
+import { imageExtensions } from "@/lib/utils/file";
 import type { DirectoryEntity } from "@/server/service/files/find";
 
-export default function directoryEntityToIcon(
-  directoryEntity: DirectoryEntity,
+export default function fileToIcon(
+  file: DirectoryEntity,
   renderImage: boolean = false,
 ) {
-  if (
-    renderImage &&
-    [
-      "jpg",
-      "jpeg",
-      "png",
-      "gif",
-      "svg",
-      "webp",
-      "avif",
-      "bmp",
-      "ico",
-      "apng",
-    ].includes(directoryEntity.extension ?? "")
-  ) {
+  if (renderImage && imageExtensions.includes(file.extension ?? "")) {
     return (
       <Image
-        src={path.join(STATIC_FILES_ROUTE, directoryEntity.path)}
-        alt={directoryEntity.path}
+        src={path.join(STATIC_FILES_ROUTE, file.path)}
+        alt={file.path}
         width={80}
         height={80}
         className="object-cover"
@@ -45,11 +32,11 @@ export default function directoryEntityToIcon(
     );
   }
 
-  if (directoryEntity.type === "directory") {
+  if (file.type === "directory") {
     return <FolderIcon className="fill-foreground" />;
   }
 
-  switch (directoryEntity.extension) {
+  switch (file.extension) {
     case "txt":
     case "doc":
     case "docx":

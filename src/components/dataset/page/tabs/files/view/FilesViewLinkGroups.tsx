@@ -1,7 +1,7 @@
 import path from "path";
 import React from "react";
 
-import { useCurrentDirectoryEntity } from "@/components/dataset/page/tabs/files/FilesContext";
+import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
 import type { DatasetResponse } from "@/lib/types";
 import { cn, datasetFilesDirectory } from "@/lib/utils";
 
@@ -12,13 +12,12 @@ export default function FilesViewLinkGroups({
   dataset: DatasetResponse;
   className?: string;
 }) {
-  const { currentDirectoryEntity, setCurrentDirectoryEntity } =
-    useCurrentDirectoryEntity();
+  const { currentFile, setCurrentFile } = useFileContext();
 
   const basePath = datasetFilesDirectory(dataset);
 
-  const relativePath = currentDirectoryEntity.path.startsWith(basePath)
-    ? currentDirectoryEntity.path.slice(basePath.length + 1)
+  const relativePath = currentFile.path.startsWith(basePath)
+    ? currentFile.path.slice(basePath.length + 1)
     : "";
 
   const pathParts = relativePath ? relativePath.split("/") : [];
@@ -35,14 +34,29 @@ export default function FilesViewLinkGroups({
 
         return (
           <React.Fragment key={index}>
-            <span>/</span>
+            {index === 0 ? (
+              <button
+                className="text-link hover:underline"
+                onClick={() => {
+                  setCurrentFile({
+                    path: basePath,
+                    name: dataset.slug,
+                    type: "directory",
+                  });
+                }}
+              >
+                /
+              </button>
+            ) : (
+              <span>/</span>
+            )}
             {isLast ? (
-              <span>{part}</span>
+              <span className="text-nowrap">{part}</span>
             ) : (
               <button
                 className="text-link hover:underline"
                 onClick={() => {
-                  setCurrentDirectoryEntity({
+                  setCurrentFile({
                     path: cumulativePath,
                     name: part,
                     type: "directory",
