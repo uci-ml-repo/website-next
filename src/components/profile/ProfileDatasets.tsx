@@ -1,7 +1,9 @@
 import type { Dataset } from "@prisma/client";
-import { DatabaseIcon, SquarePenIcon } from "lucide-react";
+import { DatabaseIcon, PlusIcon, SquarePenIcon } from "lucide-react";
+import Link from "next/link";
 
-import DatasetGroup from "@/components/dataset/summarized/DatasetGroup";
+import DatasetCardCarousel from "@/components/dataset/summarized/DatasetCardCarousel";
+import { Button } from "@/components/ui/button";
 import type { DraftDatasetResponse } from "@/lib/types";
 
 export default function ProfileDatasets({
@@ -11,18 +13,29 @@ export default function ProfileDatasets({
   datasets: Dataset[];
   draftDatasets: DraftDatasetResponse[];
 }) {
+  const endCard = (
+    <Button asChild className="lift" variant="gold">
+      <Link href="#">
+        <PlusIcon />
+        <div>Start Draft</div>
+      </Link>
+    </Button>
+  );
+
   return (
     <div className="space-y-8">
-      <DatasetGroup
+      <DatasetCardCarousel
         icon={<DatabaseIcon />}
         heading="Submitted Datasets"
         datasets={datasets}
+        endCard={endCard}
       />
 
-      <DatasetGroup
+      <DatasetCardCarousel
         icon={<SquarePenIcon />}
         heading="Draft Datasets"
         datasets={datasets} // TODO
+        endCard={endCard}
       />
     </div>
   );

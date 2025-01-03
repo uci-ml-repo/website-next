@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
-import DatasetGroup from "@/components/dataset/summarized/DatasetGroup";
+import DatasetCardCarousel from "@/components/dataset/summarized/DatasetCardCarousel";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
@@ -63,14 +63,14 @@ export default async function Page() {
       </div>
 
       <div className="space-y-10">
-        <DatasetGroup
+        <DatasetCardCarousel
           icon={<TrendingUpIcon className="size-8" />}
           heading="Popular Datasets"
           seeAllHref={DATASETS_PATH} // TODO
           datasets={popularDatasets.datasets}
         />
         <hr />
-        <DatasetGroup
+        <DatasetCardCarousel
           icon={<SparklesIcon className="size-8" />}
           heading="New Datasets"
           seeAllHref={DATASETS_PATH} // TODO

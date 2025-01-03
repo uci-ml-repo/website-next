@@ -21,12 +21,12 @@ export default function ProfileHeader({ session }: { session: Session }) {
           </div>
         </div>
       </div>
-      <RoleBadge role={session.user.role} />
+      <ProfileHeaderRoleBadge role={session.user.role} />
     </div>
   );
 }
 
-function RoleBadge({ role }: { role: UserRole }) {
+function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
   if (role === "BASIC") {
     return <div />;
   }

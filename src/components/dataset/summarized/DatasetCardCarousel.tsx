@@ -20,13 +20,15 @@ interface DatasetGroupProps {
   heading: string;
   icon?: React.ReactNode;
   seeAllHref?: string;
+  endCard?: React.ReactNode;
   datasets: Dataset[];
 }
 
-export default function DatasetGroup({
+export default function DatasetCardCarousel({
   icon,
   heading,
   seeAllHref,
+  endCard,
   datasets,
 }: DatasetGroupProps) {
   const cardBreakpoints = cn(
@@ -63,6 +65,13 @@ export default function DatasetGroup({
                       <div>See All</div>
                     </Link>
                   </Button>
+                </DatasetCardSkeleton>
+              </CarouselItem>
+            )}
+            {endCard && (
+              <CarouselItem className={cardBreakpoints}>
+                <DatasetCardSkeleton className="bg-muted">
+                  {endCard}
                 </DatasetCardSkeleton>
               </CarouselItem>
             )}

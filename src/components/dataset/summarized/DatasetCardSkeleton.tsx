@@ -22,7 +22,7 @@ export default function DatasetCardSkeleton({
     return (
       <Card
         className={cn(
-          "flex h-full w-full items-center justify-center",
+          "flex h-[360px] w-full items-center justify-center",
           className,
         )}
       >
@@ -32,7 +32,7 @@ export default function DatasetCardSkeleton({
   }
 
   return (
-    <Card>
+    <Card className="h-[360px]">
       <CardHeader className={cn("p-0", className)}>
         <Skeleton className="h-[100px] w-full rounded-b-none rounded-t-2xl object-cover object-center" />
       </CardHeader>

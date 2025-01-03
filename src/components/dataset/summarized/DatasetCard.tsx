@@ -31,8 +31,8 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const href = datasetPage(dataset);
 
   return (
-    <Card className="lift-lg group" ref={ref}>
-      <Link href={href}>
+    <Card className="lift-lg group flex h-[360px] flex-col" ref={ref}>
+      <Link href={href} className="flex flex-1 flex-col">
         <CardHeader className="p-0">
           <Image
             src={thumbnail}
@@ -40,17 +40,17 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             width={350}
             height={100}
             priority
-            className="h-[100px] w-auto rounded-t-2xl object-cover object-center"
+            className="h-[100px] w-full rounded-t-2xl object-cover object-center"
           />
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="h-26 space-y-2">
+        <CardContent className="flex flex-1 flex-col space-y-4">
+          <div className="flex flex-1 flex-col space-y-2">
             <CardTitle>
               <h3 className="line-clamp-2 group-hover:underline">
                 {dataset.title}
               </h3>
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="flex-1">
               <p className="line-clamp-3">
                 {dataset.subtitle ?? dataset.description}
               </p>
