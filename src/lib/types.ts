@@ -8,9 +8,13 @@ export type DraftDatasetResponse = NonNullable<
   RouterOutput["drafts"]["find"]["byId"]
 >;
 
-export type DiscussionResponse = NonNullable<
+export type DiscussionResponseWithReplies = NonNullable<
   RouterOutput["discussions"]["find"]["byId"]
 >;
+
+export type DiscussionResponse = NonNullable<
+  RouterOutput["discussions"]["find"]["byId"]
+>["replies"][number];
 
 export type BookmarkResponse = NonNullable<
   RouterOutput["bookmarks"]["find"]["byUserId"][number]

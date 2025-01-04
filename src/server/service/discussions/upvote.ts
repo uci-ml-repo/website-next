@@ -79,4 +79,12 @@ export default class DiscussionsUpvoteService {
       },
     });
   }
+
+  async count(discussionId: string) {
+    return this.prisma.discussionUpvote.count({
+      where: {
+        discussionId,
+      },
+    });
+  }
 }

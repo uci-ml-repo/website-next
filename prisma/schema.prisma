@@ -257,7 +257,7 @@ model Discussion {
 
   reports DiscussionReport[]
 
-  @@map("discussion")
+  @@map("discussions")
 }
 
 model DiscussionUpvote {

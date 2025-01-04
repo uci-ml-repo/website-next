@@ -36,9 +36,7 @@ export default function DiscussionDeleteDialog({
         <DialogTitle>Delete Comment</DialogTitle>
         <div>
           <p>Are you sure you want to delete this comment?</p>
-          {discussion.replies.length > 0 && (
-            <p>Replies will not be affected.</p>
-          )}
+          <p>Any existing replies will not be affected.</p>
         </div>
         <div className="flex justify-between">
           <Button variant="secondary" onClick={() => setOpen(false)}>

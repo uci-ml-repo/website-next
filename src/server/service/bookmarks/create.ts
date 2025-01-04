@@ -10,15 +10,8 @@ export default class BookmarksCreateService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await this.prisma.bookmark.upsert({
-      where: {
-        userId_datasetId: {
-          userId,
-          datasetId,
-        },
-      },
-      update: {},
-      create: {
+    const bookmark = await this.prisma.bookmark.create({
+      data: {
         datasetId,
         userId,
       },

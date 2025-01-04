@@ -18,11 +18,13 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session } = useSession();
 
   const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>("upvoteCount");
+  const [orderBy, setOrderBy] =
+    useState<DiscussionQuery["orderBy"]>("upvoteCount");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery({
     datasetId: dataset.id,
-    orderBy: orderBy as DiscussionQuery["orderBy"],
+    orderBy: orderBy,
+    excludeReplies: true,
   });
 
   if (discussionsQuery.isLoading) {
@@ -36,7 +38,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const discussions = discussionsQuery.data!;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h2 className="text-2xl font-bold">Discussions</h2>
 
       <div>
@@ -51,7 +53,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
             className="overflow-hidden"
           >
             <DiscussionCreateInput
-              dataset={dataset}
+              datasetId={dataset.id}
               setIsAuthoring={setIsAuthoring}
             />
           </motion.div>

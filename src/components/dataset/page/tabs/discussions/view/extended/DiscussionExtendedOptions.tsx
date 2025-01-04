@@ -61,7 +61,7 @@ export default function DiscussionExtendedOptions({
         </DropdownMenuContent>
       </DropdownMenu>
       <DiscussionReportDialog
-        discussion={discussion}
+        discussionId={discussion.id}
         open={isReportDialogOpen}
         setOpen={setIsReportDialogOpen}
       />

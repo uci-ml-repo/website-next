@@ -8,10 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import type { DiscussionQuery } from "@/server/schema/discussions";
 
 interface DatasetDiscussionSortByProps {
-  orderBy: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  orderBy: DiscussionQuery["orderBy"];
+  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionQuery["orderBy"]>>;
   className?: string;
 }
 
@@ -23,16 +24,21 @@ export default function DiscussionsOrderBy({
   return (
     <div className={cn("flex items-center space-x-2", className)}>
       <div className="text-nowrap text-sm text-muted-foreground">Sort by:</div>
-      <Select value={orderBy} onValueChange={setOrderBy}>
+      <Select
+        value={orderBy}
+        onValueChange={(value) =>
+          setOrderBy(value as DiscussionQuery["orderBy"])
+        }
+      >
         <SelectTrigger className="w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="top">
+          <SelectItem value="upvoteCount">
             <ArrowUpRightIcon className="size-5" />
             <span>Top</span>
           </SelectItem>
-          <SelectItem value="new">
+          <SelectItem value="createdAt">
             <ClockIcon className="size-5" />
             <span>New</span>
           </SelectItem>

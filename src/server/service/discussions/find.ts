@@ -11,7 +11,12 @@ export default class DiscussionsFindService {
       include: {
         upvotes: true,
         user: true,
-        replies: true,
+        replies: {
+          include: {
+            user: true,
+            upvotes: true,
+          },
+        },
       },
     });
   }
@@ -21,11 +26,17 @@ export default class DiscussionsFindService {
       where: {
         datasetId: query.datasetId,
         userId: query.userId,
+        replyToId: query.excludeReplies ? null : undefined,
       },
       include: {
         upvotes: true,
         user: true,
-        replies: true,
+        replies: {
+          include: {
+            user: true,
+            upvotes: true,
+          },
+        },
       },
       orderBy: query.orderBy
         ? { [query.orderBy]: query.sort }
@@ -42,7 +53,12 @@ export default class DiscussionsFindService {
       include: {
         upvotes: true,
         user: true,
-        replies: true,
+        replies: {
+          include: {
+            user: true,
+            upvotes: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });

@@ -7,16 +7,19 @@ export default class DiscussionsCreateService {
     content,
     userId,
     datasetId,
+    replyToId,
   }: {
     content: string;
     userId: string;
     datasetId: number;
+    replyToId?: string;
   }) {
     return this.prisma.discussion.create({
       data: {
         content,
         userId,
         datasetId,
+        replyToId,
       },
       include: {
         user: true,

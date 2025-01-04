@@ -23,7 +23,6 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import type { DiscussionResponse } from "@/lib/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -37,11 +36,11 @@ const formSchema = z.object({
 });
 
 export default function DiscussionReportDialog({
-  discussion,
+  discussionId,
   open,
   setOpen,
 }: {
-  discussion: DiscussionResponse;
+  discussionId: string;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -59,7 +58,7 @@ export default function DiscussionReportDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createReportMutation.mutate({
-      discussionId: discussion.id,
+      discussionId,
       userId: session.data?.user?.id,
       ...values,
     });

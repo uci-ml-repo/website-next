@@ -16,12 +16,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Spinner from "@/components/ui/spinner";
-import type { DatasetResponse } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface AddDatasetDiscussionInputProps {
-  dataset: DatasetResponse;
+  datasetId: number;
   setIsAuthoring: React.Dispatch<React.SetStateAction<boolean>>;
+  replyTo?: DiscussionResponse;
 }
 
 const formSchema = z.object({
@@ -29,8 +30,9 @@ const formSchema = z.object({
 });
 
 export default function DiscussionCreateInput({
-  dataset,
+  datasetId,
   setIsAuthoring,
+  replyTo,
 }: AddDatasetDiscussionInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -48,7 +50,7 @@ export default function DiscussionCreateInput({
   const createMutation = trpc.discussions.create.fromData.useMutation({
     onSuccess: () => {
       utils.discussions.find.byQuery.invalidate({
-        datasetId: dataset.id,
+        datasetId,
         orderBy: "upvoteCount",
       });
     },
@@ -56,8 +58,9 @@ export default function DiscussionCreateInput({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await createMutation.mutateAsync({
-      datasetId: dataset.id,
+      datasetId,
       content: serialize(values.nodes),
+      replyToId: replyTo?.id,
     });
     form.reset();
     setIsAuthoring(false);
@@ -86,26 +89,35 @@ export default function DiscussionCreateInput({
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end space-x-2">
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    isTextEmpty
-                      ? setIsAuthoring(false)
-                      : setCancelDialogOpen(true)
-                  }
-                  type="button"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="gold"
-                  type="submit"
-                  disabled={isTextEmpty || createMutation.isPending}
-                >
-                  {createMutation.isPending && <Spinner />}
-                  Post
-                </Button>
+              <div className="flex items-center justify-between">
+                {replyTo ? (
+                  <div className="text-sm text-muted-foreground">
+                    Replying to {replyTo.user.name}
+                  </div>
+                ) : (
+                  <div />
+                )}
+                <div className="flex space-x-2">
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      isTextEmpty
+                        ? setIsAuthoring(false)
+                        : setCancelDialogOpen(true)
+                    }
+                    type="button"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="gold"
+                    type="submit"
+                    disabled={isTextEmpty || createMutation.isPending}
+                  >
+                    {createMutation.isPending && <Spinner />}
+                    Post
+                  </Button>
+                </div>
               </div>
             </form>
           </Form>
