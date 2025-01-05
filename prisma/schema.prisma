@@ -257,6 +257,7 @@ model Discussion {
 
   reports DiscussionReport[]
 
+  @@index([createdAt])
   @@map("discussions")
 }
 

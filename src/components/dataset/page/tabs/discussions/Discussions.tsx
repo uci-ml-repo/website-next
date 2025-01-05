@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -43,20 +42,11 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
 
       <div>
         {isAuthoring && (
-          <motion.div
-            initial={{ height: 0, marginBottom: 0 }}
-            animate={{
-              height: "auto",
-              marginBottom: 24,
-            }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <DiscussionCreateInput
-              datasetId={dataset.id}
-              setIsAuthoring={setIsAuthoring}
-            />
-          </motion.div>
+          <DiscussionCreateInput
+            datasetId={dataset.id}
+            setIsAuthoring={setIsAuthoring}
+            className="mb-6"
+          />
         )}
         <div className="items-center space-y-6 sm:flex">
           {!isAuthoring &&
@@ -93,7 +83,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {discussions.map((discussion) => (
           <Discussion key={discussion.id} discussion={discussion} />
         ))}

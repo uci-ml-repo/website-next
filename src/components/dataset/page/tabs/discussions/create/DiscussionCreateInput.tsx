@@ -19,10 +19,11 @@ import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-interface AddDatasetDiscussionInputProps {
+interface DiscussionCreateInputProps {
   datasetId: number;
   setIsAuthoring: React.Dispatch<React.SetStateAction<boolean>>;
   replyTo?: DiscussionResponse;
+  className?: string;
 }
 
 const formSchema = z.object({
@@ -33,7 +34,8 @@ export default function DiscussionCreateInput({
   datasetId,
   setIsAuthoring,
   replyTo,
-}: AddDatasetDiscussionInputProps) {
+  className,
+}: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,7 +53,6 @@ export default function DiscussionCreateInput({
     onSuccess: () => {
       utils.discussions.find.byQuery.invalidate({
         datasetId,
-        orderBy: "upvoteCount",
       });
     },
   });
@@ -68,7 +69,7 @@ export default function DiscussionCreateInput({
 
   return (
     <>
-      <Card>
+      <Card className={className}>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

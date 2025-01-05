@@ -16,6 +16,7 @@ export default class DiscussionsFindService {
             user: true,
             upvotes: true,
           },
+          orderBy: [{ createdAt: "asc" }],
         },
       },
     });
@@ -36,11 +37,12 @@ export default class DiscussionsFindService {
             user: true,
             upvotes: true,
           },
+          orderBy: [{ createdAt: "asc" }],
         },
       },
       orderBy: query.orderBy
         ? { [query.orderBy]: query.sort }
-        : [{ upvoteCount: "desc" }, { createdAt: "desc" }],
+        : [{ upvoteCount: "desc" }, { createdAt: "asc" }],
       skip: query.skip,
       take: query.take,
       cursor: query.cursor ? { id: query.cursor } : undefined,
@@ -58,6 +60,7 @@ export default class DiscussionsFindService {
             user: true,
             upvotes: true,
           },
+          orderBy: [{ createdAt: "asc" }],
         },
       },
       orderBy: { createdAt: "desc" },
