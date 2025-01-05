@@ -1,4 +1,4 @@
-import DiscussionCreateReply from "@/components/dataset/page/tabs/discussions/view/DiscussionCreateReply";
+import DiscussionCreateReply from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateReply";
 import DiscussionReply from "@/components/dataset/page/tabs/discussions/view/DiscussionReply";
 import DiscussionUpvote from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussions/view/extended/DiscussionExtendedOptions";

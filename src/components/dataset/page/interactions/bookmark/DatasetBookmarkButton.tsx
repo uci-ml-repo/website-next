@@ -23,6 +23,9 @@ export default function DatasetBookmarkButton({
   const { isBookmarked, setIsBookmarked } = useBookmark();
 
   const addBookmark = trpc.bookmarks.create.addBookmark.useMutation({
+    onSettled: () => {
+      setIsBookmarked(true);
+    },
     onSuccess: async () => {
       setIsBookmarked(true);
       toast({
@@ -33,8 +36,10 @@ export default function DatasetBookmarkButton({
   });
 
   const removeBookmark = trpc.bookmarks.remove.removeBookmark.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       setIsBookmarked(false);
+    },
+    onSuccess: () => {
       toast({
         title: "Bookmark removed",
       });
@@ -44,17 +49,19 @@ export default function DatasetBookmarkButton({
   const handleBookmark = async () => {
     if (!session?.user) return;
 
-    if (isBookmarked) {
-      await removeBookmark.mutateAsync({
-        datasetId: dataset.id,
-        userId: session.user.id,
-      });
-    } else {
-      await addBookmark.mutateAsync({
-        datasetId: dataset.id,
-        userId: session.user.id,
-      });
-    }
+    try {
+      if (isBookmarked) {
+        await removeBookmark.mutateAsync({
+          datasetId: dataset.id,
+          userId: session.user.id,
+        });
+      } else {
+        await addBookmark.mutateAsync({
+          datasetId: dataset.id,
+          userId: session.user.id,
+        });
+      }
+    } catch {}
   };
 
   return (

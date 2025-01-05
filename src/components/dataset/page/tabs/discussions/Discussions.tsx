@@ -15,23 +15,28 @@ import { trpc } from "@/server/trpc/query/client";
 export type DiscussionsOrderBy = "top" | "new";
 
 export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
-  const discussionsQuery = trpc.discussions.find.byQuery.useQuery({
-    datasetId: dataset.id,
-    excludeReplies: true,
-
-    orderBy:
-      orderBy === "top"
-        ? "upvoteCount"
-        : orderBy === "new"
-          ? "createdAt"
-          : undefined,
-    sort: orderBy ? "desc" : undefined,
-  });
+  const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
+    {
+      datasetId: dataset.id,
+      excludeReplies: true,
+      selectUpvoteUserId: session ? session.user.id : undefined,
+      orderBy:
+        orderBy === "top"
+          ? "upvoteCount"
+          : orderBy === "new"
+            ? "createdAt"
+            : undefined,
+      sort: orderBy ? "desc" : undefined,
+    },
+    {
+      enabled: status !== "loading",
+    },
+  );
 
   if (!discussionsQuery.data || discussionsQuery.isLoading) {
     return (

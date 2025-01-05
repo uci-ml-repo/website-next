@@ -90,7 +90,7 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
         ) : data.length === 0 ? (
           <div className="p-2">
             {debouncedSearchTerm.length === 0 ? (
-              <Alert>No files available.</Alert>
+              <Alert>No files</Alert>
             ) : (
               <Alert className="flex min-w-fit items-center justify-between gap-2 text-nowrap">
                 <span className="text-muted-foreground">No results</span>
@@ -106,25 +106,30 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
             )}
           </div>
         ) : (
-          <div className="min-w-fit p-2">
-            {data.map((directoryEntity) => {
-              if (directoryEntity.type === "directory") {
-                return (
-                  <FilesBrowseDirectory
-                    key={directoryEntity.path}
-                    directory={directoryEntity}
-                  />
-                );
-              } else if (directoryEntity.type === "file") {
-                return (
-                  <FilesBrowseFile
-                    file={directoryEntity}
-                    key={directoryEntity.path}
-                  />
-                );
-              }
-              return null;
-            })}
+          <div className="min-w-fit space-y-2 p-2">
+            {debouncedSearchTerm.length > 0 && (
+              <div className="text-muted-foreground">Search Results:</div>
+            )}
+            <div>
+              {data.map((directoryEntity) => {
+                if (directoryEntity.type === "directory") {
+                  return (
+                    <FilesBrowseDirectory
+                      key={directoryEntity.path}
+                      directory={directoryEntity}
+                    />
+                  );
+                } else if (directoryEntity.type === "file") {
+                  return (
+                    <FilesBrowseFile
+                      file={directoryEntity}
+                      key={directoryEntity.path}
+                    />
+                  );
+                }
+                return null;
+              })}
+            </div>
           </div>
         )}
       </div>

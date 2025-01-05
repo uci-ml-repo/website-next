@@ -30,7 +30,13 @@ export default class DiscussionsFindService {
         replyToId: query.excludeReplies ? null : undefined,
       },
       include: {
-        upvotes: true,
+        upvotes: query.selectUpvoteUserId
+          ? {
+              where: {
+                userId: query.selectUpvoteUserId,
+              },
+            }
+          : false,
         user: true,
         replies: {
           include: {

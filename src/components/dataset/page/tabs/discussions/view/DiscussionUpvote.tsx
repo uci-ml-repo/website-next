@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -60,9 +59,12 @@ export default function DiscussionUpvote({
       authedAction={() => {}}
       session={session}
     >
-      <Button variant="outline" size="sm" className="flex items-center">
+      <Button
+        variant={discussion.upvotes.length > 0 ? "gold" : "secondary"}
+        size="sm"
+        className="flex items-center"
+      >
         <ChevronUpIcon />
-        <Separator orientation="vertical" />
         <span>{discussion.upvoteCount.toLocaleString()}</span>
       </Button>
     </SignInRequired>

@@ -25,16 +25,15 @@ export default function ProfileDatasets({
   return (
     <div className="space-y-8">
       <DatasetCardCarousel
-        icon={<DatabaseIcon />}
-        heading="Submitted Datasets"
-        datasets={datasets}
-        endCard={endCard}
-      />
-
-      <DatasetCardCarousel
         icon={<SquarePenIcon />}
         heading="Draft Datasets"
         datasets={datasets} // TODO
+        endCard={endCard}
+      />
+      <DatasetCardCarousel
+        icon={<DatabaseIcon />}
+        heading="Submitted Datasets"
+        datasets={datasets}
         endCard={endCard}
       />
     </div>
