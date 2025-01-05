@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon, ClockIcon } from "lucide-react";
 
+import type { DiscussionsOrderBy } from "@/components/dataset/page/tabs/discussions/Discussions";
 import {
   Select,
   SelectContent,
@@ -8,11 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import type { DiscussionQuery } from "@/server/schema/discussions";
 
 interface DatasetDiscussionSortByProps {
-  orderBy: DiscussionQuery["orderBy"];
-  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionQuery["orderBy"]>>;
+  orderBy: DiscussionsOrderBy;
+  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionsOrderBy>>;
   className?: string;
 }
 
@@ -26,19 +26,17 @@ export default function DiscussionsOrderBy({
       <div className="text-nowrap text-sm text-muted-foreground">Sort by:</div>
       <Select
         value={orderBy}
-        onValueChange={(value) =>
-          setOrderBy(value as DiscussionQuery["orderBy"])
-        }
+        onValueChange={(value) => setOrderBy(value as DiscussionsOrderBy)}
       >
         <SelectTrigger className="w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="upvoteCount">
+          <SelectItem value="top">
             <ArrowUpRightIcon className="size-5" />
             <span>Top</span>
           </SelectItem>
-          <SelectItem value="createdAt">
+          <SelectItem value="new">
             <ClockIcon className="size-5" />
             <span>New</span>
           </SelectItem>

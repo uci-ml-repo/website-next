@@ -10,31 +10,36 @@ import Discussion from "@/components/dataset/page/tabs/discussions/view/Discussi
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
-import type { DiscussionQuery } from "@/server/schema/discussions";
 import { trpc } from "@/server/trpc/query/client";
+
+export type DiscussionsOrderBy = "top" | "new";
 
 export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session } = useSession();
 
   const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
-  const [orderBy, setOrderBy] =
-    useState<DiscussionQuery["orderBy"]>("upvoteCount");
+  const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery({
     datasetId: dataset.id,
-    orderBy: orderBy,
     excludeReplies: true,
+
+    orderBy:
+      orderBy === "top"
+        ? "upvoteCount"
+        : orderBy === "new"
+          ? "createdAt"
+          : undefined,
+    sort: orderBy ? "desc" : undefined,
   });
 
-  if (discussionsQuery.isLoading) {
+  if (!discussionsQuery.data || discussionsQuery.isLoading) {
     return (
       <div className="flex h-20 w-full items-center justify-center">
         <Spinner className="size-10" />
       </div>
     );
   }
-
-  const discussions = discussionsQuery.data!;
 
   return (
     <div className="space-y-4">
@@ -50,7 +55,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         )}
         <div className="items-center space-y-6 sm:flex">
           {!isAuthoring &&
-            (discussions.length === 0 ? (
+            (discussionsQuery.data.length === 0 ? (
               <Card className="w-full">
                 <CardContent className="flex h-[130px] items-center justify-center">
                   <div className="space-y-4 text-center">
@@ -73,7 +78,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
               />
             ))}
 
-          {discussions.length > 0 && (
+          {discussionsQuery.data.length > 0 && (
             <DiscussionsOrderBy
               orderBy={orderBy}
               setOrderBy={setOrderBy}
@@ -84,7 +89,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
       </div>
 
       <div className="space-y-6">
-        {discussions.map((discussion) => (
+        {discussionsQuery.data.map((discussion) => (
           <Discussion key={discussion.id} discussion={discussion} />
         ))}
       </div>
