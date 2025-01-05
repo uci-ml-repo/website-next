@@ -2,6 +2,7 @@
 
 import { ChevronUpIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
@@ -17,20 +18,21 @@ export default function DiscussionUpvote({
   discussion,
 }: DiscussionUpvoteProps) {
   const { data: session } = useSession();
-
-  const utils = trpc.useUtils();
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(
+    discussion.upvotes.length > 0,
+  );
+  const [upvoteCount, setUpvoteCount] = useState<number>(
+    discussion.upvoteCount,
+  );
 
   const upvoteMutation = trpc.discussions.upvote.create.useMutation({
     onSuccess: async () => {
-      await utils.discussions.upvote.find.invalidate({
-        discussionId: discussion.id,
-        userId: session?.user.id!,
-      });
+      setIsUpvoted(true);
+      setUpvoteCount((prev) => prev + 1);
     },
-    onError: (error) => {
+    onError: () => {
       toast({
-        title: "Error upvoting comment",
-        description: error.message,
+        title: "Error upvoting",
         variant: "destructive",
       });
     },
@@ -38,34 +40,47 @@ export default function DiscussionUpvote({
 
   const removeUpvoteMutation = trpc.discussions.upvote.remove.useMutation({
     onSuccess: async () => {
-      await utils.discussions.upvote.find.invalidate({
-        discussionId: discussion.id,
-        userId: session?.user.id!,
-      });
+      setIsUpvoted(false);
+      setUpvoteCount((prev) => prev - 1);
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: "Error removing upvote",
-        description: error.message,
         variant: "destructive",
       });
     },
   });
 
+  function handleUpvote() {
+    if (!session?.user) return;
+
+    if (isUpvoted) {
+      removeUpvoteMutation.mutate({
+        discussionId: discussion.id,
+        userId: session.user.id,
+      });
+    } else {
+      upvoteMutation.mutate({
+        discussionId: discussion.id,
+        userId: session.user.id,
+      });
+    }
+  }
+
   return (
     <SignInRequired
       title="Sign in to upvote comments"
       body="To upvote comments and access other features, please sign in"
-      authedAction={() => {}}
+      authedAction={handleUpvote}
       session={session}
     >
       <Button
-        variant={discussion.upvotes.length > 0 ? "gold" : "secondary"}
+        variant={isUpvoted ? "gold" : "secondary"}
         size="sm"
         className="flex items-center"
       >
         <ChevronUpIcon />
-        <span>{discussion.upvoteCount.toLocaleString()}</span>
+        <span>{upvoteCount.toLocaleString()}</span>
       </Button>
     </SignInRequired>
   );
