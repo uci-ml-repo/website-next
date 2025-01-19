@@ -1,5 +1,4 @@
-import type { ApprovalStatus } from "@prisma/client";
-
+import { Enums } from "@/db/types";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
 /**
@@ -20,9 +19,9 @@ export function datasetFilesPath({
 }: {
   id: number;
   slug: string;
-  status: ApprovalStatus;
+  status: string;
 }) {
-  return `/${status === "APPROVED" ? "public" : "private"}/${id}/${slug}`;
+  return `/${status === Enums.DatasetStatus.APPROVED ? "public" : "private"}/${id}/${slug}`;
 }
 
 export function datasetThumbnailURL({
@@ -30,7 +29,7 @@ export function datasetThumbnailURL({
   hasGraphics,
   id,
 }: {
-  status: ApprovalStatus;
+  status: string;
   hasGraphics: boolean;
   id: number;
 }) {
@@ -46,9 +45,9 @@ export function datasetFilesURL({
   status,
 }: {
   id: number;
-  status: ApprovalStatus;
+  status: string;
 }) {
-  return `${STATIC_FILES_ROUTE}/${status === "APPROVED" ? "public" : "private"}/${id}`;
+  return `${STATIC_FILES_ROUTE}/${status === Enums.DatasetStatus.APPROVED ? "public" : "private"}/${id}`;
 }
 
 export function datasetPythonDataURL({
@@ -56,7 +55,7 @@ export function datasetPythonDataURL({
   status,
 }: {
   id: number;
-  status: ApprovalStatus;
+  status: string;
 }) {
   return `${datasetFilesURL({ id, status })}/data.csv`;
 }
@@ -68,7 +67,7 @@ export function datasetZipURL({
 }: {
   id: number;
   slug: string;
-  status: ApprovalStatus;
+  status: string;
 }) {
   return `${datasetFilesURL({ id, status })}/${slug}.zip`;
 }

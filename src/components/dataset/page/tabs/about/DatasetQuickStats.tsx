@@ -9,15 +9,15 @@ export default function DatasetQuickStats({
   const stats = [
     {
       name: "Subject Area",
-      value: formatEnum(dataset.subjectArea),
+      value: formatEnum(dataset.subjectArea ?? ""),
     },
     {
       name: "Characteristics",
-      value: formatEnum(dataset.characteristics),
+      value: formatEnum(dataset.characteristics ?? ""),
     },
     {
       name: "Tasks",
-      value: formatEnum(dataset.tasks),
+      value: formatEnum(dataset.tasks ?? ""),
     },
     {
       name: "Features",
@@ -29,7 +29,7 @@ export default function DatasetQuickStats({
     },
     {
       name: "Feature Types",
-      value: formatEnum(dataset.featureTypes),
+      value: formatEnum(dataset.featureTypes ?? ""),
     },
   ];
 

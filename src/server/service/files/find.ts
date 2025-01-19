@@ -1,4 +1,3 @@
-import type { PrismaClient } from "@prisma/client";
 import fg from "fast-glob";
 import fs from "fs-extra";
 import path from "path";
@@ -36,8 +35,6 @@ function sortDirectoryEntities(a: DirectoryEntity, b: DirectoryEntity) {
 }
 
 export default class FileFindService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async list(absolutePath: string) {
     const nodes = await fs.readdir(absolutePath, { withFileTypes: true });
 

@@ -5,9 +5,9 @@ import { useSession } from "next-auth/react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { useBookmark } from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkedContext";
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
-import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";

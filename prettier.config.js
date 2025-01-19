@@ -6,11 +6,7 @@
 const config = {
   endOfLine: "lf",
   tabWidth: 2,
-  plugins: [
-    "prettier-plugin-packagejson",
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-prisma",
-  ],
+  plugins: ["prettier-plugin-packagejson", "prettier-plugin-tailwindcss"],
   tailwindFunctions: ["cva", "clsx", "cn"],
 };
 

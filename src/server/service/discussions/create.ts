@@ -1,8 +1,7 @@
-import type { PrismaClient } from "@prisma/client";
+import { db } from "@/db";
+import { discussions } from "@/db/schema";
 
 export default class DiscussionsCreateService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async fromData({
     content,
     userId,
@@ -14,18 +13,11 @@ export default class DiscussionsCreateService {
     datasetId: number;
     replyToId?: string;
   }) {
-    return this.prisma.discussion.create({
-      data: {
-        content,
-        userId,
-        datasetId,
-        replyToId,
-      },
-      include: {
-        user: true,
-        upvotes: true,
-        replies: true,
-      },
+    return db.insert(discussions).values({
+      content,
+      userId,
+      datasetId,
+      replyToId,
     });
   }
 }

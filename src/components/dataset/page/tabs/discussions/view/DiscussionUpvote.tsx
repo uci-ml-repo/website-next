@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 

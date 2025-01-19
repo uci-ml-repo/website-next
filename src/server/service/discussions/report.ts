@@ -1,12 +1,10 @@
-import type {
-  DiscussionReportReason,
-  PrismaClient,
-  ReportResolutionType,
-} from "@prisma/client";
+import type { ReportResolutionType } from "@/db/types";
+import { Enums } from "@/db/types";
+import DiscussionReportReason = Enums.DiscussionReportReason;
+import { db } from "@/db";
+import { discussionReportResolutions, discussionReports } from "@/db/schema";
 
 export default class DiscussionsReportService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async create({
     discussionId,
     reason,
@@ -18,13 +16,11 @@ export default class DiscussionsReportService {
     details?: string;
     userId?: string;
   }) {
-    return this.prisma.discussionReport.create({
-      data: {
-        discussionId,
-        reason,
-        details,
-        userId,
-      },
+    return db.insert(discussionReports).values({
+      discussionId,
+      reason,
+      details,
+      userId,
     });
   }
 
@@ -39,13 +35,11 @@ export default class DiscussionsReportService {
     type: ReportResolutionType;
     comment: string;
   }) {
-    return this.prisma.discussionReportResolution.create({
-      data: {
-        reportId,
-        userId,
-        type,
-        comment,
-      },
+    return db.insert(discussionReportResolutions).values({
+      reportId,
+      userId,
+      type,
+      comment,
     });
   }
 }

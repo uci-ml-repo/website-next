@@ -1,4 +1,3 @@
-import type { Dataset } from "@prisma/client";
 import { Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { DatasetsSelect } from "@/db/types";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -24,7 +24,7 @@ import {
 import { caller } from "@/server/trpc/query/server";
 
 interface DatasetCardProps {
-  dataset: Dataset;
+  dataset: DatasetsSelect;
   ref?: React.Ref<HTMLDivElement>;
 }
 
@@ -74,10 +74,12 @@ export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
                 "[&>div]:flex [&>div]:items-center [&>div]:space-x-2 [&_svg]:size-4",
               )}
             >
-              <div>
-                <MicroscopeIcon />
-                <span className="truncate">{formatEnum(dataset.tasks)}</span>
-              </div>
+              {dataset.tasks && (
+                <div>
+                  <MicroscopeIcon />
+                  <span className="truncate">{formatEnum(dataset.tasks)}</span>
+                </div>
+              )}
               {dataset.featureCount && (
                 <div>
                   <Columns3Icon />
@@ -86,12 +88,14 @@ export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
                   </span>
                 </div>
               )}
-              <div>
-                <Rows3Icon />
-                <span>
-                  {abbreviateDecimal(dataset.instanceCount)} Instances
-                </span>
-              </div>
+              {dataset.instanceCount && (
+                <div>
+                  <Rows3Icon />
+                  <span>
+                    {abbreviateDecimal(dataset.instanceCount)} Instances
+                  </span>
+                </div>
+              )}
             </div>
           </CardDescription>
         </CardContent>

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  let dataset: DatasetResponse | null;
+  let dataset: DatasetResponse | undefined;
 
   if (id) {
     const idNumber = parseInt(id);

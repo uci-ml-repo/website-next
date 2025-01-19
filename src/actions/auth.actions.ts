@@ -3,7 +3,8 @@
 import bcryptjs from "bcryptjs";
 
 import { signIn } from "@/auth";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db";
+import { users } from "@/db/schema";
 
 type Provider = "google" | "github";
 
@@ -25,7 +26,9 @@ export async function credentialsLogin({
   password: string;
 }) {
   try {
-    const existingUser = await prisma.user.findFirst({ where: { email } });
+    const existingUser = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
+    });
 
     if (!existingUser) {
       return {
@@ -81,7 +84,9 @@ export async function credentialsRegister({
   name: string;
 }) {
   try {
-    const existingUser = await prisma.user.findFirst({ where: { email } });
+    const existingUser = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
+    });
 
     if (existingUser) {
       return {
@@ -92,12 +97,10 @@ export async function credentialsRegister({
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
+    const user = await db.insert(users).values({
+      email,
+      password: hashedPassword,
+      name,
     });
 
     await signIn("credentials", {

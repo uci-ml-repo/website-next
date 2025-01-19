@@ -1,8 +1,9 @@
-import type { PrismaClient } from "@prisma/client";
+import { and, eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { bookmarks } from "@/db/schema";
 
 export default class BookmarksRemoveService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async removeBookmark({
     datasetId,
     userId,
@@ -10,14 +11,11 @@ export default class BookmarksRemoveService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await this.prisma.bookmark.delete({
-      where: {
-        userId_datasetId: {
-          userId,
-          datasetId,
-        },
-      },
-    });
+    const bookmark = await db
+      .delete(bookmarks)
+      .where(
+        and(eq(bookmarks.datasetId, datasetId), eq(bookmarks.userId, userId)),
+      );
     return bookmark;
   }
 }

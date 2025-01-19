@@ -51,15 +51,6 @@ export const protectedProcedure = t.procedure
       userRoles.add(MiddlewareRoles.DATASET_OWNER);
     }
 
-    if (requireRoles.has(MiddlewareRoles.DATASET_DRAFT_OWNER)) {
-      await AssertOwner.draftDataset({
-        draftDatasetId: inputCast.draftDatasetId,
-        userId: ctx.session.user.id,
-      });
-
-      userRoles.add(MiddlewareRoles.DATASET_DRAFT_OWNER);
-    }
-
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
       await AssertOwner.discussion({
         discussionId: inputCast.discussionId,

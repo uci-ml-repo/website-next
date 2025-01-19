@@ -1,10 +1,12 @@
-import type { Prisma } from "@prisma/client";
 import bcryptjs from "bcryptjs";
 
-const dummyUserId = "0";
+import type { datasets, papers, users } from "@/db/schema";
+import { Enums } from "@/db/types";
+
+const dummyUserId = crypto.randomUUID();
 const password = bcryptjs.hashSync("p", 10);
 
-export const users: Prisma.UserCreateManyInput[] = [
+export const usersSeed: (typeof users.$inferInsert)[] = [
   {
     id: dummyUserId,
     email: "dummy@guci.edu",
@@ -12,36 +14,32 @@ export const users: Prisma.UserCreateManyInput[] = [
     password,
   },
   {
-    id: "admin",
+    id: crypto.randomUUID(),
     email: "admin@uci.edu",
     name: "Admin",
-    role: "ADMIN",
+    role: Enums.UserRole.ADMIN,
     password,
   },
   {
-    id: "librarian",
+    id: crypto.randomUUID(),
     email: "librarian@uci.edu",
     name: "Librarian",
-    role: "LIBRARIAN",
+    role: Enums.UserRole.LIBRARIAN,
     password,
   },
   {
-    id: "curator",
+    id: crypto.randomUUID(),
     email: "curator@uci.edu",
     name: "Curator",
-    role: "CURATOR",
+    role: Enums.UserRole.CURATOR,
     password,
   },
 ];
-
-export const datasets: Omit<
-  Required<Prisma.DatasetCreateManyInput>,
-  "createdAt" | "updatedAt" | "variablesDescription" | "zipSize" | "fileCount"
->[] = [
+export const datasetsSeed: (typeof datasets.$inferSelect)[] = [
   {
     id: 53,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1936,
     title: "Iris",
@@ -49,10 +47,10 @@ export const datasets: Omit<
     doi: "10.24432/C56C76",
     description:
       "A small classic dataset from Fisher, 1936. One of the earliest known datasets used for evaluating classification methods.",
-    subjectArea: "BIOLOGY",
-    characteristics: ["TABULAR"],
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CONTINUOUS"],
+    subjectArea: Enums.DatasetSubjectArea.BIOLOGY,
+    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
     instanceCount: 150,
     featureCount: 4,
     hasGraphics: true,
@@ -61,12 +59,13 @@ export const datasets: Omit<
     downloadCount: 191103,
     slug: "iris",
     externalLink: null,
-    // // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 45,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1989,
     title: "Heart Disease",
@@ -74,10 +73,14 @@ export const datasets: Omit<
     doi: "10.24432/C5DW2B",
     description:
       "4 databases: Cleveland, Hungary, Switzerland, and the VA Long Beach.",
-    subjectArea: "BIOLOGY",
-    characteristics: ["MULTIVARIATE"],
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CATEGORICAL", "INTEGER", "CONTINUOUS"],
+    subjectArea: Enums.DatasetSubjectArea.BIOLOGY,
+    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+      Enums.DatasetFeatureType.CONTINUOUS,
+    ],
     instanceCount: 303,
     featureCount: 13,
     hasGraphics: true,
@@ -86,12 +89,13 @@ export const datasets: Omit<
     downloadCount: 125605,
     slug: "heart+disease",
     externalLink: null,
-    // // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 186,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("2009-10-07"),
     yearCreated: 2009,
     title: "Wine Quality",
@@ -99,10 +103,10 @@ export const datasets: Omit<
     doi: "10.24432/C56S3T",
     description:
       "Two datasets are included, related to red and white vinho verde wine samples, from the north of Portugal. The goal is to model wine quality based on physicochemical tests (see [Cortez et al., 2009], http://www3.dsi.uminho.pt/pcortez/wine/).",
-    characteristics: ["MULTIVARIATE"],
-    subjectArea: "BUSINESS",
-    tasks: ["CLASSIFICATION", "REGRESSION"],
-    featureTypes: ["CONTINUOUS"],
+    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    subjectArea: Enums.DatasetSubjectArea.BUSINESS,
+    tasks: [Enums.DatasetTask.CLASSIFICATION, Enums.DatasetTask.REGRESSION],
+    featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
     instanceCount: 4898,
     featureCount: 12,
     hasGraphics: false,
@@ -111,12 +115,13 @@ export const datasets: Omit<
     downloadCount: 105932,
     slug: "wine+quality",
     externalLink: null,
-    // // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 2,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("2012-02-14"),
     yearCreated: 2009,
     title: "Adult",
@@ -124,10 +129,13 @@ export const datasets: Omit<
     doi: "10.24432/C56S3T",
     description:
       'Predict whether annual income of an individual exceeds $50K/yr based on census data. Also known as "Census Income" dataset.',
-    characteristics: ["MULTIVARIATE"],
-    subjectArea: "SOCIAL_SCIENCE",
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CATEGORICAL", "INTEGER"],
+    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    subjectArea: Enums.DatasetSubjectArea.SOCIAL_SCIENCE,
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+    ],
     instanceCount: 48842,
     featureCount: 14,
     hasGraphics: false,
@@ -136,22 +144,23 @@ export const datasets: Omit<
     downloadCount: 80360,
     slug: "adult",
     externalLink: null,
-    // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 17,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("1995-11-01"),
     yearCreated: 1993,
     title: "Breast Cancer Wisconsin (Diagnostic)",
     subtitle: null,
     doi: "10.24432/C5DW2B",
     description: "Diagnostic Wisconsin Breast Cancer Database.",
-    characteristics: ["MULTIVARIATE"],
-    subjectArea: "HEALTH_AND_MEDICINE",
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CONTINUOUS"],
+    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
     instanceCount: 569,
     featureCount: 30,
     hasGraphics: false,
@@ -160,23 +169,33 @@ export const datasets: Omit<
     downloadCount: 78091,
     slug: "breast+cancer+wisconsin+diagnostic",
     externalLink: null,
-    // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 1031,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("2024-07-11"),
     yearCreated: 2024,
-    title: "Dataset for Assessing Mathematics Learning in Higher Education",
+    title:
+      "Enums.Dataset for Assessing Mathematics Learning in Higher Education",
     subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
     doi: "10.34620/dadosipb/PW3OWY",
     description:
       "MathE is a mathematical platform developed under the MathE project (mathe.pixel-online.org). The dataset has 9546 answers to questions in the Mathematical topics taught in higher education. The file has eight features, named: Student ID, Student Country, Question ID, Type of answer (correct or incorrect), Question level (basic or advanced), Math Topic, Math Subtopic, and Question Keywords. The question level was associated with the professor who submitted the question. The data was obtained from February 2019 until December 2023.",
-    characteristics: ["TABULAR"],
-    subjectArea: "EDUCATION",
-    tasks: ["CLASSIFICATION", "REGRESSION", "CLUSTERING"],
-    featureTypes: ["CONTINUOUS", "CATEGORICAL", "INTEGER"],
+    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    subjectArea: Enums.DatasetSubjectArea.EDUCATION,
+    tasks: [
+      Enums.DatasetTask.CLASSIFICATION,
+      Enums.DatasetTask.REGRESSION,
+      Enums.DatasetTask.CLUSTERING,
+    ],
+    featureTypes: [
+      Enums.DatasetFeatureType.CONTINUOUS,
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+    ],
     instanceCount: 10375,
     featureCount: 8,
     hasGraphics: false,
@@ -185,12 +204,13 @@ export const datasets: Omit<
     downloadCount: 3459,
     slug: "dataset+for+assessing+mathematics+learning+in+higher+education",
     externalLink: null,
-    // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 1074,
     userId: dummyUserId,
-    status: "PENDING",
+    status: Enums.DatasetStatus.PENDING,
     donatedAt: new Date("2024-10-15"),
     yearCreated: 2024,
     title: "Nvidia Market Customer segmentation data",
@@ -198,10 +218,18 @@ export const datasets: Omit<
     doi: null,
     description:
       "The Nvidia Market Customer Segmentation dataset provides a comprehensive analysis of sales and market dynamics for Nvidia's product offerings across various global regions from 1993 to 2024. This synthetic dataset includes over 39,000 entries, capturing key variables such as product categories (Gaming, AI, Data Center, OEM), specific product names (e.g., RTX 3080, Tesla V100), customer segments (Gamers, AI Researchers, Cloud Providers, Educational Institutions), and regions (North America, Europe, APAC, and more). It details customer purchasing behavior, including revenue data, units sold, marketing expenditures, customer satisfaction scores, and customer retention rates.",
-    characteristics: ["TABULAR"],
-    subjectArea: "BUSINESS",
-    tasks: ["CLASSIFICATION", "REGRESSION", "CLUSTERING"],
-    featureTypes: ["CONTINUOUS", "CATEGORICAL", "INTEGER"],
+    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    subjectArea: Enums.DatasetSubjectArea.BUSINESS,
+    tasks: [
+      Enums.DatasetTask.CLASSIFICATION,
+      Enums.DatasetTask.REGRESSION,
+      Enums.DatasetTask.CLUSTERING,
+    ],
+    featureTypes: [
+      Enums.DatasetFeatureType.CONTINUOUS,
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+    ],
     instanceCount: 39298,
     featureCount: 19,
     hasGraphics: false,
@@ -210,12 +238,13 @@ export const datasets: Omit<
     downloadCount: 0,
     slug: "nvidia+market+customer+segmentation+data",
     externalLink: null,
-    // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 388,
     userId: dummyUserId,
-    status: "REJECTED",
+    status: Enums.DatasetStatus.REJECTED,
     donatedAt: new Date("2017-05-24"),
     yearCreated: 2017,
     title: "Epileptic Seizure Recognition",
@@ -223,10 +252,16 @@ export const datasets: Omit<
     doi: "10.24432/C5G308",
     description:
       "This dataset is a pre-processed and re-structured/reshaped version of a very commonly used dataset featuring epileptic seizure detection.",
-    characteristics: ["MULTIVARIATE", "TIME_SERIES"],
-    subjectArea: "HEALTH_AND_MEDICINE",
-    tasks: ["CLASSIFICATION", "CLUSTERING"],
-    featureTypes: ["INTEGER", "CONTINUOUS"],
+    characteristics: [
+      Enums.DatasetCharacteristic.MULTIVARIATE,
+      Enums.DatasetCharacteristic.TIME_SERIES,
+    ],
+    subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
+    tasks: [Enums.DatasetTask.CLASSIFICATION, Enums.DatasetTask.CLUSTERING],
+    featureTypes: [
+      Enums.DatasetFeatureType.INTEGER,
+      Enums.DatasetFeatureType.CONTINUOUS,
+    ],
     instanceCount: 11500,
     featureCount: 1,
     hasGraphics: false,
@@ -235,23 +270,31 @@ export const datasets: Omit<
     downloadCount: 2032,
     slug: "epileptic+seizure+recognition",
     externalLink: null,
-    // filecount: 1
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 939,
     userId: dummyUserId,
-    status: "PENDING",
+    status: Enums.DatasetStatus.PENDING,
     donatedAt: new Date("2023-12-07"),
     yearCreated: 2023,
-    title: "My Pending Externally Linked Dataset",
+    title: "My Pending Externally Linked Enums.Dataset",
     subtitle: null,
     doi: "10.5281/zenodo.7669442",
     description:
       "This is a test dataset to see if the website can handle pending external links",
-    characteristics: ["TABULAR", "IMAGE"],
-    subjectArea: "HEALTH_AND_MEDICINE",
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CONTINUOUS", "CATEGORICAL", "INTEGER"],
+    characteristics: [
+      Enums.DatasetCharacteristic.TABULAR,
+      Enums.DatasetCharacteristic.IMAGE,
+    ],
+    subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [
+      Enums.DatasetFeatureType.CONTINUOUS,
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+    ],
     instanceCount: 782,
     featureCount: 59,
     hasGraphics: false,
@@ -260,12 +303,13 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "test+pending",
     externalLink: "https://zenodo.org/records/7669442",
-    // fileCount: null,
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
   {
     id: 938,
     userId: dummyUserId,
-    status: "APPROVED",
+    status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("2023-12-07"),
     yearCreated: 2023,
     title: "Regensburg Pediatric Appendicitis",
@@ -273,10 +317,17 @@ export const datasets: Omit<
     doi: "10.5281/zenodo.7669442",
     description:
       "This repository holds the data from a cohort of pediatric patients with suspected appendicitis admitted with abdominal pain to Children’s Hospital St. Hedwig in Regensburg, Germany, between 2016 and 2021. Each patient has (potentially multiple) ultrasound (US) images, aka views, tabular data comprising laboratory, physical examination, scoring results and ultrasonographic findings extracted manually by the experts, and three target variables, namely, diagnosis, management and severity.",
-    characteristics: ["TABULAR", "IMAGE"],
-    subjectArea: "HEALTH_AND_MEDICINE",
-    tasks: ["CLASSIFICATION"],
-    featureTypes: ["CONTINUOUS", "CATEGORICAL", "INTEGER"],
+    characteristics: [
+      Enums.DatasetCharacteristic.TABULAR,
+      Enums.DatasetCharacteristic.IMAGE,
+    ],
+    subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
+    tasks: [Enums.DatasetTask.CLASSIFICATION],
+    featureTypes: [
+      Enums.DatasetFeatureType.CONTINUOUS,
+      Enums.DatasetFeatureType.CATEGORICAL,
+      Enums.DatasetFeatureType.INTEGER,
+    ],
     instanceCount: 782,
     featureCount: 59,
     hasGraphics: false,
@@ -285,17 +336,19 @@ export const datasets: Omit<
     downloadCount: 4043,
     slug: "regensburg+pediatric+appendicitis",
     externalLink: "https://zenodo.org/records/7669442",
-    // fileCount: null,
+    variablesDescription: "",
+    updatedAt: new Date(),
   },
 ];
 
-export const introductoryPapers: Prisma.DatasetPaperCreateManyInput[] =
-  datasets.map((dataset, i) => ({
-    id: `${i + 1}`,
-    title: `Very Scientific Paper Number ${i + 1}`,
+export const papersSeed: (typeof papers.$inferInsert)[] = datasetsSeed.map(
+  (dataset) => ({
+    id: crypto.randomUUID(),
+    title: `Very Scientific Paper Number`,
     authors: ["John Lorenzini", "Andrew Wang"],
     venue: "Journal of Science",
     year: 2024,
     semanticScholarId: 1,
     introductoryForDatasetId: dataset.id,
-  }));
+  }),
+);

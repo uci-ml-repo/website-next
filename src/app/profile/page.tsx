@@ -27,7 +27,6 @@ export default async function Page() {
 
   const bookmarks = await caller.bookmarks.find.byUserId(session.user.id);
   const datasets = await caller.datasets.find.byUserId(session.user.id);
-  const draftDatasets = await caller.drafts.find.byUserId(session.user.id);
   const discussions = await caller.discussions.find.byUserId(session.user.id);
 
   return (
@@ -39,10 +38,7 @@ export default async function Page() {
           <LinearTabsTrigger value="bookmarks" badgeValue={bookmarks.length}>
             Bookmarks
           </LinearTabsTrigger>
-          <LinearTabsTrigger
-            value="datasets"
-            badgeValue={datasets.length + draftDatasets.length}
-          >
+          <LinearTabsTrigger value="datasets" badgeValue={datasets.length}>
             Datasets
           </LinearTabsTrigger>
           <LinearTabsTrigger
@@ -58,7 +54,7 @@ export default async function Page() {
           <ProfileBookmarks bookmarks={bookmarks} />
         </LinearTabsContent>
         <LinearTabsContent value="datasets">
-          <ProfileDatasets datasets={datasets} draftDatasets={draftDatasets} />
+          <ProfileDatasets datasets={datasets} />
         </LinearTabsContent>
         <LinearTabsContent value="discussions">
           <ProfileDiscussions discussions={discussions} />

@@ -1,5 +1,3 @@
-import type { PrismaClient } from "@prisma/client";
-
 import DiscussionsCreateService from "@/server/service/discussions/create";
 import DiscussionsEditService from "@/server/service/discussions/edit";
 import DiscussionsFindService from "@/server/service/discussions/find";
@@ -9,12 +7,11 @@ import DiscussionsUpvoteService from "@/server/service/discussions/upvote";
 
 export default class DiscussionsService {
   constructor(
-    readonly prisma: PrismaClient,
-    readonly find = new DiscussionsFindService(prisma),
-    readonly edit = new DiscussionsEditService(prisma),
-    readonly create = new DiscussionsCreateService(prisma),
-    readonly remove = new DiscussionsRemoveService(prisma),
-    readonly upvote = new DiscussionsUpvoteService(prisma),
-    readonly report = new DiscussionsReportService(prisma),
+    readonly find = new DiscussionsFindService(),
+    readonly edit = new DiscussionsEditService(),
+    readonly create = new DiscussionsCreateService(),
+    readonly remove = new DiscussionsRemoveService(),
+    readonly upvote = new DiscussionsUpvoteService(),
+    readonly report = new DiscussionsReportService(),
   ) {}
 }

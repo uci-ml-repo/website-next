@@ -1,12 +1,10 @@
-import type {
-  DatasetReportReason,
-  PrismaClient,
-  ReportResolutionType,
-} from "@prisma/client";
+import type { ReportResolutionType } from "@/db/types";
+import { Enums } from "@/db/types";
+import DatasetReportReason = Enums.DatasetReportReason;
+import { db } from "@/db";
+import { datasetReportResolutions, datasetReports } from "@/db/schema";
 
 export default class DatasetsReportService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async create({
     datasetId,
     reason,
@@ -18,13 +16,11 @@ export default class DatasetsReportService {
     details: string;
     userId?: string;
   }) {
-    return this.prisma.datasetReport.create({
-      data: {
-        datasetId,
-        reason,
-        details,
-        userId,
-      },
+    return db.insert(datasetReports).values({
+      datasetId,
+      reason,
+      details,
+      userId,
     });
   }
 
@@ -39,13 +35,11 @@ export default class DatasetsReportService {
     type: ReportResolutionType;
     comment: string;
   }) {
-    return this.prisma.datasetReportResolution.create({
-      data: {
-        reportId,
-        userId,
-        type,
-        comment,
-      },
+    return db.insert(datasetReportResolutions).values({
+      reportId,
+      userId,
+      type,
+      comment,
     });
   }
 }

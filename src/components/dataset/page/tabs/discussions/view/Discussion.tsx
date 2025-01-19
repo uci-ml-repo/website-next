@@ -1,5 +1,3 @@
-import DiscussionCreateReply from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateReply";
-import DiscussionReply from "@/components/dataset/page/tabs/discussions/view/DiscussionReply";
 import DiscussionUpvote from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussions/view/extended/DiscussionExtendedOptions";
 import styles from "@/components/rich-text/RichText.module.css";
@@ -51,18 +49,18 @@ export default function Discussion({
           />
         </div>
 
-        <div
-          className={cn(
-            "space-y-6",
-            discussion.replies.length > 0 ? "ml-2 border-l-2 pl-4" : "",
-          )}
-        >
-          {discussion.replies.map((reply) => (
-            <DiscussionReply discussion={reply} key={reply.id} />
-          ))}
+        {/*<div*/}
+        {/*  className={cn(*/}
+        {/*    "space-y-6",*/}
+        {/*    discussion.replies.length > 0 ? "ml-2 border-l-2 pl-4" : "",*/}
+        {/*  )}*/}
+        {/*>*/}
+        {/*  {discussion.replies.map((reply) => (*/}
+        {/*    <DiscussionReply discussion={reply} key={reply.id} />*/}
+        {/*  ))}*/}
 
-          <DiscussionCreateReply discussion={discussion} />
-        </div>
+        {/*  <DiscussionCreateReply discussion={discussion} />*/}
+        {/*</div>*/}
       </CardContent>
     </Card>
   );

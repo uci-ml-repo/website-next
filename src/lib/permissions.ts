@@ -1,7 +1,7 @@
-import type { UserRole } from "@prisma/client";
+import { Enums } from "@/db/types";
 
-export const PRIVILEGED_ROLES: Set<UserRole> = new Set([
-  "ADMIN",
-  "CURATOR",
-  "LIBRARIAN",
+export const PRIVILEGED_ROLES: Set<Enums.UserRole> = new Set([
+  Enums.UserRole.ADMIN,
+  Enums.UserRole.LIBRARIAN,
+  Enums.UserRole.CURATOR,
 ]);

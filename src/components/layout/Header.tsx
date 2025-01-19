@@ -1,4 +1,3 @@
-import { UserRole } from "@prisma/client";
 import { LayoutDashboardIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -12,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
+import { Enums } from "@/db/types";
 import { ADMIN_PATH, PROFILE_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,7 @@ export default async function Header() {
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
-              {session.user.role === UserRole.ADMIN && (
+              {session.user.role === Enums.UserRole.ADMIN && (
                 <DropdownMenuItem destructive asChild>
                   <Link href={ADMIN_PATH}>
                     <LayoutDashboardIcon />

@@ -1,10 +1,11 @@
-import type { DiscussionReportReason, PrismaClient } from "@prisma/client";
+import { eq } from "drizzle-orm";
 
+import { db } from "@/db";
+import { discussions } from "@/db/schema";
+import type { DiscussionReportReason } from "@/db/types";
 import ServiceError from "@/server/service/errors";
 
 export default class DiscussionsRemoveService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async byId({
     discussionId,
     userId,
@@ -14,9 +15,9 @@ export default class DiscussionsRemoveService {
     userId: string;
     deletionReason?: DiscussionReportReason;
   }) {
-    const discussion = await this.prisma.discussion.findUnique({
-      where: { id: discussionId },
-      include: {
+    const discussion = await db.query.discussions.findFirst({
+      where: (discussions, { eq }) => eq(discussions.id, discussionId),
+      with: {
         replies: true,
       },
     });
@@ -29,19 +30,14 @@ export default class DiscussionsRemoveService {
     }
 
     if (discussion.replies.length > 0) {
-      return this.prisma.discussion.update({
-        where: { id: discussionId },
-        data: {
-          content: "[Deleted]",
-          deletedAt: new Date(),
-          deletedByUserId: userId,
-          deletionReason,
-        },
+      return db.update(discussions).set({
+        content: "[Deleted]",
+        deletedAt: new Date(),
+        deletedByUserId: userId,
+        deletionReason,
       });
     }
 
-    return this.prisma.discussion.delete({
-      where: { id: discussionId },
-    });
+    return db.delete(discussions).where(eq(discussions.id, discussionId));
   }
 }

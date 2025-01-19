@@ -1,7 +1,7 @@
-import { UserRole } from "@prisma/client";
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
+import { Enums } from "@/db/types";
 
 export default async function Layout({
   children,
@@ -14,7 +14,7 @@ export default async function Layout({
     return unauthorized();
   }
 
-  if (session.user.role !== UserRole.ADMIN) {
+  if (session.user.role !== Enums.UserRole.ADMIN) {
     return unauthorized();
   }
 

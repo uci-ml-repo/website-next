@@ -1,4 +1,3 @@
-import type { PrismaClient } from "@prisma/client";
 import AdmZip from "adm-zip";
 import fs from "fs-extra";
 import readline from "readline";
@@ -12,8 +11,6 @@ interface ReadFileParams {
 }
 
 export default class FilesReadService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async readFileInfinite({
     absolutePath,
     cursor = 0,

@@ -1,8 +1,8 @@
-import type { UserRole } from "@prisma/client";
 import type { Session } from "next-auth";
 
 import { Badge } from "@/components/ui/badge";
 import ProfileAvatar from "@/components/ui/profile-avatar";
+import type { UserRole } from "@/db/types";
 
 export default function ProfileHeader({ session }: { session: Session }) {
   return (
@@ -27,12 +27,12 @@ export default function ProfileHeader({ session }: { session: Session }) {
 }
 
 function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
-  if (role === "BASIC") {
+  if (role === "basic") {
     return <div />;
   }
 
   return (
-    <Badge variant={role === "ADMIN" ? "destructive" : "blue"} size="lg">
+    <Badge variant={role === "admin" ? "destructive" : "blue"} size="lg">
       {role}
     </Badge>
   );

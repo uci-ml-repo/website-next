@@ -1,75 +1,28 @@
-import { type PrismaClient } from "@prisma/client";
-
+import { db } from "@/db";
 import type { DiscussionQuery } from "@/server/schema/discussions";
 
 export default class DiscussionsFindService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async byId(id: string) {
-    return this.prisma.discussion.findUnique({
-      where: { id },
-      include: {
+    return db.query.discussions.findFirst({
+      where: (discussions, { eq }) => eq(discussions.id, id),
+      with: {
         upvotes: true,
         user: true,
-        replies: {
-          include: {
-            user: true,
-            upvotes: true,
-          },
-          orderBy: [{ createdAt: "asc" }],
-        },
       },
     });
   }
 
   async byQuery(query: DiscussionQuery) {
-    return this.prisma.discussion.findMany({
-      where: {
-        datasetId: query.datasetId,
-        userId: query.userId,
-        replyToId: query.excludeReplies ? null : undefined,
-      },
-      include: {
-        upvotes: query.selectUpvoteUserId
-          ? {
-              where: {
-                userId: query.selectUpvoteUserId,
-              },
-            }
-          : false,
-        user: true,
-        replies: {
-          include: {
-            user: true,
-            upvotes: true,
-          },
-          orderBy: [{ createdAt: "asc" }],
-        },
-      },
-      orderBy: query.orderBy
-        ? { [query.orderBy]: query.sort }
-        : [{ upvoteCount: "desc" }, { createdAt: "asc" }],
-      skip: query.skip,
-      take: query.take,
-      cursor: query.cursor ? { id: query.cursor } : undefined,
-    });
+    return [];
   }
 
   async byUserId(userId: string) {
-    return this.prisma.discussion.findMany({
-      where: { userId },
-      include: {
+    return db.query.discussions.findMany({
+      where: (discussions, { eq }) => eq(discussions.userId, userId),
+      with: {
         upvotes: true,
         user: true,
-        replies: {
-          include: {
-            user: true,
-            upvotes: true,
-          },
-          orderBy: [{ createdAt: "asc" }],
-        },
       },
-      orderBy: { createdAt: "desc" },
     });
   }
 }

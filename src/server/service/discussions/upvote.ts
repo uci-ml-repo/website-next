@@ -1,8 +1,10 @@
-import type { PrismaClient } from "@prisma/client";
+import { and, count, eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { discussions, discussionUpvotes } from "@/db/schema";
+import { decrement, increment } from "@/db/util";
 
 export default class DiscussionsUpvoteService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async create({
     userId,
     discussionId,
@@ -10,26 +12,18 @@ export default class DiscussionsUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    const [upvote] = await this.prisma.$transaction([
-      this.prisma.discussionUpvote.create({
-        data: {
-          discussionId,
-          userId,
-        },
-      }),
-      this.prisma.discussion.update({
-        where: {
-          id: discussionId,
-        },
-        data: {
-          upvoteCount: {
-            increment: 1,
-          },
-        },
-      }),
-    ]);
+    return await db.transaction(async (tx) => {
+      tx.update(discussions)
+        .set({
+          upvoteCount: increment(discussions.upvoteCount),
+        })
+        .where(eq(discussions.id, discussionId));
 
-    return upvote;
+      return tx.insert(discussionUpvotes).values({
+        discussionId,
+        userId,
+      });
+    });
   }
 
   async remove({
@@ -39,28 +33,22 @@ export default class DiscussionsUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    const [upvote] = await this.prisma.$transaction([
-      this.prisma.discussionUpvote.delete({
-        where: {
-          userId_discussionId: {
-            userId,
-            discussionId,
-          },
-        },
-      }),
-      this.prisma.discussion.update({
-        where: {
-          id: discussionId,
-        },
-        data: {
-          upvoteCount: {
-            decrement: 1,
-          },
-        },
-      }),
-    ]);
+    return await db.transaction(async (tx) => {
+      tx.update(discussions)
+        .set({
+          upvoteCount: decrement(discussions.upvoteCount),
+        })
+        .where(eq(discussions.id, discussionId));
 
-    return upvote;
+      return tx
+        .delete(discussionUpvotes)
+        .where(
+          and(
+            eq(discussionUpvotes.userId, userId),
+            eq(discussionUpvotes.discussionId, discussionId),
+          ),
+        );
+    });
   }
 
   async find({
@@ -70,21 +58,16 @@ export default class DiscussionsUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    return this.prisma.discussionUpvote.findUnique({
-      where: {
-        userId_discussionId: {
-          userId,
-          discussionId,
-        },
-      },
+    return db.query.discussionUpvotes.findFirst({
+      where: (upvotes, { and, eq }) =>
+        and(eq(upvotes.userId, userId), eq(upvotes.discussionId, discussionId)),
     });
   }
 
   async count(discussionId: string) {
-    return this.prisma.discussionUpvote.count({
-      where: {
-        discussionId,
-      },
-    });
+    return db
+      .select({ count: count() })
+      .from(discussionUpvotes)
+      .where(eq(discussionUpvotes.discussionId, discussionId));
   }
 }

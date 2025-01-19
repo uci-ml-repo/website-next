@@ -1,6 +1,5 @@
 "use client";
 
-import type { DatasetPaper } from "@prisma/client";
 import {
   ChevronDownIcon,
   ChevronsDownUpIcon,
@@ -13,6 +12,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
+import type { PapersSelect } from "@/db/types";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -40,15 +40,16 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
             <div className="text-sm text-muted-foreground">
               This list may be incomplete
             </div>
-            {dataset.citedIn.length > 0
-              ? dataset.citedIn.map((paper) => (
-                  <PaperPreview key={paper.id} paper={paper} />
-                ))
-              : blank}
+            {/*{dataset.citedIn.length > 0*/}
+            {/*  ? dataset.citedIn.map((paper) => (*/}
+            {/*      <PaperPreview key={paper.id} paper={paper} />*/}
+            {/*    ))*/}
+            {/*  : blank}*/}
           </div>
         ),
       },
     ];
+
   const [openStates, setOpenStates] = useState<boolean[]>(
     Array(datasetMetadataContent.length).fill(false),
   );
@@ -146,7 +147,7 @@ function MetadataCollapsible({
   );
 }
 
-function PaperPreview({ paper }: { paper: DatasetPaper }) {
+function PaperPreview({ paper }: { paper: PapersSelect }) {
   return (
     <div>
       <Link

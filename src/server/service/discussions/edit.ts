@@ -1,12 +1,13 @@
-import type { PrismaClient } from "@prisma/client";
+import { eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { discussions } from "@/db/schema";
 
 export default class DiscussionsEditService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async byId({ id, content }: { id: string; content: string }) {
-    return this.prisma.discussion.update({
-      where: { id },
-      data: { content },
-    });
+    return db
+      .update(discussions)
+      .set({ content })
+      .where(eq(discussions.id, id));
   }
 }

@@ -1,17 +1,14 @@
-import type { Dataset } from "@prisma/client";
 import { DatabaseIcon, PlusIcon, SquarePenIcon } from "lucide-react";
 import Link from "next/link";
 
 import DatasetCardCarousel from "@/components/dataset/summarized/DatasetCardCarousel";
 import { Button } from "@/components/ui/button";
-import type { DraftDatasetResponse } from "@/lib/types";
+import type { DatasetsSelect } from "@/db/types";
 
 export default function ProfileDatasets({
   datasets,
-  draftDatasets,
 }: {
-  datasets: Dataset[];
-  draftDatasets: DraftDatasetResponse[];
+  datasets: DatasetsSelect[];
 }) {
   const endCard = (
     <Button asChild className="lift" variant="gold">

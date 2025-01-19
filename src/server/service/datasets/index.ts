@@ -1,5 +1,3 @@
-import type { PrismaClient } from "@prisma/client";
-
 import DatasetsCiteService from "@/server/service/datasets/cite";
 import DatasetsCountService from "@/server/service/datasets/count";
 import DatasetsFindService from "@/server/service/datasets/find";
@@ -7,10 +5,9 @@ import DatasetsReportService from "@/server/service/datasets/report";
 
 export default class DatasetsService {
   constructor(
-    readonly prisma: PrismaClient,
-    readonly find = new DatasetsFindService(prisma),
-    readonly cite = new DatasetsCiteService(prisma),
-    readonly count = new DatasetsCountService(prisma),
-    readonly report = new DatasetsReportService(prisma),
+    readonly find = new DatasetsFindService(),
+    readonly cite = new DatasetsCiteService(),
+    readonly count = new DatasetsCountService(),
+    readonly report = new DatasetsReportService(),
   ) {}
 }

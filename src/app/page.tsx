@@ -37,8 +37,8 @@ export default async function Page() {
         <div className="space-y-4">
           <Banner variant="hero" />
           <p className="text-pretty text-lg sm:text-xl">
-            We currently maintain {datasetCount} datasets used by millions in
-            the machine learning community.
+            We currently maintain {datasetCount[0].count} datasets used by
+            millions in the machine learning community.
           </p>
         </div>
         <div className="flex flex-wrap gap-4">

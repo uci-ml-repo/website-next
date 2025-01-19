@@ -1,4 +1,4 @@
-import type { DatasetResponse } from "@/lib/types";
+import type { AcceptedDatasetResponse } from "@/lib/types";
 import { datasetPage, datasetPythonDataURL, paperUrl } from "@/lib/utils";
 
 export type IntroPaperMetadata = {
@@ -47,7 +47,7 @@ export type PythonMetadata = {
 };
 
 export function datasetToPythonMetadata(
-  dataset: DatasetResponse,
+  dataset: AcceptedDatasetResponse,
 ): PythonMetadata {
   return {
     uci_id: dataset.id,

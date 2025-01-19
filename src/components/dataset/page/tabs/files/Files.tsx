@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import FilesBrowse from "@/components/dataset/page/tabs/files/browse/FilesBrowse";
 import { useFileContext } from "@/components/dataset/page/tabs/files/FilesContext";
 import FilesView from "@/components/dataset/page/tabs/files/view/FilesView";
+import { useIsMobile } from "@/components/hooks/use-mobile";
 import Split from "@/components/ui/split";
-import { useIsMobile } from "@/hooks/use-mobile";
 import type { DatasetResponse } from "@/lib/types";
 
 export default function Files({ dataset }: { dataset: DatasetResponse }) {

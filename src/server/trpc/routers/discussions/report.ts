@@ -1,6 +1,6 @@
-import { DiscussionReportReason, ReportResolutionType } from "@prisma/client";
 import { z } from "zod";
 
+import { Enums } from "@/db/types";
 import { enumToArray } from "@/lib/utils";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";
@@ -10,7 +10,7 @@ const discussionsReportRouter = router({
     .input(
       z.object({
         discussionId: z.string(),
-        reason: z.enum(enumToArray(DiscussionReportReason)),
+        reason: z.enum(enumToArray(Enums.DiscussionReportReason)),
         details: z.string().optional(),
         userId: z.string().optional(),
       }),
@@ -24,7 +24,7 @@ const discussionsReportRouter = router({
       z.object({
         reportId: z.string(),
         userId: z.string(),
-        type: z.enum(enumToArray(ReportResolutionType)),
+        type: z.enum(enumToArray(Enums.ReportResolutionType)),
         comment: z.string(),
       }),
     )

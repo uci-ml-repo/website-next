@@ -1,13 +1,14 @@
-import { ApprovalStatus, type PrismaClient } from "@prisma/client";
+import { count, eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { datasets } from "@/db/schema";
+import { Enums } from "@/db/types";
 
 export default class DatasetsCountService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async approved() {
-    return this.prisma.dataset.count({
-      where: {
-        status: ApprovalStatus.APPROVED,
-      },
-    });
+    return db
+      .select({ count: count() })
+      .from(datasets)
+      .where(eq(datasets.status, Enums.DatasetStatus.APPROVED));
   }
 }

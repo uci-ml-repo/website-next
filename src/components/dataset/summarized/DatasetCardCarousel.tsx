@@ -1,4 +1,3 @@
-import type { Dataset } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -12,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import type { DatasetsSelect } from "@/db/types";
 import { cn } from "@/lib/utils";
 
 interface DatasetGroupProps {
@@ -19,7 +19,7 @@ interface DatasetGroupProps {
   icon?: React.ReactNode;
   seeAllHref?: string;
   endCard?: React.ReactNode;
-  datasets: Dataset[];
+  datasets: DatasetsSelect[];
 }
 
 export default function DatasetCardCarousel({

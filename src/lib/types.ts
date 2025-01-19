@@ -1,20 +1,15 @@
+import type { AcceptedDatasetSelect } from "@/db/types";
 import type { RouterOutput } from "@/server/trpc/routers";
 
 export type DatasetResponse = NonNullable<
   RouterOutput["datasets"]["find"]["byId"]
 >;
 
-export type DraftDatasetResponse = NonNullable<
-  RouterOutput["drafts"]["find"]["byId"]
->;
-
-export type DiscussionResponseWithReplies = NonNullable<
-  RouterOutput["discussions"]["find"]["byId"]
->;
+export type AcceptedDatasetResponse = DatasetResponse & AcceptedDatasetSelect;
 
 export type DiscussionResponse = NonNullable<
   RouterOutput["discussions"]["find"]["byId"]
->["replies"][number];
+>;
 
 export type BookmarkResponse = NonNullable<
   RouterOutput["bookmarks"]["find"]["byUserId"][number]

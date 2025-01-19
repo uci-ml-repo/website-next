@@ -6,7 +6,6 @@ import { useState } from "react";
 import DiscussionCreateButton from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateButton";
 import DiscussionCreateInput from "@/components/dataset/page/tabs/discussions/create/DiscussionCreateInput";
 import DiscussionsOrderBy from "@/components/dataset/page/tabs/discussions/DiscussionsOrderBy";
-import Discussion from "@/components/dataset/page/tabs/discussions/view/Discussion";
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
@@ -25,12 +24,6 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
       datasetId: dataset.id,
       excludeReplies: true,
       selectUpvoteUserId: session ? session.user.id : undefined,
-      orderBy:
-        orderBy === "top"
-          ? "upvoteCount"
-          : orderBy === "new"
-            ? "createdAt"
-            : undefined,
       sort: orderBy ? "desc" : undefined,
     },
     {
@@ -93,11 +86,11 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         </div>
       </div>
 
-      <div className="space-y-6">
-        {discussionsQuery.data.map((discussion) => (
-          <Discussion key={discussion.id} discussion={discussion} />
-        ))}
-      </div>
+      {/*<div className="space-y-6">*/}
+      {/*  {discussionsQuery.data.map((discussion) => (*/}
+      {/*    <Discussion key={discussion.id} discussion={discussion} />*/}
+      {/*  ))}*/}
+      {/*</div>*/}
     </div>
   );
 }

@@ -1,19 +1,17 @@
-import type { DatasetAuthor, PrismaClient } from "@prisma/client";
-
+import { db } from "@/db";
+import type { AuthorsSelect } from "@/db/types";
 import ServiceError from "@/server/service/errors";
 
 export default class DatasetsCiteService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async byDatasetId(id: number) {
-    const dataset = await this.prisma.dataset.findFirst({
-      where: { id },
-      include: {
+    const dataset = await db.query.datasets.findFirst({
+      where: (dataset, { eq }) => eq(dataset.id, id),
+      with: {
         authors: true,
       },
     });
 
-    if (dataset == null) {
+    if (!dataset) {
       throw new ServiceError({
         reason: "Dataset Not Found",
         origin: "Dataset",
@@ -47,7 +45,7 @@ class Citation {
 
   private readonly id: number;
   private readonly title: string;
-  private readonly authors: DatasetAuthor[];
+  private readonly authors: AuthorsSelect[];
   private readonly yearCreated: number;
   private readonly doi: string | null;
 
@@ -60,34 +58,34 @@ class Citation {
   }: {
     id: number;
     title: string;
-    authors: DatasetAuthor[];
-    yearCreated: number;
+    authors: AuthorsSelect[];
+    yearCreated: number | null;
     doi: string | null;
   }) {
     this.id = id;
     this.title = title;
     this.authors = authors;
-    this.yearCreated = yearCreated;
+    this.yearCreated = yearCreated ?? 0;
     this.doi = doi;
   }
 
-  private static lastFirst(author: DatasetAuthor) {
+  private static lastFirst(author: AuthorsSelect) {
     return `${author.lastName}, ${author.firstName}`;
   }
 
-  private static firstLast(author: DatasetAuthor) {
+  private static firstLast(author: AuthorsSelect) {
     return `${author.firstName} ${author.lastName}`;
   }
 
-  private static firstInitialLast(author: DatasetAuthor) {
+  private static firstInitialLast(author: AuthorsSelect) {
     return `${Citation.toInitial(author.firstName)} ${author.lastName}`;
   }
 
-  private static lastFirstInitial(author: DatasetAuthor) {
+  private static lastFirstInitial(author: AuthorsSelect) {
     return `${author.lastName}, ${Citation.toInitial(author.firstName)}`;
   }
 
-  private static lastFirstInitialNoPunctuation(author: DatasetAuthor) {
+  private static lastFirstInitialNoPunctuation(author: AuthorsSelect) {
     return `${author.lastName} ${Citation.toInitial(author.firstName, false)}`;
   }
 
@@ -117,9 +115,9 @@ class Citation {
     etAlCutoff = -1,
     listFormatter = Citation.longConjunction,
   }: {
-    authors: DatasetAuthor[];
-    firstAuthorFormatter: (author: DatasetAuthor) => string;
-    subsequentAuthorsFormatter?: (author: DatasetAuthor) => string;
+    authors: AuthorsSelect[];
+    firstAuthorFormatter: (author: AuthorsSelect) => string;
+    subsequentAuthorsFormatter?: (author: AuthorsSelect) => string;
     etAlCutoff?: number;
     listFormatter?: typeof Citation.longConjunction;
   }) {

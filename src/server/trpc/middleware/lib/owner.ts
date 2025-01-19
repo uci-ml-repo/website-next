@@ -25,28 +25,6 @@ export namespace AssertOwner {
     }
   };
 
-  export const draftDataset = async ({
-    draftDatasetId,
-    userId,
-  }: {
-    draftDatasetId: string | undefined;
-    userId: string;
-  }) => {
-    if (!draftDatasetId) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
-    }
-
-    const draftDataset = await service.drafts.find.byId(draftDatasetId);
-
-    if (!draftDataset) {
-      throw new TRPCError({ code: "NOT_FOUND" });
-    }
-
-    if (draftDataset.userId !== userId) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-  };
-
   export const discussion = async ({
     discussionId,
     userId,

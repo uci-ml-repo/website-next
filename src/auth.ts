@@ -1,5 +1,4 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { UserRole } from "@prisma/client";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcryptjs from "bcryptjs";
 import NextAuth, { type DefaultSession, type User } from "next-auth";
 import { encode } from "next-auth/jwt";
@@ -7,10 +6,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { v4 as uuid } from "uuid";
 
 import authConfig from "@/auth.config";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db";
+import type { UserRole } from "@/db/types";
 import { SIGN_IN_PATH } from "@/lib/routes";
-
-const adapter = PrismaAdapter(prisma);
 
 declare module "next-auth" {
   interface Session {
@@ -27,6 +25,8 @@ declare module "@auth/core/adapters" {
   }
 }
 
+const adapter = DrizzleAdapter(db);
+
 export const authOptions = NextAuth({
   adapter,
   ...authConfig,
@@ -42,7 +42,9 @@ export const authOptions = NextAuth({
         const password = credentials.password as string;
 
         try {
-          const user = await prisma.user.findFirst({ where: { email } });
+          const user = await db.query.users.findFirst({
+            where: (users, { eq }) => eq(users.email, email),
+          });
 
           if (!user || !user.password) {
             return null;

@@ -1,8 +1,7 @@
-import type { PrismaClient } from "@prisma/client";
+import { db } from "@/db";
+import { bookmarks } from "@/db/schema";
 
 export default class BookmarksCreateService {
-  constructor(readonly prisma: PrismaClient) {}
-
   async addBookmark({
     datasetId,
     userId,
@@ -10,11 +9,9 @@ export default class BookmarksCreateService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await this.prisma.bookmark.create({
-      data: {
-        datasetId,
-        userId,
-      },
+    const bookmark = await db.insert(bookmarks).values({
+      datasetId,
+      userId,
     });
 
     return bookmark;

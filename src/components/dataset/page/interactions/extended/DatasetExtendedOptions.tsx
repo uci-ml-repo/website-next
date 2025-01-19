@@ -4,6 +4,7 @@ import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
 import { useState } from "react";
 
 import DatasetReportDialog from "@/components/dataset/page/interactions/extended/DatasetReportDialog";
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "@/hooks/use-toast";
 import type { DatasetResponse } from "@/lib/types";
 
 export default function DatasetExtendedOptions({

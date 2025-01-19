@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DiscussionReportReason } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,11 +22,11 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
+import { Enums } from "@/db/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-const discussionReportReasons = enumToArray(DiscussionReportReason);
+const discussionReportReasons = enumToArray(Enums.DiscussionReportReason);
 
 const formSchema = z.object({
   reason: z.enum(discussionReportReasons, {
