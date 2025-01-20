@@ -35,10 +35,7 @@ export default async function DatasetInteractions({
   ];
 
   return (
-    <div
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
+    <div className={cn("flex items-center space-x-4", className)} {...props}>
       <TooltipProvider delayDuration={300} disableHoverableContent>
         {activity.map((activityItem) => (
           <Tooltip key={activityItem.tooltip}>
@@ -51,9 +48,8 @@ export default async function DatasetInteractions({
             </TooltipContent>
           </Tooltip>
         ))}
-        <DatasetBookmarkButton dataset={dataset} />
       </TooltipProvider>
-
+      <DatasetBookmarkButton dataset={dataset} />
       <DatasetExtendedOptions dataset={dataset} />
     </div>
   );

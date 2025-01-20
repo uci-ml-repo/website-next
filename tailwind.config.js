@@ -12,6 +12,25 @@ const config = {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            code: {},
+            h1: {
+              fontSize: "1.5rem",
+              lineHeight: "2rem",
+            },
+            h2: {
+              fontSize: "1.25rem",
+              lineHeight: "1.75rem",
+            },
+            h3: {
+              fontSize: "1.125rem",
+              lineHeight: "1.75rem",
+            },
+          },
+        },
+      },
       screens: {
         xxs: "340px",
         xs: "480px",
@@ -104,7 +123,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
 
 export default config;
