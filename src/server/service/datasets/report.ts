@@ -1,8 +1,8 @@
-import type { ReportResolutionType } from "@/db/types";
-import { Enums } from "@/db/types";
+import type { ReportResolutionType } from "@/db/enums";
+import { Enums } from "@/db/enums";
 import DatasetReportReason = Enums.DatasetReportReason;
 import { db } from "@/db";
-import { datasetReportResolutions, datasetReports } from "@/db/schema";
+import { datasetReport, datasetReportResolution } from "@/db/schema";
 
 export default class DatasetsReportService {
   async create({
@@ -16,7 +16,7 @@ export default class DatasetsReportService {
     details: string;
     userId?: string;
   }) {
-    return db.insert(datasetReports).values({
+    return db.insert(datasetReport).values({
       datasetId,
       reason,
       details,
@@ -35,7 +35,7 @@ export default class DatasetsReportService {
     type: ReportResolutionType;
     comment: string;
   }) {
-    return db.insert(datasetReportResolutions).values({
+    return db.insert(datasetReportResolution).values({
       reportId,
       userId,
       type,

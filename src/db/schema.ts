@@ -14,9 +14,8 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
+import { Enums } from "@/db/enums";
 import { enumToArray } from "@/db/util";
-
-import { Enums } from "./types";
 
 export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
 
@@ -65,8 +64,8 @@ export const reportResolutionType = pgEnum(
   enumToArray(Enums.ReportResolutionType),
 );
 
-export const datasets = pgTable(
-  "datasets",
+export const dataset = pgTable(
+  "dataset",
   {
     id: serial("id").primaryKey(),
     title: text("title").notNull(),
@@ -94,7 +93,7 @@ export const datasets = pgTable(
     featureTypes: datasetFeatureType("feature_types").array(),
 
     userId: uuid("user_id")
-      .references(() => users.id)
+      .references(() => user.id)
       .notNull(),
 
     donatedAt: date("donated_at", { mode: "date" }).defaultNow().notNull(),
@@ -121,99 +120,107 @@ export const datasets = pgTable(
   ],
 );
 
-export const datasetsRelations = relations(datasets, ({ one, many }) => ({
-  user: one(users, {
-    fields: [datasets.userId],
-    references: [users.id],
+export const datasetRelations = relations(dataset, ({ one, many }) => ({
+  user: one(user, {
+    fields: [dataset.userId],
+    references: [user.id],
   }),
-  variables: many(variables),
-  datasetKeywords: many(datasetKeywords),
-  introductoryPaper: one(papers),
-  bookmarks: many(bookmarks),
-  authors: many(authors),
-  reports: many(datasetReports),
+  variables: many(variable),
+  datasetKeywords: many(datasetKeyword),
+  bookmarks: many(bookmark),
+  authors: many(author),
+  reports: many(datasetReport),
+  introductoryPaper: one(paper),
 }));
 
-export const datasetReports = pgTable("dataset_reports", {
+export const datasetReport = pgTable("dataset_report", {
   id: uuid("id").primaryKey().defaultRandom(),
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => datasets.id),
+    .references(() => dataset.id),
   reason: datasetReportReason("reason").notNull(),
   details: text("details").notNull(),
   userId: uuid("user_id"),
   createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const datasetReportsRelations = relations(datasetReports, ({ one }) => ({
-  dataset: one(datasets, {
-    fields: [datasetReports.datasetId],
-    references: [datasets.id],
+export const datasetReportRelations = relations(datasetReport, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [datasetReport.datasetId],
+    references: [dataset.id],
   }),
-  user: one(users, {
-    fields: [datasetReports.userId],
-    references: [users.id],
+  user: one(user, {
+    fields: [datasetReport.userId],
+    references: [user.id],
   }),
-  resolution: one(datasetReportResolutions),
+  resolution: one(datasetReportResolution),
 }));
 
-export const datasetReportResolutions = pgTable("dataset_report_resolutions", {
+export const datasetReportResolution = pgTable("dataset_report_resolution", {
   id: uuid("id").primaryKey().defaultRandom(),
   reportId: uuid("report_id")
     .notNull()
-    .references(() => datasetReports.id),
+    .references(() => datasetReport.id),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => user.id),
   type: reportResolutionType("type").notNull(),
   comment: text("comment").notNull(),
   createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const datasetReportResolutionsRelations = relations(
-  datasetReportResolutions,
+export const datasetReportResolutionRelations = relations(
+  datasetReportResolution,
   ({ one }) => ({
-    report: one(datasetReports, {
-      fields: [datasetReportResolutions.reportId],
-      references: [datasetReports.id],
+    report: one(datasetReport, {
+      fields: [datasetReportResolution.reportId],
+      references: [datasetReport.id],
     }),
-    user: one(users, {
-      fields: [datasetReportResolutions.userId],
-      references: [users.id],
+    user: one(user, {
+      fields: [datasetReportResolution.userId],
+      references: [user.id],
     }),
   }),
 );
 
-export const authors = pgTable("authors", {
+export const author = pgTable("author", {
   id: uuid("id").primaryKey().defaultRandom(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   email: text("email").notNull(),
 
-  datasetId: integer("dataset_id").references(() => datasets.id),
+  datasetId: integer("dataset_id").references(() => dataset.id),
 });
 
-export const variables = pgTable("variables", {
+export const authorsRelations = relations(author, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [author.datasetId],
+    references: [dataset.id],
+  }),
+}));
+
+export const variable = pgTable("variable", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   role: datasetFeatureRole("role").notNull(),
   type: datasetFeatureType("type").notNull(),
   missingValues: boolean("missing_values").notNull(),
+  units: text("units"),
 
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => datasets.id),
+    .references(() => dataset.id),
 });
 
-export const variablesRelations = relations(variables, ({ one }) => ({
-  dataset: one(datasets, {
-    fields: [variables.datasetId],
-    references: [datasets.id],
+export const variableRelations = relations(variable, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [variable.datasetId],
+    references: [dataset.id],
   }),
 }));
 
-export const keywords = pgTable("keywords", {
+export const keyword = pgTable("keyword", {
   id: uuid("id").primaryKey().defaultRandom(),
   status: datasetStatus("status").notNull(),
   keyword: text("keyword").notNull(),
@@ -221,38 +228,35 @@ export const keywords = pgTable("keywords", {
   createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const keywordsRelations = relations(keywords, ({ many }) => ({
-  datasetKeywords: many(datasetKeywords),
+export const keywordsRelations = relations(keyword, ({ many }) => ({
+  datasetKeywords: many(datasetKeyword),
 }));
 
-export const datasetKeywords = pgTable(
-  "dataset_keywords",
+export const datasetKeyword = pgTable(
+  "dataset_keyword",
   {
     keywordId: uuid("keyword_id")
       .notNull()
-      .references(() => keywords.id),
+      .references(() => keyword.id),
     datasetId: integer("dataset_id")
       .notNull()
-      .references(() => datasets.id),
+      .references(() => dataset.id),
   },
   (t) => [primaryKey({ columns: [t.keywordId, t.datasetId] })],
 );
 
-export const datasetKeywordsRelations = relations(
-  datasetKeywords,
-  ({ one }) => ({
-    keyword: one(keywords, {
-      fields: [datasetKeywords.keywordId],
-      references: [keywords.id],
-    }),
-    dataset: one(datasets, {
-      fields: [datasetKeywords.datasetId],
-      references: [datasets.id],
-    }),
+export const datasetKeywordRelations = relations(datasetKeyword, ({ one }) => ({
+  keyword: one(keyword, {
+    fields: [datasetKeyword.keywordId],
+    references: [keyword.id],
   }),
-);
+  dataset: one(dataset, {
+    fields: [datasetKeyword.datasetId],
+    references: [dataset.id],
+  }),
+}));
 
-export const papers = pgTable("papers", {
+export const paper = pgTable("paper", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   authors: text("authors").array().notNull(),
@@ -263,53 +267,53 @@ export const papers = pgTable("papers", {
 
   introductoryForDatasetId: integer("introductory_for_dataset_id")
     .notNull()
-    .references(() => datasets.id),
+    .references(() => dataset.id),
 });
 
-export const papersRelations = relations(papers, ({ one }) => ({
-  introductoryForDataset: one(datasets, {
-    fields: [papers.introductoryForDatasetId],
-    references: [datasets.id],
+export const paperRelations = relations(paper, ({ one }) => ({
+  introductoryForDataset: one(dataset, {
+    fields: [paper.introductoryForDatasetId],
+    references: [dataset.id],
   }),
 }));
 
-export const bookmarks = pgTable(
-  "bookmarks",
+export const bookmark = pgTable(
+  "bookmark",
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => user.id),
     datasetId: integer("dataset_id")
       .notNull()
-      .references(() => datasets.id),
+      .references(() => dataset.id),
 
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.datasetId] })],
 );
 
-export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
-  dataset: one(datasets, {
-    fields: [bookmarks.datasetId],
-    references: [datasets.id],
+export const bookmarkRelations = relations(bookmark, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [bookmark.datasetId],
+    references: [dataset.id],
   }),
-  user: one(users, {
-    fields: [bookmarks.userId],
-    references: [users.id],
+  user: one(user, {
+    fields: [bookmark.userId],
+    references: [user.id],
   }),
 }));
 
-export const discussions = pgTable("discussions", {
+export const discussion = pgTable("discussion", {
   id: uuid("id").primaryKey().defaultRandom(),
   content: text("content").notNull(),
 
   replyToId: uuid("reply_to_id"),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => user.id),
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => datasets.id),
+    .references(() => dataset.id),
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
@@ -320,105 +324,111 @@ export const discussions = pgTable("discussions", {
   deletionReason: discussionReportReason("deletion_reason"),
 });
 
-export const discussionsRelations = relations(discussions, ({ one, many }) => ({
-  replyTo: one(discussions, {
-    fields: [discussions.replyToId],
-    references: [discussions.id],
+export const discussionRelations = relations(discussion, ({ one, many }) => ({
+  replyTo: one(discussion, {
+    fields: [discussion.replyToId],
+    references: [discussion.id],
+    relationName: "replies",
   }),
-  replies: many(discussions),
-  upvotes: many(discussionUpvotes),
-  user: one(users, {
-    fields: [discussions.userId],
-    references: [users.id],
+  replies: many(discussion, {
+    relationName: "replies",
+  }),
+  upvotes: many(discussionUpvote),
+  user: one(user, {
+    fields: [discussion.userId],
+    references: [user.id],
   }),
 }));
 
-export const discussionUpvotes = pgTable(
-  "discussion_upvotes",
+export const discussionUpvote = pgTable(
+  "discussion_upvote",
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => user.id),
     discussionId: uuid("discussion_id")
       .notNull()
-      .references(() => discussions.id),
+      .references(() => discussion.id),
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.discussionId] })],
 );
 
-export const discussionUpvotesRelations = relations(
-  discussionUpvotes,
+export const discussionUpvoteRelations = relations(
+  discussionUpvote,
   ({ one }) => ({
-    user: one(users, {
-      fields: [discussionUpvotes.userId],
-      references: [users.id],
+    user: one(user, {
+      fields: [discussionUpvote.userId],
+      references: [user.id],
     }),
-    discussion: one(discussions, {
-      fields: [discussionUpvotes.discussionId],
-      references: [discussions.id],
+    discussion: one(discussion, {
+      fields: [discussionUpvote.discussionId],
+      references: [discussion.id],
     }),
   }),
 );
 
-export const discussionReports = pgTable("discussion_reports", {
+export const discussionReport = pgTable("discussion_report", {
   id: uuid("id").primaryKey().defaultRandom(),
   discussionId: uuid("discussion_id")
     .notNull()
-    .references(() => discussions.id),
+    .references(() => discussion.id),
   reason: discussionReportReason("reason").notNull(),
   details: text("details"),
   userId: uuid("user_id"),
   createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const discussionReportsRelations = relations(
-  discussionReports,
+export const discussionReportRelations = relations(
+  discussionReport,
   ({ one }) => ({
-    discussion: one(discussions, {
-      fields: [discussionReports.discussionId],
-      references: [discussions.id],
+    discussion: one(discussion, {
+      fields: [discussionReport.discussionId],
+      references: [discussion.id],
     }),
-    user: one(users),
-    resolution: one(discussionReportResolutions),
+    user: one(user, {
+      fields: [discussionReport.userId],
+      references: [user.id],
+    }),
+    resolution: one(discussionReportResolution),
   }),
 );
 
-export const discussionReportResolutions = pgTable(
-  "discussion_report_resolutions",
+export const discussionReportResolution = pgTable(
+  "discussion_report_resolution",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     reportId: uuid("report_id")
       .notNull()
-      .references(() => discussionReports.id),
+      .references(() => discussionReport.id),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => user.id),
     type: reportResolutionType("type").notNull(),
     comment: text("comment").notNull(),
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
 );
 
-export const discussionReportResolutionsRelations = relations(
-  discussionReportResolutions,
+export const discussionReportResolutionRelations = relations(
+  discussionReportResolution,
   ({ one }) => ({
-    report: one(discussionReports, {
-      fields: [discussionReportResolutions.reportId],
-      references: [discussionReports.id],
+    report: one(discussionReport, {
+      fields: [discussionReportResolution.reportId],
+      references: [discussionReport.id],
     }),
-    user: one(users, {
-      fields: [discussionReportResolutions.userId],
-      references: [users.id],
+    user: one(user, {
+      fields: [discussionReportResolution.userId],
+      references: [user.id],
     }),
   }),
 );
 
-export const users = pgTable("users", {
+export const user = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name"),
   email: text("email").unique(),
-  emailVerified: timestamp("email_verified", { mode: "date" }),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("password"),
   image: text("image"),
   role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
@@ -426,20 +436,24 @@ export const users = pgTable("users", {
   createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
-  datasets: many(datasets),
-  bookmarks: many(bookmarks),
+export const userRelations = relations(user, ({ many }) => ({
+  datasets: many(dataset),
+  bookmarks: many(bookmark),
+  discussions: many(discussion),
+  discussionReports: many(discussionReport),
+  accounts: many(account),
+  sessions: many(session),
 }));
 
-export const accounts = pgTable(
-  "accounts",
+export const account = pgTable(
+  "account",
   {
-    userId: uuid("user_id")
+    userId: uuid("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -457,16 +471,30 @@ export const accounts = pgTable(
   ],
 );
 
-export const sessions = pgTable("session", {
-  sessionToken: text("session_token").primaryKey(),
-  userId: uuid("user_id")
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(user, {
+    fields: [account.userId],
+    references: [user.id],
+  }),
+}));
+
+export const session = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: uuid("userId")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-export const verificationTokens = pgTable(
-  "verification_token",
+export const sessionRelations = relations(session, ({ one }) => ({
+  user: one(user, {
+    fields: [session.userId],
+    references: [user.id],
+  }),
+}));
+
+export const verificationToken = pgTable(
+  "verificationToken",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),

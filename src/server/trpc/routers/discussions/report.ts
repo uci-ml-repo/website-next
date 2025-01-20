@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Enums } from "@/db/types";
+import { Enums } from "@/db/enums";
 import { enumToArray } from "@/lib/utils";
 import service from "@/server/service";
 import { procedure, router } from "@/server/trpc";

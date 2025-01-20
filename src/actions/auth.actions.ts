@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 
 import { signIn } from "@/auth";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { user } from "@/db/schema";
 
 type Provider = "google" | "github";
 
@@ -26,8 +26,8 @@ export async function credentialsLogin({
   password: string;
 }) {
   try {
-    const existingUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
+    const existingUser = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
     });
 
     if (!existingUser) {
@@ -84,8 +84,8 @@ export async function credentialsRegister({
   name: string;
 }) {
   try {
-    const existingUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
+    const existingUser = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
     });
 
     if (existingUser) {
@@ -97,7 +97,7 @@ export async function credentialsRegister({
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const user = await db.insert(users).values({
+    const registeredUser = await db.insert(user).values({
       email,
       password: hashedPassword,
       name,
@@ -111,7 +111,7 @@ export async function credentialsRegister({
 
     return {
       success: true,
-      data: user,
+      data: registeredUser,
     };
   } catch (error: unknown) {
     return {

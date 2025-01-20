@@ -1,14 +1,14 @@
 import { count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { datasets } from "@/db/schema";
-import { Enums } from "@/db/types";
+import { Enums } from "@/db/enums";
+import { dataset } from "@/db/schema";
 
 export default class DatasetsCountService {
   async approved() {
     return db
       .select({ count: count() })
-      .from(datasets)
-      .where(eq(datasets.status, Enums.DatasetStatus.APPROVED));
+      .from(dataset)
+      .where(eq(dataset.status, Enums.DatasetStatus.APPROVED));
   }
 }

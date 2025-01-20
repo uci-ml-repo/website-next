@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { discussions } from "@/db/schema";
+import { discussion } from "@/db/schema";
 
 export default class DiscussionsCreateService {
   async fromData({
@@ -13,7 +13,7 @@ export default class DiscussionsCreateService {
     datasetId: number;
     replyToId?: string;
   }) {
-    return db.insert(discussions).values({
+    return db.insert(discussion).values({
       content,
       userId,
       datasetId,

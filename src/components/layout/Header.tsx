@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import { Enums } from "@/db/types";
+import { Enums } from "@/db/enums";
 import { ADMIN_PATH, PROFILE_PATH } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 

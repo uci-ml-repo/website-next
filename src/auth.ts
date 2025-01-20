@@ -7,7 +7,7 @@ import { v4 as uuid } from "uuid";
 
 import authConfig from "@/auth.config";
 import { db } from "@/db";
-import type { UserRole } from "@/db/types";
+import type { UserRole } from "@/db/enums";
 import { SIGN_IN_PATH } from "@/lib/routes";
 
 declare module "next-auth" {
@@ -42,8 +42,8 @@ export const authOptions = NextAuth({
         const password = credentials.password as string;
 
         try {
-          const user = await db.query.users.findFirst({
-            where: (users, { eq }) => eq(users.email, email),
+          const user = await db.query.user.findFirst({
+            where: (user, { eq }) => eq(user.email, email),
           });
 
           if (!user || !user.password) {
@@ -53,7 +53,9 @@ export const authOptions = NextAuth({
           if (bcryptjs.compareSync(password, user.password)) {
             return user as User;
           }
-        } catch {}
+        } catch (error) {
+          console.error(error);
+        }
 
         return null;
       },

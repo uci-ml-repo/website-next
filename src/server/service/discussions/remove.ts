@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussions } from "@/db/schema";
-import type { DiscussionReportReason } from "@/db/types";
+import type { DiscussionReportReason } from "@/db/enums";
+import { discussion } from "@/db/schema";
 import ServiceError from "@/server/service/errors";
 
 export default class DiscussionsRemoveService {
@@ -15,22 +15,22 @@ export default class DiscussionsRemoveService {
     userId: string;
     deletionReason?: DiscussionReportReason;
   }) {
-    const discussion = await db.query.discussions.findFirst({
-      where: (discussions, { eq }) => eq(discussions.id, discussionId),
+    const queriedDiscussion = await db.query.discussion.findFirst({
+      where: (discussion, { eq }) => eq(discussion.id, discussionId),
       with: {
         replies: true,
       },
     });
 
-    if (!discussion) {
+    if (!queriedDiscussion) {
       throw new ServiceError({
         reason: "Dataset Not Found",
         origin: "Dataset",
       });
     }
 
-    if (discussion.replies.length > 0) {
-      return db.update(discussions).set({
+    if (queriedDiscussion.replies.length > 0) {
+      return db.update(discussion).set({
         content: "[Deleted]",
         deletedAt: new Date(),
         deletedByUserId: userId,
@@ -38,6 +38,6 @@ export default class DiscussionsRemoveService {
       });
     }
 
-    return db.delete(discussions).where(eq(discussions.id, discussionId));
+    return db.delete(discussion).where(eq(discussion.id, discussionId));
   }
 }

@@ -1,8 +1,8 @@
-import type { ReportResolutionType } from "@/db/types";
-import { Enums } from "@/db/types";
+import type { ReportResolutionType } from "@/db/enums";
+import { Enums } from "@/db/enums";
 import DiscussionReportReason = Enums.DiscussionReportReason;
 import { db } from "@/db";
-import { discussionReportResolutions, discussionReports } from "@/db/schema";
+import { discussionReport, discussionReportResolution } from "@/db/schema";
 
 export default class DiscussionsReportService {
   async create({
@@ -16,7 +16,7 @@ export default class DiscussionsReportService {
     details?: string;
     userId?: string;
   }) {
-    return db.insert(discussionReports).values({
+    return db.insert(discussionReport).values({
       discussionId,
       reason,
       details,
@@ -35,7 +35,7 @@ export default class DiscussionsReportService {
     type: ReportResolutionType;
     comment: string;
   }) {
-    return db.insert(discussionReportResolutions).values({
+    return db.insert(discussionReportResolution).values({
       reportId,
       userId,
       type,

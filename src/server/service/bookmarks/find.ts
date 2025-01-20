@@ -2,8 +2,8 @@ import { db } from "@/db";
 
 export default class BookmarksFindService {
   async byUserId(userId: string) {
-    const bookmarks = await db.query.bookmarks.findMany({
-      where: (bookmarks, { eq }) => eq(bookmarks.userId, userId),
+    const bookmarks = await db.query.bookmark.findMany({
+      where: (bookmark, { eq }) => eq(bookmark.userId, userId),
       with: {
         dataset: true,
       },
@@ -19,9 +19,9 @@ export default class BookmarksFindService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await db.query.bookmarks.findFirst({
-      where: (bookmarks, { and, eq }) =>
-        and(eq(bookmarks.datasetId, datasetId), eq(bookmarks.userId, userId)),
+    const bookmark = await db.query.bookmark.findFirst({
+      where: (bookmark, { and, eq }) =>
+        and(eq(bookmark.datasetId, datasetId), eq(bookmark.userId, userId)),
     });
 
     return !!bookmark;

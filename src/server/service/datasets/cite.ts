@@ -4,7 +4,7 @@ import ServiceError from "@/server/service/errors";
 
 export default class DatasetsCiteService {
   async byDatasetId(id: number) {
-    const dataset = await db.query.datasets.findFirst({
+    const dataset = await db.query.dataset.findFirst({
       where: (dataset, { eq }) => eq(dataset.id, id),
       with: {
         authors: true,

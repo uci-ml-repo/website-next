@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 
 import { Badge } from "@/components/ui/badge";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import type { UserRole } from "@/db/types";
+import type { UserRole } from "@/db/enums";
 
 export default function ProfileHeader({ session }: { session: Session }) {
   return (
@@ -27,7 +27,7 @@ export default function ProfileHeader({ session }: { session: Session }) {
 }
 
 function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
-  if (role === "basic") {
+  if (!role || role === "basic") {
     return <div />;
   }
 

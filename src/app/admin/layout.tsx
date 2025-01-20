@@ -1,7 +1,7 @@
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import { Enums } from "@/db/types";
+import { Enums } from "@/db/enums";
 
 export default async function Layout({
   children,

@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { bookmarks } from "@/db/schema";
+import { bookmark } from "@/db/schema";
 
 export default class BookmarksCreateService {
   async addBookmark({
@@ -9,11 +9,9 @@ export default class BookmarksCreateService {
     datasetId: number;
     userId: string;
   }) {
-    const bookmark = await db.insert(bookmarks).values({
+    return db.insert(bookmark).values({
       datasetId,
       userId,
     });
-
-    return bookmark;
   }
 }

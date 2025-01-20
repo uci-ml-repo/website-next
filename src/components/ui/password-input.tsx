@@ -1,7 +1,7 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import * as React from "react";
 
-import { Input, type InputProps } from "./input";
+import { Input, type InputProps } from "@/components/ui/input";
 
 interface PasswordInputProps
   extends Omit<InputProps, "type" | "icon" | "iconPosition"> {}

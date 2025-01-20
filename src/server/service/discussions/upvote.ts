@@ -1,7 +1,7 @@
 import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussions, discussionUpvotes } from "@/db/schema";
+import { discussion, discussionUpvote } from "@/db/schema";
 import { decrement, increment } from "@/db/util";
 
 export default class DiscussionsUpvoteService {
@@ -13,13 +13,13 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     return await db.transaction(async (tx) => {
-      tx.update(discussions)
+      tx.update(discussion)
         .set({
-          upvoteCount: increment(discussions.upvoteCount),
+          upvoteCount: increment(discussion.upvoteCount),
         })
-        .where(eq(discussions.id, discussionId));
+        .where(eq(discussion.id, discussionId));
 
-      return tx.insert(discussionUpvotes).values({
+      return tx.insert(discussionUpvote).values({
         discussionId,
         userId,
       });
@@ -34,18 +34,18 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     return await db.transaction(async (tx) => {
-      tx.update(discussions)
+      tx.update(discussion)
         .set({
-          upvoteCount: decrement(discussions.upvoteCount),
+          upvoteCount: decrement(discussion.upvoteCount),
         })
-        .where(eq(discussions.id, discussionId));
+        .where(eq(discussion.id, discussionId));
 
       return tx
-        .delete(discussionUpvotes)
+        .delete(discussionUpvote)
         .where(
           and(
-            eq(discussionUpvotes.userId, userId),
-            eq(discussionUpvotes.discussionId, discussionId),
+            eq(discussionUpvote.userId, userId),
+            eq(discussionUpvote.discussionId, discussionId),
           ),
         );
     });
@@ -58,16 +58,16 @@ export default class DiscussionsUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    return db.query.discussionUpvotes.findFirst({
-      where: (upvotes, { and, eq }) =>
-        and(eq(upvotes.userId, userId), eq(upvotes.discussionId, discussionId)),
+    return db.query.discussionUpvote.findFirst({
+      where: (upvote, { and, eq }) =>
+        and(eq(upvote.userId, userId), eq(upvote.discussionId, discussionId)),
     });
   }
 
   async count(discussionId: string) {
     return db
       .select({ count: count() })
-      .from(discussionUpvotes)
-      .where(eq(discussionUpvotes.discussionId, discussionId));
+      .from(discussionUpvote)
+      .where(eq(discussionUpvote.discussionId, discussionId));
   }
 }

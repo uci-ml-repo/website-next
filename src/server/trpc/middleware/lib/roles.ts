@@ -1,5 +1,5 @@
-import type { UserRole } from "@/db/types";
-import { Enums } from "@/db/types";
+import type { UserRole } from "@/db/enums";
+import { Enums } from "@/db/enums";
 import { PRIVILEGED_ROLES } from "@/lib/permissions";
 
 export const MiddlewareRoles = {

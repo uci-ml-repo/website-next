@@ -1,7 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { datasetToPythonMetadata } from "@/app/api/datasets/schema";
 import type { DatasetResponse } from "@/lib/types";
 import { caller } from "@/server/trpc/query/server";
 
@@ -55,6 +54,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     status: 200,
     statusText: "OK",
-    data: datasetToPythonMetadata(dataset),
+    // data: datasetToPythonMetadata(acceptedDataset.parse(dataset)),
   });
 }

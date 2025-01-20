@@ -3,13 +3,13 @@ import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussion
 import styles from "@/components/rich-text/RichText.module.css";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import type { DiscussionResponseWithReplies } from "@/lib/types";
+import type { DiscussionResponse } from "@/lib/types";
 import { cn, timeSince } from "@/lib/utils";
 
 export default function Discussion({
   discussion,
 }: {
-  discussion: DiscussionResponseWithReplies;
+  discussion: DiscussionResponse;
 }) {
   return (
     <Card>

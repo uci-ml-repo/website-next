@@ -1,125 +1,34 @@
-import type { authors, datasets, papers } from "./schema";
+import { z } from "zod";
 
-export namespace Enums {
-  export enum UserRole {
-    ADMIN = "admin",
-    LIBRARIAN = "librarian",
-    CURATOR = "curator",
-    BASIC = "basic",
-  }
+import type { RequireNonNullable } from "@/lib/utils/require-keys";
 
-  export enum DatasetStatus {
-    DRAFT = "draft",
-    PENDING = "pending",
-    APPROVED = "approved",
-    REJECTED = "rejected",
-  }
+import type { author, dataset, paper } from "./schema";
 
-  export enum DatasetSubjectArea {
-    BIOLOGY = "biology",
-    BUSINESS = "business",
-    CLIMATE_AND_ENVIRONMENT = "climate_and_environment",
-    COMPUTER_SCIENCE = "computer_science",
-    EDUCATION = "education",
-    ENGINEERING = "engineering",
-    GAMES = "games",
-    HEALTH_AND_MEDICINE = "health_and_medicine",
-    LAW = "law",
-    PHYSICS_AND_CHEMISTRY = "physics_and_chemistry",
-    SOCIAL_SCIENCE = "social_science",
-    OTHER = "other",
-  }
+export type AcceptedDatasetRequiredFields =
+  | "yearCreated"
+  | "instanceCount"
+  | "description"
+  | "subjectArea"
+  | "characteristics"
+  | "tasks"
+  | "featureTypes";
 
-  export enum DatasetTask {
-    CLASSIFICATION = "classification",
-    REGRESSION = "regression",
-    CLUSTERING = "clustering",
-  }
+export const acceptedDataset = z.object({
+  yearCreated: z.number(),
+  instanceCount: z.number(),
+  description: z.string(),
+  subjectArea: z.string(),
+  characteristics: z.array(z.string()),
+  tasks: z.array(z.string()),
+  featureTypes: z.array(z.string()),
+});
 
-  export enum DatasetCharacteristic {
-    TABULAR = "tabular",
-    SEQUENTIAL = "sequential",
-    MULTIVARIATE = "multivariate",
-    TIME_SERIES = "time_series",
-    TEXT = "text",
-    IMAGE = "image",
-    SPATIOTEMPORAL = "spatiotemporal",
-  }
+export type DatasetsSelect = typeof dataset.$inferSelect;
+export type AcceptedDatasetSelect = RequireNonNullable<
+  DatasetsSelect,
+  AcceptedDatasetRequiredFields
+>;
 
-  export enum DatasetFeatureRole {
-    ID = "id",
-    FEATURE = "feature",
-    TARGET = "target",
-    OTHER = "other",
-  }
+export type AuthorsSelect = typeof author.$inferSelect;
 
-  export enum DatasetFeatureType {
-    CATEGORICAL = "categorical",
-    INTEGER = "integer",
-    CONTINUOUS = "continuous",
-    BINARY = "binary",
-    TEXT = "text",
-    DATE = "date",
-    OTHER = "other",
-  }
-
-  export enum DatasetReportReason {
-    MISSING_FILES_OR_DATA = "missing_files_or_data",
-    INACCURATE_METADATA = "inaccurate_metadata",
-    OTHER = "other",
-  }
-
-  export enum DiscussionReportReason {
-    SPAM = "spam",
-    UNPROFESSIONAL = "unprofessional",
-    INAPPROPRIATE = "inappropriate",
-    OTHER = "other",
-  }
-
-  export enum ReportResolutionType {
-    IGNORED = "ignored",
-    RESOLVED = "resolved",
-  }
-}
-
-export type UserRole = (typeof Enums.UserRole)[keyof typeof Enums.UserRole];
-
-export type DatasetStatus =
-  (typeof Enums.DatasetStatus)[keyof typeof Enums.DatasetStatus];
-
-export type DatasetSubjectArea =
-  (typeof Enums.DatasetSubjectArea)[keyof typeof Enums.DatasetSubjectArea];
-
-export type DatasetTask =
-  (typeof Enums.DatasetTask)[keyof typeof Enums.DatasetTask];
-
-export type DatasetCharacteristic =
-  (typeof Enums.DatasetCharacteristic)[keyof typeof Enums.DatasetCharacteristic];
-
-export type DatasetFeatureRole =
-  (typeof Enums.DatasetFeatureRole)[keyof typeof Enums.DatasetFeatureRole];
-
-export type DatasetFeatureType =
-  (typeof Enums.DatasetFeatureType)[keyof typeof Enums.DatasetFeatureType];
-
-export type DatasetReportReason =
-  (typeof Enums.DatasetReportReason)[keyof typeof Enums.DatasetReportReason];
-
-export type DiscussionReportReason =
-  (typeof Enums.DiscussionReportReason)[keyof typeof Enums.DiscussionReportReason];
-
-export type ReportResolutionType =
-  (typeof Enums.ReportResolutionType)[keyof typeof Enums.ReportResolutionType];
-
-export type DatasetsSelect = typeof datasets.$inferSelect;
-export type AcceptedDatasetSelect = DatasetsSelect &
-  Required<
-    Pick<
-      DatasetsSelect,
-      "yearCreated" | "instanceCount" | "description" | "subjectArea"
-    >
-  >;
-
-export type AuthorsSelect = typeof authors.$inferSelect;
-
-export type PapersSelect = typeof papers.$inferSelect;
+export type PapersSelect = typeof paper.$inferSelect;

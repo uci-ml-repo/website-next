@@ -1,4 +1,4 @@
-import { Enums } from "@/db/types";
+import { Enums } from "@/db/enums";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 
 /**

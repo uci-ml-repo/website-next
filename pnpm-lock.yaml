@@ -110,6 +110,9 @@ importers:
       drizzle-orm:
         specifier: 0.38.4
         version: 0.38.4(@types/pg@8.11.10)(@types/react@19.0.7)(pg@8.13.1)(react@19.0.0)
+      drizzle-zod:
+        specifier: 0.6.1
+        version: 0.6.1(drizzle-orm@0.38.4(@types/pg@8.11.10)(@types/react@19.0.7)(pg@8.13.1)(react@19.0.0))(zod@3.24.1)
       embla-carousel-react:
         specifier: 8.5.2
         version: 8.5.2(react@19.0.0)
@@ -135,8 +138,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: 0.471.1
-        version: 0.471.1(react@19.0.0)
+        specifier: 0.473.0
+        version: 0.473.0(react@19.0.0)
       mime:
         specifier: 4.0.6
         version: 4.0.6
@@ -2370,6 +2373,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.6.1:
+    resolution: {integrity: sha512-huEbUgnsuR8tupnmLiyB2F1I2H9dswI3GfM36IbIqx9i0YUeYjRsDpJVyFVeziUvI1ogT9JHRL2Q03cC4QmvxA==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: '>=3.0.0'
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -3324,8 +3333,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@0.471.1:
-    resolution: {integrity: sha512-syOxwPhf62gg2YOsz72HRn+CIpeudFy67AeKnSR8Hn/fIIF4ubhNbRF+pQ2CaJrl+X9Os4PL87z2DXQi3DVeDA==}
+  lucide-react@0.473.0:
+    resolution: {integrity: sha512-KW6u5AKeIjkvrxXZ6WuCu9zHE/gEYSXCay+Gre2ZoInD0Je/e3RBtP4OHpJVJ40nDklSvjVKjgH7VU8/e2dzRw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -6586,6 +6595,11 @@ snapshots:
       pg: 8.13.1
       react: 19.0.0
 
+  drizzle-zod@0.6.1(drizzle-orm@0.38.4(@types/pg@8.11.10)(@types/react@19.0.7)(pg@8.13.1)(react@19.0.0))(zod@3.24.1):
+    dependencies:
+      drizzle-orm: 0.38.4(@types/pg@8.11.10)(@types/react@19.0.7)(pg@8.13.1)(react@19.0.0)
+      zod: 3.24.1
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.1
@@ -7783,7 +7797,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@0.471.1(react@19.0.0):
+  lucide-react@0.473.0(react@19.0.0):
     dependencies:
       react: 19.0.0
 
