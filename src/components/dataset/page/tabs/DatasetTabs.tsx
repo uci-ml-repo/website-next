@@ -19,7 +19,7 @@ export default async function DatasetTabs({
 }: {
   dataset: DatasetResponse;
 }) {
-  const discussions = await caller.discussions.find.byQuery({
+  const discussionsQuery = await caller.discussions.find.byQuery({
     datasetId: dataset.id,
   });
 
@@ -42,7 +42,7 @@ export default async function DatasetTabs({
           )}
           <LinearTabsTrigger
             value="discussions"
-            badgeValue={discussions.length}
+            badgeValue={discussionsQuery.discussions.length}
           >
             Discussions
           </LinearTabsTrigger>

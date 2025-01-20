@@ -1,10 +1,10 @@
 import DiscussionUpvote from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussions/view/extended/DiscussionExtendedOptions";
-import styles from "@/components/rich-text/RichText.module.css";
+import MDXViewer from "@/components/editor/MDXViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";
-import { cn, timeSince } from "@/lib/utils";
+import { timeSince } from "@/lib/utils";
 
 export default function Discussion({
   discussion,
@@ -43,10 +43,7 @@ export default function Discussion({
             </div>
           </div>
 
-          <div
-            className={cn(styles.rich, "mx-2")}
-            dangerouslySetInnerHTML={{ __html: discussion.content }}
-          />
+          <MDXViewer markdown={discussion.content} />
         </div>
 
         {/*<div*/}

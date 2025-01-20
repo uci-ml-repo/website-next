@@ -18,9 +18,7 @@ export default function DiscussionUpvote({
   discussion,
 }: DiscussionUpvoteProps) {
   const { data: session } = useSession();
-  const [isUpvoted, setIsUpvoted] = useState<boolean>(
-    discussion.upvotes.length > 0,
-  );
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
   const [upvoteCount, setUpvoteCount] = useState<number>(
     discussion.upvoteCount,
   );

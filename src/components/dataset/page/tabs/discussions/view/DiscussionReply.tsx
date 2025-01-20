@@ -1,9 +1,9 @@
 import DiscussionUpvote from "@/components/dataset/page/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/page/tabs/discussions/view/extended/DiscussionExtendedOptions";
-import styles from "@/components/rich-text/RichText.module.css";
+import MDXViewer from "@/components/editor/MDXViewer";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";
-import { cn, timeSince } from "@/lib/utils";
+import { timeSince } from "@/lib/utils";
 
 export default function DiscussionReply({
   discussion,
@@ -34,10 +34,7 @@ export default function DiscussionReply({
         </div>
       </div>
 
-      <div
-        className={cn(styles.rich, "mx-2")}
-        dangerouslySetInnerHTML={{ __html: discussion.content }}
-      />
+      <MDXViewer markdown={discussion.content} />
 
       <div className="flex items-center space-x-1">
         <DiscussionUpvote discussion={discussion} />

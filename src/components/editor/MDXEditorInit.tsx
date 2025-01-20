@@ -34,28 +34,30 @@ import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-interface MDXEditorProps {
-  markdown?: string;
-  placeholder?: string;
+export type MDXEditorProps = Omit<
+  React.ComponentProps<typeof MDXEditor>,
+  "markdown"
+> & {
   diffMarkdown?: string;
-  onChange?: (markdown: string) => void;
-}
+  markdown?: string;
+};
 
 export default function MDXEditorInit({
-  markdown,
-  placeholder,
   diffMarkdown,
-  onChange,
+  ...props
 }: MDXEditorProps) {
   const { theme } = useTheme();
 
   return (
     <MDXEditor
-      onChange={onChange}
-      className={cn(theme === "dark" ? "dark-theme" : "")}
+      className={cn(
+        theme === "dark" ? "dark-theme" : "",
+        "overflow-hidden rounded-lg border",
+        props.className,
+      )}
       contentEditableClassName="min-w-full bg-background prose dark:prose-invert"
-      markdown={markdown ?? ""}
-      placeholder={placeholder}
+      markdown={props.markdown ?? ""}
+      {...props}
       plugins={[
         toolbarPlugin({
           toolbarContents: ToolbarContents,

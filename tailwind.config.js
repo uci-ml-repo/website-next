@@ -15,7 +15,12 @@ const config = {
       typography: {
         DEFAULT: {
           css: {
-            code: {},
+            "code::before": {
+              content: "",
+            },
+            "code::after": {
+              content: "",
+            },
             h1: {
               fontSize: "1.5rem",
               lineHeight: "2rem",

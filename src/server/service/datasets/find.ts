@@ -1,8 +1,9 @@
-import { and, asc, count, desc } from "drizzle-orm";
+import { and, asc, count } from "drizzle-orm";
 
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
-import type { DatasetQuery } from "@/server/schema/datasets";
+import type { DatasetQuery } from "@/server/service/schema/datasets";
+import { sortFunction } from "@/server/service/schema/lib/order";
 
 function buildQuery(query: DatasetQuery) {
   return and();
@@ -32,15 +33,18 @@ export default class DatasetsFindService {
   }
 
   async byQuery(query: DatasetQuery) {
-    const sortFunction = query.sort === "desc" ? desc : asc;
+    const orderBy = query.order
+      ? query.order.map(({ orderBy, sort }) =>
+          sortFunction(sort)(dataset[orderBy]),
+        )
+      : [asc(dataset.id)];
 
-    const datasetsQuery = await db
-      .select()
-      .from(dataset)
-      .where(buildQuery(query))
-      .orderBy(sortFunction(dataset[query.orderBy ?? "id"]))
-      .offset(query.skip ?? 0)
-      .limit(query.take ?? 100);
+    const datasets = await db.query.dataset.findMany({
+      where: buildQuery(query),
+      orderBy: orderBy,
+      limit: query.limit,
+      offset: query.offset,
+    });
 
     const [countQuery] = await db
       .select({ count: count() })
@@ -48,7 +52,7 @@ export default class DatasetsFindService {
       .where(buildQuery(query));
 
     return {
-      datasets: datasetsQuery,
+      datasets,
       count: countQuery.count,
     };
   }

@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 
+import type { MDXEditorProps } from "@/components/editor/MDXEditorInit";
+
 const MDXEditorComp = dynamic(
   () => import("@/components/editor/MDXEditorInit"),
   {
@@ -9,12 +11,6 @@ const MDXEditorComp = dynamic(
   },
 );
 
-export interface EditorProps {
-  markdown?: string;
-  placeholder?: string;
-  onChange?: (markdown: string) => void;
-}
-
-export default function MDXEditor(props: EditorProps) {
+export default function MDXEditor(props: MDXEditorProps) {
   return <MDXEditorComp {...props} />;
 }

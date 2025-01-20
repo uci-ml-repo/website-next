@@ -11,6 +11,8 @@ import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
+import Discussion from "./view/Discussion";
+
 export type DiscussionsOrderBy = "top" | "new";
 
 export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
@@ -20,12 +22,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
-    {
-      datasetId: dataset.id,
-      excludeReplies: true,
-      selectUpvoteUserId: session ? session.user.id : undefined,
-      sort: orderBy ? "desc" : undefined,
-    },
+    {},
     {
       enabled: status !== "loading",
     },
@@ -53,7 +50,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         )}
         <div className="items-center space-y-6 sm:flex">
           {!isAuthoring &&
-            (discussionsQuery.data.length === 0 ? (
+            (discussionsQuery.data.discussions.length === 0 ? (
               <Card className="w-full">
                 <CardContent className="flex h-[130px] items-center justify-center">
                   <div className="space-y-4 text-center">
@@ -76,7 +73,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
               />
             ))}
 
-          {discussionsQuery.data.length > 0 && (
+          {discussionsQuery.data.discussions.length > 0 && (
             <DiscussionsOrderBy
               orderBy={orderBy}
               setOrderBy={setOrderBy}
@@ -86,11 +83,11 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         </div>
       </div>
 
-      {/*<div className="space-y-6">*/}
-      {/*  {discussionsQuery.data.map((discussion) => (*/}
-      {/*    <Discussion key={discussion.id} discussion={discussion} />*/}
-      {/*  ))}*/}
-      {/*</div>*/}
+      <div className="space-y-6">
+        {discussionsQuery.data.discussions.map((discussion) => (
+          <Discussion key={discussion.id} discussion={discussion} />
+        ))}
+      </div>
     </div>
   );
 }
