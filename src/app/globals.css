@@ -103,7 +103,7 @@ body {
 }
 
 .lift {
-  @apply cursor-pointer ease-out hover:scale-[1.02] hover:shadow-md;
+  @apply cursor-pointer ease-out hover:scale-[1.015] hover:shadow-md;
   transition: transform 250ms;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -122,4 +122,8 @@ body {
 
 .hide-inactive [data-state="inactive"] {
   @apply hidden;
+}
+
+.prose {
+  font-family: "Inter", sans-serif;
 }

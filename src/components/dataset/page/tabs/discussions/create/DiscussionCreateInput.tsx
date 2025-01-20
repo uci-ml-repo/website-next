@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import type { MDXEditorMethods } from "@mdxeditor/editor";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -36,6 +37,7 @@ export default function DiscussionCreateInput({
   className,
 }: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
+  const editorRef = useRef<MDXEditorMethods>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,21 +56,22 @@ export default function DiscussionCreateInput({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit() {
     await createMutation.mutateAsync({
       datasetId,
-      content: values.content,
+      content: getContent(),
       replyToId: replyTo?.id,
     });
     form.reset();
     setIsAuthoring(false);
   }
 
-  const isContentEmpty = form.watch("content") === "";
+  function getContent() {
+    return editorRef.current?.getMarkdown() ?? "";
+  }
 
   return (
     <>
-      {form.watch("content")}
       <Card className={className}>
         <CardContent>
           <Form {...form}>
@@ -79,11 +82,7 @@ export default function DiscussionCreateInput({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <MDXEditor
-                        markdown={field.value}
-                        onChange={(value) => field.onChange(value)}
-                        placeholder="Write a comment"
-                      />
+                      <MDXEditor ref={editorRef} markdown={field.value} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,19 +100,15 @@ export default function DiscussionCreateInput({
                   <Button
                     variant="secondary"
                     onClick={() =>
-                      isContentEmpty
-                        ? setIsAuthoring(false)
-                        : setCancelDialogOpen(true)
+                      getContent()
+                        ? setCancelDialogOpen(true)
+                        : setIsAuthoring(false)
                     }
                     type="button"
                   >
                     Cancel
                   </Button>
-                  <Button
-                    variant="gold"
-                    type="submit"
-                    disabled={isContentEmpty || createMutation.isPending}
-                  >
+                  <Button variant="gold" type="submit">
                     {createMutation.isPending && <Spinner />}
                     Post
                   </Button>

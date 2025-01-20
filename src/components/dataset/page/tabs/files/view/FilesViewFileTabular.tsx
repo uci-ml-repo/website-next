@@ -15,7 +15,7 @@ export default function FilesViewFilesTabular({
           return (
             <TableRow key={index}>
               <TableCell className="w-0 bg-muted">
-                <pre>{index + 1}</pre>
+                <pre className="text-muted-foreground">{index + 1}</pre>
               </TableCell>
 
               {cells.map((cell, index) => (

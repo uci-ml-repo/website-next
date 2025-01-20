@@ -34,58 +34,60 @@ import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
+import styles from "./MDXEditorInit.module.css";
+
+export const allPlugins = [
+  listsPlugin(),
+  quotePlugin(),
+  headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
+  linkPlugin(),
+  linkDialogPlugin(),
+  imagePlugin({
+    imageUploadHandler: async () =>
+      Promise.resolve("https://picsum.photos/200/300"),
+  }),
+  tablePlugin(),
+  thematicBreakPlugin(),
+  codeBlockPlugin({ defaultCodeBlockLanguage: "text" }),
+  codeMirrorPlugin({
+    codeBlockLanguages: {
+      "C++": "C/C++",
+      r: "R",
+      python: "Python",
+      js: "JavaScript",
+      text: "text",
+    },
+    autoLoadLanguageSupport: true,
+  }),
+];
+
 export type MDXEditorProps = Omit<
   React.ComponentProps<typeof MDXEditor>,
   "markdown"
 > & {
-  diffMarkdown?: string;
   markdown?: string;
 };
 
-export default function MDXEditorInit({
-  diffMarkdown,
-  ...props
-}: MDXEditorProps) {
+export default function MDXEditorInit({ ...props }: MDXEditorProps) {
   const { theme } = useTheme();
 
   return (
     <MDXEditor
       className={cn(
-        theme === "dark" ? "dark-theme" : "",
-        "overflow-hidden rounded-lg border",
+        { "dark-theme": theme === "dark" },
+        styles.darkEditor,
         props.className,
       )}
-      contentEditableClassName="min-w-full bg-background prose dark:prose-invert"
-      markdown={props.markdown ?? ""}
+      contentEditableClassName="min-w-full bg-background prose dark:prose-invert font-sans"
+      markdown={props.markdown ?? "*X*"}
       {...props}
       plugins={[
         toolbarPlugin({
           toolbarContents: ToolbarContents,
         }),
-        listsPlugin(),
-        quotePlugin(),
-        headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
-        linkPlugin(),
-        linkDialogPlugin(),
-        imagePlugin({
-          imageUploadHandler: async () =>
-            Promise.resolve("https://picsum.photos/200/300"),
-        }),
-        tablePlugin(),
-        thematicBreakPlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: "text" }),
-        codeMirrorPlugin({
-          codeBlockLanguages: {
-            "C++": "C/C++",
-            r: "R",
-            python: "Python",
-            js: "JavaScript",
-            text: "text",
-          },
-          autoLoadLanguageSupport: true,
-        }),
-        diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: diffMarkdown }),
         markdownShortcutPlugin(),
+        diffSourcePlugin({ viewMode: "rich-text" }),
+        ...allPlugins,
       ]}
     />
   );
@@ -97,7 +99,7 @@ function ToolbarContents() {
   );
 
   return (
-    <DiffSourceToggleWrapper>
+    <DiffSourceToggleWrapper options={["rich-text", "source"]}>
       <UndoRedo />
       <VerticalSeparator />
 

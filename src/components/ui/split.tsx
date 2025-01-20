@@ -32,7 +32,7 @@ export default function Split({
   sizes = [20, 80],
   setSizes,
   minSize = 0,
-  snapThreshold = 20,
+  snapThreshold = 40,
   children,
 }: CustomSplitProps) {
   const minSizes = useMemo<[number, number]>(() => {

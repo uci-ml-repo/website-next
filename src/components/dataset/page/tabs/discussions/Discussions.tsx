@@ -9,6 +9,7 @@ import DiscussionsOrderBy from "@/components/dataset/page/tabs/discussions/Discu
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 import Discussion from "./view/Discussion";
@@ -22,7 +23,9 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
-    {},
+    {
+      datasetId: dataset.id,
+    },
     {
       enabled: status !== "loading",
     },
@@ -38,16 +41,12 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Discussions</h2>
-
       <div>
-        {isAuthoring && (
-          <DiscussionCreateInput
-            datasetId={dataset.id}
-            setIsAuthoring={setIsAuthoring}
-            className="mb-6"
-          />
-        )}
+        <DiscussionCreateInput
+          datasetId={dataset.id}
+          setIsAuthoring={setIsAuthoring}
+          className={cn("mb-6", { hidden: !isAuthoring })}
+        />
         <div className="items-center space-y-6 sm:flex">
           {!isAuthoring &&
             (discussionsQuery.data.discussions.length === 0 ? (
