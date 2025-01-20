@@ -1,9 +1,10 @@
-import { DatabaseIcon, PlusIcon, SquarePenIcon } from "lucide-react";
+import { PlusIcon, SquarePenIcon } from "lucide-react";
 import Link from "next/link";
 
 import DatasetCardCarousel from "@/components/dataset/summarized/DatasetCardCarousel";
 import { Button } from "@/components/ui/button";
 import type { DatasetsSelect } from "@/db/types";
+import { CONTRIBUTE_PATH } from "@/lib/routes";
 
 export default function ProfileDatasets({
   datasets,
@@ -12,7 +13,7 @@ export default function ProfileDatasets({
 }) {
   const endCard = (
     <Button asChild className="lift" variant="gold">
-      <Link href="#">
+      <Link href={CONTRIBUTE_PATH}>
         <PlusIcon />
         <div>Start Draft</div>
       </Link>
@@ -23,13 +24,7 @@ export default function ProfileDatasets({
     <div className="space-y-8">
       <DatasetCardCarousel
         icon={<SquarePenIcon />}
-        heading="Draft Datasets"
-        datasets={datasets} // TODO
-        endCard={endCard}
-      />
-      <DatasetCardCarousel
-        icon={<DatabaseIcon />}
-        heading="Submitted Datasets"
+        heading="Datasets"
         datasets={datasets}
         endCard={endCard}
       />

@@ -4,7 +4,6 @@ import { auth, signIn } from "@/auth";
 import Main from "@/components/layout/Main";
 import ProfileBookmarks from "@/components/profile/ProfileBookmarks";
 import ProfileDatasets from "@/components/profile/ProfileDatasets";
-import ProfileDiscussions from "@/components/profile/ProfileDiscussions";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import {
   LinearTabs,
@@ -27,7 +26,6 @@ export default async function Page() {
 
   const bookmarks = await caller.bookmarks.find.byUserId(session.user.id);
   const datasets = await caller.datasets.find.byUserId(session.user.id);
-  const discussions = await caller.discussions.find.byUserId(session.user.id);
 
   return (
     <Main className="space-y-8">
@@ -41,12 +39,6 @@ export default async function Page() {
           <LinearTabsTrigger value="datasets" badgeValue={datasets.length}>
             Datasets
           </LinearTabsTrigger>
-          <LinearTabsTrigger
-            value="discussions"
-            badgeValue={discussions.length}
-          >
-            Discussions
-          </LinearTabsTrigger>
         </LinearTabsList>
         <TabsListBorder />
 
@@ -55,9 +47,6 @@ export default async function Page() {
         </LinearTabsContent>
         <LinearTabsContent value="datasets">
           <ProfileDatasets datasets={datasets} />
-        </LinearTabsContent>
-        <LinearTabsContent value="discussions">
-          <ProfileDiscussions discussions={discussions} />
         </LinearTabsContent>
       </LinearTabs>
     </Main>

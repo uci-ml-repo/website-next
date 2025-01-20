@@ -26,7 +26,7 @@ export default function FilesViewLinkGroups({
   return (
     <div
       className={cn(
-        "ml-1 flex space-x-1 overflow-hidden text-lg font-medium",
+        "ml-1 flex items-center space-x-1 overflow-hidden text-lg",
         className,
       )}
     >
@@ -55,7 +55,7 @@ export default function FilesViewLinkGroups({
             )}
             <span className="flex-shrink-0">/</span>
             {isLast ? (
-              <span className="truncate">{part}</span>
+              <span className="truncate max-md:text-sm">{part}</span>
             ) : (
               <button
                 className="text-link hover:underline"

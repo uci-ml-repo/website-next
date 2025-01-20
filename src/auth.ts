@@ -8,6 +8,7 @@ import { v4 as uuid } from "uuid";
 import authConfig from "@/auth.config";
 import { db } from "@/db";
 import type { UserRole } from "@/db/enums";
+import { account, session, user, verificationToken } from "@/db/schema";
 import { SIGN_IN_PATH } from "@/lib/routes";
 
 declare module "next-auth" {
@@ -25,7 +26,12 @@ declare module "@auth/core/adapters" {
   }
 }
 
-const adapter = DrizzleAdapter(db);
+const adapter = DrizzleAdapter(db, {
+  usersTable: user,
+  accountsTable: account,
+  sessionsTable: session,
+  verificationTokensTable: verificationToken,
+});
 
 export const authOptions = NextAuth({
   adapter,

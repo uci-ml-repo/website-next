@@ -63,7 +63,9 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
           <div className="whitespace-nowrap text-sm text-muted-foreground">
             {currentFile.type === "directory" ? (
               directoryQuery.data ? (
-                <>({directoryQuery.data?.length} items)</>
+                <span className="mr-1">
+                  ({directoryQuery.data?.length} items)
+                </span>
               ) : (
                 <Spinner className="size-4" />
               )

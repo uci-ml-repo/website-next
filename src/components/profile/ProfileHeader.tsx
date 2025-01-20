@@ -33,7 +33,7 @@ function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
 
   return (
     <Badge variant={role === "admin" ? "destructive" : "blue"} size="lg">
-      {role}
+      {role.toUpperCase()}
     </Badge>
   );
 }
