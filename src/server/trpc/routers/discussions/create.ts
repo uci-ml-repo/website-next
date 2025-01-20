@@ -8,8 +8,8 @@ const discussionsCreateRouter = router({
     .input(
       z.object({
         datasetId: z.number(),
+        title: z.string(),
         content: z.string(),
-        replyToId: z.string().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {

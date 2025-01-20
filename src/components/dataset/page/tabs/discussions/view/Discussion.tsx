@@ -25,39 +25,20 @@ export default function Discussion({
                 </span>
 
                 <span className="text-xs text-muted-foreground">
-                  {discussion.deletedAt ? (
-                    <>(deleted {timeSince(discussion.deletedAt)} ago)</>
-                  ) : (
-                    discussion.editedAt && (
-                      <>(edited {timeSince(discussion.editedAt)} ago)</>
-                    )
+                  {discussion.updatedAt && (
+                    <>(edited {timeSince(discussion.updatedAt)} ago)</>
                   )}
                 </span>
               </div>
             </div>
             <div className="flex items-center space-x-1">
               <DiscussionUpvote discussion={discussion} />
-              {!discussion.deletedAt && (
-                <DiscussionExtendedOptions discussion={discussion} />
-              )}
+              <DiscussionExtendedOptions discussion={discussion} />
             </div>
           </div>
 
           <MDXViewer markdown={discussion.content} />
         </div>
-
-        {/*<div*/}
-        {/*  className={cn(*/}
-        {/*    "space-y-6",*/}
-        {/*    discussion.replies.length > 0 ? "ml-2 border-l-2 pl-4" : "",*/}
-        {/*  )}*/}
-        {/*>*/}
-        {/*  {discussion.replies.map((reply) => (*/}
-        {/*    <DiscussionReply discussion={reply} key={reply.id} />*/}
-        {/*  ))}*/}
-
-        {/*  <DiscussionCreateReply discussion={discussion} />*/}
-        {/*</div>*/}
       </CardContent>
     </Card>
   );

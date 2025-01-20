@@ -22,12 +22,8 @@ export default function DiscussionReply({
             </span>
 
             <span className="text-xs text-muted-foreground">
-              {discussion.deletedAt ? (
-                <>(deleted {timeSince(discussion.deletedAt)} ago)</>
-              ) : (
-                discussion.editedAt && (
-                  <>(edited {timeSince(discussion.editedAt)} ago)</>
-                )
+              {discussion.updatedAt && (
+                <>(edited {timeSince(discussion.updatedAt)} ago)</>
               )}
             </span>
           </div>

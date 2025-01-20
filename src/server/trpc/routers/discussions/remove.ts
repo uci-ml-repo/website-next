@@ -1,10 +1,8 @@
 import { z } from "zod";
 
 import { Enums } from "@/db/enums";
-import { enumToArray } from "@/lib/utils";
 import service from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
-import DiscussionReportReason = Enums.DiscussionReportReason;
 
 const discussionsRemoveRouter = router({
   byId: protectedProcedure
@@ -12,14 +10,11 @@ const discussionsRemoveRouter = router({
     .input(
       z.object({
         discussionId: z.string(),
-        reason: z.enum(enumToArray(DiscussionReportReason)).optional(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       return service.discussions.remove.byId({
         discussionId: input.discussionId,
-        userId: ctx.user.id,
-        deletionReason: input.reason,
       });
     }),
 });

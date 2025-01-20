@@ -59,8 +59,8 @@ export default function DiscussionCreateInput({
   async function onSubmit() {
     await createMutation.mutateAsync({
       datasetId,
+      title: "",
       content: getContent(),
-      replyToId: replyTo?.id,
     });
     form.reset();
     setIsAuthoring(false);

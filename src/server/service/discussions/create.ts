@@ -3,21 +3,21 @@ import { discussion } from "@/db/schema";
 
 export default class DiscussionsCreateService {
   async fromData({
+    title,
     content,
     userId,
     datasetId,
-    replyToId,
   }: {
+    title: string;
     content: string;
     userId: string;
     datasetId: number;
-    replyToId?: string;
   }) {
     return db.insert(discussion).values({
+      title,
       content,
       userId,
       datasetId,
-      replyToId,
     });
   }
 }

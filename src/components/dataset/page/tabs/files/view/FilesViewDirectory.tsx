@@ -32,7 +32,7 @@ export default function FilesViewDirectory({
   }
 
   if (isError || !data) {
-    return <div className="p-4">Error loading directory.</div>;
+    return <div className="p-4">Error loading directory</div>;
   }
 
   return (

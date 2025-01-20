@@ -69,7 +69,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1989,
     title: "Heart Disease",
-    subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
+    subtitle: null,
     doi: "10.24432/C5DW2B",
     description:
       "4 databases: Cleveland, Hungary, Switzerland, and the VA Long Beach.",
