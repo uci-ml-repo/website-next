@@ -3,6 +3,8 @@
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "motion/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
@@ -11,10 +13,10 @@ import { cn } from "@/lib/utils";
 
 const TabsValueContext = React.createContext<string | undefined>(undefined);
 
-function useTabsValue() {
+export function useTabsValue() {
   const ctx = React.useContext(TabsValueContext);
   if (ctx === undefined) {
-    throw new Error("useTabsValue must be used within <LinearTabsRoot>");
+    throw new Error("useTabsValue must be used within <LinearTabs>");
   }
   return ctx;
 }
@@ -25,49 +27,22 @@ interface LinearTabsRootProps
     "value" | "onValueChange" | "defaultValue"
   > {
   defaultValue: string;
-  urlStore?: boolean;
+  routerStore?: string;
 }
 
 function LinearTabs({
   defaultValue,
-  urlStore = false,
+  routerStore,
   children,
   ...props
 }: LinearTabsRootProps) {
+  const router = useRouter();
   const [currentValue, setCurrentValue] = React.useState<string>(defaultValue);
-
-  React.useEffect(() => {
-    if (!urlStore) return;
-    if (typeof window === "undefined") return;
-
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      setCurrentValue(hash);
-    }
-  }, [defaultValue, urlStore]);
-
-  React.useEffect(() => {
-    if (!urlStore) return;
-    if (typeof window === "undefined") return;
-
-    function handleHashChange() {
-      const hash = window.location.hash.slice(1);
-
-      if (hash === currentValue) return;
-
-      setCurrentValue(hash);
-    }
-
-    window.addEventListener("hashchange", handleHashChange);
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, [urlStore, defaultValue, currentValue]);
 
   function onValueChange(val: string) {
     setCurrentValue(val);
-    if (urlStore && typeof window !== "undefined") {
-      window.location.hash = val;
+    if (routerStore && typeof window !== "undefined") {
+      router.push(routerStore + "/" + val);
     }
   }
 
@@ -185,32 +160,44 @@ const LinearTabsTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
     badgeVariant?: VariantProps<typeof badgeVariants>["variant"];
     badgeValue?: number | string;
+    link?: string;
   }
 >(
   (
-    { className, children, badgeVariant = "secondary", badgeValue, ...props },
+    {
+      className,
+      children,
+      badgeVariant = "secondary",
+      badgeValue,
+      link,
+      ...props
+    },
     ref,
-  ) => (
-    <TabsPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
-        "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "data-[state=active]:text-foreground",
-        className,
-      )}
-      {...props}
-    >
-      {badgeValue !== undefined ? (
-        <div className="flex items-center space-x-2">
-          <span>{children}</span>
-          <Badge variant={badgeVariant}>{badgeValue}</Badge>
-        </div>
-      ) : (
-        children
-      )}
-    </TabsPrimitive.Trigger>
-  ),
+  ) => {
+    const content = (
+      <TabsPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
+          "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "data-[state=active]:text-foreground",
+          className,
+        )}
+        {...props}
+      >
+        {badgeValue !== undefined ? (
+          <div className="flex items-center space-x-2">
+            <span>{children}</span>
+            <Badge variant={badgeVariant}>{badgeValue}</Badge>
+          </div>
+        ) : (
+          children
+        )}
+      </TabsPrimitive.Trigger>
+    );
+
+    return link ? <Link href={link}>{content}</Link> : content;
+  },
 );
 LinearTabsTrigger.displayName = "LinearTabsTrigger";
 
