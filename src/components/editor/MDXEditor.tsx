@@ -12,5 +12,9 @@ const MDXEditorComp = dynamic(
 );
 
 export default function MDXEditor(props: MDXEditorProps) {
-  return <MDXEditorComp {...props} />;
+  return (
+    <div className="rounded-lg border">
+      <MDXEditorComp {...props} />
+    </div>
+  );
 }

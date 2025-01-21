@@ -317,11 +317,8 @@ export const discussion = pgTable("discussion", {
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date()),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at"),
 
   archivedAt: date("deleted_at", { mode: "date" }),
   archivedByUserId: uuid("deleted_by_user_id"),

@@ -15,6 +15,7 @@ const inputVariants = cva(
       },
       pill: {
         true: "rounded-full",
+        false: "rounded-md",
       },
     },
     defaultVariants: {

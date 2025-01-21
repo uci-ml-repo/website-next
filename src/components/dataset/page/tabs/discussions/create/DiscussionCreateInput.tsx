@@ -15,6 +15,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -27,7 +28,11 @@ interface DiscussionCreateInputProps {
 }
 
 const formSchema = z.object({
-  content: z.string(),
+  title: z
+    .string()
+    .min(5, { message: "Title must be at least 5 characters" })
+    .max(100, { message: "Title must be less than 100 characters" }),
+  content: z.string().min(1, { message: "Content is required" }),
 });
 
 export default function DiscussionCreateInput({
@@ -42,6 +47,7 @@ export default function DiscussionCreateInput({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
       content: "",
     },
   });
@@ -56,10 +62,10 @@ export default function DiscussionCreateInput({
     },
   });
 
-  async function onSubmit() {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     await createMutation.mutateAsync({
       datasetId,
-      title: "",
+      title: values.title,
       content: getContent(),
     });
     form.reset();
@@ -78,11 +84,34 @@ export default function DiscussionCreateInput({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        pill={false}
+                        className="px-4 font-bold"
+                        placeholder="Discussion Topic"
+                        variantSize="xl"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="content"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <MDXEditor ref={editorRef} markdown={field.value} />
+                      <MDXEditor
+                        {...field}
+                        ref={editorRef}
+                        markdown={field.value}
+                        autoFocus
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -78,7 +78,7 @@ export default function MDXEditorInit({ ...props }: MDXEditorProps) {
         styles.darkEditor,
         props.className,
       )}
-      contentEditableClassName="min-w-full bg-background prose dark:prose-invert font-sans"
+      contentEditableClassName="min-w-full bg-background prose dark:prose-invert font-sans rounded-lg"
       markdown={props.markdown ?? "*X*"}
       {...props}
       plugins={[
