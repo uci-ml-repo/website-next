@@ -1,6 +1,5 @@
 import DiscussionUpvote from "@/components/dataset/tabs/discussions/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/dataset/tabs/discussions/view/extended/DiscussionExtendedOptions";
-import MDXViewer from "@/components/editor/MDXViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";
@@ -15,29 +14,31 @@ export default function Discussion({
     <Card>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <ProfileAvatar src={discussion.user.image} className="size-8" />
-              <div className="space-x-1.5">
-                <span className="font-semibold">{discussion.user.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  &middot; {timeSince(discussion.createdAt)} ago
-                </span>
-
-                <span className="text-xs text-muted-foreground">
+          <div className="flex justify-between">
+            <div className="flex min-w-0 items-center">
+              <ProfileAvatar
+                src={discussion.user.image}
+                className="mr-2 size-12 max-sm:hidden"
+              />
+              <div className="min-w-0">
+                <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
+                  {discussion.title}
+                </div>
+                <div className="space-x-1.5 text-xs text-muted-foreground">
+                  <span>{discussion.user.name}</span>
+                  <span>&middot; {timeSince(discussion.createdAt)} ago</span>
                   {discussion.updatedAt && (
-                    <>(edited {timeSince(discussion.updatedAt)} ago)</>
+                    <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
                   )}
-                </span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-1">
+
+            <div className="flex space-x-1">
               <DiscussionUpvote discussion={discussion} />
               <DiscussionExtendedOptions discussion={discussion} />
             </div>
           </div>
-
-          <MDXViewer markdown={discussion.content} />
         </div>
       </CardContent>
     </Card>

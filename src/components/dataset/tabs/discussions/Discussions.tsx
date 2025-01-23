@@ -25,6 +25,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
     {
       datasetId: dataset.id,
+      upvoteUserId: session?.user.id,
     },
     {
       enabled: status !== "loading",

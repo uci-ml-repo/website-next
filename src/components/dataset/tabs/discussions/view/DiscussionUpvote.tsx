@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
-import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -24,28 +23,20 @@ export default function DiscussionUpvote({
   );
 
   const upvoteMutation = trpc.discussions.upvote.create.useMutation({
-    onSuccess: async () => {
+    onSettled: () => {
       setIsUpvoted(true);
-      setUpvoteCount((prev) => prev + 1);
     },
-    onError: () => {
-      toast({
-        title: "Error upvoting",
-        variant: "destructive",
-      });
+    onSuccess: () => {
+      setUpvoteCount((prev) => prev + 1);
     },
   });
 
   const removeUpvoteMutation = trpc.discussions.upvote.remove.useMutation({
-    onSuccess: async () => {
+    onSettled: () => {
       setIsUpvoted(false);
-      setUpvoteCount((prev) => prev - 1);
     },
-    onError: () => {
-      toast({
-        title: "Error removing upvote",
-        variant: "destructive",
-      });
+    onSuccess: () => {
+      setUpvoteCount((prev) => prev - 1);
     },
   });
 
