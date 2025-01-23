@@ -1,8 +1,7 @@
-import { and, count, eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
-import { decrement, increment } from "@/db/util";
 
 export default class DiscussionsUpvoteService {
   async create({
@@ -13,9 +12,10 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     return await db.transaction(async (tx) => {
-      tx.update(discussion)
+      await tx
+        .update(discussion)
         .set({
-          upvoteCount: increment(discussion.upvoteCount),
+          upvoteCount: sql`${discussion.upvoteCount} + 1`,
         })
         .where(eq(discussion.id, discussionId));
 
@@ -34,9 +34,10 @@ export default class DiscussionsUpvoteService {
     discussionId: string;
   }) {
     return await db.transaction(async (tx) => {
-      tx.update(discussion)
+      await tx
+        .update(discussion)
         .set({
-          upvoteCount: decrement(discussion.upvoteCount),
+          upvoteCount: sql`${discussion.upvoteCount} - 1`,
         })
         .where(eq(discussion.id, discussionId));
 
