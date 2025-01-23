@@ -41,7 +41,7 @@ export default function MDXViewerInit({ markdown }: EditorProps) {
     <div ref={editorRef}>
       <MDXEditor
         readOnly
-        className={cn({ "dark-theme": theme === "dark" })}
+        className={cn({ "dark-theme": theme === "dark" }, "[&_div]:p-0")}
         contentEditableClassName="min-w-full bg-background prose dark:prose-invert"
         markdown={markdown ?? ""}
         plugins={[

@@ -7,17 +7,17 @@ import { Button } from "@/components/ui/button";
 export default function DiscussionCreateButton({
   text,
   session,
-  authAction,
+  authedRedirect,
 }: {
   text: string;
   session: Session | null;
-  authAction: () => void;
+  authedRedirect: string;
 }) {
   return (
     <SignInRequired
       title="Sign in to comment"
       body="To comment and access other features, please sign in."
-      authedAction={authAction}
+      authedRedirect={authedRedirect}
       session={session}
     >
       <Button variant="gold" className="lift">

@@ -1,5 +1,8 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { MDXEditorMethods } from "@mdxeditor/editor";
+import { redirect } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,7 +25,6 @@ import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCreateInputProps {
   datasetId: number;
-  setIsAuthoring: React.Dispatch<React.SetStateAction<boolean>>;
   replyTo?: DiscussionResponse;
   className?: string;
 }
@@ -37,7 +39,6 @@ const formSchema = z.object({
 
 export default function DiscussionCreateInput({
   datasetId,
-  setIsAuthoring,
   replyTo,
   className,
 }: DiscussionCreateInputProps) {
@@ -69,7 +70,6 @@ export default function DiscussionCreateInput({
       content: getContent(),
     });
     form.reset();
-    setIsAuthoring(false);
   }
 
   function getContent() {
@@ -129,9 +129,7 @@ export default function DiscussionCreateInput({
                   <Button
                     variant="secondary"
                     onClick={() =>
-                      getContent()
-                        ? setCancelDialogOpen(true)
-                        : setIsAuthoring(false)
+                      getContent().length > 0 || setCancelDialogOpen(true)
                     }
                     type="button"
                   >
@@ -162,8 +160,7 @@ export default function DiscussionCreateInput({
               variant="destructive"
               onClick={() => {
                 form.reset();
-                setCancelDialogOpen(false);
-                setIsAuthoring(false);
+                redirect(".");
               }}
             >
               Discard

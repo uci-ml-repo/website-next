@@ -4,12 +4,10 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import DiscussionCreateButton from "@/components/dataset/tabs/discussions/create/DiscussionCreateButton";
-import DiscussionCreateInput from "@/components/dataset/tabs/discussions/create/DiscussionCreateInput";
 import DiscussionsOrderBy from "@/components/dataset/tabs/discussions/DiscussionsOrderBy";
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 import Discussion from "./view/Discussion";
@@ -19,12 +17,22 @@ export type DiscussionsOrderBy = "top" | "new";
 export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session, status } = useSession();
 
-  const [isAuthoring, setIsAuthoring] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
     {
       datasetId: dataset.id,
+      order: [
+        orderBy === "top"
+          ? {
+              orderBy: "upvoteCount",
+              sort: "desc",
+            }
+          : {
+              orderBy: "createdAt",
+              sort: "desc",
+            },
+      ],
     },
     {
       enabled: status !== "loading",
@@ -42,35 +50,29 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   return (
     <div className="space-y-4">
       <div>
-        <DiscussionCreateInput
-          datasetId={dataset.id}
-          setIsAuthoring={setIsAuthoring}
-          className={cn("mb-6", { hidden: !isAuthoring })}
-        />
         <div className="items-center space-y-6 sm:flex">
-          {!isAuthoring &&
-            (discussionsQuery.data.discussions.length === 0 ? (
-              <Card className="w-full">
-                <CardContent className="flex h-[130px] items-center justify-center">
-                  <div className="space-y-4 text-center">
-                    <div className="text-muted-foreground">
-                      There are no discussions yet
-                    </div>
-                    <DiscussionCreateButton
-                      text="Start a discussion"
-                      session={session}
-                      authAction={() => setIsAuthoring(true)}
-                    />
+          {discussionsQuery.data.discussions.length === 0 ? (
+            <Card className="w-full">
+              <CardContent className="flex h-[130px] items-center justify-center">
+                <div className="space-y-4 text-center">
+                  <div className="text-muted-foreground">
+                    There are no discussions yet
                   </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <DiscussionCreateButton
-                text="Add discussion"
-                session={session}
-                authAction={() => setIsAuthoring(true)}
-              />
-            ))}
+                  <DiscussionCreateButton
+                    text="Start a discussion"
+                    session={session}
+                    authedRedirect="discussions/create"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <DiscussionCreateButton
+              text="Add discussion"
+              session={session}
+              authedRedirect="discussions/create"
+            />
+          )}
 
           {discussionsQuery.data.discussions.length > 0 && (
             <DiscussionsOrderBy
@@ -82,7 +84,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-3">
         {discussionsQuery.data.discussions.map((discussion) => (
           <Discussion key={discussion.id} discussion={discussion} />
         ))}

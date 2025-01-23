@@ -21,7 +21,6 @@ export default function DiscussionCreateReply({
     <div>
       <DiscussionCreateInput
         datasetId={discussion.datasetId}
-        setIsAuthoring={setIsAuthoring}
         replyTo={discussion}
       />
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Session } from "next-auth";
 import { useState } from "react";
 
@@ -17,7 +18,8 @@ import {
 interface SignInPromptProps {
   title: string;
   body: string;
-  authedAction: () => void;
+  authedAction?: () => void;
+  authedRedirect?: string;
   session: Session | null;
   children: React.ReactNode;
 }
@@ -28,20 +30,30 @@ export default function SignInRequired({
   children,
   session,
   authedAction,
+  authedRedirect,
 }: SignInPromptProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-  function onClick() {
+  function onClick(e: React.MouseEvent) {
     if (!session?.user) {
+      e.preventDefault();
       setDialogOpen(true);
-    } else {
+    } else if (authedAction) {
       authedAction();
     }
   }
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <div onClick={onClick}>{children}</div>
+      {authedAction ? (
+        <div onClick={onClick}>{children}</div>
+      ) : authedRedirect ? (
+        <Link href={authedRedirect} onClick={onClick}>
+          {children}
+        </Link>
+      ) : (
+        children
+      )}
       <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
