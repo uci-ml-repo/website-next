@@ -1,3 +1,3 @@
-export default function Page() {
-  return <div />;
-}
+import Page from "./about/page";
+
+export default Page;

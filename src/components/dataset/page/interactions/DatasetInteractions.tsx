@@ -16,7 +16,7 @@ export interface DatasetActivityProps
   dataset: DatasetResponse;
 }
 
-export default async function DatasetInteractions({
+export default function DatasetInteractions({
   dataset,
   className,
   ...props

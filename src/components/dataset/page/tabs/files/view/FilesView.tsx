@@ -40,6 +40,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
       <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
         <div className="flex w-full items-center space-x-2 truncate">
           <div className="flex flex-shrink-0">
+            {JSON.stringify(currentFile)}
             <Button
               variant="ghost"
               size="icon"

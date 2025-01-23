@@ -11,22 +11,22 @@ import Split from "@/components/ui/split";
 import type { DatasetResponse } from "@/lib/types";
 
 export default function Files({ dataset }: { dataset: DatasetResponse }) {
-  const [sizes, setSizes] = useState<[number, number]>([20, 80]);
+  const [splitSizes, setSplitSizes] = useState<[number, number]>([20, 80]);
 
   const { currentFile } = useFileContext();
   const isMobile = useIsMobile();
 
   useEffect(() => {
     if (isMobile) {
-      setSizes([100, 0]);
+      setSplitSizes([100, 0]);
     } else {
-      setSizes([20, 80]);
+      setSplitSizes([20, 80]);
     }
   }, [isMobile]);
 
   useEffect(() => {
     if (isMobile && currentFile.type === "file") {
-      setSizes([0, 100]);
+      setSplitSizes([0, 100]);
     }
   }, [currentFile, isMobile]);
 
@@ -34,16 +34,16 @@ export default function Files({ dataset }: { dataset: DatasetResponse }) {
     <div className="flex h-full flex-col space-y-2">
       <div className="flex justify-between md:hidden">
         <button
-          onClick={() => setSizes([100, 0])}
+          onClick={() => setSplitSizes([100, 0])}
           className="flex disabled:invisible"
-          disabled={sizes[1] < 50}
+          disabled={splitSizes[1] < 50}
         >
           <ChevronLeftIcon />
           <span>Browse</span>
         </button>
         <button
-          onClick={() => setSizes([0, 100])}
-          disabled={sizes[0] < 50}
+          onClick={() => setSplitSizes([0, 100])}
+          disabled={splitSizes[0] < 50}
           className="flex disabled:invisible"
         >
           <span>View File</span>
@@ -53,8 +53,8 @@ export default function Files({ dataset }: { dataset: DatasetResponse }) {
       <Split
         className="h-[75dvh]"
         gutterSize={12}
-        sizes={sizes}
-        setSizes={setSizes}
+        sizes={splitSizes}
+        setSizes={setSplitSizes}
       >
         <div className="flex h-full flex-col overflow-hidden rounded-l-xl border-2 border-r-0">
           <FilesBrowse dataset={dataset} />

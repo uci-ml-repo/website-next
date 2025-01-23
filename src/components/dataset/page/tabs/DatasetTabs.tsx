@@ -1,76 +1,69 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import path from "path";
+import React from "react";
+
 import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
-import About from "@/components/dataset/page/tabs/about/About";
-import Discussions from "@/components/dataset/page/tabs/discussions/Discussions";
-import Files from "@/components/dataset/page/tabs/files/Files";
-import { FileProvider } from "@/components/dataset/page/tabs/files/FilesContext";
 import {
   LinearTabs,
-  LinearTabsContent,
   LinearTabsList,
   LinearTabsTrigger,
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetFilesPath } from "@/lib/utils";
-import { caller } from "@/server/trpc/query/server";
 
-export default async function DatasetTabs({
-  dataset,
-}: {
+interface DatasetTabsProps {
+  basePath: string;
   dataset: DatasetResponse;
-}) {
-  const discussionsQuery = await caller.discussions.find.byQuery({
-    datasetId: dataset.id,
-  });
+  discussionsCount: number;
+  children: React.ReactNode;
+}
 
-  let zipStats;
-  try {
-    zipStats = await caller.files.read.zipStats({
-      path: datasetFilesPath(dataset) + ".zip",
-    });
-  } catch {
-    zipStats = null;
-  }
+export default function DatasetTabs({
+  basePath,
+  dataset,
+  discussionsCount,
+  children,
+}: DatasetTabsProps) {
+  const pathname = usePathname();
+
+  const segments = pathname.split("/").filter(Boolean);
+
+  const activeTab = segments[3] || "about";
 
   return (
-    <LinearTabs defaultValue="about">
+    <LinearTabs defaultValue={activeTab}>
       <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
         <LinearTabsList className="space-x-8">
-          <LinearTabsTrigger value="about">About</LinearTabsTrigger>
-          {zipStats && (
-            <LinearTabsTrigger value="files">Files</LinearTabsTrigger>
+          <LinearTabsTrigger value="about" link={path.join(basePath, "about")}>
+            About
+          </LinearTabsTrigger>
+
+          {!dataset.externalLink && (
+            <LinearTabsTrigger
+              value="files"
+              link={path.join(basePath, "files")}
+            >
+              Files
+            </LinearTabsTrigger>
           )}
+
           <LinearTabsTrigger
             value="discussions"
-            badgeValue={discussionsQuery.discussions.length}
+            badgeValue={discussionsCount}
+            link={path.join(basePath, "discussions")}
           >
             Discussions
           </LinearTabsTrigger>
         </LinearTabsList>
+
         <DatasetInteractions dataset={dataset} className="max-md:hidden" />
       </div>
+
       <TabsListBorder />
 
-      <div className="hide-inactive">
-        <LinearTabsContent value="about">
-          <About dataset={dataset} />
-        </LinearTabsContent>
-        {zipStats && (
-          <LinearTabsContent value="files" forceMount>
-            <FileProvider
-              initialPath={{
-                path: datasetFilesPath(dataset),
-                type: "directory",
-              }}
-            >
-              <Files dataset={dataset} />
-            </FileProvider>
-          </LinearTabsContent>
-        )}
-        <LinearTabsContent value="discussions" forceMount>
-          <Discussions dataset={dataset} />
-        </LinearTabsContent>
-      </div>
+      {children}
     </LinearTabs>
   );
 }
