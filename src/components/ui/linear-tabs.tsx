@@ -4,7 +4,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
@@ -30,19 +30,27 @@ interface LinearTabsRootProps
   routerStore?: string;
 }
 
-function LinearTabs({
+export function LinearTabs({
   defaultValue,
   routerStore,
   children,
   ...props
 }: LinearTabsRootProps) {
   const router = useRouter();
-  const [currentValue, setCurrentValue] = React.useState<string>(defaultValue);
+  const pathname = usePathname();
+
+  const [currentValue, setCurrentValue] = React.useState(defaultValue);
+
+  React.useEffect(() => {
+    const segments = pathname.split("/").filter(Boolean);
+    const nextValue = segments[3] || "about";
+    setCurrentValue(nextValue);
+  }, [pathname]);
 
   function onValueChange(val: string) {
     setCurrentValue(val);
-    if (routerStore && typeof window !== "undefined") {
-      router.push(routerStore + "/" + val);
+    if (routerStore) {
+      router.push(`${routerStore}/${val}`);
     }
   }
 
@@ -75,7 +83,7 @@ const linearTabsListVariants = cva(
   },
 );
 
-const LinearTabsList = React.forwardRef<
+export const LinearTabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
     VariantProps<typeof linearTabsListVariants>
@@ -155,7 +163,7 @@ type TriggerElement = React.ReactElement<{
   value: string;
 }>;
 
-const LinearTabsTrigger = React.forwardRef<
+export const LinearTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
     badgeVariant?: VariantProps<typeof badgeVariants>["variant"];
@@ -201,7 +209,7 @@ const LinearTabsTrigger = React.forwardRef<
 );
 LinearTabsTrigger.displayName = "LinearTabsTrigger";
 
-const LinearTabsContent = React.forwardRef<
+export const LinearTabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
@@ -216,5 +224,3 @@ const LinearTabsContent = React.forwardRef<
   />
 ));
 LinearTabsContent.displayName = "LinearTabsContent";
-
-export { LinearTabs, LinearTabsContent, LinearTabsList, LinearTabsTrigger };

@@ -29,11 +29,10 @@ export default function DatasetTabs({
   const pathname = usePathname();
 
   const segments = pathname.split("/").filter(Boolean);
-
   const activeTab = segments[3] || "about";
 
   return (
-    <LinearTabs defaultValue={activeTab}>
+    <LinearTabs defaultValue={activeTab} routerStore={basePath}>
       <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
         <LinearTabsList className="space-x-8">
           <LinearTabsTrigger value="about" link={path.join(basePath, "about")}>
