@@ -4,10 +4,10 @@ import path from "path";
 import { cache } from "react";
 
 import { auth } from "@/auth";
-import DatasetTitleGroup from "@/components/dataset/page/DatasetTitleGroup";
-import { DatasetBookmarkProvider } from "@/components/dataset/page/interactions/bookmark/DatasetBookmarkedContext";
-import DatasetInteractions from "@/components/dataset/page/interactions/DatasetInteractions";
-import DatasetTabs from "@/components/dataset/page/tabs/DatasetTabs";
+import DatasetTitleGroup from "@/components/dataset/DatasetTitleGroup";
+import { DatasetBookmarkProvider } from "@/components/dataset/interactions/bookmark/DatasetBookmarkedContext";
+import DatasetInteractions from "@/components/dataset/interactions/DatasetInteractions";
+import DatasetTabs from "@/components/dataset/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { DATASETS_PATH } from "@/lib/routes";

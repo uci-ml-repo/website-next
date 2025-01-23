@@ -1,4 +1,4 @@
-import Discussions from "@/components/dataset/page/tabs/discussions/Discussions";
+import Discussions from "@/components/dataset/tabs/discussions/Discussions";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({

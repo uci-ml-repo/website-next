@@ -1,4 +1,4 @@
-import About from "@/components/dataset/page/tabs/about/About";
+import About from "@/components/dataset/tabs/about/About";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({

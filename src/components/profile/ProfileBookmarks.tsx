@@ -1,6 +1,6 @@
 import { BookmarkIcon } from "lucide-react";
 
-import DatasetCard from "@/components/dataset/summarized/DatasetCard";
+import DatasetCard from "@/components/dataset/preview/DatasetCard";
 import { Card, CardContent } from "@/components/ui/card";
 import type { BookmarkResponse } from "@/lib/types";
 

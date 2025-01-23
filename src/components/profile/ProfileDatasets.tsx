@@ -1,7 +1,7 @@
 import { PlusIcon, SquarePenIcon } from "lucide-react";
 import Link from "next/link";
 
-import DatasetCardCarousel from "@/components/dataset/summarized/DatasetCardCarousel";
+import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
 import { Button } from "@/components/ui/button";
 import type { DatasetsSelect } from "@/db/types";
 import { CONTRIBUTE_PATH } from "@/lib/routes";
