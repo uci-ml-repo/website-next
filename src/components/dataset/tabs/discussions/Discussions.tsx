@@ -7,21 +7,29 @@ import DiscussionCreateButton from "@/components/dataset/tabs/discussions/create
 import DiscussionsOrderBy from "@/components/dataset/tabs/discussions/DiscussionsOrderBy";
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
-import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 import DiscussionPreview from "./view/DiscussionPreview";
 
 export type DiscussionsOrderBy = "top" | "new";
 
-export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
+export default function Discussions({
+  datasetId,
+  userId,
+  allowCreate,
+}: {
+  datasetId?: number;
+  userId?: string;
+  allowCreate?: boolean;
+}) {
   const { data: session, status } = useSession();
 
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussion.find.byQuery.useQuery(
     {
-      datasetId: dataset.id,
+      datasetId: datasetId,
+      userId: userId,
       order:
         orderBy === "top"
           ? { upvoteCount: "desc", createdAt: "desc" }
@@ -42,6 +50,15 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
     );
   }
 
+  const Create = () =>
+    allowCreate && (
+      <DiscussionCreateButton
+        text="Add discussion"
+        session={session}
+        authedRedirect="discussions/create"
+      />
+    );
+
   return (
     <div className="space-y-4">
       <div>
@@ -53,22 +70,12 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
                   <div className="text-muted-foreground">
                     There are no discussions yet
                   </div>
-                  <div>
-                    <DiscussionCreateButton
-                      text="Start a discussion"
-                      session={session}
-                      authedRedirect="discussions/create"
-                    />
-                  </div>
+                  <Create />
                 </div>
               </CardContent>
             </Card>
           ) : (
-            <DiscussionCreateButton
-              text="Add discussion"
-              session={session}
-              authedRedirect="discussions/create"
-            />
+            <Create />
           )}
 
           {discussionsQuery.data.discussions.length > 0 && (

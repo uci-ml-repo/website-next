@@ -12,6 +12,10 @@ function buildQuery(query: DiscussionQuery) {
     conditions.push(eq(discussion.datasetId, query.datasetId));
   }
 
+  if (query.userId) {
+    conditions.push(eq(discussion.userId, query.userId));
+  }
+
   return and(...conditions);
 }
 

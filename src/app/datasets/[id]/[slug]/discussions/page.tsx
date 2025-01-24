@@ -1,4 +1,4 @@
-import Discussions from "@/components/dataset/tabs/discussions/Discussions";
+import DatasetDiscussions from "@/components/dataset/tabs/discussions/Discussions";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -8,5 +8,5 @@ export default async function Page({
 }) {
   const dataset = await caller.dataset.find.byId(Number((await params).id));
 
-  return <Discussions dataset={dataset!} />;
+  return <DatasetDiscussions datasetId={dataset!.id} />;
 }

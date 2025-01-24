@@ -48,9 +48,11 @@ export default function SignInRequired({
       {authedAction ? (
         <div onClick={onClick}>{children}</div>
       ) : authedRedirect ? (
-        <Link href={authedRedirect} onClick={onClick}>
-          {children}
-        </Link>
+        <div>
+          <Link href={authedRedirect} onClick={onClick}>
+            {children}
+          </Link>
+        </div>
       ) : (
         children
       )}

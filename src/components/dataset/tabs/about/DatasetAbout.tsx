@@ -4,7 +4,11 @@ import DatasetSideData from "@/components/dataset/tabs/about/DatasetSideData";
 import DatasetVariables from "@/components/dataset/tabs/about/DatasetVariables";
 import type { DatasetResponse } from "@/lib/types";
 
-export default function About({ dataset }: { dataset: DatasetResponse }) {
+export default function DatasetAbout({
+  dataset,
+}: {
+  dataset: DatasetResponse;
+}) {
   return (
     <div className="space-y-16">
       <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
