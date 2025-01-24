@@ -1,5 +1,5 @@
 import { Enums } from "@/db/enums";
-import { STATIC_FILES_ROUTE } from "@/lib/routes";
+import { DATASETS_PATH, STATIC_FILES_ROUTE } from "@/lib/routes";
 
 /**
  * Get the path for a dataset's data files
@@ -73,5 +73,5 @@ export function datasetZipURL({
 }
 
 export function datasetPage({ id, slug }: { id: number; slug: string }) {
-  return `/datasets/${id}/${slug}`;
+  return `${DATASETS_PATH}/${id}/${slug}`;
 }

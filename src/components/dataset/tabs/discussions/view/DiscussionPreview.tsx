@@ -5,7 +5,7 @@ import DiscussionExtendedOptions from "@/components/dataset/tabs/discussions/vie
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";
-import { timeSince } from "@/lib/utils";
+import { datasetPage, timeSince } from "@/lib/utils";
 
 export default function DiscussionPreview({
   discussion,
@@ -17,7 +17,7 @@ export default function DiscussionPreview({
       <CardContent className="space-y-6">
         <div className="flex justify-between">
           <Link
-            href={`discussions/${discussion.id}`}
+            href={`${datasetPage(discussion.dataset)}/discussions/${discussion.id}`}
             className="flex w-full min-w-0 items-center"
           >
             <ProfileAvatar

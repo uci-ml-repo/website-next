@@ -178,8 +178,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     status: Enums.DatasetStatus.APPROVED,
     donatedAt: new Date("2024-07-11"),
     yearCreated: 2024,
-    title:
-      "Enums.Dataset for Assessing Mathematics Learning in Higher Education",
+    title: "Dataset for Assessing Mathematics Learning in Higher Education",
     subtitle: "SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE SUBTITLE",
     doi: "10.34620/dadosipb/PW3OWY",
     description:

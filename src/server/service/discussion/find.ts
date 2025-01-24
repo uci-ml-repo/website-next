@@ -59,8 +59,8 @@ export default class DiscussionFindService {
     return db.query.discussion.findMany({
       where: (discussion, { eq }) => eq(discussion.userId, userId),
       with: {
-        upvotes: true,
         user: true,
+        dataset: true,
       },
     });
   }
