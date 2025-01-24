@@ -35,8 +35,8 @@ export default class DatasetFindService {
 
   async byQuery(query: DatasetQuery) {
     const orderBy = query.order
-      ? query.order.map(({ orderBy, sort }) =>
-          sortFunction(sort)(dataset[orderBy]),
+      ? Object.entries(query.order).map(([orderBy, sort]) =>
+          sortFunction(sort)(dataset[orderBy as keyof typeof query.order]),
         )
       : [asc(dataset.id)];
 

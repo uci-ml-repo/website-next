@@ -21,11 +21,11 @@ export default async function Page() {
   const datasetCount = await caller.dataset.count.approved();
 
   const popularDatasets = await caller.dataset.find.byQuery({
-    order: [{ orderBy: "viewCount", sort: "desc" }],
+    order: { viewCount: "desc" },
     limit: 10,
   });
   const newDatasets = await caller.dataset.find.byQuery({
-    order: [{ orderBy: "donatedAt", sort: "desc" }],
+    order: { donatedAt: "desc" },
     limit: 10,
   });
 

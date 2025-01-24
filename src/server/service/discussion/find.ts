@@ -28,8 +28,8 @@ export default class DiscussionFindService {
 
   async byQuery(query: DiscussionQuery) {
     const orderBy = query.order
-      ? query.order.map(({ orderBy, sort }) =>
-          sortFunction(sort)(discussion[orderBy]),
+      ? Object.entries(query.order).map(([orderBy, sort]) =>
+          sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
         )
       : [asc(dataset.id)];
 

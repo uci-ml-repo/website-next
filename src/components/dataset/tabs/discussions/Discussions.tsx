@@ -22,17 +22,10 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
   const discussionsQuery = trpc.discussion.find.byQuery.useQuery(
     {
       datasetId: dataset.id,
-      order: [
+      order:
         orderBy === "top"
-          ? {
-              orderBy: "upvoteCount",
-              sort: "desc",
-            }
-          : {
-              orderBy: "createdAt",
-              sort: "desc",
-            },
-      ],
+          ? { upvoteCount: "desc", createdAt: "desc" }
+          : { createdAt: "desc" },
       limit: 10,
       offset: 0,
     },
