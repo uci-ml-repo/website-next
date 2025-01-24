@@ -1,6 +1,12 @@
 import path from "path";
 import React, { useEffect, useRef, useState } from "react";
 
+import {
+  audioExtensions,
+  imageExtensions,
+  tabularToDelimiter,
+  videoExtensions,
+} from "@/components/dataset/tabs/files/lib/extensions";
 import FilesViewFileAudio from "@/components/dataset/tabs/files/view/FilesViewFileAudio";
 import FilesViewFileImage from "@/components/dataset/tabs/files/view/FilesViewFileImage";
 import FilesViewFilesTabular from "@/components/dataset/tabs/files/view/FilesViewFileTabular";
@@ -9,12 +15,6 @@ import FilesViewFileVideo from "@/components/dataset/tabs/files/view/FilesViewFi
 import { Alert } from "@/components/ui/alert";
 import Spinner from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import {
-  audioExtensions,
-  imageExtensions,
-  tabularToDelimiter,
-  videoExtensions,
-} from "@/lib/utils/file";
 import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 

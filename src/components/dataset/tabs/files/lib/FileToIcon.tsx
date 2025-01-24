@@ -12,12 +12,12 @@ import {
 import Image from "next/image";
 import path from "path";
 
-import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import {
   audioExtensions,
   imageExtensions,
   videoExtensions,
-} from "@/lib/utils/file";
+} from "@/components/dataset/tabs/files/lib/extensions";
+import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DirectoryEntity } from "@/server/service/file/find";
 
 export default function fileToIcon(

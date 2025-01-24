@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { RequireNonNullable } from "@/lib/utils/require-keys";
+import type { RequireNonNullable } from "@/lib/utils";
 
 import type { author, dataset, paper } from "./schema";
 

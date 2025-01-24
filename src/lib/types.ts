@@ -1,5 +1,5 @@
 import type { AcceptedDatasetRequiredFields } from "@/db/types";
-import type { RequireNonNullable } from "@/lib/utils/require-keys";
+import type { RequireNonNullable } from "@/lib/utils";
 import type { RouterOutput } from "@/server/trpc/routers";
 
 export type DatasetResponse = NonNullable<
