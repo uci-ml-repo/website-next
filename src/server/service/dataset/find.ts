@@ -1,12 +1,13 @@
-import { and, asc, count } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
+import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
 import type { DatasetQuery } from "@/server/service/schema/datasets";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 function buildQuery(query: DatasetQuery) {
-  return and();
+  return and(eq(dataset.status, Enums.DatasetStatus.APPROVED));
 }
 
 export default class DatasetFindService {
