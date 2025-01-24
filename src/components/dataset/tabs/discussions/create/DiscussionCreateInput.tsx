@@ -9,7 +9,6 @@ import { z } from "zod";
 
 import MDXEditor from "@/components/editor/MDXEditor";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
@@ -40,7 +39,6 @@ const formSchema = z.object({
 export default function DiscussionCreateInput({
   datasetId,
   replyTo,
-  className,
 }: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
   const editorRef = useRef<MDXEditorMethods>(null);
@@ -55,9 +53,9 @@ export default function DiscussionCreateInput({
 
   const utils = trpc.useUtils();
 
-  const createMutation = trpc.discussions.create.fromData.useMutation({
+  const createMutation = trpc.discussion.create.fromData.useMutation({
     onSuccess: () => {
-      utils.discussions.find.byQuery.invalidate({
+      utils.discussion.find.byQuery.invalidate({
         datasetId,
       });
     },
@@ -78,73 +76,70 @@ export default function DiscussionCreateInput({
 
   return (
     <>
-      <Card className={className}>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        pill={false}
-                        className="px-4 font-bold"
-                        placeholder="Discussion Topic"
-                        variantSize="xl"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <MDXEditor
-                        {...field}
-                        ref={editorRef}
-                        markdown={field.value}
-                        autoFocus
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex items-center justify-between">
-                {replyTo ? (
-                  <div className="text-sm text-muted-foreground">
-                    Replying to {replyTo.user.name}
-                  </div>
-                ) : (
-                  <div />
-                )}
-                <div className="flex space-x-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      getContent().length > 0 || setCancelDialogOpen(true)
-                    }
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                  <Button variant="gold" type="submit">
-                    {createMutation.isPending && <Spinner />}
-                    Post
-                  </Button>
-                </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    pill={false}
+                    className="px-4 font-bold"
+                    placeholder="Discussion Topic"
+                    variantSize="xl"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <MDXEditor
+                    {...field}
+                    ref={editorRef}
+                    markdown={field.value}
+                    autoFocus
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center justify-between">
+            {replyTo ? (
+              <div className="text-sm text-muted-foreground">
+                Replying to {replyTo.user.name}
               </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+            ) : (
+              <div />
+            )}
+            <div className="flex space-x-2">
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  getContent().length > 0 || setCancelDialogOpen(true)
+                }
+                type="button"
+              >
+                Cancel
+              </Button>
+              <Button variant="gold" type="submit">
+                {createMutation.isPending && <Spinner />}
+                Post
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Form>
+
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard comment?</DialogTitle>

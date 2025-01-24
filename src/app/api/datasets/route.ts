@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    dataset = await caller.datasets.find.byId(idNumber);
+    dataset = await caller.dataset.find.byId(idNumber);
 
     if (!dataset || dataset.status !== "APPROVED") {
       return NextResponse.json({
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       });
     }
   } else if (name) {
-    dataset = await caller.datasets.find.byTitle(name);
+    dataset = await caller.dataset.find.byTitle(name);
 
     if (!dataset) {
       return NextResponse.json({

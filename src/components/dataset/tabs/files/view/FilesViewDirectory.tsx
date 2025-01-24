@@ -12,7 +12,7 @@ export default function FilesViewDirectory({
 }) {
   const { setCurrentFile } = useFileContext();
 
-  const { data, isLoading, isError } = trpc.files.find.list.useQuery(
+  const { data, isLoading, isError } = trpc.file.find.list.useQuery(
     { path: directoryPath ?? "" },
     {
       enabled: !!directoryPath,

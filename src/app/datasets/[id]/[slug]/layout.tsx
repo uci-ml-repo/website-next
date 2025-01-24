@@ -14,7 +14,7 @@ import { DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return caller.datasets.find.byId(id);
+  return caller.dataset.find.byId(id);
 });
 
 export async function generateMetadata({
@@ -47,13 +47,13 @@ export default async function Layout({
   }
 
   const initialBookmarked = session?.user.id
-    ? await caller.bookmarks.find.isBookmarked({
+    ? await caller.bookmark.find.isBookmarked({
         datasetId: dataset.id,
         userId: session.user.id,
       })
     : false;
 
-  const discussionsQuery = await caller.discussions.find.byQuery({
+  const discussionsQuery = await caller.discussion.find.byQuery({
     datasetId: dataset.id,
   });
 

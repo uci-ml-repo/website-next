@@ -10,7 +10,7 @@ import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-import Discussion from "./view/Discussion";
+import DiscussionPreview from "./view/DiscussionPreview";
 
 export type DiscussionsOrderBy = "top" | "new";
 
@@ -19,7 +19,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
 
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
-  const discussionsQuery = trpc.discussions.find.byQuery.useQuery(
+  const discussionsQuery = trpc.discussion.find.byQuery.useQuery(
     {
       datasetId: dataset.id,
       order: [
@@ -86,7 +86,7 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
 
       <div className="space-y-3">
         {discussionsQuery.data.discussions.map((discussion) => (
-          <Discussion key={discussion.id} discussion={discussion} />
+          <DiscussionPreview key={discussion.id} discussion={discussion} />
         ))}
       </div>
     </div>

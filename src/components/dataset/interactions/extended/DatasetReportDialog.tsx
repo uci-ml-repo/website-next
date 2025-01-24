@@ -47,7 +47,7 @@ export default function DatasetReportDialog({
 }) {
   const session = useSession();
 
-  const createReportMutation = trpc.datasets.report.create.useMutation();
+  const createReportMutation = trpc.dataset.report.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

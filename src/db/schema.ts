@@ -331,6 +331,10 @@ export const discussionRelations = relations(discussion, ({ one, many }) => ({
     references: [user.id],
   }),
   comments: many(discussionComment),
+  dataset: one(dataset, {
+    fields: [discussion.datasetId],
+    references: [dataset.id],
+  }),
 }));
 
 export const discussionComment = pgTable("discussion_comment", {

@@ -17,7 +17,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
   const { currentFile, fileHistory, back, fileForwardHistory, forward } =
     useFileContext();
 
-  const directoryQuery = trpc.files.find.list.useQuery(
+  const directoryQuery = trpc.file.find.list.useQuery(
     {
       path: currentFile.path,
     },
@@ -26,7 +26,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
     },
   );
 
-  const fileStatsQuery = trpc.files.read.stats.useQuery(
+  const fileStatsQuery = trpc.file.read.stats.useQuery(
     {
       path: currentFile.path,
     },

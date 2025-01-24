@@ -6,7 +6,7 @@ export default async function Page({
 }: {
   params: Promise<{ id: string; slug: string }>;
 }) {
-  const dataset = await caller.datasets.find.byId(Number((await params).id));
+  const dataset = await caller.dataset.find.byId(Number((await params).id));
 
   return <Discussions dataset={dataset!} />;
 }

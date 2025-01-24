@@ -46,7 +46,7 @@ export default function DiscussionReportDialog({
 }) {
   const session = useSession();
 
-  const createReportMutation = trpc.discussions.report.create.useMutation();
+  const createReportMutation = trpc.discussion.report.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

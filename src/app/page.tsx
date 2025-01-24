@@ -18,13 +18,13 @@ import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
-  const datasetCount = await caller.datasets.count.approved();
+  const datasetCount = await caller.dataset.count.approved();
 
-  const popularDatasets = await caller.datasets.find.byQuery({
+  const popularDatasets = await caller.dataset.find.byQuery({
     order: [{ orderBy: "viewCount", sort: "desc" }],
     limit: 10,
   });
-  const newDatasets = await caller.datasets.find.byQuery({
+  const newDatasets = await caller.dataset.find.byQuery({
     order: [{ orderBy: "donatedAt", sort: "desc" }],
     limit: 10,
   });

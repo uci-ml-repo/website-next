@@ -24,7 +24,7 @@ export default function FilesBrowseDirectory({
     }
   }, [currentFile.path, directory.path]);
 
-  const directoryQuery = trpc.files.find.list.useQuery(
+  const directoryQuery = trpc.file.find.list.useQuery(
     {
       path: directory.path,
     },

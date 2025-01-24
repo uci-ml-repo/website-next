@@ -34,7 +34,7 @@ export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
 
   let zipStats;
   try {
-    zipStats = await caller.files.read.zipStats({
+    zipStats = await caller.file.read.zipStats({
       path: datasetFilesPath(dataset) + ".zip",
     });
   } catch {

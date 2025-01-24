@@ -15,7 +15,7 @@ import {
   tabularToDelimiter,
   videoExtensions,
 } from "@/lib/utils/file";
-import type { DirectoryEntity } from "@/server/service/files/find";
+import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
@@ -23,7 +23,7 @@ export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
 
   const [cachedLines, setCachedLines] = useState<string[]>([]);
 
-  const readFileQuery = trpc.files.read.readFileInfinite.useInfiniteQuery(
+  const readFileQuery = trpc.file.read.readFileInfinite.useInfiniteQuery(
     {
       path: file.path,
       takeLines: 50,

@@ -22,7 +22,7 @@ export default function DiscussionUpvote({
     discussion.upvoteCount,
   );
 
-  const upvoteMutation = trpc.discussions.upvote.create.useMutation({
+  const upvoteMutation = trpc.discussion.upvote.create.useMutation({
     onSettled: () => {
       setIsUpvoted(true);
     },
@@ -31,7 +31,7 @@ export default function DiscussionUpvote({
     },
   });
 
-  const removeUpvoteMutation = trpc.discussions.upvote.remove.useMutation({
+  const removeUpvoteMutation = trpc.discussion.upvote.remove.useMutation({
     onSettled: () => {
       setIsUpvoted(false);
     },

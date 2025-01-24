@@ -30,7 +30,7 @@ export default async function DatasetDownloadButton({
 
   let zipStats;
   try {
-    zipStats = await caller.files.read.zipStats({
+    zipStats = await caller.file.read.zipStats({
       path: datasetFilesPath(dataset) + ".zip",
     });
   } catch {

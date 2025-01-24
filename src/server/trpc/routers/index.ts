@@ -1,16 +1,16 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { router } from "@/server/trpc";
-import bookmarksRouter from "@/server/trpc/routers/bookmarks";
-import datasetsRouter from "@/server/trpc/routers/datasets";
-import discussionsRouter from "@/server/trpc/routers/discussions";
-import filesRouter from "@/server/trpc/routers/files";
+import bookmarkRouter from "@/server/trpc/routers/bookmark";
+import datasetRouter from "@/server/trpc/routers/dataset";
+import discussionRouter from "@/server/trpc/routers/discussion";
+import filesRouter from "@/server/trpc/routers/file";
 
 export const appRouter = router({
-  datasets: datasetsRouter,
-  discussions: discussionsRouter,
-  files: filesRouter,
-  bookmarks: bookmarksRouter,
+  dataset: datasetRouter,
+  discussion: discussionRouter,
+  file: filesRouter,
+  bookmark: bookmarkRouter,
 });
 
 export type AppRouter = typeof appRouter;

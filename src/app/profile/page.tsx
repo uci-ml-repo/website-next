@@ -24,8 +24,8 @@ export default async function Page() {
     return signIn(undefined, { redirectTo: PROFILE_PATH });
   }
 
-  const bookmarks = await caller.bookmarks.find.byUserId(session.user.id);
-  const datasets = await caller.datasets.find.byUserId(session.user.id);
+  const bookmarks = await caller.bookmark.find.byUserId(session.user.id);
+  const datasets = await caller.dataset.find.byUserId(session.user.id);
 
   return (
     <Main className="space-y-8">

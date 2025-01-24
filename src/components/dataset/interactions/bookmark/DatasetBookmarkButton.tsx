@@ -22,7 +22,7 @@ export default function DatasetBookmarkButton({
   const { data: session } = useSession();
   const { isBookmarked, setIsBookmarked } = useBookmark();
 
-  const addBookmark = trpc.bookmarks.create.addBookmark.useMutation({
+  const addBookmark = trpc.bookmark.create.addBookmark.useMutation({
     onSettled: () => {
       setIsBookmarked(true);
     },
@@ -35,7 +35,7 @@ export default function DatasetBookmarkButton({
     },
   });
 
-  const removeBookmark = trpc.bookmarks.remove.removeBookmark.useMutation({
+  const removeBookmark = trpc.bookmark.remove.removeBookmark.useMutation({
     onSettled: () => {
       setIsBookmarked(false);
     },

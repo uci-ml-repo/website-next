@@ -17,9 +17,9 @@ export default function DiscussionDeleteDialog({
 }: DiscussionDeleteDialogProps) {
   const utils = trpc.useUtils();
 
-  const removeMutation = trpc.discussions.remove.byId.useMutation({
+  const removeMutation = trpc.discussion.remove.byId.useMutation({
     onSuccess: () => {
-      utils.discussions.find.byQuery.invalidate({
+      utils.discussion.find.byQuery.invalidate({
         datasetId: discussion.datasetId,
       });
     },
@@ -34,10 +34,7 @@ export default function DiscussionDeleteDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent aria-describedby={undefined}>
         <DialogTitle>Delete Comment</DialogTitle>
-        <div>
-          <p>Are you sure you want to delete this comment?</p>
-          <p>Any existing replies will not be affected.</p>
-        </div>
+        <div>Are you sure you want to delete this discussion?</div>
         <div className="flex justify-between">
           <Button variant="secondary" onClick={() => setOpen(false)}>
             Cancel

@@ -18,7 +18,7 @@ import {
   imageExtensions,
   videoExtensions,
 } from "@/lib/utils/file";
-import type { DirectoryEntity } from "@/server/service/files/find";
+import type { DirectoryEntity } from "@/server/service/file/find";
 
 export default function fileToIcon(
   file: DirectoryEntity,

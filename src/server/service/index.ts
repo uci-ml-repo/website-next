@@ -1,14 +1,14 @@
-import BookmarksService from "@/server/service/bookmarks";
-import DatasetsService from "@/server/service/datasets";
-import DiscussionsService from "@/server/service/discussions";
-import FilesService from "@/server/service/files";
+import BookmarkService from "@/server/service/bookmark";
+import DatasetService from "@/server/service/dataset";
+import DiscussionService from "@/server/service/discussion";
+import FileService from "@/server/service/file";
 
 class RepositoryService {
   constructor(
-    readonly datasets = new DatasetsService(),
-    readonly discussions = new DiscussionsService(),
-    readonly files = new FilesService(),
-    readonly bookmarks = new BookmarksService(),
+    readonly dataset = new DatasetService(),
+    readonly discussion = new DiscussionService(),
+    readonly file = new FileService(),
+    readonly bookmark = new BookmarkService(),
   ) {}
 }
 

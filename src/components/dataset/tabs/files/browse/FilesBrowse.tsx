@@ -12,7 +12,7 @@ import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetFilesPath } from "@/lib/utils";
-import type { DirectoryEntity } from "@/server/service/files/find";
+import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
@@ -46,11 +46,11 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
     }
   }, [searchTerm, debounceSetSearchTerm]);
 
-  const rootDirectoryQuery = trpc.files.find.list.useQuery({
+  const rootDirectoryQuery = trpc.file.find.list.useQuery({
     path: datasetFilesPath(dataset),
   });
 
-  const searchQuery = trpc.files.find.search.useQuery(
+  const searchQuery = trpc.file.find.search.useQuery(
     {
       path: datasetFilesPath(dataset),
       search: debouncedSearchTerm,

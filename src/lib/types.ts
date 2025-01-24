@@ -3,7 +3,7 @@ import type { RequireNonNullable } from "@/lib/utils/require-keys";
 import type { RouterOutput } from "@/server/trpc/routers";
 
 export type DatasetResponse = NonNullable<
-  RouterOutput["datasets"]["find"]["byId"]
+  RouterOutput["dataset"]["find"]["byId"]
 >;
 
 export type AcceptedDatasetResponse = RequireNonNullable<
@@ -12,13 +12,13 @@ export type AcceptedDatasetResponse = RequireNonNullable<
 >;
 
 export type DiscussionResponse = NonNullable<
-  RouterOutput["discussions"]["find"]["byId"]
+  RouterOutput["discussion"]["find"]["byId"]
 >;
 
 export type BookmarkResponse = NonNullable<
-  RouterOutput["bookmarks"]["find"]["byUserId"][number]
+  RouterOutput["bookmark"]["find"]["byUserId"][number]
 >;
 
 export type FileResponse = NonNullable<
-  RouterOutput["files"]["find"]["list"][number]
+  RouterOutput["file"]["find"]["list"][number]
 >;

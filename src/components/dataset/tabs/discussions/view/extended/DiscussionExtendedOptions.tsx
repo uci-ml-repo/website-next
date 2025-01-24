@@ -6,6 +6,7 @@ import {
   PencilIcon,
   Trash2Icon,
 } from "lucide-react";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DATASETS_PATH } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 
 export default function DiscussionExtendedOptions({
@@ -41,9 +43,13 @@ export default function DiscussionExtendedOptions({
         <DropdownMenuContent align="end">
           {session?.user.id === discussion.user.id ? (
             <>
-              <DropdownMenuItem>
-                <PencilIcon />
-                Edit
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`${DATASETS_PATH}/${discussion.dataset.id}/${discussion.dataset.slug}/discussions/${discussion.id}/edit`}
+                >
+                  <PencilIcon />
+                  Edit
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 destructive
