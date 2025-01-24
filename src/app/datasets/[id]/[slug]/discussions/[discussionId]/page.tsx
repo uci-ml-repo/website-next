@@ -25,38 +25,40 @@ export default async function Page({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex min-w-0 items-center space-x-2">
-          <Button asChild variant="outline" size="icon">
-            <Link href=".">
-              <ArrowLeftIcon />
-            </Link>
-          </Button>
-          <ProfileAvatar
-            src={discussion.user.image}
-            className="mr-2 size-8 max-sm:hidden"
-          />
-          <div className="min-w-0">
-            <div className="space-x-1.5 text-xs text-muted-foreground">
-              <span>{discussion.user.name}</span>
-              <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-              {discussion.updatedAt && (
-                <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-              )}
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <div className="flex justify-between">
+          <div className="flex min-w-0 items-center space-x-2">
+            <Button asChild variant="outline" size="icon">
+              <Link href=".">
+                <ArrowLeftIcon />
+              </Link>
+            </Button>
+            <ProfileAvatar
+              src={discussion.user.image}
+              className="mr-2 size-8 max-sm:hidden"
+            />
+            <div className="min-w-0">
+              <div className="space-x-1.5 text-xs text-muted-foreground">
+                <span>{discussion.user.name}</span>
+                <span>&middot; {timeSince(discussion.createdAt)} ago</span>
+                {discussion.updatedAt && (
+                  <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex space-x-1">
-          <DiscussionUpvote discussion={discussion} />
-          <DiscussionExtendedOptions discussion={discussion} />
+          <div className="flex space-x-1">
+            <DiscussionUpvote discussion={discussion} />
+            <DiscussionExtendedOptions discussion={discussion} />
+          </div>
         </div>
+        <h1 className="overflow-hidden overflow-ellipsis text-pretty text-2xl font-bold">
+          {discussion.title}
+        </h1>
+        <MDXViewer markdown={discussion.content} />
       </div>
-      <h1 className="overflow-hidden overflow-ellipsis text-pretty text-2xl font-bold">
-        {discussion.title}
-      </h1>
-      <MDXViewer markdown={discussion.content} />
       <DiscussionComments discussion={discussion} />
     </div>
   );

@@ -15,7 +15,7 @@ export default function ProfileDatasets({
     <Button asChild className="lift" variant="gold">
       <Link href={CONTRIBUTE_PATH}>
         <PlusIcon />
-        <div>Start Draft</div>
+        <div>Add Dataset</div>
       </Link>
     </Button>
   );

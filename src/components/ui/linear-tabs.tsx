@@ -28,11 +28,13 @@ interface LinearTabsRootProps
   > {
   defaultValue: string;
   routerStore?: string;
+  routerSegment?: number;
 }
 
 export function LinearTabs({
   defaultValue,
   routerStore,
+  routerSegment,
   children,
   ...props
 }: LinearTabsRootProps) {
@@ -42,10 +44,12 @@ export function LinearTabs({
   const [currentValue, setCurrentValue] = React.useState(defaultValue);
 
   React.useEffect(() => {
-    const segments = pathname.split("/").filter(Boolean);
-    const nextValue = segments[3] || "about";
-    setCurrentValue(nextValue);
-  }, [pathname]);
+    if (routerStore && routerSegment) {
+      const segments = pathname.split("/").filter(Boolean);
+      const nextValue = segments[routerSegment] || defaultValue;
+      setCurrentValue(nextValue);
+    }
+  }, [defaultValue, pathname, routerSegment, routerStore]);
 
   function onValueChange(val: string) {
     setCurrentValue(val);

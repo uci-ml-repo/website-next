@@ -279,7 +279,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     status: Enums.DatasetStatus.PENDING,
     donatedAt: new Date("2023-12-07"),
     yearCreated: 2023,
-    title: "My Pending Externally Linked Enums.Dataset",
+    title: "My Pending Externally Linked Dataset",
     subtitle: null,
     doi: "10.5281/zenodo.7669442",
     description:

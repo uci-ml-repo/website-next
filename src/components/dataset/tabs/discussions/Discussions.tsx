@@ -33,6 +33,8 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
               sort: "desc",
             },
       ],
+      limit: 10,
+      offset: 0,
     },
     {
       enabled: status !== "loading",
@@ -54,15 +56,17 @@ export default function Discussions({ dataset }: { dataset: DatasetResponse }) {
           {discussionsQuery.data.discussions.length === 0 ? (
             <Card className="w-full">
               <CardContent className="flex h-[130px] items-center justify-center">
-                <div className="space-y-4 text-center">
+                <div className="space-y-3 text-center">
                   <div className="text-muted-foreground">
                     There are no discussions yet
                   </div>
-                  <DiscussionCreateButton
-                    text="Start a discussion"
-                    session={session}
-                    authedRedirect="discussions/create"
-                  />
+                  <div>
+                    <DiscussionCreateButton
+                      text="Start a discussion"
+                      session={session}
+                      authedRedirect="discussions/create"
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>

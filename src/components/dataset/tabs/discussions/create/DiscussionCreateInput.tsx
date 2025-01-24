@@ -1,9 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { MDXEditorMethods } from "@mdxeditor/editor";
 import { redirect } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -41,7 +40,6 @@ export default function DiscussionCreateInput({
   replyTo,
 }: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
-  const editorRef = useRef<MDXEditorMethods>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,14 +62,9 @@ export default function DiscussionCreateInput({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await createMutation.mutateAsync({
       datasetId,
-      title: values.title,
-      content: getContent(),
+      ...values,
     });
-    form.reset();
-  }
-
-  function getContent() {
-    return editorRef.current?.getMarkdown() ?? "";
+    redirect(".");
   }
 
   return (
@@ -102,12 +95,7 @@ export default function DiscussionCreateInput({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <MDXEditor
-                    {...field}
-                    ref={editorRef}
-                    markdown={field.value}
-                    autoFocus
-                  />
+                  <MDXEditor {...field} markdown={field.value} autoFocus />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -125,7 +113,9 @@ export default function DiscussionCreateInput({
               <Button
                 variant="secondary"
                 onClick={() =>
-                  getContent().length > 0 || setCancelDialogOpen(true)
+                  form.getValues().content || form.getValues().title
+                    ? setCancelDialogOpen(true)
+                    : redirect(".")
                 }
                 type="button"
               >
@@ -151,13 +141,7 @@ export default function DiscussionCreateInput({
             >
               Cancel
             </Button>
-            <Button
-              variant="destructive"
-              onClick={() => {
-                form.reset();
-                redirect(".");
-              }}
-            >
+            <Button variant="destructive" onClick={() => redirect(".")}>
               Discard
             </Button>
           </div>

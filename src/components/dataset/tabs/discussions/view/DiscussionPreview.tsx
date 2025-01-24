@@ -13,40 +13,37 @@ export default function DiscussionPreview({
   discussion: DiscussionResponse;
 }) {
   return (
-    <Card className="group hover:bg-muted/50">
-      <Link href={`discussions/${discussion.id}`}>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <div className="flex min-w-0 items-center">
-                <ProfileAvatar
-                  src={discussion.user.image}
-                  className="mr-2 size-12 max-sm:hidden"
-                />
-                <div className="min-w-0">
-                  <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold group-hover:underline">
-                    {discussion.title}
-                  </div>
-                  <div className="space-x-1.5 text-xs text-muted-foreground">
-                    <span>{discussion.user.name}</span>
-                    <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-                    {discussion.updatedAt && (
-                      <span>
-                        (edited {timeSince(discussion.updatedAt)} ago)
-                      </span>
-                    )}
-                  </div>
-                </div>
+    <Card className="lift group">
+      <CardContent className="space-y-6">
+        <div className="flex justify-between">
+          <Link
+            href={`discussions/${discussion.id}`}
+            className="flex w-full min-w-0 items-center"
+          >
+            <ProfileAvatar
+              src={discussion.user.image}
+              className="mr-2 size-12 max-sm:hidden"
+            />
+            <div className="min-w-0">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold group-hover:underline">
+                {discussion.title}
               </div>
-
-              <div className="flex space-x-1">
-                <DiscussionUpvote discussion={discussion} />
-                <DiscussionExtendedOptions discussion={discussion} />
+              <div className="space-x-1.5 text-xs text-muted-foreground">
+                <span>{discussion.user.name}</span>
+                <span>&middot; {timeSince(discussion.createdAt)} ago</span>
+                {discussion.updatedAt && (
+                  <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
+                )}
               </div>
             </div>
+          </Link>
+
+          <div className="flex space-x-1">
+            <DiscussionUpvote discussion={discussion} />
+            <DiscussionExtendedOptions discussion={discussion} />
           </div>
-        </CardContent>
-      </Link>
+        </div>
+      </CardContent>
     </Card>
   );
 }
