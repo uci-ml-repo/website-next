@@ -81,8 +81,11 @@ export default function DiscussionCreateInput({
                     {...field}
                     pill={false}
                     className="px-4 font-bold"
-                    placeholder="Discussion Topic"
+                    placeholder="Discussion Title"
                     variantSize="xl"
+                    disabled={
+                      form.formState.isSubmitting || form.formState.isSubmitted
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -95,7 +98,14 @@ export default function DiscussionCreateInput({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <MDXEditor {...field} markdown={field.value} autoFocus />
+                  <MDXEditor
+                    {...field}
+                    markdown={field.value}
+                    autoFocus
+                    readOnly={
+                      form.formState.isSubmitting || form.formState.isSubmitted
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,7 +132,8 @@ export default function DiscussionCreateInput({
                 Cancel
               </Button>
               <Button variant="gold" type="submit">
-                {createMutation.isPending && <Spinner />}
+                {(form.formState.isSubmitting ||
+                  form.formState.isSubmitted) && <Spinner />}
                 Post
               </Button>
             </div>
