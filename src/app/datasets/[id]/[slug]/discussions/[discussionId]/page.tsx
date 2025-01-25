@@ -2,9 +2,9 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import DiscussionComments from "@/components/dataset/tabs/discussions/view/comments/DiscussionComments";
-import DiscussionUpvote from "@/components/dataset/tabs/discussions/view/DiscussionUpvote";
-import DiscussionExtendedOptions from "@/components/dataset/tabs/discussions/view/extended/DiscussionExtendedOptions";
+import DiscussionComments from "@/components/discussion/view/comments/DiscussionComments";
+import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
+import DiscussionExtendedOptions from "@/components/discussion/view/extended/DiscussionExtendedOptions";
 import MDXViewer from "@/components/editor/MDXViewer";
 import { Button } from "@/components/ui/button";
 import ProfileAvatar from "@/components/ui/profile-avatar";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import DiscussionUpvote from "@/components/dataset/tabs/discussions/view/DiscussionUpvote";
+import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";

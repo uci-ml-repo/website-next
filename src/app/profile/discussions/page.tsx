@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import Discussions from "@/components/dataset/tabs/discussions/Discussions";
+import Discussions from "@/components/discussion/Discussions";
 
 export default async function Page() {
   const session = await auth();

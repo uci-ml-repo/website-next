@@ -1,6 +1,6 @@
 import { ArrowUpRightIcon, ClockIcon } from "lucide-react";
 
-import type { DiscussionsOrderBy } from "@/components/dataset/tabs/discussions/Discussions";
+import type { DiscussionsOrderBy } from "@/components/discussion/Discussions";
 import {
   Select,
   SelectContent,

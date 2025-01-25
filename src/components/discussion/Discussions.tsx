@@ -3,13 +3,12 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import DiscussionCreateButton from "@/components/dataset/tabs/discussions/create/DiscussionCreateButton";
-import DiscussionsOrderBy from "@/components/dataset/tabs/discussions/DiscussionsOrderBy";
+import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
+import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
+import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
 import { Card, CardContent } from "@/components/ui/card";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
-
-import DiscussionPreview from "./view/DiscussionPreview";
 
 export type DiscussionsOrderBy = "top" | "new";
 
@@ -61,11 +60,13 @@ export default function Discussions({
                   <div className="text-muted-foreground">
                     There are no discussions yet
                   </div>
-                  <DiscussionCreateButton
-                    text="Add discussion"
-                    session={session}
-                    authedRedirect="discussions/create"
-                  />
+                  {allowCreate && (
+                    <DiscussionCreateButton
+                      text="Add discussion"
+                      session={session}
+                      authedRedirect="discussions/create"
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>

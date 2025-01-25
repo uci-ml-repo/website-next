@@ -1,7 +1,7 @@
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import DiscussionCreateInput from "@/components/dataset/tabs/discussions/create/DiscussionCreateInput";
+import DiscussionCreateInput from "@/components/discussion/create/DiscussionCreateInput";
 
 export default async function Page({
   params,
