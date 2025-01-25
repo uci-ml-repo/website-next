@@ -82,7 +82,8 @@ export default function DiscussionCreateInput({
                     placeholder="Discussion Title"
                     variantSize="xl"
                     disabled={
-                      form.formState.isSubmitting || form.formState.isSubmitted
+                      form.formState.isSubmitting ||
+                      form.formState.isSubmitSuccessful
                     }
                   />
                 </FormControl>
@@ -101,7 +102,8 @@ export default function DiscussionCreateInput({
                     markdown={field.value}
                     autoFocus
                     readOnly={
-                      form.formState.isSubmitting || form.formState.isSubmitted
+                      form.formState.isSubmitting ||
+                      form.formState.isSubmitSuccessful
                     }
                   />
                 </FormControl>
@@ -122,9 +124,8 @@ export default function DiscussionCreateInput({
               Cancel
             </Button>
             <Button variant="gold" type="submit">
-              {(form.formState.isSubmitting || form.formState.isSubmitted) && (
-                <Spinner />
-              )}
+              {(form.formState.isSubmitting ||
+                form.formState.isSubmitSuccessful) && <Spinner />}
               Post <SendHorizontalIcon />
             </Button>
           </div>

@@ -11,7 +11,6 @@ export const discussionQuery = z.object({
 });
 
 export const discussionCommentQuery = z.object({
-  datasetId: z.number().optional(),
   discussionId: z.string().optional(),
   userId: z.string().optional(),
   order: order(["createdAt", "upvoteCount"]).optional(),

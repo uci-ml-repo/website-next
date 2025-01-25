@@ -1,23 +1,18 @@
 import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dataset, discussion, discussionComment } from "@/db/schema";
+import { dataset, discussionComment } from "@/db/schema";
 import type { DiscussionCommentQuery } from "@/server/service/schema/discussions";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 function buildQuery(query: DiscussionCommentQuery) {
   let conditions = [];
-
-  if (query.datasetId) {
-    conditions.push(eq(discussion.datasetId, query.datasetId));
-  }
-
   if (query.userId) {
-    conditions.push(eq(discussion.userId, query.userId));
+    conditions.push(eq(discussionComment.userId, query.userId));
   }
 
   if (query.discussionId) {
-    conditions.push(eq(discussion.id, query.discussionId));
+    conditions.push(eq(discussionComment.discussionId, query.discussionId));
   }
 
   return and(...conditions);

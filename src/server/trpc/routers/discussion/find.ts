@@ -5,7 +5,7 @@ import { discussionQuery } from "@/server/service/schema/discussions";
 import { procedure, router } from "@/server/trpc";
 
 const discussionFindRouter = router({
-  byId: procedure.input(z.string()).query(async ({ input }) => {
+  byId: procedure.input(z.string().uuid()).query(async ({ input }) => {
     return service.discussion.find.byId(input);
   }),
 
@@ -13,7 +13,7 @@ const discussionFindRouter = router({
     return service.discussion.find.byQuery(input);
   }),
 
-  byUserId: procedure.input(z.string()).query(async ({ input }) => {
+  byUserId: procedure.input(z.string().uuid()).query(async ({ input }) => {
     return service.discussion.find.byUserId(input);
   }),
 });
