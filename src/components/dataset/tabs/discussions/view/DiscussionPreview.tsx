@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import DiscussionUpvote from "@/components/dataset/tabs/discussions/view/DiscussionUpvote";
-import DiscussionExtendedOptions from "@/components/dataset/tabs/discussions/view/extended/DiscussionExtendedOptions";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionResponse } from "@/lib/types";
@@ -9,8 +8,10 @@ import { datasetPage, timeSince } from "@/lib/utils";
 
 export default function DiscussionPreview({
   discussion,
+  showOnDataset,
 }: {
   discussion: DiscussionResponse;
+  showOnDataset?: boolean;
 }) {
   return (
     <Card className="lift group">
@@ -34,14 +35,14 @@ export default function DiscussionPreview({
                 {discussion.updatedAt && (
                   <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
                 )}
+                {showOnDataset && (
+                  <span>&middot; {discussion.dataset.title}</span>
+                )}
               </div>
             </div>
           </Link>
 
-          <div className="flex space-x-1">
-            <DiscussionUpvote discussion={discussion} />
-            <DiscussionExtendedOptions discussion={discussion} />
-          </div>
+          <DiscussionUpvote discussion={discussion} />
         </div>
       </CardContent>
     </Card>

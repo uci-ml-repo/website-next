@@ -50,19 +50,10 @@ export default function Discussions({
     );
   }
 
-  const Create = () =>
-    allowCreate && (
-      <DiscussionCreateButton
-        text="Add discussion"
-        session={session}
-        authedRedirect="discussions/create"
-      />
-    );
-
   return (
     <div className="space-y-4">
       <div>
-        <div className="items-center space-y-6 sm:flex">
+        <div className="items-center max-sm:space-y-4 sm:flex">
           {discussionsQuery.data.discussions.length === 0 ? (
             <Card className="w-full">
               <CardContent className="flex h-[130px] items-center justify-center">
@@ -70,19 +61,28 @@ export default function Discussions({
                   <div className="text-muted-foreground">
                     There are no discussions yet
                   </div>
-                  <Create />
+                  <DiscussionCreateButton
+                    text="Add discussion"
+                    session={session}
+                    authedRedirect="discussions/create"
+                  />
                 </div>
               </CardContent>
             </Card>
           ) : (
-            <Create />
+            <DiscussionCreateButton
+              text="Add discussion"
+              session={session}
+              authedRedirect="discussions/create"
+              className="max-sm:w-full"
+            />
           )}
 
           {discussionsQuery.data.discussions.length > 0 && (
             <DiscussionsOrderBy
               orderBy={orderBy}
               setOrderBy={setOrderBy}
-              className="sm:flex sm:w-full sm:justify-end"
+              className="flex w-full justify-end"
             />
           )}
         </div>
@@ -90,7 +90,11 @@ export default function Discussions({
 
       <div className="space-y-3">
         {discussionsQuery.data.discussions.map((discussion) => (
-          <DiscussionPreview key={discussion.id} discussion={discussion} />
+          <DiscussionPreview
+            key={discussion.id}
+            discussion={discussion}
+            showOnDataset={!!userId}
+          />
         ))}
       </div>
     </div>

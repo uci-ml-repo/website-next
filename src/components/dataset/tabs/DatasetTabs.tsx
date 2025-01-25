@@ -29,11 +29,12 @@ export default function DatasetTabs({
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
 
-  const discussionCountQuery = trpc.discussion.count.byDatasetId.useQuery(
-    dataset.id,
-  );
+  const discussionCountQuery = trpc.discussion.find.byQuery.useQuery({
+    datasetId: dataset.id,
+  });
 
-  const discussionCount = discussionCountQuery?.data ?? null;
+  const discussionCount =
+    discussionCountQuery?.data?.discussions.length ?? null;
 
   return (
     <LinearTabs
