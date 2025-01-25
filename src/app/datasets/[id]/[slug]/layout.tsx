@@ -75,7 +75,7 @@ export default async function Layout({
           <DatasetTabs
             basePath={basePath}
             dataset={dataset}
-            discussionsCount={discussionsQuery.discussions.length}
+            // discussionsCount={discussionsQuery.discussions.length}
           >
             {children}
           </DatasetTabs>

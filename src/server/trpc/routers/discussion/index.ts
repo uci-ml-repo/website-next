@@ -1,5 +1,6 @@
 import { router } from "@/server/trpc";
 import discussionCommentRouter from "@/server/trpc/routers/discussion/comment";
+import discussionCountRouter from "@/server/trpc/routers/discussion/count";
 import discussionCreateRouter from "@/server/trpc/routers/discussion/create";
 import discussionFindRouter from "@/server/trpc/routers/discussion/find";
 import discussionRemoveRouter from "@/server/trpc/routers/discussion/remove";
@@ -10,6 +11,7 @@ import discussionUpvoteRouter from "@/server/trpc/routers/discussion/upvote";
 const discussionRouter = router({
   comment: discussionCommentRouter,
   find: discussionFindRouter,
+  count: discussionCountRouter,
   edit: discussionUpdateRouter,
   create: discussionCreateRouter,
   remove: discussionRemoveRouter,

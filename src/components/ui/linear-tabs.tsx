@@ -9,6 +9,7 @@ import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
+import Spinner from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 const TabsValueContext = React.createContext<string | undefined>(undefined);
@@ -171,7 +172,7 @@ export const LinearTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
     badgeVariant?: VariantProps<typeof badgeVariants>["variant"];
-    badgeValue?: number | string;
+    badgeValue?: number | string | null;
     link?: string;
   }
 >(
@@ -200,7 +201,9 @@ export const LinearTabsTrigger = React.forwardRef<
         {badgeValue !== undefined ? (
           <div className="flex items-center space-x-2">
             <span>{children}</span>
-            <Badge variant={badgeVariant}>{badgeValue}</Badge>
+            <Badge variant={badgeVariant}>
+              {badgeValue ?? <Spinner className="size-4" />}
+            </Badge>
           </div>
         ) : (
           children

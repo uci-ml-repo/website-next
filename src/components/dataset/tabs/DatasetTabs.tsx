@@ -12,24 +12,28 @@ import {
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
 import type { DatasetResponse } from "@/lib/types";
+import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetTabsProps {
   basePath: string;
   dataset: DatasetResponse;
-  discussionsCount: number;
   children: React.ReactNode;
 }
 
 export default function DatasetTabs({
   basePath,
   dataset,
-  discussionsCount,
   children,
 }: DatasetTabsProps) {
   const pathname = usePathname();
-
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
+
+  const discussionCountQuery = trpc.discussion.count.byDatasetId.useQuery(
+    dataset.id,
+  );
+
+  const discussionCount = discussionCountQuery?.data ?? null;
 
   return (
     <LinearTabs
@@ -54,7 +58,7 @@ export default function DatasetTabs({
 
           <LinearTabsTrigger
             value="discussions"
-            badgeValue={discussionsCount}
+            badgeValue={discussionCount}
             link={path.join(basePath, "discussions")}
           >
             Discussions

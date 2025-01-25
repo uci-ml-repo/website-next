@@ -1,4 +1,5 @@
 import DiscussionCommentService from "@/server/service/discussion/comment";
+import DiscussionCountService from "@/server/service/discussion/count";
 import DiscussionCreateService from "@/server/service/discussion/create";
 import DiscussionUpdateService from "@/server/service/discussion/edit";
 import DiscussionFindService from "@/server/service/discussion/find";
@@ -10,6 +11,7 @@ export default class DiscussionService {
   constructor(
     readonly comment = new DiscussionCommentService(),
     readonly find = new DiscussionFindService(),
+    readonly count = new DiscussionCountService(),
     readonly update = new DiscussionUpdateService(),
     readonly create = new DiscussionCreateService(),
     readonly remove = new DiscussionRemoveService(),
