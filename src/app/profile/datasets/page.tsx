@@ -1,10 +1,33 @@
+import { PlusIcon, SquarePenIcon } from "lucide-react";
+import Link from "next/link";
+
 import { auth } from "@/auth";
-import ProfileDatasets from "@/components/profile/ProfileDatasets";
+import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
+import { Button } from "@/components/ui/button";
+import { CONTRIBUTE_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
   const session = await auth();
   const datasets = await caller.dataset.find.byUserId(session!.user.id);
 
-  return <ProfileDatasets datasets={datasets} />;
+  const endCard = (
+    <Button asChild className="lift" variant="gold">
+      <Link href={CONTRIBUTE_PATH}>
+        <PlusIcon />
+        <div>Add Dataset</div>
+      </Link>
+    </Button>
+  );
+
+  return (
+    <div className="space-y-8">
+      <DatasetCardCarousel
+        icon={<SquarePenIcon />}
+        heading="Datasets"
+        datasets={datasets}
+        endCard={endCard}
+      />
+    </div>
+  );
 }
