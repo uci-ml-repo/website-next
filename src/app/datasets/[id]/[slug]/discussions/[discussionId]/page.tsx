@@ -28,7 +28,7 @@ export default async function Page({
     <div className="space-y-8">
       <div className="space-y-4">
         <div className="flex justify-between">
-          <div className="flex min-w-0 items-center space-x-2">
+          <div className="flex min-w-0 items-center space-x-4">
             <Button asChild variant="outline" size="icon">
               <Link href=".">
                 <ArrowLeftIcon />

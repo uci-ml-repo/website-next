@@ -10,7 +10,9 @@ export default function DiscussionComments({
 }: {
   discussion: DiscussionResponse;
 }) {
-  const commentsQuery = trpc.discussion.comment.find.byId.useQuery("");
+  const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
+    discussionId: discussion.id,
+  });
 
   return (
     <div>

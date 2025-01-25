@@ -1,7 +1,11 @@
+import { redirect } from "next/navigation";
+import path from "path";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
+import { datasetPage } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionDeleteDialogProps {
@@ -27,7 +31,7 @@ export default function DiscussionDeleteDialog({
 
   function removeDiscussion() {
     removeMutation.mutate({ discussionId: discussion.id });
-    setOpen(false);
+    redirect(path.join(datasetPage(discussion.dataset), "discussions"));
   }
 
   return (

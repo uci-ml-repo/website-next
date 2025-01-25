@@ -313,7 +313,7 @@ export const discussion = pgTable("discussion", {
     .references(() => user.id),
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => dataset.id),
+    .references(() => dataset.id, { onDelete: "cascade" }),
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
@@ -346,7 +346,7 @@ export const discussionComment = pgTable("discussion_comment", {
     .references(() => user.id),
   discussionId: uuid("discussion_id")
     .notNull()
-    .references(() => discussion.id),
+    .references(() => discussion.id, { onDelete: "cascade" }),
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
@@ -380,7 +380,7 @@ export const discussionUpvote = pgTable(
       .references(() => user.id),
     discussionId: uuid("discussion_id")
       .notNull()
-      .references(() => discussion.id),
+      .references(() => discussion.id, { onDelete: "cascade" }),
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.discussionId] })],
@@ -408,7 +408,7 @@ export const discussionCommentUpvote = pgTable(
       .references(() => user.id),
     commentId: uuid("comment_id")
       .notNull()
-      .references(() => discussionComment.id),
+      .references(() => discussionComment.id, { onDelete: "cascade" }),
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.commentId] })],
@@ -432,7 +432,7 @@ export const discussionReport = pgTable("discussion_report", {
   id: uuid("id").primaryKey().defaultRandom(),
   discussionId: uuid("discussion_id")
     .notNull()
-    .references(() => discussion.id),
+    .references(() => discussion.id, { onDelete: "cascade" }),
   reason: discussionReportReason("reason").notNull(),
   details: text("details"),
   userId: uuid("user_id"),

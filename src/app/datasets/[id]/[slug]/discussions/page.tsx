@@ -8,5 +8,5 @@ export default async function Page({
 }) {
   const dataset = await caller.dataset.find.byId(Number((await params).id));
 
-  return <DatasetDiscussions datasetId={dataset!.id} />;
+  return <DatasetDiscussions datasetId={dataset!.id} allowCreate />;
 }

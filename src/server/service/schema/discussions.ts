@@ -10,4 +10,14 @@ export const discussionQuery = z.object({
   offset: z.number().optional(),
 });
 
+export const discussionCommentQuery = z.object({
+  datasetId: z.number().optional(),
+  discussionId: z.string().optional(),
+  userId: z.string().optional(),
+  order: order(["createdAt", "upvoteCount"]).optional(),
+  limit: z.number().optional(),
+  offset: z.number().optional(),
+});
+
 export type DiscussionQuery = z.infer<typeof discussionQuery>;
+export type DiscussionCommentQuery = z.infer<typeof discussionCommentQuery>;

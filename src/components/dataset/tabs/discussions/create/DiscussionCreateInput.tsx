@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SendHorizontalIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,12 +19,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
-import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCreateInputProps {
   datasetId: number;
-  replyTo?: DiscussionResponse;
   className?: string;
 }
 
@@ -37,7 +36,6 @@ const formSchema = z.object({
 
 export default function DiscussionCreateInput({
   datasetId,
-  replyTo,
 }: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -112,31 +110,23 @@ export default function DiscussionCreateInput({
             )}
           />
           <div className="flex items-center justify-between">
-            {replyTo ? (
-              <div className="text-sm text-muted-foreground">
-                Replying to {replyTo.user.name}
-              </div>
-            ) : (
-              <div />
-            )}
-            <div className="flex space-x-2">
-              <Button
-                variant="secondary"
-                onClick={() =>
-                  form.getValues().content || form.getValues().title
-                    ? setCancelDialogOpen(true)
-                    : redirect(".")
-                }
-                type="button"
-              >
-                Cancel
-              </Button>
-              <Button variant="gold" type="submit">
-                {(form.formState.isSubmitting ||
-                  form.formState.isSubmitted) && <Spinner />}
-                Post
-              </Button>
-            </div>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                form.getValues().content || form.getValues().title
+                  ? setCancelDialogOpen(true)
+                  : redirect(".")
+              }
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button variant="gold" type="submit">
+              {(form.formState.isSubmitting || form.formState.isSubmitted) && (
+                <Spinner />
+              )}
+              Post <SendHorizontalIcon />
+            </Button>
           </div>
         </form>
       </Form>
