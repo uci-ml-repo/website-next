@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 
-import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { FileResponse } from "@/lib/types";
 
 interface FileContextProps {
@@ -19,7 +18,7 @@ const FileContext = createContext<FileContextProps>({
   fileHistory: [],
   fileForwardHistory: [],
   currentFile: {
-    path: STATIC_FILES_ROUTE,
+    path: "",
     type: "directory",
   },
   setCurrentFile: () => {},

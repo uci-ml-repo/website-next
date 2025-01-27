@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontalIcon } from "lucide-react";
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import { redirect, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -38,6 +38,11 @@ export default function DiscussionCreateInput({
   datasetId,
 }: DiscussionCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    console.log(pathname);
+  }, [pathname]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,17 +80,20 @@ export default function DiscussionCreateInput({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    {...field}
-                    pill={false}
-                    className="px-4 font-bold"
-                    placeholder="Discussion Title"
-                    variantSize="xl"
-                    disabled={
-                      form.formState.isSubmitting ||
-                      form.formState.isSubmitSuccessful
-                    }
-                  />
+                  <div className="rounded-lg bg-secondary">
+                    <div className="px-2 py-1 text-sm">Discussion Title</div>
+                    <Input
+                      {...field}
+                      pill={false}
+                      className="bg-background px-4 font-bold"
+                      // placeholder="Discussion Title"
+                      variantSize="xl"
+                      disabled={
+                        form.formState.isSubmitting ||
+                        form.formState.isSubmitSuccessful
+                      }
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

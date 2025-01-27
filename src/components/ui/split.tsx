@@ -203,11 +203,13 @@ export default function Split({
       </div>
 
       <motion.div
+        className="w-full"
         animate={{
-          width:
-            leftPercent === 100
+          width: leftPercent
+            ? leftPercent === 100
               ? `${minSizes[1]}px`
-              : `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`,
+              : `calc(${100 - leftPercent}% - ${gutterSize / 2}px)`
+            : "100%",
           minWidth: `${minSizes[1]}px`,
         }}
         transition={{ duration: shouldAnimate && leftPercent !== 0 ? 0.3 : 0 }}

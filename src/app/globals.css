@@ -127,3 +127,7 @@ body {
 .prose {
   font-family: "Inter", sans-serif;
 }
+
+.mdxeditor-toolbar {
+  @apply !bg-secondary;
+}
