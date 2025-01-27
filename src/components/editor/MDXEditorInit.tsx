@@ -34,8 +34,6 @@ import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-import styles from "./MDXEditorInit.module.css";
-
 export const allPlugins = [
   listsPlugin(),
   quotePlugin(),
@@ -73,11 +71,7 @@ export default function MDXEditorInit({ ...props }: MDXEditorProps) {
 
   return (
     <MDXEditor
-      className={cn(
-        { "dark-theme": theme === "dark" },
-        styles.darkEditor,
-        props.className,
-      )}
+      className={cn({ "dark-theme": theme === "dark" }, props.className)}
       contentEditableClassName="min-w-full bg-background prose dark:prose-invert font-sans rounded-lg"
       markdown={props.markdown ?? "*X*"}
       {...props}
