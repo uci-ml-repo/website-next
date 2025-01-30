@@ -1,5 +1,22 @@
-import { router } from "@/server/trpc";
+import { z } from "zod";
 
-const discussionCommentCreateRouter = router({});
+import service from "@/server/service";
+import { protectedProcedure, router } from "@/server/trpc";
+
+const discussionCommentCreateRouter = router({
+  fromData: protectedProcedure
+    .input(
+      z.object({
+        discussionId: z.string(),
+        content: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      return service.discussion.comment.create.fromData({
+        userId: ctx.user.id,
+        ...input,
+      });
+    }),
+});
 
 export default discussionCommentCreateRouter;

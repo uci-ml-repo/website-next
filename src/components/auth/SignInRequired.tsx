@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import SignInButton from "@/components/auth/SignInButton";
@@ -20,7 +20,6 @@ interface SignInPromptProps {
   body: string;
   authedAction?: () => void;
   authedRedirect?: string;
-  session: Session | null;
   children: React.ReactNode;
 }
 
@@ -28,10 +27,10 @@ export default function SignInRequired({
   title,
   body,
   children,
-  session,
   authedAction,
   authedRedirect,
 }: SignInPromptProps) {
+  const { data: session } = useSession();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   function onClick(e: React.MouseEvent) {

@@ -5,11 +5,11 @@ import { protectedProcedure, router } from "@/server/trpc";
 
 const bookmarkCreateRouter = router({
   addBookmark: protectedProcedure
-    .input(z.object({ datasetId: z.number(), userId: z.string() }))
-    .mutation(async ({ input }) => {
+    .input(z.object({ datasetId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
       return service.bookmark.create.addBookmark({
         datasetId: input.datasetId,
-        userId: input.userId,
+        userId: ctx.user.id,
       });
     }),
 });

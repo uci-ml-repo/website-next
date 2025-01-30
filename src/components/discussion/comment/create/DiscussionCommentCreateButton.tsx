@@ -1,23 +1,26 @@
 import { PlusIcon } from "lucide-react";
+import type { Session } from "next-auth";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function DiscussionCreateButton({
+export default function DiscussionCommentCreateButton({
   text,
-  authedRedirect,
+  session,
+  authedAction,
   className,
 }: {
   text: string;
-  authedRedirect: string;
+  session: Session | null;
+  authedAction: () => void;
   className?: string;
 }) {
   return (
     <SignInRequired
       title="Sign in to comment"
       body="To comment and access other features, please sign in."
-      authedRedirect={authedRedirect}
+      authedAction={authedAction}
     >
       <Button variant="gold" className={cn("lift", className)}>
         <PlusIcon />

@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import DiscussionComments from "@/components/discussion/view/comments/DiscussionComments";
+import DiscussionComments from "@/components/discussion/comment/DiscussionComments";
 import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/discussion/view/extended/DiscussionExtendedOptions";
 import MDXViewer from "@/components/editor/MDXViewer";
@@ -59,6 +59,7 @@ export default async function Page({
         </h1>
         <MDXViewer markdown={discussion.content} />
       </div>
+      <hr />
       <DiscussionComments discussion={discussion} />
     </div>
   );

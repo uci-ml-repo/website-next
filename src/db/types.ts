@@ -2,7 +2,15 @@ import { z } from "zod";
 
 import type { RequireNonNullable } from "@/lib/utils";
 
-import type { author, dataset, discussionUpvote, paper, user } from "./schema";
+import type {
+  author,
+  dataset,
+  discussion,
+  discussionCommentUpvote,
+  discussionUpvote,
+  paper,
+  user,
+} from "./schema";
 
 export type AcceptedDatasetRequiredFields =
   | "yearCreated"
@@ -35,4 +43,9 @@ export type AuthorSelect = typeof author.$inferSelect;
 
 export type PaperSelect = typeof paper.$inferSelect;
 
+export type DiscussionSelect = typeof discussion.$inferSelect;
+
 export type DiscussionUpvoteSelect = typeof discussionUpvote.$inferSelect;
+
+export type DiscussionCommentUpvoteSelect =
+  typeof discussionCommentUpvote.$inferSelect;

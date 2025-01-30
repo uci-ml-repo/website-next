@@ -1,9 +1,6 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontalIcon } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -18,45 +15,43 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DiscussionCreateInputProps {
-  datasetId: number;
+interface DiscussionCommentCreateInputProps {
+  discussionId: string;
+  className?: string;
+  setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formSchema = z.object({
-  title: z
-    .string()
-    .min(5, { message: "Title must be at least 5 characters" })
-    .max(100, { message: "Title must be less than 100 characters" }),
   content: z.string().min(1, { message: "Content is required" }),
 });
 
-export default function DiscussionCreateInput({
-  datasetId,
-}: DiscussionCreateInputProps) {
-  const router = useRouter();
+export default function DiscussionCommentCreateInput({
+  discussionId,
+  className,
+  setIsCommenting,
+}: DiscussionCommentCreateInputProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
       content: "",
     },
   });
 
   const utils = trpc.useUtils();
 
-  const createMutation = trpc.discussion.create.fromData.useMutation({
-    onSuccess: () => {
-      utils.discussion.find.byQuery.invalidate({
-        datasetId,
+  const createMutation = trpc.discussion.comment.create.fromData.useMutation({
+    onSuccess: async () => {
+      await utils.discussion.comment.find.byQuery.invalidate({
+        discussionId,
       });
 
-      router.push(".");
+      setIsCommenting(false);
     },
     onError: (error) => {
       toast({
@@ -68,8 +63,9 @@ export default function DiscussionCreateInput({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("values", values);
     await createMutation.mutateAsync({
-      datasetId,
+      discussionId,
       ...values,
     });
   }
@@ -79,28 +75,10 @@ export default function DiscussionCreateInput({
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="rounded-lg bg-secondary">
-                    <div className="px-2 py-1 text-sm">Discussion Title</div>
-                    <Input
-                      {...field}
-                      pill={false}
-                      className="bg-background px-4 font-bold"
-                      variantSize="xl"
-                      disabled={isSubmitting || isSubmitSuccessful}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={cn("space-y-4", className)}
+        >
           <FormField
             control={form.control}
             name="content"
@@ -122,7 +100,7 @@ export default function DiscussionCreateInput({
             <Button
               variant="secondary"
               onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : redirect(".")
+                isDirty ? setCancelDialogOpen(true) : setIsCommenting(false)
               }
               type="button"
             >
@@ -134,7 +112,7 @@ export default function DiscussionCreateInput({
               disabled={isSubmitting || isSubmitSuccessful}
             >
               {(isSubmitting || isSubmitSuccessful) && <Spinner />}
-              Post <SendHorizontalIcon />
+              Comment <SendHorizontalIcon />
             </Button>
           </div>
         </form>
@@ -142,8 +120,8 @@ export default function DiscussionCreateInput({
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
-          <DialogTitle>Discard discussion?</DialogTitle>
-          <p>You have a discussion in progress, discard it?</p>
+          <DialogTitle>Discard comment?</DialogTitle>
+          <p>You have a comment in progress, discard it?</p>
           <div className="flex justify-between">
             <Button
               variant="secondary"
@@ -151,7 +129,10 @@ export default function DiscussionCreateInput({
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => redirect(".")}>
+            <Button
+              variant="destructive"
+              onClick={() => setIsCommenting(false)}
+            >
               Discard
             </Button>
           </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { BookmarkIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { useBookmark } from "@/components/dataset/interactions/bookmark/DatasetBookmarkedContext";
@@ -19,7 +18,6 @@ interface DatasetBookmarkButtonProps {
 export default function DatasetBookmarkButton({
   dataset,
 }: DatasetBookmarkButtonProps) {
-  const { data: session } = useSession();
   const { isBookmarked, setIsBookmarked } = useBookmark();
 
   const addBookmark = trpc.bookmark.create.addBookmark.useMutation({
@@ -47,18 +45,14 @@ export default function DatasetBookmarkButton({
   });
 
   const handleBookmark = async () => {
-    if (!session?.user) return;
-
     try {
       if (isBookmarked) {
         await removeBookmark.mutateAsync({
           datasetId: dataset.id,
-          userId: session.user.id,
         });
       } else {
         await addBookmark.mutateAsync({
           datasetId: dataset.id,
-          userId: session.user.id,
         });
       }
     } catch {}
@@ -75,7 +69,6 @@ export default function DatasetBookmarkButton({
           title="Sign in to bookmark datasets"
           body="To bookmark datasets and access other features, please sign in."
           authedAction={handleBookmark}
-          session={session}
         >
           <Button size="icon" variant="ghost">
             <BookmarkIcon

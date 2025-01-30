@@ -136,8 +136,8 @@ export default function DiscussionEdit({
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
-          <DialogTitle>Discard comment?</DialogTitle>
-          <p>You have a comment in progress, discard it?</p>
+          <DialogTitle>Discard edits?</DialogTitle>
+          <p>You have an edit in progress, discard it?</p>
           <div className="flex justify-between">
             <Button
               variant="secondary"

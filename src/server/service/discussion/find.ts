@@ -31,10 +31,10 @@ type RawDiscussion = typeof discussion.$inferSelect & {
   upvotes: DiscussionUpvoteSelect[];
 };
 
-function transformDiscussion({ upvotes, ...discussion }: RawDiscussion) {
+function transformRow({ upvotes, ...discussion }: RawDiscussion) {
   return {
     ...discussion,
-    upvoted: !!upvotes,
+    upvoted: upvotes ? upvotes.length > 0 : false,
   };
 }
 
@@ -53,12 +53,10 @@ export default class DiscussionFindService {
             : undefined,
         },
       })
-      .then((discussion) =>
-        discussion ? transformDiscussion(discussion) : null,
-      );
+      .then((discussion) => (discussion ? transformRow(discussion) : null));
   }
 
-  async byQuery(query: DiscussionQuery, session: Session | null) {
+  async byQuery(query: DiscussionQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
           sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
@@ -81,7 +79,7 @@ export default class DiscussionFindService {
         limit: query.limit,
         offset: query.offset,
       })
-      .then((discussions) => discussions.map(transformDiscussion));
+      .then((discussions) => discussions.map(transformRow));
 
     const [countQuery] = await db
       .select({ count: count() })
@@ -108,6 +106,6 @@ export default class DiscussionFindService {
             : undefined,
         },
       })
-      .then((discussions) => discussions.map(transformDiscussion));
+      .then((discussions) => discussions.map(transformRow));
   }
 }

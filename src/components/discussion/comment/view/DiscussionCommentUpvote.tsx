@@ -5,22 +5,20 @@ import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
-import type { DiscussionResponse } from "@/lib/types";
+import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DiscussionUpvoteProps {
-  discussion: DiscussionResponse;
+interface DiscussionCommentUpvoteProps {
+  comment: DiscussionCommentResponse;
 }
 
-export default function DiscussionUpvote({
-  discussion,
-}: DiscussionUpvoteProps) {
-  const [isUpvoted, setIsUpvoted] = useState<boolean>(discussion.upvoted);
-  const [upvoteCount, setUpvoteCount] = useState<number>(
-    discussion.upvoteCount,
-  );
+export default function DiscussionCommentUpvote({
+  comment,
+}: DiscussionCommentUpvoteProps) {
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(comment.upvoted);
+  const [upvoteCount, setUpvoteCount] = useState<number>(comment.upvoteCount);
 
-  const upvoteMutation = trpc.discussion.upvote.create.useMutation({
+  const upvoteMutation = trpc.discussion.comment.upvote.create.useMutation({
     onSettled: () => {
       setIsUpvoted(true);
     },
@@ -29,23 +27,24 @@ export default function DiscussionUpvote({
     },
   });
 
-  const removeUpvoteMutation = trpc.discussion.upvote.remove.useMutation({
-    onSettled: () => {
-      setIsUpvoted(false);
-    },
-    onSuccess: () => {
-      setUpvoteCount((prev) => prev - 1);
-    },
-  });
+  const removeUpvoteMutation =
+    trpc.discussion.comment.upvote.remove.useMutation({
+      onSettled: () => {
+        setIsUpvoted(false);
+      },
+      onSuccess: () => {
+        setUpvoteCount((prev) => prev - 1);
+      },
+    });
 
   function handleUpvote() {
     if (isUpvoted) {
       removeUpvoteMutation.mutate({
-        discussionId: discussion.id,
+        discussionCommentId: comment.id,
       });
     } else {
       upvoteMutation.mutate({
-        discussionId: discussion.id,
+        discussionCommentId: comment.id,
       });
     }
   }

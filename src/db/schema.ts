@@ -104,7 +104,7 @@ export const dataset = pgTable(
   },
   (t) => [
     {
-      checkConstraint: check(
+      acceptedConstraint: check(
         "accepted_check",
         or(
           ne(t.status, Enums.DatasetStatus.APPROVED),
@@ -406,12 +406,12 @@ export const discussionCommentUpvote = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => user.id),
-    commentId: uuid("comment_id")
+    discussionCommentId: uuid("discussion_comment_id")
       .notNull()
       .references(() => discussionComment.id, { onDelete: "cascade" }),
     createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
   },
-  (t) => [primaryKey({ columns: [t.userId, t.commentId] })],
+  (t) => [primaryKey({ columns: [t.userId, t.discussionCommentId] })],
 );
 
 export const discussionCommentUpvoteRelations = relations(
@@ -422,7 +422,7 @@ export const discussionCommentUpvoteRelations = relations(
       references: [user.id],
     }),
     comment: one(discussionComment, {
-      fields: [discussionCommentUpvote.commentId],
+      fields: [discussionCommentUpvote.discussionCommentId],
       references: [discussionComment.id],
     }),
   }),

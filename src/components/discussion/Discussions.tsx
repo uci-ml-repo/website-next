@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
@@ -61,8 +61,7 @@ export default function Discussions({
                 </div>
                 {allowCreate && (
                   <DiscussionCreateButton
-                    text="Add discussion"
-                    session={session}
+                    text="Add Discussion"
                     authedRedirect="discussions/create"
                   />
                 )}
@@ -72,8 +71,7 @@ export default function Discussions({
         ) : (
           allowCreate && (
             <DiscussionCreateButton
-              text="Add discussion"
-              session={session}
+              text="Add Discussion"
               authedRedirect="discussions/create"
               className="max-sm:w-full"
             />
@@ -89,13 +87,16 @@ export default function Discussions({
         )}
       </div>
 
-      <div className="space-y-3">
-        {discussionsQuery.data.discussions.map((discussion) => (
-          <DiscussionPreview
-            key={discussion.id}
-            discussion={discussion}
-            showOnDataset={!!userId}
-          />
+      <div>
+        {discussionsQuery.data.discussions.map((discussion, index) => (
+          <React.Fragment key={discussion.id}>
+            {index === 0 && <hr />}
+            <DiscussionPreview
+              discussion={discussion}
+              showOnDataset={!!userId}
+            />
+            <hr />
+          </React.Fragment>
         ))}
       </div>
     </div>
