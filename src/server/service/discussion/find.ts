@@ -34,7 +34,7 @@ type RawDiscussion = typeof discussion.$inferSelect & {
 function transformDiscussion({ upvotes, ...discussion }: RawDiscussion) {
   return {
     ...discussion,
-    upvoted: upvotes.length > 0,
+    upvoted: !!upvotes,
   };
 }
 

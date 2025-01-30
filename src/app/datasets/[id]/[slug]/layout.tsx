@@ -53,10 +53,6 @@ export default async function Layout({
       })
     : false;
 
-  const discussionsQuery = await caller.discussion.find.byQuery({
-    datasetId: dataset.id,
-  });
-
   const basePath = path.join(DATASETS_PATH, id, slug);
 
   return (
@@ -72,11 +68,7 @@ export default async function Layout({
             />
           </Card>
 
-          <DatasetTabs
-            basePath={basePath}
-            dataset={dataset}
-            // discussionsCount={discussionsQuery.discussions.length}
-          >
+          <DatasetTabs basePath={basePath} dataset={dataset}>
             {children}
           </DatasetTabs>
         </DatasetBookmarkProvider>
