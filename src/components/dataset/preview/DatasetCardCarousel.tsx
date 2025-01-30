@@ -11,7 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import type { DatasetsSelect } from "@/db/types";
+import type { DatasetSelect } from "@/db/types";
 import { cn } from "@/lib/utils";
 
 interface DatasetGroupProps {
@@ -19,7 +19,7 @@ interface DatasetGroupProps {
   icon?: React.ReactNode;
   seeAllHref?: string;
   endCard?: React.ReactNode;
-  datasets: DatasetsSelect[];
+  datasets: DatasetSelect[];
 }
 
 export default function DatasetCardCarousel({

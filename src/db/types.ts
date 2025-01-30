@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import type { RequireNonNullable } from "@/lib/utils";
 
-import type { author, dataset, paper } from "./schema";
+import type { author, dataset, discussionUpvote, paper, user } from "./schema";
 
 export type AcceptedDatasetRequiredFields =
   | "yearCreated"
@@ -23,12 +23,16 @@ export const acceptedDataset = z.object({
   featureTypes: z.array(z.string()),
 });
 
-export type DatasetsSelect = typeof dataset.$inferSelect;
+export type UserSelect = typeof user.$inferSelect;
+
+export type DatasetSelect = typeof dataset.$inferSelect;
 export type AcceptedDatasetSelect = RequireNonNullable<
-  DatasetsSelect,
+  DatasetSelect,
   AcceptedDatasetRequiredFields
 >;
 
-export type AuthorsSelect = typeof author.$inferSelect;
+export type AuthorSelect = typeof author.$inferSelect;
 
-export type PapersSelect = typeof paper.$inferSelect;
+export type PaperSelect = typeof paper.$inferSelect;
+
+export type DiscussionUpvoteSelect = typeof discussionUpvote.$inferSelect;

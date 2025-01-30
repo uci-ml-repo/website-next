@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { DatasetsSelect } from "@/db/types";
+import type { DatasetSelect } from "@/db/types";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -24,7 +24,7 @@ import {
 import { caller } from "@/server/trpc/query/server";
 
 interface DatasetCardProps {
-  dataset: DatasetsSelect;
+  dataset: DatasetSelect;
   ref?: React.Ref<HTMLDivElement>;
 }
 

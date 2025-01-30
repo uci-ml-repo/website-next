@@ -2,12 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontalIcon } from "lucide-react";
-import { redirect, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { redirect, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import MDXEditor from "@/components/editor/MDXEditor";
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -37,12 +38,8 @@ const formSchema = z.object({
 export default function DiscussionCreateInput({
   datasetId,
 }: DiscussionCreateInputProps) {
+  const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    console.log(pathname);
-  }, [pathname]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,6 +56,15 @@ export default function DiscussionCreateInput({
       utils.discussion.find.byQuery.invalidate({
         datasetId,
       });
+
+      router.push(".");
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -67,8 +73,9 @@ export default function DiscussionCreateInput({
       datasetId,
       ...values,
     });
-    redirect(".");
   }
+
+  const { isDirty, isSubmitting, isSubmitSuccessful } = form.formState;
 
   return (
     <>
@@ -86,12 +93,8 @@ export default function DiscussionCreateInput({
                       {...field}
                       pill={false}
                       className="bg-background px-4 font-bold"
-                      // placeholder="Discussion Title"
                       variantSize="xl"
-                      disabled={
-                        form.formState.isSubmitting ||
-                        form.formState.isSubmitSuccessful
-                      }
+                      disabled={isSubmitting || isSubmitSuccessful}
                     />
                   </div>
                 </FormControl>
@@ -109,10 +112,7 @@ export default function DiscussionCreateInput({
                     {...field}
                     markdown={field.value}
                     autoFocus
-                    readOnly={
-                      form.formState.isSubmitting ||
-                      form.formState.isSubmitSuccessful
-                    }
+                    disabled={isSubmitting || isSubmitSuccessful}
                   />
                 </FormControl>
                 <FormMessage />
@@ -123,17 +123,18 @@ export default function DiscussionCreateInput({
             <Button
               variant="secondary"
               onClick={() =>
-                form.getValues().content || form.getValues().title
-                  ? setCancelDialogOpen(true)
-                  : redirect(".")
+                isDirty ? setCancelDialogOpen(true) : redirect(".")
               }
               type="button"
             >
               Cancel
             </Button>
-            <Button variant="gold" type="submit">
-              {(form.formState.isSubmitting ||
-                form.formState.isSubmitSuccessful) && <Spinner />}
+            <Button
+              variant="gold"
+              type="submit"
+              disabled={isSubmitting || isSubmitSuccessful}
+            >
+              {(isSubmitting || isSubmitSuccessful) && <Spinner />}
               Post <SendHorizontalIcon />
             </Button>
           </div>

@@ -12,7 +12,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
-import type { PapersSelect } from "@/db/types";
+import type { PaperSelect } from "@/db/types";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -147,7 +147,7 @@ function MetadataCollapsible({
   );
 }
 
-function PaperPreview({ paper }: { paper: PapersSelect }) {
+function PaperPreview({ paper }: { paper: PaperSelect }) {
   return (
     <div>
       <Link

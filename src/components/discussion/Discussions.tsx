@@ -51,42 +51,42 @@ export default function Discussions({
 
   return (
     <div className="space-y-4">
-      <div>
-        <div className="items-center max-sm:space-y-4 sm:flex">
-          {discussionsQuery.data.discussions.length === 0 ? (
-            <Card className="w-full">
-              <CardContent className="flex h-[130px] items-center justify-center">
-                <div className="space-y-3 text-center">
-                  <div className="text-muted-foreground">
-                    There are no discussions yet
-                  </div>
-                  {allowCreate && (
-                    <DiscussionCreateButton
-                      text="Add discussion"
-                      session={session}
-                      authedRedirect="discussions/create"
-                    />
-                  )}
+      <div className="items-center max-sm:space-y-4 sm:flex">
+        {discussionsQuery.data.discussions.length === 0 ? (
+          <Card className="w-full">
+            <CardContent className="flex h-[130px] items-center justify-center">
+              <div className="space-y-3 text-center">
+                <div className="text-muted-foreground">
+                  There are no discussions yet
                 </div>
-              </CardContent>
-            </Card>
-          ) : (
+                {allowCreate && (
+                  <DiscussionCreateButton
+                    text="Add discussion"
+                    session={session}
+                    authedRedirect="discussions/create"
+                  />
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          allowCreate && (
             <DiscussionCreateButton
               text="Add discussion"
               session={session}
               authedRedirect="discussions/create"
               className="max-sm:w-full"
             />
-          )}
+          )
+        )}
 
-          {discussionsQuery.data.discussions.length > 0 && (
-            <DiscussionsOrderBy
-              orderBy={orderBy}
-              setOrderBy={setOrderBy}
-              className="flex w-full justify-end"
-            />
-          )}
-        </div>
+        {discussionsQuery.data.discussions.length > 0 && (
+          <DiscussionsOrderBy
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
+            className="flex w-full justify-end"
+          />
+        )}
       </div>
 
       <div className="space-y-3">

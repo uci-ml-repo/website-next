@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import type { AuthorsSelect } from "@/db/types";
+import type { AuthorSelect } from "@/db/types";
 import ServiceError from "@/server/service/errors";
 
 export default class DatasetCiteService {
@@ -45,7 +45,7 @@ class Citation {
 
   private readonly id: number;
   private readonly title: string;
-  private readonly authors: AuthorsSelect[];
+  private readonly authors: AuthorSelect[];
   private readonly yearCreated: number;
   private readonly doi: string | null;
 
@@ -58,7 +58,7 @@ class Citation {
   }: {
     id: number;
     title: string;
-    authors: AuthorsSelect[];
+    authors: AuthorSelect[];
     yearCreated: number | null;
     doi: string | null;
   }) {
@@ -69,23 +69,23 @@ class Citation {
     this.doi = doi;
   }
 
-  private static lastFirst(author: AuthorsSelect) {
+  private static lastFirst(author: AuthorSelect) {
     return `${author.lastName}, ${author.firstName}`;
   }
 
-  private static firstLast(author: AuthorsSelect) {
+  private static firstLast(author: AuthorSelect) {
     return `${author.firstName} ${author.lastName}`;
   }
 
-  private static firstInitialLast(author: AuthorsSelect) {
+  private static firstInitialLast(author: AuthorSelect) {
     return `${Citation.toInitial(author.firstName)} ${author.lastName}`;
   }
 
-  private static lastFirstInitial(author: AuthorsSelect) {
+  private static lastFirstInitial(author: AuthorSelect) {
     return `${author.lastName}, ${Citation.toInitial(author.firstName)}`;
   }
 
-  private static lastFirstInitialNoPunctuation(author: AuthorsSelect) {
+  private static lastFirstInitialNoPunctuation(author: AuthorSelect) {
     return `${author.lastName} ${Citation.toInitial(author.firstName, false)}`;
   }
 
@@ -115,9 +115,9 @@ class Citation {
     etAlCutoff = -1,
     listFormatter = Citation.longConjunction,
   }: {
-    authors: AuthorsSelect[];
-    firstAuthorFormatter: (author: AuthorsSelect) => string;
-    subsequentAuthorsFormatter?: (author: AuthorsSelect) => string;
+    authors: AuthorSelect[];
+    firstAuthorFormatter: (author: AuthorSelect) => string;
+    subsequentAuthorsFormatter?: (author: AuthorSelect) => string;
     etAlCutoff?: number;
     listFormatter?: typeof Citation.longConjunction;
   }) {

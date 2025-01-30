@@ -64,16 +64,27 @@ export type MDXEditorProps = Omit<
   "markdown"
 > & {
   markdown?: string;
+  disabled?: boolean;
 };
 
-export default function MDXEditorInit({ ...props }: MDXEditorProps) {
+export default function MDXEditorInit({
+  className,
+  markdown = "",
+  disabled,
+  readOnly,
+  ...props
+}: MDXEditorProps) {
   const { theme } = useTheme();
 
   return (
     <MDXEditor
-      className={cn({ "dark-theme": theme === "dark" }, props.className)}
-      contentEditableClassName="min-w-full bg-background prose dark:prose-invert font-sans rounded-lg"
-      markdown={props.markdown ?? "*X*"}
+      className={cn({ "dark-theme": theme === "dark" }, className)}
+      contentEditableClassName={cn(
+        { "!bg-muted": disabled },
+        "prose min-w-full rounded-lg rounded-t-none bg-background font-sans dark:prose-invert",
+      )}
+      markdown={markdown}
+      readOnly={readOnly || disabled}
       {...props}
       plugins={[
         toolbarPlugin({
