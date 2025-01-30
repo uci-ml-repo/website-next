@@ -5,13 +5,15 @@ import { discussionCommentQuery } from "@/server/service/schema/discussions";
 import { procedure, router } from "@/server/trpc";
 
 const discussionCommentFindRouter = router({
-  byId: procedure.input(z.string()).query(async ({ input }) => {
-    return service.discussion.comment.find.byId(input);
+  byId: procedure.input(z.string()).query(async ({ input, ctx }) => {
+    return service.discussion.comment.find.byId(input, ctx.session);
   }),
 
-  byQuery: procedure.input(discussionCommentQuery).query(async ({ input }) => {
-    return service.discussion.comment.find.byQuery(input);
-  }),
+  byQuery: procedure
+    .input(discussionCommentQuery)
+    .query(async ({ input, ctx }) => {
+      return service.discussion.comment.find.byQuery(input, ctx.session);
+    }),
 });
 
 export default discussionCommentFindRouter;

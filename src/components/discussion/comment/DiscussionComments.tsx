@@ -1,7 +1,6 @@
 "use client";
 
 import { MessageSquareTextIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
 import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
@@ -18,25 +17,18 @@ export default function DiscussionComments({
 }: {
   discussion: DiscussionResponse;
 }) {
-  const { status } = useSession();
-
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
-  const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery(
-    {
-      discussionId: discussion.id,
-      order:
-        orderBy === "top"
-          ? { upvoteCount: "desc", createdAt: "desc" }
-          : { createdAt: "desc" },
-      limit: 10,
-      offset: 0,
-    },
-    {
-      enabled: status !== "loading",
-    },
-  );
+  const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
+    discussionId: discussion.id,
+    order:
+      orderBy === "top"
+        ? { upvoteCount: "desc", createdAt: "desc" }
+        : { createdAt: "desc" },
+    limit: 10,
+    offset: 0,
+  });
 
   if (!commentsQuery.data || commentsQuery.isLoading) {
     return (
