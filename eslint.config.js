@@ -27,7 +27,7 @@ const config = [
       "@typescript-eslint": typescriptESLintPlugin,
     },
     rules: {
-      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-explicit-any": "error",
     },
   },
@@ -39,13 +39,13 @@ const config = [
       prettier: prettierPlugin,
     },
     rules: {
-      "no-unused-expressions": "warn",
-      "prettier/prettier": "warn",
+      "no-unused-expressions": "error",
+      "prettier/prettier": "error",
       "import/first": "error",
       "import/no-duplicates": "error",
-      "simple-import-sort/imports": "warn",
-      "simple-import-sort/exports": "warn",
-      "unused-imports/no-unused-imports": "warn",
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
         {
@@ -57,10 +57,10 @@ const config = [
       ],
       "react/no-unescaped-entities": "off",
       "react/jsx-curly-brace-presence": [
-        "warn",
+        "error",
         { props: "never", children: "never" },
       ],
-      "react/self-closing-comp": "warn",
+      "react/self-closing-comp": "error",
     },
   },
   {

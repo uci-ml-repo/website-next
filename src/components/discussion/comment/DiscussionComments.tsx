@@ -1,7 +1,6 @@
 "use client";
 
 import { MessageSquareTextIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
 import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
@@ -18,8 +17,6 @@ export default function DiscussionComments({
 }: {
   discussion: DiscussionResponse;
 }) {
-  const { data: session, status } = useSession();
-
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
@@ -78,7 +75,6 @@ export default function DiscussionComments({
                 </div>
                 <DiscussionCommentCreateButton
                   text="Add Comment"
-                  session={session}
                   authedAction={() => setIsCommenting(true)}
                 />
               </div>
@@ -87,7 +83,6 @@ export default function DiscussionComments({
         ) : (
           <DiscussionCommentCreateButton
             text="Add Comment"
-            session={session}
             authedAction={() => setIsCommenting(true)}
             className="max-sm:w-full"
           />

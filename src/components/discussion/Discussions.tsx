@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
@@ -21,8 +20,6 @@ export default function Discussions({
   userId?: string;
   allowCreate?: boolean;
 }) {
-  const { data: session, status } = useSession();
-
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
   const discussionsQuery = trpc.discussion.find.byQuery.useQuery(
