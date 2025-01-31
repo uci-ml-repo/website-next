@@ -1,7 +1,8 @@
-import { and, count, eq, sql } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
+import service from "@/server/service";
 
 export default class DiscussionUpvoteService {
   async create({
@@ -11,19 +12,19 @@ export default class DiscussionUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    return await db.transaction(async (tx) => {
-      await tx
-        .update(discussion)
-        .set({
-          upvoteCount: sql`${discussion.upvoteCount} + 1`,
-        })
-        .where(eq(discussion.id, discussionId));
-
-      return tx.insert(discussionUpvote).values({
-        discussionId,
-        userId,
-      });
+    const upvote = await db.insert(discussionUpvote).values({
+      discussionId,
+      userId,
     });
+
+    await db
+      .update(discussion)
+      .set({
+        upvoteCount: await service.discussion.upvote.count(discussionId),
+      })
+      .where(eq(discussion.id, discussionId));
+
+    return upvote;
   }
 
   async remove({
@@ -33,23 +34,23 @@ export default class DiscussionUpvoteService {
     userId: string;
     discussionId: string;
   }) {
-    return await db.transaction(async (tx) => {
-      await tx
-        .update(discussion)
-        .set({
-          upvoteCount: sql`${discussion.upvoteCount} - 1`,
-        })
-        .where(eq(discussion.id, discussionId));
+    const upvote = await db
+      .delete(discussionUpvote)
+      .where(
+        and(
+          eq(discussionUpvote.userId, userId),
+          eq(discussionUpvote.discussionId, discussionId),
+        ),
+      );
 
-      return tx
-        .delete(discussionUpvote)
-        .where(
-          and(
-            eq(discussionUpvote.userId, userId),
-            eq(discussionUpvote.discussionId, discussionId),
-          ),
-        );
-    });
+    await db
+      .update(discussion)
+      .set({
+        upvoteCount: await service.discussion.upvote.count(discussionId),
+      })
+      .where(eq(discussion.id, discussionId));
+
+    return upvote;
   }
 
   async find({

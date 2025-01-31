@@ -15,25 +15,31 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface SignInPromptProps {
+interface SignInRequiredProps {
   title: string;
   body: string;
   authedAction?: () => void;
   authedRedirect?: string;
+  disabled?: boolean;
   children: React.ReactNode;
 }
 
 export default function SignInRequired({
   title,
   body,
+  disabled,
   children,
   authedAction,
   authedRedirect,
-}: SignInPromptProps) {
+}: SignInRequiredProps) {
   const { data: session } = useSession();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   function onClick(e: React.MouseEvent) {
+    if (disabled) {
+      return;
+    }
+
     if (!session?.user) {
       e.preventDefault();
       setDialogOpen(true);
@@ -64,7 +70,11 @@ export default function SignInRequired({
         <p>{body}</p>
         <DialogFooter className="items-center !justify-between gap-4">
           <DialogClose asChild>
-            <Button variant="secondary" className="max-sm:w-full">
+            <Button
+              variant="secondary"
+              className="max-sm:w-full"
+              disabled={disabled}
+            >
               Cancel
             </Button>
           </DialogClose>
