@@ -46,4 +46,27 @@ export namespace AssertOwner {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
   };
+
+  export const discussionComment = async ({
+    discussionCommentId,
+    userId,
+  }: {
+    discussionCommentId: string | undefined;
+    userId: string;
+  }) => {
+    if (!discussionCommentId) {
+      throw new TRPCError({ code: "BAD_REQUEST" });
+    }
+
+    const discussionComment =
+      await service.discussion.comment.find.byId(discussionCommentId);
+
+    if (!discussionComment) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (discussionComment.userId !== userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+  };
 }

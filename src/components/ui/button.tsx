@@ -22,6 +22,8 @@ const buttonVariants = cva(
         blue: "bg-uci-blue text-uci-blue-foreground shadow-sm",
         gold: "bg-uci-gold text-uci-gold-foreground shadow-sm",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghostDestructive:
+          "text-destructive hover:bg-destructive hover:text-background",
         link: "text-primary underline-offset-2 hover:underline",
       },
       size: {

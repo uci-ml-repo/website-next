@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
+import Spinner from "@/components/ui/spinner";
 import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -23,25 +24,26 @@ export default function DiscussionCommentUpvote({
   );
 
   const upvoteMutation = trpc.discussion.comment.upvote.create.useMutation({
-    onSettled: () => {
-      setIsUpvoted(true);
-    },
     onSuccess: () => {
+      setIsUpvoted(true);
       setUpvoteCount((prev) => prev + 1);
     },
   });
 
   const removeUpvoteMutation =
     trpc.discussion.comment.upvote.remove.useMutation({
-      onSettled: () => {
-        setIsUpvoted(false);
-      },
       onSuccess: () => {
+        setIsUpvoted(false);
         setUpvoteCount((prev) => prev - 1);
       },
     });
 
+  const isPending = upvoteMutation.isPending || removeUpvoteMutation.isPending;
+
   function handleUpvote() {
+    if (isPending) {
+      return;
+    }
     if (isUpvoted) {
       removeUpvoteMutation.mutate({
         discussionCommentId: discussionComment.id,
@@ -63,8 +65,9 @@ export default function DiscussionCommentUpvote({
         variant={isUpvoted ? "gold" : "secondary"}
         size="sm"
         className="m-2 flex items-center"
+        disabled={isPending}
       >
-        <ChevronUpIcon />
+        {isPending ? <Spinner /> : <ChevronUpIcon />}
         <span>{upvoteCount.toLocaleString()}</span>
       </Button>
     </SignInRequired>

@@ -25,7 +25,6 @@ const discussionReportRouter = router({
         reportId: z.string(),
         userId: z.string(),
         type: z.enum(enumToArray(Enums.ReportResolutionType)),
-        comment: z.string(),
       }),
     )
     .mutation(async ({ input }) => {

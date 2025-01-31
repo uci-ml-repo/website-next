@@ -1,45 +1,39 @@
-import { redirect } from "next/navigation";
-import path from "path";
-
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Spinner from "@/components/ui/spinner";
-import type { DiscussionResponse } from "@/lib/types";
-import { datasetPage } from "@/lib/utils";
+import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionDeleteDialogProps {
-  discussion: DiscussionResponse;
+  discussionComment: DiscussionCommentResponse;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DiscussionDeleteDialog({
-  discussion,
+export default function DiscussionCommentDeleteDialog({
+  discussionComment,
   open,
   setOpen,
 }: DiscussionDeleteDialogProps) {
   const utils = trpc.useUtils();
 
-  const removeMutation = trpc.discussion.remove.byId.useMutation({
+  const removeMutation = trpc.discussion.comment.remove.byId.useMutation({
     onSuccess: async () => {
-      await utils.discussion.find.byQuery.invalidate({
-        datasetId: discussion.datasetId,
+      await utils.discussion.comment.find.byQuery.invalidate({
+        discussionId: discussionComment.discussionId,
       });
     },
   });
 
-  function removeDiscussion() {
-    removeMutation.mutate({ discussionId: discussion.id });
-    redirect(path.join(datasetPage(discussion.dataset), "discussions"));
+  function removeDiscussionComment() {
+    removeMutation.mutate({ discussionCommentId: discussionComment.id });
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent aria-describedby={undefined}>
         <DialogTitle>Delete Comment</DialogTitle>
-        <div>Are you sure you want to delete this discussion?</div>
-        <div>This action can not be undone.</div>
+        <div>Are you sure you want to delete this comment?</div>
         <div className="flex justify-between">
           <Button variant="secondary" onClick={() => setOpen(false)}>
             Cancel
@@ -47,7 +41,7 @@ export default function DiscussionDeleteDialog({
           <Button
             variant="destructive"
             disabled={removeMutation.isPending}
-            onClick={removeDiscussion}
+            onClick={removeDiscussionComment}
           >
             {removeMutation.isPending && <Spinner />}
             Delete

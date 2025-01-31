@@ -18,6 +18,7 @@ export const protectedProcedure = t.procedure
       datasetId: z.number().optional(),
       draftDatasetId: z.string().optional(),
       discussionId: z.string().optional(),
+      discussionCommentId: z.string().optional(),
     }),
   )
   .use(async ({ ctx, meta, input, next }) => {
@@ -37,6 +38,7 @@ export const protectedProcedure = t.procedure
       datasetId?: number;
       draftDatasetId?: string;
       discussionId?: string;
+      discussionCommentId?: string;
     };
 
     const requireRoles = new Set<MiddlewareRole>(meta.requireRoles);
@@ -58,6 +60,15 @@ export const protectedProcedure = t.procedure
       });
 
       userRoles.add(MiddlewareRoles.DISCUSSION_AUTHOR);
+    }
+
+    if (requireRoles.has(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR)) {
+      await AssertOwner.discussionComment({
+        discussionCommentId: inputCast.discussionCommentId,
+        userId: ctx.session.user.id,
+      });
+
+      userRoles.add(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR);
     }
 
     if (requireRoles.isDisjointFrom(userRoles)) {

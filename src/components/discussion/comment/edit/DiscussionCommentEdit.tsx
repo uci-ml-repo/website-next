@@ -1,15 +1,9 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PencilIcon, Trash2Icon } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { formSchema } from "@/components/discussion/create/DiscussionCreateInput";
-import DiscussionDeleteDialog from "@/components/discussion/view/extended/DiscussionDeleteDialog";
-import MDXEditor from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -20,30 +14,32 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
-import type { DiscussionResponse } from "@/lib/types";
+import { Textarea } from "@/components/ui/textarea";
+import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DiscussionEdit({
-  discussion,
-}: {
-  discussion: DiscussionResponse;
-}) {
-  const router = useRouter();
+import { formSchema } from "../create/DiscussionCommentCreateInput";
 
+export default function DiscussionCommentEdit({
+  discussionComment,
+  setIsEditing,
+}: {
+  discussionComment: DiscussionCommentResponse;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: discussion.title,
-      content: discussion.content,
+      content: discussionComment.content,
     },
   });
 
-  const editMutation = trpc.discussion.update.byId.useMutation({
+  const utils = trpc.useUtils();
+
+  const editMutation = trpc.discussion.comment.update.byId.useMutation({
     onError: (error) => {
       toast({
         title: "Error",
@@ -51,8 +47,11 @@ export default function DiscussionEdit({
         variant: "destructive",
       });
     },
-    onSuccess: () => {
-      router.push(".");
+    onSuccess: async () => {
+      await utils.discussion.comment.find.byQuery.invalidate({
+        discussionId: discussionComment.discussionId,
+      });
+      setIsEditing(false);
     },
   });
 
@@ -60,56 +59,24 @@ export default function DiscussionEdit({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     editMutation.mutate({
-      id: discussion.id,
+      id: discussionComment.id,
       ...values,
     });
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="text-2xl font-bold">Editing {discussion.title}</div>
-        <Button
-          variant="ghostDestructive"
-          size="icon"
-          onClick={() => setDeleteDialogOpen(true)}
-        >
-          <Trash2Icon />
-        </Button>
-      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="rounded-lg bg-secondary">
-                    <div className="px-2 py-1 text-sm">Discussion Title</div>
-                    <Input
-                      {...field}
-                      pill={false}
-                      className="bg-background px-4 font-bold"
-                      variantSize="xl"
-                      disabled={isSubmitting || isSubmitSuccessful}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="content"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <MDXEditor
+                  <Textarea
                     {...field}
-                    markdown={field.value}
-                    autoFocus
+                    className="bg-background"
                     disabled={isSubmitting || isSubmitSuccessful}
                   />
                 </FormControl>
@@ -117,11 +84,12 @@ export default function DiscussionEdit({
               </FormItem>
             )}
           />
-          <div className="flex items-center justify-between">
+
+          <div className="flex items-center justify-end space-x-2">
             <Button
               variant="secondary"
               onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : redirect(".")
+                isDirty ? setCancelDialogOpen(true) : setIsEditing(false)
               }
               type="button"
             >
@@ -150,18 +118,12 @@ export default function DiscussionEdit({
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => redirect(".")}>
+            <Button variant="destructive" onClick={() => setIsEditing(false)}>
               Discard
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-
-      <DiscussionDeleteDialog
-        discussion={discussion}
-        open={deleteDialogOpen}
-        setOpen={setDeleteDialogOpen}
-      />
     </div>
   );
 }

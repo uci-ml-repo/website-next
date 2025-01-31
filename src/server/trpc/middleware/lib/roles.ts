@@ -5,6 +5,7 @@ import { PRIVILEGED_ROLES } from "@/lib/permissions";
 export const MiddlewareRoles = {
   DATASET_OWNER: "DATASET_OWNER",
   DISCUSSION_AUTHOR: "DISCUSSION_AUTHOR",
+  DISCUSSION_COMMENT_AUTHOR: "DISCUSSION_COMMENT_AUTHOR",
   ...Enums.UserRole,
 } as const;
 

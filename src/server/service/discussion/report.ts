@@ -28,18 +28,15 @@ export default class DiscussionReportService {
     reportId,
     userId,
     type,
-    comment,
   }: {
     reportId: string;
     userId: string;
     type: ReportResolutionType;
-    comment: string;
   }) {
     return db.insert(discussionReportResolution).values({
       reportId,
       userId,
       type,
-      comment,
     });
   }
 }

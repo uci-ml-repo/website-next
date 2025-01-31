@@ -24,7 +24,7 @@ interface DiscussionCommentCreateInputProps {
   setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const formSchema = z.object({
+export const formSchema = z.object({
   content: z.string().min(1, { message: "Content is required" }),
 });
 

@@ -318,9 +318,6 @@ export const discussion = pgTable("discussion", {
 
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }),
-
-  archivedAt: timestamp("archived_at", { mode: "date" }),
-  archivedByUserId: uuid("archived_by_user_id"),
 });
 
 export const discussionRelations = relations(discussion, ({ one, many }) => ({
@@ -461,7 +458,6 @@ export const discussionReportResolution = pgTable(
       .notNull()
       .references(() => user.id),
     type: reportResolutionType("type").notNull(),
-    comment: text("comment").notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
 );
@@ -475,6 +471,61 @@ export const discussionReportResolutionRelations = relations(
     }),
     user: one(user, {
       fields: [discussionReportResolution.userId],
+      references: [user.id],
+    }),
+  }),
+);
+
+export const discussionCommentReport = pgTable("discussion_comment_report", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  discussionCommentId: uuid("discussion_comment_id")
+    .notNull()
+    .references(() => discussion.id, { onDelete: "cascade" }),
+  reason: discussionReportReason("reason").notNull(),
+  details: text("details"),
+  userId: uuid("user_id"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const discussionCommentReportRelations = relations(
+  discussionCommentReport,
+  ({ one }) => ({
+    discussionComment: one(discussionComment, {
+      fields: [discussionCommentReport.discussionCommentId],
+      references: [discussionComment.id],
+    }),
+    user: one(user, {
+      fields: [discussionCommentReport.userId],
+      references: [user.id],
+    }),
+    resolution: one(discussionCommentReportResolution),
+  }),
+);
+
+export const discussionCommentReportResolution = pgTable(
+  "discussion_comment_report_resolution",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    reportId: uuid("report_id")
+      .notNull()
+      .references(() => discussionCommentReport.id),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id),
+    type: reportResolutionType("type").notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+);
+
+export const discussionCommentReportResolutionRelations = relations(
+  discussionCommentReportResolution,
+  ({ one }) => ({
+    report: one(discussionCommentReport, {
+      fields: [discussionCommentReportResolution.reportId],
+      references: [discussionCommentReport.id],
+    }),
+    user: one(user, {
+      fields: [discussionCommentReportResolution.userId],
       references: [user.id],
     }),
   }),
