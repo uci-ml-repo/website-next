@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SendHorizontalIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import MDXEditor from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -15,14 +14,13 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import ProfileAvatar from "@/components/ui/profile-avatar";
 import Spinner from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCommentCreateInputProps {
   discussionId: string;
-  className?: string;
-  setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formSchema = z.object({
@@ -31,10 +29,11 @@ const formSchema = z.object({
 
 export default function DiscussionCommentCreateInput({
   discussionId,
-  className,
-  setIsCommenting,
 }: DiscussionCommentCreateInputProps) {
+  const { data: session } = useSession();
+
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
+  const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,66 +62,77 @@ export default function DiscussionCommentCreateInput({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("values", values);
     await createMutation.mutateAsync({
       discussionId,
       ...values,
     });
+
+    form.reset();
   }
 
-  const { isDirty, isSubmitting, isSubmitSuccessful } = form.formState;
+  const { isDirty, isSubmitting } = form.formState;
 
   return (
     <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className={cn("space-y-4", className)}
-        >
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <MDXEditor
-                    {...field}
-                    markdown={field.value}
-                    autoFocus
-                    disabled={isSubmitting || isSubmitSuccessful}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex items-center justify-between">
-            <Button
-              variant="secondary"
-              onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : setIsCommenting(false)
-              }
-              type="button"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="gold"
-              type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
-            >
-              {(isSubmitting || isSubmitSuccessful) && <Spinner />}
-              Comment <SendHorizontalIcon />
-            </Button>
-          </div>
-        </form>
-      </Form>
+      <div className="flex w-full p-4">
+        <ProfileAvatar
+          src={session?.user.image}
+          className="mr-3 size-12 max-sm:hidden"
+        />
+        <div className="w-full">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        onFocus={() => setIsCommenting(true)}
+                        placeholder="Add comment"
+                        style={{ resize: "vertical" }}
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {isCommenting && (
+                <div className="flex items-center justify-end space-x-2">
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      isDirty
+                        ? setCancelDialogOpen(true)
+                        : setIsCommenting(false)
+                    }
+                    type="button"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="gold"
+                    type="submit"
+                    disabled={!isDirty || isSubmitting}
+                  >
+                    {isSubmitting && <Spinner />}
+                    Comment
+                  </Button>
+                </div>
+              )}
+            </form>
+          </Form>
+        </div>
+      </div>
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard comment?</DialogTitle>
           <p>You have a comment in progress, discard it?</p>
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <Button
               variant="secondary"
               onClick={() => setCancelDialogOpen(false)}
@@ -131,7 +141,11 @@ export default function DiscussionCommentCreateInput({
             </Button>
             <Button
               variant="destructive"
-              onClick={() => setIsCommenting(false)}
+              onClick={() => {
+                form.reset();
+                setIsCommenting(false);
+                setCancelDialogOpen(false);
+              }}
             >
               Discard
             </Button>

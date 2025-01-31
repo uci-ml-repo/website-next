@@ -80,9 +80,8 @@ export default function Discussions({
       </div>
 
       <div>
-        {discussionsQuery.data.discussions.map((discussion, index) => (
+        {discussionsQuery.data.discussions.map((discussion) => (
           <React.Fragment key={discussion.id}>
-            {index === 0 && <hr />}
             <DiscussionPreview
               discussion={discussion}
               showOnDataset={!!userId}

@@ -19,7 +19,7 @@ export default function DiscussionCommentCreateButton({
       body="To comment and access other features, please sign in."
       authedAction={authedAction}
     >
-      <Button variant="gold" className={cn("lift", className)}>
+      <Button variant="secondary" className={cn("lift", className)}>
         <PlusIcon />
         <span>{text}</span>
       </Button>

@@ -47,20 +47,16 @@ export const authOptions = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        try {
-          const user = await db.query.user.findFirst({
-            where: (user, { eq }) => eq(user.email, email),
-          });
+        const user = await db.query.user.findFirst({
+          where: (user, { eq }) => eq(user.email, email),
+        });
 
-          if (!user || !user.password) {
-            return null;
-          }
+        if (!user || !user.password) {
+          return null;
+        }
 
-          if (bcryptjs.compareSync(password, user.password)) {
-            return user as User;
-          }
-        } catch (error) {
-          console.error(error);
+        if (bcryptjs.compareSync(password, user.password)) {
+          return user as User;
         }
 
         return null;

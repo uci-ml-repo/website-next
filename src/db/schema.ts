@@ -3,7 +3,6 @@ import { and, isNotNull, ne, or, relations } from "drizzle-orm";
 import {
   boolean,
   check,
-  date,
   integer,
   pgEnum,
   pgTable,
@@ -96,7 +95,7 @@ export const dataset = pgTable(
       .references(() => user.id)
       .notNull(),
 
-    donatedAt: date("donated_at", { mode: "date" }).defaultNow().notNull(),
+    donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .notNull()
       .defaultNow()
@@ -141,7 +140,7 @@ export const datasetReport = pgTable("dataset_report", {
   reason: datasetReportReason("reason").notNull(),
   details: text("details").notNull(),
   userId: uuid("user_id"),
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const datasetReportRelations = relations(datasetReport, ({ one }) => ({
@@ -166,7 +165,7 @@ export const datasetReportResolution = pgTable("dataset_report_resolution", {
     .references(() => user.id),
   type: reportResolutionType("type").notNull(),
   comment: text("comment").notNull(),
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const datasetReportResolutionRelations = relations(
@@ -225,7 +224,7 @@ export const keyword = pgTable("keyword", {
   status: datasetStatus("status").notNull(),
   keyword: text("keyword").notNull(),
 
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const keywordsRelations = relations(keyword, ({ many }) => ({
@@ -287,7 +286,7 @@ export const bookmark = pgTable(
       .notNull()
       .references(() => dataset.id),
 
-    createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.datasetId] })],
 );
@@ -317,11 +316,11 @@ export const discussion = pgTable("discussion", {
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
 
-  archivedAt: date("deleted_at", { mode: "date" }),
-  archivedByUserId: uuid("deleted_by_user_id"),
+  archivedAt: timestamp("archived_at", { mode: "date" }),
+  archivedByUserId: uuid("archived_by_user_id"),
 });
 
 export const discussionRelations = relations(discussion, ({ one, many }) => ({
@@ -350,11 +349,8 @@ export const discussionComment = pgTable("discussion_comment", {
 
   upvoteCount: integer("upvote_count").default(0).notNull(),
 
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date()),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
 });
 
 export const discussionCommentRelations = relations(
@@ -381,7 +377,7 @@ export const discussionUpvote = pgTable(
     discussionId: uuid("discussion_id")
       .notNull()
       .references(() => discussion.id, { onDelete: "cascade" }),
-    createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.discussionId] })],
 );
@@ -409,7 +405,7 @@ export const discussionCommentUpvote = pgTable(
     discussionCommentId: uuid("discussion_comment_id")
       .notNull()
       .references(() => discussionComment.id, { onDelete: "cascade" }),
-    createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.discussionCommentId] })],
 );
@@ -436,7 +432,7 @@ export const discussionReport = pgTable("discussion_report", {
   reason: discussionReportReason("reason").notNull(),
   details: text("details"),
   userId: uuid("user_id"),
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const discussionReportRelations = relations(
@@ -466,7 +462,7 @@ export const discussionReportResolution = pgTable(
       .references(() => user.id),
     type: reportResolutionType("type").notNull(),
     comment: text("comment").notNull(),
-    createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
 );
 
@@ -493,7 +489,7 @@ export const user = pgTable("user", {
   image: text("image"),
   role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
 
-  createdAt: date("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const userRelations = relations(user, ({ many }) => ({

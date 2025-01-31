@@ -36,8 +36,8 @@ export default function DiscussionExtendedOptions({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="size-7">
-            <EllipsisVerticalIcon className="!size-4" />
+          <Button variant="ghost" size="icon">
+            <EllipsisVerticalIcon className="!size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

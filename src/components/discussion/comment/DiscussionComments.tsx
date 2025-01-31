@@ -3,13 +3,10 @@
 import { MessageSquareTextIcon } from "lucide-react";
 import React, { useState } from "react";
 
-import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
 import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
 import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
-import { Card, CardContent } from "@/components/ui/card";
 import type { DiscussionResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function DiscussionComments({
@@ -18,7 +15,6 @@ export default function DiscussionComments({
   discussion: DiscussionResponse;
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
-  const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
     discussionId: discussion.id,
@@ -41,61 +37,25 @@ export default function DiscussionComments({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center space-x-2 text-xl font-bold">
-        <MessageSquareTextIcon />
-        <span>
-          {commentsQuery.data.count} Comment
-          {commentsQuery.data.count !== 1 && "s"}
-        </span>
-      </div>
-
-      <div
-        className={cn("items-center", {
-          "sm:flex": !isCommenting,
-          "space-y-6": isCommenting,
-        })}
-      >
-        {isCommenting ? (
-          <DiscussionCommentCreateInput
-            discussionId={discussion.id}
-            className="w-full"
-            setIsCommenting={setIsCommenting}
-          />
-        ) : commentsQuery.data.discussionComments.length === 0 ? (
-          <Card className="w-full">
-            <CardContent className="flex h-[130px] items-center justify-center">
-              <div className="space-y-3 text-center">
-                <div className="text-muted-foreground">
-                  There are no comments yet
-                </div>
-                <DiscussionCommentCreateButton
-                  text="Add Comment"
-                  authedAction={() => setIsCommenting(true)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <DiscussionCommentCreateButton
-            text="Add Comment"
-            authedAction={() => setIsCommenting(true)}
-            className="max-sm:w-full"
-          />
-        )}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2 text-xl font-bold">
+          <MessageSquareTextIcon />
+          <span>
+            {commentsQuery.data.count} Comment
+            {commentsQuery.data.count !== 1 && "s"}
+          </span>
+        </div>
 
         {commentsQuery.data.discussionComments.length > 0 && (
-          <DiscussionsOrderBy
-            orderBy={orderBy}
-            setOrderBy={setOrderBy}
-            className="flex w-full justify-end"
-          />
+          <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />
         )}
       </div>
 
+      <DiscussionCommentCreateInput discussionId={discussion.id} />
+
       <div className="space-y-3">
-        {commentsQuery.data.discussionComments.map((comment, index) => (
+        {commentsQuery.data.discussionComments.map((comment) => (
           <React.Fragment key={comment.id}>
-            {index === 0 && <hr />}
             <DiscussionComment discussionComment={comment} />
             <hr />
           </React.Fragment>

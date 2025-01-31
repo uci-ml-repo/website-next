@@ -34,22 +34,24 @@ export default async function Page({
                 <ArrowLeftIcon />
               </Link>
             </Button>
-            <ProfileAvatar
-              src={discussion.user.image}
-              className="mr-2 size-8 max-sm:hidden"
-            />
-            <div className="min-w-0">
-              <div className="space-x-1.5 text-xs text-muted-foreground">
-                <span>{discussion.user.name}</span>
-                <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-                {discussion.updatedAt && (
-                  <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-                )}
+            <div className="flex items-center space-x-2">
+              <ProfileAvatar
+                src={discussion.user.image}
+                className="mr-2 size-8 max-sm:hidden"
+              />
+              <div className="min-w-0">
+                <div className="space-x-1.5 text-xs text-muted-foreground">
+                  <span>{discussion.user.name}</span>
+                  <span>&middot; {timeSince(discussion.createdAt)} ago</span>
+                  {discussion.updatedAt && (
+                    <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex space-x-1">
+          <div className="flex items-center">
             <DiscussionUpvote discussion={discussion} />
             <DiscussionExtendedOptions discussion={discussion} />
           </div>
