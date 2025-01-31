@@ -11,12 +11,14 @@ import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
+export type DiscussionCommentsOrderBy = "top" | "new";
+
 export default function DiscussionComments({
   discussion,
 }: {
   discussion: DiscussionResponse;
 }) {
-  const [orderBy, setOrderBy] = useState<"top" | "new">("top");
+  const [orderBy, setOrderBy] = useState<DiscussionCommentsOrderBy>("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
@@ -62,6 +64,7 @@ export default function DiscussionComments({
         <DiscussionCommentCreateInput
           discussionId={discussion.id}
           setIsCommenting={setIsCommenting}
+          setOrderBy={setOrderBy}
         />
       ) : (
         <DiscussionCommentCreateButton

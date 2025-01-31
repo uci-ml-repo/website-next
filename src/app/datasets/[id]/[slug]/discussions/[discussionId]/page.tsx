@@ -47,7 +47,7 @@ export default async function Page({
           </div>
         </div>
 
-        <h1 className="overflow-hidden overflow-ellipsis text-pretty text-2xl font-bold">
+        <h1 className="overflow-hidden overflow-ellipsis text-pretty text-2xl font-extrabold">
           {discussion.title}
         </h1>
 

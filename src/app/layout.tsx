@@ -4,7 +4,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
-import Footer from "@/components/layout/Footer";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
@@ -71,7 +70,7 @@ export default function Layout({
 
                   {children}
 
-                  <Footer />
+                  {/*<Footer />*/}
                 </div>
               </SidebarProvider>
               <Toaster />

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import type { DiscussionCommentsOrderBy } from "@/components/discussion/comment/DiscussionComments";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -22,6 +23,7 @@ import { trpc } from "@/server/trpc/query/client";
 interface DiscussionCommentCreateInputProps {
   discussionId: string;
   setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
+  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionCommentsOrderBy>>;
 }
 
 export const formSchema = z.object({
@@ -31,6 +33,7 @@ export const formSchema = z.object({
 export default function DiscussionCommentCreateInput({
   discussionId,
   setIsCommenting,
+  setOrderBy,
 }: DiscussionCommentCreateInputProps) {
   const { data: session } = useSession();
 
@@ -52,6 +55,7 @@ export default function DiscussionCommentCreateInput({
       });
 
       setIsCommenting(false);
+      setOrderBy("new");
     },
     onError: (error) => {
       toast({
@@ -78,7 +82,7 @@ export default function DiscussionCommentCreateInput({
       <div className="flex w-full py-4">
         <ProfileAvatar
           src={session?.user.image}
-          className="mr-3 size-12 max-sm:hidden"
+          className="mr-3 size-10 max-sm:hidden"
         />
         <div className="w-full">
           <Form {...form}>
@@ -92,7 +96,6 @@ export default function DiscussionCommentCreateInput({
                       <Textarea
                         {...field}
                         placeholder="Add comment"
-                        style={{ resize: "vertical" }}
                         disabled={isSubmitting}
                       />
                     </FormControl>

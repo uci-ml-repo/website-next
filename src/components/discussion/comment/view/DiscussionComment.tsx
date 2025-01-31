@@ -21,7 +21,7 @@ export default function DiscussionComment({
       <div className="flex w-full py-4">
         <ProfileAvatar
           src={discussionComment.user.image}
-          className="mr-3 size-12 max-sm:hidden"
+          className="mr-3 size-10 max-sm:hidden"
         />
         <div className="w-full">
           <div className="space-x-1.5 text-xs text-muted-foreground">
@@ -37,7 +37,9 @@ export default function DiscussionComment({
               setIsEditing={setIsEditing}
             />
           ) : (
-            <p>{discussionComment.content}</p>
+            <div className="whitespace-pre-wrap">
+              {discussionComment.content}
+            </div>
           )}
         </div>
       </div>
