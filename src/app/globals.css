@@ -132,11 +132,16 @@ body {
   @apply !rounded-b-none !bg-secondary;
 }
 
-.hide-codemirror-toolbar ._selectDropdownArrow_uazmk_373,
-.hide-codemirror-toolbar ._iconButton_uazmk_456 {
+.mdx-readonly {
+  @apply [&_div]:p-0;
+}
+
+.mdx-readonly ._selectDropdownArrow_uazmk_373,
+.mdx-readonly ._iconButton_uazmk_456,
+.mdx-readonly [data-radix-popper-content-wrapper] {
   @apply hidden;
 }
 
-.hide-codemirror-toolbar ._selectTrigger_uazmk_307 {
+.mdx-readonly ._selectTrigger_uazmk_307 {
   @apply !w-fit;
 }
