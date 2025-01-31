@@ -42,7 +42,7 @@ export default function FilesViewLinkGroups({
           <React.Fragment key={index}>
             {index === 0 && (
               <button
-                className="flex-shrink-0 text-link"
+                className="text-link"
                 onClick={() => {
                   setCurrentFile({
                     path: basePath,
@@ -50,7 +50,7 @@ export default function FilesViewLinkGroups({
                   });
                 }}
               >
-                <HouseIcon className="size-4" />
+                <HouseIcon className="size-4 shrink-0" />
               </button>
             )}
             <span className="flex-shrink-0">/</span>
@@ -72,7 +72,7 @@ export default function FilesViewLinkGroups({
           </React.Fragment>
         );
       })}
-      {pathParts.length === 0 && <HouseIcon className="size-4" />}
+      {pathParts.length === 0 && <HouseIcon className="size-4 shrink-0" />}
     </div>
   );
 }
