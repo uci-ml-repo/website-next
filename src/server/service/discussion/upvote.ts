@@ -69,6 +69,7 @@ export default class DiscussionUpvoteService {
     return db
       .select({ count: count() })
       .from(discussionUpvote)
-      .where(eq(discussionUpvote.discussionId, discussionId));
+      .where(eq(discussionUpvote.discussionId, discussionId))
+      .then((res) => res[0].count);
   }
 }

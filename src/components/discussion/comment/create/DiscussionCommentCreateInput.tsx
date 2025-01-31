@@ -21,6 +21,7 @@ import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCommentCreateInputProps {
   discussionId: string;
+  setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formSchema = z.object({
@@ -29,11 +30,11 @@ const formSchema = z.object({
 
 export default function DiscussionCommentCreateInput({
   discussionId,
+  setIsCommenting,
 }: DiscussionCommentCreateInputProps) {
   const { data: session } = useSession();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
-  const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,7 +75,7 @@ export default function DiscussionCommentCreateInput({
 
   return (
     <>
-      <div className="flex w-full p-4">
+      <div className="flex w-full py-4">
         <ProfileAvatar
           src={session?.user.image}
           className="mr-3 size-12 max-sm:hidden"
@@ -90,7 +91,6 @@ export default function DiscussionCommentCreateInput({
                     <FormControl>
                       <Textarea
                         {...field}
-                        onFocus={() => setIsCommenting(true)}
                         placeholder="Add comment"
                         style={{ resize: "vertical" }}
                         disabled={isSubmitting}
@@ -100,29 +100,25 @@ export default function DiscussionCommentCreateInput({
                   </FormItem>
                 )}
               />
-              {isCommenting && (
-                <div className="flex items-center justify-end space-x-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      isDirty
-                        ? setCancelDialogOpen(true)
-                        : setIsCommenting(false)
-                    }
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="gold"
-                    type="submit"
-                    disabled={!isDirty || isSubmitting}
-                  >
-                    {isSubmitting && <Spinner />}
-                    Comment
-                  </Button>
-                </div>
-              )}
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    isDirty ? setCancelDialogOpen(true) : setIsCommenting(false)
+                  }
+                  type="button"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="gold"
+                  type="submit"
+                  disabled={!isDirty || isSubmitting}
+                >
+                  {isSubmitting && <Spinner />}
+                  Comment
+                </Button>
+              </div>
             </form>
           </Form>
         </div>

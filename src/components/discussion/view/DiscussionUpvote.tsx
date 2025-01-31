@@ -52,8 +52,8 @@ export default function DiscussionUpvote({
 
   return (
     <SignInRequired
-      title="Sign in to upvote comments"
-      body="To upvote comments and access other features, please sign in"
+      title="Sign in to upvote discussions"
+      body="To upvote discussions and access other features, please sign in"
       authedAction={handleUpvote}
     >
       <Button

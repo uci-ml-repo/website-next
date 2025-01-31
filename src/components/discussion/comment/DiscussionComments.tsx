@@ -3,6 +3,7 @@
 import { MessageSquareTextIcon } from "lucide-react";
 import React, { useState } from "react";
 
+import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
 import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
 import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
@@ -15,6 +16,7 @@ export default function DiscussionComments({
   discussion: DiscussionResponse;
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
+  const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
     discussionId: discussion.id,
@@ -38,20 +40,30 @@ export default function DiscussionComments({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2 text-xl font-bold">
+        <div className="flex items-center space-x-2">
           <MessageSquareTextIcon />
-          <span>
+          <span className="text-nowrap text-lg font-bold sm:text-xl">
             {commentsQuery.data.count} Comment
             {commentsQuery.data.count !== 1 && "s"}
           </span>
         </div>
-
         {commentsQuery.data.discussionComments.length > 0 && (
           <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />
         )}
       </div>
 
-      <DiscussionCommentCreateInput discussionId={discussion.id} />
+      {isCommenting ? (
+        <DiscussionCommentCreateInput
+          discussionId={discussion.id}
+          setIsCommenting={setIsCommenting}
+        />
+      ) : (
+        <DiscussionCommentCreateButton
+          text="Add Comment"
+          className="max-md:w-full"
+          authedAction={() => setIsCommenting(true)}
+        />
+      )}
 
       <div className="space-y-3">
         {commentsQuery.data.discussionComments.map((comment) => (

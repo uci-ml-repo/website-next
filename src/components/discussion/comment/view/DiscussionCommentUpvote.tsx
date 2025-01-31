@@ -9,14 +9,18 @@ import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCommentUpvoteProps {
-  comment: DiscussionCommentResponse;
+  discussionComment: DiscussionCommentResponse;
 }
 
 export default function DiscussionCommentUpvote({
-  comment,
+  discussionComment,
 }: DiscussionCommentUpvoteProps) {
-  const [isUpvoted, setIsUpvoted] = useState<boolean>(comment.upvoted);
-  const [upvoteCount, setUpvoteCount] = useState<number>(comment.upvoteCount);
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(
+    discussionComment.upvoted,
+  );
+  const [upvoteCount, setUpvoteCount] = useState<number>(
+    discussionComment.upvoteCount,
+  );
 
   const upvoteMutation = trpc.discussion.comment.upvote.create.useMutation({
     onSettled: () => {
@@ -40,11 +44,11 @@ export default function DiscussionCommentUpvote({
   function handleUpvote() {
     if (isUpvoted) {
       removeUpvoteMutation.mutate({
-        discussionCommentId: comment.id,
+        discussionCommentId: discussionComment.id,
       });
     } else {
       upvoteMutation.mutate({
-        discussionCommentId: comment.id,
+        discussionCommentId: discussionComment.id,
       });
     }
   }

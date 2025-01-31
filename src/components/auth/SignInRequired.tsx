@@ -45,7 +45,9 @@ export default function SignInRequired({
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       {authedAction ? (
-        <div onClick={onClick}>{children}</div>
+        <div onClick={onClick} className="w-fit">
+          {children}
+        </div>
       ) : authedRedirect ? (
         <div>
           <Link href={authedRedirect} onClick={onClick}>
