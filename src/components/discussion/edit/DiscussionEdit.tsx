@@ -67,12 +67,15 @@ export default function DiscussionEdit({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="text-2xl font-bold">Editing {discussion.title}</div>
+      <div className="flex items-center justify-between space-x-2">
+        <div className="truncate text-2xl font-bold">
+          Editing: {discussion.title}
+        </div>
         <Button
           variant="ghostDestructive"
           size="icon"
           onClick={() => setDeleteDialogOpen(true)}
+          className="shrink-0"
         >
           <Trash2Icon />
         </Button>

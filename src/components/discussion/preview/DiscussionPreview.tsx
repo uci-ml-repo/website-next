@@ -20,7 +20,7 @@ export default function DiscussionPreview({
       >
         <ProfileAvatar
           src={discussion.user.image}
-          className="mr-2 size-12 max-sm:hidden"
+          className="mr-3 size-12 max-sm:hidden"
         />
         <div className="min-w-0">
           <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold group-hover:underline">

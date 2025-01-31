@@ -98,7 +98,7 @@ export default function DiscussionCommentEdit({
             <Button
               variant="gold"
               type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
+              disabled={!isDirty || isSubmitting || isSubmitSuccessful}
             >
               {(isSubmitting || isSubmitSuccessful) && <Spinner />}
               Submit <PencilIcon />

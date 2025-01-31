@@ -55,7 +55,6 @@ export const allPlugins = [
       js: "JavaScript",
       text: "text",
     },
-    autoLoadLanguageSupport: true,
   }),
 ];
 

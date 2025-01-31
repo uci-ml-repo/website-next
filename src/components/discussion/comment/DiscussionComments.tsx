@@ -7,6 +7,7 @@ import DiscussionCommentCreateButton from "@/components/discussion/comment/creat
 import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
 import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
+import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -30,9 +31,14 @@ export default function DiscussionComments({
 
   if (!commentsQuery.data || commentsQuery.isLoading) {
     return (
-      <div className="flex items-center space-x-1 text-xl font-bold">
-        <MessageSquareTextIcon />
-        <span>Comments</span>
+      <div>
+        <div className="flex items-center space-x-1 text-xl font-bold">
+          <MessageSquareTextIcon />
+          <span>Comments</span>
+        </div>
+        <div className="flex h-12 items-center justify-center">
+          <Spinner />
+        </div>
       </div>
     );
   }

@@ -131,3 +131,12 @@ body {
 .mdxeditor-toolbar {
   @apply !rounded-b-none !bg-secondary;
 }
+
+.hide-codemirror-toolbar ._selectDropdownArrow_uazmk_373,
+.hide-codemirror-toolbar ._iconButton_uazmk_456 {
+  @apply hidden;
+}
+
+.hide-codemirror-toolbar ._selectTrigger_uazmk_307 {
+  @apply !w-fit;
+}
