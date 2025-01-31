@@ -22,21 +22,16 @@ export default function Discussions({
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
 
-  const discussionsQuery = trpc.discussion.find.byQuery.useQuery(
-    {
-      datasetId: datasetId,
-      userId: userId,
-      order:
-        orderBy === "top"
-          ? { upvoteCount: "desc", createdAt: "desc" }
-          : { createdAt: "desc" },
-      limit: 10,
-      offset: 0,
-    },
-    {
-      enabled: status !== "loading",
-    },
-  );
+  const discussionsQuery = trpc.discussion.find.byQuery.useQuery({
+    datasetId: datasetId,
+    userId: userId,
+    order:
+      orderBy === "top"
+        ? { upvoteCount: "desc", createdAt: "desc" }
+        : { createdAt: "desc" },
+    limit: 10,
+    offset: 0,
+  });
 
   if (!discussionsQuery.data || discussionsQuery.isLoading) {
     return (
