@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageSquareTextIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
 import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
@@ -21,17 +21,53 @@ export default function DiscussionComments({
   const [orderBy, setOrderBy] = useState<DiscussionCommentsOrderBy>("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
-  const commentsQuery = trpc.discussion.comment.find.byQuery.useQuery({
-    discussionId: discussion.id,
-    order:
-      orderBy === "top"
-        ? { upvoteCount: "desc", createdAt: "desc" }
-        : { createdAt: "desc" },
-    limit: 10,
-    offset: 0,
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    trpc.discussion.comment.find.byQuery.useInfiniteQuery(
+      {
+        discussionId: discussion.id,
+        order:
+          orderBy === "top"
+            ? { upvoteCount: "desc", createdAt: "desc" }
+            : { createdAt: "desc" },
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      },
+    );
 
-  if (!commentsQuery.data || commentsQuery.isLoading) {
+  const comments = data?.pages.flatMap((page) => page.discussionComments) || [];
+  const totalCount = data?.pages[0]?.count || 0;
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "100px",
+      },
+    );
+
+    const currentElement = loadMoreRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoading) {
     return (
       <div>
         <div className="flex items-center space-x-1 text-xl font-bold">
@@ -51,11 +87,10 @@ export default function DiscussionComments({
         <div className="flex items-center space-x-2">
           <MessageSquareTextIcon />
           <span className="text-nowrap text-lg font-bold sm:text-xl">
-            {commentsQuery.data.count} Comment
-            {commentsQuery.data.count !== 1 && "s"}
+            {totalCount} Comment{totalCount !== 1 && "s"}
           </span>
         </div>
-        {commentsQuery.data.discussionComments.length > 0 && (
+        {comments.length > 0 && (
           <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />
         )}
       </div>
@@ -75,13 +110,21 @@ export default function DiscussionComments({
       )}
 
       <div className="space-y-3">
-        {commentsQuery.data.discussionComments.map((comment) => (
+        {comments.map((comment) => (
           <React.Fragment key={comment.id}>
             <DiscussionComment discussionComment={comment} />
             <hr />
           </React.Fragment>
         ))}
       </div>
+
+      <div ref={loadMoreRef} />
+
+      {isFetchingNextPage && (
+        <div className="flex h-12 items-center justify-center">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 }

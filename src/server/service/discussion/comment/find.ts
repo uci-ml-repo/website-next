@@ -2,7 +2,7 @@ import type { Session } from "@auth/core/types";
 import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dataset, discussionComment } from "@/db/schema";
+import { discussionComment } from "@/db/schema";
 import type {
   DiscussionCommentUpvoteSelect,
   DiscussionSelect,
@@ -62,12 +62,16 @@ export default class DiscussionCommentFindService {
             discussionComment[orderBy as keyof typeof query.order],
           ),
         )
-      : [asc(dataset.id)];
+      : [asc(discussionComment.createdAt)];
+
+    const limitPlusOne = query.limit ? query.limit + 1 : undefined;
+
+    const offset = query.cursor ?? 0;
 
     const discussionComments = await db.query.discussionComment
       .findMany({
         where: buildQuery(query),
-        orderBy: orderBy,
+        orderBy,
         with: {
           user: true,
           discussion: true,
@@ -77,10 +81,16 @@ export default class DiscussionCommentFindService {
               }
             : undefined,
         },
-        limit: query.limit,
-        offset: query.offset,
+        limit: limitPlusOne,
+        offset,
       })
       .then((comments) => comments.map(transformRow));
+
+    let nextCursor: number | undefined = undefined;
+    if (query.limit && discussionComments.length > query.limit) {
+      discussionComments.pop();
+      nextCursor = offset + query.limit;
+    }
 
     const [countQuery] = await db
       .select({ count: count() })
@@ -90,6 +100,7 @@ export default class DiscussionCommentFindService {
     return {
       discussionComments,
       count: countQuery.count,
+      nextCursor,
     };
   }
 }
