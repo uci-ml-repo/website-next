@@ -1,11 +1,12 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
+import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
@@ -23,7 +24,6 @@ export default function Discussions({
   allowCreate?: boolean;
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.find.byQuery.useInfiniteQuery(
@@ -42,32 +42,11 @@ export default function Discussions({
     );
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
-
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      {
-        rootMargin: "100px",
-      },
-    );
-
-    const currentElement = loadMoreRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   if (isLoading) {
     return (

@@ -1,12 +1,13 @@
 "use client";
 
 import { MessageSquareTextIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
 import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
 import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
+import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -20,7 +21,6 @@ export default function DiscussionComments({
 }) {
   const [orderBy, setOrderBy] = useState<DiscussionCommentsOrderBy>("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.comment.find.byQuery.useInfiniteQuery(
@@ -40,31 +40,11 @@ export default function DiscussionComments({
   const comments = data?.pages.flatMap((page) => page.discussionComments) || [];
   const totalCount = data?.pages[0]?.count || 0;
 
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      {
-        rootMargin: "100px",
-      },
-    );
-
-    const currentElement = loadMoreRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   if (isLoading) {
     return (
