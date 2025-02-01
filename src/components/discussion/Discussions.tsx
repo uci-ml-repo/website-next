@@ -8,7 +8,7 @@ import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -24,6 +24,7 @@ export default function Discussions({
   allowCreate?: boolean;
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.find.byQuery.useInfiniteQuery(
@@ -72,7 +73,13 @@ export default function Discussions({
       ) : (
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <div className="w-full">
-            <Input icon={SearchIcon} placeholder="Search Discussions" />
+            <InputClearable
+              icon={SearchIcon}
+              placeholder="Search Discussions"
+              value={searchValue}
+              setValue={setSearchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
           </div>
 
           <div className="max-sm: flex justify-between gap-4 max-sm:w-full max-sm:flex-row-reverse">

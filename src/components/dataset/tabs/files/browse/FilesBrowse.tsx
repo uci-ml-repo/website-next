@@ -16,7 +16,7 @@ import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = React.useState("");
   const [isDebouncing, setIsDebouncing] = React.useState(false);
 
@@ -36,15 +36,15 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   }, [debounceSetSearchTerm]);
 
   React.useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (searchValue.trim() === "") {
       setDebouncedSearchTerm("");
       setIsDebouncing(false);
       debounceSetSearchTerm.cancel();
     } else {
       setIsDebouncing(true);
-      debounceSetSearchTerm(searchTerm);
+      debounceSetSearchTerm(searchValue);
     }
-  }, [searchTerm, debounceSetSearchTerm]);
+  }, [searchValue, debounceSetSearchTerm]);
 
   const rootDirectoryQuery = trpc.file.find.list.useQuery({
     path: datasetFilesPath(dataset),
@@ -77,9 +77,9 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
           placeholder="Search files"
           className="h-8 rounded-lg bg-background"
           containerClassName="w-full"
-          value={searchTerm}
-          setValue={setSearchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchValue}
+          setValue={setSearchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
       <div className="h-full w-full overflow-auto bg-muted">
@@ -97,7 +97,7 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setSearchTerm("")}
+                  onClick={() => setSearchValue("")}
                 >
                   <CircleXIcon />
                   <span>Clear search</span>

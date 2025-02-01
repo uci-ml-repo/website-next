@@ -114,9 +114,9 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
               e.preventDefault();
               setValue("");
             }}
-            className="absolute right-2 flex items-center justify-center text-muted-foreground"
+            className="absolute right-3 flex items-center justify-center text-muted-foreground"
           >
-            <CircleXIcon className="size-4" />
+            <CircleXIcon className="size-5" />
           </button>
         )}
       </div>
