@@ -24,7 +24,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         ghostDestructive:
           "text-destructive hover:bg-destructive hover:text-background",
-        link: "text-primary underline-offset-2 hover:underline",
+        link: "!p-0 text-primary underline-offset-2 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 [&_svg]:size-4",

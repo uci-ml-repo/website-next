@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 
 import DiscussionComments from "@/components/discussion/comment/DiscussionComments";
+import DiscussionContent from "@/components/discussion/view/DiscussionContent.trsx";
 import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/discussion/view/extended/DiscussionExtendedOptions";
-import MDXViewer from "@/components/editor/MDXViewer";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import { timeSince } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
@@ -49,7 +49,7 @@ export default async function Page({
           {discussion.title}
         </h1>
 
-        <MDXViewer markdown={discussion.content} />
+        <DiscussionContent content={discussion.content} />
       </div>
       <hr />
       <DiscussionComments discussion={discussion} />

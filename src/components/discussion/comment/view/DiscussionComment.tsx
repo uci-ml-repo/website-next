@@ -5,6 +5,7 @@ import { useState } from "react";
 import DiscussionCommentEdit from "@/components/discussion/comment/edit/DiscussionCommentEdit";
 import DiscussionCommentUpvote from "@/components/discussion/comment/view/DiscussionCommentUpvote";
 import DiscussionCommentExtendedOptions from "@/components/discussion/comment/view/extended/DiscussionCommentExtendedOptions";
+import Expandable from "@/components/ui/expandable";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import type { DiscussionCommentResponse } from "@/lib/types";
 import { timeSince } from "@/lib/utils";
@@ -38,9 +39,11 @@ export default function DiscussionComment({
               setIsEditing={setIsEditing}
             />
           ) : (
-            <div className="whitespace-pre-wrap">
-              {discussionComment.content}
-            </div>
+            <Expandable truncationHeight={100}>
+              <div className="whitespace-pre-wrap">
+                {discussionComment.content}
+              </div>
+            </Expandable>
           )}
         </div>
       </div>

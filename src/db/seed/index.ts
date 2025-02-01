@@ -52,7 +52,7 @@ async function main() {
           maxDate: new Date(),
         }),
         title: f.loremIpsum(),
-        content: f.loremIpsum({ sentencesCount: 20 }),
+        content: f.loremIpsum({ sentencesCount: 50 }),
         userId: f.valuesFromArray({ values: users.map((u) => u.id) }),
         datasetId: f.valuesFromArray({ values: [iris.id] }),
         upvoteCount: f.valuesFromArray({ values: [0] }),
