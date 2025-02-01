@@ -24,20 +24,18 @@ export default async function Page({
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <div className="flex justify-between">
+        <div className="flex justify-between space-x-2">
           <div className="flex items-center">
             <ProfileAvatar
               src={discussion.user.image}
               className="mr-2 size-8 max-sm:hidden"
             />
-            <div className="min-w-0">
-              <div className="space-x-1.5 text-xs text-muted-foreground">
-                <span>{discussion.user.name}</span>
-                <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-                {discussion.updatedAt && (
-                  <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-                )}
-              </div>
+            <div className="space-x-1.5 text-xs text-muted-foreground">
+              <span>{discussion.user.name}</span>
+              <span>&middot; {timeSince(discussion.createdAt)} ago</span>
+              {discussion.updatedAt && (
+                <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
+              )}
             </div>
           </div>
 

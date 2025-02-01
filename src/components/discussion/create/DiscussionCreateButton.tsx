@@ -1,27 +1,45 @@
+"use client";
+
 import { PlusIcon } from "lucide-react";
+import { motion } from "motion/react";
+import { useState } from "react";
 
 import SignInRequired from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function DiscussionCreateButton({
-  text,
-  authedRedirect,
   className,
 }: {
-  text: string;
-  authedRedirect: string;
   className?: string;
 }) {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
   return (
     <SignInRequired
-      title="Sign in to comment"
-      body="To comment and access other features, please sign in."
-      authedRedirect={authedRedirect}
+      title="Sign in to create discussions"
+      body="To create discussions and access other features, please sign in."
+      authedRedirect="discussions/create"
     >
-      <Button variant="gold" className={cn("lift", className)}>
+      <Button
+        variant="gold"
+        size={isHovered ? "default" : "icon"}
+        className={cn("lift", className)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <PlusIcon />
-        <span>{text}</span>
+        {isHovered && (
+          <motion.span
+            className="overflow-x-hidden"
+            initial={{ width: 0 }}
+            animate={{
+              width: isHovered ? "auto" : 0,
+            }}
+          >
+            Create
+          </motion.span>
+        )}
       </Button>
     </SignInRequired>
   );

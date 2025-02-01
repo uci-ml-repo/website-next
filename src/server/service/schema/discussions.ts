@@ -7,7 +7,7 @@ export const discussionQuery = z.object({
   userId: z.string().optional(),
   order: order(["createdAt", "upvoteCount"]).optional(),
   limit: z.number().optional(),
-  offset: z.number().optional(),
+  cursor: z.number().optional(),
 });
 
 export const discussionCommentQuery = z.object({

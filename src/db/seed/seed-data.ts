@@ -4,35 +4,35 @@ import { Enums } from "@/db/enums";
 import type { dataset, paper, user } from "@/db/schema";
 
 const dummyUserId = crypto.randomUUID();
-const password = bcryptjs.hashSync("p", 10);
+export const dummyPassword = bcryptjs.hashSync("p", 10);
 
 export const usersSeed: (typeof user.$inferInsert)[] = [
   {
     id: dummyUserId,
     email: "dummy@guci.edu",
     name: "dummy",
-    password,
+    password: dummyPassword,
   },
   {
     id: crypto.randomUUID(),
     email: "admin@uci.edu",
     name: "Admin",
     role: Enums.UserRole.ADMIN,
-    password,
+    password: dummyPassword,
   },
   {
     id: crypto.randomUUID(),
     email: "librarian@uci.edu",
     name: "Librarian",
     role: Enums.UserRole.LIBRARIAN,
-    password,
+    password: dummyPassword,
   },
   {
     id: crypto.randomUUID(),
     email: "curator@uci.edu",
     name: "Curator",
     role: Enums.UserRole.CURATOR,
-    password,
+    password: dummyPassword,
   },
 ];
 export const datasetsSeed: (typeof dataset.$inferSelect)[] = [

@@ -2,7 +2,7 @@ import type { Session } from "@auth/core/types";
 import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dataset, discussion } from "@/db/schema";
+import { discussion } from "@/db/schema";
 import type {
   DatasetSelect,
   DiscussionUpvoteSelect,
@@ -61,7 +61,7 @@ export default class DiscussionFindService {
       ? Object.entries(query.order).map(([orderBy, sort]) =>
           sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
         )
-      : [asc(dataset.id)];
+      : [asc(discussion.createdAt)];
 
     const discussions = await db.query.discussion
       .findMany({
@@ -76,10 +76,16 @@ export default class DiscussionFindService {
               }
             : undefined,
         },
-        limit: query.limit,
-        offset: query.offset,
+        limit: query.limit ? query.limit + 1 : undefined,
+        offset: query.cursor ?? 0,
       })
       .then((discussions) => discussions.map(transformRow));
+
+    let nextCursor: number | undefined = undefined;
+    if (query.limit && discussions.length > query.limit) {
+      discussions.pop();
+      nextCursor = (query.cursor ?? 0) + query.limit;
+    }
 
     const [countQuery] = await db
       .select({ count: count() })
@@ -89,6 +95,7 @@ export default class DiscussionFindService {
     return {
       discussions,
       count: countQuery.count,
+      nextCursor,
     };
   }
 

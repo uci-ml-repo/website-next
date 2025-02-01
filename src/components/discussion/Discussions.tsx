@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { SearchIcon } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -21,19 +23,53 @@ export default function Discussions({
   allowCreate?: boolean;
 }) {
   const [orderBy, setOrderBy] = useState<"top" | "new">("top");
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const discussionsQuery = trpc.discussion.find.byQuery.useQuery({
-    datasetId: datasetId,
-    userId: userId,
-    order:
-      orderBy === "top"
-        ? { upvoteCount: "desc", createdAt: "desc" }
-        : { createdAt: "desc" },
-    limit: 10,
-    offset: 0,
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    trpc.discussion.find.byQuery.useInfiniteQuery(
+      {
+        datasetId: datasetId,
+        userId: userId,
+        order:
+          orderBy === "top"
+            ? { upvoteCount: "desc", createdAt: "desc" }
+            : { createdAt: "desc" },
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      },
+    );
 
-  if (!discussionsQuery.data || discussionsQuery.isLoading) {
+  const discussions = data?.pages.flatMap((page) => page.discussions) || [];
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "100px",
+      },
+    );
+
+    const currentElement = loadMoreRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoading) {
     return (
       <div className="flex h-20 w-full items-center justify-center">
         <Spinner className="size-10" />
@@ -43,44 +79,36 @@ export default function Discussions({
 
   return (
     <div className="space-y-4">
-      <div className="items-center max-sm:space-y-4 sm:flex">
-        {discussionsQuery.data.discussions.length === 0 ? (
-          <Card className="w-full">
-            <CardContent className="flex h-[130px] items-center justify-center">
-              <div className="space-y-3 text-center">
-                <div className="text-muted-foreground">
-                  There are no discussions yet
-                </div>
-                {allowCreate && (
-                  <DiscussionCreateButton
-                    text="Add Discussion"
-                    authedRedirect="discussions/create"
-                  />
-                )}
+      {discussions.length === 0 ? (
+        <Card className="w-full">
+          <CardContent className="flex h-[130px] items-center justify-center">
+            <div className="space-y-3 text-center">
+              <div className="text-muted-foreground">
+                There are no discussions yet
               </div>
-            </CardContent>
-          </Card>
-        ) : (
-          allowCreate && (
-            <DiscussionCreateButton
-              text="Add Discussion"
-              authedRedirect="discussions/create"
-              className="max-sm:w-full"
-            />
-          )
-        )}
+              {allowCreate && <DiscussionCreateButton />}
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="w-full">
+            <Input icon={SearchIcon} placeholder="Search Discussions" />
+          </div>
 
-        {discussionsQuery.data.discussions.length > 0 && (
-          <DiscussionsOrderBy
-            orderBy={orderBy}
-            setOrderBy={setOrderBy}
-            className="flex w-full justify-end"
-          />
-        )}
-      </div>
+          <div className="max-sm: flex justify-between gap-4 max-sm:w-full max-sm:flex-row-reverse">
+            <DiscussionsOrderBy
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
+              className="flex justify-end"
+            />
+            {allowCreate && <DiscussionCreateButton />}
+          </div>
+        </div>
+      )}
 
       <div>
-        {discussionsQuery.data.discussions.map((discussion) => (
+        {discussions.map((discussion) => (
           <React.Fragment key={discussion.id}>
             <DiscussionPreview
               discussion={discussion}
@@ -90,6 +118,14 @@ export default function Discussions({
           </React.Fragment>
         ))}
       </div>
+
+      <div ref={loadMoreRef} />
+
+      {isFetchingNextPage && (
+        <div className="flex h-12 items-center justify-center">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 }

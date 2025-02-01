@@ -64,10 +64,6 @@ export default class DiscussionCommentFindService {
         )
       : [asc(discussionComment.createdAt)];
 
-    const limitPlusOne = query.limit ? query.limit + 1 : undefined;
-
-    const offset = query.cursor ?? 0;
-
     const discussionComments = await db.query.discussionComment
       .findMany({
         where: buildQuery(query),
@@ -81,15 +77,15 @@ export default class DiscussionCommentFindService {
               }
             : undefined,
         },
-        limit: limitPlusOne,
-        offset,
+        limit: query.limit ? query.limit + 1 : undefined,
+        offset: query.cursor ?? 0,
       })
       .then((comments) => comments.map(transformRow));
 
     let nextCursor: number | undefined = undefined;
     if (query.limit && discussionComments.length > query.limit) {
       discussionComments.pop();
-      nextCursor = offset + query.limit;
+      nextCursor = (query.cursor ?? 0) + query.limit;
     }
 
     const [countQuery] = await db

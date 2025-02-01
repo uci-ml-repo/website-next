@@ -13,31 +13,37 @@ export default function DiscussionPreview({
   showOnDataset?: boolean;
 }) {
   return (
-    <div className="group flex justify-between hover:bg-muted">
+    <div className="group flex justify-between space-x-2 hover:bg-muted">
       <Link
         href={`${datasetPage(discussion.dataset)}/discussions/${discussion.id}`}
-        className="flex w-full min-w-0 items-center p-4"
+        className="flex w-full min-w-0 items-center px-2 py-4 sm:px-4"
       >
         <ProfileAvatar
           src={discussion.user.image}
           className="mr-3 size-12 max-sm:hidden"
         />
         <div className="min-w-0">
-          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold group-hover:underline">
+          <div className="overflow-hidden text-ellipsis text-pretty text-xl font-bold group-hover:underline max-md:line-clamp-3 md:whitespace-nowrap">
             {discussion.title}
           </div>
           <div className="space-x-1.5 text-xs text-muted-foreground">
             <span>{discussion.user.name}</span>
             <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-            {discussion.updatedAt && (
-              <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-            )}
-            {showOnDataset && <span>&middot; {discussion.dataset.title}</span>}
+            <span className="max-sm:hidden">
+              {discussion.updatedAt && (
+                <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
+              )}
+              {showOnDataset && (
+                <span>&middot; {discussion.dataset.title}</span>
+              )}
+            </span>
           </div>
         </div>
       </Link>
 
-      <DiscussionUpvote discussion={discussion} />
+      <div className="flex items-center p-0 sm:p-4">
+        <DiscussionUpvote discussion={discussion} />
+      </div>
     </div>
   );
 }

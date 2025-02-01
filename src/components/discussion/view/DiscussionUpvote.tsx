@@ -62,7 +62,6 @@ export default function DiscussionUpvote({
       <Button
         variant={isUpvoted ? "gold" : "secondary"}
         size="sm"
-        className="m-2 flex items-center"
         disabled={isPending}
       >
         {isPending ? <Spinner /> : <ChevronUpIcon />}

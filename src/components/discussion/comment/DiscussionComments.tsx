@@ -20,6 +20,7 @@ export default function DiscussionComments({
 }) {
   const [orderBy, setOrderBy] = useState<DiscussionCommentsOrderBy>("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.comment.find.byQuery.useInfiniteQuery(
@@ -38,8 +39,6 @@ export default function DiscussionComments({
 
   const comments = data?.pages.flatMap((page) => page.discussionComments) || [];
   const totalCount = data?.pages[0]?.count || 0;
-
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
