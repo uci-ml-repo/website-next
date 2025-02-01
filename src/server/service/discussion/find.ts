@@ -8,10 +8,7 @@ import type {
   DiscussionUpvoteSelect,
   UserSelect,
 } from "@/db/types";
-import type {
-  DiscussionQuery,
-  DiscussionSearchQuery,
-} from "@/server/service/schema/discussions";
+import type { DiscussionQuery } from "@/server/service/schema/discussions";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 const DISCUSSION_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${discussion.title}), 'A') ||
@@ -40,12 +37,7 @@ type RawDiscussion = typeof discussion.$inferSelect & {
 function transformRow({ upvotes, ...discussion }: RawDiscussion) {
   return {
     ...discussion,
-    upvoted:
-      upvotes === null
-        ? false
-        : Array.isArray(upvotes)
-          ? upvotes.length > 0
-          : true,
+    upvoted: Array.isArray(upvotes) ? upvotes.length > 0 : !!upvotes,
   };
 }
 
@@ -84,17 +76,10 @@ export default class DiscussionFindService {
       .then((discussions) => discussions.map(transformRow));
   }
 
-  async byQuery(query: DiscussionQuery, session?: Session | null) {
-    const orderBy = query.order
-      ? Object.entries(query.order).map(([orderBy, sort]) =>
-          sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
-        )
-      : [asc(discussion.createdAt)];
-
-    const discussions = await db.query.discussion
+  async byUserId(userId: string, session: Session | null) {
+    return db.query.discussion
       .findMany({
-        where: buildQuery(query),
-        orderBy: orderBy,
+        where: (discussion, { eq }) => eq(discussion.userId, userId),
         with: {
           user: true,
           dataset: true,
@@ -104,10 +89,18 @@ export default class DiscussionFindService {
               }
             : undefined,
         },
-        offset: query.cursor ?? 0,
-        limit: query.limit ? query.limit + 1 : undefined,
       })
       .then((discussions) => discussions.map(transformRow));
+  }
+
+  async byQuery(query: DiscussionQuery, session?: Session | null) {
+    let discussions;
+
+    if (query.search) {
+      discussions = await this.bySearchQuery(query, session);
+    } else {
+      discussions = await this.byRawQuery(query, session);
+    }
 
     let nextCursor: number | undefined = undefined;
     if (query.limit && discussions.length > query.limit) {
@@ -127,10 +120,17 @@ export default class DiscussionFindService {
     };
   }
 
-  async byUserId(userId: string, session: Session | null) {
-    return db.query.discussion
+  private async byRawQuery(query: DiscussionQuery, session?: Session | null) {
+    const orderBy = query.order
+      ? Object.entries(query.order).map(([orderBy, sort]) =>
+          sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
+        )
+      : [asc(discussion.createdAt)];
+
+    return await db.query.discussion
       .findMany({
-        where: (discussion, { eq }) => eq(discussion.userId, userId),
+        where: buildQuery(query),
+        orderBy: orderBy,
         with: {
           user: true,
           dataset: true,
@@ -140,12 +140,17 @@ export default class DiscussionFindService {
               }
             : undefined,
         },
+        offset: query.cursor ?? 0,
+        limit: query.limit ? query.limit + 1 : undefined,
       })
       .then((discussions) => discussions.map(transformRow));
   }
 
-  async bySearch(query: DiscussionSearchQuery, session: Session | null) {
-    const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search}))`;
+  private async bySearchQuery(
+    query: DiscussionQuery,
+    session?: Session | null,
+  ) {
+    const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search ?? ""}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DISCUSSION_WEIGHTS}, ${normalizedTsQuery}))`;
 
@@ -170,7 +175,9 @@ export default class DiscussionFindService {
       .where(
         and(
           buildQuery(query),
-          sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`,
+          query.search
+            ? sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`
+            : undefined,
         ),
       )
       .offset(query.cursor ?? 0)
