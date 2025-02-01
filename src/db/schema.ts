@@ -118,13 +118,9 @@ export const dataset = pgTable(
               ${t.subjectArea} IS NOT NULL))`,
     ),
     check(
-      "external_check",
-      sql`((${t.externalLink} IS NULL AND
-          ${t.size} IS NOT NULL AND
-          ${t.fileCount} IS NOT NULL)
-          OR (${t.externalLink} ~* '^https?://' AND
-          ${t.size} IS NULL AND
-          ${t.fileCount} IS NULL))`,
+      "files_check",
+      sql`((${t.externalLink} IS NULL AND ${t.size} IS NOT NULL AND ${t.fileCount} IS NOT NULL)
+          OR (${t.externalLink} IS NOT NULL AND ${t.externalLink} ~* '^https?://' AND ${t.size} IS NULL AND ${t.fileCount} IS NULL))`,
     ),
     index("dataset_search_index").using(
       "gin",

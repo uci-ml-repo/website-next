@@ -320,8 +320,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: "https://zenodo.org/records/7669442",
     variablesDescription: "",
     updatedAt: new Date(),
-    size: 0,
-    fileCount: 0,
+    size: null,
+    fileCount: null,
   },
   {
     id: 938,
@@ -355,8 +355,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: "https://zenodo.org/records/7669442",
     variablesDescription: "",
     updatedAt: new Date(),
-    size: 0,
-    fileCount: 0,
+    size: null,
+    fileCount: null,
   },
 ];
 
