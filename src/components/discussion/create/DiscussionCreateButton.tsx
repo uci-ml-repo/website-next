@@ -26,7 +26,7 @@ export default function DiscussionCreateButton({
       className={cn("lift", className)}
     >
       <PlusIcon />
-      {!tooltip && <span>Create Discussion</span>}
+      {!tooltip && <span>Start Discussion</span>}
     </Button>
   );
 
@@ -44,7 +44,7 @@ export default function DiscussionCreateButton({
                 <CreateButton />
               </div>
             </TooltipTrigger>
-            <TooltipContent>Create Discussion</TooltipContent>
+            <TooltipContent>Start Discussion</TooltipContent>
           </Tooltip>
         ) : (
           <CreateButton />
