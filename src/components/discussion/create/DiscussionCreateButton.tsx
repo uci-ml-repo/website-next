@@ -21,26 +21,29 @@ export default function DiscussionCreateButton({
       body="To create discussions and access other features, please sign in."
       authedRedirect="discussions/create"
     >
-      <Button
-        variant="gold"
-        size={isHovered ? "default" : "icon"}
-        className={cn("lift", className)}
+      <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <PlusIcon />
-        {isHovered && (
-          <motion.span
-            className="overflow-x-hidden"
-            initial={{ width: 0 }}
-            animate={{
-              width: isHovered ? "auto" : 0,
-            }}
-          >
-            Create
-          </motion.span>
-        )}
-      </Button>
+        <Button
+          variant="gold"
+          size={isHovered ? "default" : "icon"}
+          className={cn("lift", className)}
+        >
+          <PlusIcon />
+          {isHovered && (
+            <motion.span
+              className="overflow-x-hidden"
+              initial={{ width: 0 }}
+              animate={{
+                width: isHovered ? "auto" : 0,
+              }}
+            >
+              Create
+            </motion.span>
+          )}
+        </Button>
+      </div>
     </SignInRequired>
   );
 }
