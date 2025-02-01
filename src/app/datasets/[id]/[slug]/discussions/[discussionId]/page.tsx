@@ -39,7 +39,7 @@ export default async function Page({
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <DiscussionUpvote discussion={discussion} />
             <DiscussionExtendedOptions discussion={discussion} />
           </div>

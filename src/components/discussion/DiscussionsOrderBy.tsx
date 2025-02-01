@@ -28,7 +28,7 @@ export default function DiscussionsOrderBy({
         value={orderBy}
         onValueChange={(value) => setOrderBy(value as DiscussionsOrderBy)}
       >
-        <SelectTrigger className="w-32">
+        <SelectTrigger className="h-10 w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

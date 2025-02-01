@@ -78,7 +78,7 @@ export default function DiscussionCreateInput({
 
   return (
     <div className="space-y-4">
-      <div className="text-2xl font-bold">Creating Discussion</div>
+      <div className="text-2xl font-bold">Create Discussion</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

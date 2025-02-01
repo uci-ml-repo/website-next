@@ -69,7 +69,7 @@ export default function DiscussionEdit({
     <div className="space-y-4">
       <div className="flex items-center justify-between space-x-2">
         <div className="truncate text-2xl font-bold">
-          Editing: {discussion.title}
+          Edit: {discussion.title}
         </div>
         <Button
           variant="ghostDestructive"

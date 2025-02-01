@@ -81,7 +81,7 @@ export default function Discussions({
               setOrderBy={setOrderBy}
               className="flex justify-end"
             />
-            {allowCreate && <DiscussionCreateButton />}
+            {allowCreate && <DiscussionCreateButton tooltip />}
           </div>
         </div>
       )}

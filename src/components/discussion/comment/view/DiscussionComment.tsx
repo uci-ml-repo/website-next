@@ -17,13 +17,13 @@ export default function DiscussionComment({
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between space-x-1">
       <div className="flex w-full py-4">
         <ProfileAvatar
           src={discussionComment.user.image}
           className="mr-3 size-10 max-sm:hidden"
         />
-        <div className="w-full">
+        <div className="w-full space-y-1">
           <div className="space-x-1.5 text-xs text-muted-foreground">
             <span>{discussionComment.user.name}</span>
             <span>&middot; {timeSince(discussionComment.createdAt)} ago</span>
@@ -31,6 +31,7 @@ export default function DiscussionComment({
               <span>(edited {timeSince(discussionComment.updatedAt)} ago)</span>
             )}
           </div>
+
           {isEditing ? (
             <DiscussionCommentEdit
               discussionComment={discussionComment}
@@ -45,8 +46,8 @@ export default function DiscussionComment({
       </div>
 
       <div>
-        <div className="flex items-center">
-          <DiscussionCommentUpvote discussionComment={discussionComment} />
+        <DiscussionCommentUpvote discussionComment={discussionComment} />
+        <div className="flex justify-end">
           <DiscussionCommentExtendedOptions
             discussionComment={discussionComment}
             setIsEditing={setIsEditing}
