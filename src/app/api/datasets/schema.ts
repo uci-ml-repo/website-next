@@ -1,3 +1,4 @@
+import { Enums } from "@/db/enums";
 import type { AcceptedDatasetResponse } from "@/lib/types";
 import { datasetPage, datasetPythonDataURL } from "@/lib/utils";
 
@@ -66,10 +67,10 @@ export function datasetToPythonMetadata(
     num_features: dataset.featureCount,
     feature_types: dataset.featureTypes,
     target_col: dataset.variables
-      .filter((v) => v.role === "TARGET")
+      .filter((v) => v.role === Enums.DatasetFeatureRole.TARGET)
       .map((v) => v.name),
     index_col: dataset.variables
-      .filter((v) => v.role === "ID")
+      .filter((v) => v.role === Enums.DatasetFeatureRole.ID)
       .map((v) => v.name),
     has_missing_values: dataset.variables.some((v) => v.missingValues)
       ? "yes"

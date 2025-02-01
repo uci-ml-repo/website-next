@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { Enums } from "@/db/enums";
 import type { DatasetResponse } from "@/lib/types";
 import { caller } from "@/server/trpc/query/server";
 
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
 
     dataset = await caller.dataset.find.byId(idNumber);
 
-    if (!dataset || dataset.status !== "APPROVED") {
+    if (!dataset || dataset.status !== Enums.DatasetStatus.APPROVED) {
       return NextResponse.json({
         status: 404,
         message: `Dataset with id ${id} not found`,

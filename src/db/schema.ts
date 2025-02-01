@@ -15,7 +15,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { Enums } from "@/db/enums";
-import { enumToArray } from "@/db/util";
+import { enumToArray } from "@/lib/utils";
 
 export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
 
@@ -81,7 +81,9 @@ export const dataset = pgTable(
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
     slug: text("slug").notNull(),
-    status: datasetStatus("status").default("draft").notNull(),
+    status: datasetStatus("status")
+      .default(Enums.DatasetStatus.DRAFT)
+      .notNull(),
 
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count").default(0).notNull(),
