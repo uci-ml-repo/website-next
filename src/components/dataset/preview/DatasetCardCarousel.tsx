@@ -57,7 +57,7 @@ export default function DatasetCardCarousel({
             {seeAllHref && (
               <CarouselItem className={cardBreakpoints}>
                 <DatasetCardSkeleton className="bg-muted">
-                  <Button asChild className="lift">
+                  <Button asChild className="lift" variant="gold">
                     <Link href={seeAllHref}>
                       <SearchIcon />
                       <div>See All</div>

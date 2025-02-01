@@ -2,7 +2,7 @@
 
 import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
-import React, { useCallback, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -12,11 +12,12 @@ export default function DatasetSearchInput() {
   const [inputValue, setInputValue] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const debouncedSetSearchValue = useCallback(
-    debounce((value: string) => {
-      setSearchValue(value);
-    }, 100),
-    [],
+  const debouncedSetSearchValue = useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchValue(value);
+      }, 100),
+    [setSearchValue],
   );
 
   const { data, isPending } = trpc.dataset.find.byQuery.useQuery(
@@ -50,6 +51,7 @@ export default function DatasetSearchInput() {
           <CardContent>
             {JSON.stringify(data ? data.datasets.map((d) => d.title) : [])}
             <div>{inputValue}</div>
+            {isPending && <div>Loading...</div>}
           </CardContent>
         </Card>
       )}

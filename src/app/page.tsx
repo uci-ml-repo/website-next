@@ -76,11 +76,9 @@ export default async function Page() {
             <p className="text-pretty text-center text-xl font-bold">
               Didn't find what you were looking for?
             </p>
-            <Button asChild className="lift" size="lg">
-              <div>
-                <SearchIcon />
-                <Link href={DATASETS_ROUTE}>Explore All Datasets</Link>
-              </div>
+            <Button className="lift" size="lg" variant="gold">
+              <SearchIcon />
+              <Link href={DATASETS_ROUTE}>Explore All Datasets</Link>
             </Button>
           </div>
         </div>
