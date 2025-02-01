@@ -109,13 +109,14 @@ export const dataset = pgTable(
       "accepted_check",
       sql`(${t.status} = 'draft' OR
               (${t.yearCreated} IS NOT NULL AND
+              ${t.doi} IS NOT NULL AND
               ${t.instanceCount} IS NOT NULL AND
               ${t.description} IS NOT NULL AND
               ${t.subjectArea} IS NOT NULL))`,
     ),
     index("dataset_search_index").using(
       "gin",
-      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A'))`,
+      sql`(SETWEIGHT(TO_TSVECTOR('simple', ${t.title}), 'A'))`,
     ),
   ],
 );

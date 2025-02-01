@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
 import React, { useMemo, useState } from "react";
 
+import DatasetRow from "@/components/dataset/preview/DatasetRow";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { trpc } from "@/server/trpc/query/client";
@@ -49,9 +50,16 @@ export default function DatasetSearchInput() {
       {inputValue && (
         <Card className="absolute left-0 right-0">
           <CardContent>
-            {JSON.stringify(data ? data.datasets.map((d) => d.title) : [])}
             <div>{inputValue}</div>
             {isPending && <div>Loading...</div>}
+            {data &&
+              (data.datasets.length === 0 ? (
+                <div>No Results</div>
+              ) : (
+                data.datasets.map((dataset) => (
+                  <DatasetRow key={dataset.id} dataset={dataset} />
+                ))
+              ))}
           </CardContent>
         </Card>
       )}

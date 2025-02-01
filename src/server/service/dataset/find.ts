@@ -3,10 +3,11 @@ import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
+import ServiceError from "@/server/service/errors";
 import type { DatasetQuery } from "@/server/service/schema/datasets";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
-const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${dataset.title}), 'A'))`;
+const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(dataset.status, Enums.DatasetStatus.APPROVED)];
@@ -20,7 +21,11 @@ function buildQuery(query: DatasetQuery) {
 export default class DatasetFindService {
   async byId(id: number) {
     return db.query.dataset.findFirst({
-      where: (dataset, { eq }) => eq(dataset.id, id),
+      where: (dataset, { and, eq }) =>
+        and(
+          eq(dataset.id, id),
+          eq(dataset.status, Enums.DatasetStatus.APPROVED),
+        ),
       with: {
         datasetKeywords: { with: { keyword: true } },
         authors: true,
@@ -28,12 +33,48 @@ export default class DatasetFindService {
         variables: true,
         user: true,
       },
+    });
+  }
+
+  async batch(ids: number[]) {
+    const datasets = await db.query.dataset.findMany({
+      where: (dataset, { and, inArray }) =>
+        and(
+          inArray(dataset.id, ids),
+          eq(dataset.status, Enums.DatasetStatus.APPROVED),
+        ),
+      with: {
+        datasetKeywords: { with: { keyword: true } },
+        authors: true,
+        introductoryPaper: true,
+        variables: true,
+        user: true,
+      },
+    });
+
+    const datasetMap = new Map(
+      datasets.map((dataset) => [dataset.id, dataset]),
+    );
+
+    return ids.map((id) => {
+      const dataset = datasetMap.get(id);
+      if (!dataset) {
+        throw new ServiceError({
+          reason: "Dataset Not Found",
+          origin: "Dataset",
+        });
+      }
+      return dataset;
     });
   }
 
   async byUserId(userId: string) {
     return db.query.dataset.findMany({
-      where: (dataset, { eq }) => eq(dataset.userId, userId),
+      where: (dataset, { and, eq }) =>
+        and(
+          eq(dataset.userId, userId),
+          eq(dataset.status, Enums.DatasetStatus.APPROVED),
+        ),
       with: {
         datasetKeywords: { with: { keyword: true } },
         authors: true,
@@ -42,10 +83,6 @@ export default class DatasetFindService {
         user: true,
       },
     });
-  }
-
-  async byTitle(title: string) {
-    return undefined;
   }
 
   async byQuery(query: DatasetQuery) {
@@ -97,11 +134,11 @@ export default class DatasetFindService {
   }
 
   private async bySearchQuery(query: DatasetQuery) {
-    const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search ?? ""}))`;
-    const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
+    const tsQuery = sql`(PLAINTO_TSQUERY('simple', ${query.search ?? ""}))`;
+    const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('simple', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DATASET_WEIGHTS}, ${normalizedTsQuery}))`;
 
-    return db
+    const datasets = await db
       .select({
         ...getTableColumns(dataset),
         rank: rank.mapWith(Number),
@@ -118,5 +155,7 @@ export default class DatasetFindService {
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
       .orderBy((t) => [desc(t.rank), desc(t.viewCount)]);
+
+    return this.batch(datasets.map((d) => d.id));
   }
 }

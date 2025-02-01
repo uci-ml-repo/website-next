@@ -2,8 +2,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { Enums } from "@/db/enums";
-import type { DatasetResponse } from "@/lib/types";
+import type { AcceptedDatasetResponse, DatasetResponse } from "@/lib/types";
 import { caller } from "@/server/trpc/query/server";
+
+import { datasetToPythonMetadata } from "./schema";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
@@ -37,14 +39,16 @@ export async function GET(req: NextRequest) {
       });
     }
   } else if (name) {
-    dataset = await caller.dataset.find.byTitle(name);
+    const datasetByTitle = await caller.dataset.find.byQuery({ search: name });
 
-    if (!dataset) {
+    if (!datasetByTitle) {
       return NextResponse.json({
         status: 404,
         message: `Dataset with 'name' ${name} not found`,
       });
     }
+
+    dataset = datasetByTitle.datasets[0];
   } else {
     return NextResponse.json({
       status: 400,
@@ -55,6 +59,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     status: 200,
     statusText: "OK",
-    // data: datasetToPythonMetadata(acceptedDataset.parse(dataset)),
+    data: datasetToPythonMetadata(dataset as AcceptedDatasetResponse),
   });
 }

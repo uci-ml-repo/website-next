@@ -9,6 +9,7 @@ import type {
 } from "./schema";
 
 export type AcceptedDatasetRequiredFields =
+  | "doi"
   | "yearCreated"
   | "instanceCount"
   | "description"
