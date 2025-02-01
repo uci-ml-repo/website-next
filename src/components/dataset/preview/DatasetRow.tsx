@@ -21,7 +21,7 @@ export default function DatasetRow({ dataset }: { dataset: DatasetResponse }) {
         <div className="truncate text-lg font-bold decoration-2 group-hover:underline">
           {dataset.title}
         </div>
-        <div className="truncate">
+        <div className="truncate text-sm text-muted-foreground">
           {dataset.subtitle ?? dataset.description}
         </div>
       </div>

@@ -2,9 +2,11 @@
 
 import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
+import Link from "next/link";
 import React, { useMemo, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
+import DatasetRowSkeleton from "@/components/dataset/preview/DatasetRowSkeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { trpc } from "@/server/trpc/query/client";
@@ -51,24 +53,38 @@ export default function DatasetSearchInput() {
         onBlur={() => setInputFocused(false)}
       />
       {inputFocused && (
-        <Card className="absolute left-0 right-0 z-10 shadow-2xl">
+        <Card
+          onMouseDown={(e) => e.preventDefault()}
+          className="absolute left-0 right-0 top-[calc(100%+1px)] z-10 shadow-2xl"
+        >
           <CardContent className="p-0">
-            <div>{inputValue}</div>
-            {inputValue ? (
-              isPending && <div>Loading...</div>
-            ) : (
-              <div>Type to search </div>
+            {inputValue && (
+              <Link
+                className="flex items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold decoration-2 hover:bg-accent hover:underline"
+                href="#"
+              >
+                <SearchIcon />
+                <span>Search '{inputValue}'</span>
+              </Link>
             )}
-            {data &&
-              (data.datasets.length === 0 ? (
-                <div>No Results</div>
-              ) : (
-                <div>
-                  {data.datasets.map((dataset) => (
-                    <DatasetRow key={dataset.id} dataset={dataset} />
-                  ))}
-                </div>
-              ))}
+            {inputValue ? (
+              isPending &&
+              Array.from({ length: 1 }).map((_, index) => (
+                <DatasetRowSkeleton key={index} />
+              ))
+            ) : (
+              <div className="flex items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold text-muted-foreground">
+                <SearchIcon />
+                <span>Type to search</span>
+              </div>
+            )}
+            {data && data.datasets.length > 0 && (
+              <div>
+                {data.datasets.map((dataset) => (
+                  <DatasetRow key={dataset.id} dataset={dataset} />
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
