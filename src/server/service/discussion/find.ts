@@ -182,7 +182,7 @@ export default class DiscussionFindService {
       )
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
-      .orderBy((t) => [desc(t.rank), asc(t.id)])
+      .orderBy((t) => [desc(t.rank), desc(t.createdAt)])
       .then((rows) => rows.map(transformRow));
   }
 }
