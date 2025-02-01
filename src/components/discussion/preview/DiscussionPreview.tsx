@@ -14,7 +14,7 @@ export default function DiscussionPreview({
   showOnDataset?: boolean;
 }) {
   return (
-    <div className="group flex justify-between space-x-2 hover:bg-muted">
+    <div className="group flex justify-between space-x-2 hover:bg-accent">
       <Link
         href={`${DATASET_ROUTE(discussion.dataset)}/discussions/${discussion.id}`}
         className="flex w-full min-w-0 items-center px-2 py-4 sm:px-4"

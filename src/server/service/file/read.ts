@@ -59,7 +59,10 @@ export default class FileReadService {
 
   async zipStats({ absolutePath }: { absolutePath: string }) {
     if (!fs.pathExistsSync(absolutePath)) {
-      throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
+      return {
+        size: null,
+        fileCount: null,
+      };
     }
 
     const size = fs.statSync(absolutePath).size;

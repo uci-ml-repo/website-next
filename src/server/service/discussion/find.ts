@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
 import type {
   DatasetSelect,
+  DiscussionSelect,
   DiscussionUpvoteSelect,
   UserSelect,
 } from "@/db/types";
@@ -28,7 +29,7 @@ function buildQuery(query: DiscussionQuery) {
   return and(...conditions);
 }
 
-type RawDiscussion = typeof discussion.$inferSelect & {
+type RawDiscussion = DiscussionSelect & {
   user: UserSelect;
   dataset: DatasetSelect;
   upvotes: DiscussionUpvoteSelect[] | DiscussionUpvoteSelect | null;

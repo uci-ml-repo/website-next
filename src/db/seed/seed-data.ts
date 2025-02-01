@@ -61,6 +61,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 45,
@@ -91,6 +93,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 186,
@@ -117,6 +121,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 2,
@@ -146,6 +152,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 17,
@@ -171,6 +179,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 1031,
@@ -205,6 +215,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 1074,
@@ -214,7 +226,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     yearCreated: 2024,
     title: "Nvidia Market Customer segmentation data",
     subtitle: null,
-    doi: null,
+    doi: "",
     description:
       "The Nvidia Market Customer Segmentation dataset provides a comprehensive analysis of sales and market dynamics for Nvidia's product offerings across various global regions from 1993 to 2024. This synthetic dataset includes over 39,000 entries, capturing key variables such as product categories (Gaming, AI, Data Center, OEM), specific product names (e.g., RTX 3080, Tesla V100), customer segments (Gamers, AI Researchers, Cloud Providers, Educational Institutions), and regions (North America, Europe, APAC, and more). It details customer purchasing behavior, including revenue data, units sold, marketing expenditures, customer satisfaction scores, and customer retention rates.",
     characteristics: [Enums.DatasetCharacteristic.TABULAR],
@@ -239,6 +251,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 388,
@@ -271,6 +285,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: null,
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 939,
@@ -304,6 +320,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: "https://zenodo.org/records/7669442",
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
   {
     id: 938,
@@ -337,6 +355,8 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     externalLink: "https://zenodo.org/records/7669442",
     variablesDescription: "",
     updatedAt: new Date(),
+    size: 0,
+    fileCount: 0,
   },
 ];
 

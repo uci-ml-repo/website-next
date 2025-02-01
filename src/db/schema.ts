@@ -94,6 +94,9 @@ export const dataset = pgTable(
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
 
+    size: integer("size"),
+    fileCount: integer("file_count"),
+
     userId: uuid("user_id")
       .references(() => user.id)
       .notNull(),
@@ -113,6 +116,15 @@ export const dataset = pgTable(
               ${t.instanceCount} IS NOT NULL AND
               ${t.description} IS NOT NULL AND
               ${t.subjectArea} IS NOT NULL))`,
+    ),
+    check(
+      "external_check",
+      sql`((${t.externalLink} IS NULL AND
+          ${t.size} IS NOT NULL AND
+          ${t.fileCount} IS NOT NULL)
+          OR (${t.externalLink} ~* '^https?://' AND
+          ${t.size} IS NULL AND
+          ${t.fileCount} IS NULL))`,
     ),
     index("dataset_search_index").using(
       "gin",

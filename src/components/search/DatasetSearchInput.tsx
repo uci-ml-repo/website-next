@@ -10,6 +10,7 @@ import { InputClearable } from "@/components/ui/input-clearable";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function DatasetSearchInput() {
+  const [inputFocused, setInputFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -46,19 +47,27 @@ export default function DatasetSearchInput() {
         value={inputValue}
         setValue={setInputValue}
         onChange={handleChange}
+        onFocus={() => setInputFocused(true)}
+        onBlur={() => setInputFocused(false)}
       />
-      {inputValue && (
-        <Card className="absolute left-0 right-0">
-          <CardContent>
+      {inputFocused && (
+        <Card className="absolute left-0 right-0 z-10 shadow-2xl">
+          <CardContent className="p-0">
             <div>{inputValue}</div>
-            {isPending && <div>Loading...</div>}
+            {inputValue ? (
+              isPending && <div>Loading...</div>
+            ) : (
+              <div>Type to search </div>
+            )}
             {data &&
               (data.datasets.length === 0 ? (
                 <div>No Results</div>
               ) : (
-                data.datasets.map((dataset) => (
-                  <DatasetRow key={dataset.id} dataset={dataset} />
-                ))
+                <div>
+                  {data.datasets.map((dataset) => (
+                    <DatasetRow key={dataset.id} dataset={dataset} />
+                  ))}
+                </div>
               ))}
           </CardContent>
         </Card>

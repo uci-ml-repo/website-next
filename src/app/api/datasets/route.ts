@@ -2,7 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { Enums } from "@/db/enums";
-import type { AcceptedDatasetResponse, DatasetResponse } from "@/lib/types";
+import type { DatasetSelect } from "@/db/types";
+import type { AcceptedDatasetResponse } from "@/lib/types";
 import { caller } from "@/server/trpc/query/server";
 
 import { datasetToPythonMetadata } from "./schema";
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  let dataset: DatasetResponse | undefined;
+  let dataset: DatasetSelect | undefined;
 
   if (id) {
     const idNumber = parseInt(id);

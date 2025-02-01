@@ -17,28 +17,17 @@ import {
   abbreviateDecimal,
   abbreviateFileSize,
   cn,
-  datasetFilesPath,
   formatEnum,
 } from "@/lib/utils";
-import { caller } from "@/server/trpc/query/server";
 
 interface DatasetCardProps {
   dataset: DatasetSelect;
   ref?: React.Ref<HTMLDivElement>;
 }
 
-export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
+export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
-
-  let zipStats;
-  try {
-    zipStats = await caller.file.read.zipStats({
-      path: datasetFilesPath(dataset) + ".zip",
-    });
-  } catch {
-    zipStats = null;
-  }
 
   return (
     <Card className="lift-lg group flex h-[360px] flex-col" ref={ref}>
@@ -107,19 +96,16 @@ export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
             <Badge variant="secondary">External</Badge>
           ) : (
             <>
-              {zipStats ? (
-                zipStats.fileCount &&
-                zipStats.size && (
-                  <div>
-                    <span>
-                      {zipStats.fileCount === 1
-                        ? "1 File"
-                        : `${zipStats.fileCount} Files`}
-                    </span>
-                    <span> &middot; </span>
-                    <span>{abbreviateFileSize(zipStats.size)}</span>
-                  </div>
-                )
+              {dataset.fileCount !== null && dataset.size !== null ? (
+                <div>
+                  <span>
+                    {dataset.fileCount === 1
+                      ? "1 File"
+                      : `${dataset.fileCount} Files`}
+                  </span>
+                  <span> &middot; </span>
+                  <span>{abbreviateFileSize(dataset.size)}</span>
+                </div>
               ) : (
                 <Badge variant="destructive">Missing Files</Badge>
               )}

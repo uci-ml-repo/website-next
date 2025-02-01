@@ -1,11 +1,14 @@
 import type {
   author,
   dataset,
+  datasetKeyword,
   discussion,
   discussionCommentUpvote,
   discussionUpvote,
+  keyword,
   paper,
   user,
+  variable,
 } from "./schema";
 
 export type AcceptedDatasetRequiredFields =
@@ -21,6 +24,12 @@ export type AcceptedDatasetRequiredFields =
 export type UserSelect = typeof user.$inferSelect;
 
 export type DatasetSelect = typeof dataset.$inferSelect;
+
+export type DatasetKeywordSelect = typeof datasetKeyword.$inferSelect;
+
+export type KeywordSelect = typeof keyword.$inferSelect;
+
+export type VariableSelect = typeof variable.$inferSelect;
 
 export type AuthorSelect = typeof author.$inferSelect;
 

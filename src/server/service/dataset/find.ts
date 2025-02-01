@@ -118,7 +118,7 @@ export default class DatasetFindService {
         )
       : [asc(dataset.id)];
 
-    return await db.query.dataset.findMany({
+    return db.query.dataset.findMany({
       where: buildQuery(query),
       orderBy,
       offset: query.cursor ?? 0,

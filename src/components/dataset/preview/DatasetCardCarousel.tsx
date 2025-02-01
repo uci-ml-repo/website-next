@@ -1,3 +1,5 @@
+"use client";
+
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -10,8 +12,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  CarouselScrollDots,
 } from "@/components/ui/carousel";
-import type { DatasetSelect } from "@/db/types";
+import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface DatasetGroupProps {
@@ -19,7 +22,7 @@ interface DatasetGroupProps {
   icon?: React.ReactNode;
   seeAllHref?: string;
   endCard?: React.ReactNode;
-  datasets: DatasetSelect[];
+  datasets: DatasetResponse[];
 }
 
 export default function DatasetCardCarousel({
@@ -30,12 +33,12 @@ export default function DatasetCardCarousel({
   datasets,
 }: DatasetGroupProps) {
   const cardBreakpoints = cn(
-    "basis-full sm:basis-1/2 md:basis-1/3 xl:basis-1/4",
+    "basis-full xs:basis-1/2 md:basis-1/3 xl:basis-1/4",
   );
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-4">
           {icon}
           <h2 className="text-2xl font-bold">{heading}</h2>
@@ -46,7 +49,7 @@ export default function DatasetCardCarousel({
           </Button>
         )}
       </div>
-      <div className="max-[1600px]:mx-10">
+      <div className="max-[1600px]:mx-10 max-sm:mx-0">
         <Carousel opts={{ align: "start", skipSnaps: true, duration: 20 }}>
           <CarouselContent allowPadding>
             {datasets.map((dataset) => (
@@ -74,8 +77,9 @@ export default function DatasetCardCarousel({
               </CarouselItem>
             )}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselScrollDots />
+          <CarouselPrevious className="max-sm:hidden" />
+          <CarouselNext className="max-sm:hidden" />
         </Carousel>
       </div>
     </div>

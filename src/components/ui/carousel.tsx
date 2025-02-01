@@ -5,6 +5,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  slidesInView: number[];
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -65,14 +67,26 @@ const Carousel = React.forwardRef<
       },
       plugins,
     );
+    const [slidesInView, setSlidesInView] = React.useState<number[]>([]);
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
+
+    useEffect(() => {
+      if (!api) {
+        return;
+      }
+
+      setSlidesInView(api.slidesInView());
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    }, [api]);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
       if (!api) {
         return;
       }
 
+      setSlidesInView(api.slidesInView());
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
     }, []);
@@ -130,6 +144,7 @@ const Carousel = React.forwardRef<
             orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
+          slidesInView,
           canScrollPrev,
           canScrollNext,
         }}
@@ -258,6 +273,16 @@ const CarouselNext = React.forwardRef<
 });
 CarouselNext.displayName = "CarouselNext";
 
+const CarouselScrollDots = () => {
+  const carousel = useCarousel();
+
+  if (!carousel || !carousel.api) {
+    return null;
+  }
+
+  return <div>XXX {JSON.stringify(carousel.slidesInView)}</div>;
+};
+
 export {
   Carousel,
   type CarouselApi,
@@ -265,4 +290,5 @@ export {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  CarouselScrollDots,
 };
