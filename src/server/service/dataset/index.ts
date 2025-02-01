@@ -2,6 +2,7 @@ import DatasetCiteService from "@/server/service/dataset/cite";
 import DatasetCountService from "@/server/service/dataset/count";
 import DatasetFindService from "@/server/service/dataset/find";
 import DatasetReportService from "@/server/service/dataset/report";
+import DatasetUpdateService from "@/server/service/dataset/update";
 
 export default class DatasetService {
   constructor(
@@ -9,5 +10,6 @@ export default class DatasetService {
     readonly cite = new DatasetCiteService(),
     readonly count = new DatasetCountService(),
     readonly report = new DatasetReportService(),
+    readonly update = new DatasetUpdateService(),
   ) {}
 }

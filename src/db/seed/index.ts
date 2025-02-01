@@ -12,6 +12,7 @@ import {
   user,
 } from "@/db/schema";
 import * as schema from "@/db/schema";
+import service from "@/server/service";
 
 import {
   datasetsSeed,
@@ -79,6 +80,10 @@ async function main() {
       },
     },
   }));
+
+  for (const d of datasets) {
+    await service.dataset.update.zipSize(d);
+  }
 }
 
 main().then(() => {
