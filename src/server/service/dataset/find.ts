@@ -6,8 +6,7 @@ import { dataset } from "@/db/schema";
 import type { DatasetQuery } from "@/server/service/schema/datasets";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
-const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${dataset.title}), 'A') ||
-                              SETWEIGHT(TO_TSVECTOR('english', ${dataset.description}), 'B'))`;
+const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${dataset.title}), 'A'))`;
 
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(dataset.status, Enums.DatasetStatus.APPROVED)];

@@ -11,9 +11,9 @@ import React from "react";
 import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
+import DatasetSearchInput from "@/components/search/DatasetSearchInput";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
@@ -44,20 +44,16 @@ export default async function Page() {
             label="Explore All Datasets"
             variant="blue"
             icon={<ListIcon />}
-            href={DATASETS_PATH} // TODO
+            href={DATASETS_PATH}
           />
           <NavButton
             label="Contribute Dataset"
             variant="secondary"
             icon={<PlusIcon />}
-            href={CONTRIBUTE_PATH} // TODO
+            href={CONTRIBUTE_PATH}
           />
         </div>
-        <Input
-          placeholder="Search for a dataset"
-          variantSize="xl"
-          icon={SearchIcon}
-        />
+        <DatasetSearchInput />
       </div>
 
       <div className="space-y-10">

@@ -115,9 +115,7 @@ export const dataset = pgTable(
     ),
     index("dataset_search_index").using(
       "gin",
-      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
-              SETWEIGHT(TO_TSVECTOR('english', ${t.subtitle}), 'C') ||
-              SETWEIGHT(TO_TSVECTOR('english', ${t.description}), 'D'))`,
+      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A')`,
     ),
   ],
 );
