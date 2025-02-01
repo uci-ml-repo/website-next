@@ -18,6 +18,7 @@ export default function DiscussionPreview({
       <Link
         href={`${DATASET_ROUTE(discussion.dataset)}/discussions/${discussion.id}`}
         className="flex w-full min-w-0 items-center px-2 py-4 sm:px-4"
+        prefetch={false}
       >
         <ProfileAvatar
           src={discussion.user.image}

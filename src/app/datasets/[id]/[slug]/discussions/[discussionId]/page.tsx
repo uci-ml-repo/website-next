@@ -5,6 +5,7 @@ import DiscussionContent from "@/components/discussion/view/DiscussionContent.tr
 import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
 import DiscussionExtendedOptions from "@/components/discussion/view/extended/DiscussionExtendedOptions";
 import ProfileAvatar from "@/components/ui/profile-avatar";
+import ScrollToTop from "@/components/ui/scroll-to-top";
 import { timeSince } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
@@ -23,6 +24,7 @@ export default async function Page({
 
   return (
     <div className="space-y-8">
+      <ScrollToTop />
       <div className="space-y-2">
         <div className="flex justify-between space-x-2">
           <div className="flex items-center">
@@ -51,7 +53,9 @@ export default async function Page({
 
         <DiscussionContent content={discussion.content} />
       </div>
+
       <hr />
+
       <DiscussionComments discussion={discussion} />
     </div>
   );

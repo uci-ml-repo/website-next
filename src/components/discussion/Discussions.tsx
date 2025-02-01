@@ -7,6 +7,7 @@ import DiscussionCreateButton from "@/components/discussion/create/DiscussionCre
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import BackToTop from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
@@ -116,6 +117,8 @@ export default function Discussions({
           <Spinner />
         </div>
       )}
+
+      {!hasNextPage && <BackToTop />}
     </div>
   );
 }

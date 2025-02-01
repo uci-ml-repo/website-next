@@ -8,6 +8,7 @@ import DiscussionCommentCreateInput from "@/components/discussion/comment/create
 import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import BackToTop from "@/components/ui/back-to-top";
 import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -102,6 +103,8 @@ export default function DiscussionComments({
           <Spinner />
         </div>
       )}
+
+      {!hasNextPage && <BackToTop />}
     </div>
   );
 }
