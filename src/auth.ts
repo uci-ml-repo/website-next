@@ -9,7 +9,7 @@ import authConfig from "@/auth.config";
 import { db } from "@/db";
 import type { UserRole } from "@/db/enums";
 import { account, session, user, verificationToken } from "@/db/schema";
-import { SIGN_IN_PATH } from "@/lib/routes";
+import { SIGN_IN_ROUTE } from "@/lib/routes";
 
 declare module "next-auth" {
   interface Session {
@@ -100,7 +100,7 @@ export const authOptions = NextAuth({
     },
   },
   pages: {
-    signIn: SIGN_IN_PATH,
+    signIn: SIGN_IN_ROUTE,
   },
   secret: process.env.AUTH_SECRET,
 });

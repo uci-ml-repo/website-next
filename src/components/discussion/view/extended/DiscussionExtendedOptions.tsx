@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DATASETS_PATH } from "@/lib/routes";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 
 export default function DiscussionExtendedOptions({
@@ -45,7 +45,7 @@ export default function DiscussionExtendedOptions({
             <>
               <DropdownMenuItem asChild>
                 <Link
-                  href={`${DATASETS_PATH}/${discussion.dataset.id}/${discussion.dataset.slug}/discussions/${discussion.id}/edit`}
+                  href={`${DATASETS_ROUTE}/${discussion.dataset.id}/${discussion.dataset.slug}/discussions/${discussion.id}/edit`}
                 >
                   <PencilIcon />
                   Edit

@@ -14,7 +14,7 @@ import Main from "@/components/layout/Main";
 import DatasetSearchInput from "@/components/search/DatasetSearchInput";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { CONTRIBUTE_PATH, DATASETS_PATH } from "@/lib/routes";
+import { CONTRIBUTE_ROUTE, DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
@@ -44,13 +44,13 @@ export default async function Page() {
             label="Explore All Datasets"
             variant="blue"
             icon={<ListIcon />}
-            href={DATASETS_PATH}
+            href={DATASETS_ROUTE}
           />
           <NavButton
             label="Contribute Dataset"
             variant="secondary"
             icon={<PlusIcon />}
-            href={CONTRIBUTE_PATH}
+            href={CONTRIBUTE_ROUTE}
           />
         </div>
         <DatasetSearchInput />
@@ -60,14 +60,14 @@ export default async function Page() {
         <DatasetCardCarousel
           icon={<TrendingUpIcon className="size-8" />}
           heading="Popular Datasets"
-          seeAllHref={DATASETS_PATH} // TODO
+          seeAllHref={DATASETS_ROUTE} // TODO
           datasets={popularDatasets.datasets}
         />
         <hr />
         <DatasetCardCarousel
           icon={<SparklesIcon className="size-8" />}
           heading="New Datasets"
-          seeAllHref={DATASETS_PATH} // TODO
+          seeAllHref={DATASETS_ROUTE} // TODO
           datasets={newDatasets.datasets}
         />
         <hr />
@@ -79,7 +79,7 @@ export default async function Page() {
             <Button asChild className="lift" size="lg">
               <div>
                 <SearchIcon />
-                <Link href={DATASETS_PATH}>Explore All Datasets</Link>
+                <Link href={DATASETS_ROUTE}>Explore All Datasets</Link>
               </div>
             </Button>
           </div>

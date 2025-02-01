@@ -12,13 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { DatasetSelect } from "@/db/types";
+import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
   cn,
   datasetFilesPath,
-  datasetPage,
-  datasetThumbnailURL,
   formatEnum,
 } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
@@ -29,8 +28,8 @@ interface DatasetCardProps {
 }
 
 export default async function DatasetCard({ dataset, ref }: DatasetCardProps) {
-  const thumbnail = datasetThumbnailURL(dataset);
-  const href = datasetPage(dataset);
+  const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
+  const href = DATASET_ROUTE(dataset);
 
   let zipStats;
   try {

@@ -2,8 +2,9 @@ import Link from "next/link";
 
 import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
 import ProfileAvatar from "@/components/ui/profile-avatar";
+import { DATASET_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
-import { datasetPage, timeSince } from "@/lib/utils";
+import { timeSince } from "@/lib/utils";
 
 export default function DiscussionPreview({
   discussion,
@@ -15,7 +16,7 @@ export default function DiscussionPreview({
   return (
     <div className="group flex justify-between space-x-2 hover:bg-muted">
       <Link
-        href={`${datasetPage(discussion.dataset)}/discussions/${discussion.id}`}
+        href={`${DATASET_ROUTE(discussion.dataset)}/discussions/${discussion.id}`}
         className="flex w-full min-w-0 items-center px-2 py-4 sm:px-4"
       >
         <ProfileAvatar

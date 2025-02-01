@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
 import { Enums } from "@/db/enums";
-import { ADMIN_PATH, PROFILE_PATH } from "@/lib/routes";
+import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export default async function Header() {
@@ -36,14 +36,14 @@ export default async function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44" align="end">
               <DropdownMenuItem asChild>
-                <Link href={PROFILE_PATH}>
+                <Link href={PROFILE_ROUTE}>
                   <UserIcon />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
               {session.user.role === Enums.UserRole.ADMIN && (
                 <DropdownMenuItem destructive asChild>
-                  <Link href={ADMIN_PATH}>
+                  <Link href={ADMIN_ROUTE}>
                     <LayoutDashboardIcon />
                     <span>Dashboard</span>
                   </Link>

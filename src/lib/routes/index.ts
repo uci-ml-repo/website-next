@@ -1,0 +1,11 @@
+export * from "./dataset";
+
+export const HOME_ROUTE = "/";
+export const SIGN_IN_ROUTE = "/auth/login";
+export const ADMIN_ROUTE = "/admin";
+export const ABOUT_ROUTE = "/about";
+export const CONTACT_ROUTE = "/contact";
+export const PRIVACY_POLICY_ROUTE = "/privacy";
+export const PROFILE_ROUTE = "/profile";
+export const CONTRIBUTE_ROUTE = "/contribute";
+export const STATIC_FILES_ROUTE = "/api/static";

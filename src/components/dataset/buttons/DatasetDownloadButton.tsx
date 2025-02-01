@@ -2,12 +2,9 @@ import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { DATASET_ZIP_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import {
-  abbreviateFileSize,
-  datasetFilesPath,
-  datasetZipURL,
-} from "@/lib/utils";
+import { abbreviateFileSize, datasetFilesPath } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
 interface DatasetDownloadButtonProps {
@@ -39,7 +36,7 @@ export default async function DatasetDownloadButton({
 
   return (
     <Button variant="blue" className="lift w-full" size="lg" asChild>
-      <a href={datasetZipURL(dataset)} download>
+      <a href={DATASET_ZIP_ROUTE(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>

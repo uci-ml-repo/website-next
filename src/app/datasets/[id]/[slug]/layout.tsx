@@ -10,7 +10,7 @@ import DatasetInteractions from "@/components/dataset/interactions/DatasetIntera
 import DatasetTabs from "@/components/dataset/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
-import { DATASETS_PATH } from "@/lib/routes";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
@@ -53,7 +53,7 @@ export default async function Layout({
       })
     : false;
 
-  const basePath = path.join(DATASETS_PATH, id, slug);
+  const basePath = path.join(DATASETS_ROUTE, id, slug);
 
   return (
     <Main className="content space-y-6">

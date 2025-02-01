@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 
-import { DATASETS_PATH } from "@/lib/routes";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -17,6 +17,6 @@ export default async function Page({
   }
 
   redirect(
-    `${DATASETS_PATH}/${dataset.id}/${encodeURIComponent(dataset.slug)}`,
+    `${DATASETS_ROUTE}/${dataset.id}/${encodeURIComponent(dataset.slug)}`,
   );
 }

@@ -13,17 +13,17 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { DATASETS_PATH, HOME_PATH } from "@/lib/routes";
+import { DATASETS_ROUTE, HOME_ROUTE } from "@/lib/routes";
 
 const items = [
   {
     title: "Home",
-    url: HOME_PATH,
+    url: HOME_ROUTE,
     icon: Home,
   },
   {
     title: "Datasets",
-    url: DATASETS_PATH,
+    url: DATASETS_ROUTE,
     icon: DatabaseIcon,
   },
 ];

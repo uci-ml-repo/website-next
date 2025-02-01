@@ -49,6 +49,7 @@ export default function DatasetSearchInput() {
         <Card className="absolute left-0 right-0">
           <CardContent>
             {JSON.stringify(data ? data.datasets.map((d) => d.title) : [])}
+            <div>{inputValue}</div>
           </CardContent>
         </Card>
       )}

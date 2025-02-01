@@ -2,10 +2,10 @@ import Link from "next/link";
 
 import { Anteater, Banner } from "@/components/icons";
 import {
-  ABOUT_PATH,
-  CONTACT_PATH,
-  HOME_PATH,
-  PRIVACY_POLICY_PATH,
+  ABOUT_ROUTE,
+  CONTACT_ROUTE,
+  HOME_ROUTE,
+  PRIVACY_POLICY_ROUTE,
 } from "@/lib/routes";
 
 interface FooterLinkGroupProps {
@@ -39,7 +39,7 @@ export default function Footer() {
     {
       title: "Our Project",
       links: [
-        { name: "About Us", href: ABOUT_PATH },
+        { name: "About Us", href: ABOUT_ROUTE },
         {
           name: "Center for Machine Learning",
           href: "https://cml.ics.uci.edu/",
@@ -55,11 +55,11 @@ export default function Footer() {
       links: [
         {
           name: "Contact",
-          href: CONTACT_PATH,
+          href: CONTACT_ROUTE,
         },
         {
           name: "Privacy Policy",
-          href: PRIVACY_POLICY_PATH,
+          href: PRIVACY_POLICY_ROUTE,
         },
         {
           name: "Feature Request / Bug Report",
@@ -74,7 +74,7 @@ export default function Footer() {
       <div className="content-x w-full">
         <div className="grid grid-flow-row gap-10 max-sm:justify-center sm:grid-flow-col">
           <div>
-            <Link href={HOME_PATH} className="flex h-full w-fit items-center">
+            <Link href={HOME_ROUTE} className="flex h-full w-fit items-center">
               <div className="flex h-24 w-fit items-center">
                 <Anteater className="mr-4 h-1/2 fill-uci-blue-foreground max-lg:hidden" />
                 <Banner

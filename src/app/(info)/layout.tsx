@@ -6,7 +6,7 @@ import React from "react";
 
 import Main from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
-import { HOME_PATH } from "@/lib/routes";
+import { HOME_ROUTE } from "@/lib/routes";
 
 export default function MdxLayout({
   children,
@@ -24,7 +24,7 @@ export default function MdxLayout({
           className="lift w-full sm:w-fit"
           asChild
         >
-          <Link href={HOME_PATH}>
+          <Link href={HOME_ROUTE}>
             <ArrowLeftIcon />
             Return Home
           </Link>

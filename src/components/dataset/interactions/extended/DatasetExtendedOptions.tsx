@@ -13,8 +13,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetPage } from "@/lib/utils";
 
 export default function DatasetExtendedOptions({
   dataset,
@@ -23,13 +23,13 @@ export default function DatasetExtendedOptions({
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  const link = path.join(
-    window.location.origin,
-    datasetPage({ slug: dataset.slug, id: dataset.id }),
-  );
-
   async function copyLink() {
     if (typeof navigator.clipboard === "undefined") return;
+
+    const link = path.join(
+      window.location.origin,
+      DATASET_ROUTE({ slug: dataset.slug, id: dataset.id }),
+    );
 
     await navigator.clipboard.writeText(link);
 

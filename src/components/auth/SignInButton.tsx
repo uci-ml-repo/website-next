@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { SIGN_IN_PATH } from "@/lib/routes";
+import { SIGN_IN_ROUTE } from "@/lib/routes";
 
 interface SignInButtonProps extends React.ComponentProps<typeof Button> {}
 
@@ -28,7 +28,7 @@ export default function SignInButton(props: SignInButtonProps) {
     };
   }, []);
 
-  if (pathname === SIGN_IN_PATH) {
+  if (pathname === SIGN_IN_ROUTE) {
     return null;
   }
 
@@ -37,7 +37,7 @@ export default function SignInButton(props: SignInButtonProps) {
   return (
     <Button variant="outline" asChild {...props}>
       <a
-        href={`${SIGN_IN_PATH}?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+        href={`${SIGN_IN_ROUTE}?callbackUrl=${encodeURIComponent(callbackUrl)}`}
       >
         <LogInIcon className="size-6" />
         <p>Sign In</p>

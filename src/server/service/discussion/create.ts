@@ -13,11 +13,16 @@ export default class DiscussionCreateService {
     userId: string;
     datasetId: number;
   }) {
-    return db.insert(discussion).values({
-      title,
-      content,
-      userId,
-      datasetId,
-    });
+    const [inserted] = await db
+      .insert(discussion)
+      .values({
+        title,
+        content,
+        userId,
+        datasetId,
+      })
+      .returning();
+
+    return inserted;
   }
 }

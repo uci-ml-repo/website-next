@@ -46,8 +46,11 @@ async function main() {
   await seed(db, { discussion }, { count: 55 }).refine((f) => ({
     discussion: {
       columns: {
-        createdAt: f.date({ maxDate: new Date() }),
-        updatedAt: f.date({ maxDate: new Date() }),
+        createdAt: f.date({ maxDate: new Date("01-01-2024") }),
+        updatedAt: f.date({
+          minDate: new Date("01-01-2024"),
+          maxDate: new Date(),
+        }),
         title: f.loremIpsum(),
         content: f.loremIpsum({ sentencesCount: 20 }),
         userId: f.valuesFromArray({ values: users.map((u) => u.id) }),
@@ -62,8 +65,11 @@ async function main() {
   await seed(db, { discussionComment }, { count: 1_000 }).refine((f) => ({
     discussionComment: {
       columns: {
-        createdAt: f.date({ maxDate: new Date() }),
-        updatedAt: f.date({ maxDate: new Date() }),
+        createdAt: f.date({ maxDate: new Date("01-01-2024") }),
+        updatedAt: f.date({
+          minDate: new Date("01-01-2024"),
+          maxDate: new Date(),
+        }),
         discussionId: f.valuesFromArray({
           values: discussions.map((d) => d.id),
         }),

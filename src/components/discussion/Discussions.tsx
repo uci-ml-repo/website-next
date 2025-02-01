@@ -91,6 +91,12 @@ export default function Discussions({
         </div>
       ) : (
         <div>
+          {searchValue && data && (
+            <div className="text-lg text-muted-foreground">
+              Found {discussions.length}
+              {hasNextPage && "+"} discussions for "{searchValue}"
+            </div>
+          )}
           {discussions.map((discussion) => (
             <React.Fragment key={discussion.id}>
               <DiscussionPreview

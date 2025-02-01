@@ -3,15 +3,16 @@ import Image from "next/image";
 import DatasetCitationButton from "@/components/dataset/buttons/DatasetCitationButton";
 import DatasetDownloadButton from "@/components/dataset/buttons/DatasetDownloadButton";
 import DatasetPythonButton from "@/components/dataset/buttons/DatasetPythonButton";
+import { DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { cn, datasetThumbnailURL } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 export default function DatasetTitleGroup({
   dataset,
 }: {
   dataset: DatasetResponse;
 }) {
-  const thumbnail = datasetThumbnailURL(dataset);
+  const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
 
   return (
     <div className="flex items-center justify-between">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
 import { Button } from "@/components/ui/button";
-import { CONTRIBUTE_PATH } from "@/lib/routes";
+import { CONTRIBUTE_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
@@ -13,7 +13,7 @@ export default async function Page() {
 
   const endCard = (
     <Button asChild className="lift" variant="gold">
-      <Link href={CONTRIBUTE_PATH}>
+      <Link href={CONTRIBUTE_ROUTE}>
         <PlusIcon />
         <div>Add Dataset</div>
       </Link>

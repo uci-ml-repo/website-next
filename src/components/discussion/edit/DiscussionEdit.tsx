@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
+import { DATASET_DISCUSSION_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -43,6 +44,12 @@ export default function DiscussionEdit({
     },
   });
 
+  const redirectRoute = DATASET_DISCUSSION_ROUTE({
+    id: discussion.dataset.id,
+    slug: discussion.dataset.slug,
+    discussionId: discussion.id,
+  });
+
   const editMutation = trpc.discussion.update.byId.useMutation({
     onError: (error) => {
       toast({
@@ -52,7 +59,7 @@ export default function DiscussionEdit({
       });
     },
     onSuccess: () => {
-      router.push(".");
+      router.push(redirectRoute);
     },
   });
 
@@ -124,7 +131,7 @@ export default function DiscussionEdit({
             <Button
               variant="secondary"
               onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : redirect(".")
+                isDirty ? setCancelDialogOpen(true) : redirect(redirectRoute)
               }
               type="button"
             >
@@ -153,7 +160,10 @@ export default function DiscussionEdit({
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => redirect(".")}>
+            <Button
+              variant="destructive"
+              onClick={() => redirect(redirectRoute)}
+            >
               Discard
             </Button>
           </div>

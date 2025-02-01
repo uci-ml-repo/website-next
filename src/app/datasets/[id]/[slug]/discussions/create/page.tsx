@@ -8,12 +8,12 @@ export default async function Page({
 }: {
   params: Promise<{ id: string; slug: string }>;
 }) {
-  const { id } = await params;
+  const { id, slug } = await params;
   const session = await auth();
 
   if (!session?.user) {
     return unauthorized();
   }
 
-  return <DiscussionCreateInput datasetId={Number(id)} />;
+  return <DiscussionCreateInput datasetId={Number(id)} datasetSlug={slug} />;
 }

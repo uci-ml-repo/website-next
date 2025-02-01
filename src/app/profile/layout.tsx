@@ -11,7 +11,7 @@ import {
   LinearTabsTrigger,
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
-import { PROFILE_PATH } from "@/lib/routes";
+import { PROFILE_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export const metadata: Metadata = { title: "Profile" };
@@ -24,7 +24,7 @@ export default async function Layout({
   const session = await auth();
 
   if (!session || !session.user) {
-    return signIn(undefined, { redirectTo: PROFILE_PATH });
+    return signIn(undefined, { redirectTo: PROFILE_ROUTE });
   }
 
   const bookmarks = await caller.bookmark.find.byUserId(session.user.id);
@@ -37,28 +37,28 @@ export default async function Layout({
 
       <LinearTabs
         defaultValue="bookmarks"
-        routerStore={PROFILE_PATH}
+        routerStore={PROFILE_ROUTE}
         routerSegment={1}
       >
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger
             value="bookmarks"
             badgeValue={bookmarks.length}
-            link={path.join(PROFILE_PATH, "bookmarks")}
+            link={path.join(PROFILE_ROUTE, "bookmarks")}
           >
             Bookmarks
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="datasets"
             badgeValue={datasets.length}
-            link={path.join(PROFILE_PATH, "datasets")}
+            link={path.join(PROFILE_ROUTE, "datasets")}
           >
             Datasets
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="discussions"
             badgeValue={discussions.length}
-            link={path.join(PROFILE_PATH, "discussions")}
+            link={path.join(PROFILE_ROUTE, "discussions")}
           >
             Discussions
           </LinearTabsTrigger>

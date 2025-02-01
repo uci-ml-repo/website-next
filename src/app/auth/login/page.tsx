@@ -9,7 +9,7 @@ import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HOME_PATH } from "@/lib/routes";
+import { HOME_ROUTE } from "@/lib/routes";
 
 export type Tab = "signin" | "register";
 
@@ -28,7 +28,7 @@ export default function Page() {
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
-  const redirectTo = callbackUrl ? getFullURLPath(callbackUrl) : HOME_PATH;
+  const redirectTo = callbackUrl ? getFullURLPath(callbackUrl) : HOME_ROUTE;
 
   const onTabChange = (tab: string) => {
     setTab(tab as Tab);

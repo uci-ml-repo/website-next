@@ -20,10 +20,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
+import {
+  DATASET_DISCUSSION_ROUTE,
+  DATASET_DISCUSSIONS_ROUTE,
+} from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCreateInputProps {
   datasetId: number;
+  datasetSlug: string;
 }
 
 export const formSchema = z.object({
@@ -36,6 +41,7 @@ export const formSchema = z.object({
 
 export default function DiscussionCreateInput({
   datasetId,
+  datasetSlug,
 }: DiscussionCreateInputProps) {
   const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
@@ -51,12 +57,18 @@ export default function DiscussionCreateInput({
   const utils = trpc.useUtils();
 
   const createMutation = trpc.discussion.create.fromData.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       utils.discussion.find.byQuery.invalidate({
         datasetId,
       });
 
-      router.push(".");
+      router.push(
+        DATASET_DISCUSSION_ROUTE({
+          id: datasetId,
+          slug: datasetSlug,
+          discussionId: data.id,
+        }),
+      );
     },
     onError: (error) => {
       toast({
@@ -123,7 +135,14 @@ export default function DiscussionCreateInput({
             <Button
               variant="secondary"
               onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : redirect(".")
+                isDirty
+                  ? setCancelDialogOpen(true)
+                  : redirect(
+                      DATASET_DISCUSSIONS_ROUTE({
+                        id: datasetId,
+                        slug: datasetSlug,
+                      }),
+                    )
               }
               type="button"
             >
@@ -152,7 +171,17 @@ export default function DiscussionCreateInput({
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => redirect(".")}>
+            <Button
+              variant="destructive"
+              onClick={() =>
+                redirect(
+                  DATASET_DISCUSSIONS_ROUTE({
+                    id: datasetId,
+                    slug: datasetSlug,
+                  }),
+                )
+              }
+            >
               Discard
             </Button>
           </div>
