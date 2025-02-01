@@ -105,12 +105,17 @@ export const dataset = pgTable(
   (t) => [
     check(
       "accepted_check",
-      sql`(
-                    ${t.status} = 'draft' OR
-                    (${t.yearCreated} IS NOT NULL AND
-                    ${t.instanceCount} IS NOT NULL AND
-                    ${t.description} IS NOT NULL AND
-                    ${t.subjectArea} IS NOT NULL))`,
+      sql`(${t.status} = 'draft' OR
+              (${t.yearCreated} IS NOT NULL AND
+              ${t.instanceCount} IS NOT NULL AND
+              ${t.description} IS NOT NULL AND
+              ${t.subjectArea} IS NOT NULL))`,
+    ),
+    index("dataset_search_index").using(
+      "gin",
+      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
+              SETWEIGHT(TO_TSVECTOR('english', ${t.subtitle}), 'C') ||
+              SETWEIGHT(TO_TSVECTOR('english', ${t.description}), 'D'))`,
     ),
   ],
 );
@@ -318,10 +323,9 @@ export const discussion = pgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }),
   },
   (t) => [
-    index("course_search_index").using(
+    index("discussion_search_index").using(
       "gin",
-      sql`(
-              SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
+      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
               SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
     ),
   ],

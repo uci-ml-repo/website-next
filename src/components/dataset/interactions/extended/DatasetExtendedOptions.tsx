@@ -1,6 +1,7 @@
 "use client";
 
 import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
+import path from "path";
 import { useState } from "react";
 
 import DatasetReportDialog from "@/components/dataset/interactions/extended/DatasetReportDialog";
@@ -13,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { DatasetResponse } from "@/lib/types";
+import { datasetPage } from "@/lib/utils";
 
 export default function DatasetExtendedOptions({
   dataset,
@@ -21,16 +23,19 @@ export default function DatasetExtendedOptions({
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
+  const link = path.join(
+    window.location.origin,
+    datasetPage({ slug: dataset.slug, id: dataset.id }),
+  );
+
   async function copyLink() {
     if (typeof navigator.clipboard === "undefined") return;
 
-    await navigator.clipboard.writeText(
-      window.location.origin + window.location.pathname,
-    );
+    await navigator.clipboard.writeText(link);
 
     toast({
       title: "Dataset Link Copied",
-      description: window.location.origin + window.location.pathname,
+      description: link,
     });
   }
 

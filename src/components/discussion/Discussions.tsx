@@ -1,7 +1,7 @@
 "use client";
 
 import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
@@ -12,8 +12,6 @@ import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
-export type DiscussionsOrderBy = "top" | "new";
-
 export default function Discussions({
   datasetId,
   userId,
@@ -23,8 +21,14 @@ export default function Discussions({
   userId?: string;
   allowCreate?: boolean;
 }) {
-  const [orderBy, setOrderBy] = useState<"top" | "new">("top");
+  const [orderBy, setOrderBy] = useState<string>("top");
   const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    if (searchValue) {
+      setOrderBy("relevance");
+    }
+  }, [orderBy, searchValue]);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.find.byQuery.useInfiniteQuery(
@@ -67,6 +71,7 @@ export default function Discussions({
           <DiscussionsOrderBy
             orderBy={orderBy}
             setOrderBy={setOrderBy}
+            setSearchValue={setSearchValue}
             className="flex justify-end"
           />
           {allowCreate && <DiscussionCreateButton tooltip />}

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import type { DiscussionCommentsOrderBy } from "@/components/discussion/comment/DiscussionComments";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -23,7 +22,7 @@ import { trpc } from "@/server/trpc/query/client";
 interface DiscussionCommentCreateInputProps {
   discussionId: string;
   setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
-  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionCommentsOrderBy>>;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const formSchema = z.object({

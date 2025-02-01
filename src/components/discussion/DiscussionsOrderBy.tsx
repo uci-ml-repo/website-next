@@ -1,6 +1,5 @@
-import { ArrowUpRightIcon, ClockIcon } from "lucide-react";
+import { ArrowUpRightIcon, ClockIcon, SearchIcon } from "lucide-react";
 
-import type { DiscussionsOrderBy } from "@/components/discussion/Discussions";
 import {
   Select,
   SelectContent,
@@ -11,24 +10,30 @@ import {
 import { cn } from "@/lib/utils";
 
 interface DatasetDiscussionSortByProps {
-  orderBy: DiscussionsOrderBy;
-  setOrderBy: React.Dispatch<React.SetStateAction<DiscussionsOrderBy>>;
+  orderBy: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  setSearchValue?: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
 }
 
 export default function DiscussionsOrderBy({
   orderBy,
   setOrderBy,
+  setSearchValue,
   className,
 }: DatasetDiscussionSortByProps) {
+  function handleChange(value: string) {
+    if (setSearchValue) {
+      setSearchValue("");
+    }
+    setOrderBy(value);
+  }
+
   return (
     <div className={cn("flex items-center space-x-2", className)}>
       <div className="text-nowrap text-sm text-muted-foreground">Sort by:</div>
-      <Select
-        value={orderBy}
-        onValueChange={(value) => setOrderBy(value as DiscussionsOrderBy)}
-      >
-        <SelectTrigger className="h-10 w-32">
+      <Select value={orderBy} onValueChange={handleChange}>
+        <SelectTrigger className="h-10 w-40">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -40,6 +45,12 @@ export default function DiscussionsOrderBy({
             <ClockIcon className="size-5" />
             <span>New</span>
           </SelectItem>
+          {orderBy === "relevance" && (
+            <SelectItem value="relevance">
+              <SearchIcon className="size-5" />
+              <span>Relevance</span>
+            </SelectItem>
+          )}
         </SelectContent>
       </Select>
     </div>
