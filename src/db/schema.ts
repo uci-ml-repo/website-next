@@ -322,7 +322,7 @@ export const discussion = pgTable(
       "gin",
       sql`(
               SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
-              SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'B'))`,
+              SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
     ),
   ],
 );

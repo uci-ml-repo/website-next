@@ -53,19 +53,6 @@ export default class DiscussionUpvoteService {
     return upvote;
   }
 
-  async find({
-    userId,
-    discussionId,
-  }: {
-    userId: string;
-    discussionId: string;
-  }) {
-    return db.query.discussionUpvote.findFirst({
-      where: (upvote, { and, eq }) =>
-        and(eq(upvote.userId, userId), eq(upvote.discussionId, discussionId)),
-    });
-  }
-
   async count(discussionId: string) {
     return db
       .select({ count: count() })

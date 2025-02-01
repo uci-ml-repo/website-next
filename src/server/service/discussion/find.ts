@@ -1,8 +1,8 @@
 import type { Session } from "@auth/core/types";
-import { and, asc, count, desc, eq, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussion } from "@/db/schema";
+import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
 import type {
   DatasetSelect,
   DiscussionUpvoteSelect,
@@ -15,7 +15,7 @@ import type {
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 const DISCUSSION_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${discussion.title}), 'A') ||
-                                   SETWEIGHT(TO_TSVECTOR('english', ${discussion.content}), 'B'))`;
+                                   SETWEIGHT(TO_TSVECTOR('english', ${discussion.content}), 'D'))`;
 
 function buildQuery(query: DiscussionQuery) {
   let conditions = [];
@@ -34,13 +34,18 @@ function buildQuery(query: DiscussionQuery) {
 type RawDiscussion = typeof discussion.$inferSelect & {
   user: UserSelect;
   dataset: DatasetSelect;
-  upvotes: DiscussionUpvoteSelect[];
+  upvotes: DiscussionUpvoteSelect[] | DiscussionUpvoteSelect | null;
 };
 
 function transformRow({ upvotes, ...discussion }: RawDiscussion) {
   return {
     ...discussion,
-    upvoted: upvotes ? upvotes.length > 0 : false,
+    upvoted:
+      upvotes === null
+        ? false
+        : Array.isArray(upvotes)
+          ? upvotes.length > 0
+          : true,
   };
 }
 
@@ -139,25 +144,38 @@ export default class DiscussionFindService {
       .then((discussions) => discussions.map(transformRow));
   }
 
-  async search(query: DiscussionSearchQuery, session: Session | null) {
+  async bySearch(query: DiscussionSearchQuery, session: Session | null) {
     const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DISCUSSION_WEIGHTS}, ${normalizedTsQuery}))`;
 
-    const discussions = await db
+    return db
       .select({
-        id: discussion.id,
+        ...getTableColumns(discussion),
+        user: getTableColumns(user),
+        dataset: getTableColumns(dataset),
+        upvotes: getTableColumns(discussionUpvote),
         rank: rank.mapWith(Number),
       })
       .from(discussion)
-      .where(sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`)
+      .innerJoin(user, eq(discussion.userId, user.id))
+      .innerJoin(dataset, eq(discussion.datasetId, dataset.id))
+      .leftJoin(
+        discussionUpvote,
+        and(
+          eq(discussion.id, discussionUpvote.discussionId),
+          session ? eq(discussion.userId, session.user.id) : undefined,
+        ),
+      )
+      .where(
+        and(
+          buildQuery(query),
+          sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`,
+        ),
+      )
       .offset(query.cursor ?? 0)
-      .limit(query.limit ? query.limit + 1 : 100)
-      .orderBy((t) => [desc(t.rank), asc(t.id)]);
-
-    return await this.batch(
-      discussions.map((x) => x.id),
-      session,
-    );
+      .limit(query.limit ? query.limit + 1 : 10)
+      .orderBy((t) => [desc(t.rank), asc(t.id)])
+      .then((rows) => rows.map(transformRow));
   }
 }

@@ -29,19 +29,6 @@ const discussionUpvoteRouter = router({
         discussionId: input.discussionId,
       });
     }),
-
-  find: protectedProcedure
-    .input(
-      z.object({
-        discussionId: z.string(),
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      return service.discussion.upvote.find({
-        userId: ctx.user.id,
-        discussionId: input.discussionId,
-      });
-    }),
 });
 
 export default discussionUpvoteRouter;

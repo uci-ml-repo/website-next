@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { trpc } from "@/server/trpc/query/client";
 
 export default function Test() {
-  const router = useRouter();
+  const discussions = trpc.discussion.find.bySearch.useQuery({
+    search: "Phasellus",
+  });
 
-  return (
-    <button onClick={() => router.push("/about")}>
-      Click here to read more
-    </button>
-  );
+  return <div>{JSON.stringify(discussions.data)}</div>;
 }
