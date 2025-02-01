@@ -10,9 +10,17 @@ import Main from "@/components/layout/Main";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HOME_PATH } from "@/lib/routes";
-import { getFullPath } from "@/lib/utils";
 
 export type Tab = "signin" | "register";
+
+function getFullURLPath(url: string) {
+  if (url.startsWith("http")) {
+    const urlObject = new URL(url);
+    return urlObject.pathname + urlObject.search + urlObject.hash;
+  }
+
+  return url;
+}
 
 export default function Page() {
   const [tab, setTab] = useState<Tab>("signin");
@@ -20,7 +28,7 @@ export default function Page() {
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
-  const redirectTo = callbackUrl ? getFullPath(callbackUrl) : HOME_PATH;
+  const redirectTo = callbackUrl ? getFullURLPath(callbackUrl) : HOME_PATH;
 
   const onTabChange = (tab: string) => {
     setTab(tab as Tab);

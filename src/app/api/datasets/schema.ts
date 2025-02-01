@@ -1,5 +1,5 @@
 import type { AcceptedDatasetResponse } from "@/lib/types";
-import { datasetPage, datasetPythonDataURL, paperUrl } from "@/lib/utils";
+import { datasetPage, datasetPythonDataURL } from "@/lib/utils";
 
 export type IntroPaperMetadata = {
   title: string;
@@ -45,6 +45,10 @@ export type PythonMetadata = {
 
   external_url?: string | null;
 };
+
+function paperUrl({ semanticScholarId }: { semanticScholarId: number }) {
+  return `https://api.semanticscholar.org/CorpusID:${semanticScholarId}`;
+}
 
 export function datasetToPythonMetadata(
   dataset: AcceptedDatasetResponse,

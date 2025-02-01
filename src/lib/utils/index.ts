@@ -4,6 +4,3 @@ export * from "./date";
 export * from "./enum";
 export * from "./keys";
 export * from "./number";
-export * from "./paper";
-export * from "./string";
-export * from "./url";

@@ -10,6 +10,14 @@ export const discussionQuery = z.object({
   cursor: z.number().optional(),
 });
 
+export const discussionSearchQuery = z.object({
+  datasetId: z.number().optional(),
+  userId: z.string().optional(),
+  search: z.string().optional(),
+  limit: z.number().optional(),
+  cursor: z.number().optional(),
+});
+
 export const discussionCommentQuery = z.object({
   discussionId: z.string().optional(),
   userId: z.string().optional(),
@@ -19,4 +27,5 @@ export const discussionCommentQuery = z.object({
 });
 
 export type DiscussionQuery = z.infer<typeof discussionQuery>;
+export type DiscussionSearchQuery = z.infer<typeof discussionSearchQuery>;
 export type DiscussionCommentQuery = z.infer<typeof discussionCommentQuery>;

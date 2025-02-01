@@ -1,5 +1,5 @@
 import type { Session } from "@auth/core/types";
-import { and, asc, count, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion } from "@/db/schema";
@@ -8,8 +8,14 @@ import type {
   DiscussionUpvoteSelect,
   UserSelect,
 } from "@/db/types";
-import type { DiscussionQuery } from "@/server/service/schema/discussions";
+import type {
+  DiscussionQuery,
+  DiscussionSearchQuery,
+} from "@/server/service/schema/discussions";
 import { sortFunction } from "@/server/service/schema/lib/order";
+
+const DISCUSSION_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${discussion.title}), 'A') ||
+                                   SETWEIGHT(TO_TSVECTOR('english', ${discussion.content}), 'B'))`;
 
 function buildQuery(query: DiscussionQuery) {
   let conditions = [];
@@ -56,6 +62,23 @@ export default class DiscussionFindService {
       .then((discussion) => (discussion ? transformRow(discussion) : null));
   }
 
+  async batch(ids: string[], session?: Session | null) {
+    return db.query.discussion
+      .findMany({
+        where: (discussion, { inArray }) => inArray(discussion.id, ids),
+        with: {
+          user: true,
+          dataset: true,
+          upvotes: session
+            ? {
+                where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
+              }
+            : undefined,
+        },
+      })
+      .then((discussions) => discussions.map(transformRow));
+  }
+
   async byQuery(query: DiscussionQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
@@ -76,8 +99,8 @@ export default class DiscussionFindService {
               }
             : undefined,
         },
-        limit: query.limit ? query.limit + 1 : undefined,
         offset: query.cursor ?? 0,
+        limit: query.limit ? query.limit + 1 : undefined,
       })
       .then((discussions) => discussions.map(transformRow));
 
@@ -114,5 +137,27 @@ export default class DiscussionFindService {
         },
       })
       .then((discussions) => discussions.map(transformRow));
+  }
+
+  async search(query: DiscussionSearchQuery, session: Session | null) {
+    const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search}))`;
+    const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
+    const rank = sql`(TS_RANK(${DISCUSSION_WEIGHTS}, ${normalizedTsQuery}))`;
+
+    const discussions = await db
+      .select({
+        id: discussion.id,
+        rank: rank.mapWith(Number),
+      })
+      .from(discussion)
+      .where(sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`)
+      .offset(query.cursor ?? 0)
+      .limit(query.limit ? query.limit + 1 : 100)
+      .orderBy((t) => [desc(t.rank), asc(t.id)]);
+
+    return await this.batch(
+      discussions.map((x) => x.id),
+      session,
+    );
   }
 }

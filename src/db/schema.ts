@@ -1,8 +1,9 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
-import { and, isNotNull, ne, or, relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  index,
   integer,
   pgEnum,
   pgTable,
@@ -102,20 +103,15 @@ export const dataset = pgTable(
       .$onUpdate(() => new Date()),
   },
   (t) => [
-    {
-      acceptedConstraint: check(
-        "accepted_check",
-        or(
-          ne(t.status, Enums.DatasetStatus.APPROVED),
-          and(
-            isNotNull(t.yearCreated),
-            isNotNull(t.instanceCount),
-            isNotNull(t.description),
-            isNotNull(t.subjectArea),
-          ),
-        )!,
-      ),
-    },
+    check(
+      "accepted_check",
+      sql`(
+                    ${t.status} = 'draft' OR
+                    (${t.yearCreated} IS NOT NULL AND
+                    ${t.instanceCount} IS NOT NULL AND
+                    ${t.description} IS NOT NULL AND
+                    ${t.subjectArea} IS NOT NULL))`,
+    ),
   ],
 );
 
@@ -302,23 +298,34 @@ export const bookmarkRelations = relations(bookmark, ({ one }) => ({
   }),
 }));
 
-export const discussion = pgTable("discussion", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
+export const discussion = pgTable(
+  "discussion",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    title: text("title").notNull(),
+    content: text("content").notNull(),
 
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => user.id),
-  datasetId: integer("dataset_id")
-    .notNull()
-    .references(() => dataset.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id),
+    datasetId: integer("dataset_id")
+      .notNull()
+      .references(() => dataset.id, { onDelete: "cascade" }),
 
-  upvoteCount: integer("upvote_count").default(0).notNull(),
+    upvoteCount: integer("upvote_count").default(0).notNull(),
 
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date" }),
-});
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" }),
+  },
+  (t) => [
+    index("course_search_index").using(
+      "gin",
+      sql`(
+              SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
+              SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'B'))`,
+    ),
+  ],
+);
 
 export const discussionRelations = relations(discussion, ({ one, many }) => ({
   upvotes: many(discussionUpvote),

@@ -6,7 +6,10 @@ import path from "path";
 
 import { auth } from "@/auth";
 import { PRIVILEGED_ROLES } from "@/lib/permissions";
-import { toStringArray } from "@/lib/utils";
+
+function toStringArray(str: string | string[]): string[] {
+  return Array.isArray(str) ? str : [str];
+}
 
 export async function GET(
   req: NextRequest,
