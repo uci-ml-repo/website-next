@@ -173,7 +173,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
           "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
-          "data-[state=expanded]:max-2xl:shadow-[5px_0px_12px_0px_rgba(0,0,0,.25)]",
+          "data-[state=expanded]:max-xl:shadow-[5px_0px_12px_0px_rgba(0,0,0,.25)]",
           "transition-all ease-out",
           "border-r bg-sidebar text-sidebar-foreground",
           className,

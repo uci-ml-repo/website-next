@@ -73,7 +73,7 @@ export function LinearTabs({
 }
 
 const linearTabsListVariants = cva(
-  "relative inline-flex h-fit w-full items-center justify-start text-muted-foreground",
+  "relative inline-flex h-fit w-full items-center justify-start py-1 text-muted-foreground",
   {
     variants: {
       variant: {

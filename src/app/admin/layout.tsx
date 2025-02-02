@@ -1,7 +1,8 @@
-import { unauthorized } from "next/navigation";
+import { forbidden } from "next/navigation";
 
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { Enums } from "@/db/enums";
+import { ADMIN_ROUTE } from "@/lib/routes";
 
 export default async function Layout({
   children,
@@ -11,11 +12,11 @@ export default async function Layout({
   const session = await auth();
 
   if (!session || !session.user) {
-    return unauthorized();
+    return signIn(undefined, { redirectTo: ADMIN_ROUTE });
   }
 
   if (session.user.role !== Enums.UserRole.ADMIN) {
-    return unauthorized();
+    return forbidden();
   }
 
   return <>{children}</>;

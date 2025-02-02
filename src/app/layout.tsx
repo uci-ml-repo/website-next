@@ -75,7 +75,7 @@ export default async function Layout({
                     "max-md:!pl-0",
                     "peer-data-[state=collapsed]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:pl-[--sidebar-width-collapsed]",
-                    "peer-data-[state=expanded]:2xl:pl-[--sidebar-width]",
+                    "peer-data-[state=expanded]:xl:pl-[--sidebar-width]",
                   )}
                 >
                   <Header session={session} />
