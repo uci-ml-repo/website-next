@@ -1,7 +1,10 @@
+"use client";
+
 import { LayoutDashboardIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
+import type { Session } from "next-auth";
+import { useEffect, useState } from "react";
 
-import { auth } from "@/auth";
 import SignInButton from "@/components/auth/SignInButton";
 import SignOut from "@/components/auth/SignOut";
 import {
@@ -16,48 +19,67 @@ import { Enums } from "@/db/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-export default async function Header() {
-  const session = await auth();
+export const HEADER_HEIGHT = "4.5rem";
+
+export default function Header({ session }: { session: Session | null }) {
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="relative">
-      <div className="flex h-20 items-center justify-between p-4 sm:px-6">
-        <div>
+    <header
+      style={{ height: HEADER_HEIGHT }}
+      className={cn(
+        "relative z-40 bg-background max-md:fixed max-md:left-0 max-md:right-0",
+        "transition-shadow ease-in-out",
+        { shadow: hasScrolled },
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <div className="m-2">
           <SidebarTrigger className="md:hidden" />
         </div>
-        {session?.user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <ProfileAvatar
-                src={session.user.image}
-                role="button"
-                className={cn(
-                  "cursor-pointer outline outline-4 outline-border",
-                  "transition-all duration-100 ease-out hover:scale-105",
-                )}
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-44" align="end">
-              <DropdownMenuItem asChild>
-                <Link href={PROFILE_ROUTE}>
-                  <UserIcon />
-                  <span>Profile</span>
-                </Link>
-              </DropdownMenuItem>
-              {session.user.role === Enums.UserRole.ADMIN && (
-                <DropdownMenuItem destructive asChild>
-                  <Link href={ADMIN_ROUTE}>
-                    <LayoutDashboardIcon />
-                    <span>Dashboard</span>
+        <div className="mx-4">
+          {session?.user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <ProfileAvatar
+                  src={session.user.image}
+                  tabIndex={0}
+                  aria-label="Profile options"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-44" align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={PROFILE_ROUTE}>
+                    <UserIcon />
+                    <span>Profile</span>
                   </Link>
                 </DropdownMenuItem>
-              )}
-              <SignOut />
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <SignInButton />
-        )}
+                {session.user.role === Enums.UserRole.ADMIN && (
+                  <DropdownMenuItem destructive asChild>
+                    <Link href={ADMIN_ROUTE}>
+                      <LayoutDashboardIcon />
+                      <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <SignOut />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <SignInButton />
+          )}
+        </div>
       </div>
     </header>
   );

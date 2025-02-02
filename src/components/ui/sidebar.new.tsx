@@ -4,7 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import * as React from "react";
 
 import { useIsMobile } from "@/components/hooks/use-mobile";
@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 
 export const SIDEBAR_WIDTH = "16rem";
 export const SIDEBAR_WIDTH_MOBILE = "18rem";
-export const SIDEBAR_WIDTH_ICON = "4rem";
+export const SIDEBAR_WIDTH_COLLAPSED = "4rem";
 
 type SidebarContext = {
   state: "expanded" | "collapsed";
@@ -117,7 +117,7 @@ const SidebarProvider = React.forwardRef<
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH,
-                "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+                "--sidebar-width-collapsed": SIDEBAR_WIDTH_COLLAPSED,
                 ...style,
               } as React.CSSProperties
             }
@@ -172,7 +172,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         ref={ref}
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
-          "data-[state=collapsed]:w-[--sidebar-width-icon] data-[state=expanded]:w-[--sidebar-width]",
+          "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
           "data-[state=expanded]:max-2xl:shadow-[5px_0px_12px_0px_rgba(0,0,0,.25)]",
           "transition-all ease-out",
           "border-r bg-sidebar text-sidebar-foreground",
@@ -200,15 +200,15 @@ const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn("size-12", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
+      aria-label="Toggle sidebar"
       {...props}
     >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <MenuIcon className="!size-6" />
     </Button>
   );
 });

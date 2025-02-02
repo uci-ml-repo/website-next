@@ -5,8 +5,9 @@ import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import * as React from "react";
 
+import { auth } from "@/auth";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
-import Header from "@/components/layout/Header";
+import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar.new";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -44,11 +45,13 @@ export const viewport: Viewport = {
   width: "device-width",
 };
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <SessionProvider>
@@ -69,12 +72,23 @@ export default function Layout({
                 <div
                   className={cn(
                     "w-full bg-background",
-                    "pl-[--sidebar-width-icon]",
+                    "max-md:!pl-0",
+                    "peer-data-[state=collapsed]:pl-[--sidebar-width-collapsed]",
+                    "peer-data-[state=expanded]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:2xl:pl-[--sidebar-width]",
                   )}
                 >
-                  <Header />
-                  {children}
+                  <Header session={session} />
+                  <div
+                    style={
+                      {
+                        "--header-height": HEADER_HEIGHT,
+                      } as React.CSSProperties
+                    }
+                    className="max-md:mt-[--header-height]"
+                  >
+                    {children}
+                  </div>
                 </div>
               </SidebarProvider>
 

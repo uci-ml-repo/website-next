@@ -19,8 +19,9 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarTrigger />
-      <div>X</div>
+      <div className="m-2">
+        <SidebarTrigger />
+      </div>
     </Sidebar>
   );
 }
