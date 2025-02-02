@@ -324,7 +324,7 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
   const SHOW_NODES_SIDES = 3;
 
   return (
-    <div className="flex items-center justify-center space-x-1 pt-4">
+    <div className="flex h-6 items-center justify-center space-x-1 pt-4">
       {slideNodes.map((_, index) => (
         <div
           key={index}

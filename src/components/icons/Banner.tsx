@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const logoVariants = cva(cn(), {
   variants: {
     variant: {
-      hero: "[&>div]:text-[35px] [&>div]:xs:text-[50px] [&>div]:md:text-[60px] [&>svg]:h-[35px] [&>svg]:xs:h-[50px] [&>svg]:md:h-[60px]",
+      hero: "[&>div]:text-[30px] [&>div]:xs:text-[45px] [&>div]:md:text-[55px] [&>svg]:h-[30px] [&>svg]:xs:h-[45px] [&>svg]:md:h-[55px]",
       logo: "select-none space-y-0.5 [&>div]:text-[24px] [&>svg]:h-[24px]",
     },
     textColor: {
