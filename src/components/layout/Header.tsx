@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar.new";
 import { Enums } from "@/db/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -21,7 +22,9 @@ export default async function Header() {
   return (
     <header className="relative">
       <div className="flex h-20 items-center justify-between p-4 sm:px-6">
-        <div />
+        <div>
+          <SidebarTrigger className="md:hidden" />
+        </div>
         {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger>

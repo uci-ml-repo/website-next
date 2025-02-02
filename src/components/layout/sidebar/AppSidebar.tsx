@@ -1,6 +1,6 @@
 import { DatabaseIcon, Home } from "lucide-react";
 
-import { Sidebar } from "@/components/ui/sidebar.new";
+import { Sidebar, SidebarTrigger } from "@/components/ui/sidebar.new";
 import { DATASETS_ROUTE, HOME_ROUTE } from "@/lib/routes";
 
 const items = [
@@ -19,6 +19,7 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
+      <SidebarTrigger />
       <div>X</div>
     </Sidebar>
   );

@@ -138,13 +138,14 @@ const SidebarProvider = React.forwardRef<
 SidebarProvider.displayName = "SidebarProvider";
 
 const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
-  ({ children, ...props }, ref) => {
+  ({ children, className, ...props }, ref) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
           <SheetContent
             aria-describedby={undefined}
+            side="left"
             data-sidebar="sidebar"
             data-mobile="true"
             style={
@@ -152,7 +153,10 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
               } as React.CSSProperties
             }
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            className={cn(
+              "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+              className,
+            )}
           >
             <VisuallyHidden>
               <SheetTitle>Sidebar</SheetTitle>
@@ -167,11 +171,15 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
       <div
         ref={ref}
         className={cn(
-          "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:block",
-          "data-[state=collapsed]:w-[--sidebar-width-icon] data-[state=open]:w-[--sidebar-width]",
-          "bg-destructive text-sidebar-foreground",
+          "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
+          "data-[state=collapsed]:w-[--sidebar-width-icon] data-[state=expanded]:w-[--sidebar-width]",
+          "data-[state=expanded]:max-2xl:shadow-[5px_0px_12px_0px_rgba(0,0,0,.25)]",
+          "transition-all ease-out",
+          "border-r bg-sidebar text-sidebar-foreground",
+          className,
         )}
         data-state={state}
+        {...props}
       >
         {children}
       </div>

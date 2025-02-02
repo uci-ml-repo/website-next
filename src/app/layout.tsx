@@ -68,9 +68,9 @@ export default function Layout({
                 <AppSidebar />
                 <div
                   className={cn(
-                    "w-full",
-                    "peer-data-[state=collapsed]:pl-[--sidebar-width-icon]",
-                    "peer-data-[state=open]:pl-[--sidebar-width]",
+                    "w-full bg-background",
+                    "pl-[--sidebar-width-icon]",
+                    "peer-data-[state=expanded]:2xl:pl-[--sidebar-width]",
                   )}
                 >
                   <Header />
