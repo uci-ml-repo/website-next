@@ -275,7 +275,6 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
   const [slideNodes, setSlideNodes] = useState<HTMLElement[]>([]);
   const [minSlide, setMinSlide] = useState(0);
   const [maxSlide, setMaxSlide] = useState(0);
-  const { canScrollPrev, canScrollNext } = useCarousel();
 
   useEffect(() => {
     if (!api || slideNodes.length < 1) return;
@@ -332,7 +331,7 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
           className={cn(
             "rounded-full transition-all ease-in",
             slidesInView.includes(index)
-              ? "h-2 w-4 bg-secondary-foreground/40"
+              ? "h-2 w-4 bg-secondary-foreground/50"
               : "size-2 bg-secondary-foreground/20",
             {
               hidden:
@@ -341,8 +340,8 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
             },
             {
               "size-1.5":
-                index == minSlide - SHOW_NODES_SIDES ||
-                index == maxSlide + SHOW_NODES_SIDES,
+                index === minSlide - SHOW_NODES_SIDES ||
+                index === maxSlide + SHOW_NODES_SIDES,
             },
           )}
         />

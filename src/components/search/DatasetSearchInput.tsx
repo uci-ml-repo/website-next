@@ -73,8 +73,8 @@ export default function DatasetSearchInput() {
                 <DatasetRowSkeleton key={index} />
               ))
             ) : (
-              <div className="flex items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold text-muted-foreground">
-                <span>Type to search &hellip;</span>
+              <div className="truncate p-4 text-lg text-muted-foreground">
+                Type to search&hellip;
               </div>
             )}
             {data && data.datasets.length > 0 && (
