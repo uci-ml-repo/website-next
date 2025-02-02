@@ -154,6 +154,7 @@ export default class DiscussionFindService {
     const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search ?? ""}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DISCUSSION_WEIGHTS}, ${normalizedTsQuery}))`;
+    const trigramSimilarity = sql`similarity(${discussion.title}, ${query.search})`;
 
     return db
       .select({
@@ -162,6 +163,7 @@ export default class DiscussionFindService {
         dataset: getTableColumns(dataset),
         upvotes: getTableColumns(discussionUpvote),
         rank: rank.mapWith(Number),
+        similarity: trigramSimilarity.mapWith(Number),
       })
       .from(discussion)
       .innerJoin(user, eq(discussion.userId, user.id))
@@ -177,13 +179,14 @@ export default class DiscussionFindService {
         and(
           buildQuery(query),
           query.search
-            ? sql`(${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})`
+            ? sql`((${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery})
+                      OR (similarity(${discussion.title}, ${query.search}) > 0.1))`
             : undefined,
         ),
       )
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
-      .orderBy((t) => [desc(t.rank), desc(t.createdAt)])
+      .orderBy((t) => [desc(t.rank), desc(t.similarity), desc(t.createdAt)])
       .then((rows) => rows.map(transformRow));
   }
 }

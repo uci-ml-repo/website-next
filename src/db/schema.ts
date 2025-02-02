@@ -122,9 +122,13 @@ export const dataset = pgTable(
       sql`((${t.externalLink} IS NULL AND ${t.size} IS NOT NULL AND ${t.fileCount} IS NOT NULL)
           OR (${t.externalLink} IS NOT NULL AND ${t.externalLink} ~* '^https?://' AND ${t.size} IS NULL AND ${t.fileCount} IS NULL))`,
     ),
-    index("dataset_search_index").using(
+    index("dataset_ts_search_index").using(
       "gin",
       sql`(SETWEIGHT(TO_TSVECTOR('simple', ${t.title}), 'A'))`,
+    ),
+    index("dataset_trgm_search_index").using(
+      "gin",
+      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );
@@ -336,6 +340,10 @@ export const discussion = pgTable(
       "gin",
       sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
               SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
+    ),
+    index("discussion_trgm_search_index").using(
+      "gin",
+      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );

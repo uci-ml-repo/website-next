@@ -17,7 +17,7 @@ export default function DatasetRow({ dataset }: { dataset: DatasetResponse }) {
         height={200}
         className="size-12 rounded-lg object-cover"
       />
-      <div>
+      <div className="min-w-0">
         <div className="truncate text-lg font-bold decoration-2 group-hover:underline">
           {dataset.title}
         </div>

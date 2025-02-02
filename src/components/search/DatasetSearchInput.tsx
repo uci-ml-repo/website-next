@@ -50,7 +50,6 @@ export default function DatasetSearchInput() {
         setValue={setInputValue}
         onChange={handleChange}
         onFocus={() => setInputFocused(true)}
-        onBlur={() => setInputFocused(false)}
       />
       {inputFocused && (
         <Card
@@ -78,7 +77,7 @@ export default function DatasetSearchInput() {
               </div>
             )}
             {data && data.datasets.length > 0 && (
-              <div>
+              <div className="w-full">
                 {data.datasets.map((dataset) => (
                   <DatasetRow key={dataset.id} dataset={dataset} />
                 ))}
