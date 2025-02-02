@@ -5,7 +5,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -167,17 +167,14 @@ Carousel.displayName = "Carousel";
 
 const CarouselContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { allowPadding?: boolean }
->(({ className, allowPadding, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { gutter?: boolean }
+>(({ className, gutter, ...props }, ref) => {
   const { carouselRef, orientation } = useCarousel();
 
   return (
     <div
       ref={carouselRef}
-      className={cn(
-        "overflow-hidden",
-        allowPadding ? "-m-3 -mb-6 p-3 pb-6" : "",
-      )}
+      className={cn("overflow-hidden", gutter ? "-m-3 -mb-6 p-3 pb-6" : "")}
     >
       <div
         ref={ref}
@@ -273,14 +270,85 @@ const CarouselNext = React.forwardRef<
 });
 CarouselNext.displayName = "CarouselNext";
 
-const CarouselScrollDots = () => {
-  const carousel = useCarousel();
+const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
+  const [slidesInView, setSlidesInView] = useState<number[]>([]);
+  const [slideNodes, setSlideNodes] = useState<HTMLElement[]>([]);
+  const [minSlide, setMinSlide] = useState(0);
+  const [maxSlide, setMaxSlide] = useState(0);
+  const { canScrollPrev, canScrollNext } = useCarousel();
 
-  if (!carousel || !carousel.api) {
-    return null;
-  }
+  useEffect(() => {
+    if (!api || slideNodes.length < 1) return;
 
-  return <div>XXX {JSON.stringify(carousel.slidesInView)}</div>;
+    setMinSlide(slidesInView[0]);
+    setMaxSlide(slidesInView[slidesInView.length - 1]);
+  }, [api, slideNodes.length, slidesInView]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const handleWindowResize = () => {
+      setSlidesInView(api.slidesInView());
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [api]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setSlideNodes(api.slideNodes());
+
+    api.on("init", () => {
+      setSlideNodes(api.slideNodes());
+    });
+  }, [api]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setSlidesInView(api.slidesInView());
+
+    api.on("init", () => {
+      setSlidesInView(api.slidesInView());
+    });
+
+    api.on("scroll", () => {
+      setSlidesInView(api.slidesInView());
+    });
+  }, [api]);
+
+  const SHOW_NODES_SIDES = 3;
+
+  return (
+    <div className="flex items-center justify-center space-x-1 pt-4">
+      {slideNodes.map((_, index) => (
+        <div
+          key={index}
+          className={cn(
+            "rounded-full transition-all ease-in",
+            slidesInView.includes(index)
+              ? "h-2 w-4 bg-secondary-foreground/40"
+              : "size-2 bg-secondary-foreground/20",
+            {
+              hidden:
+                index < minSlide - SHOW_NODES_SIDES ||
+                index > maxSlide + SHOW_NODES_SIDES,
+            },
+            {
+              "size-1.5":
+                index == minSlide - SHOW_NODES_SIDES ||
+                index == maxSlide + SHOW_NODES_SIDES,
+            },
+          )}
+        />
+      ))}
+    </div>
+  );
 };
 
 export {

@@ -58,14 +58,14 @@ export default async function Page() {
 
       <div className="space-y-10">
         <DatasetCardCarousel
-          icon={<TrendingUpIcon className="size-8" />}
+          icon={<TrendingUpIcon />}
           heading="Popular Datasets"
           seeAllHref={DATASETS_ROUTE} // TODO
           datasets={popularDatasets.datasets}
         />
         <hr />
         <DatasetCardCarousel
-          icon={<SparklesIcon className="size-8" />}
+          icon={<SparklesIcon />}
           heading="New Datasets"
           seeAllHref={DATASETS_ROUTE} // TODO
           datasets={newDatasets.datasets}

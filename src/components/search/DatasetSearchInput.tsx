@@ -74,8 +74,7 @@ export default function DatasetSearchInput() {
               ))
             ) : (
               <div className="flex items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold text-muted-foreground">
-                <SearchIcon />
-                <span>Type to search</span>
+                <span>Type to search &hellip;</span>
               </div>
             )}
             {data && data.datasets.length > 0 && (

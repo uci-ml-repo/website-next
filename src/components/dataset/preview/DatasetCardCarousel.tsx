@@ -2,10 +2,13 @@
 
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import * as React from "react";
 
 import DatasetCard from "@/components/dataset/preview/DatasetCard";
 import DatasetCardSkeleton from "@/components/dataset/preview/DatasetCardSkeleton";
 import { Button } from "@/components/ui/button";
+import type { CarouselApi } from "@/components/ui/carousel";
 import {
   Carousel,
   CarouselContent,
@@ -32,16 +35,18 @@ export default function DatasetCardCarousel({
   endCard,
   datasets,
 }: DatasetGroupProps) {
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
   const cardBreakpoints = cn(
-    "basis-full xs:basis-1/2 md:basis-1/3 xl:basis-1/4",
+    "basis-full xs:basis-1/2 lg:basis-1/3 xl:basis-1/4",
   );
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between space-x-2">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 [&>svg]:size-6 sm:[&>svg]:size-8">
           {icon}
-          <h2 className="text-2xl font-bold">{heading}</h2>
+          <h2 className="text-xl font-bold sm:text-2xl">{heading}</h2>
         </div>
         {seeAllHref && (
           <Button variant="link" asChild>
@@ -50,8 +55,16 @@ export default function DatasetCardCarousel({
         )}
       </div>
       <div className="max-[1600px]:mx-10 max-sm:mx-0">
-        <Carousel opts={{ align: "start", skipSnaps: true, duration: 20 }}>
-          <CarouselContent allowPadding>
+        <Carousel
+          opts={{
+            align: "start",
+            skipSnaps: true,
+            duration: 20,
+            inViewThreshold: 0.5,
+          }}
+          setApi={setCarouselApi}
+        >
+          <CarouselContent gutter>
             {datasets.map((dataset) => (
               <CarouselItem key={dataset.id} className={cardBreakpoints}>
                 <DatasetCard dataset={dataset} />
@@ -77,7 +90,7 @@ export default function DatasetCardCarousel({
               </CarouselItem>
             )}
           </CarouselContent>
-          <CarouselScrollDots />
+          <CarouselScrollDots api={carouselApi} />
           <CarouselPrevious className="max-sm:hidden" />
           <CarouselNext className="max-sm:hidden" />
         </Carousel>

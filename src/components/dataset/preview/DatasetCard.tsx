@@ -42,7 +42,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             className="h-[100px] w-full rounded-t-2xl object-cover object-center"
           />
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col space-y-4">
+        <CardContent className="flex flex-1 flex-col space-y-2">
           <div className="flex flex-1 flex-col space-y-2">
             <CardTitle>
               <h3 className="line-clamp-2 group-hover:underline">
