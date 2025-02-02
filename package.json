@@ -78,7 +78,6 @@
     "class-variance-authority": "0.7.1",
     "client-only": "0.0.1",
     "clsx": "2.1.1",
-    "cmdk": "1.0.0",
     "dotenv": "16.4.7",
     "dotenv-cli": "8.0.0",
     "drizzle-orm": "0.39.1",
@@ -112,8 +111,8 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "19.6.1",
-    "@commitlint/config-conventional": "19.6.0",
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.7.1",
     "@eslint/eslintrc": "3.2.0",
     "@next/eslint-plugin-next": "15.1.6",
     "@tailwindcss/typography": "0.5.16",
