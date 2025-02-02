@@ -105,18 +105,21 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           value={value}
           onChange={onChange}
+          autoComplete="off"
           {...props}
         />
         {value && (
           <button
             type="button"
+            tabIndex={-1}
             onClick={(e) => {
               e.preventDefault();
               setValue("");
             }}
             className="absolute right-3 flex items-center justify-center text-muted-foreground"
+            aria-label="Clear input"
           >
-            <CircleXIcon className="size-5" />
+            <CircleXIcon className="size-5" aria-hidden={true} />
           </button>
         )}
       </div>

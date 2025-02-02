@@ -7,7 +7,8 @@ import type { DatasetResponse } from "@/lib/types";
 export default function DatasetRow({ dataset }: { dataset: DatasetResponse }) {
   return (
     <Link
-      className="group flex items-center space-x-2 rounded-2xl p-4 hover:bg-accent"
+      tabIndex={-1}
+      className="hover:bg-accent-1 group flex w-full items-center space-x-2 rounded-2xl p-4"
       href={DATASET_ROUTE(dataset)}
     >
       <Image
