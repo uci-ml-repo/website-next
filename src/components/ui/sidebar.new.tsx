@@ -47,14 +47,12 @@ function useSidebar() {
 const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    defaultOpen?: boolean;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
   }
 >(
   (
     {
-      defaultOpen = true,
       open: openProp,
       onOpenChange: setOpenProp,
       className,
@@ -67,7 +65,8 @@ const SidebarProvider = React.forwardRef<
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = React.useState(false);
 
-    const [_open, _setOpen] = React.useState(defaultOpen);
+    const [_open, _setOpen] = React.useState(false);
+
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -80,6 +79,26 @@ const SidebarProvider = React.forwardRef<
       },
       [setOpenProp, open],
     );
+
+    React.useEffect(() => {
+      const mediaQuery = window.matchMedia("(min-width: 1280px)");
+
+      const handleMediaChange = (e: MediaQueryListEvent) => {
+        if (e.matches) {
+          setOpen(true);
+          setOpenMobile(true);
+        } else {
+          setOpen(false);
+          setOpenMobile(false);
+        }
+      };
+
+      mediaQuery.addEventListener("change", handleMediaChange);
+
+      return () => {
+        mediaQuery.removeEventListener("change", handleMediaChange);
+      };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const toggleSidebar = React.useCallback(() => {
       return isMobile
@@ -140,6 +159,7 @@ SidebarProvider.displayName = "SidebarProvider";
 const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   ({ children, className, ...props }, ref) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
@@ -173,7 +193,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
           "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
-          "data-[state=expanded]:max-xl:shadow-[5px_0px_12px_0px_rgba(0,0,0,.25)]",
+          "data-[state=expanded]:max-xl:shadow-[0px_0px_20px_12px_rgba(0,0,0,.25)]",
           "transition-all ease-out",
           "border-r bg-sidebar text-sidebar-foreground",
           className,

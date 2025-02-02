@@ -67,7 +67,7 @@ export default async function Layout({
             >
               <BackgroundGraph />
 
-              <SidebarProvider defaultOpen={false}>
+              <SidebarProvider>
                 <AppSidebar />
                 <div
                   className={cn(

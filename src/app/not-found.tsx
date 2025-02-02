@@ -13,7 +13,7 @@ export default function NotFound() {
       </h1>
       <div className="text-lg">
         <span>Go back </span>
-        <a href={HOME_ROUTE} className="text-link">
+        <a href={HOME_ROUTE} className="text-link hover:underline">
           Home
         </a>
       </div>

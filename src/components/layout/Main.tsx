@@ -7,7 +7,11 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
 export default function Main({ children, ...props }: MainProps) {
   return (
     <div className="flex justify-center">
-      <main {...props} className={cn("content", props.className)}>
+      <main
+        {...props}
+        className={cn("content", props.className)}
+        id="site-content"
+      >
         {children}
       </main>
     </div>
