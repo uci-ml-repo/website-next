@@ -6,9 +6,10 @@ import { SessionProvider } from "next-auth/react";
 import * as React from "react";
 
 import { auth } from "@/auth";
+import AppSidebar from "@/components/layout/AppSidebar";
+import CookiesAlert from "@/components/layout/CookiesAlert";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar.new";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -90,6 +91,7 @@ export default async function Layout({
                     {children}
                   </div>
                 </div>
+                <CookiesAlert />
               </SidebarProvider>
 
               <Toaster />

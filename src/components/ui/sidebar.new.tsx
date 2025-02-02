@@ -5,9 +5,11 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import { MenuIcon } from "lucide-react";
+import type { RefObject } from "react";
 import * as React from "react";
 
-import { useIsMobile } from "@/components/hooks/use-mobile";
+import { useClickOutside } from "@/components/hooks/use-click-outside";
+import { useIsBreakpoint, useIsMobile } from "@/components/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -63,6 +65,7 @@ const SidebarProvider = React.forwardRef<
     ref,
   ) => {
     const isMobile = useIsMobile();
+    const isSheet = useIsBreakpoint(1280);
     const [openMobile, setOpenMobile] = React.useState(false);
 
     const [_open, _setOpen] = React.useState(false);
@@ -158,7 +161,15 @@ SidebarProvider.displayName = "SidebarProvider";
 
 const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   ({ children, className, ...props }, ref) => {
-    const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+    const { isMobile, state, openMobile, setOpenMobile, setOpen } =
+      useSidebar();
+    const isSheet = useIsBreakpoint(1280);
+
+    useClickOutside(ref as RefObject<HTMLDivElement>, () => {
+      if (isSheet) {
+        setOpen(false);
+      }
+    });
 
     if (isMobile) {
       return (
@@ -193,7 +204,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
           "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
-          "data-[state=expanded]:max-xl:shadow-[0px_0px_20px_12px_rgba(0,0,0,.25)]",
+          "data-[state=expanded]:max-xl:shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)]",
           "transition-all ease-out",
           "border-r bg-sidebar text-sidebar-foreground",
           className,

@@ -37,7 +37,7 @@ body {
     --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 4%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 96%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -103,7 +103,7 @@ body {
 }
 
 .lift {
-  @apply ease-out hover:scale-[1.005] hover:shadow-md;
+  @apply ease-out hover:scale-[1.01] hover:shadow-md;
   transition: transform 250ms;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

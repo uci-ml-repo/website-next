@@ -4,6 +4,7 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 
@@ -332,7 +333,11 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
   const SHOW_NODES_SIDES = 3;
 
   return (
-    <div className="flex h-6 items-center justify-center space-x-1 pt-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="flex h-6 items-center justify-center space-x-1 pt-4"
+    >
       {slideNodes.map(
         (_, index) =>
           index >= minSlide - SHOW_NODES_SIDES &&
@@ -354,7 +359,7 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
             />
           ),
       )}
-    </div>
+    </motion.div>
   );
 };
 
