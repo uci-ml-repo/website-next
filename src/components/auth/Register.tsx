@@ -188,12 +188,12 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
       />
       <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Have an account?</span>
-        <span
+        <button
           className="cursor-pointer text-foreground underline"
           onClick={() => setTab("signin")}
         >
           Sign In
-        </span>
+        </button>
       </p>
     </div>
   );

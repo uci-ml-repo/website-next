@@ -51,6 +51,7 @@ const TabsContent = React.forwardRef<
       className,
     )}
     {...props}
+    tabIndex={-1}
   />
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;

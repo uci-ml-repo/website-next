@@ -22,6 +22,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         icon={showPassword ? EyeOffIcon : EyeIcon}
         iconPosition="right"
         onIconClick={handleToggle}
+        iconButtonProps={{
+          "aria-label": showPassword ? "Hide password" : "Show password",
+        }}
       />
     );
   },

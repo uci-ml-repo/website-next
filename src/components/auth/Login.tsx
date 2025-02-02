@@ -124,12 +124,12 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
       />
       <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Don't have an account?</span>
-        <span
+        <button
           className="cursor-pointer text-foreground underline"
           onClick={() => setTab("register")}
         >
           Register
-        </span>
+        </button>
       </p>
     </div>
   );

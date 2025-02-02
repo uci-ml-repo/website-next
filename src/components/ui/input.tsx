@@ -28,6 +28,7 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  iconButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
   iconPosition?: "left" | "right";
   onIconClick?: () => void;
   containerClassName?: string;
@@ -43,6 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconPosition = "left",
       pill = true,
       onIconClick,
+      iconButtonProps,
       value,
       onChange,
       ...props
@@ -80,19 +82,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={cn("relative flex items-center", containerClassName)}>
-        {Icon && (
-          <span
-            className={cn(
-              "absolute flex items-center justify-center text-muted-foreground",
-              onIconClick ? "z-20 cursor-pointer" : "pointer-events-none",
-              iconSize[variantSize ?? "default"],
-              iconOffset[iconPosition][variantSize ?? "default"],
-            )}
-            onClick={onIconClick}
-          >
-            <Icon />
-          </span>
-        )}
         <input
           className={cn(
             inputVariants({ variantSize, pill, className }),
@@ -103,6 +92,31 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           {...props}
         />
+        {Icon &&
+          (onIconClick ? (
+            <button
+              type="button"
+              className={cn(
+                "absolute z-20 flex cursor-pointer items-center justify-center text-muted-foreground",
+                iconSize[variantSize ?? "default"],
+                iconOffset[iconPosition][variantSize ?? "default"],
+              )}
+              onClick={onIconClick}
+              {...iconButtonProps}
+            >
+              <Icon aria-hidden={true} />
+            </button>
+          ) : (
+            <span
+              className={cn(
+                "pointer-events-none absolute flex items-center justify-center text-muted-foreground",
+                iconSize[variantSize ?? "default"],
+                iconOffset[iconPosition][variantSize ?? "default"],
+              )}
+            >
+              <Icon />
+            </span>
+          ))}
       </div>
     );
   },
