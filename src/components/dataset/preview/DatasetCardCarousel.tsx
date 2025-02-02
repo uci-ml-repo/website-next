@@ -54,7 +54,7 @@ export default function DatasetCardCarousel({
           </Button>
         )}
       </div>
-      <div className="max-[1600px]:mx-10 max-md:mx-0">
+      <div className="max-2xl:mx-10 max-md:mx-0">
         <Carousel
           opts={{
             align: "start",

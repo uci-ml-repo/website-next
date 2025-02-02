@@ -34,6 +34,7 @@ const BackgroundGraph = () => {
         `absolute right-0 top-0 -z-50`,
         `size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]`,
       )}
+      aria-hidden={true}
     >
       <svg viewBox="0 0 600 600">
         {nodes.map((node, index) => (

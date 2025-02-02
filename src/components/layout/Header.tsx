@@ -24,7 +24,7 @@ export default async function Header() {
         <div />
         {session?.user ? (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger>
               <ProfileAvatar
                 src={session.user.image}
                 role="button"

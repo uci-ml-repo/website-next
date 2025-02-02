@@ -36,7 +36,7 @@ interface LogoProps
 export function Banner({ variant, textColor, className, link }: LogoProps) {
   const content = (
     <div className={cn(logoVariants({ variant, textColor }), className)}>
-      <UCIrvine />
+      <UCIrvine aria-label="UC Irvine" />
       <div className="font-semibold leading-none text-uci-blue">
         Machine Learning Repository
       </div>

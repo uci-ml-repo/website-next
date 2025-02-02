@@ -325,28 +325,27 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
 
   return (
     <div className="flex h-6 items-center justify-center space-x-1 pt-4">
-      {slideNodes.map((_, index) => (
-        <div
-          key={index}
-          onClick={() => api && api.scrollTo(index)}
-          className={cn(
-            "cursor-pointer rounded-full transition-all",
-            index >= minSlide && index <= maxSlide
-              ? "h-2 w-4 bg-secondary-foreground/50"
-              : "size-2 bg-secondary-foreground/20",
-            {
-              hidden:
-                index < minSlide - SHOW_NODES_SIDES ||
-                index > maxSlide + SHOW_NODES_SIDES,
-            },
-            {
-              "size-1.5":
-                index === minSlide - SHOW_NODES_SIDES ||
-                index === maxSlide + SHOW_NODES_SIDES,
-            },
-          )}
-        />
-      ))}
+      {slideNodes.map(
+        (_, index) =>
+          index >= minSlide - SHOW_NODES_SIDES &&
+          index <= maxSlide + SHOW_NODES_SIDES && (
+            <div
+              key={index}
+              onClick={() => api && api.scrollTo(index)}
+              className={cn(
+                "cursor-pointer rounded-full transition-all",
+                index >= minSlide && index <= maxSlide
+                  ? "h-2 w-4 bg-secondary-foreground/50"
+                  : "size-2 bg-secondary-foreground/20",
+                {
+                  "size-1.5":
+                    index === minSlide - SHOW_NODES_SIDES ||
+                    index === maxSlide + SHOW_NODES_SIDES,
+                },
+              )}
+            />
+          ),
+      )}
     </div>
   );
 };

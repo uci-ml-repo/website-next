@@ -3,11 +3,12 @@ import "@/app/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import * as React from "react";
 
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar.new";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
@@ -65,14 +66,18 @@ export default function Layout({
 
               <SidebarProvider defaultOpen={false}>
                 <AppSidebar />
-                <div className="w-full">
+                <div
+                  className={cn(
+                    "w-full",
+                    "peer-data-[state=collapsed]:pl-[--sidebar-width-icon]",
+                    "peer-data-[state=open]:pl-[--sidebar-width]",
+                  )}
+                >
                   <Header />
-
                   {children}
-
-                  {/*<Footer />*/}
                 </div>
               </SidebarProvider>
+
               <Toaster />
             </ThemeProvider>
           </body>

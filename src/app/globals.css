@@ -113,11 +113,11 @@ body {
 }
 
 .content-x {
-  @apply max-w-screen-2xl px-6 sm:px-10;
+  @apply max-w-screen-2xl px-6 sm:px-10 2xl:px-14;
 }
 
 .content {
-  @apply content-x min-h-screen w-full pb-24;
+  @apply content-x min-h-screen w-full pb-20;
 }
 
 .hide-inactive [data-state="inactive"] {
