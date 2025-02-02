@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import SignInButton from "@/components/auth/SignInButton";
 import SignOut from "@/components/auth/SignOut";
+import { useIsMobile } from "@/components/hooks/use-mobile";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,9 +20,10 @@ import { Enums } from "@/db/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-export const HEADER_HEIGHT = "4.5rem";
+export const HEADER_HEIGHT = "4rem";
 
 export default function Header({ session }: { session: Session | null }) {
+  const isMobile = useIsMobile();
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -41,14 +43,14 @@ export default function Header({ session }: { session: Session | null }) {
       className={cn(
         "relative z-40 bg-background max-md:fixed max-md:left-0 max-md:right-0",
         "transition-shadow ease-in-out",
-        { shadow: hasScrolled },
+        { shadow: isMobile && hasScrolled },
       )}
     >
       <div className="flex items-center justify-between">
         <div className="m-2">
           <SidebarTrigger className="md:hidden" />
         </div>
-        <div className="mx-4">
+        <div className="mx-4 md:my-3">
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
