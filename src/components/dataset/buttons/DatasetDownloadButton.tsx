@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DATASET_ZIP_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { abbreviateFileSize, datasetFilesPath } from "@/lib/utils";
-import { caller } from "@/server/trpc/query/server";
+import { abbreviateFileSize } from "@/lib/utils";
 
 interface DatasetDownloadButtonProps {
   dataset: DatasetResponse;
@@ -21,7 +20,7 @@ export default async function DatasetDownloadButton({
         className="lift w-full"
         size="lg"
         asChild
-        aria-label={`Download ${dataset.title}`}
+        aria-label={`View ${dataset.title}`}
       >
         <Link href={dataset.externalLink} target="_blank">
           <ExternalLinkIcon />
@@ -31,24 +30,21 @@ export default async function DatasetDownloadButton({
     );
   }
 
-  let zipStats;
-  try {
-    zipStats = await caller.file.read.zipStats({
-      path: datasetFilesPath(dataset) + ".zip",
-    });
-  } catch {
-    zipStats = null;
-  }
-
   return (
-    <Button variant="blue" className="lift w-full" size="lg" asChild>
+    <Button
+      variant="blue"
+      className="lift w-full"
+      size="lg"
+      asChild
+      aria-label={`Download ${dataset.title}`}
+    >
       <a href={DATASET_ZIP_ROUTE(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>
-          {zipStats && zipStats.size && (
+          {dataset && dataset.size && (
             <span className="ml-1 text-sm">
-              ({abbreviateFileSize(zipStats.size)})
+              ({abbreviateFileSize(dataset.size)})
             </span>
           )}
         </div>

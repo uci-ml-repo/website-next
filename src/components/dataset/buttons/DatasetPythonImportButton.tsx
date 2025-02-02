@@ -1,7 +1,5 @@
 "use client";
 
-import "highlight.js/styles/github-dark.min.css";
-
 import hljs from "highlight.js";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -49,7 +47,7 @@ const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
   }, []);
 
   return (
-    <div className="dark relative overflow-hidden rounded-lg">
+    <div className={cn("dark relative overflow-hidden rounded-lg")}>
       <pre>
         <code className={cn("pr-12 text-sm", language)}>{code}</code>
       </pre>
