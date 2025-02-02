@@ -54,7 +54,7 @@ export default function DatasetCardCarousel({
           </Button>
         )}
       </div>
-      <div className="max-[1600px]:mx-10 max-sm:mx-0">
+      <div className="max-[1600px]:mx-10 max-md:mx-0">
         <Carousel
           opts={{
             align: "start",
@@ -91,8 +91,8 @@ export default function DatasetCardCarousel({
             )}
           </CarouselContent>
           <CarouselScrollDots api={carouselApi} />
-          <CarouselPrevious className="max-sm:hidden" />
-          <CarouselNext className="max-sm:hidden" />
+          <CarouselPrevious className="max-md:hidden" />
+          <CarouselNext className="max-md:hidden" />
         </Carousel>
       </div>
     </div>

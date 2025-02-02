@@ -7,7 +7,6 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -45,14 +44,7 @@ export default function Page() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="apa">APA</SelectItem>
-                  <SelectItem value="mla">MLA</SelectItem>
-                  <SelectItem value="chicago">Chicago</SelectItem>
-                  <SelectItem value="vancouver">Vancouver</SelectItem>
-                  <SelectItem value="ieee">IEEE</SelectItem>
-                  <SelectItem value="bibtex">BibTeX</SelectItem>
-                </SelectGroup>
+                <SelectGroup />
               </SelectContent>
             </Select>
           </div>

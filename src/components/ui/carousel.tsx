@@ -328,9 +328,10 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
       {slideNodes.map((_, index) => (
         <div
           key={index}
+          onClick={() => api && api.scrollTo(index)}
           className={cn(
-            "rounded-full transition-all ease-in",
-            slidesInView.includes(index)
+            "cursor-pointer rounded-full transition-all",
+            index >= minSlide && index <= maxSlide
               ? "h-2 w-4 bg-secondary-foreground/50"
               : "size-2 bg-secondary-foreground/20",
             {

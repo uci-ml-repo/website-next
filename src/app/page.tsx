@@ -56,14 +56,13 @@ export default async function Page() {
         <DatasetSearchInput />
       </div>
 
-      <div className="space-y-10">
+      <div className="space-y-12">
         <DatasetCardCarousel
           icon={<TrendingUpIcon />}
           heading="Popular Datasets"
           seeAllHref={DATASETS_ROUTE} // TODO
           datasets={popularDatasets.datasets}
         />
-        <hr />
         <DatasetCardCarousel
           icon={<SparklesIcon />}
           heading="New Datasets"
@@ -76,9 +75,11 @@ export default async function Page() {
             <p className="text-pretty text-center text-xl font-bold">
               Didn't find what you were looking for?
             </p>
-            <Button className="lift" size="lg" variant="gold">
-              <SearchIcon />
-              <Link href={DATASETS_ROUTE}>Explore All Datasets</Link>
+            <Button className="lift" size="lg" variant="gold" asChild>
+              <Link href={DATASETS_ROUTE}>
+                <SearchIcon />
+                Explore All Datasets
+              </Link>
             </Button>
           </div>
         </div>
