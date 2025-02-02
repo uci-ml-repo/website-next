@@ -24,8 +24,9 @@ export default function DiscussionCreateButton({
       variant="gold"
       size={tooltip ? "icon-lg" : "lg"}
       className={cn("lift", className)}
+      aria-label="Start discussion"
     >
-      <PlusIcon />
+      <PlusIcon aria-hidden={true} />
       {!tooltip && <span>Start Discussion</span>}
     </Button>
   );

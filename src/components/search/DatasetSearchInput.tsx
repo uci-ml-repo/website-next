@@ -43,6 +43,7 @@ export default function DatasetSearchInput() {
   return (
     <div className="relative">
       <InputClearable
+        id="search"
         placeholder="Search datasets"
         variantSize="xl"
         icon={SearchIcon}
@@ -50,6 +51,7 @@ export default function DatasetSearchInput() {
         setValue={setInputValue}
         onChange={handleChange}
         onFocus={() => setInputFocused(true)}
+        aria-label="Search datasets"
       />
       {inputFocused && (
         <Card

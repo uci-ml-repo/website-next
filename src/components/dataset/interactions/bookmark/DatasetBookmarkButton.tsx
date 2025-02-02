@@ -61,8 +61,13 @@ export default function DatasetBookmarkButton({
   return (
     <>
       {addBookmark.isPending || removeBookmark.isPending ? (
-        <Button size="icon" variant="ghost" disabled>
-          <Spinner className="!size-5 opacity-70" />
+        <Button
+          size="icon"
+          variant="ghost"
+          disabled
+          aria-label="Bookmarking dataset"
+        >
+          <Spinner className="!size-5 opacity-70" aria-hidden={true} />
         </Button>
       ) : (
         <SignInRequired
@@ -70,12 +75,17 @@ export default function DatasetBookmarkButton({
           body="To bookmark datasets and access other features, please sign in."
           authedAction={handleBookmark}
         >
-          <Button size="icon" variant="ghost">
+          <Button
+            size="icon"
+            variant="ghost"
+            aria-label={isBookmarked ? "Remove bookmark" : "Bookmark dataset"}
+          >
             <BookmarkIcon
               className={cn(
                 "!size-5 cursor-pointer",
                 isBookmarked ? "fill-uci-gold" : "",
               )}
+              aria-hidden={true}
             />
           </Button>
         </SignInRequired>

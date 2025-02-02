@@ -10,8 +10,8 @@ export function Developer({ name, subTitle, avatar, github }) {
     <div className={"flex items-center justify-between space-x-4"}>
       <div className={"flex items-center"}>
         <Avatar className={"mr-4 size-14 sm:size-16"}>
-          <AvatarImage src={avatar} />
-          <AvatarFallback>
+          <AvatarImage src={avatar} alt={`Avatar for ${name}`} />
+          <AvatarFallback alt={`Avatar for ${name}`}>
             <CircleUserRoundIcon className={"size-4/5 text-muted-foreground"} />
           </AvatarFallback>
         </Avatar>
@@ -25,7 +25,7 @@ export function Developer({ name, subTitle, avatar, github }) {
           <Link
             href={"https://github.com/" + github}
             target={"_blank"}
-            className={"transition-transform ease-in-out hover:scale-110"}
+            aria-label={`GitHub profile of ${name}`}
           >
             <GithubIcon />
           </Link>

@@ -62,6 +62,7 @@ export default function Discussions({
           <InputClearable
             icon={SearchIcon}
             placeholder="Search discussions"
+            aria-label="Search discussions"
             value={searchValue}
             setValue={setSearchValue}
             onChange={(e) => setSearchValue(e.target.value)}

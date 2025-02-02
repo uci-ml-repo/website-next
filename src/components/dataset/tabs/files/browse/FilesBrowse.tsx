@@ -75,6 +75,7 @@ export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
           variantSize="sm"
           icon={SearchIcon}
           placeholder="Search files"
+          aria-label="Search files"
           className="h-8 rounded-lg bg-background"
           containerClassName="w-full"
           value={searchValue}

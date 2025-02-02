@@ -45,6 +45,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
               size="icon"
               disabled={fileHistory.length === 0}
               onClick={back}
+              aria-label="Back"
             >
               <ChevronLeftIcon className="size-6" />
             </Button>
@@ -53,6 +54,7 @@ export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
               size="icon"
               disabled={fileForwardHistory.length === 0}
               onClick={forward}
+              aria-label="Forward"
             >
               <ChevronRightIcon className="size-6" />
             </Button>
