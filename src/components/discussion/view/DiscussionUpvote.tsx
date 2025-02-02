@@ -63,6 +63,7 @@ export default function DiscussionUpvote({
         variant={isUpvoted ? "gold" : "secondary"}
         size="sm"
         disabled={isPending}
+        aria-label={isUpvoted ? "Remove upvote" : "Upvote discussion"}
       >
         {isPending ? <Spinner /> : <ChevronUpIcon />}
         <span>{upvoteCount.toLocaleString()}</span>

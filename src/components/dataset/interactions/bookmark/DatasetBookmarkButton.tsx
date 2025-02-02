@@ -67,7 +67,7 @@ export default function DatasetBookmarkButton({
           disabled
           aria-label="Bookmarking dataset"
         >
-          <Spinner className="!size-5 opacity-70" aria-hidden={true} />
+          <Spinner className="!size-5 opacity-70" />
         </Button>
       ) : (
         <SignInRequired

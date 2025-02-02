@@ -35,7 +35,7 @@ export default function DiscussionCommentExtendedOptions({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" aria-label="Extended options">
-            <EllipsisVerticalIcon className="!size-5" aria-hidden={true} />
+            <EllipsisVerticalIcon className="!size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

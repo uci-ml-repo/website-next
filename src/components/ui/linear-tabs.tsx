@@ -190,8 +190,8 @@ export const LinearTabsTrigger = React.forwardRef<
           <Link
             href={link}
             className={cn(
-              "data-[state=active]:!text-foreground",
-              "inline-flex items-center whitespace-nowrap p-2 text-xl font-medium ring-offset-background",
+              "data-[state=active]:text-foreground",
+              "inline-flex items-center whitespace-nowrap p-1 text-xl font-medium ring-offset-background",
               "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
               className,
             )}

@@ -104,7 +104,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={onIconClick}
               {...iconButtonProps}
             >
-              <Icon aria-hidden={true} />
+              <Icon />
             </button>
           ) : (
             <span
