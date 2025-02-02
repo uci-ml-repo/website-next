@@ -111,7 +111,6 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
         {value && (
           <button
             type="button"
-            tabIndex={-1}
             onClick={(e) => {
               e.preventDefault();
               setValue("");

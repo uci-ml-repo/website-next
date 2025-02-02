@@ -6,6 +6,10 @@ export type DatasetResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byId"]
 >;
 
+export type DatasetQueryResponse = NonNullable<
+  RouterOutput["dataset"]["find"]["byQuery"]
+>;
+
 export type AcceptedDatasetResponse = RequireNonNullable<
   DatasetResponse,
   AcceptedDatasetRequiredFields

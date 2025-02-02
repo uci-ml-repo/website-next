@@ -3,20 +3,24 @@
 import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
+import { redirect } from "next/navigation";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
 import DatasetRowSkeleton from "@/components/dataset/preview/DatasetRowSkeleton";
-import { Command, CommandItem, CommandList } from "@/components/ui/command";
+import { Card } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
+import { DATASETS_ROUTE } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-import { Card } from "../ui/card";
-
-export default function DatasetSearchCommand() {
+export default function DatasetSearchInput() {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const debouncedSetSearchValue = useMemo(
     () =>
@@ -30,12 +34,12 @@ export default function DatasetSearchCommand() {
     if (inputValue === "") {
       setSearchValue("");
     }
-  }, [inputValue, setSearchValue]);
+  }, [inputValue]);
 
   const { data, isPending } = trpc.dataset.find.byQuery.useQuery(
     {
       search: searchValue,
-      limit: 5,
+      limit: 4,
     },
     {
       enabled: searchValue.length > 0,
@@ -48,63 +52,122 @@ export default function DatasetSearchCommand() {
     debouncedSetSearchValue(newValue);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (e.currentTarget.contains(e.relatedTarget)) {
+      return;
+    }
+    setIsFocused(false);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       e.currentTarget.blur();
+    } else if (e.key === "Enter") {
+      redirect(DATASETS_ROUTE);
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const focusableItems = cardRef.current?.querySelectorAll(
+        '[data-focusable="true"]',
+      );
+      if (focusableItems && focusableItems.length > 0) {
+        if (e.key === "ArrowDown") {
+          (focusableItems[0] as HTMLElement).focus();
+        } else if (e.key === "ArrowUp") {
+          (focusableItems[focusableItems.length - 1] as HTMLElement).focus();
+        }
+      }
+    }
+  };
+
+  const handleItemKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    const focusableItems = cardRef.current?.querySelectorAll(
+      '[data-focusable="true"]',
+    );
+    if (!focusableItems) return;
+    const itemsArray = Array.from(focusableItems);
+    const currentIndex = itemsArray.indexOf(e.currentTarget as HTMLElement);
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < itemsArray.length) {
+        (itemsArray[nextIndex] as HTMLElement).focus();
+      } else {
+        inputRef.current?.focus();
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prevIndex = currentIndex - 1;
+      if (prevIndex >= 0) {
+        (itemsArray[prevIndex] as HTMLElement).focus();
+      } else {
+        inputRef.current?.focus();
+      }
     }
   };
 
   return (
-    <Command className="relative overflow-visible">
+    <div
+      className="relative overflow-visible"
+      onFocus={() => setIsFocused(true)}
+      onBlur={handleBlur}
+    >
       <InputClearable
         id="search"
+        ref={inputRef}
         placeholder="Search datasets..."
         variantSize="xl"
         value={inputValue}
         setValue={setInputValue}
         onChange={handleChange}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleInputKeyDown}
         aria-label="Search datasets"
       />
-      <CommandList className={isFocused ? "visible" : "hidden"}>
-        <Card className="absolute left-0 right-0 top-[calc(100%+1px)] z-10 shadow-2xl">
-          {inputValue && (
-            <CommandItem>
-              <Link
-                tabIndex={-1}
-                href="#"
-                className="flex w-full items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold decoration-2 hover:bg-accent hover:underline"
-              >
-                <SearchIcon />
-                <span>Search '{inputValue}'</span>
-              </Link>
-            </CommandItem>
-          )}
+      <Card
+        ref={cardRef}
+        className={cn(
+          "absolute left-0 right-0 top-[calc(100%+1px)] z-10 shadow-2xl",
+          { hidden: !isFocused },
+        )}
+      >
+        {inputValue && (
+          <Link
+            href={DATASETS_ROUTE}
+            className="flex w-full items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold decoration-2 hover:bg-accent hover:underline focus:bg-accent focus:underline"
+            data-focusable="true"
+            tabIndex={0}
+            onKeyDown={handleItemKeyDown}
+          >
+            <SearchIcon />
+            <span>View all results for '{inputValue}'</span>
+          </Link>
+        )}
 
-          {inputValue ? (
-            isPending &&
-            Array.from({ length: 1 }).map((_, index) => (
-              <DatasetRowSkeleton key={index} />
-            ))
-          ) : (
-            <div className="truncate p-4 text-lg text-muted-foreground">
-              Type to search&hellip;
-            </div>
-          )}
+        {inputValue ? (
+          isPending &&
+          Array.from({ length: 1 }).map((_, index) => (
+            <DatasetRowSkeleton key={index} />
+          ))
+        ) : (
+          <div className="truncate p-4 text-lg text-muted-foreground">
+            Type to search&hellip;
+          </div>
+        )}
 
-          {data?.datasets && (
-            <div className="w-full">
-              {data.datasets.map((dataset) => (
-                <CommandItem key={dataset.id}>
-                  <DatasetRow dataset={dataset} />
-                </CommandItem>
-              ))}
-            </div>
-          )}
-        </Card>
-      </CommandList>
-    </Command>
+        {data?.datasets && (
+          <div className="w-full">
+            {data.datasets.map((dataset) => (
+              <DatasetRow
+                dataset={dataset}
+                key={dataset.id}
+                data-focusable="true"
+                tabIndex={0}
+                onKeyDown={handleItemKeyDown}
+              />
+            ))}
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
