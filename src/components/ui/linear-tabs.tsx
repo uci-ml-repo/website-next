@@ -134,10 +134,7 @@ export const LinearTabsList = React.forwardRef<
       {React.Children.map(
         children as TriggerElement[],
         (child: TriggerElement) => {
-          if (
-            React.isValidElement(child) &&
-            typeof child.props.value === "string"
-          ) {
+          if (React.isValidElement(child)) {
             return React.cloneElement(child, {
               "data-value": child.props.value,
             });
@@ -183,20 +180,49 @@ export const LinearTabsTrigger = React.forwardRef<
       badgeVariant = "secondary",
       badgeValue,
       link,
-      ...props
+      ...triggerProps
     },
     ref,
   ) => {
-    const content = (
+    if (link) {
+      return (
+        <TabsPrimitive.Trigger asChild ref={ref} {...triggerProps}>
+          <Link
+            href={link}
+            className={cn(
+              "data-[state=active]:!text-foreground",
+              "inline-flex items-center whitespace-nowrap p-2 text-xl font-medium ring-offset-background",
+              "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              className,
+            )}
+            tabIndex={0}
+            onFocus={(e) => e.preventDefault()}
+          >
+            {badgeValue !== undefined ? (
+              <div className="flex items-center space-x-2">
+                <span>{children}</span>
+                <Badge variant={badgeVariant}>
+                  {badgeValue ?? <Spinner className="size-4" />}
+                </Badge>
+              </div>
+            ) : (
+              children
+            )}
+          </Link>
+        </TabsPrimitive.Trigger>
+      );
+    }
+
+    return (
       <TabsPrimitive.Trigger
         ref={ref}
+        {...triggerProps}
         className={cn(
           "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
           "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "data-[state=active]:text-foreground",
           className,
         )}
-        {...props}
       >
         {badgeValue !== undefined ? (
           <div className="flex items-center space-x-2">
@@ -210,8 +236,6 @@ export const LinearTabsTrigger = React.forwardRef<
         )}
       </TabsPrimitive.Trigger>
     );
-
-    return link ? <Link href={link}>{content}</Link> : content;
   },
 );
 LinearTabsTrigger.displayName = "LinearTabsTrigger";

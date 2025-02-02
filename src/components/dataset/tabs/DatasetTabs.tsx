@@ -43,7 +43,7 @@ export default function DatasetTabs({
       routerSegment={3}
     >
       <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
-        <LinearTabsList className="space-x-8">
+        <LinearTabsList className="space-x-8 py-1">
           <LinearTabsTrigger value="about" link={path.join(basePath, "about")}>
             About
           </LinearTabsTrigger>

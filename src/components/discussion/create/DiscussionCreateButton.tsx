@@ -32,13 +32,13 @@ export default function DiscussionCreateButton({
   );
 
   return (
-    <TooltipProvider>
-      <SignInRequired
-        title="Sign in to create discussions"
-        body="To create discussions and access other features, please sign in."
-        authedRedirect="discussions/create"
-      >
-        {tooltip ? (
+    <SignInRequired
+      title="Sign in to create discussions"
+      body="To create discussions and access other features, please sign in."
+      authedRedirect="discussions/create"
+    >
+      {tooltip ? (
+        <TooltipProvider>
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
               <div>
@@ -47,10 +47,10 @@ export default function DiscussionCreateButton({
             </TooltipTrigger>
             <TooltipContent>Start Discussion</TooltipContent>
           </Tooltip>
-        ) : (
-          <CreateButton />
-        )}
-      </SignInRequired>
-    </TooltipProvider>
+        </TooltipProvider>
+      ) : (
+        <CreateButton />
+      )}
+    </SignInRequired>
   );
 }
