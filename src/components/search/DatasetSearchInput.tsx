@@ -59,6 +59,12 @@ export default function DatasetSearchInput() {
     setIsFocused(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      setIsFocused(false);
+    }
+  };
+
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       e.currentTarget.blur();
@@ -111,6 +117,7 @@ export default function DatasetSearchInput() {
       className="relative overflow-visible"
       onFocus={() => setIsFocused(true)}
       onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
     >
       <InputClearable
         id="search"
