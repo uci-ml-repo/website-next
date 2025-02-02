@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import DatasetCitationButton from "@/components/dataset/buttons/DatasetCitationButton";
 import DatasetDownloadButton from "@/components/dataset/buttons/DatasetDownloadButton";
-import DatasetPythonButton from "@/components/dataset/buttons/DatasetPythonButton";
+import DatasetPythonImportButton from "@/components/dataset/buttons/DatasetPythonImportButton";
 import { DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,7 @@ export default function DatasetTitleGroup({
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton dataset={dataset} />
           {dataset.isAvailablePython && (
-            <DatasetPythonButton dataset={dataset} />
+            <DatasetPythonImportButton dataset={dataset} />
           )}
           <DatasetCitationButton dataset={dataset} />
         </div>

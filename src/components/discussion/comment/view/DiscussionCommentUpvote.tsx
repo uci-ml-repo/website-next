@@ -66,6 +66,7 @@ export default function DiscussionCommentUpvote({
         size="sm"
         className="m-2 flex items-center"
         disabled={isPending}
+        aria-label={isUpvoted ? "Remove upvote" : "Upvote comment"}
       >
         {isPending ? <Spinner /> : <ChevronUpIcon />}
         <span>{upvoteCount.toLocaleString()}</span>

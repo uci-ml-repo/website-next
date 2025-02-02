@@ -16,7 +16,13 @@ export default async function DatasetDownloadButton({
 }: DatasetDownloadButtonProps) {
   if (dataset.externalLink) {
     return (
-      <Button variant="blue" className="lift w-full" size="lg" asChild>
+      <Button
+        variant="blue"
+        className="lift w-full"
+        size="lg"
+        asChild
+        aria-label={`Download ${dataset.title}`}
+      >
         <Link href={dataset.externalLink} target="_blank">
           <ExternalLinkIcon />
           <div>View Dataset</div>

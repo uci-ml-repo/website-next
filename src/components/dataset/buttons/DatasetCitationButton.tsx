@@ -49,7 +49,12 @@ export default function DatasetCitationButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="lift w-full" size="lg">
+        <Button
+          variant="secondary"
+          className="lift w-full"
+          size="lg"
+          aria-label={`Cite ${dataset.title}`}
+        >
           <BookMarkedIcon />
           <div>Cite</div>
         </Button>

@@ -20,7 +20,7 @@ import {
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-interface DatasetPythonButtonProps {
+interface DatasetPythonImportButtonProps {
   dataset: DatasetResponse;
 }
 
@@ -58,9 +58,9 @@ const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
   );
 };
 
-export default function DatasetPythonButton({
+export default function DatasetPythonImportButton({
   dataset,
-}: DatasetPythonButtonProps) {
+}: DatasetPythonImportButtonProps) {
   const pipInstallCommand = `pip install ucimlrepo`;
 
   const pythonCode = getPythonSnippet(dataset);
@@ -68,7 +68,12 @@ export default function DatasetPythonButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="lift w-full" size="lg">
+        <Button
+          variant="secondary"
+          className="lift w-full"
+          size="lg"
+          aria-label={`Import ${dataset.title} in Python`}
+        >
           <PythonIcon />
           <div>Import</div>
         </Button>
