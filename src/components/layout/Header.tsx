@@ -42,7 +42,7 @@ export default function Header({ session }: { session: Session | null }) {
       style={{ height: HEADER_HEIGHT }}
       className={cn(
         "relative z-40 bg-background max-md:fixed max-md:left-0 max-md:right-0",
-        "transition-shadow ease-in-out",
+        "transition-shadow ease-in-out md:!h-18",
         { shadow: isMobile && hasScrolled },
       )}
     >
@@ -50,15 +50,13 @@ export default function Header({ session }: { session: Session | null }) {
         <div className="m-2">
           <SidebarTrigger className="md:hidden" />
         </div>
-        <div className="mx-4 md:my-3">
+        <div className="mx-4 md:my-4">
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <ProfileAvatar
-                  src={session.user.image}
-                  tabIndex={0}
-                  aria-label="Profile options"
-                />
+                <button aria-label="Profile options">
+                  <ProfileAvatar src={session.user.image} />
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-44" align="end">
                 <DropdownMenuItem asChild>
