@@ -1,6 +1,8 @@
+import { desc } from "drizzle-orm";
 import type { Session } from "next-auth";
 
 import { db } from "@/db";
+import { bookmark } from "@/db/schema";
 import type { BookmarkQuery } from "@/server/service/schema/bookmark";
 
 export default class BookmarkFindService {
@@ -18,6 +20,7 @@ export default class BookmarkFindService {
           },
         },
       },
+      orderBy: desc(bookmark.createdAt),
       limit: query.limit ? query.limit + 1 : undefined,
       offset: query.cursor ?? 0,
     });

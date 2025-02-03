@@ -151,7 +151,7 @@ export default class DatasetFindService {
           buildQuery(query),
           query.search
             ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery})
-                      OR (similarity(${dataset.title}, ${query.search}) > 0.15))`
+                      OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
             : undefined,
         ),
       )

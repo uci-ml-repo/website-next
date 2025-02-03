@@ -120,7 +120,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
       <SidebarMenu
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="h-full"
+        className="flex-1 overflow-auto"
       >
         <SidebarMenuItem>
           <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
@@ -160,7 +160,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
             {bookmarksQuery.data &&
               bookmarksQuery.data.bookmarks.length > 0 && (
-                <SidebarOpenVisible className="mt-2">
+                <SidebarOpenVisible className="mt-2 flex h-full flex-col">
                   <SidebarGroup>
                     <SidebarGroupLabel asChild>
                       <Link
@@ -170,14 +170,18 @@ export default function AppSidebar({ session }: { session: Session | null }) {
                         Bookmarks
                       </Link>
                     </SidebarGroupLabel>
-                    <ul>
-                      {bookmarksQuery.data.bookmarks.map((datasetBookmark) => (
-                        <DatasetSidebarPreview
-                          dataset={datasetBookmark.dataset}
-                          key={datasetBookmark.dataset.id}
-                        />
-                      ))}
-                    </ul>
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden">
+                      <ul>
+                        {bookmarksQuery.data.bookmarks.map(
+                          (datasetBookmark) => (
+                            <DatasetSidebarPreview
+                              dataset={datasetBookmark.dataset}
+                              key={datasetBookmark.dataset.id}
+                            />
+                          ),
+                        )}
+                      </ul>
+                    </div>
                   </SidebarGroup>
                 </SidebarOpenVisible>
               )}
