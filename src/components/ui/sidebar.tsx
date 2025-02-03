@@ -3,6 +3,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { MenuIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { type RefObject, useEffect } from "react";
 import * as React from "react";
@@ -205,6 +206,7 @@ const Sidebar = React.forwardRef<
         className,
       )}
       data-state={state}
+      data-temporary-open={temporaryOpen}
       {...props}
     >
       {children}
@@ -478,26 +480,36 @@ const SidebarMenuButton = React.forwardRef<
     }, [_isActive, activePath, isActive, pathname]);
 
     return (
-      <Comp
-        ref={ref}
-        data-sidebar="menu-button"
-        data-active={_isActive}
-        className={cn(
-          "peer/menu-button flex h-12 w-full items-center gap-5 overflow-hidden p-2 pl-[22px]",
-          "text-left text-lg font-semibold outline-none ring-sidebar-ring transition-[width,height,padding]",
-          "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50",
-          "group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground",
-          "[&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:stroke-[2.5px]",
-          "data-[active=true]:bg-sidebar-accent",
-          className,
-        )}
-        {...props}
-      >
-        {children}
+      <div className="relative">
         {_isActive && (
-          <div className="absolute right-0 h-full w-1 bg-uci-gold/70" />
+          <>
+            <div className="absolute right-0 top-0 z-50 h-full w-1 bg-uci-gold" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 0.3 }}
+              className="absolute bottom-0 top-0 h-full bg-sidebar-accent group-data-[state=collapsed]:w-full"
+            />
+          </>
         )}
-      </Comp>
+        <Comp
+          ref={ref}
+          data-sidebar="menu-button"
+          data-active={_isActive}
+          className={cn(
+            "peer/menu-button flex h-12 w-full items-center gap-5 overflow-hidden p-2 pl-[22px]",
+            "text-left text-lg font-semibold outline-none ring-sidebar-ring transition-[width,height,padding]",
+            "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50",
+            "group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50",
+            "data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground",
+            "[&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:stroke-[2.5px] [&_*]:z-10",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </Comp>
+      </div>
     );
   },
 );
@@ -507,9 +519,8 @@ const SidebarMenuAction = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<"button"> & {
     asChild?: boolean;
-    showOnHover?: boolean;
   }
->(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
+>(({ className, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button";
 
   return (
@@ -518,14 +529,8 @@ const SidebarMenuAction = React.forwardRef<
       data-sidebar="menu-action"
       className={cn(
         "absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 peer-hover/menu-button:text-sidebar-accent-foreground [&>svg]:size-4 [&>svg]:shrink-0",
-        // Increases the hit area of the button on mobile.
         "after:absolute after:-inset-2 after:md:hidden",
-        "peer-data-[size=sm]/menu-button:top-1",
-        "peer-data-[size=default]/menu-button:top-1.5",
-        "peer-data-[size=lg]/menu-button:top-2.5",
-        "group-data-[collapsible=icon]:hidden",
-        showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-data-[state=collapsed]:hidden",
         className,
       )}
       {...props}
@@ -544,10 +549,6 @@ const SidebarMenuBadge = React.forwardRef<
     className={cn(
       "pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-sidebar-foreground",
       "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground",
-      "peer-data-[size=sm]/menu-button:top-1",
-      "peer-data-[size=default]/menu-button:top-1.5",
-      "peer-data-[size=lg]/menu-button:top-2.5",
-      "group-data-[collapsible=icon]:hidden",
       className,
     )}
     {...props}
@@ -563,8 +564,7 @@ const SidebarMenuSub = React.forwardRef<
     ref={ref}
     data-sidebar="menu-sub"
     className={cn(
-      "mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5",
-      "group-data-[collapsible=icon]:hidden",
+      "ml-[30px] flex min-w-0 translate-x-px flex-col border-l border-sidebar-border",
       className,
     )}
     {...props}
@@ -584,28 +584,49 @@ const SidebarMenuSubButton = React.forwardRef<
     asChild?: boolean;
     size?: "sm" | "md";
     isActive?: boolean;
+    activePath?: RegExp | string;
   }
->(({ asChild = false, size = "md", isActive, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : "a";
+>(
+  (
+    { asChild = false, size = "md", isActive, activePath, className, ...props },
+    ref,
+  ) => {
+    const Comp = asChild ? Slot : "a";
 
-  return (
-    <Comp
-      ref={ref}
-      data-sidebar="menu-sub-button"
-      data-size={size}
-      data-active={isActive}
-      className={cn(
-        "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
-        "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
-        size === "sm" && "text-xs",
-        size === "md" && "text-sm",
-        "group-data-[collapsible=icon]:hidden",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+    const [_isActive, setIsActive] = React.useState(isActive);
+    const pathname = usePathname();
+
+    useEffect(() => {
+      if (activePath) {
+        setIsActive(isActive || !!pathname.match(activePath));
+      } else {
+        setIsActive(isActive);
+      }
+    }, [_isActive, activePath, isActive, pathname]);
+
+    return (
+      <div className="relative">
+        <Comp
+          ref={ref}
+          data-sidebar="menu-sub-button"
+          data-size={size}
+          data-active={_isActive}
+          className={cn(
+            "flex h-8 min-w-0 -translate-x-px items-center gap-2 overflow-hidden px-4 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
+            "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+            size === "sm" && "text-xs",
+            size === "md" && "text-sm",
+            className,
+          )}
+          {...props}
+        />
+        {_isActive && (
+          <div className="absolute right-0 top-0 h-8 w-1 bg-uci-gold/70" />
+        )}
+      </div>
+    );
+  },
+);
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 
 export {

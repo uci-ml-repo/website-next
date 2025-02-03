@@ -1,36 +1,59 @@
 "use client";
 
 import {
+  ChevronRightIcon,
   DatabaseIcon,
   HouseIcon,
+  InfoIcon,
   LayoutDashboardIcon,
+  PlusIcon,
   UserIcon,
 } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
 import type { Session } from "next-auth";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Banner } from "@/components/icons";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarFooter,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
+  ABOUT_ROUTE,
   ADMIN_ROUTE,
+  CONTACT_ROUTE,
+  CONTRIBUTE_ROUTE,
   DATASETS_ROUTE,
   HOME_ROUTE,
+  PRIVACY_POLICY_ROUTE,
   PROFILE_ROUTE,
 } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export default function AppSidebar({ session }: { session: Session | null }) {
   const ref = useRef<HTMLDivElement>(null);
 
+  const { setOpen, open } = useSidebar();
   const [temporaryOpen, setTemporaryOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(true);
+
+  useEffect(() => {
+    if (!open) setResourcesOpen(false);
+  }, [open, setResourcesOpen]);
 
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -41,7 +64,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
           setTemporaryOpen(true);
           hoverTimerRef.current = null;
         },
-        temporaryOpen ? 0 : 200,
+        temporaryOpen ? 0 : 150,
       );
     }
   };
@@ -55,7 +78,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
   };
 
   return (
-    <Sidebar ref={ref} temporaryOpen={temporaryOpen}>
+    <Sidebar ref={ref} temporaryOpen={temporaryOpen} className="pb-6">
       <div className="flex items-center">
         <SidebarTrigger />
         <Link href={HOME_ROUTE}>
@@ -68,38 +91,37 @@ export default function AppSidebar({ session }: { session: Session | null }) {
         className="h-full"
       >
         <SidebarMenuItem>
-          <Link href={HOME_ROUTE}>
-            <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)}>
-              <HouseIcon /> Home
-            </SidebarMenuButton>
-          </Link>
+          <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
+            <Link href={HOME_ROUTE}>
+              <HouseIcon />
+              <span>Home</span>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <Link href={DATASETS_ROUTE}>
-            <SidebarMenuButton activePath={DATASETS_ROUTE}>
-              <DatabaseIcon /> Datasets
-            </SidebarMenuButton>
-          </Link>
+          <SidebarMenuButton activePath={DATASETS_ROUTE} asChild>
+            <Link href={DATASETS_ROUTE}>
+              <DatabaseIcon />
+              <span>Datasets</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton activePath={CONTRIBUTE_ROUTE} asChild>
+            <Link href={CONTRIBUTE_ROUTE}>
+              <PlusIcon />
+              <span>Contribute</span>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
         {session?.user && (
           <SidebarMenuItem>
-            <Link href={PROFILE_ROUTE}>
-              <SidebarMenuButton activePath={PROFILE_ROUTE}>
-                <UserIcon /> Profile
-              </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-        )}
-        {isPriviliged(session?.user.role) && (
-          <SidebarMenuItem>
-            <Link href={ADMIN_ROUTE}>
-              <SidebarMenuButton
-                activePath={ADMIN_ROUTE}
-                className="!text-destructive"
-              >
-                <LayoutDashboardIcon /> Admin
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
+              <Link href={PROFILE_ROUTE}>
+                <UserIcon />
+                <span>Profile</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         )}
       </SidebarMenu>
@@ -108,13 +130,76 @@ export default function AppSidebar({ session }: { session: Session | null }) {
         onMouseLeave={handleMouseLeave}
       >
         <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href={HOME_ROUTE}>
-              <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)}>
-                <HouseIcon /> Home
+          {isPriviliged(session?.user.role) && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                activePath={ADMIN_ROUTE}
+                className="!text-destructive"
+                asChild
+              >
+                <Link href={ADMIN_ROUTE}>
+                  <LayoutDashboardIcon />
+                  <span>Admin</span>
+                </Link>
               </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
+            </SidebarMenuItem>
+          )}
+          <Collapsible
+            className="group/collapsible"
+            open={resourcesOpen}
+            onOpenChange={(isCollapsibleOpen) => {
+              if (isCollapsibleOpen) {
+                setOpen(true);
+                setResourcesOpen(true);
+              } else {
+                setResourcesOpen(false);
+              }
+            }}
+          >
+            <CollapsibleTrigger asChild>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  activePath={RegExp(
+                    `${ABOUT_ROUTE}|${CONTACT_ROUTE}|${PRIVACY_POLICY_ROUTE}`,
+                  )}
+                >
+                  <InfoIcon />
+                  <span className="flex w-full items-center justify-between">
+                    <span>Resources</span>
+                    <ChevronRightIcon
+                      className={cn("transition-transform", {
+                        "rotate-90": resourcesOpen,
+                      })}
+                    />
+                  </span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </CollapsibleTrigger>
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: resourcesOpen ? "auto" : 0 }}
+              className="overflow-hidden"
+            >
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  <SidebarMenuSubButton asChild activePath={ABOUT_ROUTE}>
+                    <Link href={ABOUT_ROUTE}>About</Link>
+                  </SidebarMenuSubButton>
+
+                  <SidebarMenuSubButton asChild activePath={CONTACT_ROUTE}>
+                    <Link href={CONTACT_ROUTE}>Contact</Link>
+                  </SidebarMenuSubButton>
+
+                  <SidebarMenuSubButton
+                    asChild
+                    activePath={PRIVACY_POLICY_ROUTE}
+                  >
+                    <Link href={PRIVACY_POLICY_ROUTE}>Privacy</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </motion.div>
+          </Collapsible>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

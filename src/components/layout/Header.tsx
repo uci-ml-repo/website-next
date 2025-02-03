@@ -69,7 +69,7 @@ export default function Header({ session }: { session: Session | null }) {
                   <DropdownMenuItem destructive asChild>
                     <Link href={ADMIN_ROUTE}>
                       <LayoutDashboardIcon />
-                      <span>Dashboard</span>
+                      <span>Admin</span>
                     </Link>
                   </DropdownMenuItem>
                 )}
