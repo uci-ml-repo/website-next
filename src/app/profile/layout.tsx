@@ -27,7 +27,7 @@ export default async function Layout({
     return signIn(undefined, { redirectTo: PROFILE_ROUTE });
   }
 
-  const bookmarks = await caller.bookmark.find.byUserId(session.user.id);
+  const bookmarks = (await caller.bookmark.find.byUserQuery({})).bookmarks;
   const datasets = await caller.dataset.find.byUserId(session.user.id);
   const discussions = await caller.discussion.find.byUserId(session.user.id);
 

@@ -8,7 +8,7 @@ import type {
   DiscussionSelect,
   UserSelect,
 } from "@/db/types";
-import type { DiscussionCommentQuery } from "@/server/service/schema/discussions";
+import type { DiscussionCommentQuery } from "@/server/service/schema/discussion";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 function buildQuery(query: DiscussionCommentQuery) {

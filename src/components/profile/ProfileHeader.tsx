@@ -32,7 +32,11 @@ function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
   }
 
   return (
-    <Badge variant={role === "admin" ? "destructive" : "blue"} size="lg">
+    <Badge
+      variant={role === "admin" ? "destructive" : "blue"}
+      size="lg"
+      className="z-50"
+    >
       {role.toUpperCase()}
     </Badge>
   );

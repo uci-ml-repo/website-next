@@ -15,20 +15,25 @@ import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 
+import DatasetSidebarPreview from "@/components/dataset/preview/DatasetSidebarPreview";
 import { Banner } from "@/components/icons";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
+  SidebarOpenVisible,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
@@ -40,18 +45,19 @@ import {
   DATASETS_ROUTE,
   HOME_ROUTE,
   PRIVACY_POLICY_ROUTE,
+  PROFILE_BOOKMARKS_ROUTE,
   PROFILE_ROUTE,
 } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
+import { trpc } from "@/server/trpc/query/client";
 
 export default function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { setOpen, open } = useSidebar();
-  const [temporaryOpen, setTemporaryOpen] = useState(false);
+  const { setOpen, open, temporaryOpen, setTemporaryOpen } = useSidebar();
   const [resourcesOpen, setResourcesOpen] = useState(true);
 
   useEffect(() => {
@@ -98,8 +104,13 @@ export default function AppSidebar({ session }: { session: Session | null }) {
     }
   }, [pathname]);
 
+  const bookmarksQuery = trpc.bookmark.find.byUserQuery.useQuery(
+    {},
+    { enabled: !!session?.user },
+  );
+
   return (
-    <Sidebar ref={ref} temporaryOpen={temporaryOpen} className="pb-4">
+    <Sidebar ref={ref} className="pb-6">
       <div className="flex items-center">
         <SidebarTrigger />
         <Link href={HOME_ROUTE}>
@@ -135,15 +146,42 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
+        <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
+
         {session?.user && (
-          <SidebarMenuItem>
-            <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
-              <Link href={PROFILE_ROUTE}>
-                <UserIcon />
-                <span>Profile</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <>
+            <SidebarMenuItem>
+              <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
+                <Link href={PROFILE_ROUTE}>
+                  <UserIcon />
+                  <span>Profile</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            {bookmarksQuery.data &&
+              bookmarksQuery.data.bookmarks.length > 0 && (
+                <SidebarOpenVisible className="mt-2">
+                  <SidebarGroup>
+                    <SidebarGroupLabel asChild>
+                      <Link
+                        href={PROFILE_BOOKMARKS_ROUTE}
+                        className="hover:underline"
+                      >
+                        Bookmarks
+                      </Link>
+                    </SidebarGroupLabel>
+                    <ul>
+                      {bookmarksQuery.data.bookmarks.map((datasetBookmark) => (
+                        <DatasetSidebarPreview
+                          dataset={datasetBookmark.dataset}
+                          key={datasetBookmark.dataset.id}
+                        />
+                      ))}
+                    </ul>
+                  </SidebarGroup>
+                </SidebarOpenVisible>
+              )}
+          </>
         )}
       </SidebarMenu>
       <SidebarFooter

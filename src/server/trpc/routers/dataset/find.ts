@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import service from "@/server/service";
-import { datasetQuery } from "@/server/service/schema/datasets";
+import { datasetQuery } from "@/server/service/schema/dataset";
 import { procedure, router } from "@/server/trpc";
 
 const datasetFindRouter = router({

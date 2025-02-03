@@ -20,12 +20,15 @@ export default function DatasetBookmarkButton({
 }: DatasetBookmarkButtonProps) {
   const { isBookmarked, setIsBookmarked } = useBookmark();
 
+  const util = trpc.useUtils();
+
   const addBookmark = trpc.bookmark.create.addBookmark.useMutation({
     onSettled: () => {
       setIsBookmarked(true);
     },
     onSuccess: async () => {
       setIsBookmarked(true);
+      util.bookmark.find.byUserQuery.invalidate();
       toast({
         title: "Bookmark added",
         description: "View bookmarked datasets from your profile",
@@ -36,6 +39,7 @@ export default function DatasetBookmarkButton({
   const removeBookmark = trpc.bookmark.remove.removeBookmark.useMutation({
     onSettled: () => {
       setIsBookmarked(false);
+      util.bookmark.find.byUserQuery.invalidate();
     },
     onSuccess: () => {
       toast({

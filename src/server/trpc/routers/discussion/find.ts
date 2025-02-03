@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import service from "@/server/service";
-import { discussionQuery } from "@/server/service/schema/discussions";
+import { discussionQuery } from "@/server/service/schema/discussion";
 import { procedure, router } from "@/server/trpc";
 
 const discussionFindRouter = router({

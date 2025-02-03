@@ -28,6 +28,8 @@ type SidebarContext = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
+  temporaryOpen: boolean;
+  setTemporaryOpen: (open: boolean) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -37,7 +39,6 @@ function useSidebar() {
   if (!context) {
     throw new Error("useSidebar must be used within a SidebarProvider.");
   }
-
   return context;
 }
 
@@ -63,7 +64,6 @@ const SidebarProvider = React.forwardRef<
     const [openMobile, setOpenMobile] = React.useState(false);
 
     const [_open, _setOpen] = React.useState(false);
-
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -76,6 +76,8 @@ const SidebarProvider = React.forwardRef<
       },
       [setOpenProp, open],
     );
+
+    const [temporaryOpen, setTemporaryOpen] = React.useState(false);
 
     React.useEffect(() => {
       const mediaQuery = window.matchMedia("(max-width: 1280px)");
@@ -111,6 +113,8 @@ const SidebarProvider = React.forwardRef<
         openMobile,
         setOpenMobile,
         toggleSidebar,
+        temporaryOpen,
+        setTemporaryOpen,
       }),
       [
         state,
@@ -120,6 +124,8 @@ const SidebarProvider = React.forwardRef<
         openMobile,
         setOpenMobile,
         toggleSidebar,
+        temporaryOpen,
+        setTemporaryOpen,
       ],
     );
 
@@ -150,66 +156,72 @@ const SidebarProvider = React.forwardRef<
 );
 SidebarProvider.displayName = "SidebarProvider";
 
-const Sidebar = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> & { temporaryOpen?: boolean }
->(({ children, className, temporaryOpen, ...props }, ref) => {
-  const { isMobile, state, openMobile, setOpenMobile, setOpen } = useSidebar();
-  const isSheet = useIsBreakpoint(1280);
+const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, className, ...props }, ref) => {
+    const {
+      isMobile,
+      state,
+      openMobile,
+      setOpenMobile,
+      setOpen,
+      temporaryOpen,
+    } = useSidebar();
+    const isSheet = useIsBreakpoint(1280);
 
-  useClickOutside(ref as RefObject<HTMLDivElement>, () => {
-    if (isSheet) {
-      setOpen(false);
+    useClickOutside(ref as RefObject<HTMLDivElement>, () => {
+      if (isSheet) {
+        setOpen(false);
+      }
+    });
+
+    if (isMobile) {
+      return (
+        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+          <SheetContent
+            aria-describedby={undefined}
+            side="left"
+            data-sidebar="sidebar"
+            data-mobile="true"
+            style={
+              {
+                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              } as React.CSSProperties
+            }
+            className={cn(
+              "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)] [&>button]:hidden",
+              className,
+            )}
+          >
+            <VisuallyHidden>
+              <SheetTitle>Sidebar</SheetTitle>
+            </VisuallyHidden>
+            <div className="flex h-full w-full flex-col">{children}</div>
+          </SheetContent>
+        </Sheet>
+      );
     }
-  });
 
-  if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
-          aria-describedby={undefined}
-          side="left"
-          data-sidebar="sidebar"
-          data-mobile="true"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-            } as React.CSSProperties
-          }
-          className={cn(
-            "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)] [&>button]:hidden",
-            className,
-          )}
-        >
-          <VisuallyHidden>
-            <SheetTitle>Sidebar</SheetTitle>
-          </VisuallyHidden>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+      <div
+        ref={ref}
+        className={cn(
+          "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
+          "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
+          "data-[state=expanded]:max-xl:shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)]",
+          "transition-all ease-out",
+          "overflow-x-hidden border-r bg-sidebar text-sidebar-foreground",
+          { "!w-[--sidebar-width]": temporaryOpen },
+          className,
+        )}
+        data-state={state}
+        data-temporary-open={temporaryOpen}
+        {...props}
+      >
+        {children}
+      </div>
     );
-  }
-
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
-        "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
-        "data-[state=expanded]:max-xl:shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)]",
-        "transition-all ease-out",
-        "overflow-x-hidden border-r bg-sidebar text-sidebar-foreground",
-        { "!w-[--sidebar-width]": temporaryOpen },
-        className,
-      )}
-      data-state={state}
-      data-temporary-open={temporaryOpen}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+  },
+);
 Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<
@@ -372,9 +384,8 @@ const SidebarGroupLabel = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      data-sidebar="group-label"
       className={cn(
-        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opa] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "flex h-8 shrink-0 pl-2 text-base text-muted-foreground",
         className,
       )}
       {...props}
@@ -623,6 +634,18 @@ const SidebarMenuSubButton = React.forwardRef<
 );
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 
+const SidebarOpenVisible = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ ...props }, ref) => {
+  const { open, temporaryOpen, openMobile } = useSidebar();
+  if (!open && !temporaryOpen && !openMobile) {
+    return null;
+  }
+  return <div ref={ref} {...props} />;
+});
+SidebarOpenVisible.displayName = "SidebarOpenVisible";
+
 export {
   Sidebar,
   SidebarContent,
@@ -641,6 +664,7 @@ export {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarOpenVisible,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,

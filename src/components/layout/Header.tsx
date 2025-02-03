@@ -47,17 +47,15 @@ export default function Header({ session }: { session: Session | null }) {
         { shadow: isMobile && hasScrolled },
       )}
     >
-      <BackgroundGraph className="absolute right-0 top-0" />
-
-      <div className="flex items-center justify-between">
+      <div className="z-50 flex items-center justify-between">
         <div>
           <SidebarTrigger className="md:hidden" />
         </div>
-        <div className="mx-4 md:my-4">
+        <div className="z-50 mx-4 md:my-4">
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button aria-label="Profile options" className="z-40">
+                <button aria-label="Profile options" className="z-50">
                   <ProfileAvatar src={session.user.image} />
                 </button>
               </DropdownMenuTrigger>
@@ -80,10 +78,11 @@ export default function Header({ session }: { session: Session | null }) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <SignInButton />
+            <SignInButton className="z-50" />
           )}
         </div>
       </div>
+      <BackgroundGraph className="absolute right-0 top-0" />
     </header>
   );
 }

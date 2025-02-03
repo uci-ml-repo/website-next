@@ -1,12 +1,15 @@
 import { z } from "zod";
 
 import service from "@/server/service";
-import { procedure, protectedProcedure, router } from "@/server/trpc";
+import { bookmarkQuery } from "@/server/service/schema/bookmark";
+import { protectedProcedure, router } from "@/server/trpc";
 
 const bookmarkFindRouter = router({
-  byUserId: procedure.input(z.string()).query(async ({ input }) => {
-    return service.bookmark.find.byUserId(input);
-  }),
+  byUserQuery: protectedProcedure
+    .input(bookmarkQuery)
+    .query(async ({ input, ctx }) => {
+      return service.bookmark.find.byUserQuery(input, ctx.user);
+    }),
 
   isBookmarked: protectedProcedure
     .input(z.object({ datasetId: z.number(), userId: z.string() }))

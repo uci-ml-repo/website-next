@@ -1,26 +1,65 @@
-import { BookmarkIcon } from "lucide-react";
+"use client";
 
-import { auth } from "@/auth";
-import DatasetCard from "@/components/dataset/preview/DatasetCard";
+import { BookmarkIcon, SearchIcon } from "lucide-react";
+import React, { useState } from "react";
+
+import DatasetRow from "@/components/dataset/preview/DatasetRow";
+import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import { Card, CardContent } from "@/components/ui/card";
-import { caller } from "@/server/trpc/query/server";
+import { InputClearable } from "@/components/ui/input-clearable";
+import Spinner from "@/components/ui/spinner";
+import { trpc } from "@/server/trpc/query/client";
 
-export default async function Page() {
-  const session = await auth();
-  const bookmarks = await caller.bookmark.find.byUserId(session!.user.id);
+export default function Page() {
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    trpc.bookmark.find.byUserQuery.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      },
+    );
+
+  const bookmarks = data?.pages.flatMap((page) => page.bookmarks) || [];
+
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
+
+  const [searchValue, setSearchValue] = useState("");
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <div className="flex items-center space-x-2">
         <BookmarkIcon className="size-6 fill-uci-gold" />
         <h2 className="text-2xl font-bold">Bookmarks</h2>
       </div>
-      {bookmarks.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {bookmarks.map((bookmark) => (
-            <DatasetCard key={bookmark.dataset.id} dataset={bookmark.dataset} />
-          ))}
+      {isLoading ? (
+        <div className="flex h-20 w-full items-center justify-center">
+          <Spinner className="size-10" />
         </div>
+      ) : bookmarks.length > 0 ? (
+        <>
+          <InputClearable
+            variantSize="lg"
+            placeholder="Search bookmarks"
+            icon={SearchIcon}
+            value={searchValue}
+            setValue={setSearchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <div>
+            {bookmarks.map((bookmark) => (
+              <React.Fragment key={bookmark.dataset.id}>
+                <DatasetRow dataset={bookmark.dataset} />
+                <hr />
+              </React.Fragment>
+            ))}
+          </div>
+        </>
       ) : (
         <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
           <CardContent className="text-pretty text-center">
@@ -31,6 +70,14 @@ export default async function Page() {
             </span>
           </CardContent>
         </Card>
+      )}
+
+      <div ref={loadMoreRef} />
+
+      {isFetchingNextPage && (
+        <div className="flex h-12 items-center justify-center">
+          <Spinner />
+        </div>
       )}
     </div>
   );

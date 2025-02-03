@@ -34,7 +34,7 @@ const BackgroundGraph = ({
   return (
     <div
       className={cn(
-        "size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]",
+        "pointer-events-none size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]",
         className,
       )}
       aria-hidden={true}

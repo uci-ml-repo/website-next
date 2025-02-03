@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
 import ServiceError from "@/server/service/errors";
-import type { DatasetQuery } from "@/server/service/schema/datasets";
+import type { DatasetQuery } from "@/server/service/schema/dataset";
 import { sortFunction } from "@/server/service/schema/lib/order";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
