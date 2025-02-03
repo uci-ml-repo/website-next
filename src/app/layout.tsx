@@ -10,7 +10,7 @@ import AppSidebar from "@/components/layout/AppSidebar";
 import CookiesAlert from "@/components/layout/CookiesAlert";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
-import { SidebarProvider } from "@/components/ui/sidebar.new";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
@@ -69,7 +69,7 @@ export default async function Layout({
               <BackgroundGraph />
 
               <SidebarProvider>
-                <AppSidebar />
+                <AppSidebar session={session} />
                 <div
                   className={cn(
                     "w-full bg-background",

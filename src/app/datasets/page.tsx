@@ -27,7 +27,7 @@ export default function Page() {
         <div className="flex w-full items-center justify-between">
           <div>Search</div>
           <Sheet>
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button variant="blue">
                 <FilterIcon />
                 Filters

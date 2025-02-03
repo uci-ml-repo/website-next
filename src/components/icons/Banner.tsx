@@ -11,6 +11,7 @@ const logoVariants = cva(cn(), {
     variant: {
       hero: "[&>div]:text-[30px] [&>div]:xs:text-[45px] [&>div]:md:text-[55px] [&>svg]:h-[30px] [&>svg]:xs:h-[45px] [&>svg]:md:h-[55px]",
       logo: "select-none space-y-0.5 [&>div]:text-[24px] [&>svg]:h-[24px]",
+      "logo-sm": "select-none space-y-0.5 [&>div]:text-[18px] [&>svg]:h-[18px]",
     },
     textColor: {
       default: "[&>div]:text-uci-blue [&>svg]:fill-primary",
@@ -31,14 +32,21 @@ interface LogoProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof logoVariants> {
   link?: boolean;
+  abbreviate?: boolean;
 }
 
-export function Banner({ variant, textColor, className, link }: LogoProps) {
+export function Banner({
+  variant,
+  textColor,
+  className,
+  link,
+  abbreviate,
+}: LogoProps) {
   const content = (
     <div className={cn(logoVariants({ variant, textColor }), className)}>
       <UCIrvine aria-label="UC Irvine" />
-      <div className="font-semibold leading-none text-uci-blue">
-        Machine Learning Repository
+      <div className="font-bold leading-none text-uci-blue">
+        {abbreviate ? "ML Repository" : "Machine Learning Repository"}
       </div>
     </div>
   );

@@ -12,6 +12,10 @@ export const MiddlewareRoles = {
 export type MiddlewareRole =
   (typeof MiddlewareRoles)[keyof typeof MiddlewareRoles];
 
-export function isPriviliged(role: UserRole) {
+export function isPriviliged(role?: UserRole) {
+  if (!role) {
+    return false;
+  }
+
   return PRIVILEGED_ROLES.has(role);
 }

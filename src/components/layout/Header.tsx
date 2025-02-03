@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileAvatar from "@/components/ui/profile-avatar";
-import { SidebarTrigger } from "@/components/ui/sidebar.new";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Enums } from "@/db/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -47,7 +47,7 @@ export default function Header({ session }: { session: Session | null }) {
       )}
     >
       <div className="flex items-center justify-between">
-        <div className="m-2">
+        <div>
           <SidebarTrigger className="md:hidden" />
         </div>
         <div className="mx-4 md:my-4">
