@@ -1,4 +1,10 @@
-import { Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
+import {
+  CalendarDaysIcon,
+  Columns3Icon,
+  EyeIcon,
+  MicroscopeIcon,
+  Rows3Icon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,7 +36,7 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const href = DATASET_ROUTE(dataset);
 
   return (
-    <Card className="lift-lg group flex h-[360px] flex-col" ref={ref}>
+    <Card className="lift-lg group flex h-[355px] flex-col" ref={ref}>
       <Link href={href} className="flex flex-1 flex-col">
         <CardHeader className="p-0">
           <Image
@@ -42,77 +48,96 @@ export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
             className="h-[100px] w-full rounded-t-2xl object-cover object-center"
           />
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col space-y-2">
-          <div className="flex flex-1 flex-col space-y-2">
-            <CardTitle>
-              <h3 className="line-clamp-2 group-hover:underline">
-                {dataset.title}
-              </h3>
-            </CardTitle>
-            <CardDescription className="flex-1">
-              <p className="line-clamp-3">
-                {dataset.subtitle ?? dataset.description}
-              </p>
-            </CardDescription>
-          </div>
-          <CardDescription className="flex h-18 items-end">
-            <div
-              className={cn(
-                "w-full space-y-1",
-                "[&>div]:flex [&>div]:items-center [&>div]:space-x-2 [&_svg]:size-4",
-              )}
-            >
-              {dataset.tasks && (
-                <div>
-                  <MicroscopeIcon />
-                  <span className="truncate">{formatEnum(dataset.tasks)}</span>
-                </div>
-              )}
-              {dataset.featureCount && (
-                <div>
-                  <Columns3Icon />
-                  <span>
-                    {abbreviateDecimal(dataset.featureCount)} Features
-                  </span>
-                </div>
-              )}
-              {dataset.instanceCount && (
-                <div>
-                  <Rows3Icon />
-                  <span>
-                    {abbreviateDecimal(dataset.instanceCount)} Instances
-                  </span>
-                </div>
-              )}
-            </div>
-          </CardDescription>
-        </CardContent>
-        <CardFooter className="h-10 justify-between border-t py-2.5">
-          <div className="flex items-center space-x-1">
-            <EyeIcon />
-            <div>{abbreviateDecimal(dataset.viewCount)}</div>
-          </div>
-          {dataset.externalLink ? (
-            <Badge variant="secondary">External</Badge>
-          ) : (
-            <>
-              {dataset.fileCount !== null && dataset.size !== null ? (
-                <div>
-                  <span>
-                    {dataset.fileCount === 1
-                      ? "1 File"
-                      : `${dataset.fileCount} Files`}
-                  </span>
-                  <span> &middot; </span>
-                  <span>{abbreviateFileSize(dataset.size)}</span>
-                </div>
-              ) : (
-                <Badge variant="destructive">Missing Files</Badge>
-              )}
-            </>
-          )}
-        </CardFooter>
+
+        <DatasetCardContent dataset={dataset} />
       </Link>
     </Card>
+  );
+}
+
+export function DatasetCardContent({
+  dataset,
+  descriptionClassName,
+}: {
+  dataset: DatasetSelect;
+  descriptionClassName?: string;
+}) {
+  return (
+    <>
+      <CardContent className="flex flex-1 flex-col space-y-2">
+        <div className="flex flex-1 flex-col space-y-2">
+          <CardTitle>
+            <h3 className="line-clamp-2 group-hover:underline">
+              {dataset.title}
+            </h3>
+          </CardTitle>
+          <CardDescription className="flex-1">
+            <p className={cn(descriptionClassName ?? "line-clamp-2")}>
+              {dataset.subtitle ?? dataset.description}
+            </p>
+          </CardDescription>
+        </div>
+        <CardDescription className="flex items-end">
+          <div
+            className={cn(
+              "w-full space-y-1",
+              "[&>div]:flex [&>div]:items-center [&>div]:space-x-2 [&_svg]:size-4",
+            )}
+          >
+            {dataset.tasks && (
+              <div>
+                <MicroscopeIcon />
+                <span className="truncate">{formatEnum(dataset.tasks)}</span>
+              </div>
+            )}
+            {dataset.yearCreated && (
+              <div>
+                <CalendarDaysIcon />
+                <span className="truncate">{dataset.yearCreated}</span>
+              </div>
+            )}
+            {dataset.featureCount && (
+              <div>
+                <Columns3Icon />
+                <span>{abbreviateDecimal(dataset.featureCount)} Features</span>
+              </div>
+            )}
+            {dataset.instanceCount && (
+              <div>
+                <Rows3Icon />
+                <span>
+                  {abbreviateDecimal(dataset.instanceCount)} Instances
+                </span>
+              </div>
+            )}
+          </div>
+        </CardDescription>
+      </CardContent>
+      <CardFooter className="h-10 justify-between border-t py-2.5">
+        <div className="flex items-center space-x-1">
+          <EyeIcon />
+          <div>{abbreviateDecimal(dataset.viewCount)}</div>
+        </div>
+        {dataset.externalLink ? (
+          <Badge variant="secondary">External</Badge>
+        ) : (
+          <>
+            {dataset.fileCount !== null && dataset.size !== null ? (
+              <div>
+                <span>
+                  {dataset.fileCount === 1
+                    ? "1 File"
+                    : `${dataset.fileCount} Files`}
+                </span>
+                <span> &middot; </span>
+                <span>{abbreviateFileSize(dataset.size)}</span>
+              </div>
+            ) : (
+              <Badge variant="destructive">Missing Files</Badge>
+            )}
+          </>
+        )}
+      </CardFooter>
+    </>
   );
 }

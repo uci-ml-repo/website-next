@@ -8,6 +8,7 @@ import * as React from "react";
 import { auth } from "@/auth";
 import AppSidebar from "@/components/layout/AppSidebar";
 import CookiesAlert from "@/components/layout/CookiesAlert";
+import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -57,6 +58,8 @@ export default async function Layout({
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
+            <BackgroundGraph className="absolute right-0 top-0 -z-10" />
+
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
@@ -69,7 +72,7 @@ export default async function Layout({
                 <AppSidebar session={session} />
                 <div
                   className={cn(
-                    "w-full bg-background",
+                    "w-full",
                     "max-md:!pl-0",
                     "peer-data-[state=collapsed]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:pl-[--sidebar-width-collapsed]",

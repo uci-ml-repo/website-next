@@ -23,10 +23,6 @@ export type DiscussionCommentResponse = NonNullable<
   RouterOutput["discussion"]["comment"]["find"]["byId"]
 >;
 
-export type BookmarkResponse = NonNullable<
-  RouterOutput["bookmark"]["find"]["byUserId"][number]
->;
-
 export type FileResponse = NonNullable<
   RouterOutput["file"]["find"]["list"][number]
 >;

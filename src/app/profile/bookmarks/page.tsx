@@ -51,10 +51,14 @@ export default function Page() {
             setValue={setSearchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <div>
+          <div className="relative">
             {bookmarks.map((bookmark) => (
               <React.Fragment key={bookmark.dataset.id}>
-                <DatasetRow dataset={bookmark.dataset} />
+                <DatasetRow
+                  hoverCard
+                  dataset={bookmark.dataset}
+                  className="rounded-none"
+                />
                 <hr />
               </React.Fragment>
             ))}

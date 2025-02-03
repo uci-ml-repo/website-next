@@ -3,7 +3,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { MenuIcon } from "lucide-react";
-import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { type RefObject, useEffect } from "react";
 import * as React from "react";
@@ -140,10 +139,7 @@ const SidebarProvider = React.forwardRef<
                 ...style,
               } as React.CSSProperties
             }
-            className={cn(
-              "group/sidebar-wrapper flex min-h-svh bg-sidebar",
-              className,
-            )}
+            className={cn("group/sidebar-wrapper flex min-h-svh", className)}
             ref={ref}
             {...props}
           >
@@ -477,6 +473,10 @@ const SidebarMenuButton = React.forwardRef<
     const [_isActive, setIsActive] = React.useState(isActive);
     const pathname = usePathname();
 
+    if (typeof activePath === "string") {
+      activePath = new RegExp(`^${activePath}`);
+    }
+
     useEffect(() => {
       if (activePath) {
         setIsActive(isActive || !!pathname.match(activePath));
@@ -488,15 +488,7 @@ const SidebarMenuButton = React.forwardRef<
     return (
       <div className="relative">
         {_isActive && (
-          <>
-            <div className="absolute right-0 top-0 z-50 h-full w-1 bg-uci-gold" />
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 0.3, ease: "easeIn" }}
-              className="pointer-events-none absolute bottom-0 top-0 h-full bg-sidebar-accent"
-            />
-          </>
+          <div className="absolute right-0 top-0 z-50 h-full w-1 bg-uci-gold" />
         )}
         <Comp
           ref={ref}
@@ -509,7 +501,7 @@ const SidebarMenuButton = React.forwardRef<
             "group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50",
             "data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:text-sidebar-accent-foreground",
             "[&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:stroke-[2.5px] [&_*]:z-10",
-            _isActive ? "bg-sidebar-accent/50" : "hover:bg-sidebar-accent/50",
+            _isActive ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50",
             className,
           )}
           {...props}

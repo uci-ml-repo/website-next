@@ -124,6 +124,7 @@ export default function DatasetSearchInput() {
         ref={inputRef}
         placeholder="Search datasets..."
         variantSize="xl"
+        icon={SearchIcon}
         value={inputValue}
         setValue={setInputValue}
         onChange={handleChange}
