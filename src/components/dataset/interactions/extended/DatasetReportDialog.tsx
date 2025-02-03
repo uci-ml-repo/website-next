@@ -121,8 +121,9 @@ export default function DatasetReportDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    <span>Details</span>
-                    <span className="text-destructive">*</span>
+                    <span className="after:text-destructive after:content-['*']">
+                      Details
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <Textarea

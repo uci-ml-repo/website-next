@@ -120,7 +120,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
       <SidebarMenu
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="flex-1 overflow-auto"
+        className="flex-1 overflow-hidden"
       >
         <SidebarMenuItem>
           <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
@@ -160,8 +160,8 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
             {bookmarksQuery.data &&
               bookmarksQuery.data.bookmarks.length > 0 && (
-                <SidebarOpenVisible className="mt-2 flex h-full flex-col">
-                  <SidebarGroup>
+                <SidebarOpenVisible className="mt-2 flex h-full flex-col overflow-hidden">
+                  <SidebarGroup className="overflow-hidden">
                     <SidebarGroupLabel asChild>
                       <Link
                         href={PROFILE_BOOKMARKS_ROUTE}
@@ -170,7 +170,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
                         Bookmarks
                       </Link>
                     </SidebarGroupLabel>
-                    <div className="flex-1 overflow-y-auto overflow-x-hidden">
+                    <div className="flex-1 overflow-y-auto">
                       <ul>
                         {bookmarksQuery.data.bookmarks.map(
                           (datasetBookmark) => (

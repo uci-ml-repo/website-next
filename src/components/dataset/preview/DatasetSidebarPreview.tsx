@@ -22,7 +22,7 @@ export default function DatasetSidebarPreview({
       <Link
         href={datasetRoute}
         className={cn(
-          "flex items-center space-x-2 rounded-lg p-2 hover:bg-sidebar-accent",
+          "group/dataset flex items-center space-x-2 rounded-lg px-2 py-1.5 hover:bg-sidebar-accent",
           {
             "bg-sidebar-accent": isActive,
           },
@@ -36,7 +36,9 @@ export default function DatasetSidebarPreview({
           className="size-7 rounded-lg object-cover"
         />
         <div className="flex w-full min-w-0 items-center justify-between space-x-1">
-          <div className="truncate text-base font-bold">{dataset.title}</div>
+          <div className="truncate text-base font-bold decoration-2 group-hover/dataset:underline">
+            {dataset.title}
+          </div>
           {isActive && (
             <div className="size-1.5 shrink-0 rounded-full bg-muted-foreground" />
           )}
