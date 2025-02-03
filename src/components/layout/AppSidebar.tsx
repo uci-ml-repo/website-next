@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 
@@ -45,6 +46,8 @@ import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export default function AppSidebar({ session }: { session: Session | null }) {
+  const pathname = usePathname();
+
   const ref = useRef<HTMLDivElement>(null);
 
   const { setOpen, open } = useSidebar();
@@ -77,8 +80,26 @@ export default function AppSidebar({ session }: { session: Session | null }) {
     setTemporaryOpen(false);
   };
 
+  const resourcePath = RegExp(
+    `${ABOUT_ROUTE}|${CONTACT_ROUTE}|${PRIVACY_POLICY_ROUTE}`,
+  );
+
+  useEffect(() => {
+    if (temporaryOpen && pathname.match(resourcePath)) {
+      setResourcesOpen(true);
+    } else if (!temporaryOpen && !open) {
+      setResourcesOpen(false);
+    }
+  }, [open, pathname, resourcePath, temporaryOpen]);
+
+  useEffect(() => {
+    if (window) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
   return (
-    <Sidebar ref={ref} temporaryOpen={temporaryOpen} className="pb-6">
+    <Sidebar ref={ref} temporaryOpen={temporaryOpen} className="pb-4">
       <div className="flex items-center">
         <SidebarTrigger />
         <Link href={HOME_ROUTE}>

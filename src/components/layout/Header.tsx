@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import SignInButton from "@/components/auth/SignInButton";
 import SignOut from "@/components/auth/SignOut";
 import { useIsMobile } from "@/components/hooks/use-mobile";
+import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,11 +42,13 @@ export default function Header({ session }: { session: Session | null }) {
     <header
       style={{ height: HEADER_HEIGHT }}
       className={cn(
-        "relative z-40 bg-background max-md:fixed max-md:left-0 max-md:right-0",
-        "transition-shadow ease-in-out md:!h-18",
+        "z-40 bg-background max-md:fixed max-md:left-0 max-md:right-0",
+        "transition-shadow ease-in-out max-md:overflow-y-hidden md:!h-18",
         { shadow: isMobile && hasScrolled },
       )}
     >
+      <BackgroundGraph className="absolute right-0 top-0" />
+
       <div className="flex items-center justify-between">
         <div>
           <SidebarTrigger className="md:hidden" />
@@ -54,7 +57,7 @@ export default function Header({ session }: { session: Session | null }) {
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button aria-label="Profile options">
+                <button aria-label="Profile options" className="z-40">
                   <ProfileAvatar src={session.user.image} />
                 </button>
               </DropdownMenuTrigger>

@@ -8,7 +8,6 @@ import * as React from "react";
 import { auth } from "@/auth";
 import AppSidebar from "@/components/layout/AppSidebar";
 import CookiesAlert from "@/components/layout/CookiesAlert";
-import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -66,8 +65,6 @@ export default async function Layout({
               enableSystem
               disableTransitionOnChange
             >
-              <BackgroundGraph />
-
               <SidebarProvider>
                 <AppSidebar session={session} />
                 <div

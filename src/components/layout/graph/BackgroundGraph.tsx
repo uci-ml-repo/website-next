@@ -7,7 +7,10 @@ import { cn } from "@/lib/utils";
 
 import styles from "./BackgroundGraph.module.css";
 
-const BackgroundGraph = () => {
+const BackgroundGraph = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
 
   const ANIMATION_DELAY = 0.01;
@@ -31,10 +34,11 @@ const BackgroundGraph = () => {
   return (
     <div
       className={cn(
-        `absolute right-0 top-0 -z-50`,
-        `size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]`,
+        "size-[275px] xs:size-[300px] sm:size-[400px] xl:size-[600px]",
+        className,
       )}
       aria-hidden={true}
+      {...props}
     >
       <svg viewBox="0 0 600 600">
         {nodes.map((node, index) => (

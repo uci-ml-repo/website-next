@@ -78,13 +78,10 @@ const SidebarProvider = React.forwardRef<
     );
 
     React.useEffect(() => {
-      const mediaQuery = window.matchMedia("(min-width: 1280px)");
+      const mediaQuery = window.matchMedia("(max-width: 1280px)");
 
       const handleMediaChange = (e: MediaQueryListEvent) => {
         if (e.matches) {
-          setOpen(true);
-          setOpenMobile(true);
-        } else {
           setOpen(false);
           setOpenMobile(false);
         }
@@ -180,7 +177,7 @@ const Sidebar = React.forwardRef<
             } as React.CSSProperties
           }
           className={cn(
-            "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+            "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)] [&>button]:hidden",
             className,
           )}
         >
@@ -613,14 +610,12 @@ const SidebarMenuSubButton = React.forwardRef<
           className={cn(
             "flex h-8 min-w-0 -translate-x-px items-center gap-2 overflow-hidden px-4 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
             "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
-            size === "sm" && "text-xs",
-            size === "md" && "text-sm",
             className,
           )}
           {...props}
         />
         {_isActive && (
-          <div className="absolute right-0 top-0 h-8 w-1 bg-uci-gold/70" />
+          <div className="absolute right-0 top-0 h-8 w-1 bg-uci-gold" />
         )}
       </div>
     );
