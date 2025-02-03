@@ -12,6 +12,10 @@ const config = {
   ],
   theme: {
     extend: {
+      containers: {
+        "2xs": "16rem",
+        "3xs": "14rem",
+      },
       typography: {
         DEFAULT: {
           css: {
@@ -128,7 +132,11 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/container-queries"),
+  ],
 };
 
 export default config;

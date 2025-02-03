@@ -113,7 +113,7 @@ export function DatasetCardContent({
           </div>
         </CardDescription>
       </CardContent>
-      <CardFooter className="h-10 justify-between border-t py-2.5">
+      <CardFooter className="h-10 justify-between border-t py-2.5 @container">
         <div className="flex items-center space-x-1">
           <EyeIcon />
           <div>{abbreviateDecimal(dataset.viewCount)}</div>
@@ -123,13 +123,13 @@ export function DatasetCardContent({
         ) : (
           <>
             {dataset.fileCount !== null && dataset.size !== null ? (
-              <div>
-                <span>
+              <div className="flex items-center space-x-1">
+                <span className="hidden @3xs:block">
                   {dataset.fileCount === 1
                     ? "1 File"
                     : `${dataset.fileCount} Files`}
                 </span>
-                <span> &middot; </span>
+                <span className="hidden @3xs:block">&middot;</span>
                 <span>{abbreviateFileSize(dataset.size)}</span>
               </div>
             ) : (

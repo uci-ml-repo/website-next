@@ -93,7 +93,7 @@ export default function DatasetRow({
         <HoverCardContent className="w-[50dvw] min-w-64 max-w-xl" align="end">
           <DatasetCardContent
             dataset={dataset}
-            descriptionClassName="line-clamp-4"
+            descriptionClassName="line-clamp-4 text-base"
           />
         </HoverCardContent>
       </HoverCard>
