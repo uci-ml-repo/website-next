@@ -3,6 +3,7 @@ import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
+import DatasetPrivilegedFindService from "@/server/service/dataset/privleged/find";
 import ServiceError from "@/server/service/errors";
 import type { DatasetQuery } from "@/server/service/schema/dataset";
 import { sortFunction } from "@/server/service/schema/lib/order";
@@ -19,6 +20,8 @@ function buildQuery(query: DatasetQuery) {
 }
 
 export default class DatasetFindService {
+  constructor(readonly privileged = new DatasetPrivilegedFindService()) {}
+
   async byId(id: number) {
     return db.query.dataset.findFirst({
       where: (dataset, { and, eq }) =>
@@ -137,7 +140,11 @@ export default class DatasetFindService {
     const tsQuery = sql`(PLAINTO_TSQUERY('simple', ${query.search ?? ""}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('simple', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DATASET_WEIGHTS}, ${normalizedTsQuery}))`;
-    const trigramSimilarity = sql`similarity(${dataset.title}, ${query.search})`;
+    const trigramSimilarity = sql`similarity
+        (
+        ${dataset.title},
+        ${query.search}
+        )`;
 
     const datasets = await db
       .select({
@@ -151,7 +158,7 @@ export default class DatasetFindService {
           buildQuery(query),
           query.search
             ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery})
-                      OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
+                                OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
             : undefined,
         ),
       )

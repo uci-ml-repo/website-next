@@ -69,7 +69,7 @@ body {
     --destructive-muted: 0 84% 42%;
     --destructive-foreground: 0 0% 98%;
     --positive: 114 49% 41%;
-    --uci-blue: 209 100% 34%;
+    --uci-blue: 209 70% 40%;
     --uci-blue-foreground: 0 0% 90%;
     --uci-gold: 48 99% 51%;
     --uci-gold-foreground: 0 0% 9%;
@@ -93,7 +93,7 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --link: 196 100% 35%;
+    --link: 196 100% 40%;
     --radius: 0.5rem;
   }
 }

@@ -17,16 +17,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/dataset/:id",
-        destination: "/datasets/:id",
-        permanent: true,
-      },
-      {
-        source: "/dataset/:id/:slug",
-        destination: "/datasets/:id/:slug",
-        permanent: true,
-      },
-      {
         source: "/api/dataset",
         destination: "/api/datasets",
         permanent: true,

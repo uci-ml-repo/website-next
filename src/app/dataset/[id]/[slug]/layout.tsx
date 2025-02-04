@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { forbidden, notFound } from "next/navigation";
 import path from "path";
 import { cache } from "react";
 
@@ -10,11 +10,14 @@ import DatasetInteractions from "@/components/dataset/interactions/DatasetIntera
 import DatasetTabs from "@/components/dataset/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
+import { Enums } from "@/db/enums";
 import { DATASETS_ROUTE } from "@/lib/routes";
+import service from "@/server/service";
+import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return caller.dataset.find.byId(id);
+  return service.dataset.find.privileged.byId(id);
 });
 
 export async function generateMetadata({
@@ -44,6 +47,14 @@ export default async function Layout({
   const dataset = await getDataset(Number(id));
   if (!dataset || dataset.slug !== decodeURIComponent(slug)) {
     return notFound();
+  }
+
+  if (
+    dataset.status !== Enums.DatasetStatus.APPROVED &&
+    !isPriviliged(session?.user.role) &&
+    dataset.userId !== session?.user.id
+  ) {
+    return forbidden();
   }
 
   const initialBookmarked = session?.user.id

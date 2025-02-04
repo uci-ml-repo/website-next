@@ -4,7 +4,7 @@ import { STATIC_FILES_ROUTE } from "@/lib/routes/index";
 export const DATASETS_ROUTE = "/datasets";
 
 export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {
-  return `${DATASETS_ROUTE}/${id}/${slug}`;
+  return `/dataset/${id}/${slug}`;
 }
 
 export function DATASET_DISCUSSIONS_ROUTE({
@@ -36,7 +36,7 @@ export function DATASET_DISCUSSION_CREATE_ROUTE({
   id: number;
   slug: string;
 }) {
-  return `${DATASET_ROUTE({ id, slug })}/discussions/create`;
+  return `${DATASET_DISCUSSIONS_ROUTE({ id, slug })}/create`;
 }
 
 export function DATASET_DISCUSSION_EDIT_ROUTE({

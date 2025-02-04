@@ -1,3 +1,5 @@
+import "server-only";
+
 import BookmarkService from "@/server/service/bookmark";
 import DatasetService from "@/server/service/dataset";
 import DiscussionService from "@/server/service/discussion";
