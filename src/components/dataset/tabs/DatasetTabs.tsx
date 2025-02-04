@@ -17,14 +17,9 @@ import { trpc } from "@/server/trpc/query/client";
 interface DatasetTabsProps {
   basePath: string;
   dataset: DatasetResponse;
-  children: React.ReactNode;
 }
 
-export default function DatasetTabs({
-  basePath,
-  dataset,
-  children,
-}: DatasetTabsProps) {
+export default function DatasetTabs({ basePath, dataset }: DatasetTabsProps) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
@@ -70,8 +65,6 @@ export default function DatasetTabs({
       </div>
 
       <TabsListBorder />
-
-      {children}
     </LinearTabs>
   );
 }

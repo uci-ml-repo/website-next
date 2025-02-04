@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 type UseInfiniteScrollProps = {
   fetchNextPage: () => void;
@@ -14,6 +14,12 @@ export default function useInfiniteScroll({
   rootMargin = "100px",
 }: UseInfiniteScrollProps) {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const triggerFetchNextPage = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
@@ -39,5 +45,8 @@ export default function useInfiniteScroll({
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, rootMargin]);
 
-  return loadMoreRef;
+  return {
+    loadMoreRef,
+    triggerFetchNextPage,
+  };
 }

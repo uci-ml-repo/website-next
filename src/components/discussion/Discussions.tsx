@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, Undo2Icon } from "lucide-react";
+import { ChevronDownIcon, SearchIcon, Undo2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
@@ -44,13 +44,13 @@ export default function Discussions({
           orderBy === "top"
             ? { upvoteCount: "desc", createdAt: "desc" }
             : { createdAt: "desc" },
-        limit: 20,
+        limit: 15,
       },
       { getNextPageParam: (lastPage) => lastPage.nextCursor },
     );
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
-  const loadMoreRef = useInfiniteScroll({
+  const { triggerFetchNextPage } = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -93,7 +93,7 @@ export default function Discussions({
           </Button>
         </div>
       ) : (
-        <div>
+        <div className="w-full">
           {searchValue && data && (
             <div className="text-lg text-muted-foreground">
               Found {discussions.length}
@@ -114,15 +114,24 @@ export default function Discussions({
         </div>
       )}
 
-      <div ref={loadMoreRef} />
-
       {isFetchingNextPage && (
         <div className="flex h-12 items-center justify-center">
           <Spinner />
         </div>
       )}
 
-      {!hasNextPage && discussions.length > 10 && <BackToTop />}
+      <div className="flex items-center justify-between">
+        {hasNextPage && (
+          <Button
+            onClick={triggerFetchNextPage}
+            variant="blue"
+            disabled={isFetchingNextPage}
+          >
+            <ChevronDownIcon /> View more
+          </Button>
+        )}
+        {discussions.length > 10 && <BackToTop />}
+      </div>
     </div>
   );
 }

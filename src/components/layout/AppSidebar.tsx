@@ -147,12 +147,12 @@ export default function AppSidebar({ session }: { session: Session | null }) {
                     <SidebarGroupLabel asChild>
                       <Link
                         href={PROFILE_BOOKMARKS_ROUTE}
-                        className="hover:underline"
+                        className="mx-2 hover:underline"
                       >
                         Bookmarks
                       </Link>
                     </SidebarGroupLabel>
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto px-2">
                       <ul>
                         {bookmarksQuery.data.bookmarks.map(
                           (datasetBookmark) => (

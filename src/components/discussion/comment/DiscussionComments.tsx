@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageSquareTextIcon } from "lucide-react";
+import { ChevronDownIcon, MessageSquareTextIcon } from "lucide-react";
 import React, { useState } from "react";
 
 import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
@@ -9,6 +9,7 @@ import DiscussionComment from "@/components/discussion/comment/view/DiscussionCo
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import BackToTop from "@/components/ui/back-to-top";
+import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -39,7 +40,7 @@ export default function DiscussionComments({
   const comments = data?.pages.flatMap((page) => page.discussionComments) || [];
   const totalCount = data?.pages[0]?.count || 0;
 
-  const loadMoreRef = useInfiniteScroll({
+  const { triggerFetchNextPage } = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -72,7 +73,6 @@ export default function DiscussionComments({
           <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />
         )}
       </div>
-
       {isCommenting ? (
         <DiscussionCommentCreateInput
           discussionId={discussion.id}
@@ -86,7 +86,6 @@ export default function DiscussionComments({
           authedAction={() => setIsCommenting(true)}
         />
       )}
-
       <div className="space-y-3">
         {comments.map((comment) => (
           <React.Fragment key={comment.id}>
@@ -95,16 +94,23 @@ export default function DiscussionComments({
           </React.Fragment>
         ))}
       </div>
-
-      <div ref={loadMoreRef} />
-
       {isFetchingNextPage && (
         <div className="flex h-12 items-center justify-center">
           <Spinner />
         </div>
       )}
-
-      {!hasNextPage && comments.length > 10 && <BackToTop />}
+      <div className="flex items-center justify-between">
+        {hasNextPage && (
+          <Button
+            onClick={triggerFetchNextPage}
+            variant="blue"
+            disabled={isFetchingNextPage}
+          >
+            <ChevronDownIcon /> View more
+          </Button>
+        )}
+        {comments.length > 10 && <BackToTop />}
+      </div>
     </div>
   );
 }

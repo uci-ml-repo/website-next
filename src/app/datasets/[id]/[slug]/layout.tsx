@@ -56,23 +56,21 @@ export default async function Layout({
   const basePath = path.join(DATASETS_ROUTE, id, slug);
 
   return (
-    <Main className="content space-y-6">
-      <div className="space-y-8">
+    <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
+      <Main className="space-y-8">
         <DatasetTitleGroup dataset={dataset} />
 
-        <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
-          <Card className="rounded-full md:hidden">
-            <DatasetInteractions
-              dataset={dataset}
-              className="w-full justify-around"
-            />
-          </Card>
+        <Card className="rounded-full md:hidden">
+          <DatasetInteractions
+            dataset={dataset}
+            className="w-full justify-around"
+          />
+        </Card>
 
-          <DatasetTabs basePath={basePath} dataset={dataset}>
-            {children}
-          </DatasetTabs>
-        </DatasetBookmarkProvider>
-      </div>
-    </Main>
+        <DatasetTabs basePath={basePath} dataset={dataset} />
+
+        {children}
+      </Main>
+    </DatasetBookmarkProvider>
   );
 }

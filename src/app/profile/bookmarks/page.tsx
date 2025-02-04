@@ -1,15 +1,23 @@
 "use client";
 
-import { BookmarkIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import {
+  BookmarkIcon,
+  ChevronDownIcon,
+  SearchIcon,
+  Undo2Icon,
+} from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import BackToTop from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function Page() {
@@ -37,7 +45,7 @@ export default function Page() {
     }
   }, [data, hasBookmarks]);
 
-  const loadMoreRef = useInfiniteScroll({
+  const { triggerFetchNextPage } = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -45,12 +53,15 @@ export default function Page() {
 
   if (!isLoading && !hasBookmarks) {
     return (
-      <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
-        <CardContent className="text-pretty text-center">
-          <span>
+      <Card className="flex h-28 items-center justify-center bg-muted">
+        <CardContent className="space-y-1 text-pretty text-center">
+          <div className="text-muted-foreground">
             Visit a dataset and click the bookmark button (
             <BookmarkIcon className="mb-0.5 inline size-5" />) to save it here.
-          </span>
+          </div>
+          <Link href={DATASETS_ROUTE} className="underline">
+            Find a dataset to bookmark
+          </Link>
         </CardContent>
       </Card>
     );
@@ -125,12 +136,24 @@ export default function Page() {
             </div>
           )}
 
-          <div ref={loadMoreRef} />
           {isFetchingNextPage && (
             <div className="flex h-12 items-center justify-center">
               <Spinner />
             </div>
           )}
+
+          <div className="flex items-center justify-between">
+            {hasNextPage && (
+              <Button
+                onClick={triggerFetchNextPage}
+                variant="blue"
+                disabled={isFetchingNextPage}
+              >
+                <ChevronDownIcon /> View more
+              </Button>
+            )}
+            {bookmarks.length > 10 && <BackToTop />}
+          </div>
         </>
       )}
     </div>
