@@ -23,7 +23,7 @@ export default async function Page({
     <Discussions datasetId={dataset!.id} allowCreate />
   ) : (
     <Card className="w-full">
-      <CardContent className="flex h-[130px] items-center justify-center">
+      <CardContent className="flex h-[130px] items-center justify-center bg-muted">
         <div className="space-y-3 text-center">
           <div className="text-muted-foreground">
             There are no discussions yet

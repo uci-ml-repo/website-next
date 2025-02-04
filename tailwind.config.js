@@ -96,6 +96,7 @@ const config = {
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
+          muted: "hsl(var(--destructive-muted))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         positive: {

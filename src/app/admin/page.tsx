@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <Main className="space-y-6">
-      <h1 className="text-4xl font-bold text-foreground">Admin Dashboard</h1>
+      <h1 className="text-4xl font-bold">Admin Dashboard</h1>
       <LinearTabs defaultValue="overview">
         <LinearTabsList className="space-x-10 overflow-x-auto">
           <LinearTabsTrigger value="overview">Overview</LinearTabsTrigger>

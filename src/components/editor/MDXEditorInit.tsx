@@ -79,8 +79,9 @@ export default function MDXEditorInit({
     <MDXEditor
       className={cn({ "dark-theme": theme === "dark" }, className)}
       contentEditableClassName={cn(
-        { "!bg-muted": disabled },
         "prose min-w-full rounded-lg rounded-t-none bg-background font-sans dark:prose-invert",
+        { "bg-muted": disabled },
+        { "-mt-[4px] leading-[32px]": !markdown },
       )}
       markdown={markdown}
       readOnly={readOnly || disabled}

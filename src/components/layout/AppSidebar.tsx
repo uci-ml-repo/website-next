@@ -14,9 +14,11 @@ import { useEffect, useRef } from "react";
 
 import DatasetSidebarPreview from "@/components/dataset/preview/DatasetSidebarPreview";
 import { Banner } from "@/components/icons";
+import { ThemeToggle } from "@/components/layout/sidebar/ThemeToggle";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -78,98 +80,106 @@ export default function AppSidebar({ session }: { session: Session | null }) {
   );
 
   return (
-    <Sidebar ref={ref} className="pb-6">
+    <Sidebar ref={ref}>
       <div className="flex items-center">
         <SidebarTrigger />
         <Link href={HOME_ROUTE}>
           <Banner variant="logo-sm" className="text-nowrap" abbreviate />
         </Link>
       </div>
-      <SidebarMenu
+      <div
+        className="flex h-full w-full flex-col"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="flex-1 overflow-hidden"
       >
-        <SidebarMenuItem>
-          <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
-            <Link href={HOME_ROUTE}>
-              <HouseIcon />
-              <span>Home</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton activePath={DATASETS_ROUTE} asChild>
-            <Link href={DATASETS_ROUTE}>
-              <DatabaseIcon />
-              <span>Datasets</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton activePath={CONTRIBUTE_ROUTE} asChild>
-            <Link href={CONTRIBUTE_ROUTE}>
-              <PlusIcon />
-              <span>Contribute</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
-
-        {isPriviliged(session?.user.role) && (
+        <SidebarMenu className="flex-1 overflow-hidden">
           <SidebarMenuItem>
-            <SidebarMenuButton
-              activePath={ADMIN_ROUTE}
-              className="!text-destructive"
-              asChild
-            >
-              <Link href={ADMIN_ROUTE}>
-                <LayoutDashboardIcon />
-                <span>Admin</span>
+            <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
+              <Link href={HOME_ROUTE}>
+                <HouseIcon />
+                <span>Home</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-        )}
-        {session?.user && (
-          <>
+          <SidebarMenuItem>
+            <SidebarMenuButton activePath={DATASETS_ROUTE} asChild>
+              <Link href={DATASETS_ROUTE}>
+                <DatabaseIcon />
+                <span>Datasets</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton activePath={CONTRIBUTE_ROUTE} asChild>
+              <Link href={CONTRIBUTE_ROUTE}>
+                <PlusIcon />
+                <span>Contribute</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
+
+          {isPriviliged(session?.user.role) && (
             <SidebarMenuItem>
-              <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
-                <Link href={PROFILE_ROUTE}>
-                  <UserIcon />
-                  <span>Profile</span>
+              <SidebarMenuButton
+                activePath={ADMIN_ROUTE}
+                className="!text-destructive-muted"
+                asChild
+              >
+                <Link href={ADMIN_ROUTE}>
+                  <LayoutDashboardIcon />
+                  <span>Admin</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            {bookmarksQuery.data &&
-              bookmarksQuery.data.bookmarks.length > 0 && (
-                <SidebarOpenVisible className="mt-2 flex h-full flex-col overflow-hidden">
-                  <SidebarGroup className="overflow-hidden">
-                    <SidebarGroupLabel asChild>
-                      <Link
-                        href={PROFILE_BOOKMARKS_ROUTE}
-                        className="mx-2 hover:underline"
-                      >
-                        Bookmarks
-                      </Link>
-                    </SidebarGroupLabel>
-                    <div className="flex-1 overflow-y-auto px-2">
-                      <ul>
-                        {bookmarksQuery.data.bookmarks.map(
-                          (datasetBookmark) => (
-                            <DatasetSidebarPreview
-                              dataset={datasetBookmark.dataset}
-                              key={datasetBookmark.dataset.id}
-                            />
-                          ),
-                        )}
-                      </ul>
-                    </div>
-                  </SidebarGroup>
-                </SidebarOpenVisible>
-              )}
-          </>
-        )}
-      </SidebarMenu>
+          )}
+          {session?.user && (
+            <>
+              <SidebarMenuItem>
+                <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
+                  <Link href={PROFILE_ROUTE}>
+                    <UserIcon />
+                    <span>Profile</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              {bookmarksQuery.data &&
+                bookmarksQuery.data.bookmarks.length > 0 && (
+                  <SidebarOpenVisible className="mt-2 flex h-full flex-col overflow-hidden">
+                    <SidebarGroup className="overflow-hidden">
+                      <SidebarGroupLabel asChild>
+                        <Link
+                          href={PROFILE_BOOKMARKS_ROUTE}
+                          className="mx-2 hover:underline"
+                        >
+                          Bookmarks
+                        </Link>
+                      </SidebarGroupLabel>
+                      <div className="flex-1 overflow-y-auto px-2">
+                        <ul>
+                          {bookmarksQuery.data.bookmarks.map(
+                            (datasetBookmark) => (
+                              <DatasetSidebarPreview
+                                dataset={datasetBookmark.dataset}
+                                key={datasetBookmark.dataset.id}
+                              />
+                            ),
+                          )}
+                        </ul>
+                      </div>
+                    </SidebarGroup>
+                  </SidebarOpenVisible>
+                )}
+            </>
+          )}
+        </SidebarMenu>
+        <SidebarFooter>
+          <SidebarOpenVisible className="flex items-center justify-between p-4">
+            <span className="text-sm text-muted-foreground">Theme</span>
+            <ThemeToggle />
+          </SidebarOpenVisible>
+        </SidebarFooter>
+      </div>
     </Sidebar>
   );
 }

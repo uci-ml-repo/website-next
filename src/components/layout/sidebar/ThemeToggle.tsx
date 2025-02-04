@@ -3,7 +3,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -13,14 +13,9 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={changeTheme}
-      className="relative [&>svg]:absolute [&>svg]:size-4"
-    >
-      <SunIcon className="scale-100 dark:scale-0" />
-      <MoonIcon className="scale-0 dark:scale-100" />
-    </Button>
+    <div className="flex items-center space-x-1.5 [&>svg]:size-4">
+      <Switch onCheckedChange={changeTheme} checked={theme === "dark"} />
+      {theme === "light" ? <SunIcon /> : <MoonIcon />}
+    </div>
   );
 }
