@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 
 import { auth } from "@/auth";
-import { PRIVILEGED_ROLES } from "@/lib/permissions";
+import { PRIVILEGED_ROLES } from "@/lib/roles";
 
 function toStringArray(str: string | string[]): string[] {
   return Array.isArray(str) ? str : [str];

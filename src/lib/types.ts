@@ -1,6 +1,6 @@
 import type { AcceptedDatasetRequiredFields } from "@/db/types";
 import type { RequireNonNullable } from "@/lib/utils";
-import type { RouterOutput } from "@/server/trpc/routers";
+import type { RouterOutput } from "@/server/trpc/router";
 
 export type DatasetResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byId"]

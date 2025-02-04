@@ -1,10 +1,10 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { router } from "@/server/trpc";
-import bookmarkRouter from "@/server/trpc/routers/bookmark";
-import datasetRouter from "@/server/trpc/routers/dataset";
-import discussionRouter from "@/server/trpc/routers/discussion";
-import filesRouter from "@/server/trpc/routers/file";
+import bookmarkRouter from "@/server/trpc/router/bookmark";
+import datasetRouter from "@/server/trpc/router/dataset";
+import discussionRouter from "@/server/trpc/router/discussion";
+import filesRouter from "@/server/trpc/router/file";
 
 export const appRouter = router({
   dataset: datasetRouter,

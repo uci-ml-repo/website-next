@@ -14,6 +14,10 @@ const t = initTRPC.context<typeof createContext>().create({ transformer });
 export const fileAccessProcedure = t.procedure
   .input(z.object({ path: z.string().optional() }))
   .use(async ({ ctx, input, next }) => {
+    if (!process.env.STATIC_FILES_DIRECTORY) {
+      throw new Error("No STATIC_FILES_DIRECTORY defined");
+    }
+
     if (!input.path) {
       throw new TRPCError({ code: "BAD_REQUEST", message: "No path provided" });
     }
@@ -21,14 +25,14 @@ export const fileAccessProcedure = t.procedure
     let realAccessPath: string;
     try {
       realAccessPath = fs.realpathSync(
-        path.join(process.env.STATIC_FILES_DIRECTORY!, input.path),
+        path.join(process.env.STATIC_FILES_DIRECTORY, input.path),
       );
     } catch {
       throw new TRPCError({ code: "NOT_FOUND", message: input.path });
     }
 
     const realStaticFilesRoot = fs.realpathSync(
-      process.env.STATIC_FILES_DIRECTORY!,
+      process.env.STATIC_FILES_DIRECTORY,
     );
 
     if (!realAccessPath.startsWith(realStaticFilesRoot)) {

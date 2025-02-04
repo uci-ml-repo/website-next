@@ -1,7 +1,8 @@
-import { notFound, redirect } from "next/navigation";
+import { TRPCError } from "@trpc/server";
+import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
 
 import { DATASET_ROUTE } from "@/lib/routes";
-import service from "@/server/service";
+import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
   params,
@@ -10,11 +11,21 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  const dataset = await service.dataset.find.privileged.byId(Number(id));
+  try {
+    const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
+    redirect(DATASET_ROUTE({ id: dataset.id, slug: dataset.slug }));
+  } catch (error) {
+    if (error instanceof TRPCError) {
+      switch (error.code) {
+        case "NOT_FOUND":
+          return notFound();
+        case "UNAUTHORIZED":
+          return unauthorized();
+        case "FORBIDDEN":
+          return forbidden();
+      }
+    }
 
-  if (!dataset) {
-    notFound();
+    throw error;
   }
-
-  redirect(DATASET_ROUTE({ id: dataset.id, slug: dataset.slug }));
 }

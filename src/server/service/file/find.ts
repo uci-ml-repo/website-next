@@ -13,10 +13,14 @@ function nodeToDirectoryEntity(
   node: fs.Dirent,
   absolutePath: string,
 ): DirectoryEntity {
+  if (!process.env.STATIC_FILES_DIRECTORY) {
+    throw new Error("STATIC_FILES_DIRECTORY is not set");
+  }
+
   return {
     path: path.join(
       absolutePath.slice(
-        fs.realpathSync(process.env.STATIC_FILES_DIRECTORY!).length,
+        fs.realpathSync(process.env.STATIC_FILES_DIRECTORY).length,
       ),
       node.name,
     ),
@@ -47,6 +51,10 @@ export default class FileFindService {
     absolutePath: string,
     search: string,
   ): Promise<DirectoryEntity[]> {
+    if (!process.env.STATIC_FILES_DIRECTORY) {
+      throw new Error("STATIC_FILES_DIRECTORY is not set");
+    }
+
     const filePaths = await fg(`${absolutePath}/**/*${search}*`, {
       caseSensitiveMatch: false,
       dot: true,
@@ -57,7 +65,7 @@ export default class FileFindService {
       const stat = await fs.stat(filePath);
       directoryEntities.push({
         path: filePath.slice(
-          fs.realpathSync(process.env.STATIC_FILES_DIRECTORY!).length,
+          fs.realpathSync(process.env.STATIC_FILES_DIRECTORY).length,
         ),
         type: stat.isDirectory() ? "directory" : stat.isFile() ? "file" : null,
       });

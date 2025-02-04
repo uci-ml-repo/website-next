@@ -1,5 +1,7 @@
 import "@/app/globals.css";
 
+import * as process from "node:process";
+
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
@@ -17,6 +19,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/query/client";
 
+if (!process.env.BASE_URL) {
+  throw new Error("BASE_URL is not set");
+}
+
 const inter = Inter({ subsets: ["latin"], fallback: ["sans-serif"] });
 
 export const metadata: Metadata = {
@@ -25,7 +31,7 @@ export const metadata: Metadata = {
     default: "UCI Machine Learning Repository",
   },
   description: "UCI Repository for Machine Learning Datasets",
-  metadataBase: new URL(process.env.BASE_URL!),
+  metadataBase: new URL(process.env.BASE_URL),
   openGraph: {
     images: [
       {

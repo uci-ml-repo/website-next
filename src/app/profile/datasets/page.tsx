@@ -1,5 +1,6 @@
 import { PlusIcon, SquarePenIcon } from "lucide-react";
 import Link from "next/link";
+import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
 import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
@@ -9,7 +10,12 @@ import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
   const session = await auth();
-  const datasets = await caller.dataset.find.byUserId(session!.user.id);
+
+  if (!session) {
+    return unauthorized();
+  }
+
+  const datasets = await caller.dataset.find.byUserId(session.user.id);
 
   const endCard = (
     <Button asChild className="lift" variant="gold">

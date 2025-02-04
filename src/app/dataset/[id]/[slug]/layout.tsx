@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { forbidden, notFound } from "next/navigation";
-import path from "path";
+import { forbidden, notFound, unauthorized } from "next/navigation";
 import { cache } from "react";
 
 import { auth } from "@/auth";
@@ -11,13 +10,12 @@ import DatasetTabs from "@/components/dataset/tabs/DatasetTabs";
 import Main from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { Enums } from "@/db/enums";
-import { DATASETS_ROUTE } from "@/lib/routes";
-import service from "@/server/service";
+import { DATASET_ROUTE } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return service.dataset.find.privileged.byId(id);
+  return caller.dataset.find.byId({ datasetId: id });
 });
 
 export async function generateMetadata({
@@ -31,6 +29,7 @@ export async function generateMetadata({
   if (!dataset || dataset.slug !== decodeURIComponent(slug)) {
     return { title: "Not Found" };
   }
+
   return { title: dataset.title };
 }
 
@@ -49,12 +48,15 @@ export default async function Layout({
     return notFound();
   }
 
-  if (
-    dataset.status !== Enums.DatasetStatus.APPROVED &&
-    !isPriviliged(session?.user.role) &&
-    dataset.userId !== session?.user.id
-  ) {
-    return forbidden();
+  if (dataset.status !== Enums.DatasetStatus.APPROVED) {
+    if (!session?.user) {
+      return unauthorized();
+    } else if (
+      !isPriviliged(session?.user.role) &&
+      dataset.userId !== session?.user.id
+    ) {
+      return forbidden();
+    }
   }
 
   const initialBookmarked = session?.user.id
@@ -64,7 +66,7 @@ export default async function Layout({
       })
     : false;
 
-  const basePath = path.join(DATASETS_ROUTE, id, slug);
+  const basePath = DATASET_ROUTE(dataset);
 
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>

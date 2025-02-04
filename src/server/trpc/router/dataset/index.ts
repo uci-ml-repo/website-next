@@ -1,0 +1,16 @@
+import { router } from "@/server/trpc";
+import bookmarkRouter from "@/server/trpc/router/bookmark";
+import datasetCiteRouter from "@/server/trpc/router/dataset/cite";
+import datasetCountRouter from "@/server/trpc/router/dataset/count";
+import datasetFindRouter from "@/server/trpc/router/dataset/find";
+import datasetReportRouter from "@/server/trpc/router/dataset/report";
+
+const datasetRouter = router({
+  find: datasetFindRouter,
+  count: datasetCountRouter,
+  cite: datasetCiteRouter,
+  bookmarks: bookmarkRouter,
+  report: datasetReportRouter,
+});
+
+export default datasetRouter;

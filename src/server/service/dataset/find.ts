@@ -3,7 +3,6 @@ import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
-import DatasetPrivilegedFindService from "@/server/service/dataset/privleged/find";
 import ServiceError from "@/server/service/errors";
 import type { DatasetQuery } from "@/server/service/schema/dataset";
 import { sortFunction } from "@/server/service/schema/lib/order";
@@ -20,9 +19,20 @@ function buildQuery(query: DatasetQuery) {
 }
 
 export default class DatasetFindService {
-  constructor(readonly privileged = new DatasetPrivilegedFindService()) {}
+  async byId({ datasetId }: { datasetId: number }) {
+    return db.query.dataset.findFirst({
+      where: (dataset, { eq }) => eq(dataset.id, datasetId),
+      with: {
+        datasetKeywords: { with: { keyword: true } },
+        authors: true,
+        introductoryPaper: true,
+        variables: true,
+        user: true,
+      },
+    });
+  }
 
-  async byId(id: number) {
+  async approvedById(id: number) {
     return db.query.dataset.findFirst({
       where: (dataset, { and, eq }) =>
         and(

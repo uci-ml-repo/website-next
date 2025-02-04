@@ -1,6 +1,6 @@
 import type { UserRole } from "@/db/enums";
 import { Enums } from "@/db/enums";
-import { PRIVILEGED_ROLES } from "@/lib/permissions";
+import { PRIVILEGED_ROLES } from "@/lib/roles";
 
 export const MiddlewareRoles = {
   DATASET_OWNER: "DATASET_OWNER",

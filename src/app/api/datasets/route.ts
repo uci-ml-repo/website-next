@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    dataset = await caller.dataset.find.byId(idNumber);
+    dataset = await caller.dataset.find.approvedById(idNumber);
 
     if (!dataset || dataset.status !== Enums.DatasetStatus.APPROVED) {
       return NextResponse.json({

@@ -6,7 +6,7 @@ import { cache } from "react";
 import { createCallerFactory } from "@/server/trpc";
 import { createContext } from "@/server/trpc/context";
 import { makeQueryClient } from "@/server/trpc/query/query-client";
-import { appRouter } from "@/server/trpc/routers";
+import { appRouter } from "@/server/trpc/router";
 
 const getQueryClient = cache(makeQueryClient);
 

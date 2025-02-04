@@ -1,5 +1,6 @@
 import { MessageSquareTextIcon } from "lucide-react";
 import Link from "next/link";
+import { unauthorized } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
@@ -11,10 +12,14 @@ import { caller } from "@/server/trpc/query/server";
 export default async function Page() {
   const session = await auth();
 
+  if (!session) {
+    return unauthorized();
+  }
+
   const hasDiscussions =
     (
       await caller.discussion.find.byQuery({
-        userId: session!.user.id,
+        userId: session.user.id,
         limit: 1,
       })
     ).discussions.length > 0;
@@ -27,7 +32,7 @@ export default async function Page() {
       </div>
       <div>
         {hasDiscussions ? (
-          <Discussions userId={session!.user.id} />
+          <Discussions userId={session.user.id} />
         ) : (
           <Card className="w-full bg-muted">
             <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">

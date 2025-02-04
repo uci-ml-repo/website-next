@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import DatasetFiles from "@/components/dataset/tabs/files/DatasetFiles";
 import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
 import { datasetFilesPath } from "@/lib/utils";
@@ -8,12 +10,19 @@ export default async function Page({
 }: {
   params: Promise<{ id: string; slug: string }>;
 }) {
-  const dataset = await caller.dataset.find.byId(Number((await params).id));
+  const { id } = await params;
+
+  const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
+
+  if (!dataset) {
+    return notFound();
+  }
+
   return (
     <FileProvider
-      initialPath={{ path: datasetFilesPath(dataset!), type: "directory" }}
+      initialPath={{ path: datasetFilesPath(dataset), type: "directory" }}
     >
-      <DatasetFiles dataset={dataset!} />
+      <DatasetFiles dataset={dataset} />
     </FileProvider>
   );
 }
