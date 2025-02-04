@@ -97,7 +97,9 @@ export default function Discussions({
           {searchValue && data && (
             <div className="text-lg text-muted-foreground">
               Found {discussions.length}
-              {hasNextPage && "+"} discussions for "{searchValue}"
+              {hasNextPage && "+"}{" "}
+              {discussions.length === 1 ? "discussion" : "discussions"} for '
+              {searchValue}'
             </div>
           )}
           {discussions.map((discussion) => (
@@ -120,7 +122,7 @@ export default function Discussions({
         </div>
       )}
 
-      {!hasNextPage && <BackToTop />}
+      {!hasNextPage && discussions.length > 10 && <BackToTop />}
     </div>
   );
 }

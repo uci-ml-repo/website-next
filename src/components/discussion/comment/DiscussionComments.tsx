@@ -104,7 +104,7 @@ export default function DiscussionComments({
         </div>
       )}
 
-      {!hasNextPage && <BackToTop />}
+      {!hasNextPage && comments.length > 10 && <BackToTop />}
     </div>
   );
 }

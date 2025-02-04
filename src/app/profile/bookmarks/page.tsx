@@ -90,7 +90,16 @@ export default function Page() {
             </div>
           ) : bookmarks.length > 0 ? (
             <>
-              {inputValue && <div>Search results for '{inputValue}'</div>}
+              {inputValue && (
+                <div className="text-lg text-muted-foreground">
+                  Found {bookmarks.length}
+                  {hasNextPage && "+"}{" "}
+                  {bookmarks.length === 1
+                    ? "bookmarked dataset"
+                    : "bookmarked datasets"}{" "}
+                  for '{searchValue}'
+                </div>
+              )}
 
               <div className="relative">
                 {bookmarks.map((bookmark) => (
@@ -107,7 +116,9 @@ export default function Page() {
             </>
           ) : (
             <div className="flex h-20 flex-col items-center justify-center space-y-2">
-              <div className="text-muted-foreground">No bookmarks found</div>
+              <div className="text-muted-foreground">
+                No bookmarked datasets found
+              </div>
               <Button variant="secondary" onClick={clearSearch}>
                 Clear search <Undo2Icon />
               </Button>
