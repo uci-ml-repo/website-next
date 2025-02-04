@@ -1,12 +1,20 @@
+import { notFound } from "next/navigation";
+
 import DatasetAbout from "@/components/dataset/tabs/about/DatasetAbout";
-import { caller } from "@/server/trpc/query/server";
+import service from "@/server/service";
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ id: string; slug: string }>;
 }) {
-  const dataset = await caller.dataset.find.byId(Number((await params).id));
+  const dataset = await service.dataset.find.privileged.byId(
+    Number((await params).id),
+  );
 
-  return <DatasetAbout dataset={dataset!} />;
+  if (!dataset) {
+    return notFound();
+  }
+
+  return <DatasetAbout dataset={dataset} />;
 }
