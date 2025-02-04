@@ -563,8 +563,8 @@ export const discussionCommentReportResolutionRelations = relations(
 
 export const user = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name"),
-  email: text("email").unique(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("password"),
   image: text("image"),

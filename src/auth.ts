@@ -10,6 +10,7 @@ import { db } from "@/db";
 import type { UserRole } from "@/db/enums";
 import { account, session, user, verificationToken } from "@/db/schema";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
+import service from "@/server/service";
 
 declare module "next-auth" {
   interface Session {
@@ -73,6 +74,13 @@ export const authOptions = NextAuth({
     async session({ session, user }) {
       session.user.role = user.role;
       return session;
+    },
+  },
+  events: {
+    async createUser({ user }) {
+      await service.email.sendRegistrationEmail(
+        user as { email: string; name: string },
+      );
     },
   },
   jwt: {

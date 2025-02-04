@@ -1,8 +1,7 @@
-import "server-only";
-
 import BookmarkService from "@/server/service/bookmark";
 import DatasetService from "@/server/service/dataset";
 import DiscussionService from "@/server/service/discussion";
+import EmailService from "@/server/service/email";
 import FileService from "@/server/service/file";
 import UserService from "@/server/service/user";
 
@@ -13,6 +12,7 @@ class RepositoryService {
     readonly file = new FileService(),
     readonly bookmark = new BookmarkService(),
     readonly user = new UserService(),
+    readonly email = new EmailService(),
   ) {}
 }
 

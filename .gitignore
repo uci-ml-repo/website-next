@@ -18,6 +18,9 @@
 .env*
 !.env.example
 
+# credentails
+credentials.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

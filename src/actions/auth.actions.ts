@@ -56,7 +56,7 @@ export async function credentialsLogin({
       };
     }
 
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       redirect: false,
       email,
       password,
@@ -64,7 +64,6 @@ export async function credentialsLogin({
 
     return {
       success: true,
-      data: res,
     };
   } catch (error: unknown) {
     return {
@@ -97,7 +96,7 @@ export async function credentialsRegister({
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const registeredUser = await db.insert(user).values({
+    await db.insert(user).values({
       email,
       password: hashedPassword,
       name,
@@ -111,7 +110,6 @@ export async function credentialsRegister({
 
     return {
       success: true,
-      data: registeredUser,
     };
   } catch (error: unknown) {
     return {
