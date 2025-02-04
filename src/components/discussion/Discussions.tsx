@@ -50,6 +50,7 @@ export default function Discussions({
     );
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
+
   const { triggerFetchNextPage } = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
@@ -74,7 +75,7 @@ export default function Discussions({
           <DiscussionsOrderBy
             orderBy={orderBy}
             setOrderBy={setOrderBy}
-            setSearchValue={clearSearch}
+            clearSearch={clearSearch}
             className="flex justify-end"
           />
           {allowCreate && <DiscussionCreateButton tooltip />}

@@ -1,4 +1,4 @@
-import { ArrowUpRightIcon, ClockIcon, SearchIcon } from "lucide-react";
+import { ClockIcon, SearchIcon, TrendingUpIcon } from "lucide-react";
 
 import {
   Select,
@@ -12,19 +12,19 @@ import { cn } from "@/lib/utils";
 interface DatasetDiscussionSortByProps {
   orderBy: string;
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
-  setSearchValue?: React.Dispatch<React.SetStateAction<string>>;
+  clearSearch?: () => void;
   className?: string;
 }
 
 export default function DiscussionsOrderBy({
   orderBy,
   setOrderBy,
-  setSearchValue,
+  clearSearch,
   className,
 }: DatasetDiscussionSortByProps) {
   function handleChange(value: string) {
-    if (setSearchValue) {
-      setSearchValue("");
+    if (clearSearch) {
+      clearSearch();
     }
     setOrderBy(value);
   }
@@ -38,16 +38,16 @@ export default function DiscussionsOrderBy({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="top">
-            <ArrowUpRightIcon className="size-5" />
+            <TrendingUpIcon />
             <span>Top</span>
           </SelectItem>
           <SelectItem value="new">
-            <ClockIcon className="size-5" />
+            <ClockIcon />
             <span>New</span>
           </SelectItem>
           {orderBy === "relevance" && (
             <SelectItem value="relevance">
-              <SearchIcon className="size-5" />
+              <SearchIcon />
               <span>Relevance</span>
             </SelectItem>
           )}
