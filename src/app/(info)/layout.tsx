@@ -19,7 +19,7 @@ export default function MdxLayout({
       <div className="space-y-8">
         <hr />
         <Button
-          variant="blue"
+          variant="secondary"
           size="lg"
           className="lift w-full sm:w-fit"
           asChild

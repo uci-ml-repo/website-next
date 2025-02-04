@@ -223,7 +223,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   activePath={RegExp(
-                    `${ABOUT_ROUTE}|${CONTACT_ROUTE}|${PRIVACY_POLICY_ROUTE}`,
+                    `^${ABOUT_ROUTE}|^${CONTACT_ROUTE}|^${PRIVACY_POLICY_ROUTE}`,
                   )}
                 >
                   <InfoIcon />

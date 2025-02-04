@@ -154,7 +154,7 @@ export default class DiscussionFindService {
     const tsQuery = sql`(PLAINTO_TSQUERY('english', ${query.search ?? ""}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('english', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DISCUSSION_WEIGHTS}, ${normalizedTsQuery}))`;
-    const trigramSimilarity = sql`similarity(${discussion.title}, ${query.search})`;
+    const trigramSimilarity = sql`(similarity(${discussion.title}, ${query.search}))`;
 
     return db
       .select({

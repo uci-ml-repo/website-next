@@ -11,6 +11,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -293,6 +294,7 @@ export const paperRelations = relations(paper, ({ one }) => ({
 export const bookmark = pgTable(
   "bookmark",
   {
+    id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id")
       .notNull()
       .references(() => user.id),
@@ -302,7 +304,7 @@ export const bookmark = pgTable(
 
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
-  (t) => [primaryKey({ columns: [t.userId, t.datasetId] })],
+  (t) => [unique().on(t.userId, t.datasetId)],
 );
 
 export const bookmarkRelations = relations(bookmark, ({ one }) => ({

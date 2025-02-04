@@ -603,6 +603,10 @@ const SidebarMenuSubButton = React.forwardRef<
     const [_isActive, setIsActive] = React.useState(isActive);
     const pathname = usePathname();
 
+    if (typeof activePath === "string") {
+      activePath = new RegExp(`^${activePath}`);
+    }
+
     useEffect(() => {
       if (activePath) {
         setIsActive(isActive || !!pathname.match(activePath));

@@ -12,7 +12,7 @@ export function formatEnum(
   enumString: string | string[],
   titleCase: boolean = true,
 ) {
-  const lowercaseWords = new Set(["THE", "AND", "OR"]);
+  const lowercaseWords = new Set(["the", "and", "or"]);
 
   function formatSingleEnum(str: string) {
     return str

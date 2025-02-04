@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
+import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
 import BackToTop from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
@@ -22,30 +23,30 @@ export default function Discussions({
   userId?: string;
   allowCreate?: boolean;
 }) {
-  const [orderBy, setOrderBy] = useState<string>("top");
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [orderBy, setOrderBy] = useState("top");
+
+  const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
+    useDebouncedSearch();
 
   useEffect(() => {
     if (searchValue) {
       setOrderBy("relevance");
     }
-  }, [orderBy, searchValue]);
+  }, [searchValue]);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.discussion.find.byQuery.useInfiniteQuery(
       {
-        datasetId: datasetId,
-        userId: userId,
+        datasetId,
+        userId,
         search: searchValue,
         order:
           orderBy === "top"
             ? { upvoteCount: "desc", createdAt: "desc" }
             : { createdAt: "desc" },
-        limit: 10,
+        limit: 20,
       },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-      },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor },
     );
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
@@ -63,9 +64,9 @@ export default function Discussions({
             icon={SearchIcon}
             placeholder="Search discussions"
             aria-label="Search discussions"
-            value={searchValue}
-            setValue={setSearchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            value={inputValue}
+            setValue={setInputValue}
+            onChange={handleChange}
           />
         </div>
 
@@ -73,7 +74,7 @@ export default function Discussions({
           <DiscussionsOrderBy
             orderBy={orderBy}
             setOrderBy={setOrderBy}
-            setSearchValue={setSearchValue}
+            setSearchValue={clearSearch}
             className="flex justify-end"
           />
           {allowCreate && <DiscussionCreateButton tooltip />}
@@ -87,7 +88,7 @@ export default function Discussions({
       ) : discussions.length === 0 ? (
         <div className="flex h-20 flex-col items-center justify-center space-y-2">
           <div className="text-muted-foreground">No discussions found</div>
-          <Button variant="secondary" onClick={() => setSearchValue("")}>
+          <Button variant="secondary" onClick={clearSearch}>
             Clear search <Undo2Icon />
           </Button>
         </div>

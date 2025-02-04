@@ -20,7 +20,7 @@ export default async function Page() {
   return (
     <div className="space-y-4">
       <div className="flex items-center space-x-2">
-        <MessageSquareTextIcon className="size-6" />
+        <MessageSquareTextIcon className="size-6 sm:size-7" />
         <h2 className="text-2xl font-bold">Discussions</h2>
       </div>
       <div>

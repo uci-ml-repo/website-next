@@ -44,7 +44,7 @@ export default function DatasetCardCarousel({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between space-x-2">
-        <div className="flex items-center space-x-2 sm:space-x-4 [&>svg]:size-6 sm:[&>svg]:size-8">
+        <div className="flex items-center space-x-2 sm:space-x-4 [&>svg]:size-6 sm:[&>svg]:size-7">
           {icon}
           <h2 className="text-xl font-bold sm:text-2xl">{heading}</h2>
         </div>

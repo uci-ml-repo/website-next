@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function DatasetSearchInput() {
-  const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [searchValue, setSearchValue] = useState("");
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);

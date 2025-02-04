@@ -1,19 +1,27 @@
 "use client";
 
-import { BookmarkIcon, SearchIcon } from "lucide-react";
-import React, { useState } from "react";
+import { BookmarkIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
+import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function Page() {
+  const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
+    useDebouncedSearch();
+
+  const [hasBookmarks, setHasBookmarks] = useState(false);
+
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.bookmark.find.byUserQuery.useInfiniteQuery(
       {
+        search: searchValue || undefined,
         limit: 10,
       },
       {
@@ -23,48 +31,39 @@ export default function Page() {
 
   const bookmarks = data?.pages.flatMap((page) => page.bookmarks) || [];
 
+  useEffect(() => {
+    if (data && !hasBookmarks) {
+      setHasBookmarks(data.pages[0].bookmarks.length > 0);
+    }
+  }, [data, hasBookmarks]);
+
   const loadMoreRef = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   });
 
-  const [searchValue, setSearchValue] = useState("");
+  if (!isLoading && !hasBookmarks) {
+    return (
+      <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
+        <CardContent className="text-pretty text-center">
+          <span>
+            Visit a dataset and click the bookmark button (
+            <BookmarkIcon className="mb-0.5 inline size-5" />) to save it here.
+          </span>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center space-x-2">
-        <BookmarkIcon className="size-6 fill-uci-gold" />
+        <BookmarkIcon className="size-6 fill-uci-gold sm:size-7" />
         <h2 className="text-2xl font-bold">Bookmarks</h2>
       </div>
-      {isLoading ? (
-        <div className="flex h-20 w-full items-center justify-center">
-          <Spinner className="size-10" />
-        </div>
-      ) : bookmarks.length > 0 ? (
-        <>
-          <InputClearable
-            variantSize="lg"
-            placeholder="Search bookmarks"
-            icon={SearchIcon}
-            value={searchValue}
-            setValue={setSearchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <div className="relative">
-            {bookmarks.map((bookmark) => (
-              <React.Fragment key={bookmark.dataset.id}>
-                <DatasetRow
-                  hoverCard
-                  dataset={bookmark.dataset}
-                  className="rounded-none"
-                />
-                <hr />
-              </React.Fragment>
-            ))}
-          </div>
-        </>
-      ) : (
+
+      {!isLoading && !hasBookmarks ? (
         <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
           <CardContent className="text-pretty text-center">
             <span>
@@ -74,14 +73,54 @@ export default function Page() {
             </span>
           </CardContent>
         </Card>
-      )}
+      ) : (
+        <>
+          <InputClearable
+            variantSize="lg"
+            placeholder="Search bookmarks"
+            icon={SearchIcon}
+            value={inputValue}
+            setValue={setInputValue}
+            onChange={handleChange}
+          />
 
-      <div ref={loadMoreRef} />
+          {isLoading ? (
+            <div className="flex h-20 w-full items-center justify-center">
+              <Spinner className="size-10" />
+            </div>
+          ) : bookmarks.length > 0 ? (
+            <>
+              {inputValue && <div>Search results for '{inputValue}'</div>}
 
-      {isFetchingNextPage && (
-        <div className="flex h-12 items-center justify-center">
-          <Spinner />
-        </div>
+              <div className="relative">
+                {bookmarks.map((bookmark) => (
+                  <React.Fragment key={bookmark.dataset.id}>
+                    <DatasetRow
+                      hoverCard
+                      dataset={bookmark.dataset}
+                      className="rounded-none"
+                    />
+                    <hr />
+                  </React.Fragment>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="flex h-20 flex-col items-center justify-center space-y-2">
+              <div className="text-muted-foreground">No bookmarks found</div>
+              <Button variant="secondary" onClick={clearSearch}>
+                Clear search <Undo2Icon />
+              </Button>
+            </div>
+          )}
+
+          <div ref={loadMoreRef} />
+          {isFetchingNextPage && (
+            <div className="flex h-12 items-center justify-center">
+              <Spinner />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

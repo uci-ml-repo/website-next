@@ -1,13 +1,8 @@
-import {
-  CalendarDaysIcon,
-  Columns3Icon,
-  EyeIcon,
-  Rows3Icon,
-} from "lucide-react";
+import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { DatasetCardContent } from "@/components/dataset/preview/DatasetCard";
+import DatasetHoverCard from "@/components/dataset/preview/DatasetHoverCard";
 import {
   HoverCard,
   HoverCardContent,
@@ -22,16 +17,36 @@ interface DatasetRowProps extends React.ComponentProps<"a"> {
   hoverCard?: boolean;
 }
 
+type DatasetStat = {
+  icon: React.ReactNode;
+  text: string | null;
+};
+
 export default function DatasetRow({
   dataset,
   className,
   hoverCard,
   ...props
 }: DatasetRowProps) {
+  const datasetStats: DatasetStat[] = [
+    {
+      icon: <Columns3Icon />,
+      text: dataset.featureCount
+        ? `${abbreviateDecimal(dataset.featureCount)} Features`
+        : null,
+    },
+    {
+      icon: <Rows3Icon />,
+      text: dataset.instanceCount
+        ? `${abbreviateDecimal(dataset.instanceCount)} Instances`
+        : null,
+    },
+  ];
+
   const row = (
     <Link
       className={cn(
-        "group flex w-full items-center space-x-2 rounded-2xl p-4 hover:bg-accent focus:bg-accent",
+        "group flex w-full items-center space-x-3 rounded-2xl p-4 hover:bg-accent focus:bg-accent",
         className,
       )}
       href={DATASET_ROUTE(dataset)}
@@ -45,7 +60,7 @@ export default function DatasetRow({
         className="size-12 rounded-lg object-cover"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
-        <div className="min-w-0">
+        <div className="min-w-0 -space-y-0.5">
           <div className="truncate text-lg font-bold decoration-2 group-hover:underline group-focus:underline">
             {dataset.title}
           </div>
@@ -55,32 +70,16 @@ export default function DatasetRow({
         </div>
         <div
           className={cn(
-            "grid shrink-0 grid-cols-2 grid-rows-2 gap-x-4 gap-y-1 text-muted-foreground",
-            "*:flex *:items-center *:space-x-1 [&_span]:text-nowrap [&_svg]:size-4 [&_svg]:shrink-0",
+            "grid w-36 shrink-0 grid-cols-1 grid-rows-2 gap-x-4 gap-y-1 text-muted-foreground",
+            "[&_svg]:size-4 [&_svg]:shrink-0",
           )}
         >
-          <div>
-            <EyeIcon className="size-4" />
-            <span>{abbreviateDecimal(dataset.viewCount)}</span>
-          </div>
-          {dataset.yearCreated && (
-            <div>
-              <CalendarDaysIcon />
-              <span>{dataset.yearCreated}</span>
+          {datasetStats.map((stat, i) => (
+            <div key={i} className="flex items-center space-x-2">
+              {stat.icon}
+              <span className="text-nowrap">{stat.text}</span>
             </div>
-          )}
-          {dataset.featureCount && (
-            <div>
-              <Columns3Icon />
-              <span>{abbreviateDecimal(dataset.featureCount)}</span>
-            </div>
-          )}
-          {dataset.instanceCount && (
-            <div>
-              <Rows3Icon />
-              <span>{abbreviateDecimal(dataset.instanceCount)}</span>
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </Link>
@@ -88,13 +87,10 @@ export default function DatasetRow({
 
   if (hoverCard) {
     return (
-      <HoverCard openDelay={300}>
+      <HoverCard openDelay={300} closeDelay={300}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
         <HoverCardContent className="w-[50dvw] min-w-64 max-w-xl" align="end">
-          <DatasetCardContent
-            dataset={dataset}
-            descriptionClassName="line-clamp-4 text-base"
-          />
+          <DatasetHoverCard dataset={dataset} />
         </HoverCardContent>
       </HoverCard>
     );
