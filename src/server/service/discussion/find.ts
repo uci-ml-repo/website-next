@@ -9,8 +9,8 @@ import type {
   DiscussionUpvoteSelect,
   UserSelect,
 } from "@/db/types";
-import type { DiscussionQuery } from "@/server/service/schema/discussion";
-import { sortFunction } from "@/server/service/schema/lib/order";
+import type { DiscussionQuery } from "@/server/schema/discussion";
+import { sortFunction } from "@/server/schema/lib/order";
 
 const DISCUSSION_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('english', ${discussion.title}), 'A') ||
                                    SETWEIGHT(TO_TSVECTOR('english', ${discussion.content}), 'D'))`;

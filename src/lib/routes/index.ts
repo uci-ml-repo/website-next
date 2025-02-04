@@ -2,7 +2,7 @@ export * from "./dataset";
 
 export const HOME_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/login";
-export const FORGOT_PASSWORD_ROUTE = "/auth/forgot-password";
+export const FORGOT_PASSWORD_ROUTE = "/auth/forgot";
 export const ADMIN_ROUTE = "/admin";
 export const ABOUT_ROUTE = "/about";
 export const CONTACT_ROUTE = "/contact";

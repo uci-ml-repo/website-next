@@ -3,9 +3,9 @@ import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
+import type { DatasetQuery } from "@/server/schema/dataset";
+import { sortFunction } from "@/server/schema/lib/order";
 import ServiceError from "@/server/service/errors";
-import type { DatasetQuery } from "@/server/service/schema/dataset";
-import { sortFunction } from "@/server/service/schema/lib/order";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 

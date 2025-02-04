@@ -1,7 +1,7 @@
 import { z } from "zod";
 
+import { datasetQuery } from "@/server/schema/dataset";
 import service from "@/server/service";
-import { datasetQuery } from "@/server/service/schema/dataset";
 import { procedure, router } from "@/server/trpc";
 import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
 

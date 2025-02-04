@@ -1,7 +1,7 @@
 import { z } from "zod";
 
+import { bookmarkQuery } from "@/server/schema/bookmark";
 import service from "@/server/service";
-import { bookmarkQuery } from "@/server/service/schema/bookmark";
 import { protectedProcedure, router } from "@/server/trpc";
 
 const bookmarkFindRouter = router({

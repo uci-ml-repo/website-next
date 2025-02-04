@@ -8,8 +8,8 @@ import type {
   DiscussionSelect,
   UserSelect,
 } from "@/db/types";
-import type { DiscussionCommentQuery } from "@/server/service/schema/discussion";
-import { sortFunction } from "@/server/service/schema/lib/order";
+import type { DiscussionCommentQuery } from "@/server/schema/discussion";
+import { sortFunction } from "@/server/schema/lib/order";
 
 function buildQuery(query: DiscussionCommentQuery) {
   let conditions = [];

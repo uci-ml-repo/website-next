@@ -33,6 +33,7 @@ import {
   ADMIN_ROUTE,
   CONTRIBUTE_ROUTE,
   DATASETS_ROUTE,
+  FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
   PROFILE_BOOKMARKS_ROUTE,
   PROFILE_ROUTE,
@@ -177,7 +178,12 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </>
           ) : (
             <SidebarMenuItem>
-              <SidebarMenuButton activePath={SIGN_IN_ROUTE} asChild>
+              <SidebarMenuButton
+                activePath={RegExp(
+                  `^${SIGN_IN_ROUTE}|^${FORGOT_PASSWORD_ROUTE}`,
+                )}
+                asChild
+              >
                 <Link href={SIGN_IN_ROUTE}>
                   <LogInIcon />
                   <span>Sign In</span>

@@ -53,7 +53,7 @@ export default function Page() {
         </div>
 
         {/* Desktop View */}
-        <Card className="hidden max-w-[450px] flex-col items-center justify-self-center rounded-4xl p-4 sm:flex">
+        <Card className="mx-auto hidden w-[450px] flex-col items-center rounded-4xl p-4 sm:flex">
           <CardHeader className="py-6">
             <Banner variant="logo" link />
           </CardHeader>

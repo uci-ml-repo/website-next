@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { order } from "@/server/service/schema/lib/order";
+import { order } from "@/server/schema/lib/order";
 
 export const discussionQuery = z.object({
   datasetId: z.number().optional(),

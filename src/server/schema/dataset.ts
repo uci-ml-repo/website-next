@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { order } from "@/server/service/schema/lib/order";
+import { order } from "@/server/schema/lib/order";
 
 export const datasetQuery = z.object({
   order: order(["viewCount", "donatedAt"]).optional(),

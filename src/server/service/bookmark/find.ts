@@ -3,7 +3,7 @@ import type { Session } from "next-auth";
 
 import { db } from "@/db";
 import { bookmark, dataset } from "@/db/schema";
-import type { BookmarkQuery } from "@/server/service/schema/bookmark";
+import type { BookmarkQuery } from "@/server/schema/bookmark";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
