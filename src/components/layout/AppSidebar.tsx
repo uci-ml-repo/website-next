@@ -4,6 +4,7 @@ import {
   DatabaseIcon,
   HouseIcon,
   LayoutDashboardIcon,
+  LogInIcon,
   PlusIcon,
   UserIcon,
 } from "lucide-react";
@@ -35,6 +36,7 @@ import {
   HOME_ROUTE,
   PROFILE_BOOKMARKS_ROUTE,
   PROFILE_ROUTE,
+  SIGN_IN_ROUTE,
 } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
@@ -83,9 +85,11 @@ export default function AppSidebar({ session }: { session: Session | null }) {
     <Sidebar ref={ref}>
       <div className="flex items-center">
         <SidebarTrigger />
-        <Link href={HOME_ROUTE}>
-          <Banner variant="logo-sm" className="text-nowrap" abbreviate />
-        </Link>
+        <SidebarOpenVisible>
+          <Link href={HOME_ROUTE}>
+            <Banner variant="logo-sm" className="text-nowrap" abbreviate />
+          </Link>
+        </SidebarOpenVisible>
       </div>
       <div
         className="flex h-full w-full flex-col"
@@ -133,7 +137,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
           )}
-          {session?.user && (
+          {session?.user ? (
             <>
               <SidebarMenuItem>
                 <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
@@ -171,6 +175,15 @@ export default function AppSidebar({ session }: { session: Session | null }) {
                   </SidebarOpenVisible>
                 )}
             </>
+          ) : (
+            <SidebarMenuItem>
+              <SidebarMenuButton activePath={SIGN_IN_ROUTE} asChild>
+                <Link href={SIGN_IN_ROUTE}>
+                  <LogInIcon />
+                  <span>Sign In</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           )}
         </SidebarMenu>
         <SidebarFooter>

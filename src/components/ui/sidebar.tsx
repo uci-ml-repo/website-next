@@ -416,7 +416,6 @@ const SidebarMenuItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <li
     ref={ref}
-    data-sidebar="menu-item"
     className={cn("group/menu-item relative", className)}
     {...props}
   />
@@ -468,13 +467,12 @@ const SidebarMenuButton = React.forwardRef<
           data-sidebar="menu-button"
           data-active={_isActive}
           className={cn(
-            "peer/menu-button flex h-12 w-full items-center gap-5 overflow-hidden p-2 pl-[22px]",
+            _isActive ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50",
+            "peer/menu-button flex h-12 w-full items-center gap-5 p-2 pl-[22px] ring-inset focus-visible:ring-2",
             "text-left text-lg font-semibold outline-none ring-sidebar-ring transition-[width,height,padding]",
-            "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50",
-            "group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50",
+            "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50",
             "data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:text-sidebar-accent-foreground",
             "[&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:stroke-[2.5px] [&_*]:z-10",
-            _isActive ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50",
             className,
           )}
           {...props}

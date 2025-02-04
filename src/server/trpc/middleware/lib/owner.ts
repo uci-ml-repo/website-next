@@ -14,7 +14,7 @@ export namespace AssertOwner {
       throw new TRPCError({ code: "BAD_REQUEST" });
     }
 
-    const dataset = await service.dataset.find.byId(datasetId);
+    const dataset = await service.dataset.find.byId({ datasetId });
 
     if (!dataset) {
       throw new TRPCError({ code: "NOT_FOUND" });
