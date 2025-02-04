@@ -8,8 +8,9 @@ import * as React from "react";
 import { auth } from "@/auth";
 import AppSidebar from "@/components/layout/AppSidebar";
 import CookiesAlert from "@/components/layout/CookiesAlert";
+import Footer from "@/components/layout/Footer";
 import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
-import Header, { HEADER_HEIGHT } from "@/components/layout/Header";
+import Header from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -80,17 +81,10 @@ export default async function Layout({
                   )}
                 >
                   <Header session={session} />
-                  <div
-                    style={
-                      {
-                        "--header-height": HEADER_HEIGHT,
-                      } as React.CSSProperties
-                    }
-                    className="max-md:mt-[--header-height]"
-                  >
-                    {children}
-                  </div>
+                  {children}
+                  <Footer />
                 </div>
+
                 <CookiesAlert />
               </SidebarProvider>
 

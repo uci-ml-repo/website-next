@@ -15,10 +15,6 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export const SIDEBAR_WIDTH = "16rem";
-export const SIDEBAR_WIDTH_MOBILE = "18rem";
-export const SIDEBAR_WIDTH_COLLAPSED = "4rem";
-
 type SidebarContext = {
   state: "expanded" | "collapsed";
   open: boolean;
@@ -53,7 +49,6 @@ const SidebarProvider = React.forwardRef<
       open: openProp,
       onOpenChange: setOpenProp,
       className,
-      style,
       children,
       ...props
     },
@@ -140,13 +135,6 @@ const SidebarProvider = React.forwardRef<
       <SidebarContext.Provider value={contextValue}>
         <TooltipProvider delayDuration={0}>
           <div
-            style={
-              {
-                "--sidebar-width": SIDEBAR_WIDTH,
-                "--sidebar-width-collapsed": SIDEBAR_WIDTH_COLLAPSED,
-                ...style,
-              } as React.CSSProperties
-            }
             className={cn("group/sidebar-wrapper flex min-h-svh", className)}
             ref={ref}
             {...props}
@@ -186,11 +174,6 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
             side="left"
             data-sidebar="sidebar"
             data-mobile="true"
-            style={
-              {
-                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-              } as React.CSSProperties
-            }
             className={cn(
               "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)] [&>button]:hidden",
               className,
@@ -282,24 +265,6 @@ const SidebarRail = React.forwardRef<
   );
 });
 SidebarRail.displayName = "SidebarRail";
-
-const SidebarInset = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"main">
->(({ className, ...props }, ref) => {
-  return (
-    <main
-      ref={ref}
-      className={cn(
-        "relative flex min-h-svh flex-1 flex-col bg-background",
-        "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
-SidebarInset.displayName = "SidebarInset";
 
 const SidebarHeader = React.forwardRef<
   HTMLDivElement,
@@ -659,7 +624,6 @@ export {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInset,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuBadge,

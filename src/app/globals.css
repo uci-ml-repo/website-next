@@ -8,6 +8,10 @@ body {
 
 @layer base {
   :root {
+    --header-height: 4rem;
+    --sidebar-width: 16rem;
+    --sidebar-width-collapsed: 4rem;
+
     --background: 0 0% 98%;
     --foreground: 0 0% 4%;
     --primary: 0 0% 9%;
@@ -117,7 +121,7 @@ body {
 }
 
 .content {
-  @apply content-x min-h-screen w-full pb-20;
+  @apply content-x w-full;
 }
 
 .hide-inactive [data-state="inactive"] {

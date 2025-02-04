@@ -20,8 +20,6 @@ import { Enums } from "@/db/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-export const HEADER_HEIGHT = "4rem";
-
 export default function Header({ session }: { session: Session | null }) {
   const isMobile = useIsMobile();
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -39,9 +37,8 @@ export default function Header({ session }: { session: Session | null }) {
 
   return (
     <header
-      style={{ height: HEADER_HEIGHT }}
       className={cn(
-        "z-40 max-md:fixed max-md:left-0 max-md:right-0",
+        "z-40 h-[--header-height] max-md:fixed max-md:left-0 max-md:right-0",
         "transition-all ease-in-out max-md:overflow-y-hidden md:!h-18",
         { "bg-background shadow": isMobile && hasScrolled },
       )}

@@ -1,54 +1,39 @@
 "use client";
 
 import {
-  ChevronRightIcon,
   DatabaseIcon,
   HouseIcon,
-  InfoIcon,
   LayoutDashboardIcon,
   PlusIcon,
   UserIcon,
 } from "lucide-react";
-import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import DatasetSidebarPreview from "@/components/dataset/preview/DatasetSidebarPreview";
 import { Banner } from "@/components/icons";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
   SidebarOpenVisible,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  ABOUT_ROUTE,
   ADMIN_ROUTE,
-  CONTACT_ROUTE,
   CONTRIBUTE_ROUTE,
   DATASETS_ROUTE,
   HOME_ROUTE,
-  PRIVACY_POLICY_ROUTE,
   PROFILE_BOOKMARKS_ROUTE,
   PROFILE_ROUTE,
 } from "@/lib/routes";
-import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -57,12 +42,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { setOpen, open, temporaryOpen, setTemporaryOpen } = useSidebar();
-  const [resourcesOpen, setResourcesOpen] = useState(true);
-
-  useEffect(() => {
-    if (!open) setResourcesOpen(false);
-  }, [open, setResourcesOpen]);
+  const { temporaryOpen, setTemporaryOpen } = useSidebar();
 
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -85,18 +65,6 @@ export default function AppSidebar({ session }: { session: Session | null }) {
     }
     setTemporaryOpen(false);
   };
-
-  const resourcePath = RegExp(
-    `${ABOUT_ROUTE}|${CONTACT_ROUTE}|${PRIVACY_POLICY_ROUTE}`,
-  );
-
-  useEffect(() => {
-    if (temporaryOpen && pathname.match(resourcePath)) {
-      setResourcesOpen(true);
-    } else if (!temporaryOpen && !open) {
-      setResourcesOpen(false);
-    }
-  }, [open, pathname, resourcePath, temporaryOpen]);
 
   useEffect(() => {
     if (window) {
@@ -148,6 +116,20 @@ export default function AppSidebar({ session }: { session: Session | null }) {
         </SidebarMenuItem>
         <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
 
+        {isPriviliged(session?.user.role) && (
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              activePath={ADMIN_ROUTE}
+              className="!text-destructive"
+              asChild
+            >
+              <Link href={ADMIN_ROUTE}>
+                <LayoutDashboardIcon />
+                <span>Admin</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )}
         {session?.user && (
           <>
             <SidebarMenuItem>
@@ -188,83 +170,6 @@ export default function AppSidebar({ session }: { session: Session | null }) {
           </>
         )}
       </SidebarMenu>
-      <SidebarFooter
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <SidebarMenu>
-          {isPriviliged(session?.user.role) && (
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                activePath={ADMIN_ROUTE}
-                className="!text-destructive"
-                asChild
-              >
-                <Link href={ADMIN_ROUTE}>
-                  <LayoutDashboardIcon />
-                  <span>Admin</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )}
-          <Collapsible
-            className="group/collapsible"
-            open={resourcesOpen}
-            onOpenChange={(isCollapsibleOpen) => {
-              if (isCollapsibleOpen) {
-                setOpen(true);
-                setResourcesOpen(true);
-              } else {
-                setResourcesOpen(false);
-              }
-            }}
-          >
-            <CollapsibleTrigger asChild>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  activePath={RegExp(
-                    `^${ABOUT_ROUTE}|^${CONTACT_ROUTE}|^${PRIVACY_POLICY_ROUTE}`,
-                  )}
-                >
-                  <InfoIcon />
-                  <span className="flex w-full items-center justify-between">
-                    <span>Resources</span>
-                    <ChevronRightIcon
-                      className={cn("transition-transform", {
-                        "rotate-90": resourcesOpen,
-                      })}
-                    />
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </CollapsibleTrigger>
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: resourcesOpen ? "auto" : 0 }}
-              className="overflow-hidden"
-            >
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  <SidebarMenuSubButton asChild activePath={ABOUT_ROUTE}>
-                    <Link href={ABOUT_ROUTE}>About</Link>
-                  </SidebarMenuSubButton>
-
-                  <SidebarMenuSubButton asChild activePath={CONTACT_ROUTE}>
-                    <Link href={CONTACT_ROUTE}>Contact</Link>
-                  </SidebarMenuSubButton>
-
-                  <SidebarMenuSubButton
-                    asChild
-                    activePath={PRIVACY_POLICY_ROUTE}
-                  >
-                    <Link href={PRIVACY_POLICY_ROUTE}>Privacy</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </motion.div>
-          </Collapsible>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   );
 }

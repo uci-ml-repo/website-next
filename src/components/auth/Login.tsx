@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -21,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
+import { FORGOT_PASSWORD_ROUTE } from "@/lib/routes";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }),
@@ -64,7 +66,7 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
         {error && (
           <Alert variant="destructive">
             <div className="flex items-center space-x-2">
-              <AlertCircleIcon className="h-4 w-4" />
+              <AlertCircleIcon className="size-4" />
               <AlertDescription>{error}</AlertDescription>
             </div>
           </Alert>
@@ -98,6 +100,14 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
               )}
             />
           </div>
+          <div>
+            <Link
+              className="text-sm text-muted-foreground hover:underline"
+              href={FORGOT_PASSWORD_ROUTE}
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <AuthButton
             icon={<MailIcon />}
             label="Sign in with Email"
@@ -122,15 +132,15 @@ export default function Login({ setTab, redirectTo }: LoginProps) {
           await providerLogin({ provider: "github", redirectTo });
         }}
       />
-      <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
+      <div className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Don't have an account?</span>
         <button
-          className="cursor-pointer text-foreground underline"
+          className="text-foreground underline"
           onClick={() => setTab("register")}
         >
           Register
         </button>
-      </p>
+      </div>
     </div>
   );
 }
