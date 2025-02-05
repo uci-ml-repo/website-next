@@ -630,20 +630,21 @@ export const sessionRelations = relations(session, ({ one }) => ({
   }),
 }));
 
-export const verificationToken = pgTable(
-  "verification_token",
-  {
-    identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (verificationToken) => [
-    {
-      compositePk: primaryKey({
-        columns: [verificationToken.identifier, verificationToken.token],
-      }),
-    },
-  ],
+export const emailVerificationToken = pgTable("email_verification_token", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("userId").notNull(),
+  token: text("token").notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const emailVerificationTokenRelations = relations(
+  emailVerificationToken,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [emailVerificationToken.userId],
+      references: [user.id],
+    }),
+  }),
 );
 
 export const passwordResetToken = pgTable("password_reset_token", {

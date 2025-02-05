@@ -28,7 +28,7 @@ export default class UserCredentialsService {
     } else {
       const token = generateToken();
 
-      const expires = new Date(Date.now() + 3600000); // 1 hour
+      const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
       await db.insert(passwordResetToken).values({
         userId: user.id,

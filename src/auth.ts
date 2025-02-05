@@ -8,7 +8,7 @@ import { v4 as uuid } from "uuid";
 import authConfig from "@/auth.config";
 import { db } from "@/db";
 import type { UserRole } from "@/db/enums";
-import { account, session, user, verificationToken } from "@/db/schema";
+import { account, session, user } from "@/db/schema";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import service from "@/server/service";
 
@@ -31,7 +31,6 @@ const adapter = DrizzleAdapter(db, {
   usersTable: user,
   accountsTable: account,
   sessionsTable: session,
-  verificationTokensTable: verificationToken,
 });
 
 export const authOptions = NextAuth({
@@ -80,13 +79,16 @@ export const authOptions = NextAuth({
     async createUser({ user }) {
       const existingUser = await service.user.find.byId(user.id ?? "");
 
-      if (existingUser) {
+      if (!existingUser) {
         return;
       }
 
-      service.email
-        .sendRegistrationEmail(user as { email: string; name: string })
-        .then();
+      // if the user was just created
+      if (Date.now() - existingUser.createdAt.getTime() < 1000) {
+        service.email
+          .sendRegistrationEmail(user as { email: string; name: string })
+          .then();
+      }
     },
   },
   jwt: {
