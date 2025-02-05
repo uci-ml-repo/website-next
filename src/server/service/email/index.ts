@@ -1,10 +1,16 @@
+import * as process from "node:process";
+
+import fs from "fs-extra";
 import { OAuth2Client } from "google-auth-library";
-import type { SendMailOptions, Transporter } from "nodemailer";
+import type { Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import type SMTPConnection from "nodemailer/lib/smtp-connection";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import path from "path";
+import { fileURLToPath } from "url";
 
-import ServiceError from "@/server/service/errors";
+import { ABOUT_ROUTE, CONTACT_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
+import EmailTemplateService from "@/server/service/email/templates";
 
 interface OAuth2Options extends SMTPTransport.Options {
   auth?: SMTPConnection.OAuth2;
@@ -17,8 +23,9 @@ interface OAuth2Transporter extends Transporter {
 export default class EmailService {
   oauth: OAuth2Client;
   transporter: OAuth2Transporter;
+  templatesFolder: string;
 
-  constructor() {
+  constructor(readonly template = new EmailTemplateService()) {
     this.oauth = new OAuth2Client({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -41,45 +48,37 @@ export default class EmailService {
         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
       },
     });
+
+    this.templatesFolder = path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      "templates",
+    );
   }
 
-  async sendEmail(options: SendMailOptions) {
-    const accessToken = await this.oauth
-      .getAccessToken()
-      .then((res) => res.token ?? "")
-      .catch((error) => {
-        throw new ServiceError({
-          reason: "Failed to Send Email",
-          origin: "Email",
-          message: error.message,
-        });
-      });
-
-    this.transporter.options.auth ??= {};
-    this.transporter.options.auth.accessToken = accessToken;
-
-    await this.transporter.sendMail(options).catch((error) => {
-      throw new ServiceError({
-        reason: "Failed to Send Email",
-        origin: "Email",
-        message: error.message,
-      });
-    });
+  protected readTemplateTextFile(relativePath: string) {
+    return fs.readFileSync(
+      path.join(this.templatesFolder, relativePath),
+      "utf8",
+    );
   }
 
-  async sendRegistrationEmail({
-    email,
-    name,
-  }: {
-    email: string;
-    name: string;
-  }) {
-    await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
-      to: email,
-      subject:
-        "Successful Registration for UC Irvine Machine Learning Repository",
-      text: `Hello ${name},\nYou are receiving this message because you have successfully created an account for the UCI Machine Learning Repository under this email address.`,
-    });
+  protected populateEmailTemplate(
+    content: string,
+    { name, email }: { name: string; email: string },
+  ) {
+    if (!process.env.ORIGIN) {
+      throw new Error("ORIGIN is not set");
+    }
+
+    return content
+      .replaceAll("{name}", name)
+      .replaceAll("{email}", email)
+      .replaceAll("{origin}", process.env.ORIGIN)
+      .replaceAll("{about}", path.join(process.env.ORIGIN + ABOUT_ROUTE))
+      .replaceAll("{contact}", path.join(process.env.ORIGIN + CONTACT_ROUTE))
+      .replaceAll(
+        "{privacy}",
+        path.join(process.env.ORIGIN + PRIVACY_POLICY_ROUTE),
+      );
   }
 }

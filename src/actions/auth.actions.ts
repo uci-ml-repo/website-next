@@ -5,6 +5,7 @@ import bcryptjs from "bcryptjs";
 import { signIn } from "@/auth";
 import { db } from "@/db";
 import { user } from "@/db/schema";
+import service from "@/server/service";
 
 type Provider = "google" | "github";
 
@@ -107,6 +108,8 @@ export async function credentialsRegister({
       email,
       password,
     });
+
+    service.email.sendRegistrationEmail({ email, name }).then();
 
     return {
       success: true,

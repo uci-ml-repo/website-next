@@ -19,8 +19,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/query/client";
 
-if (!process.env.BASE_URL) {
-  throw new Error("BASE_URL is not set");
+if (!process.env.ORIGIN) {
+  throw new Error("ORIGIN is not set");
 }
 
 const inter = Inter({ subsets: ["latin"], fallback: ["sans-serif"] });
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     default: "UCI Machine Learning Repository",
   },
   description: "UCI Repository for Machine Learning Datasets",
-  metadataBase: new URL(process.env.BASE_URL),
+  metadataBase: new URL(process.env.ORIGIN),
   openGraph: {
     images: [
       {

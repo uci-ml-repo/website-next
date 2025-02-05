@@ -78,9 +78,9 @@ export const authOptions = NextAuth({
   },
   events: {
     async createUser({ user }) {
-      await service.email.sendRegistrationEmail(
-        user as { email: string; name: string },
-      );
+      service.email
+        .sendRegistrationEmail(user as { email: string; name: string })
+        .then();
     },
   },
   jwt: {

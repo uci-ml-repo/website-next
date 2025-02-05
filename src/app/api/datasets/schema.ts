@@ -57,8 +57,8 @@ export function datasetToPythonMetadata(
   return {
     uci_id: dataset.id,
     name: dataset.title,
-    repository_url: process.env.BASE_URL + DATASET_ROUTE(dataset),
-    data_url: process.env.BASE_URL + DATASET_PYTHON_DATA_ROUTE(dataset),
+    repository_url: process.env.ORIGIN + DATASET_ROUTE(dataset),
+    data_url: process.env.ORIGIN + DATASET_PYTHON_DATA_ROUTE(dataset),
     abstract: dataset.description,
     area: dataset.subjectArea,
     tasks: dataset.tasks,
