@@ -1,14 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { useForm } from "react-hook-form";
 
 import { credentialsLogin, providerLogin } from "@/actions/auth.actions";
-import type { Tab } from "@/app/auth/login/page";
 import AuthButton from "@/components/auth/AuthButton";
+import type { LoginFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -24,31 +22,19 @@ import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
 import { FORGOT_PASSWORD_ROUTE } from "@/lib/routes";
 
-const formSchema = z.object({
-  email: z.string().min(1, { message: "Email is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
-
 interface LoginProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
   redirectTo: string;
+  form: ReturnType<typeof useForm<LoginFormSchema>>;
 }
 
-export default function Login({ setTab, redirectTo }: LoginProps) {
+export default function Login({ setTab, redirectTo, form }: LoginProps) {
   const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: LoginFormSchema) {
     setError(null);
     startTransition(async () => {
       const res = await credentialsLogin(values);

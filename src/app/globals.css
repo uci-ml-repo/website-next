@@ -25,7 +25,7 @@ body {
     --destructive: 0 84% 60%;
     --destructive-muted: 0 84% 38%;
     --destructive-foreground: 0 0% 98%;
-    --positive: 114 49% 41%;
+    --positive: 114 49% 36%;
     --uci-blue: 209 100% 24%;
     --uci-blue-foreground: 0 0% 98%;
     --uci-gold: 48 99% 51%;
@@ -68,7 +68,7 @@ body {
     --destructive: 0 62.8% 52%;
     --destructive-muted: 0 84% 42%;
     --destructive-foreground: 0 0% 98%;
-    --positive: 114 49% 41%;
+    --positive: 114 49% 42%;
     --uci-blue: 209 70% 40%;
     --uci-blue-foreground: 0 0% 90%;
     --uci-gold: 48 99% 51%;

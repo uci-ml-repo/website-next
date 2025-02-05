@@ -1,12 +1,14 @@
-import * as crypto from "node:crypto";
+import bcryptjs from "bcryptjs";
+import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { passwordResetToken } from "@/db/schema";
-import { formatEnum } from "@/lib/utils";
+import { passwordResetToken, user } from "@/db/schema";
+import { formatEnum, generateToken } from "@/lib/utils";
 import service from "@/server/service";
+import ServiceError from "@/server/service/errors";
 
 export default class UserCredentialsService {
-  async passwordReset({ email }: { email: string }) {
+  async sendResetPasswordEmail({ email }: { email: string }) {
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),
     });
@@ -24,7 +26,8 @@ export default class UserCredentialsService {
         providers: accounts.map((account) => formatEnum(account.provider)),
       });
     } else {
-      const token = crypto.randomBytes(32).toString("hex");
+      const token = generateToken();
+
       const expires = new Date(Date.now() + 3600000); // 1 hour
 
       await db.insert(passwordResetToken).values({
@@ -39,5 +42,75 @@ export default class UserCredentialsService {
         name: user.name,
       });
     }
+  }
+
+  async getResetPasswordToken(token: string) {
+    const passwordResetToken = await db.query.passwordResetToken.findFirst({
+      where: (passwordResetToken, { eq }) =>
+        eq(passwordResetToken.token, token),
+      with: {
+        user: true,
+      },
+    });
+
+    if (!passwordResetToken) {
+      return {
+        success: false,
+        message: "Invalid token",
+      };
+    }
+
+    if (passwordResetToken.expires < new Date()) {
+      return {
+        success: false,
+        message: "Token expired",
+      };
+    }
+
+    return { success: true, resetToken: passwordResetToken };
+  }
+
+  async resetPassword({
+    token,
+    password,
+  }: {
+    token: string;
+    password: string;
+  }) {
+    const { success, message, resetToken } =
+      await this.getResetPasswordToken(token);
+
+    if (!success || !resetToken?.user.password) {
+      throw new ServiceError({
+        reason: "Failed to Reset Password",
+        origin: "User",
+        message: message,
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    console.log(hashedPassword);
+    console.log(resetToken.user.password);
+    console.log(bcryptjs.compareSync(password, resetToken.user.password));
+
+    if (bcryptjs.compareSync(password, resetToken.user.password)) {
+      throw new ServiceError({
+        reason: "Failed to Reset Password",
+        origin: "User",
+        message: "New password must be different from old password",
+      });
+    }
+
+    await db
+      .update(user)
+      .set({ password: hashedPassword })
+      .where(eq(user.id, resetToken.userId));
+
+    await db
+      .delete(passwordResetToken)
+      .where(eq(passwordResetToken.token, token));
+
+    return { success: true };
   }
 }

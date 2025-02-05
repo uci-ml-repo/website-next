@@ -1,14 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { useForm } from "react-hook-form";
 
 import { credentialsRegister, providerLogin } from "@/actions/auth.actions";
-import type { Tab } from "@/app/auth/login/page";
 import AuthButton from "@/components/auth/AuthButton";
+import type { RegisterFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -24,52 +22,27 @@ import { PasswordInput } from "@/components/ui/password-input";
 import TextDivider from "@/components/ui/text-divider";
 import { cn } from "@/lib/utils";
 
-const formSchema = z
-  .object({
-    name: z
-      .string()
-      .min(1, { message: "Name is required" })
-      .max(255, { message: "Name cannot exceed 255 characters" }),
-    email: z
-      .string()
-      .email()
-      .max(255, { message: "Email cannot exceed 255 characters" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm Password is required" }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
 interface RegisterProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
   redirectTo: string;
+  form: ReturnType<typeof useForm<RegisterFormSchema>>;
+  emailFormIsOpen: boolean;
+  setEmailFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Register({ setTab, redirectTo }: RegisterProps) {
+export default function Register({
+  setTab,
+  redirectTo,
+  form,
+  emailFormIsOpen,
+  setEmailFormIsOpen,
+}: RegisterProps) {
   const router = useRouter();
-
-  const [emailFormIsOpen, setEmailFormIsOpen] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      name: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: RegisterFormSchema) {
     setError(null);
     startTransition(async () => {
       const res = await credentialsRegister(values);
@@ -93,7 +66,7 @@ export default function Register({ setTab, redirectTo }: RegisterProps) {
             {error && (
               <Alert variant="destructive">
                 <div className="flex items-center space-x-2">
-                  <AlertCircleIcon className="h-4 w-4" />
+                  <AlertCircleIcon className="size-4" />
                   <AlertDescription>{error}</AlertDescription>
                 </div>
               </Alert>

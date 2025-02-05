@@ -46,7 +46,7 @@ export default function DatasetRow({
   const row = (
     <Link
       className={cn(
-        "group flex w-full items-center space-x-3 rounded-2xl p-4 hover:bg-accent focus:bg-accent",
+        "group flex w-full items-center space-x-3 rounded-2xl p-4 @container hover:bg-accent focus:bg-accent",
         className,
       )}
       href={DATASET_ROUTE(dataset)}
@@ -72,6 +72,7 @@ export default function DatasetRow({
           className={cn(
             "grid w-36 shrink-0 grid-cols-1 grid-rows-2 gap-x-4 gap-y-1 text-muted-foreground",
             "[&_svg]:size-4 [&_svg]:shrink-0",
+            "hidden @md:block",
           )}
         >
           {datasetStats.map((stat, i) => (

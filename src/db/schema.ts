@@ -647,8 +647,7 @@ export const verificationToken = pgTable(
 );
 
 export const passwordResetToken = pgTable("password_reset_token", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  token: text("token").notNull().unique(),
+  token: text("token").notNull().primaryKey(),
   userId: uuid("user_id")
     .references(() => user.id)
     .notNull(),

@@ -8,7 +8,8 @@ export type ServiceErrorReason =
   | "Dataset Not Found"
   | "Invalid File Path"
   | "Failed to Send Email"
-  | "User Not Found";
+  | "User Not Found"
+  | "Failed to Reset Password";
 
 export type ServiceErrorOrigin = "Dataset" | "File" | "Email" | "User";
 
