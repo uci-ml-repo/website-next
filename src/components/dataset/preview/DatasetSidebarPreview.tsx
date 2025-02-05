@@ -33,7 +33,7 @@ export default function DatasetSidebarPreview({
           alt={`${dataset.title} thumbnail`}
           height={100}
           width={100}
-          className="size-7 rounded-md object-cover"
+          className="size-7 rounded-md object-cover dark:brightness-90"
         />
         <div className="flex w-full min-w-0 items-center justify-between space-x-1">
           <div className="truncate text-base font-bold decoration-2 group-hover/dataset:underline">

@@ -57,7 +57,7 @@ export default function DatasetRow({
         alt={`${dataset.title} thumbnail`}
         width={200}
         height={200}
-        className="size-12 rounded-lg object-cover"
+        className="size-12 rounded-lg object-cover dark:brightness-90"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
         <div className="min-w-0 -space-y-0.5">

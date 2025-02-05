@@ -43,7 +43,7 @@ export default function DatasetTitleGroup({
           alt="thumbnail"
           className={cn(
             "ml-14 h-[120px] w-[275px] min-w-64 shrink-0",
-            "rounded-2xl border-2 object-cover object-center dark:brightness-[.85] max-lg:hidden",
+            "rounded-2xl border-2 object-cover object-center dark:brightness-90 max-lg:hidden",
           )}
           priority
         />
