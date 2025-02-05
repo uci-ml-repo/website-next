@@ -14,7 +14,11 @@ export function ThemeToggle() {
 
   return (
     <div className="flex items-center space-x-1.5 [&>svg]:size-4">
-      <Switch onCheckedChange={changeTheme} checked={theme === "dark"} />
+      <Switch
+        onCheckedChange={changeTheme}
+        checked={theme === "dark"}
+        className="!bg-muted-foreground"
+      />
       {theme === "light" ? <SunIcon /> : <MoonIcon />}
     </div>
   );
