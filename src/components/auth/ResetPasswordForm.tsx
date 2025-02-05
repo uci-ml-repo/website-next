@@ -1,7 +1,6 @@
 "use client";
 
-import { AlertCircleIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { AlertCircleIcon, CheckIcon } from "lucide-react";
 import type { useForm } from "react-hook-form";
 
 import type { FormSchema } from "@/components/auth/ResetPassword";
@@ -27,21 +26,33 @@ export default function ResetPasswordForm({
   token: string;
   form: ReturnType<typeof useForm<FormSchema>>;
 }) {
-  const router = useRouter();
-
-  const resetPasswordMutation = trpc.user.credentials.resetPassword.useMutation(
-    {
-      onSuccess: () => {
-        router.push(SIGN_IN_ROUTE);
-      },
-    },
-  );
+  const resetPasswordMutation =
+    trpc.user.credentials.resetPassword.useMutation();
 
   function onSubmit(values: FormSchema) {
     resetPasswordMutation.mutate({
       token,
       password: values.password,
     });
+  }
+
+  if (resetPasswordMutation.isSuccess) {
+    return (
+      <div className="space-y-6">
+        <Alert variant="positive">
+          <div className="flex items-center space-x-2">
+            <CheckIcon />
+            <span className="text-base">Successfully changed password</span>
+          </div>
+        </Alert>
+        <div className="text-center">
+          You can now{" "}
+          <a href={SIGN_IN_ROUTE} className="text-link hover:underline">
+            Sign In
+          </a>
+        </div>
+      </div>
+    );
   }
 
   return (
