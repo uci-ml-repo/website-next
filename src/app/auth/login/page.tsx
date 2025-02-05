@@ -38,7 +38,7 @@ export default function Page() {
     <Main>
       <Tabs value={tab} onValueChange={onTabChange}>
         {/* Mobile View */}
-        <div className="flex flex-col items-center space-y-4 sm:hidden">
+        <div className="mx-auto flex max-w-[450px] flex-col items-center space-y-4 sm:hidden">
           <Banner variant="logo" link className="px-4" />
           <TabsList className="grid w-full max-w-md grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>

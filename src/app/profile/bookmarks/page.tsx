@@ -6,7 +6,6 @@ import {
   SearchIcon,
   Undo2Icon,
 } from "lucide-react";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
@@ -17,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
-import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function Page() {
@@ -50,22 +48,6 @@ export default function Page() {
     hasNextPage,
     isFetchingNextPage,
   });
-
-  if (!isLoading && !hasBookmarks) {
-    return (
-      <Card className="flex h-28 items-center justify-center bg-muted">
-        <CardContent className="space-y-1 text-pretty text-center">
-          <div className="text-muted-foreground">
-            Visit a dataset and click the bookmark button (
-            <BookmarkIcon className="mb-0.5 inline size-5" />) to save it here.
-          </div>
-          <Link href={DATASETS_ROUTE} className="underline">
-            Find a dataset to bookmark
-          </Link>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <div className="space-y-4">
@@ -143,12 +125,8 @@ export default function Page() {
           )}
 
           <div className="flex items-center justify-between">
-            {hasNextPage && (
-              <Button
-                onClick={triggerFetchNextPage}
-                variant="blue"
-                disabled={isFetchingNextPage}
-              >
+            {hasNextPage && !isFetchingNextPage && (
+              <Button onClick={triggerFetchNextPage} variant="blue">
                 <ChevronDownIcon /> View more
               </Button>
             )}

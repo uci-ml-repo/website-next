@@ -5,7 +5,7 @@ import path from "path";
 
 import { ABOUT_ROUTE, CONTACT_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 
-export default function EmailTemplateLayout({
+export default function EmailLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -15,21 +15,30 @@ export default function EmailTemplateLayout({
   }
 
   return (
-    <Tailwind>
+    <Tailwind
+      config={{
+        darkMode: "class",
+      }}
+    >
       <body className="mx-auto max-w-4xl">
         <header className="bg-gray-300 p-4">
           <a href={process.env.ORIGIN}>
             <Img
-              src="cid:logo"
+              src={path.join(process.env.ORIGIN, "img", "logo.png")}
               alt="UCI Machine Learning Repository"
-              className="h-20 w-auto"
+              className="h-20 w-auto dark:hidden"
+            />
+            <Img
+              src={path.join(process.env.ORIGIN, "img", "logo-dark.png")}
+              alt="UCI Machine Learning Repository"
+              className="hidden h-20 w-auto dark:block"
             />
           </a>
         </header>
         <main>
           <div className="bg-gray-100 px-4 py-8">{children}</div>
         </main>
-        <footer className="bg-blue-950 p-4 text-center">
+        <footer className="bg-blue-950 p-4 text-center dark:bg-blue-950">
           <div className="mx-auto space-y-2">
             <div>
               <div className="text-white">UCI Machine Learning Repository</div>

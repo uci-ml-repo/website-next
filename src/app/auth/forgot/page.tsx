@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
+import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: "Email is required" }),
@@ -33,31 +34,59 @@ export default function Page() {
     },
   });
 
+  const resetPasswordMutation =
+    trpc.user.credentials.passwordReset.useMutation();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    //
+    resetPasswordMutation.mutate({
+      email: values.email,
+    });
   }
 
   return (
     <Main>
-      <div className="flex flex-col items-center space-y-4 sm:hidden">
+      <div className="mx-auto flex max-w-[450px] flex-col items-center space-y-4 sm:hidden">
+        <div className="space-y-2">
+          <div className="text-xl font-bold">Reset you password</div>
+          <div>
+            If the email you enter matches an account, we'll send a reset link
+            to:
+          </div>
+        </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} autoComplete="email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center justify-between space-x-2">
+              <Button
+                className="px-3"
+                variant="ghost"
+                type="button"
+                size="lg"
+                asChild
+              >
+                <Link href={SIGN_IN_ROUTE}>
+                  <ArrowLeftIcon /> Back
+                </Link>
+              </Button>
+              <Button variant="blue" type="submit" size="lg">
+                <MailIcon /> Next
+              </Button>
             </div>
-            <Button type="submit" />
           </form>
         </Form>
       </div>
@@ -77,21 +106,19 @@ export default function Page() {
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input {...field} autoComplete="email" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} autoComplete="email" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="flex items-center justify-between space-x-2">
                 <Button
                   className="px-3"

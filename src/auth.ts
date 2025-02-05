@@ -78,6 +78,12 @@ export const authOptions = NextAuth({
   },
   events: {
     async createUser({ user }) {
+      const existingUser = await service.user.find.byId(user.id ?? "");
+
+      if (existingUser) {
+        return;
+      }
+
       service.email
         .sendRegistrationEmail(user as { email: string; name: string })
         .then();

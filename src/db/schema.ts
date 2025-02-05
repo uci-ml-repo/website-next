@@ -631,7 +631,7 @@ export const sessionRelations = relations(session, ({ one }) => ({
 }));
 
 export const verificationToken = pgTable(
-  "verificationToken",
+  "verification_token",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
@@ -644,4 +644,23 @@ export const verificationToken = pgTable(
       }),
     },
   ],
+);
+
+export const passwordResetToken = pgTable("password_reset_token", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  token: text("token").notNull().unique(),
+  userId: uuid("user_id")
+    .references(() => user.id)
+    .notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const passwordResetTokenRelations = relations(
+  passwordResetToken,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [passwordResetToken.userId],
+      references: [user.id],
+    }),
+  }),
 );

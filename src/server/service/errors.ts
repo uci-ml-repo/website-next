@@ -7,9 +7,10 @@
 export type ServiceErrorReason =
   | "Dataset Not Found"
   | "Invalid File Path"
-  | "Failed to Send Email";
+  | "Failed to Send Email"
+  | "User Not Found";
 
-export type ServiceErrorOrigin = "Dataset" | "File" | "Email";
+export type ServiceErrorOrigin = "Dataset" | "File" | "Email" | "User";
 
 interface ServiceErrorInterface {
   reason: ServiceErrorReason;

@@ -1,16 +1,15 @@
 import * as process from "node:process";
 
-import fs from "fs-extra";
 import { OAuth2Client } from "google-auth-library";
-import type { Transporter } from "nodemailer";
+import type { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import type SMTPConnection from "nodemailer/lib/smtp-connection";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { ABOUT_ROUTE, CONTACT_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 import EmailTemplateService from "@/server/service/email/templates";
+import ServiceError from "@/server/service/errors";
 
 interface OAuth2Options extends SMTPTransport.Options {
   auth?: SMTPConnection.OAuth2;
@@ -55,30 +54,27 @@ export default class EmailService {
     );
   }
 
-  protected readTemplateTextFile(relativePath: string) {
-    return fs.readFileSync(
-      path.join(this.templatesFolder, relativePath),
-      "utf8",
-    );
-  }
+  async sendEmail(options: SendMailOptions) {
+    const accessToken = await this.oauth
+      .getAccessToken()
+      .then((res) => res.token ?? "")
+      .catch((error) => {
+        throw new ServiceError({
+          reason: "Failed to Send Email",
+          origin: "Email",
+          message: error.message,
+        });
+      });
 
-  protected populateEmailTemplate(
-    content: string,
-    { name, email }: { name: string; email: string },
-  ) {
-    if (!process.env.ORIGIN) {
-      throw new Error("ORIGIN is not set");
-    }
+    this.transporter.options.auth ??= {};
+    this.transporter.options.auth.accessToken = accessToken;
 
-    return content
-      .replaceAll("{name}", name)
-      .replaceAll("{email}", email)
-      .replaceAll("{origin}", process.env.ORIGIN)
-      .replaceAll("{about}", path.join(process.env.ORIGIN + ABOUT_ROUTE))
-      .replaceAll("{contact}", path.join(process.env.ORIGIN + CONTACT_ROUTE))
-      .replaceAll(
-        "{privacy}",
-        path.join(process.env.ORIGIN + PRIVACY_POLICY_ROUTE),
-      );
+    await this.transporter.sendMail(options).catch((error) => {
+      throw new ServiceError({
+        reason: "Failed to Send Email",
+        origin: "Email",
+        message: error.message,
+      });
+    });
   }
 }

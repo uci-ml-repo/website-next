@@ -122,12 +122,8 @@ export default function Discussions({
       )}
 
       <div className="flex items-center justify-between">
-        {hasNextPage && (
-          <Button
-            onClick={triggerFetchNextPage}
-            variant="blue"
-            disabled={isFetchingNextPage}
-          >
+        {hasNextPage && !isFetchingNextPage && (
+          <Button onClick={triggerFetchNextPage} variant="blue">
             <ChevronDownIcon /> View more
           </Button>
         )}
