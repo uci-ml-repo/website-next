@@ -61,4 +61,22 @@ export default class EmailSendService extends EmailService {
       text,
     });
   }
+
+  async sendResetPasswordSuccessEmail({
+    email,
+    name,
+  }: {
+    email: string;
+    name: string;
+  }) {
+    const { html, text } = await this.template.resetPasswordSuccess({ name });
+
+    await this.sendEmail({
+      from: process.env.GOOGLE_EMAIL,
+      to: email,
+      subject: "Password Reset - UCI Machine Learning Repository",
+      html,
+      text,
+    });
+  }
 }

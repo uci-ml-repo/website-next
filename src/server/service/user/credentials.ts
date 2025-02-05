@@ -90,15 +90,11 @@ export default class UserCredentialsService {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    console.log(hashedPassword);
-    console.log(resetToken.user.password);
-    console.log(bcryptjs.compareSync(password, resetToken.user.password));
-
     if (bcryptjs.compareSync(password, resetToken.user.password)) {
       throw new ServiceError({
         reason: "Failed to Reset Password",
         origin: "User",
-        message: "New password must be different from old password",
+        message: "New password must be different from your old password",
       });
     }
 
@@ -110,6 +106,11 @@ export default class UserCredentialsService {
     await db
       .delete(passwordResetToken)
       .where(eq(passwordResetToken.token, token));
+
+    await service.email.sendResetPasswordSuccessEmail({
+      email: resetToken.user.email,
+      name: resetToken.user.name,
+    });
 
     return { success: true };
   }

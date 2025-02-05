@@ -8,8 +8,10 @@ import Registration from "@/server/service/email/templates/registration/Registra
 import registration from "@/server/service/email/templates/registration/registration";
 import resetPassword from "@/server/service/email/templates/reset-password/reset-password";
 import resetPasswordProviders from "@/server/service/email/templates/reset-password/reset-password-providers";
+import resetPasswordSuccess from "@/server/service/email/templates/reset-password/reset-password-success";
 import ResetPassword from "@/server/service/email/templates/reset-password/ResetPassword";
 import ResetPasswordProviders from "@/server/service/email/templates/reset-password/ResetPasswordProviders";
+import ResetPasswordSuccess from "@/server/service/email/templates/reset-password/ResetPasswordSuccess";
 
 export default class EmailTemplateService {
   async registration(name: string) {
@@ -55,6 +57,13 @@ export default class EmailTemplateService {
     return {
       html: await render(<EmailVerification />),
       text: emailVerification(),
+    };
+  }
+
+  async resetPasswordSuccess({ name }: { name: string }) {
+    return {
+      html: await render(<ResetPasswordSuccess name={name} />),
+      text: resetPasswordSuccess({ name }),
     };
   }
 }

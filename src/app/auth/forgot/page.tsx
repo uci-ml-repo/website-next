@@ -96,7 +96,7 @@ export default function Page() {
       {/* Mobile View */}
       <div className="mx-auto flex max-w-[450px] flex-col items-center space-y-4 sm:hidden">
         <div className="space-y-2">
-          <div className="text-xl font-bold">Reset you password</div>
+          <div className="text-xl font-bold">Reset your password</div>
           <div>
             If the email you enter matches an account, we'll send a reset link
             to:
@@ -114,7 +114,7 @@ export default function Page() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} autoComplete="email" />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,7 +136,7 @@ export default function Page() {
         </CardHeader>
         <CardContent className="w-full space-y-6">
           <div className="space-y-2">
-            <div className="text-xl font-bold">Reset you password</div>
+            <div className="text-xl font-bold">Reset your password</div>
             <div>
               If the email you enter matches an account, we'll send a reset code
               to:
