@@ -79,4 +79,27 @@ export default class EmailSendService extends EmailService {
       text,
     });
   }
+
+  async sendVerificationEmail({
+    email,
+    name,
+    token,
+  }: {
+    email: string;
+    name: string;
+    token: string;
+  }) {
+    const { html, text } = await this.template.verificationEmail({
+      name,
+      token,
+    });
+
+    await this.sendEmail({
+      from: process.env.GOOGLE_EMAIL,
+      to: email,
+      subject: "Verify Email - UCI Machine Learning Repository",
+      html,
+      text,
+    });
+  }
 }

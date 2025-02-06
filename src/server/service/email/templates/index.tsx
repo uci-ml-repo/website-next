@@ -1,9 +1,7 @@
 import { render } from "@react-email/render";
 import path from "path";
 
-import { RESET_PASSWORD_ROUTE } from "@/lib/routes";
-import emailVerification from "@/server/service/email/templates/email-verification/email-verification";
-import EmailVerification from "@/server/service/email/templates/email-verification/EmailVerification";
+import { RESET_PASSWORD_ROUTE, VERIFY_EMAIL_ROUTE } from "@/lib/routes";
 import Registration from "@/server/service/email/templates/registration/Registration";
 import registration from "@/server/service/email/templates/registration/registration";
 import resetPassword from "@/server/service/email/templates/reset-password/reset-password";
@@ -12,6 +10,8 @@ import resetPasswordSuccess from "@/server/service/email/templates/reset-passwor
 import ResetPassword from "@/server/service/email/templates/reset-password/ResetPassword";
 import ResetPasswordProviders from "@/server/service/email/templates/reset-password/ResetPasswordProviders";
 import ResetPasswordSuccess from "@/server/service/email/templates/reset-password/ResetPasswordSuccess";
+import verificationEmail from "@/server/service/email/templates/verification-email/verification-email";
+import VerificationEmail from "@/server/service/email/templates/verification-email/VerificationEmail";
 
 export default class EmailTemplateService {
   async registration(name: string) {
@@ -53,10 +53,21 @@ export default class EmailTemplateService {
     };
   }
 
-  async emailVerification() {
+  async verificationEmail({ name, token }: { name: string; token: string }) {
+    if (!process.env.ORIGIN) {
+      throw new Error("ORIGIN is not set");
+    }
+
+    const verificationLink = path.join(
+      process.env.ORIGIN,
+      VERIFY_EMAIL_ROUTE,
+      token,
+    );
     return {
-      html: await render(<EmailVerification />),
-      text: emailVerification(),
+      html: await render(
+        <VerificationEmail name={name} verificationLink={verificationLink} />,
+      ),
+      text: verificationEmail({ name, verificationLink }),
     };
   }
 

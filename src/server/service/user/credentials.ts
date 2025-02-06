@@ -2,7 +2,7 @@ import bcryptjs from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { passwordResetToken, user } from "@/db/schema";
+import { emailVerificationToken, passwordResetToken, user } from "@/db/schema";
 import { formatEnum, generateToken } from "@/lib/utils";
 import service from "@/server/service";
 import ServiceError from "@/server/service/errors";
@@ -44,6 +44,59 @@ export default class UserCredentialsService {
     }
   }
 
+  async sendVerificationEmail({
+    userId,
+    email,
+    name,
+  }: {
+    userId: string;
+    email: string;
+    name: string;
+  }) {
+    const token = generateToken();
+
+    const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    await db.insert(emailVerificationToken).values({
+      userId,
+      token,
+      expires,
+    });
+
+    await service.email.sendVerificationEmail({
+      token,
+      email,
+      name,
+    });
+  }
+
+  async getEmailVerificationToken(token: string) {
+    const emailVerificationToken =
+      await db.query.emailVerificationToken.findFirst({
+        where: (emailVerificationToken, { eq }) =>
+          eq(emailVerificationToken.token, token),
+        with: {
+          user: true,
+        },
+      });
+
+    if (!emailVerificationToken) {
+      return {
+        success: false,
+        message: "Invalid email verification token",
+      };
+    }
+
+    if (emailVerificationToken.expires < new Date()) {
+      return {
+        success: false,
+        message: "Email verification token expired",
+      };
+    }
+
+    return { success: true, verificationToken: emailVerificationToken };
+  }
+
   async getResetPasswordToken(token: string) {
     const passwordResetToken = await db.query.passwordResetToken.findFirst({
       where: (passwordResetToken, { eq }) =>
@@ -56,14 +109,14 @@ export default class UserCredentialsService {
     if (!passwordResetToken) {
       return {
         success: false,
-        message: "Invalid token",
+        message: "Invalid password reset token",
       };
     }
 
     if (passwordResetToken.expires < new Date()) {
       return {
         success: false,
-        message: "Token expired",
+        message: "Password reset token expired",
       };
     }
 

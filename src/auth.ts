@@ -17,6 +17,9 @@ declare module "next-auth" {
     user: {
       id: string;
       role: UserRole;
+      emailVerified: Date | null;
+      email: string;
+      name: string;
     } & DefaultSession["user"];
   }
 }
@@ -72,6 +75,7 @@ export const authOptions = NextAuth({
     },
     async session({ session, user }) {
       session.user.role = user.role;
+      session.user.emailVerified = user.emailVerified;
       return session;
     },
   },

@@ -20,7 +20,7 @@ export default function ResetPassword({
         </a>
       </p>
       <p>
-        The link will be valid for one hour. If you did not request a password
+        The link will expire in 5 minutes. If you did not request a password
         change, you can ignore this message and continue using your current
         password.
       </p>

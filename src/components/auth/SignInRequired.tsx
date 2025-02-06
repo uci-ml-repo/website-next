@@ -37,6 +37,7 @@ export default function SignInRequired({
 
   function onClick(e: React.MouseEvent) {
     if (disabled) {
+      e.preventDefault();
       return;
     }
 
@@ -49,7 +50,7 @@ export default function SignInRequired({
   }
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <>
       {authedAction ? (
         <div onClick={onClick} className="w-fit">
           {children}
@@ -63,24 +64,26 @@ export default function SignInRequired({
       ) : (
         children
       )}
-      <DialogContent aria-describedby={undefined}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <p>{body}</p>
-        <DialogFooter className="items-center !justify-between gap-4">
-          <DialogClose asChild>
-            <Button
-              variant="secondary"
-              className="max-sm:w-full"
-              disabled={disabled}
-            >
-              Cancel
-            </Button>
-          </DialogClose>
-          <SignInButton className="max-sm:w-full" variant="gold" />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent aria-describedby={undefined}>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+          <p>{body}</p>
+          <DialogFooter className="items-center !justify-between gap-4">
+            <DialogClose asChild>
+              <Button
+                variant="secondary"
+                className="max-sm:w-full"
+                disabled={disabled}
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+            <SignInButton className="max-sm:w-full" variant="gold" />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

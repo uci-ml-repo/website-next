@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { SettingsIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
@@ -61,6 +62,12 @@ export default async function Layout({
             link={path.join(PROFILE_ROUTE, "discussions")}
           >
             Discussions
+          </LinearTabsTrigger>
+          <LinearTabsTrigger
+            value="settings"
+            link={path.join(PROFILE_ROUTE, "settings")}
+          >
+            <SettingsIcon />
           </LinearTabsTrigger>
         </LinearTabsList>
         <TabsListBorder />

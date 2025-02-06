@@ -15,5 +15,9 @@ export default async function Page({
     return unauthorized();
   }
 
+  if (!session.user.emailVerified) {
+    return unauthorized();
+  }
+
   return <DiscussionCreateInput datasetId={Number(id)} datasetSlug={slug} />;
 }
