@@ -29,8 +29,9 @@ export default function ProfileSettingsEmail({
         <div className="flex h-10 items-center justify-between text-lg">
           <div>{session.user.email}</div>
           {session.user.emailVerified ? (
-            <div className="text-positive">
-              <CheckIcon /> Verified
+            <div className="flex items-center space-x-1 text-positive">
+              <CheckIcon />
+              <span>Verified</span>
             </div>
           ) : (
             !verifyEmailMutation.isSuccess && (
@@ -39,12 +40,12 @@ export default function ProfileSettingsEmail({
                 onClick={onClickVerifyEmail}
                 disabled={verifyEmailMutation.isPending}
               >
-                {verifyEmailMutation.isPending && <Spinner />} Verify
+                {verifyEmailMutation.isPending && <Spinner />} Verify Email
               </Button>
             )
           )}
         </div>
-        {verifyEmailMutation.isSuccess && (
+        {verifyEmailMutation.isSuccess && !session.user.emailVerified && (
           <Alert
             variant="positive"
             className="flex items-center justify-between"

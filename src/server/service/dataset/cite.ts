@@ -13,8 +13,8 @@ export default class DatasetCiteService {
 
     if (!dataset) {
       throw new ServiceError({
-        reason: "Dataset Not Found",
         origin: "Dataset",
+        message: "Dataset not found",
       });
     }
 

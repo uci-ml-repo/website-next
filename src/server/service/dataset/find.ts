@@ -73,8 +73,8 @@ export default class DatasetFindService {
       const dataset = datasetMap.get(id);
       if (!dataset) {
         throw new ServiceError({
-          reason: "Dataset Not Found",
           origin: "Dataset",
+          message: "Dataset not found",
         });
       }
       return dataset;

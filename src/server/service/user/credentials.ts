@@ -53,6 +53,24 @@ export default class UserCredentialsService {
     email: string;
     name: string;
   }) {
+    const verifyUser = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+
+    if (!verifyUser) {
+      throw new ServiceError({
+        origin: "User",
+        message: "User not found",
+      });
+    }
+
+    if (verifyUser.emailVerified) {
+      throw new ServiceError({
+        origin: "User",
+        message: "Email already verified",
+      });
+    }
+
     const token = generateToken();
 
     const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
@@ -135,7 +153,6 @@ export default class UserCredentialsService {
 
     if (!success || !resetToken?.user.password) {
       throw new ServiceError({
-        reason: "Failed to Reset Password",
         origin: "User",
         message: message,
       });
@@ -145,7 +162,6 @@ export default class UserCredentialsService {
 
     if (bcryptjs.compareSync(password, resetToken.user.password)) {
       throw new ServiceError({
-        reason: "Failed to Reset Password",
         origin: "User",
         message: "New password must be different from your old password",
       });
@@ -166,5 +182,35 @@ export default class UserCredentialsService {
     });
 
     return { success: true };
+  }
+
+  async verifyEmail({ token }: { token: string }) {
+    const { success, message, verificationToken } =
+      await this.getEmailVerificationToken(token);
+
+    if (!success || !verificationToken) {
+      throw new ServiceError({
+        origin: "User",
+        message: message,
+      });
+    }
+
+    if (verificationToken.user.emailVerified) {
+      throw new ServiceError({
+        origin: "User",
+        message: "Email already verified",
+      });
+    }
+
+    await db
+      .update(user)
+      .set({ emailVerified: new Date() })
+      .where(eq(user.id, verificationToken.user.id));
+
+    await db
+      .delete(emailVerificationToken)
+      .where(eq(emailVerificationToken.token, token));
+
+    return verificationToken.user;
   }
 }

@@ -17,7 +17,10 @@ export default class FileReadService {
     takeLines = 50,
   }: ReadFileParams) {
     if (!fs.pathExistsSync(absolutePath)) {
-      throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
+      throw new ServiceError({
+        origin: "File",
+        message: `Invalid file path: ${absolutePath}`,
+      });
     }
 
     const fileStream = fs.createReadStream(absolutePath);
@@ -51,7 +54,10 @@ export default class FileReadService {
 
   async stats({ absolutePath }: { absolutePath: string }) {
     if (!fs.pathExistsSync(absolutePath)) {
-      throw new ServiceError({ reason: "Invalid File Path", origin: "File" });
+      throw new ServiceError({
+        origin: "File",
+        message: `Invalid file path: ${absolutePath}`,
+      });
     }
 
     return fs.stat(absolutePath);

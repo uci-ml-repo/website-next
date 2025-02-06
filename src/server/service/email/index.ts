@@ -60,7 +60,6 @@ export default class EmailService {
       .then((res) => res.token ?? "")
       .catch((error) => {
         throw new ServiceError({
-          reason: "Failed to Send Email",
           origin: "Email",
           message: error.message,
         });
@@ -71,7 +70,6 @@ export default class EmailService {
 
     await this.transporter.sendMail(options).catch((error) => {
       throw new ServiceError({
-        reason: "Failed to Send Email",
         origin: "Email",
         message: error.message,
       });

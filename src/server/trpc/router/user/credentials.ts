@@ -37,6 +37,12 @@ const userCredentialsRouter = router({
     .mutation(async ({ input }) => {
       return service.user.credentials.resetPassword(input);
     }),
+
+  verifyEmail: procedure
+    .input(z.object({ token: z.string() }))
+    .mutation(async ({ input }) => {
+      return service.user.credentials.verifyEmail(input);
+    }),
 });
 
 export default userCredentialsRouter;

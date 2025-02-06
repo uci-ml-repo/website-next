@@ -15,8 +15,8 @@ export default class DiscussionRemoveService {
 
     if (!queriedDiscussion) {
       throw new ServiceError({
-        reason: "Dataset Not Found",
-        origin: "Dataset",
+        origin: "Discussion",
+        message: "Discussion not found",
       });
     }
 
