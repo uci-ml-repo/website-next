@@ -9,9 +9,9 @@ import Link from "next/link";
 import React from "react";
 
 import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
+import DatasetsSearchInput from "@/components/datasets/DatasetsSearchInput";
 import { Banner } from "@/components/icons";
 import Main from "@/components/layout/Main";
-import DatasetSearchInput from "@/components/search/DatasetSearchInput";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { CONTRIBUTE_ROUTE, DATASETS_ROUTE } from "@/lib/routes";
@@ -53,7 +53,7 @@ export default async function Page() {
             href={CONTRIBUTE_ROUTE}
           />
         </div>
-        <DatasetSearchInput />
+        <DatasetsSearchInput />
       </div>
 
       <div className="space-y-12">

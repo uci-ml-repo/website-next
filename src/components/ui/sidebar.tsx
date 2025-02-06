@@ -197,7 +197,10 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
           "data-[state=expanded]:max-xl:shadow-sidebar",
           "transition-all ease-out",
           "overflow-x-hidden border-r bg-sidebar text-sidebar-foreground",
-          { "!w-[--sidebar-width] shadow-sidebar": temporaryOpen },
+          {
+            "!w-[--sidebar-width] data-[state=collapsed]:shadow-sidebar":
+              temporaryOpen,
+          },
           className,
         )}
         data-state={state}
