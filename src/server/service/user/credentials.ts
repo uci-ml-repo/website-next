@@ -83,14 +83,14 @@ export default class UserCredentialsService {
     if (!emailVerificationToken) {
       return {
         success: false,
-        message: "Invalid email verification token",
+        message: "Invalid verification token",
       };
     }
 
     if (emailVerificationToken.expires < new Date()) {
       return {
         success: false,
-        message: "Email verification token expired",
+        message: "Verification token expired",
       };
     }
 
@@ -109,14 +109,14 @@ export default class UserCredentialsService {
     if (!passwordResetToken) {
       return {
         success: false,
-        message: "Invalid password reset token",
+        message: "Invalid reset token",
       };
     }
 
     if (passwordResetToken.expires < new Date()) {
       return {
         success: false,
-        message: "Password reset token expired",
+        message: "Reset token expired",
       };
     }
 

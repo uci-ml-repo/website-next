@@ -66,8 +66,9 @@ export default async function Layout({
           <LinearTabsTrigger
             value="settings"
             link={path.join(PROFILE_ROUTE, "settings")}
+            className="group"
           >
-            <SettingsIcon />
+            <SettingsIcon className="transition-all group-hover:rotate-[30deg]" />
           </LinearTabsTrigger>
         </LinearTabsList>
         <TabsListBorder />

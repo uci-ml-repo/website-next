@@ -26,7 +26,7 @@ export default function ProfileSettingsEmail({
       <CardContent className="space-y-2 px-4">
         <h3 className="text-lg font-bold">Email</h3>
 
-        <div className="flex items-center justify-between text-lg">
+        <div className="flex h-10 items-center justify-between text-lg">
           <div>{session.user.email}</div>
           {session.user.emailVerified ? (
             <div className="text-positive">
