@@ -174,7 +174,13 @@ export default class DatasetFindService {
       )
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
-      .orderBy((t) => [desc(t.rank), desc(t.similarity), desc(t.viewCount)]);
+      .orderBy((t) =>
+        query.order
+          ? Object.entries(query.order).map(([field, sort]) =>
+              sortFunction(sort)(dataset[field as keyof typeof query.order]),
+            )
+          : [desc(t.rank), desc(t.similarity), desc(t.viewCount)],
+      );
 
     return this.batch(datasets.map((d) => d.id));
   }

@@ -3,6 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+import { jsonOrString } from "@/lib/utils";
+
 export function buildQueryFilters(filters: Record<string, unknown>) {
   const params = new URLSearchParams();
 
@@ -27,7 +29,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   const filters = useMemo(() => {
     const result: Partial<T> = {};
     for (const [key, value] of searchParams.entries()) {
-      result[key as keyof T] = JSON.parse(value) as T[keyof T];
+      result[key as keyof T] = jsonOrString(value) as T[keyof T];
     }
     return result;
   }, [searchParams]);
@@ -40,7 +42,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
       router.replace(url, { scroll: false });
     },
-    [pathname, router, searchParams],
+    [filters, pathname, router],
   );
 
   return { filters, setFilters };

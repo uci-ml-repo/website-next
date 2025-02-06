@@ -32,6 +32,7 @@ body {
     --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 86%;
     --input: 0 0% 90%;
+    --input-background: 0 0% 100%;
     --ring: 0 0% 4%;
     --chart-1: 2 76% 61%;
     --chart-2: 3 58% 39%;
@@ -75,6 +76,7 @@ body {
     --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 22%;
     --input: 0 0% 22%;
+    --input-background: 0 0% 2%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -137,14 +139,14 @@ body {
 .backdrop-gradient-blur::before {
   content: "";
   position: absolute;
-  top: -30%;
-  left: -30%;
-  width: 160%;
-  height: 160%;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
   border-radius: inherit;
   background: radial-gradient(
-    hsl(var(--background) / 0.8) 50%,
-    hsl(var(--background) / 0) 90%
+    hsl(var(--background) / 1) 70%,
+    hsl(var(--background) / 0) 100%
   );
   z-index: -1;
   filter: blur(10px);

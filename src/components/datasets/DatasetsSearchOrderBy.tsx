@@ -41,7 +41,7 @@ export default function DatasetsSearchOrderBy({}: {}) {
           setFilters({ order: { [value]: orderByOptions[value].sort } });
         }}
       >
-        <SelectTrigger className="w-48 bg-background">
+        <SelectTrigger className="h-11 w-48">
           <SelectValue />
         </SelectTrigger>
 

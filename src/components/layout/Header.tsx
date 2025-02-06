@@ -40,8 +40,8 @@ export default function Header({ session }: { session: Session | null }) {
     <header
       className={cn(
         "z-40 h-[--header-height] max-md:fixed max-md:left-0 max-md:right-0 max-md:top-0",
-        "transition-all ease-in-out max-md:overflow-y-hidden md:!h-18",
-        { "bg-background shadow": isMobile && hasScrolled },
+        "transition-shadow ease-in-out max-md:overflow-y-hidden md:!h-18",
+        { "bg-background shadow-md": isMobile && hasScrolled },
       )}
     >
       <BackgroundGraph className="max absolute right-0 top-0 -z-10 md:hidden" />

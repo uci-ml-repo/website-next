@@ -7,7 +7,11 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
 export default function Main({ children, className, ...props }: MainProps) {
   return (
     <main
-      className={cn("content mx-auto max-md:mt-[--header-height]", className)}
+      className={cn(
+        "content mx-auto",
+        "max-md: pt-4 max-md:mt-[--header-height]",
+        className,
+      )}
       {...props}
     >
       {children}
