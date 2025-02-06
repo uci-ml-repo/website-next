@@ -6,6 +6,7 @@ import {
   SearchIcon,
   Undo2Icon,
 } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import Spinner from "@/components/ui/spinner";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export default function Page() {
@@ -57,13 +59,16 @@ export default function Page() {
       </div>
 
       {!isLoading && !hasBookmarks ? (
-        <Card className="flex h-20 items-center justify-center bg-muted text-muted-foreground">
-          <CardContent className="text-pretty text-center">
-            <span>
+        <Card className="w-full bg-muted">
+          <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
+            <div className="text-muted-foreground">
               Visit a dataset and click the bookmark button (
               <BookmarkIcon className="mb-0.5 inline size-5" />) to save it
               here.
-            </span>
+            </div>
+            <Link href={DATASETS_ROUTE} className="underline">
+              Find datasets to bookmark
+            </Link>
           </CardContent>
         </Card>
       ) : (

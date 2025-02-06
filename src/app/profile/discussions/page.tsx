@@ -40,7 +40,7 @@ export default async function Page() {
                 You have not created any discussions yet
               </div>
               <Link href={DATASETS_ROUTE} className="underline">
-                Find a dataset to discuss
+                Find datasets to discuss
               </Link>
             </CardContent>
           </Card>
