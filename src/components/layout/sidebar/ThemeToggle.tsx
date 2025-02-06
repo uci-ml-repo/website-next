@@ -18,6 +18,7 @@ export function ThemeToggle() {
         onCheckedChange={changeTheme}
         checked={theme === "dark"}
         className="!bg-muted-foreground"
+        aria-label="Toggle theme"
       />
       {theme === "light" ? <SunIcon /> : <MoonIcon />}
     </div>

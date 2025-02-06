@@ -42,13 +42,15 @@ export function Banner({
   link,
   abbreviate,
 }: LogoProps) {
+  const Comp = variant === "hero" ? "h1" : "div";
+
   const content = (
-    <div className={cn(logoVariants({ variant, textColor }), className)}>
+    <Comp className={cn(logoVariants({ variant, textColor }), className)}>
       <UCIrvine aria-label="UC Irvine" />
       <div className="font-bold leading-none text-uci-blue">
         {abbreviate ? "ML Repository" : "Machine Learning Repository"}
       </div>
-    </div>
+    </Comp>
   );
 
   return <>{link ? <Link href={HOME_ROUTE}>{content}</Link> : content}</>;

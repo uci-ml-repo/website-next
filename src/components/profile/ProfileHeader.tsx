@@ -13,9 +13,9 @@ export default function ProfileHeader({ session }: { session: Session }) {
           className="size-16 sm:size-20"
         />
         <div>
-          <div className="text-xl font-semibold sm:text-3xl">
+          <h1 className="text-xl font-semibold sm:text-3xl">
             {session.user.name}
-          </div>
+          </h1>
           <div className="text-base text-muted-foreground sm:text-xl">
             {session.user.email}
           </div>

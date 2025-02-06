@@ -175,7 +175,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
             data-sidebar="sidebar"
             data-mobile="true"
             className={cn(
-              "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)] [&>button]:hidden",
+              "w-[--sidebar-width] max-w-[80dvw] bg-sidebar p-0 text-sidebar-foreground shadow-sidebar [&>button]:hidden",
               className,
             )}
           >
@@ -194,10 +194,10 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden md:flex md:flex-col",
           "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width]",
-          "data-[state=expanded]:max-xl:shadow-[0px_0px_15px_12px_rgba(0,0,0,.20)]",
+          "data-[state=expanded]:max-xl:shadow-sidebar",
           "transition-all ease-out",
           "overflow-x-hidden border-r bg-sidebar text-sidebar-foreground",
-          { "!w-[--sidebar-width]": temporaryOpen },
+          { "!w-[--sidebar-width] shadow-sidebar": temporaryOpen },
           className,
         )}
         data-state={state}

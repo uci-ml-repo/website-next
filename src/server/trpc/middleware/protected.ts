@@ -34,19 +34,20 @@ export const protectedProcedure = t.procedure
       });
     }
 
-    const inputCast = input as unknown as {
-      datasetId?: number;
-      draftDatasetId?: string;
-      discussionId?: string;
-      discussionCommentId?: string;
-    };
-
     const requireRoles = new Set<MiddlewareRole>(meta.requireRoles);
     const userRoles = new Set<MiddlewareRole>([ctx.session.user.role]);
 
+    if (requireRoles.has(MiddlewareRoles.VERIFIED)) {
+      if (!ctx.session.user.emailVerified) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      userRoles.add(MiddlewareRoles.VERIFIED);
+    }
+
     if (requireRoles.has(MiddlewareRoles.DATASET_OWNER)) {
       await AssertOwner.dataset({
-        datasetId: inputCast.datasetId,
+        datasetId: input.datasetId,
         userId: ctx.session.user.id,
       });
 
@@ -55,7 +56,7 @@ export const protectedProcedure = t.procedure
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
       await AssertOwner.discussion({
-        discussionId: inputCast.discussionId,
+        discussionId: input.discussionId,
         userId: ctx.session.user.id,
       });
 
@@ -64,7 +65,7 @@ export const protectedProcedure = t.procedure
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR)) {
       await AssertOwner.discussionComment({
-        discussionCommentId: inputCast.discussionCommentId,
+        discussionCommentId: input.discussionCommentId,
         userId: ctx.session.user.id,
       });
 

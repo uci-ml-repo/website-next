@@ -29,7 +29,7 @@ export default function ErrorGraphic({
             dragElastic={0.4}
             dragTransition={{
               bounceStiffness: 100,
-              bounceDamping: 12,
+              bounceDamping: 15,
               restDelta: 0.001,
             }}
             initial={{ scale: 0.85 }}
