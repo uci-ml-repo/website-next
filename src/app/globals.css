@@ -130,11 +130,11 @@ body {
   @apply hidden;
 }
 
-.gradient-blur {
+.backdrop-gradient-blur {
   position: relative;
 }
 
-.gradient-blur::before {
+.backdrop-gradient-blur::before {
   content: "";
   position: absolute;
   top: -30%;

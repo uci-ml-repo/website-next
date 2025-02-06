@@ -6,7 +6,7 @@ import {
   TrendingUpIcon,
 } from "lucide-react";
 
-import { useQueryFilters } from "@/components/hooks/use-dataset-filters";
+import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import {
   Select,
   SelectContent,
@@ -33,7 +33,7 @@ export default function DatasetsSearchOrderBy({}: {}) {
   const defaultValue = Object.keys(filters.order || {})[0] || "viewCount";
 
   return (
-    <div className="gradient-blur space-y-1">
+    <div className="space-y-1">
       <div>Sort By</div>
       <Select
         defaultValue={defaultValue}

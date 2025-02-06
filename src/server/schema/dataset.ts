@@ -28,10 +28,7 @@ export const datasetQuery = z.object({
   featureType: z
     .array(z.enum(enumToArray(Enums.DatasetFeatureType)))
     .optional(),
-  python: z
-    .enum(["true", "false"])
-    .transform((x) => x === "true")
-    .optional(),
+  python: z.boolean().optional(),
 });
 
 export type DatasetQuery = z.infer<typeof datasetQuery>;
