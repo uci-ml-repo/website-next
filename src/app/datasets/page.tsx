@@ -44,7 +44,7 @@ export default function Page() {
               <SheetTitle>Filters</SheetTitle>
             </SheetContent>
           </Sheet>
-          <div>
+          <div className="gradient-blur space-y-1">
             <div>Sort By</div>
             <Select>
               <SelectTrigger className="w-48 bg-background">

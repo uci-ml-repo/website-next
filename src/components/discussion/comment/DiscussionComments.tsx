@@ -83,7 +83,7 @@ export default function DiscussionComments({
         <DiscussionCommentCreateButton
           text="Add Comment"
           className="max-md:w-full"
-          authedAction={() => setIsCommenting(true)}
+          setIsCommenting={setIsCommenting}
         />
       )}
       <div className="space-y-3">

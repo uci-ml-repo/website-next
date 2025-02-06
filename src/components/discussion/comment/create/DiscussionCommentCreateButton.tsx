@@ -1,28 +1,30 @@
 import { PlusIcon } from "lucide-react";
 
-import SignInRequired from "@/components/auth/SignInRequired";
+import EmailVerificationRequired from "@/components/auth/EmailVerificationRequired";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function DiscussionCommentCreateButton({
   text,
-  authedAction,
+  setIsCommenting,
   className,
 }: {
   text: string;
-  authedAction: () => void;
+  setIsCommenting: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
 }) {
   return (
-    <SignInRequired
-      title="Sign in to comment"
-      body="To comment and access other features, please sign in."
-      authedAction={authedAction}
+    <EmailVerificationRequired
+      signInTitle="Sign in to comment"
+      signInBody="To comment and access other features, please sign in."
+      emailVerificationTitle="Verify your email to comment"
+      emailVerificationBody="To comment, please verify your email."
+      verifiedAction={() => setIsCommenting(true)}
     >
       <Button variant="secondary" className={cn("lift", className)}>
         <PlusIcon />
         <span>{text}</span>
       </Button>
-    </SignInRequired>
+    </EmailVerificationRequired>
   );
 }

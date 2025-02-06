@@ -70,6 +70,9 @@ export default function EmailLayout({
             </div>
           </div>
         </div>
+
+        {/* Prevent emails from trimming */}
+        <span className="invisible">{Date.now()}</span>
       </body>
     </Tailwind>
   );

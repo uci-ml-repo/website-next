@@ -130,6 +130,27 @@ body {
   @apply hidden;
 }
 
+.gradient-blur {
+  position: relative;
+}
+
+.gradient-blur::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  border-radius: inherit;
+  background: radial-gradient(
+    hsl(var(--background) / 0.8) 50%,
+    hsl(var(--background) / 0) 90%
+  );
+  z-index: -1;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
 .prose {
   font-family: "Inter", sans-serif;
 }

@@ -14,7 +14,7 @@ export default function ProfileAvatar({
 }: ProfileAvatarProps) {
   return (
     <Avatar className={cn("size-10", className)} {...props}>
-      {src && <AvatarImage src={src} alt="avatar" fetchPriority="high" />}
+      {src && <AvatarImage src={src} alt="Avatar" fetchPriority="high" />}
       <AvatarFallback>
         <CircleUserRoundIcon className="size-4/5 text-muted-foreground" />
       </AvatarFallback>
