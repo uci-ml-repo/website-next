@@ -14,7 +14,7 @@ import { DATASETS_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DatasetsSearchInput() {
+export default function DatasetsPreviewSearch() {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");

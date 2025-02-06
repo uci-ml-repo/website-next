@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { jsonOrString } from "@/lib/utils";
 
@@ -26,6 +26,8 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const [filterCount, setFilterCount] = useState<number>(0);
+
   const filters = useMemo(() => {
     const result: Partial<T> = {};
     for (const [key, value] of searchParams.entries()) {
@@ -38,6 +40,8 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     (newFilters: Partial<T>) => {
       const params = buildQueryFilters({ ...filters, ...newFilters });
 
+      setFilterCount(params.entries().toArray().length);
+
       const url = `${pathname}?${params.toString()}`;
 
       router.replace(url, { scroll: false });
@@ -45,5 +49,5 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     [filters, pathname, router],
   );
 
-  return { filters, setFilters };
+  return { filters, setFilters, filterCount };
 }

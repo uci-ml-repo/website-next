@@ -109,6 +109,9 @@ export const dataset = pgTable(
       .$onUpdate(() => new Date()),
   },
   (t) => [
+    index("dataset_instance_count_index").on(t.instanceCount),
+    index("dataset_feature_count_index").on(t.featureCount),
+    index("dataset_donated_at_index").on(t.donatedAt),
     check(
       "accepted_check",
       sql`(${t.status} = 'draft' OR

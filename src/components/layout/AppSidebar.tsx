@@ -193,7 +193,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
           )}
         </SidebarMenu>
         <SidebarFooter>
-          <SidebarOpenVisible className="flex items-center justify-between p-4">
+          <SidebarOpenVisible className="flex items-center justify-between p-4 pb-6">
             <span className="text-sm text-muted-foreground">Theme</span>
             <ThemeToggle />
           </SidebarOpenVisible>

@@ -76,7 +76,7 @@ export default function DatasetRow({
           )}
         >
           {datasetStats.map((stat, i) => (
-            <div key={i} className="flex items-center space-x-2">
+            <div key={i} className="flex items-center space-x-1">
               {stat.icon}
               <span className="text-nowrap">{stat.text}</span>
             </div>

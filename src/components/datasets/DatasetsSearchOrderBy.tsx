@@ -34,7 +34,7 @@ export default function DatasetsSearchOrderBy({}: {}) {
 
   return (
     <div className="space-y-1">
-      <div>Sort By</div>
+      <div className="text-sm text-muted-foreground">Sort By</div>
       <Select
         defaultValue={defaultValue}
         onValueChange={(value) => {
