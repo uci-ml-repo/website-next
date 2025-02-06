@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import SignInButton from "@/components/auth/SignInButton";
 import SignOut from "@/components/auth/SignOut";
 import { useIsMobile } from "@/components/hooks/use-mobile";
+import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +44,8 @@ export default function Header({ session }: { session: Session | null }) {
         { "bg-background shadow": isMobile && hasScrolled },
       )}
     >
+      <BackgroundGraph className="max absolute right-0 top-0 -z-10 md:hidden" />
+
       <div className="flex items-center justify-between">
         <div>
           <SidebarTrigger className="md:hidden" />

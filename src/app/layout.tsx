@@ -65,7 +65,7 @@ export default async function Layout({
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
-            <BackgroundGraph className="absolute right-0 top-0 -z-10" />
+            <BackgroundGraph className="absolute right-0 top-0 -z-10 max-md:hidden" />
 
             <ThemeProvider
               attribute="class"

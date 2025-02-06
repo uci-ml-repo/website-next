@@ -38,7 +38,7 @@ export default function EmailLayout({
         <main>
           <div className="bg-gray-100 px-4 py-8">{children}</div>
         </main>
-        <footer className="bg-blue-950 p-4 text-center dark:bg-blue-950">
+        <div className="bg-blue-950 p-4 text-center dark:bg-blue-950">
           <div className="mx-auto space-y-2">
             <div>
               <div className="text-white">UCI Machine Learning Repository</div>
@@ -69,7 +69,7 @@ export default function EmailLayout({
               </a>
             </div>
           </div>
-        </footer>
+        </div>
       </body>
     </Tailwind>
   );

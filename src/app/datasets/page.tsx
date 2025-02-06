@@ -1,4 +1,11 @@
-import { FilterIcon } from "lucide-react";
+import {
+  ArrowDownAZIcon,
+  ClockIcon,
+  Columns3Icon,
+  FilterIcon,
+  Rows3Icon,
+  TrendingUpIcon,
+} from "lucide-react";
 import type { Metadata } from "next";
 
 import Main from "@/components/layout/Main";
@@ -6,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
-  SelectGroup,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,11 +47,30 @@ export default function Page() {
           <div>
             <div>Sort By</div>
             <Select>
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-48 bg-background">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup />
+                <SelectItem value="top">
+                  <TrendingUpIcon />
+                  <span>Top</span>
+                </SelectItem>
+                <SelectItem value="new">
+                  <ClockIcon />
+                  <span>New</span>
+                </SelectItem>
+                <SelectItem value="blueberry">
+                  <Rows3Icon />
+                  <span>Most Instances</span>
+                </SelectItem>
+                <SelectItem value="grapes">
+                  <Columns3Icon />
+                  <span>Most Features</span>
+                </SelectItem>
+                <SelectItem value="pineapple">
+                  <ArrowDownAZIcon />
+                  <span>Name</span>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>

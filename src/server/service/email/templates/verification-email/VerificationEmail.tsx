@@ -10,7 +10,7 @@ export default function VerificationEmail({
   return (
     <EmailTemplateLayout>
       <p>Hello {name},</p>
-      <p>Click the following link to verify your email address:</p>
+      <p>Please click the following link to verify your email address:</p>
       <p>
         <a href={verificationLink}>{verificationLink}</a>
       </p>

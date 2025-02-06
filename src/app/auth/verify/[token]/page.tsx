@@ -68,6 +68,7 @@ export default async function Page({
             <div>{user.email} has been successfully verified</div>
           </div>
         </Alert>
+        <div>You can now exit this page</div>
         <Button className="w-full" variant="blue" asChild>
           <Link href={HOME_ROUTE}>Home</Link>
         </Button>
@@ -87,6 +88,7 @@ export default async function Page({
                 <div>{user.email} has been successfully verified</div>
               </div>
             </Alert>
+            <div>You can now exit this page</div>
             <Button className="w-full" variant="blue" asChild>
               <Link href={HOME_ROUTE}>Home</Link>
             </Button>

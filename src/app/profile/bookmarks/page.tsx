@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
-import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
 import BackToTop from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

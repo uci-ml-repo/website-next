@@ -1,6 +1,7 @@
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
+import VerificationError from "@/components/auth/VerificationError";
 import DiscussionCreateInput from "@/components/discussion/create/DiscussionCreateInput";
 
 export default async function Page({
@@ -16,7 +17,7 @@ export default async function Page({
   }
 
   if (!session.user.emailVerified) {
-    return unauthorized();
+    return <VerificationError />;
   }
 
   return <DiscussionCreateInput datasetId={Number(id)} datasetSlug={slug} />;

@@ -19,7 +19,7 @@ export default async function Page() {
       </div>
 
       <div className="space-y-2">
-        <ProfileSettingsEmail session={session} />
+        <ProfileSettingsEmail />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import DiscussionCreateButton from "@/components/discussion/create/DiscussionCre
 import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
 import DiscussionPreview from "@/components/discussion/preview/DiscussionPreview";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
-import useInfiniteScroll from "@/components/hooks/use-infinite-scroll";
+import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
 import BackToTop from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
