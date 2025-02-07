@@ -154,11 +154,7 @@ export default class DatasetFindService {
     const tsQuery = sql`(PLAINTO_TSQUERY('simple', ${query.search ?? ""}))`;
     const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('simple', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
     const rank = sql`(TS_RANK(${DATASET_WEIGHTS}, ${normalizedTsQuery}))`;
-    const trigramSimilarity = sql`similarity
-        (
-        ${dataset.title},
-        ${query.search}
-        )`;
+    const trigramSimilarity = sql`(similarity(${dataset.title}, ${query.search}))`;
 
     const datasets = await db
       .select({
@@ -171,13 +167,12 @@ export default class DatasetFindService {
         and(
           buildQuery(query),
           query.search
-            ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery})
-                                OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
+            ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery}) OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
             : undefined,
         ),
       )
       .offset(query.cursor ?? 0)
-      .limit(query.limit ? query.limit + 1 : 10)
+      .limit(query.limit ? query.limit + 1 : 11)
       .orderBy((t) =>
         query.order
           ? Object.entries(query.order).map(([field, sort]) =>
