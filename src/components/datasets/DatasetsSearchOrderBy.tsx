@@ -41,13 +41,13 @@ export default function DatasetsSearchOrderBy({}: {}) {
           setFilters({ order: { [value]: orderByOptions[value].sort } });
         }}
       >
-        <SelectTrigger className="h-11 w-48">
+        <SelectTrigger className="w-52" size="lg">
           <SelectValue />
         </SelectTrigger>
 
         <SelectContent>
           {Object.entries(orderByOptions).map(([value, { icon, name }]) => (
-            <SelectItem key={value} value={value}>
+            <SelectItem key={value} value={value} size="lg">
               {icon}
               <span>{name}</span>
             </SelectItem>

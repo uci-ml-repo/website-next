@@ -6,7 +6,10 @@ export default function DatasetFeatureTypesFilter() {
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem label="Feature Types">
+    <DatasetFilterItem
+      label="Feature Types"
+      clearFilter={() => setFilters({ featureTypes: undefined })}
+    >
       <div>Stuff</div>
     </DatasetFilterItem>
   );

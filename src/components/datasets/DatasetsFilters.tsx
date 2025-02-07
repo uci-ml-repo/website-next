@@ -1,46 +1,36 @@
 import DatasetAttributesFilter from "@/components/datasets/filters/DatasetAttributesFilter";
-import DatasetDataTypeFilter from "@/components/datasets/filters/DatasetDataTypeFilter";
+import DatasetCharacteristicsFilter from "@/components/datasets/filters/DatasetCharacteristicsFilter";
 import DatasetFeatureCountFilter from "@/components/datasets/filters/DatasetFeatureCountFilter";
 import DatasetFeatureTypesFilter from "@/components/datasets/filters/DatasetFeatureTypesFilter";
 import DatasetInstanceCountFilter from "@/components/datasets/filters/DatasetInstanceCountFilter";
 import DatasetKeywordsFilter from "@/components/datasets/filters/DatasetKeywordsFilter";
 import DatasetPythonFilter from "@/components/datasets/filters/DatasetPythonFilter";
-import DatasetSubjectAreaFilter from "@/components/datasets/filters/DatasetSubjectAreaFilter";
+import DatasetSubjectAreasFilter from "@/components/datasets/filters/DatasetSubjectAreasFilter";
 import DatasetTasksFilter from "@/components/datasets/filters/DatasetTasksFilter";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 export default function DatasetsFilters() {
-  const FilterSeparator = () => <Separator className="mx-auto w-[95%]" />;
-
   return (
     <div className="mt-6 space-y-2">
       <div className="text-lg text-muted-foreground">Filters</div>
-      <Card>
+      <Card className="overflow-hidden shadow-none">
         <DatasetKeywordsFilter />
-
-        <FilterSeparator />
+        <Separator />
         <DatasetAttributesFilter />
-
-        <FilterSeparator />
-        <DatasetDataTypeFilter />
-
-        <FilterSeparator />
-        <DatasetSubjectAreaFilter />
-
-        <FilterSeparator />
+        <Separator />
+        <DatasetCharacteristicsFilter />
+        <Separator />
+        <DatasetSubjectAreasFilter />
+        <Separator />
         <DatasetTasksFilter />
-
-        <FilterSeparator />
+        <Separator />
         <DatasetFeatureTypesFilter />
-
-        <FilterSeparator />
+        <Separator />
         <DatasetFeatureCountFilter />
-
-        <FilterSeparator />
+        <Separator />
         <DatasetInstanceCountFilter />
-
-        <FilterSeparator />
+        <Separator />
         <DatasetPythonFilter />
       </Card>
     </div>

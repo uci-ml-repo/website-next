@@ -16,18 +16,21 @@ export const datasetQuery = z.object({
   limit: z.number().int().optional(),
   cursor: z.number().int().optional(),
   keywords: z.array(z.string()).optional(),
-  attributes: z
+  attributes: z.array(z.string()).optional(),
+  characteristics: z
     .array(z.enum(enumToArray(Enums.DatasetCharacteristic)))
     .optional(),
   subjectAreas: z
     .array(z.enum(enumToArray(Enums.DatasetSubjectArea)))
     .optional(),
   tasks: z.array(z.enum(enumToArray(Enums.DatasetTask))).optional(),
-  instanceCount: z.number().int().min(0).optional(),
-  featureCount: z.number().int().min(0).optional(),
-  featureType: z
+  featureTypes: z
     .array(z.enum(enumToArray(Enums.DatasetFeatureType)))
     .optional(),
+  instanceCountMin: z.number().int().min(0).optional(),
+  instanceCountMax: z.number().int().min(0).optional(),
+  featureCountMin: z.number().int().min(0).optional(),
+  featureCountMax: z.number().int().min(0).optional(),
   python: z.boolean().optional(),
 });
 

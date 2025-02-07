@@ -6,7 +6,12 @@ export default function DatasetInstanceCountFilter() {
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem label="Instance Count">
+    <DatasetFilterItem
+      label="Instance Count"
+      clearFilter={() =>
+        setFilters({ instanceCountMin: undefined, instanceCountMax: undefined })
+      }
+    >
       <div>Stuff</div>
     </DatasetFilterItem>
   );

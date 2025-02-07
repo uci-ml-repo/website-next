@@ -6,7 +6,12 @@ export default function DatasetFeatureCountFilter() {
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem label="Feature Count">
+    <DatasetFilterItem
+      label="Feature Count"
+      clearFilter={() =>
+        setFilters({ featureCountMin: undefined, featureCountMax: undefined })
+      }
+    >
       <div>Stuff</div>
     </DatasetFilterItem>
   );

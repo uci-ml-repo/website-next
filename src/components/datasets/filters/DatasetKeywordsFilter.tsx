@@ -6,7 +6,10 @@ export default function DatasetKeywordsFilter() {
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem label="Keywords">
+    <DatasetFilterItem
+      label="Keywords"
+      clearFilter={() => setFilters({ keywords: undefined })}
+    >
       <div>Stuff</div>
     </DatasetFilterItem>
   );

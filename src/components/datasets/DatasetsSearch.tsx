@@ -34,7 +34,7 @@ export default function DatasetsSearch() {
         search: searchValue,
       },
       {
-        enabled: !!searchValue && data && data.datasets.length === 0,
+        enabled: !!searchValue,
       },
     );
 
@@ -76,7 +76,7 @@ export default function DatasetsSearch() {
                     <div className="text-lg text-muted-foreground">
                       Found {data.datasets.length}{" "}
                       {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
-                      {filters.search && `for '${filters.search}'`}
+                      {filters.search && `for '${filters.search}' `}
                       {!!trueFilterCount &&
                         `matching ${trueFilterCount} ${trueFilterCount ? "filter" : "filters"}`}
                     </div>

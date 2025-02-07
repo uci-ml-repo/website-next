@@ -19,6 +19,7 @@ export const usersSeed: (typeof user.$inferInsert)[] = [
     name: "Admin",
     role: Enums.UserRole.ADMIN,
     password: dummyPassword,
+    emailVerified: new Date(),
   },
   {
     id: crypto.randomUUID(),
@@ -35,6 +36,7 @@ export const usersSeed: (typeof user.$inferInsert)[] = [
     password: dummyPassword,
   },
 ];
+
 export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 53,
@@ -114,7 +116,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     instanceCount: 4898,
     featureCount: 12,
     hasGraphics: false,
-    isAvailablePython: true,
+    isAvailablePython: false,
     viewCount: 330143,
     downloadCount: 105932,
     slug: "wine+quality",

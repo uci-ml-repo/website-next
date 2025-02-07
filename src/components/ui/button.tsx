@@ -31,6 +31,7 @@ const buttonVariants = cva(
         lg: "h-10 px-6 text-base [&_svg]:size-5",
         icon: "size-9 [&_svg]:size-4",
         "icon-lg": "size-10 [&_svg]:size-5",
+        "icon-sm": "size-5 [&_svg]:size-3.5 [&_svg]:stroke-[3]",
       },
       pill: {
         true: "rounded-full",

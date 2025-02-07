@@ -6,7 +6,10 @@ export default function DatasetTasksFilter() {
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem label="Dataset Tasks">
+    <DatasetFilterItem
+      label="Dataset Tasks"
+      clearFilter={() => setFilters({ tasks: undefined })}
+    >
       <div>Stuff</div>
     </DatasetFilterItem>
   );

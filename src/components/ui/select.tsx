@@ -1,6 +1,8 @@
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import * as React from "react";
 
@@ -28,18 +30,41 @@ const SelectGroup = ({
   </SelectPrimitive.Group>
 );
 
-const SelectValue = SelectPrimitive.Value;
+const SelectValue = ({
+  ...props
+}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>) => (
+  <SelectPrimitive.Value {...props} />
+);
+
+const selectTriggerVariants = cva(
+  cn(
+    "flex w-full items-center justify-between whitespace-nowrap border border-input bg-input-background px-3 py-2 text-sm shadow-sm",
+    "ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+  ),
+  {
+    variants: {
+      size: {
+        default: "h-9",
+        lg: "h-11",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  },
+);
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
-    pill?: boolean;
-  }
->(({ className, children, pill = true, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> &
+    VariantProps<typeof selectTriggerVariants> & {
+      pill?: boolean;
+    }
+>(({ className, children, size, pill = true, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-9 w-full items-center justify-between whitespace-nowrap border border-input bg-input-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      selectTriggerVariants({ size }),
       pill ? "rounded-full pl-3.5" : "rounded-md",
       className,
     )}
@@ -47,7 +72,9 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="size-4 opacity-50" />
+      <ChevronDown
+        className={cn("opacity-50", size === "lg" ? "size-5" : "size-4")}
+      />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -144,8 +171,9 @@ const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
     pill?: boolean;
+    size?: "default" | "lg";
   }
->(({ className, children, pill = true, ...props }, ref) => (
+>(({ className, children, size, pill = true, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -161,7 +189,12 @@ const SelectItem = React.forwardRef<
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>
-      <div className="flex items-center space-x-1.5 [&>svg]:size-4">
+      <div
+        className={cn(
+          "flex items-center space-x-1.5",
+          size === "lg" ? "text-base [&>svg]:size-5" : "[&>svg]:size-4",
+        )}
+      >
         {children}
       </div>
     </SelectPrimitive.ItemText>

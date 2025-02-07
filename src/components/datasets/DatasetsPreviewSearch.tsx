@@ -158,7 +158,7 @@ export default function DatasetsPreviewSearch() {
           ))
         ) : (
           <div className="truncate p-4 text-lg text-muted-foreground">
-            Type to search&hellip;
+            Begin typing to search&hellip;
           </div>
         )}
 

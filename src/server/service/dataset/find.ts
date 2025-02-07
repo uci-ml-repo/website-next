@@ -15,6 +15,10 @@ function buildQuery(query: DatasetQuery) {
   if (query.keywords) {
   }
 
+  if (query.python) {
+    conditions.push(eq(dataset.isAvailablePython, true));
+  }
+
   return and(...conditions);
 }
 
