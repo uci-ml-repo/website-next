@@ -9,7 +9,7 @@ export default function Main({ children, className, ...props }: MainProps) {
     <main
       className={cn(
         "content mx-auto",
-        "max-md: pt-4 max-md:mt-[--header-height]",
+        "max-md:mt-[--header-height] max-md:pt-4",
         className,
       )}
       {...props}

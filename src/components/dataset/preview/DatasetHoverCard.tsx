@@ -86,7 +86,7 @@ export default function DatasetHoverCard({
   ];
 
   return (
-    <>
+    <div className="rounded-xl border-b-2 border-uci-gold p-1">
       <CardContent className="flex flex-1 flex-col space-y-3">
         <div className="flex flex-1 flex-col space-y-2">
           <CardTitle>
@@ -124,7 +124,7 @@ export default function DatasetHoverCard({
           </TooltipProvider>
         </CardDescription>
       </CardContent>
-      <CardFooter className="h-10 justify-between border-t py-2.5 @container">
+      <CardFooter className="flex h-10 items-center justify-between border-t py-2.5 @container">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-1">
             <EyeIcon />
@@ -155,6 +155,6 @@ export default function DatasetHoverCard({
           </>
         )}
       </CardFooter>
-    </>
+    </div>
   );
 }

@@ -40,10 +40,10 @@ export default function DatasetsSearch() {
 
   return (
     <div className="backdrop-gradient-blur flex space-x-4">
-      <div className="w-52 max-lg:hidden">
+      <div className="w-72 max-lg:hidden">
         <DatasetsFilters />
       </div>
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col p-1">
         <h1 className="text-2xl font-bold">Browse datasets</h1>
         <div className="space-y-4">
           <div className="flex w-full items-end justify-between space-x-4">
@@ -94,8 +94,31 @@ export default function DatasetsSearch() {
                     ))}
                   </div>
                 </div>
-              ) : searchValue && (pureSearchData || pureSearchIsLoading) ? (
-                <div>{JSON.stringify(pureSearchData)}</div>
+              ) : searchValue &&
+                ((pureSearchData && pureSearchData.datasets.length > 0) ||
+                  pureSearchIsLoading) ? (
+                pureSearchData ? (
+                  <div>
+                    <div>
+                      No datasets matching those filters, but these match your
+                      search
+                    </div>
+                    <div>
+                      {pureSearchData.datasets.map((dataset) => (
+                        <React.Fragment key={dataset.id}>
+                          <DatasetRow
+                            hoverCard
+                            dataset={dataset}
+                            className="rounded-none"
+                          />
+                          <hr />
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div>Shit outta luck</div>
+                )
               ) : (
                 <div>Shit outta luck</div>
               ))}

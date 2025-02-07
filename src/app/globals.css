@@ -30,7 +30,7 @@ body {
     --uci-blue-foreground: 0 0% 98%;
     --uci-gold: 48 99% 51%;
     --uci-gold-foreground: 0 0% 9%;
-    --border: 0 0% 86%;
+    --border: 0 0% 88%;
     --input: 0 0% 90%;
     --input-background: 0 0% 100%;
     --ring: 0 0% 4%;
@@ -121,7 +121,7 @@ body {
 }
 
 .content-x {
-  @apply max-w-screen-2xl px-6 sm:px-10 2xl:px-16;
+  @apply max-w-[1640px] px-6 sm:px-10 2xl:px-16;
 }
 
 .content {
@@ -134,6 +134,7 @@ body {
 
 .backdrop-gradient-blur {
   position: relative;
+  overflow: hidden;
 }
 
 .backdrop-gradient-blur::before {

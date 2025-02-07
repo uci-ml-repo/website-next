@@ -57,11 +57,11 @@ export default function DatasetRow({
         alt={`${dataset.title} thumbnail`}
         width={200}
         height={200}
-        className="size-12 rounded-lg object-cover dark:brightness-90"
+        className="mt-[1px] size-12 rounded-lg object-cover dark:brightness-90"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
-        <div className="min-w-0 -space-y-0.5">
-          <div className="truncate text-lg font-bold decoration-2 group-hover:underline group-focus:underline">
+        <div className="min-w-0">
+          <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus:underline">
             {dataset.title}
           </div>
           <div className="truncate text-sm text-muted-foreground">
@@ -88,9 +88,12 @@ export default function DatasetRow({
 
   if (hoverCard) {
     return (
-      <HoverCard openDelay={300} closeDelay={300}>
+      <HoverCard openDelay={250} closeDelay={250}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
-        <HoverCardContent className="w-[50dvw] min-w-64 max-w-xl" align="end">
+        <HoverCardContent
+          className="w-[50dvw] min-w-64 max-w-xl !p-0"
+          align="end"
+        >
           <DatasetHoverCard dataset={dataset} />
         </HoverCardContent>
       </HoverCard>

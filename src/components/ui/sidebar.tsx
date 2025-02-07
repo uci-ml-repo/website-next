@@ -16,6 +16,8 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
+export const SIDEBAR_COOKIE_NAME = "sidebar:state";
+
 type SidebarContext = {
   state: "expanded" | "collapsed";
   open: boolean;
