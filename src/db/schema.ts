@@ -1,5 +1,5 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
-import { getTableColumns, relations, sql } from "drizzle-orm";
+import { eq, getTableColumns, relations, sql } from "drizzle-orm";
 import {
   boolean,
   check,
@@ -111,17 +111,18 @@ export const dataset = pgTable(
       .$onUpdate(() => new Date()),
   },
   (t) => [
+    index("dataset_id_index").on(t.id),
     index("dataset_instance_count_index").on(t.instanceCount),
     index("dataset_feature_count_index").on(t.featureCount),
     index("dataset_donated_at_index").on(t.donatedAt),
     check(
       "accepted_check",
       sql`(${t.status} = 'draft' OR
-                    (${t.yearCreated} IS NOT NULL AND
-                    ${t.doi} IS NOT NULL AND
-                    ${t.instanceCount} IS NOT NULL AND
-                    ${t.description} IS NOT NULL AND
-                    ${t.subjectArea} IS NOT NULL))`,
+        (${t.yearCreated} IS NOT NULL AND
+        ${t.doi} IS NOT NULL AND
+        ${t.instanceCount} IS NOT NULL AND
+        ${t.description} IS NOT NULL AND
+        ${t.subjectArea} IS NOT NULL))`,
     ),
     check(
       "files_check",
@@ -288,7 +289,7 @@ export const datasetKeywordRelations = relations(datasetKeyword, ({ one }) => ({
 /**
  * Paper tables
  */
-export const introductoryPaper = pgTable("paper", {
+export const introductoryPaper = pgTable("introductory_paper", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   authors: text("authors").array().notNull(),
@@ -704,56 +705,64 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
   return qb
     .select({
       ...getTableColumns(dataset),
-      id: dataset.id,
-
-      // keywords: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-      //       'id', ${keyword.id},
-      //       'keyword', ${keyword.keyword},
-      //       'department', ${keyword.createdAt},
-      //       'status', ${keyword.status}))
-      //     FROM ${keyword}
-      //     JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
-      //     WHERE ${datasetKeyword.datasetId} = ${dataset.id})`.as("keywords"),
-      // authors: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-      //       'id', ${author.id},
-      //       'first_name', ${author.firstName},
-      //       'last_name', ${author.lastName},
-      //       'email', ${author.email}))
-      //     FROM ${author}
-      //     WHERE ${author.datasetId} = ${dataset.id})`.as("authors"),
-      // variables: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-      //       'id', ${variableAlias.id},
-      //       'name', ${variableAlias.name},
-      //       'description', ${variableAlias.description},
-      //       'role', ${variableAlias.role},
-      //       'type', ${variableAlias.type},
-      //       'missing_values', ${variableAlias.missingValues},
-      //       'units', ${variableAlias.units}))
-      //     FROM ${variable} ${variableAlias}
-      //     WHERE ${variableAlias.datasetId} = ${dataset.id})`.as("variables"),
+      keywords: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+            'id', ${keyword.id},
+            'keyword', ${keyword.keyword},
+            'department', ${keyword.createdAt},
+            'status', ${keyword.status}))
+          FROM ${keyword}
+          JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
+          WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
+        "keywords",
+      ),
+      authors: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+            'id', ${author.id},
+            'first_name', ${author.firstName},
+            'last_name', ${author.lastName},
+            'email', ${author.email}))
+          FROM ${author}
+          WHERE ${author.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
+        "authors",
+      ),
+      variables: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+            'id', ${variable.id},
+            'name', ${variable.name},
+            'description', ${variable.description},
+            'role', ${variable.role},
+            'type', ${variable.type},
+            'missing_values', ${variable.missingValues},
+            'units', ${variable.units}))
+          FROM ${variable} 
+          WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
+        "variables",
+      ),
       user: sql`(SELECT JSONB_BUILD_OBJECT(
-            'id', ${user.id},
-            'name', ${user.name},
-            'email', ${user.email},
-            'email_verified', ${user.emailVerified},
-            'image', ${user.image},
-            'role', ${user.role},
-            'created_at', ${user.createdAt})
-          FROM ${user}
-          WHERE ${user.id} = ${dataset.userId})`.as("u"),
-      // introductoryPaper: sql`(SELECT JSONB_BUILD_OBJECT(
-      //       'title', ${introductoryPaper.title},
-      //       'authors', ${introductoryPaper.authors},
-      //       'venue', ${introductoryPaper.venue},
-      //       'year', ${introductoryPaper.year},
-      //       'citation_count', ${introductoryPaper.citationCount},
-      //       'semantic_scholar_id', ${introductoryPaper.semanticScholarId},
-      //       'dataset_id', ${introductoryPaper.datasetId}
-      //       )
-      //     FROM ${introductoryPaper} ${introductoryPaper}
-      //     JOIN ${dataset} ${dataset} ON ${introductoryPaper.datasetId} = ${dataset.id}
-      //     WHERE ${introductoryPaper.datasetId} = ${dataset.id})`.as("ip"),
+           'id', ${user.id},
+           'name', ${user.name},
+           'email', ${user.email},
+           'email_verified', ${user.emailVerified},
+           'image', ${user.image},
+           'role', ${user.role},
+           'created_at', ${user.createdAt})
+        FROM ${user}
+        WHERE ${user.id} = ${dataset.userId})`.as("user"),
+      introductoryPaper: sql`(SELECT JSONB_BUILD_OBJECT(
+           'title', ${introductoryPaper.title},
+           'authors', ${introductoryPaper.authors},
+           'venue', ${introductoryPaper.venue},
+           'year', ${introductoryPaper.year},
+           'citation_count', ${introductoryPaper.citationCount},
+           'semantic_scholar_id', ${introductoryPaper.semanticScholarId},
+           'dataset_id', ${introductoryPaper.datasetId})
+        FROM ${introductoryPaper}
+        WHERE ${introductoryPaper.datasetId} = ${dataset.id})`.as(
+        "introductory_paper",
+      ),
     })
     .from(dataset)
+    .leftJoin(introductoryPaper, eq(dataset.id, introductoryPaper.datasetId))
+    .leftJoin(author, eq(dataset.id, author.datasetId))
+    .leftJoin(variable, eq(dataset.id, variable.datasetId))
+    .leftJoin(datasetKeyword, eq(dataset.id, datasetKeyword.datasetId))
     .groupBy(dataset.id);
 });
