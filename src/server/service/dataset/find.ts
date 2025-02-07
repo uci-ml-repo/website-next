@@ -10,7 +10,7 @@ import ServiceError from "@/server/service/errors";
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
 function buildQuery(query: DatasetQuery) {
-  const conditions = [eq(dataset.status, Enums.DatasetStatus.APPROVED)];
+  const conditions = [eq(dataset.status, Enums.Status.APPROVED)];
 
   if (query.keywords) {
   }
@@ -39,10 +39,7 @@ export default class DatasetFindService {
   async approvedById(id: number) {
     return db.query.dataset.findFirst({
       where: (dataset, { and, eq }) =>
-        and(
-          eq(dataset.id, id),
-          eq(dataset.status, Enums.DatasetStatus.APPROVED),
-        ),
+        and(eq(dataset.id, id), eq(dataset.status, Enums.Status.APPROVED)),
       with: {
         datasetKeywords: { with: { keyword: true } },
         authors: true,
@@ -58,7 +55,7 @@ export default class DatasetFindService {
       where: (dataset, { and, inArray }) =>
         and(
           inArray(dataset.id, ids),
-          eq(dataset.status, Enums.DatasetStatus.APPROVED),
+          eq(dataset.status, Enums.Status.APPROVED),
         ),
       with: {
         datasetKeywords: { with: { keyword: true } },
@@ -90,7 +87,7 @@ export default class DatasetFindService {
       where: (dataset, { and, eq }) =>
         and(
           eq(dataset.userId, userId),
-          eq(dataset.status, Enums.DatasetStatus.APPROVED),
+          eq(dataset.status, Enums.Status.APPROVED),
         ),
       with: {
         datasetKeywords: { with: { keyword: true } },

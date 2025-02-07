@@ -79,7 +79,7 @@ export function DATASET_FILES_ROUTE({
   id: number;
   status: string;
 }) {
-  return `${STATIC_FILES_ROUTE}/${status === Enums.DatasetStatus.APPROVED ? "public" : "private"}/${id}`;
+  return `${STATIC_FILES_ROUTE}/${status === Enums.Status.APPROVED ? "public" : "private"}/${id}`;
 }
 
 export function DATASET_PYTHON_DATA_ROUTE({

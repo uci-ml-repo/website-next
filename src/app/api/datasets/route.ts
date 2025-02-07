@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     dataset = await caller.dataset.find.approvedById(idNumber);
 
-    if (!dataset || dataset.status !== Enums.DatasetStatus.APPROVED) {
+    if (!dataset || dataset.status !== Enums.Status.APPROVED) {
       return NextResponse.json({
         status: 404,
         message: `Dataset with id ${id} not found`,

@@ -6,7 +6,7 @@ export namespace Enums {
     BASIC = "basic",
   }
 
-  export enum DatasetStatus {
+  export enum Status {
     DRAFT = "draft",
     PENDING = "pending",
     APPROVED = "approved",
@@ -82,8 +82,7 @@ export namespace Enums {
 
 export type UserRole = (typeof Enums.UserRole)[keyof typeof Enums.UserRole];
 
-export type DatasetStatus =
-  (typeof Enums.DatasetStatus)[keyof typeof Enums.DatasetStatus];
+export type DatasetStatus = (typeof Enums.Status)[keyof typeof Enums.Status];
 
 export type DatasetSubjectArea =
   (typeof Enums.DatasetSubjectArea)[keyof typeof Enums.DatasetSubjectArea];

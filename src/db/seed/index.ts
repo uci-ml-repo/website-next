@@ -6,9 +6,10 @@ import { reset, seed } from "drizzle-seed";
 import { db } from "@/db";
 import {
   dataset,
+  datasetView,
   discussion,
   discussionComment,
-  paper,
+  introductoryPaper,
   user,
 } from "@/db/schema";
 import * as schema from "@/db/schema";
@@ -26,7 +27,7 @@ async function main() {
 
   await db.insert(user).values(usersSeed);
   await db.insert(dataset).values(datasetsSeed);
-  await db.insert(paper).values(papersSeed);
+  await db.insert(introductoryPaper).values(papersSeed);
 
   await seed(db, { user }, { count: 100 }).refine((f) => ({
     user: {
@@ -84,6 +85,8 @@ async function main() {
   for (const d of datasets) {
     await service.dataset.update.zipSize(d);
   }
+
+  await db.refreshMaterializedView(datasetView);
 }
 
 main().then(() => {

@@ -1,11 +1,12 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
-import { relations, sql } from "drizzle-orm";
+import { getTableColumns, relations, sql } from "drizzle-orm";
 import {
   boolean,
   check,
   index,
   integer,
   pgEnum,
+  pgMaterializedView,
   pgTable,
   primaryKey,
   serial,
@@ -18,12 +19,12 @@ import {
 import { Enums } from "@/db/enums";
 import { enumToArray } from "@/lib/utils";
 
+/**
+ * Enums
+ */
 export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
 
-export const datasetStatus = pgEnum(
-  "dataset_status",
-  enumToArray(Enums.DatasetStatus),
-);
+export const status = pgEnum("dataset_status", enumToArray(Enums.Status));
 
 export const datasetSubjectArea = pgEnum(
   "dataset_subject_area",
@@ -65,6 +66,9 @@ export const reportResolutionType = pgEnum(
   enumToArray(Enums.ReportResolutionType),
 );
 
+/**
+ * Dataset tables
+ */
 export const dataset = pgTable(
   "dataset",
   {
@@ -82,9 +86,7 @@ export const dataset = pgTable(
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
     slug: text("slug").notNull(),
-    status: datasetStatus("status")
-      .default(Enums.DatasetStatus.DRAFT)
-      .notNull(),
+    status: status("status").default(Enums.Status.DRAFT).notNull(),
 
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count").default(0).notNull(),
@@ -115,16 +117,16 @@ export const dataset = pgTable(
     check(
       "accepted_check",
       sql`(${t.status} = 'draft' OR
-              (${t.yearCreated} IS NOT NULL AND
-              ${t.doi} IS NOT NULL AND
-              ${t.instanceCount} IS NOT NULL AND
-              ${t.description} IS NOT NULL AND
-              ${t.subjectArea} IS NOT NULL))`,
+                    (${t.yearCreated} IS NOT NULL AND
+                    ${t.doi} IS NOT NULL AND
+                    ${t.instanceCount} IS NOT NULL AND
+                    ${t.description} IS NOT NULL AND
+                    ${t.subjectArea} IS NOT NULL))`,
     ),
     check(
       "files_check",
       sql`((${t.externalLink} IS NULL AND ${t.size} IS NOT NULL AND ${t.fileCount} IS NOT NULL)
-          OR (${t.externalLink} IS NOT NULL AND ${t.externalLink} ~* '^https?://' AND ${t.size} IS NULL AND ${t.fileCount} IS NULL))`,
+                OR (${t.externalLink} IS NOT NULL AND ${t.externalLink} ~* '^https?://' AND ${t.size} IS NULL AND ${t.fileCount} IS NULL))`,
     ),
     index("dataset_ts_search_index").using(
       "gin",
@@ -132,7 +134,8 @@ export const dataset = pgTable(
     ),
     index("dataset_trgm_search_index").using(
       "gin",
-      sql`${t.title} gin_trgm_ops`,
+      sql`${t.title}
+            gin_trgm_ops`,
     ),
   ],
 );
@@ -147,7 +150,7 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
   bookmarks: many(bookmark),
   authors: many(author),
   reports: many(datasetReport),
-  introductoryPaper: one(paper),
+  introductoryPaper: one(introductoryPaper),
 }));
 
 export const datasetReport = pgTable("dataset_report", {
@@ -200,6 +203,9 @@ export const datasetReportResolutionRelations = relations(
   }),
 );
 
+/**
+ * Author tables
+ */
 export const author = pgTable("author", {
   id: uuid("id").primaryKey().defaultRandom(),
   firstName: text("first_name").notNull(),
@@ -216,6 +222,9 @@ export const authorsRelations = relations(author, ({ one }) => ({
   }),
 }));
 
+/**
+ * Variable tables
+ */
 export const variable = pgTable("variable", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -237,9 +246,12 @@ export const variableRelations = relations(variable, ({ one }) => ({
   }),
 }));
 
+/**
+ * Keyword tables
+ */
 export const keyword = pgTable("keyword", {
   id: uuid("id").primaryKey().defaultRandom(),
-  status: datasetStatus("status").notNull(),
+  status: status("status").notNull(),
   keyword: text("keyword").notNull(),
 
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
@@ -273,27 +285,37 @@ export const datasetKeywordRelations = relations(datasetKeyword, ({ one }) => ({
   }),
 }));
 
-export const paper = pgTable("paper", {
+/**
+ * Paper tables
+ */
+export const introductoryPaper = pgTable("paper", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   authors: text("authors").array().notNull(),
   venue: text("venue").notNull(),
   year: integer("year").notNull(),
+  citationCount: integer("citation_count"),
 
   semanticScholarId: integer("semantic_scholar_id").notNull(),
 
-  introductoryForDatasetId: integer("introductory_for_dataset_id")
+  datasetId: integer("dataset_id")
     .notNull()
     .references(() => dataset.id),
 });
 
-export const paperRelations = relations(paper, ({ one }) => ({
-  introductoryForDataset: one(dataset, {
-    fields: [paper.introductoryForDatasetId],
-    references: [dataset.id],
+export const introductoryPaperRelations = relations(
+  introductoryPaper,
+  ({ one }) => ({
+    dataset: one(dataset, {
+      fields: [introductoryPaper.datasetId],
+      references: [dataset.id],
+    }),
   }),
-}));
+);
 
+/**
+ * Bookmark tables
+ */
 export const bookmark = pgTable(
   "bookmark",
   {
@@ -321,6 +343,9 @@ export const bookmarkRelations = relations(bookmark, ({ one }) => ({
   }),
 }));
 
+/**
+ * Discussion tables
+ */
 export const discussion = pgTable(
   "discussion",
   {
@@ -344,11 +369,12 @@ export const discussion = pgTable(
     index("discussion_search_index").using(
       "gin",
       sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
-              SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
+                    SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
     ),
     index("discussion_trgm_search_index").using(
       "gin",
-      sql`${t.title} gin_trgm_ops`,
+      sql`${t.title}
+            gin_trgm_ops`,
     ),
   ],
 );
@@ -564,6 +590,9 @@ export const discussionCommentReportResolutionRelations = relations(
   }),
 );
 
+/**
+ * User tables
+ */
 export const user = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -667,3 +696,64 @@ export const passwordResetTokenRelations = relations(
     }),
   }),
 );
+
+/**
+ * Materialized views
+ */
+export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
+  return qb
+    .select({
+      ...getTableColumns(dataset),
+      id: dataset.id,
+
+      // keywords: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+      //       'id', ${keyword.id},
+      //       'keyword', ${keyword.keyword},
+      //       'department', ${keyword.createdAt},
+      //       'status', ${keyword.status}))
+      //     FROM ${keyword}
+      //     JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
+      //     WHERE ${datasetKeyword.datasetId} = ${dataset.id})`.as("keywords"),
+      // authors: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+      //       'id', ${author.id},
+      //       'first_name', ${author.firstName},
+      //       'last_name', ${author.lastName},
+      //       'email', ${author.email}))
+      //     FROM ${author}
+      //     WHERE ${author.datasetId} = ${dataset.id})`.as("authors"),
+      // variables: sql`(SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
+      //       'id', ${variableAlias.id},
+      //       'name', ${variableAlias.name},
+      //       'description', ${variableAlias.description},
+      //       'role', ${variableAlias.role},
+      //       'type', ${variableAlias.type},
+      //       'missing_values', ${variableAlias.missingValues},
+      //       'units', ${variableAlias.units}))
+      //     FROM ${variable} ${variableAlias}
+      //     WHERE ${variableAlias.datasetId} = ${dataset.id})`.as("variables"),
+      user: sql`(SELECT JSONB_BUILD_OBJECT(
+            'id', ${user.id},
+            'name', ${user.name},
+            'email', ${user.email},
+            'email_verified', ${user.emailVerified},
+            'image', ${user.image},
+            'role', ${user.role},
+            'created_at', ${user.createdAt})
+          FROM ${user}
+          WHERE ${user.id} = ${dataset.userId})`.as("u"),
+      // introductoryPaper: sql`(SELECT JSONB_BUILD_OBJECT(
+      //       'title', ${introductoryPaper.title},
+      //       'authors', ${introductoryPaper.authors},
+      //       'venue', ${introductoryPaper.venue},
+      //       'year', ${introductoryPaper.year},
+      //       'citation_count', ${introductoryPaper.citationCount},
+      //       'semantic_scholar_id', ${introductoryPaper.semanticScholarId},
+      //       'dataset_id', ${introductoryPaper.datasetId}
+      //       )
+      //     FROM ${introductoryPaper} ${introductoryPaper}
+      //     JOIN ${dataset} ${dataset} ON ${introductoryPaper.datasetId} = ${dataset.id}
+      //     WHERE ${introductoryPaper.datasetId} = ${dataset.id})`.as("ip"),
+    })
+    .from(dataset)
+    .groupBy(dataset.id);
+});

@@ -9,6 +9,6 @@ export default class DatasetCountService {
     return db
       .select({ count: count() })
       .from(dataset)
-      .where(eq(dataset.status, Enums.DatasetStatus.APPROVED));
+      .where(eq(dataset.status, Enums.Status.APPROVED));
   }
 }
