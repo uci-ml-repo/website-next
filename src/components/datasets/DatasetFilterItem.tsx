@@ -35,6 +35,7 @@ export default function DatasetFilterItem({
       <CollapsibleTrigger
         className="flex w-full cursor-pointer items-center justify-between p-4 hover:bg-accent"
         asChild
+        tabIndex={0}
       >
         <div>
           <div className="font-medium">{label}</div>
@@ -46,7 +47,7 @@ export default function DatasetFilterItem({
                     size="icon-sm"
                     className={cn(
                       "flex size-5 items-center justify-center rounded-full bg-uci-blue",
-                      "group transition-none hover:bg-destructive",
+                      "group transition-colors hover:bg-destructive-muted",
                     )}
                     onClick={(e) => {
                       e.preventDefault();

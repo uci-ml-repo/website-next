@@ -22,8 +22,8 @@ const orderByOptions: Record<
 > = {
   viewCount: { icon: <TrendingUpIcon />, name: "Top", sort: "desc" },
   donatedAt: { icon: <ClockIcon />, name: "New", sort: "desc" },
-  instanceCount: { icon: <Rows3Icon />, name: "Most Instances", sort: "desc" },
-  featureCount: { icon: <Columns3Icon />, name: "Most Features", sort: "desc" },
+  instanceCount: { icon: <Rows3Icon />, name: "Instances", sort: "desc" },
+  featureCount: { icon: <Columns3Icon />, name: "Features", sort: "desc" },
   title: { icon: <ArrowDownAZIcon />, name: "Title", sort: "asc" },
 };
 
@@ -41,7 +41,7 @@ export default function DatasetsSearchOrderBy({}: {}) {
           setFilters({ order: { [value]: orderByOptions[value].sort } });
         }}
       >
-        <SelectTrigger className="w-52" size="lg">
+        <SelectTrigger className="w-40" size="lg">
           <SelectValue />
         </SelectTrigger>
 

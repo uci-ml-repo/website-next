@@ -739,6 +739,11 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
         "variables",
       ) as SQL.Aliased<VariableSelect[]>,
+      attributes: sql`(COALESCE((SELECT ARRAY_AGG(LOWER(${variable.name}))
+          FROM ${variable}
+          WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::text[]))`.as(
+        "attributes",
+      ) as SQL.Aliased<string[]>,
       user: sql`(SELECT JSONB_BUILD_OBJECT(
            'id', ${user.id},
            'name', ${user.name},

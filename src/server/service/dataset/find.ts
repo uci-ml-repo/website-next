@@ -26,6 +26,10 @@ function buildQuery(query: DatasetQuery) {
     conditions.push(arrayContains(datasetView.keywords, query.keywords));
   }
 
+  if (query.attributes) {
+    conditions.push(arrayContains(datasetView.attributes, query.attributes));
+  }
+
   if (query.python) {
     conditions.push(eq(datasetView.isAvailablePython, true));
   }
