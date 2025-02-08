@@ -27,7 +27,7 @@ export type PythonMetadata = {
   abstract: string;
   area: string;
   tasks: string[];
-  characteristics: string[];
+  characteristics: Enums.DatasetDataType[];
 
   num_instances: number;
   num_features: number | null;
@@ -62,7 +62,7 @@ export function datasetToPythonMetadata(
     abstract: dataset.description,
     area: dataset.subjectArea,
     tasks: dataset.tasks,
-    characteristics: dataset.characteristics,
+    characteristics: dataset.dataTypes,
     num_instances: dataset.instanceCount,
     num_features: dataset.featureCount,
     feature_types: dataset.featureTypes,

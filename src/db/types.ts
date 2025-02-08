@@ -17,7 +17,7 @@ export type AcceptedDatasetRequiredFields =
   | "instanceCount"
   | "description"
   | "subjectArea"
-  | "characteristics"
+  | "dataTypes"
   | "tasks"
   | "featureTypes";
 

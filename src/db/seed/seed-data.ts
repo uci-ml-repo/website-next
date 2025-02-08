@@ -50,7 +50,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     description:
       "A small classic dataset from Fisher, 1936. One of the earliest known datasets used for evaluating classification methods.",
     subjectArea: Enums.DatasetSubjectArea.BIOLOGY,
-    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    dataTypes: [Enums.DatasetDataType.TABULAR],
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
     instanceCount: 150,
@@ -78,7 +78,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     description:
       "4 databases: Cleveland, Hungary, Switzerland, and the VA Long Beach.",
     subjectArea: Enums.DatasetSubjectArea.BIOLOGY,
-    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    dataTypes: [Enums.DatasetDataType.MULTIVARIATE],
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [
       Enums.DatasetFeatureType.CATEGORICAL,
@@ -109,7 +109,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.24432/C56S3T",
     description:
       "Two datasets are included, related to red and white vinho verde wine samples, from the north of Portugal. The goal is to model wine quality based on physicochemical tests (see [Cortez et al., 2009], http://www3.dsi.uminho.pt/pcortez/wine/).",
-    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    dataTypes: [Enums.DatasetDataType.MULTIVARIATE],
     subjectArea: Enums.DatasetSubjectArea.BUSINESS,
     tasks: [Enums.DatasetTask.CLASSIFICATION, Enums.DatasetTask.REGRESSION],
     featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
@@ -137,7 +137,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.24432/C56S3T",
     description:
       'Predict whether annual income of an individual exceeds $50K/yr based on census data. Also known as "Census Income" dataset.',
-    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    dataTypes: [Enums.DatasetDataType.MULTIVARIATE],
     subjectArea: Enums.DatasetSubjectArea.SOCIAL_SCIENCE,
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [
@@ -167,7 +167,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     subtitle: null,
     doi: "10.24432/C5DW2B",
     description: "Diagnostic Wisconsin Breast Cancer Database.",
-    characteristics: [Enums.DatasetCharacteristic.MULTIVARIATE],
+    dataTypes: [Enums.DatasetDataType.MULTIVARIATE],
     subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [Enums.DatasetFeatureType.CONTINUOUS],
@@ -195,7 +195,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.34620/dadosipb/PW3OWY",
     description:
       "MathE is a mathematical platform developed under the MathE project (mathe.pixel-online.org). The dataset has 9546 answers to questions in the Mathematical topics taught in higher education. The file has eight features, named: Student ID, Student Country, Question ID, Type of answer (correct or incorrect), Question level (basic or advanced), Math Topic, Math Subtopic, and Question Keywords. The question level was associated with the professor who submitted the question. The data was obtained from February 2019 until December 2023.",
-    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    dataTypes: [Enums.DatasetDataType.TABULAR],
     subjectArea: Enums.DatasetSubjectArea.EDUCATION,
     tasks: [
       Enums.DatasetTask.CLASSIFICATION,
@@ -231,7 +231,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "",
     description:
       "The Nvidia Market Customer Segmentation dataset provides a comprehensive analysis of sales and market dynamics for Nvidia's product offerings across various global regions from 1993 to 2024. This synthetic dataset includes over 39,000 entries, capturing key variables such as product categories (Gaming, AI, Data Center, OEM), specific product names (e.g., RTX 3080, Tesla V100), customer segments (Gamers, AI Researchers, Cloud Providers, Educational Institutions), and regions (North America, Europe, APAC, and more). It details customer purchasing behavior, including revenue data, units sold, marketing expenditures, customer satisfaction scores, and customer retention rates.",
-    characteristics: [Enums.DatasetCharacteristic.TABULAR],
+    dataTypes: [Enums.DatasetDataType.TABULAR],
     subjectArea: Enums.DatasetSubjectArea.BUSINESS,
     tasks: [
       Enums.DatasetTask.CLASSIFICATION,
@@ -267,9 +267,9 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.24432/C5G308",
     description:
       "This dataset is a pre-processed and re-structured/reshaped version of a very commonly used dataset featuring epileptic seizure detection.",
-    characteristics: [
-      Enums.DatasetCharacteristic.MULTIVARIATE,
-      Enums.DatasetCharacteristic.TIME_SERIES,
+    dataTypes: [
+      Enums.DatasetDataType.MULTIVARIATE,
+      Enums.DatasetDataType.TIME_SERIES,
     ],
     subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
     tasks: [Enums.DatasetTask.CLASSIFICATION, Enums.DatasetTask.CLUSTERING],
@@ -301,10 +301,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.5281/zenodo.7669442",
     description:
       "This is a test dataset to see if the website can handle pending external links",
-    characteristics: [
-      Enums.DatasetCharacteristic.TABULAR,
-      Enums.DatasetCharacteristic.IMAGE,
-    ],
+    dataTypes: [Enums.DatasetDataType.TABULAR, Enums.DatasetDataType.IMAGE],
     subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [
@@ -336,10 +333,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
     doi: "10.5281/zenodo.7669442",
     description:
       "This repository holds the data from a cohort of pediatric patients with suspected appendicitis admitted with abdominal pain to Children’s Hospital St. Hedwig in Regensburg, Germany, between 2016 and 2021. Each patient has (potentially multiple) ultrasound (US) images, aka views, tabular data comprising laboratory, physical examination, scoring results and ultrasonographic findings extracted manually by the experts, and three target variables, namely, diagnosis, management and severity.",
-    characteristics: [
-      Enums.DatasetCharacteristic.TABULAR,
-      Enums.DatasetCharacteristic.IMAGE,
-    ],
+    dataTypes: [Enums.DatasetDataType.TABULAR, Enums.DatasetDataType.IMAGE],
     subjectArea: Enums.DatasetSubjectArea.HEALTH_AND_MEDICINE,
     tasks: [Enums.DatasetTask.CLASSIFICATION],
     featureTypes: [

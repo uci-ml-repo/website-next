@@ -34,7 +34,7 @@ export namespace Enums {
     CLUSTERING = "clustering",
   }
 
-  export enum DatasetCharacteristic {
+  export enum DatasetDataType {
     TABULAR = "tabular",
     SEQUENTIAL = "sequential",
     MULTIVARIATE = "multivariate",
@@ -91,7 +91,7 @@ export type DatasetTask =
   (typeof Enums.DatasetTask)[keyof typeof Enums.DatasetTask];
 
 export type DatasetCharacteristic =
-  (typeof Enums.DatasetCharacteristic)[keyof typeof Enums.DatasetCharacteristic];
+  (typeof Enums.DatasetDataType)[keyof typeof Enums.DatasetDataType];
 
 export type DatasetFeatureRole =
   (typeof Enums.DatasetFeatureRole)[keyof typeof Enums.DatasetFeatureRole];

@@ -43,9 +43,9 @@ export const datasetTask = pgEnum(
   enumToArray(Enums.DatasetTask),
 );
 
-export const datasetCharacteristic = pgEnum(
+export const datasetDataType = pgEnum(
   "dataset_characteristic",
-  enumToArray(Enums.DatasetCharacteristic),
+  enumToArray(Enums.DatasetDataType),
 );
 
 export const datasetFeatureRole = pgEnum(
@@ -100,7 +100,7 @@ export const dataset = pgTable(
 
     variablesDescription: text("variables_description"),
 
-    characteristics: datasetCharacteristic("characteristics").array(),
+    dataTypes: datasetDataType("data_types").array(),
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
 

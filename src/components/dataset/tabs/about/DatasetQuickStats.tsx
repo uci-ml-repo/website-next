@@ -12,8 +12,8 @@ export default function DatasetQuickStats({
       value: formatEnum(dataset.subjectArea ?? ""),
     },
     {
-      name: "Characteristics",
-      value: formatEnum(dataset.characteristics ?? ""),
+      name: "Data Types",
+      value: formatEnum(dataset.dataTypes ?? ""),
     },
     {
       name: "Tasks",
