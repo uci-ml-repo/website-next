@@ -36,8 +36,8 @@ function buildQuery(query: DatasetQuery) {
     conditions.push(arrayContains(datasetView.dataTypes, query.dataTypes));
   }
 
-  if (query.subjectArea) {
-    conditions.push(eq(datasetView.subjectArea, query.subjectArea));
+  if (query.subjectAreas) {
+    conditions.push(inArray(datasetView.subjectArea, query.subjectAreas));
   }
 
   if (query.tasks) {

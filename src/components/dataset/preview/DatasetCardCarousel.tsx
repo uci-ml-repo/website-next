@@ -38,7 +38,7 @@ export default function DatasetCardCarousel({
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   const cardBreakpoints = cn(
-    "basis-full @md:basis-1/2 @2xl:basis-1/3 @5xl:basis-1/4",
+    "basis-full @md:basis-1/2 @2xl:basis-1/3 @5xl:basis-1/4 @[1500px]:basis-1/5",
   );
 
   return (

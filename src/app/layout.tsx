@@ -79,7 +79,7 @@ export default async function Layout({
                 <AppSidebar session={session} />
                 <div
                   className={cn(
-                    "flex min-h-[100svh] w-full flex-col",
+                    "flex min-h-[100svh] w-full flex-col overflow-x-hidden",
                     "max-md:!pl-0",
                     "peer-data-[state=collapsed]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:pl-[--sidebar-width-collapsed]",
