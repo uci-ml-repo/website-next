@@ -50,11 +50,21 @@ export default function DatasetsFilters() {
             open={tooltipsOpen}
             onOpenChange={setTooltipsOpen}
             delayDuration={150}
+            disableHoverableContent
           >
-            <TooltipTrigger>
+            <TooltipTrigger
+              onClick={(event) => {
+                event.preventDefault();
+              }}
+            >
               <CircleHelpIcon className="size-[18px] cursor-help" />
             </TooltipTrigger>
-            <TooltipContent className="hidden" />
+            <TooltipContent
+              className="hidden"
+              onPointerDownOutside={(event) => {
+                event.preventDefault();
+              }}
+            />
           </Tooltip>
         </div>
         {filterActive && (

@@ -1,0 +1,34 @@
+import { useQueryFilters } from "@/components/hooks/use-query-filters";
+import type { DatasetQuery } from "@/server/schema/dataset";
+
+function toggleFilter<T>(
+  current: T[] | undefined,
+  checked: boolean,
+  value: T,
+): T[] | undefined {
+  if (checked) {
+    return [...(current ?? []), value];
+  }
+  const updated = (current ?? []).filter((item) => item !== value);
+  return updated.length > 0 ? updated : undefined;
+}
+
+export function useToggleFilter<K extends keyof DatasetQuery, T>(filterKey: K) {
+  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+
+  const toggle = (checked: boolean, value: T) => {
+    const current = filters[filterKey] as T[] | undefined;
+    const updated = toggleFilter(current, checked, value);
+    setFilters({ [filterKey]: updated } as Partial<DatasetQuery>);
+  };
+
+  const clear = () => {
+    setFilters({ [filterKey]: undefined } as Partial<DatasetQuery>);
+  };
+
+  const isToggled = (value: T) => {
+    return !!(filters[filterKey] as T[] | undefined)?.includes(value);
+  };
+
+  return { filters, toggle, clear, isToggled };
+}

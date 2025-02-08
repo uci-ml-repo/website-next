@@ -1,38 +1,23 @@
+// DatasetSubjectAreasFilter.tsx
 import React from "react";
 
+import DatasetFilterCheckboxItem from "@/components/datasets/DatasetFilterCheckboxItem";
 import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
 import { Enums } from "@/db/enums";
-import { enumToArray, formatEnum } from "@/lib/utils";
-import type { DatasetQuery } from "@/server/schema/dataset";
+import { enumToArray } from "@/lib/utils";
 
 export default function DatasetSubjectAreasFilter({
   tooltipOpen,
 }: {
   tooltipOpen: boolean;
 }) {
-  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+  const { filters, toggle, isToggled, clear } = useToggleFilter<
+    "subjectAreas",
+    Enums.DatasetSubjectArea
+  >("subjectAreas");
 
   const subjectAreas = enumToArray(Enums.DatasetSubjectArea);
-
-  function handleCheckedChange(
-    checked: boolean,
-    subjectArea: Enums.DatasetSubjectArea,
-  ) {
-    if (checked) {
-      setFilters({
-        subjectAreas: [...(filters.subjectAreas ?? []), subjectArea],
-      });
-    } else {
-      const updated = (filters.subjectAreas || []).filter(
-        (sa) => sa !== subjectArea,
-      );
-      setFilters({
-        subjectAreas: updated.length > 0 ? updated : undefined,
-      });
-    }
-  }
 
   return (
     <DatasetFilterItem
@@ -41,21 +26,17 @@ export default function DatasetSubjectAreasFilter({
       tooltipContent="The subject area of the dataset"
       active={!!filters.subjectAreas?.length}
       activeCount={filters.subjectAreas?.length}
-      clearFilter={() => setFilters({ subjectAreas: undefined })}
+      clearFilter={clear}
     >
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         {subjectAreas.map((subjectArea, index) => (
           <React.Fragment key={subjectArea}>
             {index > 0 && <hr />}
-            <div className="flex items-center justify-between">
-              <div>{formatEnum(subjectArea)}</div>
-              <Checkbox
-                checked={filters.subjectAreas?.includes(subjectArea) || false}
-                onCheckedChange={(checked) =>
-                  handleCheckedChange(!!checked, subjectArea)
-                }
-              />
-            </div>
+            <DatasetFilterCheckboxItem
+              toggle={toggle}
+              value={subjectArea}
+              checked={isToggled(subjectArea)}
+            />
           </React.Fragment>
         ))}
       </div>
