@@ -61,7 +61,7 @@ export default function DatasetsFilters() {
           <Button
             variant="secondary"
             size="xs"
-            className="hover:bg-destructive hover:text-destructive-foreground"
+            className="animate-in fade-in-0 hover:bg-destructive hover:text-destructive-foreground"
             onClick={clearFilters}
           >
             <XIcon />

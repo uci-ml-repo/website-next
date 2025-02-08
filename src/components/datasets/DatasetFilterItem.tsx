@@ -48,7 +48,8 @@ export default function DatasetFilterItem({
                       size="icon-sm"
                       className={cn(
                         "flex size-5 items-center justify-center rounded-full bg-uci-blue",
-                        "group transition-colors hover:bg-destructive-muted focus:bg-destructive-muted",
+                        "group hover:bg-destructive-muted focus:bg-destructive-muted",
+                        "transition-opacity animate-in fade-in-0",
                       )}
                       onClick={(e) => {
                         e.preventDefault();
@@ -57,13 +58,13 @@ export default function DatasetFilterItem({
                       }}
                       asChild
                     >
-                      <div className="text-xs text-uci-blue-foreground">
-                        {activeCount ?? (
-                          <>
-                            <XIcon className="hidden group-hover:block group-focus:block" />
-                            <CheckIcon className="group-hover:hidden group-focus:hidden" />
-                          </>
-                        )}
+                      <div>
+                        <div className="text-xs text-uci-blue-foreground group-hover:hidden group-focus:hidden">
+                          {activeCount ?? <CheckIcon />}
+                        </div>
+                        <div className="hidden group-hover:block group-focus:block">
+                          <XIcon />
+                        </div>
                       </div>
                     </Button>
                   </TooltipTrigger>
