@@ -17,12 +17,8 @@ export const datasetQuery = z.object({
   cursor: z.number().int().optional(),
   keywords: z.array(z.string()).optional(),
   attributes: z.array(z.string()).optional(),
-  characteristics: z
-    .array(z.enum(enumToArray(Enums.DatasetDataType)))
-    .optional(),
-  subjectAreas: z
-    .array(z.enum(enumToArray(Enums.DatasetSubjectArea)))
-    .optional(),
+  dataTypes: z.array(z.enum(enumToArray(Enums.DatasetDataType))).optional(),
+  subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)).optional(),
   tasks: z.array(z.enum(enumToArray(Enums.DatasetTask))).optional(),
   featureTypes: z
     .array(z.enum(enumToArray(Enums.DatasetFeatureType)))

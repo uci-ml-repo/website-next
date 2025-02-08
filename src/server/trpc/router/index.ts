@@ -5,6 +5,7 @@ import bookmarkRouter from "@/server/trpc/router/bookmark";
 import datasetRouter from "@/server/trpc/router/dataset";
 import discussionRouter from "@/server/trpc/router/discussion";
 import filesRouter from "@/server/trpc/router/file";
+import keywordRouter from "@/server/trpc/router/keyword";
 import userRouter from "@/server/trpc/router/user";
 
 export const appRouter = router({
@@ -12,6 +13,7 @@ export const appRouter = router({
   discussion: discussionRouter,
   file: filesRouter,
   bookmark: bookmarkRouter,
+  keyword: keywordRouter,
   user: userRouter,
 });
 

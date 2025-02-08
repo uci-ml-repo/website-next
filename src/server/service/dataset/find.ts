@@ -6,7 +6,9 @@ import {
   desc,
   eq,
   getTableColumns,
+  gte,
   inArray,
+  lte,
   sql,
 } from "drizzle-orm";
 
@@ -28,6 +30,40 @@ function buildQuery(query: DatasetQuery) {
 
   if (query.attributes) {
     conditions.push(arrayContains(datasetView.attributes, query.attributes));
+  }
+
+  if (query.dataTypes) {
+    conditions.push(arrayContains(datasetView.dataTypes, query.dataTypes));
+  }
+
+  if (query.subjectArea) {
+    conditions.push(eq(datasetView.subjectArea, query.subjectArea));
+  }
+
+  if (query.tasks) {
+    conditions.push(arrayContains(datasetView.tasks, query.tasks));
+  }
+
+  if (query.featureTypes) {
+    conditions.push(
+      arrayContains(datasetView.featureTypes, query.featureTypes),
+    );
+  }
+
+  if (query.instanceCountMin) {
+    conditions.push(gte(datasetView.instanceCount, query.instanceCountMin));
+  }
+
+  if (query.instanceCountMax) {
+    conditions.push(lte(datasetView.instanceCount, query.instanceCountMax));
+  }
+
+  if (query.featureCountMin) {
+    conditions.push(gte(datasetView.featureCount, query.featureCountMin));
+  }
+
+  if (query.featureCountMax) {
+    conditions.push(lte(datasetView.featureCount, query.featureCountMax));
   }
 
   if (query.python) {

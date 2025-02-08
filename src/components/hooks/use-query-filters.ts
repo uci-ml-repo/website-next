@@ -40,11 +40,10 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     (newFilters: Partial<T>) => {
       const params = buildQueryFilters({ ...filters, ...newFilters });
 
-      setFilterCount(params.entries().toArray().length);
-
       const url = `${pathname}?${params.toString()}`;
 
       router.replace(url, { scroll: false });
+      setFilterCount(params.entries().toArray().length);
     },
     [filters, pathname, router],
   );

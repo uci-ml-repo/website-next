@@ -257,13 +257,17 @@ export const variableRelations = relations(variable, ({ one }) => ({
 /**
  * Keyword tables
  */
-export const keyword = pgTable("keyword", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  status: status("status").notNull(),
-  keyword: text("keyword").notNull(),
+export const keyword = pgTable(
+  "keyword",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    status: status("status").notNull(),
+    name: text("name").notNull(),
 
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-});
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [index("keyword_name_index").on(t.name)],
+);
 
 export const keywordsRelations = relations(keyword, ({ many }) => ({
   datasetKeywords: many(datasetKeyword),
@@ -712,7 +716,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
   return qb
     .select({
       ...getTableColumns(dataset),
-      keywords: sql`(COALESCE((SELECT ARRAY_AGG(${keyword.keyword})
+      keywords: sql`(COALESCE((SELECT ARRAY_AGG(${keyword.name})
           FROM ${keyword}
           JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
           WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::text[]))`.as(

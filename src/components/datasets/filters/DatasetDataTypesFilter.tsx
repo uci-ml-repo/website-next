@@ -14,7 +14,7 @@ export default function DatasetDataTypesFilter({
       label="Data Types"
       tooltipOpen={tooltipOpen}
       tooltipContent="The types of data in the dataset"
-      clearFilter={() => setFilters({ characteristics: undefined })}
+      clearFilter={() => setFilters({ dataTypes: undefined })}
     >
       <div>Stuff</div>
     </DatasetFilterItem>

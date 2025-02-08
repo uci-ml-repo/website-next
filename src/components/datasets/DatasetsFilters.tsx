@@ -1,3 +1,5 @@
+"use client";
+
 import { CircleHelpIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 

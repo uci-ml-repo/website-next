@@ -14,7 +14,7 @@ export default function DatasetSubjectAreasFilter({
       label="Subject Area"
       tooltipOpen={tooltipOpen}
       tooltipContent="The subject area of the dataset"
-      clearFilter={() => setFilters({ subjectAreas: undefined })}
+      clearFilter={() => setFilters({ subjectArea: undefined })}
     >
       <div>Stuff</div>
     </DatasetFilterItem>
