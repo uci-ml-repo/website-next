@@ -42,12 +42,12 @@ function buildQuery(query: DatasetQuery) {
   }
 
   if (query.tasks) {
-    conditions.push(arrayContains(datasetView.tasks, query.tasks));
+    conditions.push(arrayOverlaps(datasetView.tasks, query.tasks));
   }
 
   if (query.featureTypes) {
     conditions.push(
-      arrayContains(datasetView.featureTypes, query.featureTypes),
+      arrayOverlaps(datasetView.featureTypes, query.featureTypes),
     );
   }
 
