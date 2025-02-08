@@ -15,10 +15,10 @@ export default function DatasetSideData({
       {/* Keywords */}
       <div className="space-y-2">
         <div className="text-lg font-bold">Keywords</div>
-        {dataset.datasetKeywords.length > 0
-          ? dataset.datasetKeywords.map((datasetKeyword) => (
-              <Badge variant="outline" key={datasetKeyword.keyword.id}>
-                {datasetKeyword.keyword.keyword}
+        {dataset.keywords.length > 0
+          ? dataset.keywords.map((keyword) => (
+              <Badge variant="outline" key={keyword.id}>
+                {keyword.keyword}
               </Badge>
             ))
           : blank}

@@ -1,8 +1,17 @@
-import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  inArray,
+  sql,
+} from "drizzle-orm";
 
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
-import { dataset } from "@/db/schema";
+import { dataset, datasetView } from "@/db/schema";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import ServiceError from "@/server/service/errors";
@@ -10,13 +19,13 @@ import ServiceError from "@/server/service/errors";
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
 function buildQuery(query: DatasetQuery) {
-  const conditions = [eq(dataset.status, Enums.Status.APPROVED)];
+  const conditions = [eq(datasetView.status, Enums.Status.APPROVED)];
 
   if (query.keywords) {
   }
 
   if (query.python) {
-    conditions.push(eq(dataset.isAvailablePython, true));
+    conditions.push(eq(datasetView.isAvailablePython, true));
   }
 
   return and(...conditions);
@@ -24,47 +33,36 @@ function buildQuery(query: DatasetQuery) {
 
 export default class DatasetFindService {
   async byId({ datasetId }: { datasetId: number }) {
-    return db.query.dataset.findFirst({
-      where: (dataset, { eq }) => eq(dataset.id, datasetId),
-      with: {
-        datasetKeywords: { with: { keyword: true } },
-        authors: true,
-        introductoryPaper: true,
-        variables: true,
-        user: true,
-      },
-    });
+    const [dataset] = await db
+      .select()
+      .from(datasetView)
+      .where(eq(datasetView.id, datasetId));
+    return dataset;
   }
 
   async approvedById(id: number) {
-    return db.query.dataset.findFirst({
-      where: (dataset, { and, eq }) =>
-        and(eq(dataset.id, id), eq(dataset.status, Enums.Status.APPROVED)),
-      with: {
-        datasetKeywords: { with: { keyword: true } },
-        authors: true,
-        introductoryPaper: true,
-        variables: true,
-        user: true,
-      },
-    });
+    const [dataset] = await db
+      .select()
+      .from(datasetView)
+      .where(
+        and(
+          eq(datasetView.id, id),
+          eq(datasetView.status, Enums.Status.APPROVED),
+        ),
+      );
+    return dataset;
   }
 
   async batch(ids: number[]) {
-    const datasets = await db.query.dataset.findMany({
-      where: (dataset, { and, inArray }) =>
+    const datasets = await db
+      .select()
+      .from(datasetView)
+      .where(
         and(
-          inArray(dataset.id, ids),
-          eq(dataset.status, Enums.Status.APPROVED),
+          inArray(datasetView.id, ids),
+          eq(datasetView.status, Enums.Status.APPROVED),
         ),
-      with: {
-        datasetKeywords: { with: { keyword: true } },
-        authors: true,
-        introductoryPaper: true,
-        variables: true,
-        user: true,
-      },
-    });
+      );
 
     const datasetMap = new Map(
       datasets.map((dataset) => [dataset.id, dataset]),
@@ -83,20 +81,15 @@ export default class DatasetFindService {
   }
 
   async byUserId(userId: string) {
-    return db.query.dataset.findMany({
-      where: (dataset, { and, eq }) =>
+    return db
+      .select()
+      .from(datasetView)
+      .where(
         and(
-          eq(dataset.userId, userId),
-          eq(dataset.status, Enums.Status.APPROVED),
+          eq(datasetView.userId, userId),
+          eq(datasetView.status, Enums.Status.APPROVED),
         ),
-      with: {
-        datasetKeywords: { with: { keyword: true } },
-        authors: true,
-        introductoryPaper: true,
-        variables: true,
-        user: true,
-      },
-    });
+      );
   }
 
   async byQuery(query: DatasetQuery) {
@@ -115,7 +108,7 @@ export default class DatasetFindService {
 
     const [countQuery] = await db
       .select({ count: count() })
-      .from(dataset)
+      .from(datasetView)
       .where(buildQuery(query));
 
     return {
@@ -132,19 +125,11 @@ export default class DatasetFindService {
         )
       : [asc(dataset.id)];
 
-    return db.query.dataset.findMany({
-      where: buildQuery(query),
-      orderBy,
-      offset: query.cursor ?? 0,
-      limit: query.limit ? query.limit + 1 : undefined,
-      with: {
-        datasetKeywords: { with: { keyword: true } },
-        authors: true,
-        introductoryPaper: true,
-        variables: true,
-        user: true,
-      },
-    });
+    return db
+      .select()
+      .from(datasetView)
+      .where(buildQuery(query))
+      .orderBy(...orderBy);
   }
 
   private async bySearchQuery(query: DatasetQuery) {

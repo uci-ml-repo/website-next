@@ -33,7 +33,7 @@ export type VariableSelect = typeof variable.$inferSelect;
 
 export type AuthorSelect = typeof author.$inferSelect;
 
-export type PaperSelect = typeof introductoryPaper.$inferSelect;
+export type IntroductoryPaperSelect = typeof introductoryPaper.$inferSelect;
 
 export type DiscussionSelect = typeof discussion.$inferSelect;
 

@@ -165,8 +165,8 @@ export default function AppSidebar({ session }: { session: Session | null }) {
                           {bookmarksQuery.data.bookmarks.map(
                             (datasetBookmark) => (
                               <DatasetSidebarPreview
-                                dataset={datasetBookmark.dataset}
-                                key={datasetBookmark.dataset.id}
+                                dataset={datasetBookmark.dataset_view}
+                                key={datasetBookmark.dataset_view.id}
                               />
                             ),
                           )}

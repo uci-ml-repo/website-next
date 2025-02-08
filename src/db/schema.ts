@@ -1,4 +1,5 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
+import type { SQL } from "drizzle-orm";
 import { eq, getTableColumns, relations, sql } from "drizzle-orm";
 import {
   boolean,
@@ -17,6 +18,13 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { Enums } from "@/db/enums";
+import type {
+  AuthorSelect,
+  IntroductoryPaperSelect,
+  KeywordSelect,
+  UserSelect,
+  VariableSelect,
+} from "@/db/types";
 import { enumToArray } from "@/lib/utils";
 
 /**
@@ -714,7 +722,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
           WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
         "keywords",
-      ),
+      ) as SQL.Aliased<KeywordSelect[]>,
       authors: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
             'id', ${author.id},
             'first_name', ${author.firstName},
@@ -723,7 +731,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           FROM ${author}
           WHERE ${author.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
         "authors",
-      ),
+      ) as SQL.Aliased<AuthorSelect[]>,
       variables: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
             'id', ${variable.id},
             'name', ${variable.name},
@@ -735,7 +743,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           FROM ${variable} 
           WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
         "variables",
-      ),
+      ) as SQL.Aliased<VariableSelect[]>,
       user: sql`(SELECT JSONB_BUILD_OBJECT(
            'id', ${user.id},
            'name', ${user.name},
@@ -745,7 +753,9 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
            'role', ${user.role},
            'created_at', ${user.createdAt})
         FROM ${user}
-        WHERE ${user.id} = ${dataset.userId})`.as("user"),
+        WHERE ${user.id} = ${dataset.userId})`.as(
+        "user",
+      ) as SQL.Aliased<UserSelect>,
       introductoryPaper: sql`(SELECT JSONB_BUILD_OBJECT(
            'title', ${introductoryPaper.title},
            'authors', ${introductoryPaper.authors},
@@ -757,7 +767,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
         FROM ${introductoryPaper}
         WHERE ${introductoryPaper.datasetId} = ${dataset.id})`.as(
         "introductory_paper",
-      ),
+      ) as SQL.Aliased<IntroductoryPaperSelect>,
     })
     .from(dataset)
     .leftJoin(introductoryPaper, eq(dataset.id, introductoryPaper.datasetId))

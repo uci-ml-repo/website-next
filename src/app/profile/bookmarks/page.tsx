@@ -101,10 +101,10 @@ export default function Page() {
 
               <div className="relative">
                 {bookmarks.map((bookmark) => (
-                  <React.Fragment key={bookmark.dataset.id}>
+                  <React.Fragment key={bookmark.dataset_view.id}>
                     <DatasetRow
                       hoverCard
-                      dataset={bookmark.dataset}
+                      dataset={bookmark.dataset_view}
                       className="rounded-none"
                     />
                     <hr />

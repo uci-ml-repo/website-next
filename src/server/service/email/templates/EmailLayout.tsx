@@ -22,18 +22,16 @@ export default function EmailLayout({
     >
       <body className="mx-auto max-w-4xl">
         <header className="bg-gray-300 p-4">
-          <a href={process.env.ORIGIN}>
-            <Img
-              src={path.join(process.env.ORIGIN, "img", "logo.png")}
-              alt="UCI Machine Learning Repository"
-              className="h-20 w-auto dark:hidden"
-            />
-            <Img
-              src={path.join(process.env.ORIGIN, "img", "logo-dark.png")}
-              alt="UCI Machine Learning Repository"
-              className="hidden h-20 w-auto dark:block"
-            />
-          </a>
+          <Img
+            src={path.join(process.env.ORIGIN, "img", "logo.png")}
+            alt="UCI Machine Learning Repository"
+            className="h-20 w-auto dark:hidden"
+          />
+          <Img
+            src={path.join(process.env.ORIGIN, "img", "logo-dark.png")}
+            alt="UCI Machine Learning Repository"
+            className="hidden h-20 w-auto dark:block"
+          />
         </header>
         <main>
           <div className="bg-gray-100 px-4 py-8">{children}</div>
@@ -72,7 +70,7 @@ export default function EmailLayout({
         </div>
 
         {/* Prevent emails from trimming */}
-        <span className="invisible">{Date.now()}</span>
+        <span className="text-[0]">{Date.now()}</span>
       </body>
     </Tailwind>
   );

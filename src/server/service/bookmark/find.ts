@@ -1,29 +1,20 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import type { Session } from "next-auth";
 
 import { db } from "@/db";
-import { bookmark, dataset } from "@/db/schema";
+import { bookmark, dataset, datasetView } from "@/db/schema";
 import type { BookmarkQuery } from "@/server/schema/bookmark";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
 export default class BookmarkFindService {
   async batch(ids: string[]) {
-    return db.query.bookmark.findMany({
-      where: (bookmark, { inArray }) => inArray(bookmark.id, ids),
-      with: {
-        dataset: {
-          with: {
-            datasetKeywords: { with: { keyword: true } },
-            authors: true,
-            introductoryPaper: true,
-            variables: true,
-            user: true,
-          },
-        },
-      },
-      orderBy: desc(bookmark.createdAt),
-    });
+    return db
+      .select()
+      .from(bookmark)
+      .where(inArray(bookmark.id, ids))
+      .innerJoin(datasetView, eq(bookmark.datasetId, datasetView.id))
+      .orderBy(desc(bookmark.createdAt));
   }
 
   async byUserQuery(query: BookmarkQuery, user: Session["user"]) {
@@ -31,23 +22,14 @@ export default class BookmarkFindService {
       return this.byUserSearchQuery(query, user);
     }
 
-    const bookmarks = await db.query.bookmark.findMany({
-      where: (bookmark, { eq }) => eq(bookmark.userId, user.id),
-      with: {
-        dataset: {
-          with: {
-            datasetKeywords: { with: { keyword: true } },
-            authors: true,
-            introductoryPaper: true,
-            variables: true,
-            user: true,
-          },
-        },
-      },
-      orderBy: desc(bookmark.createdAt),
-      limit: query.limit ? query.limit + 1 : undefined,
-      offset: query.cursor ?? 0,
-    });
+    const bookmarks = await db
+      .select()
+      .from(bookmark)
+      .where(eq(bookmark.userId, user.id))
+      .innerJoin(datasetView, eq(bookmark.datasetId, datasetView.id))
+      .orderBy(desc(bookmark.createdAt))
+      .offset(query.cursor ?? 0)
+      .limit(query.limit ? query.limit + 1 : 11);
 
     let nextCursor: number | undefined = undefined;
     if (query.limit && bookmarks.length > query.limit) {
