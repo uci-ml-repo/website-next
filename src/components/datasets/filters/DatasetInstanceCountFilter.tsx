@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
@@ -14,25 +14,25 @@ export default function DatasetInstanceCountFilter({
   dropdownOpen,
   onDropdownOpenChange,
 }: DatasetFiltersProps) {
-  const [values, setValues] = useState<number[]>();
+  const { filters, setFilters, debouncedSetFilters } =
+    useQueryFilters<DatasetQuery>();
 
-  const { setFilters, debouncedSetFilters } = useQueryFilters<DatasetQuery>();
+  const [values, setValues] = useState<number[]>([0, 0]);
+  const [initialized, setInitialized] = useState(false);
 
   const { data } = trpc.dataset.stats.maxDataSize.useQuery();
 
-  useEffect(() => {
-    if (data && !values) {
-      setValues([0, data.maxInstanceCount]);
-    }
-  }, [data, values]);
-
-  const getLogValue = useCallback(
-    (value: number) => {
-      if (value > 0 && data && data.maxInstanceCount > 0) {
-        const ratio = value / data.maxInstanceCount;
+  const log = useCallback(
+    (raw: number) => {
+      if (raw > 0 && data && data.maxInstanceCount > 0) {
+        const ratio = raw / data.maxInstanceCount;
         const exponent = 0.7;
         return Math.round(
-          Math.pow(data.maxInstanceCount, Math.pow(ratio, exponent)),
+          Number(
+            Math.round(
+              Math.pow(data.maxInstanceCount, Math.pow(ratio, exponent)),
+            ).toPrecision(2),
+          ),
         );
       }
       return 0;
@@ -40,17 +40,51 @@ export default function DatasetInstanceCountFilter({
     [data],
   );
 
+  const exp = useCallback(
+    (curved: number) => {
+      if (!data || data.maxInstanceCount <= 0 || curved <= 0) {
+        return 0;
+      }
+      const M = data.maxInstanceCount;
+      const raw = M * Math.pow(Math.log(curved) / Math.log(M), 1 / 0.7);
+      return Math.round(raw);
+    },
+    [data],
+  );
+
+  const maxLog = useMemo(() => log(data?.maxInstanceCount ?? 0), [data, log]);
+
   useEffect(() => {
-    if (values && data) {
-      const min = getLogValue(values[0]);
-      const max = getLogValue(values[1]);
+    if (data && !initialized) {
+      setValues([
+        filters.instanceCountMin !== undefined
+          ? exp(filters.instanceCountMin)
+          : 0,
+        filters.instanceCountMax !== undefined
+          ? exp(filters.instanceCountMax)
+          : data.maxInstanceCount,
+      ]);
+      setInitialized(true);
+    }
+  }, [
+    data,
+    filters.instanceCountMin,
+    filters.instanceCountMax,
+    exp,
+    initialized,
+  ]);
+
+  useEffect(() => {
+    if (data) {
+      const minCurved = log(values[0]);
+      const maxCurved = log(values[1]);
 
       debouncedSetFilters({
-        instanceCountMin: min,
-        instanceCountMax: max,
+        instanceCountMin: minCurved === 0 ? undefined : minCurved,
+        instanceCountMax: maxCurved === maxLog ? undefined : maxCurved,
       });
     }
-  }, [data, values, getLogValue, debouncedSetFilters]);
+  }, [data, values, log, debouncedSetFilters, maxLog]);
 
   return (
     <DatasetFilterItem
@@ -59,17 +93,19 @@ export default function DatasetInstanceCountFilter({
       tooltipContent="The number of instances (rows of data)"
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
-      clearFilter={() =>
+      active={!!filters.instanceCountMin || !!filters.instanceCountMax}
+      clearFilter={() => {
+        setValues([0, data?.maxInstanceCount ?? 0]);
         setFilters({
           instanceCountMin: undefined,
           instanceCountMax: undefined,
-        })
-      }
+        });
+      }}
     >
-      {data && values ? (
+      {data ? (
         <div className="px-2">
           <DualRangeSlider
-            label={(value) => abbreviateDecimal(getLogValue(value ?? 0), 2)}
+            label={(rawValue) => abbreviateDecimal(log(rawValue ?? 0), 2)}
             value={values}
             onValueChange={setValues}
             step={data.maxInstanceCount / 200}
