@@ -39,6 +39,7 @@ import {
   PROFILE_ROUTE,
   SIGN_IN_ROUTE,
 } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -47,7 +48,8 @@ export default function AppSidebar({ session }: { session: Session | null }) {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { temporaryOpen, setTemporaryOpen } = useSidebar();
+  const { temporaryOpen, setTemporaryOpen, open, openMobile } = useSidebar();
+  const openState = open || temporaryOpen || openMobile;
 
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -150,28 +152,30 @@ export default function AppSidebar({ session }: { session: Session | null }) {
               </SidebarMenuItem>
               {bookmarksQuery.data &&
                 bookmarksQuery.data.bookmarks.length > 0 && (
-                  <SidebarOpenVisible className="mt-2 flex h-full flex-col overflow-hidden">
-                    <SidebarGroup className="overflow-hidden">
+                  <SidebarOpenVisible>
+                    <SidebarGroup className="mt-2 flex h-full flex-col space-y-1 overflow-hidden">
                       <SidebarGroupLabel asChild>
                         <Link
                           href={PROFILE_BOOKMARKS_ROUTE}
-                          className="mx-2 hover:underline"
+                          className="mx-2 h-fit text-sm hover:underline"
                         >
                           Bookmarks
                         </Link>
                       </SidebarGroupLabel>
-                      <div className="flex-1 overflow-y-auto px-2">
-                        <ul>
-                          {bookmarksQuery.data.bookmarks.map(
-                            (datasetBookmark) => (
+                      <ul className="flex-1 space-y-0 px-2">
+                        {bookmarksQuery.data.bookmarks.map(
+                          (datasetBookmark) => (
+                            <li key={datasetBookmark.dataset_view.id}>
                               <DatasetSidebarPreview
                                 dataset={datasetBookmark.dataset_view}
-                                key={datasetBookmark.dataset_view.id}
+                                className={cn("transition-all duration-100", {
+                                  "-mb-8": !openState,
+                                })}
                               />
-                            ),
-                          )}
-                        </ul>
-                      </div>
+                            </li>
+                          ),
+                        )}
+                      </ul>
                     </SidebarGroup>
                   </SidebarOpenVisible>
                 )}

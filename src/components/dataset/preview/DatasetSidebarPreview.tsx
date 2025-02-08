@@ -3,47 +3,52 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 import type { DatasetSelect } from "@/db/types";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
+interface DatasetSidebarPreviewProps extends React.ComponentProps<"a"> {
+  dataset: DatasetSelect;
+}
+
 export default function DatasetSidebarPreview({
   dataset,
-}: {
-  dataset: DatasetSelect;
-}) {
+  className,
+  ...props
+}: DatasetSidebarPreviewProps) {
   const pathname = usePathname();
   const datasetRoute = DATASET_ROUTE(dataset);
   const isActive = pathname.startsWith(datasetRoute);
 
   return (
-    <li>
-      <Link
-        href={datasetRoute}
+    <Link
+      href={datasetRoute}
+      className={cn(
+        "group/dataset ml-1 flex items-center rounded-lg p-1.5 hover:bg-sidebar-accent",
+        { "bg-sidebar-accent": isActive },
+        className,
+      )}
+      {...props}
+    >
+      <Image
+        src={DATASET_THUMBNAIL_ROUTE(dataset)}
+        alt={`${dataset.title} thumbnail`}
+        height={100}
+        width={100}
         className={cn(
-          "group/dataset flex items-center space-x-2 rounded-lg p-1.5 pr-2 hover:bg-sidebar-accent",
-          {
-            "bg-sidebar-accent": isActive,
-          },
+          "size-7 shrink-0 rounded-md object-cover dark:brightness-90",
         )}
-      >
-        <Image
-          src={DATASET_THUMBNAIL_ROUTE(dataset)}
-          alt={`${dataset.title} thumbnail`}
-          height={100}
-          width={100}
-          className="size-7 rounded-md object-cover dark:brightness-90"
-        />
-        <div className="flex w-full min-w-0 items-center justify-between space-x-1">
-          <div className="truncate text-base font-bold decoration-2 group-hover/dataset:underline">
-            {dataset.title}
-          </div>
-          {isActive && (
-            <div className="size-1.5 shrink-0 rounded-full bg-muted-foreground" />
-          )}
+      />
+      <div className="ml-2 flex w-full min-w-0 items-center justify-between space-x-1">
+        <div className="truncate text-base font-bold group-hover/dataset:underline">
+          {dataset.title}
         </div>
-      </Link>
-    </li>
+        {isActive && (
+          <div className="size-1.5 shrink-0 rounded-full bg-muted-foreground" />
+        )}
+      </div>
+    </Link>
   );
 }

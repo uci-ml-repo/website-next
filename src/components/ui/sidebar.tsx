@@ -607,11 +607,13 @@ SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 
 const SidebarOpenVisible = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div">
->(({ children, className, ...props }, ref) => {
+  React.ComponentProps<"div"> & { animateHeight?: boolean }
+>(({ children, className, animateHeight, ...props }, ref) => {
   const { open, temporaryOpen, openMobile } = useSidebar();
 
-  if (!open && !temporaryOpen && !openMobile) {
+  const openState = open || temporaryOpen || openMobile;
+
+  if (!animateHeight && !openState) {
     return null;
   }
 
@@ -619,7 +621,10 @@ const SidebarOpenVisible = React.forwardRef<
     <div ref={ref} {...props}>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: !open && !temporaryOpen && !openMobile ? 0 : 1 }}
+        animate={{
+          opacity: !openState ? 0 : 1,
+          height: animateHeight ? (!openState ? 0 : "auto") : "auto",
+        }}
         transition={{ duration: 0.1 }}
         className={className}
       >
