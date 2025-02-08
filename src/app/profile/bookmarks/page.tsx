@@ -7,7 +7,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import DatasetRow from "@/components/dataset/preview/DatasetRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
@@ -24,8 +24,6 @@ export default function Page() {
   const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
     useDebouncedSearch();
 
-  const [hasBookmarks, setHasBookmarks] = useState(false);
-
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.bookmark.find.byUserQuery.useInfiniteQuery(
       {
@@ -38,12 +36,6 @@ export default function Page() {
     );
 
   const bookmarks = data?.pages.flatMap((page) => page.bookmarks) || [];
-
-  useEffect(() => {
-    if (data && !hasBookmarks) {
-      setHasBookmarks(data.pages[0].bookmarks.length > 0);
-    }
-  }, [data, hasBookmarks]);
 
   const { triggerFetchNextPage } = useInfiniteScroll({
     fetchNextPage,
@@ -58,7 +50,7 @@ export default function Page() {
         <h2 className="text-2xl font-bold">Bookmarks</h2>
       </div>
 
-      {!isLoading && !hasBookmarks ? (
+      {!isLoading && !(data && data.pages[0].bookmarks.length > 0) ? (
         <Card className="w-full bg-muted">
           <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
             <div className="text-muted-foreground">

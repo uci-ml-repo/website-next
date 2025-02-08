@@ -165,18 +165,18 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
           )}
         </SidebarMenu>
-        {bookmarksQuery.data && bookmarksQuery.data.bookmarks.length > 0 && (
+        {bookmarksQuery.data && bookmarksQuery.data.bookmarks.length > 0 ? (
           <SidebarOpenVisible className="min-h-0 flex-1 overflow-y-auto pt-2">
             <SidebarGroup className="hidden h-full flex-col overflow-hidden [@media_(min-height:460px)]:flex">
               <SidebarGroupLabel asChild>
                 <Link
                   href={PROFILE_BOOKMARKS_ROUTE}
-                  className="mx-2 h-fit text-sm hover:underline"
+                  className="mx-2 h-fit w-fit text-sm hover:underline"
                 >
                   Bookmarks
                 </Link>
               </SidebarGroupLabel>
-              <ul className="flex min-h-0 flex-col overflow-y-auto px-2">
+              <ul className="flex min-h-0 flex-col overflow-y-auto px-2 pt-1">
                 {bookmarksQuery.data.bookmarks.map((datasetBookmark) => (
                   <li key={datasetBookmark.dataset_view.id}>
                     <DatasetSidebarPreview
@@ -190,6 +190,8 @@ export default function AppSidebar({ session }: { session: Session | null }) {
               </ul>
             </SidebarGroup>
           </SidebarOpenVisible>
+        ) : (
+          <div className="flex-1" />
         )}
         <SidebarFooter>
           <SidebarOpenVisible className="flex items-center justify-between p-4 pb-6">

@@ -47,7 +47,7 @@ export default function DatasetFilterItem({
                     size="icon-sm"
                     className={cn(
                       "flex size-5 items-center justify-center rounded-full bg-uci-blue",
-                      "group transition-colors hover:bg-destructive-muted",
+                      "group transition-colors hover:bg-destructive-muted focus:bg-destructive-muted",
                     )}
                     onClick={(e) => {
                       e.preventDefault();
@@ -58,8 +58,8 @@ export default function DatasetFilterItem({
                     <div className="text-sm text-uci-blue-foreground">
                       {activeCount ?? (
                         <>
-                          <XIcon className="hidden group-hover:block" />
-                          <CheckIcon className="group-hover:hidden" />
+                          <XIcon className="hidden group-hover:block group-focus:block" />
+                          <CheckIcon className="group-hover:hidden group-focus:hidden" />
                         </>
                       )}
                     </div>
