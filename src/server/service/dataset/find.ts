@@ -1,5 +1,6 @@
 import {
   and,
+  arrayContains,
   asc,
   count,
   desc,
@@ -22,6 +23,7 @@ function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.Status.APPROVED)];
 
   if (query.keywords) {
+    conditions.push(arrayContains(datasetView.keywords, query.keywords));
   }
 
   if (query.python) {
@@ -32,11 +34,22 @@ function buildQuery(query: DatasetQuery) {
 }
 
 export default class DatasetFindService {
-  async byId({ datasetId }: { datasetId: number }) {
+  async byId({
+    datasetId,
+    query,
+  }: {
+    datasetId: number;
+    query?: DatasetQuery;
+  }) {
     const [dataset] = await db
       .select()
       .from(datasetView)
-      .where(eq(datasetView.id, datasetId));
+      .where(
+        and(
+          query ? buildQuery(query) : undefined,
+          eq(datasetView.id, datasetId),
+        ),
+      );
     return dataset;
   }
 
@@ -121,9 +134,9 @@ export default class DatasetFindService {
   private async byRawQuery(query: DatasetQuery) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([field, sort]) =>
-          sortFunction(sort)(dataset[field as keyof typeof query.order]),
+          sortFunction(sort)(datasetView[field as keyof typeof query.order]),
         )
-      : [asc(dataset.id)];
+      : [asc(datasetView.id)];
 
     return db
       .select()
@@ -147,7 +160,6 @@ export default class DatasetFindService {
       .from(dataset)
       .where(
         and(
-          buildQuery(query),
           query.search
             ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery}) OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
             : undefined,

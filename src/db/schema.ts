@@ -21,7 +21,6 @@ import { Enums } from "@/db/enums";
 import type {
   AuthorSelect,
   IntroductoryPaperSelect,
-  KeywordSelect,
   UserSelect,
   VariableSelect,
 } from "@/db/types";
@@ -713,16 +712,12 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
   return qb
     .select({
       ...getTableColumns(dataset),
-      keywords: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-            'id', ${keyword.id},
-            'keyword', ${keyword.keyword},
-            'department', ${keyword.createdAt},
-            'status', ${keyword.status}))
+      keywords: sql`(COALESCE((SELECT ARRAY_AGG(${keyword.keyword})
           FROM ${keyword}
           JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
-          WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
+          WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::text[]))`.as(
         "keywords",
-      ) as SQL.Aliased<KeywordSelect[]>,
+      ) as SQL.Aliased<string[]>,
       authors: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
             'id', ${author.id},
             'first_name', ${author.firstName},

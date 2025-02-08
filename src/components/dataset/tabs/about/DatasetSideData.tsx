@@ -17,8 +17,8 @@ export default function DatasetSideData({
         <div className="text-lg font-bold">Keywords</div>
         {dataset.keywords.length > 0
           ? dataset.keywords.map((keyword) => (
-              <Badge variant="outline" key={keyword.id}>
-                {keyword.keyword}
+              <Badge variant="outline" key={keyword}>
+                {keyword}
               </Badge>
             ))
           : blank}
