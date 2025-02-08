@@ -85,7 +85,7 @@ export default function AppSidebar({ session }: { session: Session | null }) {
   );
 
   return (
-    <Sidebar ref={ref}>
+    <Sidebar ref={ref} className="flex flex-col overflow-y-hidden">
       <div className="flex items-center">
         <SidebarTrigger />
         <SidebarOpenVisible>
@@ -95,11 +95,11 @@ export default function AppSidebar({ session }: { session: Session | null }) {
         </SidebarOpenVisible>
       </div>
       <div
-        className="flex h-full w-full flex-col"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        className="flex h-full flex-col overflow-hidden"
       >
-        <SidebarMenu className="flex-1 overflow-hidden">
+        <SidebarMenu className="shrink-0">
           <SidebarMenuItem>
             <SidebarMenuButton activePath={RegExp(`^${HOME_ROUTE}$`)} asChild>
               <Link href={HOME_ROUTE}>
@@ -141,45 +141,14 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
           )}
           {session?.user ? (
-            <>
-              <SidebarMenuItem>
-                <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
-                  <Link href={PROFILE_ROUTE}>
-                    <UserIcon />
-                    <span>Profile</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              {bookmarksQuery.data &&
-                bookmarksQuery.data.bookmarks.length > 0 && (
-                  <SidebarOpenVisible>
-                    <SidebarGroup className="mt-2 flex h-full flex-col space-y-1 overflow-hidden">
-                      <SidebarGroupLabel asChild>
-                        <Link
-                          href={PROFILE_BOOKMARKS_ROUTE}
-                          className="mx-2 h-fit text-sm hover:underline"
-                        >
-                          Bookmarks
-                        </Link>
-                      </SidebarGroupLabel>
-                      <ul className="flex-1 space-y-0 px-2">
-                        {bookmarksQuery.data.bookmarks.map(
-                          (datasetBookmark) => (
-                            <li key={datasetBookmark.dataset_view.id}>
-                              <DatasetSidebarPreview
-                                dataset={datasetBookmark.dataset_view}
-                                className={cn("transition-all duration-100", {
-                                  "-mb-8": !openState,
-                                })}
-                              />
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    </SidebarGroup>
-                  </SidebarOpenVisible>
-                )}
-            </>
+            <SidebarMenuItem>
+              <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
+                <Link href={PROFILE_ROUTE}>
+                  <UserIcon />
+                  <span>Profile</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           ) : (
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -196,6 +165,32 @@ export default function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
           )}
         </SidebarMenu>
+        {bookmarksQuery.data && bookmarksQuery.data.bookmarks.length > 0 && (
+          <SidebarOpenVisible className="min-h-0 flex-1 overflow-y-auto pt-2">
+            <SidebarGroup className="hidden h-full flex-col overflow-hidden [@media_(min-height:460px)]:flex">
+              <SidebarGroupLabel asChild>
+                <Link
+                  href={PROFILE_BOOKMARKS_ROUTE}
+                  className="mx-2 h-fit text-sm hover:underline"
+                >
+                  Bookmarks
+                </Link>
+              </SidebarGroupLabel>
+              <ul className="flex min-h-0 flex-col overflow-y-auto px-2">
+                {bookmarksQuery.data.bookmarks.map((datasetBookmark) => (
+                  <li key={datasetBookmark.dataset_view.id}>
+                    <DatasetSidebarPreview
+                      dataset={datasetBookmark.dataset_view}
+                      className={cn("transition-all duration-100", {
+                        "-mb-8": !openState,
+                      })}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </SidebarGroup>
+          </SidebarOpenVisible>
+        )}
         <SidebarFooter>
           <SidebarOpenVisible className="flex items-center justify-between p-4 pb-6">
             <span className="text-sm text-muted-foreground">Theme</span>

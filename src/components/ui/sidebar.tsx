@@ -3,6 +3,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { MenuIcon } from "lucide-react";
+import type { HTMLMotionProps } from "motion/react";
 import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { type RefObject, useEffect } from "react";
@@ -608,10 +609,8 @@ SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 const SidebarOpenVisible = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+  ...props
+}: Omit<HTMLMotionProps<"div">, "ref">) => {
   const { open, temporaryOpen, openMobile } = useSidebar();
 
   const openState = open || temporaryOpen || openMobile;
@@ -626,8 +625,9 @@ const SidebarOpenVisible = ({
       animate={{
         opacity: !openState ? 0 : 1,
       }}
-      transition={{ duration: 0.1 }}
+      transition={{ duration: 0.15 }}
       className={className}
+      {...props}
     >
       {children}
     </motion.div>

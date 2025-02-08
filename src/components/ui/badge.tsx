@@ -33,7 +33,7 @@ export interface BadgeProps
 
 function Badge({ className, variant, size, ...props }: BadgeProps) {
   return (
-    <div className="z-50 flex items-center rounded-full bg-background">
+    <div className="z-10 flex items-center rounded-full bg-background">
       <div
         className={cn(badgeVariants({ variant, size }), className)}
         {...props}
