@@ -1,5 +1,6 @@
 "use client";
 
+import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
@@ -48,5 +49,10 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     [filters, pathname, router],
   );
 
-  return { filters, setFilters, filterCount };
+  const debouncedSetFilters = useMemo(
+    () => debounce(setFilters, 175),
+    [setFilters],
+  );
+
+  return { filters, setFilters, debouncedSetFilters, filterCount };
 }

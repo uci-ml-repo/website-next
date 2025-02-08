@@ -144,7 +144,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
       Enums.DatasetFeatureType.CATEGORICAL,
       Enums.DatasetFeatureType.INTEGER,
     ],
-    instanceCount: 48842,
+    instanceCount: 48842000,
     featureCount: 14,
     hasGraphics: false,
     isAvailablePython: true,

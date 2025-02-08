@@ -1,8 +1,8 @@
-export function abbreviateDecimal(value: number) {
+export function abbreviateDecimal(value: number, significantDigits = 3) {
   const abbreviateDecimal = new Intl.NumberFormat("en-US", {
     style: "decimal",
     notation: "compact",
-    maximumSignificantDigits: 3,
+    maximumSignificantDigits: significantDigits,
     minimumSignificantDigits: 1,
   });
 

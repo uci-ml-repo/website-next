@@ -4,6 +4,7 @@ import datasetCiteRouter from "@/server/trpc/router/dataset/cite";
 import datasetCountRouter from "@/server/trpc/router/dataset/count";
 import datasetFindRouter from "@/server/trpc/router/dataset/find";
 import datasetReportRouter from "@/server/trpc/router/dataset/report";
+import datasetStatsRouter from "@/server/trpc/router/dataset/stats";
 
 const datasetRouter = router({
   find: datasetFindRouter,
@@ -11,6 +12,7 @@ const datasetRouter = router({
   cite: datasetCiteRouter,
   bookmarks: bookmarkRouter,
   report: datasetReportRouter,
+  stats: datasetStatsRouter,
 });
 
 export default datasetRouter;
