@@ -1,22 +1,38 @@
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import type { DatasetQuery } from "@/server/schema/dataset";
+import React from "react";
 
-export default function DatasetTasksFilter({
+import DatasetFilterCheckbox from "@/components/datasets/checkbox/DatasetFilterCheckbox";
+import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
+import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
+import { Enums } from "@/db/enums";
+import { enumToArray } from "@/lib/utils";
+
+export default function DatasetFeatureTypesFilter({
   tooltipOpen,
-}: {
-  tooltipOpen: boolean;
-}) {
-  const { setFilters } = useQueryFilters<DatasetQuery>();
+  dropdownOpen,
+  onDropdownOpenChange,
+}: DatasetFiltersProps) {
+  const { filters, toggle, isToggled, clear } = useToggleFilter<
+    "tasks",
+    Enums.DatasetTask
+  >("tasks");
 
   return (
     <DatasetFilterItem
       label="Dataset Tasks"
       tooltipOpen={tooltipOpen}
       tooltipContent="The tasks that the dataset can be used for"
-      clearFilter={() => setFilters({ tasks: undefined })}
+      dropdownOpen={dropdownOpen}
+      onDropdownOpenChange={onDropdownOpenChange}
+      active={!!filters.tasks?.length}
+      activeCount={filters.tasks?.length}
+      clearFilter={clear}
     >
-      <div>Stuff</div>
+      <DatasetFilterCheckbox
+        values={enumToArray(Enums.DatasetTask)}
+        toggle={toggle}
+        isToggled={isToggled}
+      />
     </DatasetFilterItem>
   );
 }

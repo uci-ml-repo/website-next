@@ -1,6 +1,5 @@
 import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +20,8 @@ export default function DatasetFilterItem({
   active,
   activeCount,
   clearFilter,
+  dropdownOpen,
+  onDropdownOpenChange,
   tooltipOpen,
   tooltipContent,
 }: {
@@ -29,14 +30,18 @@ export default function DatasetFilterItem({
   active?: boolean;
   activeCount?: number;
   clearFilter: () => void;
+  dropdownOpen: boolean;
+  onDropdownOpenChange: () => void;
   tooltipOpen: boolean;
   tooltipContent: string;
 }) {
-  const [open, setOpen] = useState<boolean>(false);
-
   return (
     <Tooltip open={tooltipOpen}>
-      <Collapsible open={open} onOpenChange={setOpen} className="w-full">
+      <Collapsible
+        open={dropdownOpen}
+        onOpenChange={onDropdownOpenChange}
+        className="w-full"
+      >
         <CollapsibleTrigger className="flex w-full cursor-pointer items-center hover:bg-accent">
           <div className="flex w-full items-center justify-between p-4">
             <div className="select-none font-medium">{label}</div>
@@ -48,7 +53,7 @@ export default function DatasetFilterItem({
                       size="icon-sm"
                       className={cn(
                         "flex size-5 items-center justify-center rounded-full bg-uci-blue",
-                        "group hover:bg-destructive-muted focus:bg-destructive-muted",
+                        "group hover:bg-destructive focus:bg-destructive",
                         "transition-opacity animate-in fade-in-0",
                       )}
                       onClick={(e) => {
@@ -73,7 +78,7 @@ export default function DatasetFilterItem({
               )}
               <ChevronDownIcon
                 className={cn("size-5 opacity-50 transition-all duration-100", {
-                  "-rotate-180": open,
+                  "-rotate-180": dropdownOpen,
                 })}
               />
             </div>
@@ -85,7 +90,7 @@ export default function DatasetFilterItem({
         <CollapsibleContent>
           <motion.div
             initial={{ height: 0 }}
-            animate={open ? { height: "auto" } : {}}
+            animate={dropdownOpen ? { height: "auto" } : {}}
             transition={{ duration: 0.1 }}
             className="overflow-y-hidden bg-background"
           >

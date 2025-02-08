@@ -1,7 +1,12 @@
 "use client";
 
-import { CircleHelpIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import {
+  ChevronsDownUpIcon,
+  ChevronsUpDownIcon,
+  CircleHelpIcon,
+  XIcon,
+} from "lucide-react";
+import React, { useState } from "react";
 
 import DatasetAttributesFilter from "@/components/datasets/filters/DatasetAttributesFilter";
 import DatasetDataTypesFilter from "@/components/datasets/filters/DatasetDataTypesFilter";
@@ -23,9 +28,33 @@ import {
 } from "@/components/ui/tooltip";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
+export interface DatasetFiltersProps {
+  tooltipOpen: boolean;
+  dropdownOpen: boolean;
+  onDropdownOpenChange: () => void;
+}
+
+const datasetFilters: React.FC<DatasetFiltersProps>[] = [
+  DatasetKeywordsFilter,
+  DatasetAttributesFilter,
+  DatasetDataTypesFilter,
+  DatasetSubjectAreasFilter,
+  DatasetTasksFilter,
+  DatasetFeatureTypesFilter,
+  DatasetFeatureCountFilter,
+  DatasetInstanceCountFilter,
+  DatasetPythonFilter,
+];
+
 export default function DatasetsFilters() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
+
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+
+  const [openStates, setOpenStates] = useState<boolean[]>(
+    Array(datasetFilters.length).fill(false),
+  );
+  const isAnyOpen = openStates.some((state) => state);
 
   const filterActive = Object.entries(filters).some(
     ([key, value]) => !["search", "order"].includes(key) && value !== undefined,
@@ -80,24 +109,36 @@ export default function DatasetsFilters() {
         )}
       </div>
       <Card className="overflow-hidden shadow-none">
-        <DatasetKeywordsFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetAttributesFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetDataTypesFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetSubjectAreasFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetTasksFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetFeatureTypesFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetFeatureCountFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetInstanceCountFilter tooltipOpen={tooltipsOpen} />
-        <Separator />
-        <DatasetPythonFilter tooltipOpen={tooltipsOpen} />
+        {datasetFilters.map((Filter, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && <Separator />}
+            <Filter
+              tooltipOpen={tooltipsOpen}
+              dropdownOpen={openStates[index]}
+              onDropdownOpenChange={() =>
+                setOpenStates((prev) =>
+                  prev.map((state, i) => (i === index ? !state : state)),
+                )
+              }
+            />
+          </React.Fragment>
+        ))}
       </Card>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          if (isAnyOpen) {
+            setOpenStates(Array(datasetFilters.length).fill(false));
+          } else {
+            setOpenStates(Array(datasetFilters.length).fill(true));
+          }
+        }}
+        className="text-muted-foreground"
+      >
+        <span>{isAnyOpen ? "Collapse All" : "Expand All"}</span>
+        {isAnyOpen ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
+      </Button>
     </div>
   );
 }
