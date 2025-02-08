@@ -1,5 +1,6 @@
 import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
+import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
 export default function DatasetInstanceCountFilter({
@@ -21,7 +22,7 @@ export default function DatasetInstanceCountFilter({
         })
       }
     >
-      <div>Stuff</div>
+      <DualRangeSlider />
     </DatasetFilterItem>
   );
 }

@@ -25,12 +25,11 @@ export default function DatasetSubjectAreasFilter({
         subjectAreas: [...(filters.subjectAreas ?? []), subjectArea],
       });
     } else {
-      const updatedSubjectAreas = (filters.subjectAreas || []).filter(
+      const updated = (filters.subjectAreas || []).filter(
         (sa) => sa !== subjectArea,
       );
       setFilters({
-        subjectAreas:
-          updatedSubjectAreas.length > 0 ? updatedSubjectAreas : undefined,
+        subjectAreas: updated.length > 0 ? updated : undefined,
       });
     }
   }

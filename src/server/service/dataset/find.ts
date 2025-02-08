@@ -1,6 +1,7 @@
 import {
   and,
   arrayContains,
+  arrayOverlaps,
   asc,
   count,
   desc,
@@ -33,7 +34,7 @@ function buildQuery(query: DatasetQuery) {
   }
 
   if (query.dataTypes) {
-    conditions.push(arrayContains(datasetView.dataTypes, query.dataTypes));
+    conditions.push(arrayOverlaps(datasetView.dataTypes, query.dataTypes));
   }
 
   if (query.subjectAreas) {
