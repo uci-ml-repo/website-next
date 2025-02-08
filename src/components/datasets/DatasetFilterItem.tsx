@@ -57,7 +57,7 @@ export default function DatasetFilterItem({
                       }}
                       asChild
                     >
-                      <div className="text-sm text-uci-blue-foreground">
+                      <div className="text-xs text-uci-blue-foreground">
                         {activeCount ?? (
                           <>
                             <XIcon className="hidden group-hover:block group-focus:block" />

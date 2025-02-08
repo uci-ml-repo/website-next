@@ -12,26 +12,50 @@ export default function DatasetSubjectAreasFilter({
 }: {
   tooltipOpen: boolean;
 }) {
-  const { setFilters } = useQueryFilters<DatasetQuery>();
+  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
-  // setFilters({ subjectAreas: [...] });
+  const subjectAreas = enumToArray(Enums.DatasetSubjectArea);
 
-  const subjectAreas = Enums.DatasetSubjectArea;
+  function handleCheckedChange(
+    checked: boolean,
+    subjectArea: Enums.DatasetSubjectArea,
+  ) {
+    if (checked) {
+      setFilters({
+        subjectAreas: [...(filters.subjectAreas ?? []), subjectArea],
+      });
+    } else {
+      const updatedSubjectAreas = (filters.subjectAreas || []).filter(
+        (sa) => sa !== subjectArea,
+      );
+      setFilters({
+        subjectAreas:
+          updatedSubjectAreas.length > 0 ? updatedSubjectAreas : undefined,
+      });
+    }
+  }
 
   return (
     <DatasetFilterItem
       label="Subject Area"
       tooltipOpen={tooltipOpen}
       tooltipContent="The subject area of the dataset"
+      active={!!filters.subjectAreas?.length}
+      activeCount={filters.subjectAreas?.length}
       clearFilter={() => setFilters({ subjectAreas: undefined })}
     >
       <div className="space-y-1.5">
-        {enumToArray(subjectAreas).map((subjectArea, index) => (
+        {subjectAreas.map((subjectArea, index) => (
           <React.Fragment key={subjectArea}>
             {index > 0 && <hr />}
             <div className="flex items-center justify-between">
               <div>{formatEnum(subjectArea)}</div>
-              <Checkbox />
+              <Checkbox
+                checked={filters.subjectAreas?.includes(subjectArea) || false}
+                onCheckedChange={(checked) =>
+                  handleCheckedChange(!!checked, subjectArea)
+                }
+              />
             </div>
           </React.Fragment>
         ))}
