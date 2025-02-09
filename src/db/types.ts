@@ -5,8 +5,8 @@ import type {
   discussion,
   discussionCommentUpvote,
   discussionUpvote,
-  introductoryPaper,
   keyword,
+  paper,
   user,
   variable,
 } from "./schema";
@@ -33,7 +33,7 @@ export type VariableSelect = typeof variable.$inferSelect;
 
 export type AuthorSelect = typeof author.$inferSelect;
 
-export type IntroductoryPaperSelect = typeof introductoryPaper.$inferSelect;
+export type PaperSelect = typeof paper.$inferSelect;
 
 export type DiscussionSelect = typeof discussion.$inferSelect;
 

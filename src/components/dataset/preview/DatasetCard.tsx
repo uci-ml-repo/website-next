@@ -19,11 +19,17 @@ import {
 } from "@/components/ui/card";
 import type { DatasetSelect } from "@/db/types";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
-import { abbreviateDecimal, abbreviateFileSize, formatEnum } from "@/lib/utils";
+import {
+  abbreviateDecimal,
+  abbreviateFileSize,
+  cn,
+  formatEnum,
+} from "@/lib/utils";
 
 interface DatasetCardProps {
   dataset: DatasetSelect;
   ref?: React.Ref<HTMLDivElement>;
+  className?: string;
 }
 
 type DatasetStat = {
@@ -31,7 +37,7 @@ type DatasetStat = {
   text: string | null;
 };
 
-export function DatasetCard({ dataset, ref }: DatasetCardProps) {
+export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
   const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
 
@@ -59,7 +65,10 @@ export function DatasetCard({ dataset, ref }: DatasetCardProps) {
   ];
 
   return (
-    <Card className="lift-lg group flex h-[355px] flex-col" ref={ref}>
+    <Card
+      className={cn("lift-lg group flex h-[355px] flex-col", className)}
+      ref={ref}
+    >
       <Link href={href} className="flex flex-1 flex-col">
         <CardHeader className="p-0">
           <Image

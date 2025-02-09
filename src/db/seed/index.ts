@@ -9,7 +9,7 @@ import {
   datasetView,
   discussion,
   discussionComment,
-  introductoryPaper,
+  paper,
   user,
 } from "@/db/schema";
 import * as schema from "@/db/schema";
@@ -27,7 +27,7 @@ async function main() {
 
   await db.insert(user).values(usersSeed);
   await db.insert(dataset).values(datasetsSeed);
-  await db.insert(introductoryPaper).values(papersSeed);
+  await db.insert(paper).values(papersSeed);
 
   await seed(db, { user }, { count: 100 }).refine((f) => ({
     user: {

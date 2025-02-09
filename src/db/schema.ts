@@ -20,7 +20,7 @@ import {
 import { Enums } from "@/db/enums";
 import type {
   AuthorSelect,
-  IntroductoryPaperSelect,
+  PaperSelect,
   UserSelect,
   VariableSelect,
 } from "@/db/types";
@@ -182,7 +182,7 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
   bookmarks: many(bookmark),
   authors: many(author),
   reports: many(datasetReport),
-  introductoryPaper: one(introductoryPaper),
+  introductoryPaper: one(paper),
 }));
 
 export const datasetReport = pgTable("dataset_report", {
@@ -324,7 +324,7 @@ export const datasetKeywordRelations = relations(datasetKeyword, ({ one }) => ({
 /**
  * Paper tables
  */
-export const introductoryPaper = pgTable("introductory_paper", {
+export const paper = pgTable("paper", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   authors: text("authors").array().notNull(),
@@ -332,22 +332,20 @@ export const introductoryPaper = pgTable("introductory_paper", {
   year: integer("year").notNull(),
   citationCount: integer("citation_count"),
 
-  semanticScholarId: integer("semantic_scholar_id").notNull(),
+  // semanticScholarId: integer("semantic_scholar_id").notNull(),
+  url: text("url").notNull(),
 
   datasetId: integer("dataset_id")
     .notNull()
     .references(() => dataset.id),
 });
 
-export const introductoryPaperRelations = relations(
-  introductoryPaper,
-  ({ one }) => ({
-    dataset: one(dataset, {
-      fields: [introductoryPaper.datasetId],
-      references: [dataset.id],
-    }),
+export const paperRelations = relations(paper, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [paper.datasetId],
+    references: [dataset.id],
   }),
-);
+}));
 
 /**
  * Bookmark tables
@@ -661,12 +659,12 @@ export const userRelations = relations(user, ({ many }) => ({
 export const account = pgTable(
   "account",
   {
-    userId: uuid("userId")
+    userId: uuid("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -859,29 +857,29 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           SELECT
             JSONB_BUILD_OBJECT(
               'title',
-              ${introductoryPaper.title},
+              ${paper.title},
               'authors',
-              ${introductoryPaper.authors},
+              ${paper.authors},
               'venue',
-              ${introductoryPaper.venue},
+              ${paper.venue},
               'year',
-              ${introductoryPaper.year},
+              ${paper.year},
               'citation_count',
-              ${introductoryPaper.citationCount},
-              'semantic_scholar_id',
-              ${introductoryPaper.semanticScholarId},
+              ${paper.citationCount},
+              'url',
+              ${paper.url},
               'dataset_id',
-              ${introductoryPaper.datasetId}
+              ${paper.datasetId}
             )
           FROM
-            ${introductoryPaper}
+            ${paper}
           WHERE
-            ${introductoryPaper.datasetId} = ${dataset.id}
+            ${paper.datasetId} = ${dataset.id}
         )
-      `.as("introductory_paper") as SQL.Aliased<IntroductoryPaperSelect>,
+      `.as("introductory_paper") as SQL.Aliased<PaperSelect>,
     })
     .from(dataset)
-    .leftJoin(introductoryPaper, eq(dataset.id, introductoryPaper.datasetId))
+    .leftJoin(paper, eq(dataset.id, paper.datasetId))
     .leftJoin(author, eq(dataset.id, author.datasetId))
     .leftJoin(variable, eq(dataset.id, variable.datasetId))
     .leftJoin(datasetKeyword, eq(dataset.id, datasetKeyword.datasetId))

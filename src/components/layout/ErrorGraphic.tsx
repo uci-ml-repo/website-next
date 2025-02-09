@@ -39,6 +39,7 @@ export function ErrorGraphic({ code, header, children }: ErrorGraphicProps) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="cursor-grab active:cursor-grabbing"
+            tabIndex={-1}
           >
             <Image
               draggable={false}

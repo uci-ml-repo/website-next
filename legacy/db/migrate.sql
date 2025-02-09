@@ -89,26 +89,6 @@ CREATE TABLE "session" (
 );
 
 -------------------------------------------------------------------------------
--- accounts, verification_tokens
--------------------------------------------------------------------------------
-CREATE TABLE "account" (
-  "user_id" TEXT NOT NULL,
-  "type" TEXT NOT NULL,
-  "provider" TEXT NOT NULL,
-  "provider_account_id" TEXT NOT NULL,
-  "refresh_token" TEXT,
-  "access_token" TEXT,
-  "expires_at" INTEGER,
-  "token_type" TEXT,
-  "scope" TEXT,
-  "id_token" TEXT,
-  "session_state" TEXT,
-  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMP(3) NOT NULL,
-  CONSTRAINT "accounts_pkey" PRIMARY KEY ("provider", "provider_account_id")
-);
-
--------------------------------------------------------------------------------
 -- users
 -------------------------------------------------------------------------------
 ALTER TABLE donated_datasets
@@ -366,7 +346,7 @@ DROP TABLE descriptive_questions;
 -- variable
 -------------------------------------------------------------------------------
 CREATE TABLE "variable" (
-  "id" TEXT NOT NULL,
+  "id" uuid NOT NULL,
   "name" VARCHAR(255) NOT NULL,
   "role" "dataset_feature_role" NOT NULL,
   "type" "dataset_feature_type" NOT NULL,
@@ -381,7 +361,7 @@ CREATE TABLE "variable" (
 -- creators + dataset_creators -> author
 -------------------------------------------------------------------------------
 CREATE TABLE "author" (
-  "id" TEXT NOT NULL,
+  "id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
   "first_name" VARCHAR(255) NOT NULL,
   "last_name" VARCHAR(255) NOT NULL,
@@ -458,28 +438,26 @@ RENAME COLUMN keyword TO name;
 -------------------------------------------------------------------------------
 -- dataset_papers
 -------------------------------------------------------------------------------
-CREATE TABLE "dataset_papers" (
-  "id" TEXT NOT NULL,
-  "title" VARCHAR(255) NOT NULL,
-  "authors" VARCHAR(255) [],
-  "venue" VARCHAR(255) NOT NULL,
-  "year" INTEGER NOT NULL,
-  "url" VARCHAR(255) NOT NULL,
-  "dataset_id" INTEGER,
-  "introductory_for_dataset_id" INTEGER,
-  CONSTRAINT "dataset_papers_pkey" PRIMARY KEY ("id")
+CREATE TABLE paper (
+  id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
+  title text NOT NULL,
+  authors TEXT[] NOT NULL,
+  venue text NOT NULL,
+  "year" integer NOT NULL,
+  citation_count integer,
+  url TEXT NOT NULL,
+  dataset_id integer NOT NULL CONSTRAINT paper_dataset_id_dataset_id_fk REFERENCES dataset
 );
 
 INSERT INTO
-  dataset_papers (
+  paper (
     id,
     title,
     authors,
     venue,
-    YEAR,
+    "year",
     url,
-    dataset_id,
-    introductory_for_dataset_id
+    dataset_id
   )
 SELECT
   gen_random_uuid (),
@@ -487,21 +465,20 @@ SELECT
   string_to_array(np.authors, ', '),
   np.venue,
   np.year,
-  url,
-  datasetid,
-  dd.id
+  np.url,
+  dp.datasetid
 FROM
-  dataset_papers_legacy dpl
-  INNER JOIN native_papers np ON dpl.foreignpaperid = np.id
-  INNER JOIN donated_datasets dd ON dd.intropaperid = dpl.datasetpapersid
+  dataset_papers dp
+  INNER JOIN native_papers np ON dp.foreignpaperid = np.id
+  INNER JOIN donated_datasets dd ON dd.intropaperid = dp.datasetpapersid
 WHERE
   dd.status = 'APPROVED';
 
 -------------------------------------------------------------------------------
 -- dataset bookmarks
 -------------------------------------------------------------------------------
-CREATE TABLE "dataset_bookmarks" (
-  "user_id" TEXT NOT NULL,
+CREATE TABLE "bookmark" (
+  "user_id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
   "bookmarked_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT "dataset_bookmarks_pkey" PRIMARY KEY ("user_id", "dataset_id")
@@ -566,6 +543,36 @@ GROUP BY
   id;
 
 -------------------------------------------------------------------------------
+-- accounts, email_verification_token, password_reset_token
+-------------------------------------------------------------------------------
+CREATE TABLE account (
+  user_id uuid NOT NULL CONSTRAINT "account_user_id_user_id_fk" REFERENCES "user" ON DELETE cascade,
+  type text NOT NULL,
+  provider text NOT NULL,
+  provider_account_id text NOT NULL,
+  refresh_token text,
+  access_token text,
+  expires_at integer,
+  token_type text,
+  scope text,
+  id_token text,
+  session_state text
+);
+
+CREATE TABLE email_verification_token (
+  id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
+  "userId" uuid NOT NULL,
+  token text NOT NULL,
+  expires timestamp NOT NULL
+);
+
+CREATE TABLE password_reset_token (
+  token text NOT NULL PRIMARY KEY,
+  user_id uuid NOT NULL CONSTRAINT password_reset_token_user_id_user_id_fk REFERENCES "user",
+  expires timestamp NOT NULL
+);
+
+-------------------------------------------------------------------------------
 -- CLEANUP
 -------------------------------------------------------------------------------
 DROP TABLE dataset_notes;
@@ -576,17 +583,19 @@ DROP TABLE file_info;
 
 DROP TABLE donated_datasets;
 
+DROP TABLE dataset_papers CASCADE;
+
+DROP TABLE native_papers CASCADE;
+
+DROP TABLE foreign_papers CASCADE;
+
 DROP TABLE datasets_legacy;
 
 DROP SEQUENCE cuid_counter_seq;
 
 DROP SEQUENCE dataset_keywords_datasetkeywordsid_seq CASCADE;
 
-DROP SEQUENCE dataset_papers_datasetpapersid_seq CASCADE;
-
 DROP SEQUENCE keywords_id_seq CASCADE;
-
-DROP SEQUENCE native_papers_id_seq CASCADE;
 
 DROP SEQUENCE papers_id_seq CASCADE;
 

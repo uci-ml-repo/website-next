@@ -1,16 +1,13 @@
 import Link from "next/link";
 
-import type { IntroductoryPaperSelect } from "@/db/types";
+import type { PaperSelect } from "@/db/types";
 
-export function DatasetMetadataPaperPreview({
-  paper,
-}: {
-  paper: IntroductoryPaperSelect;
-}) {
+export function DatasetMetadataPaperPreview({ paper }: { paper: PaperSelect }) {
   return (
     <div>
       <Link
-        href={`https://www.semanticscholar.org/paper/${paper.semanticScholarId}`}
+        // href={`https://www.semanticscholar.org/paper/${paper.semanticScholarId}`}
+        href={paper.url}
         target="_blank"
         className="text-lg text-link underline underline-offset-2"
       >

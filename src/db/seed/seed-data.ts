@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs";
 
 import { Enums } from "@/db/enums";
-import type { dataset, introductoryPaper, user } from "@/db/schema";
+import type { dataset, paper, user } from "@/db/schema";
 
 const dummyUserId = crypto.randomUUID();
 export const dummyPassword = bcryptjs.hashSync("p", 10);
@@ -356,13 +356,14 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   },
 ];
 
-export const papersSeed: (typeof introductoryPaper.$inferInsert)[] =
-  datasetsSeed.map((dataset) => ({
+export const papersSeed: (typeof paper.$inferInsert)[] = datasetsSeed.map(
+  (dataset) => ({
     id: crypto.randomUUID(),
     title: `Very Scientific Paper Number`,
     authors: ["John Lorenzini", "Andrew Wang"],
     venue: "Journal of Science",
     year: 2024,
-    semanticScholarId: 1,
+    url: "example.com",
     datasetId: dataset.id,
-  }));
+  }),
+);

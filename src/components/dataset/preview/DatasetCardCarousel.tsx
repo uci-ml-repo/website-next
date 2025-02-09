@@ -68,7 +68,7 @@ export function DatasetCardCarousel({
           <CarouselContent gutter>
             {datasets.map((dataset) => (
               <CarouselItem key={dataset.id} className={cardBreakpoints}>
-                <DatasetCard dataset={dataset} />
+                <DatasetCard dataset={dataset} className="select-none" />
               </CarouselItem>
             ))}
             {seeAllHref && (

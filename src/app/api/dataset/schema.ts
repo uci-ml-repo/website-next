@@ -47,8 +47,12 @@ export type PythonMetadata = {
   external_url?: string | null;
 };
 
-function paperUrl({ semanticScholarId }: { semanticScholarId: number }) {
-  return `https://api.semanticscholar.org/CorpusID:${semanticScholarId}`;
+// function paperUrl({ semanticScholarId }: { semanticScholarId: number }) {
+//   return `https://api.semanticscholar.org/CorpusID:${semanticScholarId}`;
+// }
+
+function paperUrl({ url }: { url: string }) {
+  return url;
 }
 
 export function datasetToPythonMetadata(
