@@ -1,30 +1,18 @@
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import type { DatasetQuery } from "@/server/schema/dataset";
+import DatasetFilterDualSlider from "@/components/datasets/slider/DatasetFilterDualSlider";
+import { trpc } from "@/server/trpc/query/client";
 
-export default function DatasetFeatureCountFilter({
-  tooltipOpen,
-  dropdownOpen,
-  onDropdownOpenChange,
-}: DatasetFiltersProps) {
-  const { setFilters } = useQueryFilters<DatasetQuery>();
+export default function DatasetFeatureCountFilter(props: DatasetFiltersProps) {
+  const { data } = trpc.dataset.stats.maxDataSize.useQuery();
 
   return (
-    <DatasetFilterItem
+    <DatasetFilterDualSlider
       label="Feature Count"
-      tooltipOpen={tooltipOpen}
       tooltipContent="The number of features (columns of data)"
-      dropdownOpen={dropdownOpen}
-      onDropdownOpenChange={onDropdownOpenChange}
-      clearFilter={() =>
-        setFilters({
-          featureCountMin: undefined,
-          featureCountMax: undefined,
-        })
-      }
-    >
-      <div>Stuff</div>
-    </DatasetFilterItem>
+      filterMinKey="featureCountMin"
+      filterMaxKey="featureCountMax"
+      maxRawValue={data?.maxFeatureCount}
+      {...props}
+    />
   );
 }

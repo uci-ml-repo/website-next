@@ -95,6 +95,27 @@ export default function DatasetsFilters() {
               }}
             />
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  if (isAnyOpen) {
+                    setOpenStates(Array(datasetFilters.length).fill(false));
+                  } else {
+                    setOpenStates(Array(datasetFilters.length).fill(true));
+                  }
+                }}
+                className="text-muted-foreground"
+              >
+                {isAnyOpen ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isAnyOpen ? "Collapse" : "Expand"} All
+            </TooltipContent>
+          </Tooltip>
         </div>
         {filterActive && (
           <Button
@@ -124,21 +145,6 @@ export default function DatasetsFilters() {
           </React.Fragment>
         ))}
       </Card>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => {
-          if (isAnyOpen) {
-            setOpenStates(Array(datasetFilters.length).fill(false));
-          } else {
-            setOpenStates(Array(datasetFilters.length).fill(true));
-          }
-        }}
-        className="text-muted-foreground"
-      >
-        <span>{isAnyOpen ? "Collapse All" : "Expand All"}</span>
-        {isAnyOpen ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
-      </Button>
     </div>
   );
 }
