@@ -16,6 +16,39 @@ interface DualRangeSliderProps
   log?: boolean;
 }
 
+const Thumb = React.forwardRef<
+  React.ElementRef<typeof SliderPrimitive.Thumb>,
+  {
+    labelContent: React.ReactNode;
+    labelRef: React.Ref<HTMLSpanElement>;
+    labelClass: string;
+    inactive: boolean;
+  }
+>(({ labelContent, labelRef, labelClass, inactive }, ref) => (
+  <SliderPrimitive.Thumb
+    ref={ref}
+    className={cn(
+      "relative block size-4 rounded-full border-2 bg-background",
+      inactive ? "border-muted-foreground" : "border-uci-blue",
+      "cursor-pointer ring-offset-background transition-all duration-100",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    )}
+  >
+    {labelContent && (
+      <span
+        ref={labelRef}
+        className={cn(
+          "absolute -left-2 flex w-full justify-center px-4",
+          labelClass,
+        )}
+      >
+        {labelContent}
+      </span>
+    )}
+  </SliderPrimitive.Thumb>
+));
+Thumb.displayName = "Thumb";
+
 const DualRangeSlider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   DualRangeSliderProps
@@ -24,7 +57,26 @@ const DualRangeSlider = React.forwardRef<
     { className, label, inactive = false, labelPosition = "top", ...props },
     ref,
   ) => {
-    const initialValue = props.value ?? [props.min, props.max];
+    const currentValue = props.value ?? [props.min, props.max];
+    const leftLabelRef = React.useRef<HTMLSpanElement>(null);
+    const rightLabelRef = React.useRef<HTMLSpanElement>(null);
+    const [isCollision, setIsCollision] = React.useState(false);
+
+    React.useEffect(() => {
+      if (leftLabelRef.current && rightLabelRef.current) {
+        const leftRect = leftLabelRef.current.getBoundingClientRect();
+        const rightRect = rightLabelRef.current.getBoundingClientRect();
+        if (leftRect.right > rightRect.left) {
+          setIsCollision(true);
+        } else {
+          setIsCollision(false);
+        }
+      }
+    }, [currentValue]);
+
+    const leftLabelClass = labelPosition === "top" ? "-top-6" : "top-4";
+    const rightLabelClass =
+      isCollision || labelPosition === "bottom" ? "top-4" : "-top-6";
 
     return (
       <SliderPrimitive.Root
@@ -35,7 +87,7 @@ const DualRangeSlider = React.forwardRef<
           className,
         )}
         {...props}
-        value={initialValue}
+        value={currentValue}
         onValueChange={(newValue: number[]) => {
           props.onValueChange?.(newValue);
         }}
@@ -48,29 +100,18 @@ const DualRangeSlider = React.forwardRef<
             )}
           />
         </SliderPrimitive.Track>
-        {initialValue.map((value, index) => (
-          <SliderPrimitive.Thumb
-            key={index}
-            className={cn(
-              "relative block size-4 rounded-full border-2 bg-background",
-              inactive ? "border-muted-foreground" : "border-uci-blue",
-              "cursor-pointer ring-offset-background transition-all duration-100",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-            )}
-          >
-            {label && (
-              <span
-                className={cn(
-                  "absolute flex w-full justify-center",
-                  labelPosition === "top" && "-top-6",
-                  labelPosition === "bottom" && "top-4",
-                )}
-              >
-                {label(value)}
-              </span>
-            )}
-          </SliderPrimitive.Thumb>
-        ))}
+        <Thumb
+          labelContent={label ? label(currentValue[0]) : null}
+          labelRef={leftLabelRef}
+          labelClass={leftLabelClass}
+          inactive={inactive}
+        />
+        <Thumb
+          labelContent={label ? label(currentValue[1]) : null}
+          labelRef={rightLabelRef}
+          labelClass={rightLabelClass}
+          inactive={inactive}
+        />
       </SliderPrimitive.Root>
     );
   },

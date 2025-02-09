@@ -1,4 +1,4 @@
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,7 +12,7 @@ export default function DatasetPythonFilter({
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem
+    <DatasetsFilterItem
       label="Python Available"
       tooltipOpen={tooltipOpen}
       tooltipContent="Whether the dataset is available for import in Python"
@@ -30,6 +30,6 @@ export default function DatasetPythonFilter({
           }
         />
       </div>
-    </DatasetFilterItem>
+    </DatasetsFilterItem>
   );
 }

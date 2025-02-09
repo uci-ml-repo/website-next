@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 import Spinner from "@/components/ui/spinner";
@@ -82,6 +82,26 @@ export default function DatasetFilterDualSlider({
     }
   }, [maxRawValue, filters, filterMinKey, filterMaxKey, exp, initialized]);
 
+  const prevFiltersRef = useRef(filters);
+
+  useEffect(() => {
+    if (!initialized || !maxRawValue) return;
+
+    if (
+      prevFiltersRef.current[filterMinKey] !== filters[filterMinKey] &&
+      filters[filterMinKey] === undefined
+    ) {
+      setValues((prev) => [0, prev[1]]);
+    }
+    if (
+      prevFiltersRef.current[filterMaxKey] !== filters[filterMaxKey] &&
+      filters[filterMaxKey] === undefined
+    ) {
+      setValues((prev) => [prev[0], maxRawValue]);
+    }
+    prevFiltersRef.current = filters;
+  }, [filters, filterMinKey, filterMaxKey, maxRawValue, initialized]);
+
   useEffect(() => {
     if (maxRawValue) {
       const minCurved = log(values[0]);
@@ -103,7 +123,7 @@ export default function DatasetFilterDualSlider({
   ]);
 
   return (
-    <DatasetFilterItem
+    <DatasetsFilterItem
       label={label}
       tooltipOpen={tooltipOpen}
       tooltipContent={tooltipContent}
@@ -111,7 +131,6 @@ export default function DatasetFilterDualSlider({
       onDropdownOpenChange={onDropdownOpenChange}
       active={!!filters[filterMinKey] || !!filters[filterMaxKey]}
       clearFilter={() => {
-        setValues([0, maxRawValue ?? 0]);
         setFilters({
           [filterMinKey]: undefined,
           [filterMaxKey]: undefined,
@@ -134,6 +153,6 @@ export default function DatasetFilterDualSlider({
           <Spinner />
         </div>
       )}
-    </DatasetFilterItem>
+    </DatasetsFilterItem>
   );
 }

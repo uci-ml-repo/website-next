@@ -1,4 +1,4 @@
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import type { DatasetQuery } from "@/server/schema/dataset";
@@ -13,7 +13,7 @@ export default function DatasetKeywordsFilter({
   // const { data, isLoading } = trpc.keyword.find.approved.useQuery();
 
   return (
-    <DatasetFilterItem
+    <DatasetsFilterItem
       label="Keywords"
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
@@ -22,6 +22,6 @@ export default function DatasetKeywordsFilter({
       clearFilter={() => setFilters({ keywords: undefined })}
     >
       <div>Stuff</div>
-    </DatasetFilterItem>
+    </DatasetsFilterItem>
   );
 }

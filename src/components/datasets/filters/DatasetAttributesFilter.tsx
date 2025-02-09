@@ -1,4 +1,4 @@
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import type { DatasetQuery } from "@/server/schema/dataset";
@@ -11,7 +11,7 @@ export default function DatasetAttributesFilter({
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   return (
-    <DatasetFilterItem
+    <DatasetsFilterItem
       label="Attributes"
       tooltipContent="The attributes (column variables) of the dataset"
       dropdownOpen={dropdownOpen}
@@ -20,6 +20,6 @@ export default function DatasetAttributesFilter({
       clearFilter={() => setFilters({ attributes: undefined })}
     >
       <div>Stuff</div>
-    </DatasetFilterItem>
+    </DatasetsFilterItem>
   );
 }

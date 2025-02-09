@@ -1,7 +1,7 @@
 import React from "react";
 
 import DatasetFilterCheckbox from "@/components/datasets/checkbox/DatasetFilterCheckbox";
-import DatasetFilterItem from "@/components/datasets/DatasetFilterItem";
+import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
 import { Enums } from "@/db/enums";
@@ -18,7 +18,7 @@ export default function DatasetFeatureTypesFilter({
   >("featureTypes");
 
   return (
-    <DatasetFilterItem
+    <DatasetsFilterItem
       label="Feature Types"
       tooltipContent="The data type of features in the dataset"
       tooltipOpen={tooltipOpen}
@@ -33,6 +33,6 @@ export default function DatasetFeatureTypesFilter({
         toggle={toggle}
         isToggled={isToggled}
       />
-    </DatasetFilterItem>
+    </DatasetsFilterItem>
   );
 }
