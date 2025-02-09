@@ -146,7 +146,7 @@ export function DiscussionCommentReportDialog({
               </Button>
               <Button
                 type="submit"
-                variant="destructive"
+                variant="gold"
                 disabled={!form.watch("reason")}
               >
                 Submit

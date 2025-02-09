@@ -124,7 +124,12 @@ export function AppSidebar({ session }: { session: Session | null }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
+
+          <Separator
+            orientation="horizontal"
+            className="mx-4 my-2 w-auto"
+            aria-hidden={true}
+          />
 
           {isPriviliged(session?.user.role) && (
             <SidebarMenuItem>

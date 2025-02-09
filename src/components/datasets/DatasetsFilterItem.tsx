@@ -87,14 +87,14 @@ export function DatasetsFilterItem({
             <div />
           </TooltipTrigger>
         </CollapsibleTrigger>
-        <CollapsibleContent>
+        <CollapsibleContent forceMount>
           <motion.div
             initial={{ height: 0 }}
             animate={dropdownOpen ? { height: "auto" } : {}}
             transition={{ duration: 0.1 }}
             className="overflow-y-hidden bg-background dark:bg-input-background"
           >
-            <div className="w-full select-none px-4 py-2 text-sm">
+            <div className="w-full select-none px-3 py-2 text-sm">
               {children}
             </div>
           </motion.div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { sendGAEvent } from "@next/third-parties/google";
 import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -20,6 +22,11 @@ export function DatasetDownloadButton({ dataset }: DatasetDownloadButtonProps) {
         size="lg"
         asChild
         aria-label={`View ${dataset.title}`}
+        onClick={() =>
+          sendGAEvent("event", "visit_external", {
+            datasetId: dataset.id.toString(),
+          })
+        }
       >
         <Link href={dataset.externalLink} target="_blank">
           <ExternalLinkIcon />

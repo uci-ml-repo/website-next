@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +24,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Enums } from "@/db/enums";
+import { CONTACT_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -115,27 +117,38 @@ export function DatasetReportDialog({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="details"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <span className="after:text-destructive after:content-['*']">
-                      Details
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      {...field}
-                      className="max-h-[30dvh]"
-                      placeholder="Provide details about the issue"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="details"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <span className="after:text-destructive after:content-['*']">
+                        Details
+                      </span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        className="max-h-[30dvh]"
+                        placeholder="Provide details about the issue"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="text-sm text-muted-foreground">
+                For urgent requests, please{" "}
+                <Link href={CONTACT_ROUTE} className="underline">
+                  contact us directly
+                </Link>
+                .
+              </div>
+            </div>
 
             <DialogFooter className="!w-full !justify-between gap-2">
               <Button
@@ -147,7 +160,7 @@ export function DatasetReportDialog({
               </Button>
               <Button
                 type="submit"
-                variant="destructive"
+                variant="gold"
                 disabled={!(form.watch("reason") && form.watch("details"))}
               >
                 Submit

@@ -19,7 +19,8 @@ export function DatasetAttributesFilter({
       tooltipOpen={tooltipOpen}
       clearFilter={() => setFilters({ attributes: undefined })}
     >
-      <div>Stuff</div>
+      <div>X</div>
+      {/*<Multiselect placeholder="Attribute" />*/}
     </DatasetsFilterItem>
   );
 }
