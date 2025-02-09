@@ -33,7 +33,7 @@ export default async function Page() {
     <Main className="space-y-8">
       <div className="space-y-6">
         <div className="space-y-4">
-          <Banner variant="hero" />
+          <Banner variant="hero" className="backdrop-gradient-blur" />
           <p className="text-pretty text-lg sm:text-xl">
             We currently maintain {datasetCount[0].count} datasets used by
             millions in the machine learning community.

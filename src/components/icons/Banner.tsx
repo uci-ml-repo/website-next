@@ -6,7 +6,7 @@ import { UCIrvine } from "@/components/icons";
 import { HOME_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-const logoVariants = cva(cn(), {
+const logoVariants = cva(cn("w-fit"), {
   variants: {
     variant: {
       hero: "[&>div]:text-[30px] [&>div]:xs:text-[45px] [&>div]:md:text-[55px] [&>svg]:h-[30px] [&>svg]:xs:h-[45px] [&>svg]:md:h-[55px]",
