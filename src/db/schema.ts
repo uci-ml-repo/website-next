@@ -2,6 +2,7 @@ import type { AdapterAccountType } from "@auth/core/adapters";
 import type { SQL } from "drizzle-orm";
 import { eq, getTableColumns, relations, sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
   check,
   index,
@@ -109,7 +110,7 @@ export const dataset = pgTable(
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
 
-    size: integer("size"),
+    size: bigint("size", { mode: "number" }),
     fileCount: integer("file_count"),
 
     userId: uuid("user_id")

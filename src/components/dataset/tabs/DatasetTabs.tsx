@@ -46,6 +46,7 @@ export function DatasetTabs({ basePath, dataset }: DatasetTabsProps) {
           {!dataset.externalLink && (
             <LinearTabsTrigger
               value="files"
+              badgeValue={dataset.fileCount}
               link={path.join(basePath, "files")}
             >
               Files

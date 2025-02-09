@@ -10,7 +10,7 @@ import * as React from "react";
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
+import { abbreviateDecimal, cn } from "@/lib/utils";
 
 const TabsValueContext = React.createContext<string | undefined>(undefined);
 
@@ -228,7 +228,15 @@ export const LinearTabsTrigger = React.forwardRef<
           <div className="flex items-center space-x-2">
             <span>{children}</span>
             <Badge variant={badgeVariant}>
-              {badgeValue ?? <Spinner className="size-4" />}
+              {badgeValue ? (
+                typeof badgeValue === "number" ? (
+                  abbreviateDecimal(badgeValue)
+                ) : (
+                  badgeValue
+                )
+              ) : (
+                <Spinner className="size-4" />
+              )}
             </Badge>
           </div>
         ) : (

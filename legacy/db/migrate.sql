@@ -95,9 +95,6 @@ ALTER TABLE donated_datasets
 DROP CONSTRAINT donated_datasets_ibfk_1;
 
 ALTER TABLE users
-ALTER COLUMN id TYPE TEXT USING id::TEXT;
-
-ALTER TABLE users
 RENAME COLUMN "user" TO email;
 
 ALTER TABLE users
@@ -145,13 +142,42 @@ DROP COLUMN githubid;
 ALTER TABLE users
 RENAME TO "user";
 
+ALTER TABLE "user"
+ALTER COLUMN id TYPE text USING id::text;
+
+ALTER TABLE donated_datasets
+ALTER COLUMN userid TYPE text USING userid::text;
+
+ALTER TABLE donated_datasets
+ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN KEY (userid) REFERENCES "user" (id) ON UPDATE CASCADE;
+
+ALTER TABLE "user"
+ALTER COLUMN id
+SET DEFAULT gen_random_uuid ();
+
+UPDATE "user"
+SET
+  id = gen_random_uuid ();
+
+ALTER TABLE donated_datasets
+DROP CONSTRAINT donated_datasets_ibfk_1;
+
+ALTER TABLE "user"
+ALTER COLUMN id TYPE uuid USING id::uuid;
+
+ALTER TABLE donated_datasets
+ALTER COLUMN userid TYPE uuid USING userid::uuid;
+
+ALTER TABLE donated_datasets
+ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN KEY (userid) REFERENCES "user" (id);
+
 -------------------------------------------------------------------------------
 -- datasets + donated_datasets -> dataset
 -- users.id -> donated_datasets.userid
 -------------------------------------------------------------------------------
 DROP SEQUENCE datasets_id_seq CASCADE;
 
-CREATE TABLE "dataset" (
+CREATE TABLE dataset (
   id serial PRIMARY KEY,
   title text NOT NULL,
   year_created integer,
@@ -169,15 +195,59 @@ CREATE TABLE "dataset" (
   view_count integer DEFAULT 0 NOT NULL,
   download_count integer DEFAULT 0 NOT NULL,
   variables_description text,
-  characteristics dataset_characteristic[],
+  data_types dataset_characteristic[],
   tasks dataset_task[],
   feature_types dataset_feature_type[],
-  size integer,
+  size bigint,
   file_count integer,
-  user_id text NOT NULL,
+  user_id uuid NOT NULL CONSTRAINT dataset_user_id_user_id_fk REFERENCES "user",
   donated_at timestamp DEFAULT now() NOT NULL,
-  updated_at timestamp DEFAULT now() NOT NULL
+  updated_at timestamp DEFAULT now() NOT NULL,
+  CONSTRAINT accepted_check CHECK (
+    (status = 'draft'::approval_status)
+    OR (
+      (year_created IS NOT NULL)
+      AND (doi IS NOT NULL)
+      AND (instance_count IS NOT NULL)
+      AND (description IS NOT NULL)
+      AND (subject_area IS NOT NULL)
+    )
+  ),
+  CONSTRAINT files_check CHECK (
+    (
+      (external_link IS NULL)
+      AND (size IS NOT NULL)
+      AND (file_count IS NOT NULL)
+    )
+    OR (
+      (external_link IS NOT NULL)
+      AND (external_link ~* '^https?://'::text)
+      AND (size IS NULL)
+      AND (file_count IS NULL)
+    )
+  )
 );
+
+ALTER TABLE dataset owner TO postgres;
+
+CREATE INDEX dataset_id_index ON dataset (id);
+
+CREATE INDEX dataset_instance_count_index ON dataset (instance_count);
+
+CREATE INDEX dataset_feature_count_index ON dataset (feature_count);
+
+CREATE INDEX dataset_donated_at_index ON dataset (donated_at);
+
+-- noinspection SqlResolve
+CREATE INDEX dataset_ts_search_index ON dataset USING gin (
+  setweight(
+    to_tsvector('simple'::regconfig, title),
+    'A'::"char"
+  )
+);
+
+-- noinspection SqlResolve
+CREATE INDEX dataset_trgm_search_index ON dataset USING gin (title gin_trgm_ops);
 
 INSERT INTO
   descriptive_questions (
@@ -229,11 +299,13 @@ INSERT INTO
     slug,
     user_id,
     updated_at,
-    characteristics,
+    data_types,
     tasks,
     feature_types,
     doi,
-    external_link
+    external_link,
+    file_count,
+    size
   )
 SELECT
   dd.id,
@@ -269,7 +341,7 @@ SELECT
   numhits AS view_count,
   numdownloads AS download_count,
   slug,
-  userid::text AS user_id,
+  userid AS user_id,
   CURRENT_TIMESTAMP AS updated_at,
   COALESCE(
     (
@@ -281,7 +353,7 @@ SELECT
         x = ANY (enum_range(NULL::dataset_characteristic)::TEXT[])
     ),
     '{}'
-  ) AS characteristics,
+  ) AS data_types,
   COALESCE(
     (
       SELECT
@@ -310,51 +382,50 @@ SELECT
     '{}'
   ) AS feature_types,
   regexp_replace(trim(doi), '^https?://doi.org/', '') AS doi,
-  urllink AS external_link
+  urllink AS external_link,
+  COALESCE(
+    (
+      SELECT
+        count(*)
+      FROM
+        dataset_file df
+        INNER JOIN file_info fi ON fi.id = df.fileinfoid
+      WHERE
+        fi.datasetid = dd.id
+    ),
+    0
+  ) AS file_count,
+  COALESCE(
+    (
+      SELECT
+        compressedsize
+      FROM
+        file_info fi
+      WHERE
+        fi.datasetid = dd.id
+    ),
+    0
+  ) AS size
 FROM
   donated_datasets dd
   INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
 WHERE
   slug NOTNULL;
 
-ALTER TABLE "dataset"
-ADD CONSTRAINT "dataset_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
-UPDATE "user"
-SET
-  id = gen_random_uuid ();
-
-ALTER TABLE dataset
-DROP CONSTRAINT dataset_user_id_fkey;
-
-ALTER TABLE "user"
-ALTER COLUMN id
-SET DEFAULT gen_random_uuid ();
-
-ALTER TABLE "user"
-ALTER COLUMN id TYPE uuid USING id::uuid;
-
-ALTER TABLE dataset
-ALTER COLUMN user_id type uuid USING user_id::uuid;
-
-ALTER TABLE "dataset"
-ADD CONSTRAINT "dataset_user_id_user_id_fkey" FOREIGN key ("user_id") REFERENCES "user" ("id") ON DELETE restrict ON UPDATE cascade;
-
 DROP TABLE descriptive_questions;
 
 -------------------------------------------------------------------------------
 -- variable
 -------------------------------------------------------------------------------
-CREATE TABLE "variable" (
-  "id" uuid NOT NULL,
-  "name" VARCHAR(255) NOT NULL,
-  "role" "dataset_feature_role" NOT NULL,
-  "type" "dataset_feature_type" NOT NULL,
-  "description" TEXT,
-  "units" VARCHAR(255),
-  "missingValues" BOOLEAN NOT NULL,
-  "dataset_id" INTEGER NOT NULL,
-  CONSTRAINT "dataset_variables_pkey" PRIMARY KEY ("id")
+CREATE TABLE variable (
+  id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
+  name text NOT NULL,
+  description text NOT NULL,
+  role dataset_feature_role NOT NULL,
+  type dataset_feature_type NOT NULL,
+  missing_values boolean NOT NULL,
+  units text,
+  dataset_id integer NOT NULL CONSTRAINT variable_dataset_id_dataset_id_fk REFERENCES dataset
 );
 
 -------------------------------------------------------------------------------
@@ -396,7 +467,7 @@ DROP TABLE dataset_creators;
 DROP TABLE creators;
 
 -------------------------------------------------------------------------------
--- dataset_keywords + keywords
+-- dataset_keyword + keyword
 -------------------------------------------------------------------------------
 ALTER TABLE dataset_keywords
 DROP CONSTRAINT dataset_keywords_ibfk_1,
@@ -434,6 +505,12 @@ SET DEFAULT 'pending'::approval_status;
 
 ALTER TABLE keywords
 RENAME COLUMN keyword TO name;
+
+ALTER TABLE keywords
+RENAME TO keyword;
+
+ALTER TABLE dataset_keywords
+RENAME TO dataset_keyword;
 
 -------------------------------------------------------------------------------
 -- dataset_papers
@@ -489,31 +566,104 @@ CREATE TABLE "bookmark" (
 -------------------------------------------------------------------------------
 CREATE MATERIALIZED VIEW dataset_view AS
 SELECT
-  id,
-  title,
-  year_created,
-  subtitle,
-  doi,
-  description,
-  subject_area,
-  instance_count,
-  feature_count,
-  has_graphics,
-  is_available_python,
-  external_link,
-  slug,
-  status,
-  view_count,
-  download_count,
-  variables_description,
-  characteristics,
-  tasks,
-  feature_types,
-  size,
-  file_count,
-  user_id,
-  donated_at,
-  updated_at,
+  dataset.id,
+  dataset.title,
+  dataset.year_created,
+  dataset.subtitle,
+  dataset.doi,
+  dataset.description,
+  dataset.subject_area,
+  dataset.instance_count,
+  dataset.feature_count,
+  dataset.has_graphics,
+  dataset.is_available_python,
+  dataset.external_link,
+  dataset.slug,
+  dataset.status,
+  dataset.view_count,
+  dataset.download_count,
+  dataset.variables_description,
+  dataset.data_types,
+  dataset.tasks,
+  dataset.feature_types,
+  dataset.size,
+  dataset.file_count,
+  dataset.user_id,
+  dataset.donated_at,
+  dataset.updated_at,
+  COALESCE(
+    (
+      SELECT
+        array_agg(keyword.name) AS array_agg
+      FROM
+        keyword
+        JOIN dataset_keyword dataset_keyword_1 ON dataset_keyword_1.keyword_id = keyword.id
+      WHERE
+        dataset_keyword_1.dataset_id = dataset.id
+    ),
+    ARRAY[]::TEXT[]
+  ) AS keywords,
+  COALESCE(
+    (
+      SELECT
+        array_agg(
+          jsonb_build_object(
+            'id',
+            author_1.id,
+            'first_name',
+            author_1.first_name,
+            'last_name',
+            author_1.last_name,
+            'email',
+            author_1.email
+          )
+        ) AS array_agg
+      FROM
+        author author_1
+      WHERE
+        author_1.dataset_id = dataset.id
+    ),
+    ARRAY[]::jsonb[]
+  ) AS authors,
+  COALESCE(
+    (
+      SELECT
+        array_agg(
+          jsonb_build_object(
+            'id',
+            variable_1.id,
+            'name',
+            variable_1.name,
+            'description',
+            variable_1.description,
+            'role',
+            variable_1.role,
+            'type',
+            variable_1.type,
+            'missing_values',
+            variable_1.missing_values,
+            'units',
+            variable_1.units
+          )
+        ) AS array_agg
+      FROM
+        variable variable_1
+      WHERE
+        variable_1.dataset_id = dataset.id
+    ),
+    ARRAY[]::jsonb[]
+  ) AS variables,
+  COALESCE(
+    (
+      SELECT
+        array_agg(lower(variable_1.name)) AS array_agg
+      FROM
+        variable variable_1
+      WHERE
+        variable_1.dataset_id = dataset.id
+    ),
+    ARRAY[]::TEXT[]
+  ) AS attributes,
   (
     SELECT
       jsonb_build_object(
@@ -524,7 +674,7 @@ SELECT
         'email',
         "user".email,
         'email_verified',
-        "user"."email_verified",
+        "user".email_verified,
         'image',
         "user".image,
         'role',
@@ -536,11 +686,38 @@ SELECT
       "user"
     WHERE
       "user".id = dataset.user_id
-  ) AS u
+  ) AS "user",
+  (
+    SELECT
+      jsonb_build_object(
+        'title',
+        paper_1.title,
+        'authors',
+        paper_1.authors,
+        'venue',
+        paper_1.venue,
+        'year',
+        paper_1.year,
+        'citation_count',
+        paper_1.citation_count,
+        'url',
+        paper_1.url,
+        'dataset_id',
+        paper_1.dataset_id
+      ) AS jsonb_build_object
+    FROM
+      paper paper_1
+    WHERE
+      paper_1.dataset_id = dataset.id
+  ) AS introductory_paper
 FROM
   dataset
+  LEFT JOIN paper ON dataset.id = paper.dataset_id
+  LEFT JOIN author ON dataset.id = author.dataset_id
+  LEFT JOIN variable ON dataset.id = variable.dataset_id
+  LEFT JOIN dataset_keyword ON dataset.id = dataset_keyword.dataset_id
 GROUP BY
-  id;
+  dataset.id;
 
 -------------------------------------------------------------------------------
 -- accounts, email_verification_token, password_reset_token
@@ -571,6 +748,11 @@ CREATE TABLE password_reset_token (
   user_id uuid NOT NULL CONSTRAINT password_reset_token_user_id_user_id_fk REFERENCES "user",
   expires timestamp NOT NULL
 );
+
+-------------------------------------------------------------------------------
+-- REFRESH MATERIALIZED VIEW
+-------------------------------------------------------------------------------
+REFRESH MATERIALIZED VIEW dataset_view;
 
 -------------------------------------------------------------------------------
 -- CLEANUP
