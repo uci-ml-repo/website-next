@@ -96,7 +96,7 @@ const SidebarProvider = React.forwardRef<
       return () => {
         mediaQuery.removeEventListener("change", handleMediaChange);
       };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [setOpen]);
 
     const toggleSidebar = React.useCallback(() => {
       return isMobile

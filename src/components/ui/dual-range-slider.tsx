@@ -2,6 +2,7 @@
 
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
+import { useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -57,7 +58,10 @@ const DualRangeSlider = React.forwardRef<
     { className, label, inactive = false, labelPosition = "top", ...props },
     ref,
   ) => {
-    const currentValue = props.value ?? [props.min, props.max];
+    const currentValue = useMemo(
+      () => props.value ?? [props.min, props.max],
+      [props.max, props.min, props.value],
+    );
     const leftLabelRef = React.useRef<HTMLSpanElement>(null);
     const rightLabelRef = React.useRef<HTMLSpanElement>(null);
     const [isCollision, setIsCollision] = React.useState(false);

@@ -48,7 +48,7 @@ const config = [
       "simple-import-sort/exports": "error",
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
-        "warn",
+        "error",
         {
           vars: "all",
           varsIgnorePattern: "^_",
@@ -56,6 +56,7 @@ const config = [
           argsIgnorePattern: "^_",
         },
       ],
+      "react-hooks/exhaustive-deps": "error",
       "react/no-unescaped-entities": "off",
       "react/jsx-curly-brace-presence": [
         "error",
