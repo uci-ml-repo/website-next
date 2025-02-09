@@ -2,57 +2,7 @@
 -------------------------------------------------------------------------------
 -- UTILS
 -------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION base36_encode (num bigint) RETURNS text AS $$
-DECLARE
-    base36 CONSTANT text   := '0123456789abcdefghijklmnopqrstuvwxyz';
-    encoded         text   := '';
-    remainder       int;
-    digit           char(1);
-    value           bigint := abs(num);
-BEGIN
-    IF num = 0 THEN
-        RETURN '0';
-    END IF;
-
-    WHILE value > 0
-        LOOP
-            remainder := (value % 36);
-            digit := substr(base36, remainder + 1, 1);
-            encoded := digit || encoded;
-            value := value / 36;
-        END LOOP;
-
-    RETURN encoded;
-END;
-$$ LANGUAGE plpgsql IMMUTABLE;
-
 CREATE SEQUENCE IF NOT EXISTS cuid_counter_seq START 1 MINVALUE 1 MAXVALUE 999999999999999999 CYCLE;
-
-CREATE OR REPLACE FUNCTION generate_cuid () RETURNS text AS $$
-DECLARE
-    "current_time" bigint;
-    time_block     text;
-    counter_value  bigint;
-    count_block    text;
-    fingerprint    text;
-    random_block   text;
-    result_cuid    text;
-BEGIN
-    "current_time" := floor(extract(epoch FROM clock_timestamp()) * 1000)::bigint;
-    time_block := base36_encode("current_time");
-    counter_value := nextval('cuid_counter_seq');
-    count_block := lpad(base36_encode(counter_value), 4, '0');
-    fingerprint := substring(md5(inet_server_addr()::text || inet_server_port()::text) for 4);
-    random_block := substring(md5(random()::text || random()::text), 1, 6);
-    result_cuid := 'c'
-                       || time_block
-                       || count_block
-                       || fingerprint
-        || random_block;
-
-    RETURN result_cuid;
-END;
-$$ LANGUAGE plpgsql;
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
@@ -410,7 +360,7 @@ ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users
 
 UPDATE users
 SET
-  id = generate_cuid ();
+  id = gen_random_uuid ();
 
 DROP TABLE descriptive_questions;
 
@@ -452,7 +402,7 @@ INSERT INTO
     email
   )
 SELECT
-  generate_cuid (),
+  gen_random_uuid (),
   dd.id,
   firstname,
   lastname,
@@ -494,7 +444,7 @@ ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFEREN
 
 UPDATE keywords
 SET
-  id = generate_cuid (),
+  id = gen_random_uuid (),
   keyword = lower(keyword);
 
 ALTER TABLE keywords
@@ -534,7 +484,7 @@ INSERT INTO
     introductory_for_dataset_id
   )
 SELECT
-  generate_cuid (),
+  gen_random_uuid (),
   np.title,
   string_to_array(np.authors, ', '),
   np.venue,
@@ -593,10 +543,6 @@ DROP SEQUENCE native_papers_id_seq CASCADE;
 DROP SEQUENCE papers_id_seq CASCADE;
 
 DROP SEQUENCE users_id_seq CASCADE;
-
-DROP ROUTINE base36_encode;
-
-DROP ROUTINE generate_cuid;
 
 DROP TYPE dataset_papers_type CASCADE;
 
