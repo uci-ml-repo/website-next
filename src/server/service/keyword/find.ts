@@ -9,6 +9,6 @@ export class KeywordFindService {
     return db
       .select()
       .from(keyword)
-      .where(eq(keyword.status, Enums.Status.APPROVED));
+      .where(eq(keyword.status, Enums.ApprovalStatus.APPROVED));
   }
 }

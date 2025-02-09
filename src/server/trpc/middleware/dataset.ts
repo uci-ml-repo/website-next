@@ -20,7 +20,7 @@ export const datasetAccessProcedure = t.procedure
       throw new TRPCError({ code: "NOT_FOUND" });
     }
 
-    if (dataset.status !== Enums.Status.APPROVED) {
+    if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
       if (!ctx.session?.user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       } else if (

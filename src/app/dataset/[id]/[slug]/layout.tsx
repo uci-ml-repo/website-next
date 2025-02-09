@@ -48,7 +48,7 @@ export default async function Layout({
     return notFound();
   }
 
-  if (dataset.status !== Enums.Status.APPROVED) {
+  if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
     if (!session?.user) {
       return unauthorized();
     } else if (

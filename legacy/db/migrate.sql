@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 ALTER TYPE users_role
 RENAME TO user_role;
 
-CREATE TYPE "approval_status" AS ENUM('pending', 'approved', 'rejected');
+CREATE TYPE "approval_status" AS ENUM('pending', 'approved', 'rejected', 'draft');
 
 CREATE TYPE "dataset_characteristic" AS ENUM(
   'tabular',
@@ -80,7 +80,7 @@ DROP TABLE variable_info;
 -------------------------------------------------------------------------------
 DROP TABLE auth_session;
 
-CREATE TABLE "sessions" (
+CREATE TABLE "session" (
   "session_token" TEXT NOT NULL,
   "user_id" TEXT NOT NULL,
   "expires" TIMESTAMP(3) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE "sessions" (
 -------------------------------------------------------------------------------
 -- accounts, verification_tokens
 -------------------------------------------------------------------------------
-CREATE TABLE "accounts" (
+CREATE TABLE "account" (
   "user_id" TEXT NOT NULL,
   "type" TEXT NOT NULL,
   "provider" TEXT NOT NULL,
@@ -106,14 +106,6 @@ CREATE TABLE "accounts" (
   "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP(3) NOT NULL,
   CONSTRAINT "accounts_pkey" PRIMARY KEY ("provider", "provider_account_id")
-);
-
-CREATE TABLE "verification_tokens" (
-  "identifier" TEXT NOT NULL,
-  "token" TEXT NOT NULL,
-  "expires" TIMESTAMP(3) NOT NULL,
-  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "verification_tokens_pkey" PRIMARY KEY ("identifier", "token")
 );
 
 -------------------------------------------------------------------------------
@@ -170,49 +162,41 @@ DROP COLUMN github,
 DROP COLUMN googleid,
 DROP COLUMN githubid;
 
-UPDATE users
-SET
-  email = 'ucirepository@uci.edu',
-  password = '$2a$10$Khz876l72GFYpQ1SbmanZezcH5Ug3lNc2kBLV7pmd/o7/ZaFrLGrG',
-  name = 'UCI ML Repository Root User',
-  role = 'librarian'
-WHERE
-  id = '1';
+ALTER TABLE users
+RENAME TO "user";
 
 -------------------------------------------------------------------------------
--- datasets + donated_datasets -> datasets
+-- datasets + donated_datasets -> dataset
 -- users.id -> donated_datasets.userid
 -------------------------------------------------------------------------------
 DROP SEQUENCE datasets_id_seq CASCADE;
 
-CREATE TABLE "datasets" (
-  "id" SERIAL NOT NULL,
-  "status" "approval_status" NOT NULL DEFAULT 'pending',
-  "donated_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "year_created" INTEGER NOT NULL,
-  "title" VARCHAR(255) NOT NULL,
-  "description" TEXT NOT NULL,
-  "subject_area" "dataset_subject_area" NOT NULL,
-  "is_tabular" BOOLEAN NOT NULL,
-  "instance_count" INTEGER NOT NULL,
-  "feature_count" INTEGER,
-  "has_graphics" BOOLEAN NOT NULL DEFAULT FALSE,
-  "is_available_python" BOOLEAN NOT NULL DEFAULT FALSE,
-  "view_count" INTEGER NOT NULL DEFAULT 0,
-  "download_count" INTEGER NOT NULL DEFAULT 0,
-  "slug" VARCHAR(255) NOT NULL,
-  "user_id" TEXT NOT NULL,
-  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMP(3) NOT NULL,
-  "characteristics" "dataset_characteristic" [],
-  "tasks" "dataset_task" [],
-  "feature_types" "dataset_feature_type" [],
-  "subtitle" VARCHAR(255),
-  "doi" VARCHAR(255),
-  "external_link" VARCHAR(255),
-  "file_count" INTEGER,
-  "zip_size" INTEGER,
-  CONSTRAINT "datasets_pkey" PRIMARY KEY ("id")
+CREATE TABLE "dataset" (
+  id serial PRIMARY KEY,
+  title text NOT NULL,
+  year_created integer,
+  subtitle text,
+  doi text,
+  description text,
+  subject_area dataset_subject_area,
+  instance_count integer,
+  feature_count integer,
+  has_graphics boolean DEFAULT FALSE NOT NULL,
+  is_available_python boolean DEFAULT FALSE NOT NULL,
+  external_link text,
+  slug text NOT NULL,
+  status approval_status DEFAULT 'draft'::approval_status NOT NULL,
+  view_count integer DEFAULT 0 NOT NULL,
+  download_count integer DEFAULT 0 NOT NULL,
+  variables_description text,
+  characteristics dataset_characteristic[],
+  tasks dataset_task[],
+  feature_types dataset_feature_type[],
+  size integer,
+  file_count integer,
+  user_id text NOT NULL,
+  donated_at timestamp DEFAULT now() NOT NULL,
+  updated_at timestamp DEFAULT now() NOT NULL
 );
 
 INSERT INTO
@@ -248,7 +232,7 @@ WHERE
   dq.datasetid IS NULL;
 
 INSERT INTO
-  datasets (
+  dataset (
     id,
     status,
     donated_at,
@@ -256,7 +240,6 @@ INSERT INTO
     title,
     description,
     subject_area,
-    is_tabular,
     instance_count,
     feature_count,
     has_graphics,
@@ -299,7 +282,6 @@ SELECT
     'physical_science',
     'physics_and_chemistry'
   )::dataset_subject_area AS subject_area,
-  coalesce(istabular, FALSE) AS is_tabular,
   numinstances AS instance_count,
   numfeatures AS feature_count,
   coalesce(graphics, '') <> '' AS has_graphics,
@@ -307,7 +289,7 @@ SELECT
   numhits AS view_count,
   numdownloads AS download_count,
   slug,
-  userid AS user_id,
+  userid::text AS user_id,
   CURRENT_TIMESTAMP AS updated_at,
   COALESCE(
     (
@@ -355,19 +337,35 @@ FROM
 WHERE
   slug NOTNULL;
 
-ALTER TABLE "datasets"
-ADD CONSTRAINT "datasets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "dataset"
+ADD CONSTRAINT "dataset_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
-UPDATE users
+UPDATE "user"
 SET
   id = gen_random_uuid ();
+
+ALTER TABLE dataset
+DROP CONSTRAINT dataset_user_id_fkey;
+
+ALTER TABLE "user"
+ALTER COLUMN id
+SET DEFAULT gen_random_uuid ();
+
+ALTER TABLE "user"
+ALTER COLUMN id TYPE uuid USING id::uuid;
+
+ALTER TABLE dataset
+ALTER COLUMN user_id type uuid USING user_id::uuid;
+
+ALTER TABLE "dataset"
+ADD CONSTRAINT "dataset_user_id_user_id_fkey" FOREIGN key ("user_id") REFERENCES "user" ("id") ON DELETE restrict ON UPDATE cascade;
 
 DROP TABLE descriptive_questions;
 
 -------------------------------------------------------------------------------
--- variables
+-- variable
 -------------------------------------------------------------------------------
-CREATE TABLE "dataset_variables" (
+CREATE TABLE "variable" (
   "id" TEXT NOT NULL,
   "name" VARCHAR(255) NOT NULL,
   "role" "dataset_feature_role" NOT NULL,
@@ -380,9 +378,9 @@ CREATE TABLE "dataset_variables" (
 );
 
 -------------------------------------------------------------------------------
--- creators + dataset_creators -> dataset_authors
+-- creators + dataset_creators -> author
 -------------------------------------------------------------------------------
-CREATE TABLE "dataset_authors" (
+CREATE TABLE "author" (
   "id" TEXT NOT NULL,
   "dataset_id" INTEGER NOT NULL,
   "first_name" VARCHAR(255) NOT NULL,
@@ -393,7 +391,7 @@ CREATE TABLE "dataset_authors" (
 );
 
 INSERT INTO
-  dataset_authors (
+  author (
     id,
     dataset_id,
     first_name,
@@ -428,7 +426,7 @@ ALTER TABLE dataset_keywords
 RENAME COLUMN datasetid TO dataset_id;
 
 ALTER TABLE dataset_keywords
-ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES datasets (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES dataset (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE dataset_keywords
 RENAME COLUMN keywordsid TO keyword_id;
@@ -510,12 +508,62 @@ CREATE TABLE "dataset_bookmarks" (
 );
 
 -------------------------------------------------------------------------------
--- draft datasets
+-- dataset materialized view
 -------------------------------------------------------------------------------
-CREATE TABLE "draft_datasets" (
-  "id" TEXT NOT NULL,
-  CONSTRAINT "draft_datasets_pkey" PRIMARY KEY ("id")
-);
+CREATE MATERIALIZED VIEW dataset_view AS
+SELECT
+  id,
+  title,
+  year_created,
+  subtitle,
+  doi,
+  description,
+  subject_area,
+  instance_count,
+  feature_count,
+  has_graphics,
+  is_available_python,
+  external_link,
+  slug,
+  status,
+  view_count,
+  download_count,
+  variables_description,
+  characteristics,
+  tasks,
+  feature_types,
+  size,
+  file_count,
+  user_id,
+  donated_at,
+  updated_at,
+  (
+    SELECT
+      jsonb_build_object(
+        'id',
+        "user".id,
+        'name',
+        "user".name,
+        'email',
+        "user".email,
+        'email_verified',
+        "user"."email_verified",
+        'image',
+        "user".image,
+        'role',
+        "user".role,
+        'created_at',
+        "user".created_at
+      ) AS jsonb_build_object
+    FROM
+      "user"
+    WHERE
+      "user".id = dataset.user_id
+  ) AS u
+FROM
+  dataset
+GROUP BY
+  id;
 
 -------------------------------------------------------------------------------
 -- CLEANUP

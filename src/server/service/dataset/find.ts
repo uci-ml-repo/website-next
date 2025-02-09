@@ -28,7 +28,7 @@ const DATASET_WEIGHTS = sql`
 `;
 
 function buildQuery(query: DatasetQuery) {
-  const conditions = [eq(datasetView.status, Enums.Status.APPROVED)];
+  const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
   if (query.keywords) {
     conditions.push(arrayContains(datasetView.keywords, query.keywords));
@@ -106,7 +106,7 @@ export class DatasetFindService {
       .where(
         and(
           eq(datasetView.id, id),
-          eq(datasetView.status, Enums.Status.APPROVED),
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
         ),
       );
     return dataset;
@@ -119,7 +119,7 @@ export class DatasetFindService {
       .where(
         and(
           inArray(datasetView.id, ids),
-          eq(datasetView.status, Enums.Status.APPROVED),
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
         ),
       );
 
@@ -146,7 +146,7 @@ export class DatasetFindService {
       .where(
         and(
           eq(datasetView.userId, userId),
-          eq(datasetView.status, Enums.Status.APPROVED),
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
         ),
       );
   }

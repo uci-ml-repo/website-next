@@ -31,7 +31,10 @@ import { enumToArray } from "@/lib/utils";
  */
 export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
 
-export const status = pgEnum("dataset_status", enumToArray(Enums.Status));
+export const approvalStatus = pgEnum(
+  "approval_status",
+  enumToArray(Enums.ApprovalStatus),
+);
 
 export const datasetSubjectArea = pgEnum(
   "dataset_subject_area",
@@ -93,7 +96,9 @@ export const dataset = pgTable(
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
     slug: text("slug").notNull(),
-    status: status("status").default(Enums.Status.DRAFT).notNull(),
+    status: approvalStatus("status")
+      .default(Enums.ApprovalStatus.DRAFT)
+      .notNull(),
 
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count").default(0).notNull(),
@@ -280,7 +285,7 @@ export const keyword = pgTable(
   "keyword",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    status: status("status").notNull(),
+    status: approvalStatus("status").notNull(),
     name: text("name").notNull(),
 
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
@@ -400,12 +405,14 @@ export const discussion = pgTable(
     index("discussion_search_index").using(
       "gin",
       sql`
-        SETWEIGHT(
-          TO_TSVECTOR('english', ${t.title}),
-          'A'
-        ) || SETWEIGHT(
-          TO_TSVECTOR('english', ${t.content}),
-          'D'
+        (
+          SETWEIGHT(
+            TO_TSVECTOR('english', ${t.title}),
+            'A'
+          ) || SETWEIGHT(
+            TO_TSVECTOR('english', ${t.content}),
+            'D'
+          )
         )
       `,
     ),
@@ -634,7 +641,7 @@ export const user = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  emailVerified: timestamp("email_verified", { mode: "date" }),
   password: text("password"),
   image: text("image"),
   role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
@@ -823,50 +830,54 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
         )
       `.as("attributes") as SQL.Aliased<string[]>,
       user: sql`
-        SELECT
-          JSONB_BUILD_OBJECT(
-            'id',
-            ${user.id},
-            'name',
-            ${user.name},
-            'email',
-            ${user.email},
-            'email_verified',
-            ${user.emailVerified},
-            'image',
-            ${user.image},
-            'role',
-            ${user.role},
-            'created_at',
-            ${user.createdAt}
-          )
-        FROM
-          ${user}
-        WHERE
-          ${user.id} = ${dataset.userId}
+        (
+          SELECT
+            JSONB_BUILD_OBJECT(
+              'id',
+              ${user.id},
+              'name',
+              ${user.name},
+              'email',
+              ${user.email},
+              'email_verified',
+              ${user.emailVerified},
+              'image',
+              ${user.image},
+              'role',
+              ${user.role},
+              'created_at',
+              ${user.createdAt}
+            )
+          FROM
+            ${user}
+          WHERE
+            ${user.id} = ${dataset.userId}
+        )
       `.as("user") as SQL.Aliased<UserSelect>,
       introductoryPaper: sql`
-        SELECT
-          JSONB_BUILD_OBJECT(
-            'title',
-            ${introductoryPaper.title},
-            'authors',
-            ${introductoryPaper.authors},
-            'venue',
-            ${introductoryPaper.venue},
-            'year',
-            ${introductoryPaper.year},
-            'citation_count',
-            ${introductoryPaper.citationCount},
-            'semantic_scholar_id',
-            ${introductoryPaper.semanticScholarId},
-            'dataset_id',
-            ${introductoryPaper.datasetId}
-          )
-        FROM
-          ${introductoryPaper}
-        WHERE
-          ${introductoryPaper.datasetId} = ${dataset.id}
+        (
+          SELECT
+            JSONB_BUILD_OBJECT(
+              'title',
+              ${introductoryPaper.title},
+              'authors',
+              ${introductoryPaper.authors},
+              'venue',
+              ${introductoryPaper.venue},
+              'year',
+              ${introductoryPaper.year},
+              'citation_count',
+              ${introductoryPaper.citationCount},
+              'semantic_scholar_id',
+              ${introductoryPaper.semanticScholarId},
+              'dataset_id',
+              ${introductoryPaper.datasetId}
+            )
+          FROM
+            ${introductoryPaper}
+          WHERE
+            ${introductoryPaper.datasetId} = ${dataset.id}
+        )
       `.as("introductory_paper") as SQL.Aliased<IntroductoryPaperSelect>,
     })
     .from(dataset)

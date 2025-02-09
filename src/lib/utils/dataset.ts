@@ -20,5 +20,5 @@ export function datasetFilesPath({
   slug: string;
   status: string;
 }) {
-  return `/${status === Enums.Status.APPROVED ? "public" : "private"}/${id}/${slug}`;
+  return `/${status === Enums.ApprovalStatus.APPROVED ? "public" : "private"}/${id}/${slug}`;
 }

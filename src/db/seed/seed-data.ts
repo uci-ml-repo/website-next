@@ -41,7 +41,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 53,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1936,
     title: "Iris",
@@ -69,7 +69,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 45,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("1988-07-01"),
     yearCreated: 1989,
     title: "Heart Disease",
@@ -101,7 +101,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 186,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("2009-10-07"),
     yearCreated: 2009,
     title: "Wine Quality",
@@ -129,7 +129,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 2,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("2012-02-14"),
     yearCreated: 2009,
     title: "Adult",
@@ -160,7 +160,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 17,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("1995-11-01"),
     yearCreated: 1993,
     title: "Breast Cancer Wisconsin (Diagnostic)",
@@ -187,7 +187,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 1031,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("2024-07-11"),
     yearCreated: 2024,
     title: "Dataset for Assessing Mathematics Learning in Higher Education",
@@ -223,7 +223,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 1074,
     userId: dummyUserId,
-    status: Enums.Status.PENDING,
+    status: Enums.ApprovalStatus.PENDING,
     donatedAt: new Date("2024-10-15"),
     yearCreated: 2024,
     title: "Nvidia Market Customer segmentation data",
@@ -259,7 +259,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 388,
     userId: dummyUserId,
-    status: Enums.Status.REJECTED,
+    status: Enums.ApprovalStatus.REJECTED,
     donatedAt: new Date("2017-05-24"),
     yearCreated: 2017,
     title: "Epileptic Seizure Recognition",
@@ -293,7 +293,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 939,
     userId: dummyUserId,
-    status: Enums.Status.PENDING,
+    status: Enums.ApprovalStatus.PENDING,
     donatedAt: new Date("2023-12-07"),
     yearCreated: 2023,
     title: "My Pending Externally Linked Dataset",
@@ -325,7 +325,7 @@ export const datasetsSeed: (typeof dataset.$inferSelect)[] = [
   {
     id: 938,
     userId: dummyUserId,
-    status: Enums.Status.APPROVED,
+    status: Enums.ApprovalStatus.APPROVED,
     donatedAt: new Date("2023-12-07"),
     yearCreated: 2023,
     title: "Regensburg Pediatric Appendicitis",

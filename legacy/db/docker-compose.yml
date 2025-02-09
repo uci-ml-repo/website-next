@@ -11,12 +11,10 @@ services:
     ports:
       - "3307:3306"
     volumes:
+      - mysql_data:/var/lib/mysql
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 30s
-      timeout: 5s
-      retries: 10
 
   postgres:
     container_name: postgres-current
@@ -103,3 +101,6 @@ services:
     volumes:
       - ./migrate.sql:/migrate.sql
       - ./output:/output
+
+volumes:
+  mysql_data:
