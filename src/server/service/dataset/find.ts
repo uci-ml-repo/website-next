@@ -20,7 +20,12 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
-const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
+const DATASET_WEIGHTS = sql`
+  SETWEIGHT(
+    TO_TSVECTOR('simple', ${dataset.title}),
+    'A'
+  )
+`;
 
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.Status.APPROVED)];
@@ -187,10 +192,28 @@ export class DatasetFindService {
   }
 
   private async bySearchQuery(query: DatasetQuery) {
-    const tsQuery = sql`(PLAINTO_TSQUERY('simple', ${query.search ?? ""}))`;
-    const normalizedTsQuery = sql`(CASE WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY('simple', ${tsQuery}::TEXT || ':*') ELSE '' END)`;
-    const rank = sql`(TS_RANK(${DATASET_WEIGHTS}, ${normalizedTsQuery}))`;
-    const trigramSimilarity = sql`(similarity(${dataset.title}, ${query.search}))`;
+    const tsQuery = sql` PLAINTO_TSQUERY('simple', ${query.search ?? ""}) `;
+    const normalizedTsQuery = sql`
+      CASE
+        WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
+          'simple',
+          ${tsQuery}::TEXT || ':*'
+        )
+        ELSE ''
+      END
+    `;
+    const rank = sql`
+      TS_RANK(
+        ${DATASET_WEIGHTS},
+        ${normalizedTsQuery}
+      )
+    `;
+    const trigramSimilarity = sql`
+      similarity (
+        ${dataset.title},
+        ${query.search}
+      )
+    `;
 
     const datasets = await db
       .select({
@@ -202,7 +225,17 @@ export class DatasetFindService {
       .where(
         and(
           query.search
-            ? sql`((${DATASET_WEIGHTS} @@ ${normalizedTsQuery}) OR (similarity(${dataset.title}, ${query.search}) > 0.1))`
+            ? sql`
+                (
+                  ${DATASET_WEIGHTS} @@ ${normalizedTsQuery}
+                )
+                OR (
+                  similarity (
+                    ${dataset.title},
+                    ${query.search}
+                  ) > 0.1
+                )
+              `
             : undefined,
         ),
       )

@@ -124,26 +124,45 @@ export const dataset = pgTable(
     index("dataset_donated_at_index").on(t.donatedAt),
     check(
       "accepted_check",
-      sql`(${t.status} = 'draft' OR
-        (${t.yearCreated} IS NOT NULL AND
-        ${t.doi} IS NOT NULL AND
-        ${t.instanceCount} IS NOT NULL AND
-        ${t.description} IS NOT NULL AND
-        ${t.subjectArea} IS NOT NULL))`,
+      sql`
+        ${t.status} = 'draft'
+        OR (
+          ${t.yearCreated} IS NOT NULL
+          AND ${t.doi} IS NOT NULL
+          AND ${t.instanceCount} IS NOT NULL
+          AND ${t.description} IS NOT NULL
+          AND ${t.subjectArea} IS NOT NULL
+        )
+      `,
     ),
     check(
       "files_check",
-      sql`((${t.externalLink} IS NULL AND ${t.size} IS NOT NULL AND ${t.fileCount} IS NOT NULL)
-                OR (${t.externalLink} IS NOT NULL AND ${t.externalLink} ~* '^https?://' AND ${t.size} IS NULL AND ${t.fileCount} IS NULL))`,
+      sql`
+        (
+          ${t.externalLink} IS NULL
+          AND ${t.size} IS NOT NULL
+          AND ${t.fileCount} IS NOT NULL
+        )
+        OR (
+          ${t.externalLink} IS NOT NULL
+          AND ${t.externalLink} ~* '^https?://'
+          AND ${t.size} IS NULL
+          AND ${t.fileCount} IS NULL
+        )
+      `,
     ),
     index("dataset_ts_search_index").using(
       "gin",
-      sql`(SETWEIGHT(TO_TSVECTOR('simple', ${t.title}), 'A'))`,
+      sql`
+        SETWEIGHT(
+          TO_TSVECTOR('simple', ${t.title}),
+          'A'
+        )
+      `,
     ),
     index("dataset_trgm_search_index").using(
       "gin",
-      sql`${t.title}
-            gin_trgm_ops`,
+      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );
@@ -380,13 +399,19 @@ export const discussion = pgTable(
   (t) => [
     index("discussion_search_index").using(
       "gin",
-      sql`(SETWEIGHT(TO_TSVECTOR('english', ${t.title}), 'A') ||
-                    SETWEIGHT(TO_TSVECTOR('english', ${t.content}), 'D'))`,
+      sql`
+        SETWEIGHT(
+          TO_TSVECTOR('english', ${t.title}),
+          'A'
+        ) || SETWEIGHT(
+          TO_TSVECTOR('english', ${t.content}),
+          'D'
+        )
+      `,
     ),
     index("discussion_trgm_search_index").using(
       "gin",
-      sql`${t.title}
-            gin_trgm_ops`,
+      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );
@@ -716,62 +741,133 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
   return qb
     .select({
       ...getTableColumns(dataset),
-      keywords: sql`(COALESCE((SELECT ARRAY_AGG(${keyword.name})
-          FROM ${keyword}
-          JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
-          WHERE ${datasetKeyword.datasetId} = ${dataset.id}), ARRAY[]::text[]))`.as(
-        "keywords",
-      ) as SQL.Aliased<string[]>,
-      authors: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-            'id', ${author.id},
-            'first_name', ${author.firstName},
-            'last_name', ${author.lastName},
-            'email', ${author.email}))
-          FROM ${author}
-          WHERE ${author.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
-        "authors",
-      ) as SQL.Aliased<AuthorSelect[]>,
-      variables: sql`(COALESCE((SELECT ARRAY_AGG(JSONB_BUILD_OBJECT(
-            'id', ${variable.id},
-            'name', ${variable.name},
-            'description', ${variable.description},
-            'role', ${variable.role},
-            'type', ${variable.type},
-            'missing_values', ${variable.missingValues},
-            'units', ${variable.units}))
-          FROM ${variable} 
-          WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::JSONB[]))`.as(
-        "variables",
-      ) as SQL.Aliased<VariableSelect[]>,
-      attributes: sql`(COALESCE((SELECT ARRAY_AGG(LOWER(${variable.name}))
-          FROM ${variable}
-          WHERE ${variable.datasetId} = ${dataset.id}), ARRAY[]::text[]))`.as(
-        "attributes",
-      ) as SQL.Aliased<string[]>,
-      user: sql`(SELECT JSONB_BUILD_OBJECT(
-           'id', ${user.id},
-           'name', ${user.name},
-           'email', ${user.email},
-           'email_verified', ${user.emailVerified},
-           'image', ${user.image},
-           'role', ${user.role},
-           'created_at', ${user.createdAt})
-        FROM ${user}
-        WHERE ${user.id} = ${dataset.userId})`.as(
-        "user",
-      ) as SQL.Aliased<UserSelect>,
-      introductoryPaper: sql`(SELECT JSONB_BUILD_OBJECT(
-           'title', ${introductoryPaper.title},
-           'authors', ${introductoryPaper.authors},
-           'venue', ${introductoryPaper.venue},
-           'year', ${introductoryPaper.year},
-           'citation_count', ${introductoryPaper.citationCount},
-           'semantic_scholar_id', ${introductoryPaper.semanticScholarId},
-           'dataset_id', ${introductoryPaper.datasetId})
-        FROM ${introductoryPaper}
-        WHERE ${introductoryPaper.datasetId} = ${dataset.id})`.as(
-        "introductory_paper",
-      ) as SQL.Aliased<IntroductoryPaperSelect>,
+      keywords: sql`
+        COALESCE(
+          (
+            SELECT
+              ARRAY_AGG(${keyword.name})
+            FROM
+              ${keyword}
+              JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
+            WHERE
+              ${datasetKeyword.datasetId} = ${dataset.id}
+          ),
+          ARRAY[]::TEXT[]
+        )
+      `.as("keywords") as SQL.Aliased<string[]>,
+      authors: sql`
+        COALESCE(
+          (
+            SELECT
+              ARRAY_AGG(
+                JSONB_BUILD_OBJECT(
+                  'id',
+                  ${author.id},
+                  'first_name',
+                  ${author.firstName},
+                  'last_name',
+                  ${author.lastName},
+                  'email',
+                  ${author.email}
+                )
+              )
+            FROM
+              ${author}
+            WHERE
+              ${author.datasetId} = ${dataset.id}
+          ),
+          ARRAY[]::JSONB[]
+        )
+      `.as("authors") as SQL.Aliased<AuthorSelect[]>,
+      variables: sql`
+        COALESCE(
+          (
+            SELECT
+              ARRAY_AGG(
+                JSONB_BUILD_OBJECT(
+                  'id',
+                  ${variable.id},
+                  'name',
+                  ${variable.name},
+                  'description',
+                  ${variable.description},
+                  'role',
+                  ${variable.role},
+                  'type',
+                  ${variable.type},
+                  'missing_values',
+                  ${variable.missingValues},
+                  'units',
+                  ${variable.units}
+                )
+              )
+            FROM
+              ${variable}
+            WHERE
+              ${variable.datasetId} = ${dataset.id}
+          ),
+          ARRAY[]::JSONB[]
+        )
+      `.as("variables") as SQL.Aliased<VariableSelect[]>,
+      attributes: sql`
+        COALESCE(
+          (
+            SELECT
+              ARRAY_AGG(LOWER(${variable.name}))
+            FROM
+              ${variable}
+            WHERE
+              ${variable.datasetId} = ${dataset.id}
+          ),
+          ARRAY[]::TEXT[]
+        )
+      `.as("attributes") as SQL.Aliased<string[]>,
+      user: sql`
+        SELECT
+          JSONB_BUILD_OBJECT(
+            'id',
+            ${user.id},
+            'name',
+            ${user.name},
+            'email',
+            ${user.email},
+            'email_verified',
+            ${user.emailVerified},
+            'image',
+            ${user.image},
+            'role',
+            ${user.role},
+            'created_at',
+            ${user.createdAt}
+          )
+        FROM
+          ${user}
+        WHERE
+          ${user.id} = ${dataset.userId}
+      `.as("user") as SQL.Aliased<UserSelect>,
+      introductoryPaper: sql`
+        SELECT
+          JSONB_BUILD_OBJECT(
+            'title',
+            ${introductoryPaper.title},
+            'authors',
+            ${introductoryPaper.authors},
+            'venue',
+            ${introductoryPaper.venue},
+            'year',
+            ${introductoryPaper.year},
+            'citation_count',
+            ${introductoryPaper.citationCount},
+            'semantic_scholar_id',
+            ${introductoryPaper.semanticScholarId},
+            'dataset_id',
+            ${introductoryPaper.datasetId}
+          )
+        FROM
+          ${introductoryPaper}
+        WHERE
+          ${introductoryPaper.datasetId} = ${dataset.id}
+      `.as("introductory_paper") as SQL.Aliased<IntroductoryPaperSelect>,
     })
     .from(dataset)
     .leftJoin(introductoryPaper, eq(dataset.id, introductoryPaper.datasetId))

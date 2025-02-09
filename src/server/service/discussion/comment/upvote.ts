@@ -15,8 +15,7 @@ export class DiscussionCommentUpvoteService {
       await tx
         .update(discussionComment)
         .set({
-          upvoteCount: sql`${discussionComment.upvoteCount}
-                    + 1`,
+          upvoteCount: sql`${discussionComment.upvoteCount} + 1`,
         })
         .where(eq(discussionComment.id, discussionCommentId));
 
@@ -38,8 +37,7 @@ export class DiscussionCommentUpvoteService {
       await tx
         .update(discussionComment)
         .set({
-          upvoteCount: sql`${discussionComment.upvoteCount}
-                    - 1`,
+          upvoteCount: sql`${discussionComment.upvoteCount} - 1`,
         })
         .where(eq(discussionComment.id, discussionCommentId));
 
