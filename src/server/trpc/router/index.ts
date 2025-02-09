@@ -9,10 +9,10 @@ import { keywordRouter } from "@/server/trpc/router/keyword";
 import { userRouter } from "@/server/trpc/router/user";
 
 export const appRouter = router({
+  bookmark: bookmarkRouter,
   dataset: datasetRouter,
   discussion: discussionRouter,
   file: fileRouter,
-  bookmark: bookmarkRouter,
   keyword: keywordRouter,
   user: userRouter,
 });

@@ -7,10 +7,10 @@ import { datasetReportRouter } from "@/server/trpc/router/dataset/report";
 import { datasetStatsRouter } from "@/server/trpc/router/dataset/stats";
 
 export const datasetRouter = router({
-  find: datasetFindRouter,
-  count: datasetCountRouter,
-  cite: datasetCiteRouter,
   bookmarks: bookmarkRouter,
+  cite: datasetCiteRouter,
+  count: datasetCountRouter,
+  find: datasetFindRouter,
   report: datasetReportRouter,
   stats: datasetStatsRouter,
 });

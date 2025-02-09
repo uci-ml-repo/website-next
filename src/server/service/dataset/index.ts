@@ -7,11 +7,11 @@ import { DatasetUpdateService } from "@/server/service/dataset/update";
 
 export class DatasetService {
   constructor(
-    readonly find = new DatasetFindService(),
     readonly cite = new DatasetCiteService(),
     readonly count = new DatasetCountService(),
+    readonly find = new DatasetFindService(),
     readonly report = new DatasetReportService(),
-    readonly update = new DatasetUpdateService(),
     readonly stats = new DatasetStatsService(),
+    readonly update = new DatasetUpdateService(),
   ) {}
 }

@@ -48,6 +48,7 @@
   "dependencies": {
     "@auth/core": "0.37.2",
     "@auth/drizzle-adapter": "1.7.2",
+    "@google-analytics/data": "4.12.0",
     "@hookform/resolvers": "3.10.0",
     "@mdx-js/loader": "3.1.0",
     "@mdx-js/react": "3.1.0",

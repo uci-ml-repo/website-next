@@ -9,11 +9,11 @@ import { DiscussionUpvoteService } from "@/server/service/discussion/upvote";
 export class DiscussionService {
   constructor(
     readonly comment = new DiscussionCommentService(),
-    readonly find = new DiscussionFindService(),
-    readonly update = new DiscussionUpdateService(),
     readonly create = new DiscussionCreateService(),
+    readonly find = new DiscussionFindService(),
     readonly remove = new DiscussionRemoveService(),
-    readonly upvote = new DiscussionUpvoteService(),
     readonly report = new DiscussionReportService(),
+    readonly update = new DiscussionUpdateService(),
+    readonly upvote = new DiscussionUpvoteService(),
   ) {}
 }

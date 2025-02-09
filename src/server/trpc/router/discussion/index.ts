@@ -9,10 +9,10 @@ import { discussionUpvoteRouter } from "@/server/trpc/router/discussion/upvote";
 
 export const discussionRouter = router({
   comment: discussionCommentRouter,
-  find: discussionFindRouter,
-  update: discussionUpdateRouter,
   create: discussionCreateRouter,
+  find: discussionFindRouter,
   remove: discussionRemoveRouter,
-  upvote: discussionUpvoteRouter,
   report: discussionReportRouter,
+  update: discussionUpdateRouter,
+  upvote: discussionUpvoteRouter,
 });

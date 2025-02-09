@@ -4,7 +4,7 @@ import { bookmarkFindRouter } from "@/server/trpc/router/bookmark/find";
 import { bookmarkRemoveRouter } from "@/server/trpc/router/bookmark/remove";
 
 export const bookmarkRouter = router({
-  find: bookmarkFindRouter,
   create: bookmarkCreateRouter,
+  find: bookmarkFindRouter,
   remove: bookmarkRemoveRouter,
 });
