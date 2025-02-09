@@ -38,10 +38,7 @@ const Thumb = React.forwardRef<
     {labelContent && (
       <span
         ref={labelRef}
-        className={cn(
-          "absolute -left-2 flex w-full justify-center px-4",
-          labelClass,
-        )}
+        className={cn("absolute flex w-full justify-center", labelClass)}
       >
         {labelContent}
       </span>
@@ -78,9 +75,14 @@ const DualRangeSlider = React.forwardRef<
       }
     }, [currentValue]);
 
-    const leftLabelClass = labelPosition === "top" ? "-top-6" : "top-4";
-    const rightLabelClass =
-      isCollision || labelPosition === "bottom" ? "top-4" : "-top-6";
+    const leftLabelClass = cn(
+      "-right-[14px] pr-5",
+      labelPosition === "top" ? "-top-6" : "top-4",
+    );
+    const rightLabelClass = cn(
+      "-left-[14px] pl-5",
+      isCollision || labelPosition === "bottom" ? "top-4" : "-top-6",
+    );
 
     return (
       <SliderPrimitive.Root
