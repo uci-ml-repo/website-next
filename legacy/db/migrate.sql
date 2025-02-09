@@ -281,136 +281,136 @@ FROM
 WHERE
   dq.datasetid IS NULL;
 
-INSERT INTO
-  dataset (
-    id,
-    status,
-    donated_at,
-    year_created,
-    title,
-    description,
-    subject_area,
-    instance_count,
-    feature_count,
-    has_graphics,
-    is_available_python,
-    view_count,
-    download_count,
-    slug,
-    user_id,
-    updated_at,
-    data_types,
-    tasks,
-    feature_types,
-    doi,
-    external_link,
-    file_count,
-    size
-  )
-SELECT
-  dd.id,
-  lower(replace(status, 'FAILED', 'REJECTED'))::approval_status AS status,
-  coalesce(datedonated, CURRENT_TIMESTAMP) AS donated_at, -- TODO populate null data
-  coalesce(
-    yearcreated,
-    extract(
-      YEAR
-      FROM
-        CURRENT_TIMESTAMP
-    )::INTEGER
-  ) AS year_created, -- TODO populate null data
-  name AS title,
-  trim(
-    concat(
-      abstract,
-      E'\n\n',
-      dq.otherinfo,
-      E'\n\n',
-      dq.preprocessingdescription
-    )
-  ) AS description,
-  replace(
-    replace(lower(area), ' ', '_'),
-    'physical_science',
-    'physics_and_chemistry'
-  )::dataset_subject_area AS subject_area,
-  numinstances AS instance_count,
-  numfeatures AS feature_count,
-  coalesce(graphics, '') <> '' AS has_graphics,
-  coalesce(isavailablepython, FALSE) AS is_available_python,
-  numhits AS view_count,
-  numdownloads AS download_count,
-  slug,
-  userid AS user_id,
-  CURRENT_TIMESTAMP AS updated_at,
-  COALESCE(
-    (
-      SELECT
-        array_agg(x::dataset_characteristic)
-      FROM
-        unnest(string_to_array(lower(dd.types), ', ')) x
-      WHERE
-        x = ANY (enum_range(NULL::dataset_characteristic)::TEXT[])
-    ),
-    '{}'
-  ) AS data_types,
-  COALESCE(
-    (
-      SELECT
-        array_agg(x::dataset_task)
-      FROM
-        unnest(string_to_array(lower(dd.task), ', ')) x
-      WHERE
-        x = ANY (enum_range(NULL::dataset_task)::TEXT[])
-    ),
-    '{}'
-  ) AS tasks,
-  COALESCE(
-    (
-      SELECT
-        array_agg(x::dataset_feature_type)
-      FROM
-        unnest(
-          string_to_array(
-            lower(replace(dd.featuretypes, 'Real', 'Continuous')),
-            ', '
-          )
-        ) x
-      WHERE
-        x = ANY (enum_range(NULL::dataset_feature_type)::TEXT[])
-    ),
-    '{}'
-  ) AS feature_types,
-  regexp_replace(trim(doi), '^https?://doi.org/', '') AS doi,
-  urllink AS external_link,
-  COALESCE(
-    (
-      SELECT
-        count(*)
-      FROM
-        dataset_file df
-        INNER JOIN file_info fi ON fi.id = df.fileinfoid
-      WHERE
-        fi.datasetid = dd.id
-    ),
-    0
-  ) AS file_count,
-  COALESCE(
-    (
-      SELECT
-        compressedsize
-      FROM
-        file_info fi
-      WHERE
-        fi.datasetid = dd.id
-    ),
-    0
-  ) AS size
-FROM
-  donated_datasets dd
-  INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
-WHERE
-  slug NOTNULL;
+DO $$
+  DECLARE
+    rec RECORD;
+  BEGIN
+    FOR rec IN
+      SELECT dd.id,
+             lower(replace(status, 'FAILED', 'REJECTED'))::approval_status AS status,
+             coalesce(datedonated, CURRENT_TIMESTAMP)                      AS donated_at,   -- TODO populate null data
+             coalesce(
+               yearcreated,
+               extract(
+                 YEAR
+                 FROM
+                 CURRENT_TIMESTAMP
+               )::INTEGER
+             )                                                             AS year_created, -- TODO populate null data
+             name                                                          AS title,
+             trim(
+               concat(
+                 abstract,
+                 E'\n\n',
+                 dq.otherinfo,
+                 E'\n\n',
+                 dq.preprocessingdescription
+               )
+             )                                                             AS description,
+             replace(
+               replace(lower(area), ' ', '_'),
+               'physical_science',
+               'physics_and_chemistry'
+             )::dataset_subject_area                                       AS subject_area,
+             numinstances                                                  AS instance_count,
+             numfeatures                                                   AS feature_count,
+             coalesce(graphics, '') <> ''                                  AS has_graphics,
+             coalesce(isavailablepython, FALSE)                            AS is_available_python,
+             numhits                                                       AS view_count,
+             numdownloads                                                  AS download_count,
+             slug,
+             userid                                                        AS user_id,
+             CURRENT_TIMESTAMP                                             AS updated_at,
+             COALESCE(
+               (SELECT array_agg(x::dataset_characteristic)
+                FROM unnest(string_to_array(lower(dd.types), ', ')) x
+                WHERE x = ANY (enum_range(NULL::dataset_characteristic)::TEXT[])),
+               '{}'
+             )                                                             AS data_types,
+             COALESCE(
+               (SELECT array_agg(x::dataset_task)
+                FROM unnest(string_to_array(lower(dd.task), ', ')) x
+                WHERE x = ANY (enum_range(NULL::dataset_task)::TEXT[])),
+               '{}'
+             )                                                             AS tasks,
+             COALESCE(
+               (SELECT array_agg(x::dataset_feature_type)
+                FROM unnest(
+                       string_to_array(
+                         lower(replace(dd.featuretypes, 'Real', 'Continuous')),
+                         ', '
+                       )
+                     ) x
+                WHERE x = ANY (enum_range(NULL::dataset_feature_type)::TEXT[])),
+               '{}'
+             )                                                             AS feature_types,
+             regexp_replace(trim(doi), '^https?://doi.org/', '')           AS doi,
+             urllink                                                       AS external_link,
+             (SELECT count(*)
+              FROM dataset_file df
+                     INNER JOIN file_info fi ON fi.id = df.fileinfoid
+              WHERE fi.datasetid = dd.id)                                  AS file_count,
+             (SELECT compressedsize
+              FROM file_info fi
+              WHERE fi.datasetid = dd.id)                                  AS size
+      FROM donated_datasets dd
+             INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
+      WHERE slug NOTNULL
+      LOOP
+        BEGIN
+          INSERT INTO dataset (id,
+                               status,
+                               donated_at,
+                               year_created,
+                               title,
+                               description,
+                               subject_area,
+                               instance_count,
+                               feature_count,
+                               has_graphics,
+                               is_available_python,
+                               view_count,
+                               download_count,
+                               slug,
+                               user_id,
+                               updated_at,
+                               data_types,
+                               tasks,
+                               feature_types,
+                               doi,
+                               external_link,
+                               file_count,
+                               size)
+          VALUES (rec.id,
+                  rec.status,
+                  rec.donated_at,
+                  rec.year_created,
+                  rec.title,
+                  rec.description,
+                  rec.subject_area,
+                  rec.instance_count,
+                  rec.feature_count,
+                  rec.has_graphics,
+                  rec.is_available_python,
+                  rec.view_count,
+                  rec.download_count,
+                  rec.slug,
+                  rec.user_id,
+                  rec.updated_at,
+                  rec.data_types,
+                  rec.tasks,
+                  rec.feature_types,
+                  rec.doi,
+                  rec.external_link,
+                  rec.file_count,
+                  rec.size);
+        EXCEPTION
+          WHEN OTHERS THEN
+            RAISE NOTICE 'Skipping record for donated dataset with id: %, status: % due to error: %', rec.id, rec.status, SQLERRM;
+        END;
+      END LOOP;
+  END
+$$;
 
 DROP TABLE descriptive_questions;
 
