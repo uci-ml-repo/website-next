@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import { BookmarkIcon } from "lucide-react";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
@@ -31,6 +32,10 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
         title: "Bookmark added",
         description: "View bookmarked datasets from your profile",
       });
+
+      sendGAEvent("event", "bookmark_add", {
+        datasetId: dataset.id.toString(),
+      });
     },
   });
 
@@ -42,6 +47,10 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
     onSuccess: () => {
       toast({
         title: "Bookmark removed",
+      });
+
+      sendGAEvent("event", "bookmark_remove", {
+        datasetId: dataset.id.toString(),
       });
     },
   });

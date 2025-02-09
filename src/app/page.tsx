@@ -14,7 +14,7 @@ import { Banner } from "@/components/icons";
 import { Main } from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { CONTRIBUTE_ROUTE, DATASETS_ROUTE } from "@/lib/routes";
+import { CONTRIBUTE_ROUTE, DATASETS_QUERY, DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page() {
@@ -60,13 +60,13 @@ export default async function Page() {
         <DatasetCardCarousel
           icon={<TrendingUpIcon />}
           heading="Popular Datasets"
-          seeAllHref={DATASETS_ROUTE} // TODO
+          seeAllHref={DATASETS_QUERY({ order: { viewCount: "desc" } })}
           datasets={popularDatasets.datasets}
         />
         <DatasetCardCarousel
           icon={<SparklesIcon />}
           heading="New Datasets"
-          seeAllHref={DATASETS_ROUTE} // TODO
+          seeAllHref={DATASETS_QUERY({ order: { donatedAt: "desc" } })}
           datasets={newDatasets.datasets}
         />
         <hr />

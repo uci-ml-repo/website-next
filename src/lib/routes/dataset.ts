@@ -1,11 +1,12 @@
 import { Enums } from "@/db/enums";
 import { STATIC_FILES_ROUTE } from "@/lib/routes/index";
+import { buildQueryFilters } from "@/lib/utils";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
 export const DATASETS_ROUTE = "/datasets";
 
 export function DATASETS_QUERY(query: DatasetQuery) {
-  return "/datasets";
+  return DATASETS_ROUTE + "?" + buildQueryFilters(query).toString();
 }
 
 export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {

@@ -17,8 +17,13 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/api/dataset",
-        destination: "/api/datasets",
+        source: "/index.php",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/datasets.php",
+        destination: "/datasets",
         permanent: true,
       },
       {

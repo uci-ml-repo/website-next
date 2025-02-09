@@ -8,12 +8,14 @@
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import type { google } from "@google-analytics/data/build/protos/protos";
 
+import { DATASET_ROUTE } from "@/lib/routes";
 import { service } from "@/server/service";
 
 type IRunReportRequest = google.analytics.data.v1beta.IRunReportRequest;
 
 /**
- * find the property ID on {@link https://analytics.google.com/analytics/web/}
+ * property ID
+ * @link https://analytics.google.com/analytics/web/
  */
 const propertyId = 336713517;
 
@@ -76,8 +78,8 @@ export class GoogleAnalyticsService {
    */
   async datasetViews(startDate = analyticsInceptionDate, endDate = "today") {
     const datasets = await service.dataset.find.byQuery({});
-    const pagePaths = datasets.datasets.map(
-      (dataset) => `/dataset/${dataset.id}/${dataset.slug}`,
+    const pagePaths = datasets.datasets.map((dataset) =>
+      DATASET_ROUTE(dataset),
     );
 
     const analytics = await this.asObject({
@@ -123,7 +125,7 @@ export class GoogleAnalyticsService {
       throw new Error(`dataset with ID ${id} not found`);
     }
 
-    const datasetPath = `/dataset/${id}/${dataset?.slug}`;
+    const datasetPath = DATASET_ROUTE(dataset);
 
     const analytics = await this.asObject({
       dateRanges: [

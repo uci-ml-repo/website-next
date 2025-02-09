@@ -2,6 +2,7 @@ import "@/app/globals.css";
 
 import * as process from "node:process";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
@@ -103,6 +104,7 @@ export default async function Layout({
           </body>
         </TRPCProvider>
       </SessionProvider>
+      <GoogleAnalytics gaId="G-MTKKEPF231" />
     </html>
   );
 }
