@@ -3,7 +3,7 @@ import transformer from "superjson";
 import { z } from "zod";
 
 import { Enums } from "@/db/enums";
-import service from "@/server/service";
+import { service } from "@/server/service";
 import type { createContext } from "@/server/trpc/context";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 

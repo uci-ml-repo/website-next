@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import { PythonIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import Copy from "@/components/ui/copy";
+import { Copy } from "@/components/ui/copy";
 import {
   Dialog,
   DialogContent,
@@ -56,7 +56,7 @@ const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
   );
 };
 
-export default function DatasetPythonImportButton({
+export function DatasetPythonImportButton({
   dataset,
 }: DatasetPythonImportButtonProps) {
   const pipInstallCommand = `pip install ucimlrepo`;

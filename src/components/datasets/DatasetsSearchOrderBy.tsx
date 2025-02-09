@@ -27,7 +27,7 @@ const orderByOptions: Record<
   title: { icon: <ArrowDownAZIcon />, name: "Title", sort: "asc" },
 };
 
-export default function DatasetsSearchOrderBy({}: {}) {
+export function DatasetsSearchOrderBy() {
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
   const defaultValue = Object.keys(filters.order || {})[0] || "viewCount";

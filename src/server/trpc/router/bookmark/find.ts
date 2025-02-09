@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 import { bookmarkQuery } from "@/server/schema/bookmark";
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const bookmarkFindRouter = router({
+export const bookmarkFindRouter = router({
   byUserQuery: protectedProcedure
     .input(bookmarkQuery)
     .query(async ({ input, ctx }) => {
@@ -20,5 +20,3 @@ const bookmarkFindRouter = router({
       });
     }),
 });
-
-export default bookmarkFindRouter;

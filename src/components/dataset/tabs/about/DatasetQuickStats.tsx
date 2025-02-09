@@ -1,11 +1,7 @@
 import type { DatasetResponse } from "@/lib/types";
 import { formatEnum } from "@/lib/utils";
 
-export default function DatasetQuickStats({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+export function DatasetQuickStats({ dataset }: { dataset: DatasetResponse }) {
   const stats = [
     {
       name: "Subject Area",

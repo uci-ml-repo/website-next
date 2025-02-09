@@ -4,18 +4,18 @@ import debounce from "lodash/debounce";
 import { CircleXIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
-import FilesBrowseDirectory from "@/components/dataset/tabs/files/browse/FilesBrowseDirectory";
-import FilesBrowseFile from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
+import { FilesBrowseDirectory } from "@/components/dataset/tabs/files/browse/FilesBrowseDirectory";
+import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetFilesPath } from "@/lib/utils";
 import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
+export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const [searchValue, setSearchValue] = React.useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = React.useState("");
   const [isDebouncing, setIsDebouncing] = React.useState(false);

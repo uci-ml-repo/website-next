@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { discussion } from "@/db/schema";
 
-export default class DiscussionCreateService {
+export class DiscussionCreateService {
   async fromData({
     title,
     content,

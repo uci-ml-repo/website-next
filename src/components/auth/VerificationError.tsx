@@ -1,5 +1,6 @@
-import ErrorGraphic from "@/components/layout/ErrorGraphic";
+import { ErrorGraphic } from "@/components/layout/ErrorGraphic";
 
-export default function VerificationError() {
+export function VerificationError() {
+  // TODO
   return <ErrorGraphic>X</ErrorGraphic>;
 }

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 
-export default function CookiesAlert() {
+export function CookiesAlert() {
   const [accepted, setAccepted] = useState<boolean | null>(null);
 
   useEffect(() => {

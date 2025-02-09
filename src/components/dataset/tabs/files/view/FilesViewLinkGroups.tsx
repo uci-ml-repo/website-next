@@ -6,7 +6,7 @@ import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import type { DatasetResponse } from "@/lib/types";
 import { cn, datasetFilesPath } from "@/lib/utils";
 
-export default function FilesViewLinkGroups({
+export function FilesViewLinkGroups({
   dataset,
   className,
 }: {

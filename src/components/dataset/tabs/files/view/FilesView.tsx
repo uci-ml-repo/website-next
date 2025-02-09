@@ -2,18 +2,18 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import FilesViewDirectory from "@/components/dataset/tabs/files/view/FilesViewDirectory";
-import FilesViewDownloadButton from "@/components/dataset/tabs/files/view/FilesViewDownloadButton";
-import FilesViewFile from "@/components/dataset/tabs/files/view/FilesViewFile";
-import FilesViewLinkGroups from "@/components/dataset/tabs/files/view/FilesViewLinkGroups";
+import { FilesViewDirectory } from "@/components/dataset/tabs/files/view/FilesViewDirectory";
+import { FilesViewDownloadButton } from "@/components/dataset/tabs/files/view/FilesViewDownloadButton";
+import { FilesViewFile } from "@/components/dataset/tabs/files/view/FilesViewFile";
+import { FilesViewLinkGroups } from "@/components/dataset/tabs/files/view/FilesViewLinkGroups";
 import { Button } from "@/components/ui/button";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function FilesView({ dataset }: { dataset: DatasetResponse }) {
+export function FilesView({ dataset }: { dataset: DatasetResponse }) {
   const { currentFile, fileHistory, back, fileForwardHistory, forward } =
     useFileContext();
 

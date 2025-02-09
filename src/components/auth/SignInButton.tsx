@@ -9,7 +9,7 @@ import { SIGN_IN_ROUTE } from "@/lib/routes";
 
 interface SignInButtonProps extends React.ComponentProps<typeof Button> {}
 
-export default function SignInButton(props: SignInButtonProps) {
+export function SignInButton(props: SignInButtonProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 

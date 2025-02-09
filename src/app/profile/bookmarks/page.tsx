@@ -9,14 +9,14 @@ import {
 import Link from "next/link";
 import React from "react";
 
-import DatasetRow from "@/components/dataset/preview/DatasetRow";
+import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
-import BackToTop from "@/components/ui/back-to-top";
+import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 

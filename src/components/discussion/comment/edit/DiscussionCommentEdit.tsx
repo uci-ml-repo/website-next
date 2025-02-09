@@ -14,14 +14,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 import { formSchema } from "../create/DiscussionCommentCreateInput";
 
-export default function DiscussionCommentEdit({
+export function DiscussionCommentEdit({
   discussionComment,
   setIsEditing,
 }: {

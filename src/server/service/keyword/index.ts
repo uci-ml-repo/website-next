@@ -1,5 +1,5 @@
-import KeywordFindService from "@/server/service/keyword/find";
+import { KeywordFindService } from "@/server/service/keyword/find";
 
-export default class KeywordService {
+export class KeywordService {
   constructor(readonly find = new KeywordFindService()) {}
 }

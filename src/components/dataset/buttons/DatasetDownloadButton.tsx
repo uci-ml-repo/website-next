@@ -10,9 +10,7 @@ interface DatasetDownloadButtonProps {
   dataset: DatasetResponse;
 }
 
-export default async function DatasetDownloadButton({
-  dataset,
-}: DatasetDownloadButtonProps) {
+export function DatasetDownloadButton({ dataset }: DatasetDownloadButtonProps) {
   if (dataset.externalLink) {
     return (
       <Button

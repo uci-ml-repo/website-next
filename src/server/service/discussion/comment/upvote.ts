@@ -3,7 +3,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { discussionComment, discussionCommentUpvote } from "@/db/schema";
 
-export default class DiscussionCommentUpvoteService {
+export class DiscussionCommentUpvoteService {
   async create({
     discussionCommentId,
     userId,

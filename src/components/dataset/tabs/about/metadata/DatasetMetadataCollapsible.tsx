@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
-export default function DatasetMetadataCollapsible({
+export function DatasetMetadataCollapsible({
   title,
   children,
   isOpen,

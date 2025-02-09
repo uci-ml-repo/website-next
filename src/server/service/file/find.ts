@@ -38,7 +38,7 @@ function sortDirectoryEntities(a: DirectoryEntity, b: DirectoryEntity) {
   return path.basename(a.path).localeCompare(path.basename(b.path));
 }
 
-export default class FileFindService {
+export class FileFindService {
   async list(absolutePath: string) {
     const nodes = await fs.readdir(absolutePath, { withFileTypes: true });
 

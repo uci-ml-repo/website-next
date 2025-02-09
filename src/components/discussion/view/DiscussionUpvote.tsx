@@ -3,9 +3,9 @@
 import { ChevronUpIcon } from "lucide-react";
 import { useState } from "react";
 
-import SignInRequired from "@/components/auth/SignInRequired";
+import { SignInRequired } from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -13,9 +13,7 @@ interface DiscussionUpvoteProps {
   discussion: DiscussionResponse;
 }
 
-export default function DiscussionUpvote({
-  discussion,
-}: DiscussionUpvoteProps) {
+export function DiscussionUpvote({ discussion }: DiscussionUpvoteProps) {
   const [isUpvoted, setIsUpvoted] = useState<boolean>(discussion.upvoted);
   const [upvoteCount, setUpvoteCount] = useState<number>(
     discussion.upvoteCount,

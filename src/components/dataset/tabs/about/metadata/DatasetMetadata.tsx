@@ -7,8 +7,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import DatasetMetadataCollapsible from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
-import DatasetMetadataPaperPreview from "@/components/dataset/tabs/about/metadata/DatasetMetadataPaperPreview";
+import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
+import { DatasetMetadataPaperPreview } from "@/components/dataset/tabs/about/metadata/DatasetMetadataPaperPreview";
 import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
 

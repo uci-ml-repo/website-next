@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import DatasetsFilters from "@/components/datasets/DatasetsFilters";
-import DatasetsSearch from "@/components/datasets/DatasetsSearch";
-import Main from "@/components/layout/Main";
+import { DatasetsFilters } from "@/components/datasets/DatasetsFilters";
+import { DatasetsSearch } from "@/components/datasets/DatasetsSearch";
+import { Main } from "@/components/layout/Main";
 
 export const metadata: Metadata = { title: "Datasets" };
 

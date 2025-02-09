@@ -26,7 +26,7 @@ interface CustomSplitProps {
   children: [ReactNode, ReactNode];
 }
 
-export default function Split({
+export function Split({
   className,
   gutterSize = 6,
   sizes = [20, 80],

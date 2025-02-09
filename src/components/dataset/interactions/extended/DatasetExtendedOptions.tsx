@@ -4,7 +4,7 @@ import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
 import path from "path";
 import { useState } from "react";
 
-import DatasetReportDialog from "@/components/dataset/interactions/extended/DatasetReportDialog";
+import { DatasetReportDialog } from "@/components/dataset/interactions/extended/DatasetReportDialog";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 
-export default function DatasetExtendedOptions({
+export function DatasetExtendedOptions({
   dataset,
 }: {
   dataset: DatasetResponse;

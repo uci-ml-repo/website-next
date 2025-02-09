@@ -1,15 +1,15 @@
 import path from "path";
 import { useEffect, useMemo, useState } from "react";
 
-import FilesBrowseButton from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
-import FilesBrowseFile from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
+import { FilesBrowseButton } from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
+import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import fileToIcon from "@/components/dataset/tabs/files/lib/FileToIcon";
-import Spinner from "@/components/ui/spinner";
+import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { Spinner } from "@/components/ui/spinner";
 import type { FileResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function FilesBrowseDirectory({
+export function FilesBrowseDirectory({
   directory,
 }: {
   directory: FileResponse;

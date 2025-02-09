@@ -3,9 +3,9 @@ import process from "node:process";
 import path from "path";
 
 import { SIGN_IN_ROUTE } from "@/lib/routes";
-import EmailLayout from "@/server/service/email/templates/EmailLayout";
+import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
-export default function ResetPasswordSuccess({ name }: { name: string }) {
+export function ResetPasswordSuccess({ name }: { name: string }) {
   if (!process.env.ORIGIN) {
     throw new Error("ORIGIN is not set");
   }

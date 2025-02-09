@@ -8,11 +8,11 @@ import { SessionProvider } from "next-auth/react";
 import * as React from "react";
 
 import { auth } from "@/auth";
-import AppSidebar from "@/components/layout/AppSidebar";
-import CookiesAlert from "@/components/layout/CookiesAlert";
-import Footer from "@/components/layout/Footer";
-import BackgroundGraph from "@/components/layout/graph/BackgroundGraph";
-import Header from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { CookiesAlert } from "@/components/layout/CookiesAlert";
+import { Footer } from "@/components/layout/Footer";
+import { BackgroundGraph } from "@/components/layout/graph/BackgroundGraph";
+import { Header } from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { Banner } from "@/components/icons";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
@@ -24,7 +24,7 @@ const formSchema = z
 
 export type FormSchema = z.infer<typeof formSchema>;
 
-export default function ResetPassword({ token }: { token: string }) {
+export function ResetPassword({ token }: { token: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

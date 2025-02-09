@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 
 import type { MDXEditorProps } from "@/components/editor/MDXEditorInit";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 const MDXEditorComp = dynamic(
   () => import("@/components/editor/MDXEditorInit"),
@@ -17,7 +17,7 @@ const MDXEditorComp = dynamic(
   },
 );
 
-export default function MDXEditor(props: MDXEditorProps) {
+export function MDXEditor(props: MDXEditorProps) {
   return (
     <div className="rounded-lg border">
       <MDXEditorComp {...props} />

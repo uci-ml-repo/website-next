@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function DatasetRowSkeleton() {
+export function DatasetRowSkeleton() {
   return (
     <div className="group flex space-x-2 rounded-2xl p-4">
       <Skeleton className="size-12 rounded-lg" />

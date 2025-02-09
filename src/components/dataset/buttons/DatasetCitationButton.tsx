@@ -6,7 +6,7 @@ import { BookMarkedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import Copy from "@/components/ui/copy";
+import { Copy } from "@/components/ui/copy";
 import {
   Dialog,
   DialogContent,
@@ -29,9 +29,7 @@ interface DatasetCitationButtonProps {
   dataset: DatasetResponse;
 }
 
-export default function DatasetCitationButton({
-  dataset,
-}: DatasetCitationButtonProps) {
+export function DatasetCitationButton({ dataset }: DatasetCitationButtonProps) {
   const citationsQuery = trpc.dataset.cite.byId.useQuery(dataset.id);
   const citations = citationsQuery.data;
 

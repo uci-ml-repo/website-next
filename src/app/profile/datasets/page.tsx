@@ -3,7 +3,7 @@ import Link from "next/link";
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
+import { DatasetCardCarousel } from "@/components/dataset/preview/DatasetCardCarousel";
 import { Button } from "@/components/ui/button";
 import { CONTRIBUTE_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";

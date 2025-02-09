@@ -1,12 +1,12 @@
 "use client";
 
-import MDXViewer from "@/components/editor/MDXViewer";
-import ExpandableContent from "@/components/ui/expandable";
+import { MDXViewer } from "@/components/editor/MDXViewer";
+import { Expandable } from "@/components/ui/expandable";
 
-export default function DiscussionContent({ content }: { content: string }) {
+export function DiscussionContent({ content }: { content: string }) {
   return (
-    <ExpandableContent truncationHeight={600}>
+    <Expandable truncationHeight={600}>
       <MDXViewer markdown={content} />
-    </ExpandableContent>
+    </Expandable>
   );
 }

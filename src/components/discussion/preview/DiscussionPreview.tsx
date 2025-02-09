@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
-import ProfileAvatar from "@/components/ui/profile-avatar";
+import { DiscussionUpvote } from "@/components/discussion/view/DiscussionUpvote";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { timeSince } from "@/lib/utils";
 
-export default function DiscussionPreview({
+export function DiscussionPreview({
   discussion,
   showOnDataset,
 }: {

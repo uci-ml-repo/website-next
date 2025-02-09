@@ -13,7 +13,7 @@ interface ExpandableContentProps {
   className?: string;
 }
 
-export default function Expandable({
+export function Expandable({
   children,
   truncationHeight = 600,
   gradientHeight = Math.max(30, truncationHeight / 6),

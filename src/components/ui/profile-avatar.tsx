@@ -7,7 +7,7 @@ interface ProfileAvatarProps extends React.ComponentPropsWithoutRef<"div"> {
   src?: string | null;
 }
 
-export default function ProfileAvatar({
+export function ProfileAvatar({
   src,
   className,
   ...props

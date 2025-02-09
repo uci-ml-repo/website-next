@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const discussionCreateRouter = router({
+export const discussionCreateRouter = router({
   fromData: protectedProcedure
     .meta({ requireRoles: ["VERIFIED"] })
     .input(
@@ -20,5 +20,3 @@ const discussionCreateRouter = router({
       });
     }),
 });
-
-export default discussionCreateRouter;

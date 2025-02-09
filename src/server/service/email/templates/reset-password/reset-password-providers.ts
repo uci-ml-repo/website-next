@@ -1,4 +1,4 @@
-export default function resetPasswordProviders({
+export function resetPasswordProviders({
   name,
   providers,
 }: {

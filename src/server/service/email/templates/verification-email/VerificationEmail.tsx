@@ -1,6 +1,6 @@
-import EmailTemplateLayout from "@/server/service/email/templates/EmailLayout";
+import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
-export default function VerificationEmail({
+export function VerificationEmail({
   name,
   verificationLink,
 }: {
@@ -8,7 +8,7 @@ export default function VerificationEmail({
   verificationLink: string;
 }) {
   return (
-    <EmailTemplateLayout>
+    <EmailLayout>
       <p>Hello {name},</p>
       <p>Please click the following link to verify your email address:</p>
       <p>
@@ -18,6 +18,6 @@ export default function VerificationEmail({
         This link will expire in 5 minutes. If you did not request to verify
         your email, you can ignore this message.
       </p>
-    </EmailTemplateLayout>
+    </EmailLayout>
   );
 }

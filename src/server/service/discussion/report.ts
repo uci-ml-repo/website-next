@@ -4,7 +4,7 @@ import DiscussionReportReason = Enums.DiscussionReportReason;
 import { db } from "@/db";
 import { discussionReport, discussionReportResolution } from "@/db/schema";
 
-export default class DiscussionReportService {
+export class DiscussionReportService {
   async create({
     discussionId,
     reason,

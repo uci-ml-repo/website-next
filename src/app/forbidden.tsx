@@ -1,5 +1,5 @@
 import { auth, signIn, signOut } from "@/auth";
-import ErrorGraphic from "@/components/layout/ErrorGraphic";
+import { ErrorGraphic } from "@/components/layout/ErrorGraphic";
 import { HOME_ROUTE, SIGN_IN_ROUTE } from "@/lib/routes";
 
 export default async function Forbidden() {

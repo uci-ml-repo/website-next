@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export default function FilesViewDownloadButton({ path }: { path: string }) {
+export function FilesViewDownloadButton({ path }: { path: string }) {
   return (
     <TooltipProvider delayDuration={300}>
       <Tooltip>

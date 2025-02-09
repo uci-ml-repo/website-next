@@ -4,7 +4,7 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
-export default function Main({ children, className, ...props }: MainProps) {
+export function Main({ children, className, ...props }: MainProps) {
   return (
     <main
       className={cn(

@@ -1,8 +1,8 @@
-import BookmarkCreateService from "@/server/service/bookmark/create";
-import BookmarkFindService from "@/server/service/bookmark/find";
-import BookmarkRemoveService from "@/server/service/bookmark/remove";
+import { BookmarkCreateService } from "@/server/service/bookmark/create";
+import { BookmarkFindService } from "@/server/service/bookmark/find";
+import { BookmarkRemoveService } from "@/server/service/bookmark/remove";
 
-export default class BookmarkService {
+export class BookmarkService {
   constructor(
     readonly create = new BookmarkCreateService(),
     readonly find = new BookmarkFindService(),

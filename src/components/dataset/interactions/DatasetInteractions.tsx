@@ -1,7 +1,7 @@
 import { DownloadIcon, EyeIcon } from "lucide-react";
 
-import DatasetBookmarkButton from "@/components/dataset/interactions/bookmark/DatasetBookmarkButton";
-import DatasetExtendedOptions from "@/components/dataset/interactions/extended/DatasetExtendedOptions";
+import { DatasetBookmarkButton } from "@/components/dataset/interactions/bookmark/DatasetBookmarkButton";
+import { DatasetExtendedOptions } from "@/components/dataset/interactions/extended/DatasetExtendedOptions";
 import {
   Tooltip,
   TooltipContent,
@@ -16,7 +16,7 @@ export interface DatasetActivityProps
   dataset: DatasetResponse;
 }
 
-export default function DatasetInteractions({
+export function DatasetInteractions({
   dataset,
   className,
   ...props

@@ -3,18 +3,14 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import FilesBrowse from "@/components/dataset/tabs/files/browse/FilesBrowse";
+import { FilesBrowse } from "@/components/dataset/tabs/files/browse/FilesBrowse";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import FilesView from "@/components/dataset/tabs/files/view/FilesView";
+import { FilesView } from "@/components/dataset/tabs/files/view/FilesView";
 import { useIsMobile } from "@/components/hooks/use-mobile";
-import Split from "@/components/ui/split";
+import { Split } from "@/components/ui/split";
 import type { DatasetResponse } from "@/lib/types";
 
-export default function DatasetFiles({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
   const [splitSizes, setSplitSizes] = useState<[number, number]>([20, 80]);
 
   const { currentFile } = useFileContext();

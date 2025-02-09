@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 
-import DiscussionCommentEdit from "@/components/discussion/comment/edit/DiscussionCommentEdit";
-import DiscussionCommentUpvote from "@/components/discussion/comment/view/DiscussionCommentUpvote";
-import DiscussionCommentExtendedOptions from "@/components/discussion/comment/view/extended/DiscussionCommentExtendedOptions";
-import Expandable from "@/components/ui/expandable";
-import ProfileAvatar from "@/components/ui/profile-avatar";
+import { DiscussionCommentEdit } from "@/components/discussion/comment/edit/DiscussionCommentEdit";
+import { DiscussionCommentUpvote } from "@/components/discussion/comment/view/DiscussionCommentUpvote";
+import { DiscussionCommentExtendedOptions } from "@/components/discussion/comment/view/extended/DiscussionCommentExtendedOptions";
+import { Expandable } from "@/components/ui/expandable";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import type { DiscussionCommentResponse } from "@/lib/types";
 import { timeSince } from "@/lib/utils";
 
-export default function DiscussionComment({
+export function DiscussionComment({
   discussionComment,
 }: {
   discussionComment: DiscussionCommentResponse;

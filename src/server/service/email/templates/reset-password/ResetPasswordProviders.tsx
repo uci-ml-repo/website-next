@@ -3,9 +3,9 @@ import * as process from "node:process";
 import path from "path";
 
 import { SIGN_IN_ROUTE } from "@/lib/routes";
-import EmailTemplateLayout from "@/server/service/email/templates/EmailLayout";
+import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
-export default function ResetPasswordProviders({
+export function ResetPasswordProviders({
   name,
   providers,
 }: {
@@ -17,7 +17,7 @@ export default function ResetPasswordProviders({
   }
 
   return (
-    <EmailTemplateLayout>
+    <EmailLayout>
       <p>Hello {name},</p>
       <p>
         We have received a requested to change your password. Our records show
@@ -41,6 +41,6 @@ export default function ResetPasswordProviders({
       <p>
         If you did not request a password change, you can ignore this message.
       </p>
-    </EmailTemplateLayout>
+    </EmailLayout>
   );
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import SignInButton from "@/components/auth/SignInButton";
+import { SignInButton } from "@/components/auth/SignInButton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,7 +24,7 @@ interface SignInRequiredProps {
   children: React.ReactNode;
 }
 
-export default function SignInRequired({
+export function SignInRequired({
   title,
   body,
   disabled,

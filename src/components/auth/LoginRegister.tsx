@@ -6,8 +6,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import Login from "@/components/auth/Login";
-import Register from "@/components/auth/Register";
+import { Login } from "@/components/auth/Login";
+import { Register } from "@/components/auth/Register";
 import { Banner } from "@/components/icons";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,7 +55,7 @@ export const registerFormSchema = z
 
 export type RegisterFormSchema = z.infer<typeof registerFormSchema>;
 
-export default function LoginRegister() {
+export function LoginRegister() {
   const [tab, setTab] = useState<Tab>("signin");
   const [registerEmailFormIsOpen, setRegisterEmailFormIsOpen] =
     useState<boolean>(false);

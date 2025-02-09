@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import MDXEditor from "@/components/editor/MDXEditor";
+import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import {
   DATASET_DISCUSSION_ROUTE,
   DATASET_DISCUSSIONS_ROUTE,
@@ -39,7 +39,7 @@ export const formSchema = z.object({
   content: z.string().min(1, { message: "Content is required" }),
 });
 
-export default function DiscussionCreateInput({
+export function DiscussionCreateInput({
   datasetId,
   datasetSlug,
 }: DiscussionCreateInputProps) {

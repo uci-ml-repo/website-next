@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import DiscussionDeleteDialog from "@/components/discussion/view/extended/DiscussionDeleteDialog";
-import DiscussionReportDialog from "@/components/discussion/view/extended/DiscussionReportDialog";
+import { DiscussionDeleteDialog } from "@/components/discussion/view/extended/DiscussionDeleteDialog";
+import { DiscussionReportDialog } from "@/components/discussion/view/extended/DiscussionReportDialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
 import { DATASETS_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 
-export default function DiscussionExtendedOptions({
+export function DiscussionExtendedOptions({
   discussion,
 }: {
   discussion: DiscussionResponse;

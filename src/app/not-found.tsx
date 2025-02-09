@@ -1,4 +1,4 @@
-import ErrorGraphic from "@/components/layout/ErrorGraphic";
+import { ErrorGraphic } from "@/components/layout/ErrorGraphic";
 import { HOME_ROUTE } from "@/lib/routes";
 
 export default function NotFound() {

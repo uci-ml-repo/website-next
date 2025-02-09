@@ -7,18 +7,18 @@ import {
   tabularToDelimiter,
   videoExtensions,
 } from "@/components/dataset/tabs/files/lib/extensions";
-import FilesViewFileAudio from "@/components/dataset/tabs/files/view/FilesViewFileAudio";
-import FilesViewFileImage from "@/components/dataset/tabs/files/view/FilesViewFileImage";
-import FilesViewFilesTabular from "@/components/dataset/tabs/files/view/FilesViewFileTabular";
-import FilesViewFileText from "@/components/dataset/tabs/files/view/FilesViewFileText";
-import FilesViewFileVideo from "@/components/dataset/tabs/files/view/FilesViewFileVideo";
+import { FilesViewFileAudio } from "@/components/dataset/tabs/files/view/FilesViewFileAudio";
+import { FilesViewFileImage } from "@/components/dataset/tabs/files/view/FilesViewFileImage";
+import { FilesViewFilesTabular } from "@/components/dataset/tabs/files/view/FilesViewFileTabular";
+import { FilesViewFileText } from "@/components/dataset/tabs/files/view/FilesViewFileText";
+import { FilesViewFileVideo } from "@/components/dataset/tabs/files/view/FilesViewFileVideo";
 import { Alert } from "@/components/ui/alert";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DirectoryEntity } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function FilesViewFile({ file }: { file: DirectoryEntity }) {
+export function FilesViewFile({ file }: { file: DirectoryEntity }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [cachedLines, setCachedLines] = useState<string[]>([]);

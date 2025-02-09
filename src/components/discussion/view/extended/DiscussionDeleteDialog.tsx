@@ -3,7 +3,7 @@ import path from "path";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -14,7 +14,7 @@ interface DiscussionDeleteDialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DiscussionDeleteDialog({
+export function DiscussionDeleteDialog({
   discussion,
   open,
   setOpen,

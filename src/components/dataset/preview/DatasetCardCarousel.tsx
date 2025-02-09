@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import * as React from "react";
 
-import DatasetCard from "@/components/dataset/preview/DatasetCard";
-import DatasetCardSkeleton from "@/components/dataset/preview/DatasetCardSkeleton";
+import { DatasetCard } from "@/components/dataset/preview/DatasetCard";
+import { DatasetCardSkeleton } from "@/components/dataset/preview/DatasetCardSkeleton";
 import { Button } from "@/components/ui/button";
 import type { CarouselApi } from "@/components/ui/carousel";
 import {
@@ -28,7 +28,7 @@ interface DatasetGroupProps {
   datasets: DatasetResponse[];
 }
 
-export default function DatasetCardCarousel({
+export function DatasetCardCarousel({
   icon,
   heading,
   seeAllHref,

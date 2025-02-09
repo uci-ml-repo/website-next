@@ -8,10 +8,10 @@ import {
 import Link from "next/link";
 import React from "react";
 
-import DatasetCardCarousel from "@/components/dataset/preview/DatasetCardCarousel";
-import DatasetsPreviewSearch from "@/components/datasets/DatasetsPreviewSearch";
+import { DatasetCardCarousel } from "@/components/dataset/preview/DatasetCardCarousel";
+import { DatasetsPreviewSearch } from "@/components/datasets/DatasetsPreviewSearch";
 import { Banner } from "@/components/icons";
-import Main from "@/components/layout/Main";
+import { Main } from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { CONTRIBUTE_ROUTE, DATASETS_ROUTE } from "@/lib/routes";

@@ -3,7 +3,7 @@ import { desc } from "drizzle-orm";
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
 
-export default class DatasetStatsService {
+export class DatasetStatsService {
   async maxDataSize() {
     const [maxInstanceCount] = await db
       .select()

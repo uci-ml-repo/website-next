@@ -1,10 +1,10 @@
 import type { Session } from "next-auth";
 
 import { Badge } from "@/components/ui/badge";
-import ProfileAvatar from "@/components/ui/profile-avatar";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import type { UserRole } from "@/db/enums";
 
-export default function ProfileHeader({ session }: { session: Session }) {
+export function ProfileHeader({ session }: { session: Session }) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">

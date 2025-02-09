@@ -1,4 +1,4 @@
-export default function verificationEmail({
+export function verificationEmail({
   name,
   verificationLink,
 }: {

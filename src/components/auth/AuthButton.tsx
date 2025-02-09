@@ -10,7 +10,7 @@ interface AuthButtonProps
   isPending?: boolean;
 }
 
-export default function AuthButton({
+export function AuthButton({
   icon,
   label,
   isPending,

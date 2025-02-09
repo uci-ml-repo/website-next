@@ -4,7 +4,7 @@ import { unauthorized } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
-import Discussions from "@/components/discussion/Discussions";
+import { Discussions } from "@/components/discussion/Discussions";
 import { Card, CardContent } from "@/components/ui/card";
 import { DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";

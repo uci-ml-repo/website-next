@@ -7,7 +7,7 @@ import type { BookmarkQuery } from "@/server/schema/bookmark";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
-export default class BookmarkFindService {
+export class BookmarkFindService {
   async batch(ids: string[]) {
     return db
       .select()

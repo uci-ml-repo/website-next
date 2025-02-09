@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Banner } from "@/components/icons";
-import ErrorGraphic from "@/components/layout/ErrorGraphic";
-import Main from "@/components/layout/Main";
+import { ErrorGraphic } from "@/components/layout/ErrorGraphic";
+import { Main } from "@/components/layout/Main";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";

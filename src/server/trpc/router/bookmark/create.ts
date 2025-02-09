@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const bookmarkCreateRouter = router({
+export const bookmarkCreateRouter = router({
   addBookmark: protectedProcedure
     .input(z.object({ datasetId: z.number() }))
     .mutation(async ({ input, ctx }) => {
@@ -13,5 +13,3 @@ const bookmarkCreateRouter = router({
       });
     }),
 });
-
-export default bookmarkCreateRouter;

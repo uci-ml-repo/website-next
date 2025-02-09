@@ -5,7 +5,7 @@ import React, { useState, useTransition } from "react";
 import type { useForm } from "react-hook-form";
 
 import { credentialsRegister, providerLogin } from "@/actions/auth.actions";
-import AuthButton from "@/components/auth/AuthButton";
+import { AuthButton } from "@/components/auth/AuthButton";
 import type { RegisterFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import TextDivider from "@/components/ui/text-divider";
+import { TextDivider } from "@/components/ui/text-divider";
 import { cn } from "@/lib/utils";
 
 interface RegisterProps {
@@ -30,7 +30,7 @@ interface RegisterProps {
   setEmailFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Register({
+export function Register({
   setTab,
   redirectTo,
   form,

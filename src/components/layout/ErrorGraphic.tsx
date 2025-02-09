@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { useRef } from "react";
 
-import Main from "@/components/layout/Main";
+import { Main } from "@/components/layout/Main";
 
 interface ErrorGraphicProps {
   code?: number | string;
@@ -12,11 +12,7 @@ interface ErrorGraphicProps {
   children?: React.ReactNode;
 }
 
-export default function ErrorGraphic({
-  code,
-  header,
-  children,
-}: ErrorGraphicProps) {
+export function ErrorGraphic({ code, header, children }: ErrorGraphicProps) {
   const constraintsRef = useRef(null);
 
   return (

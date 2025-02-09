@@ -8,8 +8,8 @@ import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import EmailTemplateService from "@/server/service/email/templates";
-import ServiceError from "@/server/service/errors";
+import { EmailTemplateService } from "@/server/service/email/templates";
+import { ServiceError } from "@/server/service/errors";
 
 interface OAuth2Options extends SMTPTransport.Options {
   auth?: SMTPConnection.OAuth2;
@@ -19,7 +19,7 @@ interface OAuth2Transporter extends Transporter {
   options: OAuth2Options;
 }
 
-export default class EmailService {
+export class EmailService {
   oauth: OAuth2Client;
   transporter: OAuth2Transporter;
   templatesFolder: string;

@@ -1,9 +1,9 @@
 import z from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const bookmarkRemoveRouter = router({
+export const bookmarkRemoveRouter = router({
   removeBookmark: protectedProcedure
     .input(z.object({ datasetId: z.number() }))
     .mutation(async ({ input, ctx }) => {
@@ -13,5 +13,3 @@ const bookmarkRemoveRouter = router({
       });
     }),
 });
-
-export default bookmarkRemoveRouter;

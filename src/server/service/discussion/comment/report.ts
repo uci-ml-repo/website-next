@@ -7,7 +7,7 @@ import {
   discussionCommentReportResolution,
 } from "@/db/schema";
 
-export default class DiscussionCommentReportService {
+export class DiscussionCommentReportService {
   async create({
     discussionCommentId,
     reason,

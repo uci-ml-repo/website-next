@@ -1,8 +1,8 @@
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import VerificationError from "@/components/auth/VerificationError";
-import DiscussionCreateInput from "@/components/discussion/create/DiscussionCreateInput";
+import { VerificationError } from "@/components/auth/VerificationError";
+import { DiscussionCreateInput } from "@/components/discussion/create/DiscussionCreateInput";
 
 export default async function Page({
   params,

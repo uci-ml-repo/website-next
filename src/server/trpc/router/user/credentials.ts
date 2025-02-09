@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { procedure, protectedProcedure, router } from "@/server/trpc";
 
-const userCredentialsRouter = router({
+export const userCredentialsRouter = router({
   sendResetPasswordEmail: procedure
     .input(z.object({ email: z.string() }))
     .mutation(async ({ input }) => {
@@ -44,5 +44,3 @@ const userCredentialsRouter = router({
       return service.user.credentials.verifyEmail(input);
     }),
 });
-
-export default userCredentialsRouter;

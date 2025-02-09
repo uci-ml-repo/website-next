@@ -16,7 +16,7 @@ interface DatasetDiscussionSortByProps {
   className?: string;
 }
 
-export default function DiscussionsOrderBy({
+export function DiscussionsOrderBy({
   orderBy,
   setOrderBy,
   clearSearch,

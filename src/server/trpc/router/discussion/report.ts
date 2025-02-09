@@ -2,10 +2,10 @@ import { z } from "zod";
 
 import { Enums } from "@/db/enums";
 import { enumToArray } from "@/lib/utils";
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const discussionReportRouter = router({
+export const discussionReportRouter = router({
   create: procedure
     .input(
       z.object({
@@ -31,5 +31,3 @@ const discussionReportRouter = router({
       return service.discussion.report.resolve(input);
     }),
 });
-
-export default discussionReportRouter;

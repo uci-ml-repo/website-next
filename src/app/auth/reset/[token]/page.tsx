@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import ResetPassword from "@/components/auth/ResetPassword";
-import ErrorGraphic from "@/components/layout/ErrorGraphic";
-import Main from "@/components/layout/Main";
+import { ResetPassword } from "@/components/auth/ResetPassword";
+import { ErrorGraphic } from "@/components/layout/ErrorGraphic";
+import { Main } from "@/components/layout/Main";
 import { FORGOT_PASSWORD_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 

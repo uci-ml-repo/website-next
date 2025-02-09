@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import SignInButton from "@/components/auth/SignInButton";
+import { SignInButton } from "@/components/auth/SignInButton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,7 +27,7 @@ interface EmailVerificationRequiredProps {
   children: React.ReactNode;
 }
 
-export default function EmailVerificationRequired({
+export function EmailVerificationRequired({
   signInTitle,
   signInBody,
   emailVerificationTitle,

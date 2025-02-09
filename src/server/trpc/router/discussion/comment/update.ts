@@ -1,14 +1,12 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const discussionCommentUpdateRouter = router({
+export const discussionCommentUpdateRouter = router({
   byId: procedure
     .input(z.object({ id: z.string(), content: z.string() }))
     .mutation(async ({ input }) => {
       return service.discussion.comment.update.byId(input);
     }),
 });
-
-export default discussionCommentUpdateRouter;

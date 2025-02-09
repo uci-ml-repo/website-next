@@ -5,7 +5,7 @@ import { signOut, useSession } from "next-auth/react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { HOME_ROUTE } from "@/lib/routes";
 
-export default function SignOut() {
+export function SignOut() {
   const session = useSession();
 
   const handleLogout = () => {

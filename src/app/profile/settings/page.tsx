@@ -2,7 +2,7 @@ import { SettingsIcon } from "lucide-react";
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import ProfileSettingsEmail from "@/components/profile/settings/ProfileSettingsEmail";
+import { ProfileSettingsEmail } from "@/components/profile/settings/ProfileSettingsEmail";
 
 export default async function Page() {
   const session = await auth();

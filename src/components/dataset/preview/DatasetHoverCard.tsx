@@ -40,11 +40,7 @@ type DatasetStat = {
   mobileExclude?: boolean;
 };
 
-export default function DatasetHoverCard({
-  dataset,
-}: {
-  dataset: DatasetSelect;
-}) {
+export function DatasetHoverCard({ dataset }: { dataset: DatasetSelect }) {
   const datasetStats: DatasetStat[] = [
     {
       icon: <Columns3Icon />,

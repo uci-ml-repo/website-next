@@ -9,7 +9,7 @@ import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 const TabsValueContext = React.createContext<string | undefined>(undefined);

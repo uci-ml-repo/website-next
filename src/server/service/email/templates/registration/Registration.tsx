@@ -1,15 +1,15 @@
 import path from "path";
 
 import { PROFILE_SETTINGS_ROUTE } from "@/lib/routes";
-import EmailTemplateLayout from "@/server/service/email/templates/EmailLayout";
+import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
-export default function Registration({ name }: { name: string }) {
+export function Registration({ name }: { name: string }) {
   if (!process.env.ORIGIN) {
     throw new Error("ORIGIN is not set");
   }
 
   return (
-    <EmailTemplateLayout>
+    <EmailLayout>
       <p>Hello {name},</p>
       <p>
         You have successfully created an account for the UCI Machine Learning
@@ -25,6 +25,6 @@ export default function Registration({ name }: { name: string }) {
         </a>
         .
       </p>
-    </EmailTemplateLayout>
+    </EmailLayout>
   );
 }

@@ -4,7 +4,7 @@ import { ChevronUpIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-export default function BackToTop() {
+export function BackToTop() {
   function toTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }

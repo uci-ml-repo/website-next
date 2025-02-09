@@ -1,10 +1,10 @@
 import { PlusIcon } from "lucide-react";
 
-import EmailVerificationRequired from "@/components/auth/EmailVerificationRequired";
+import { EmailVerificationRequired } from "@/components/auth/EmailVerificationRequired";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function DiscussionCommentCreateButton({
+export function DiscussionCommentCreateButton({
   text,
   setIsCommenting,
   className,

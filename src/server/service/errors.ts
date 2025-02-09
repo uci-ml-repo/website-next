@@ -16,10 +16,7 @@ interface ServiceErrorInterface {
   message?: string;
 }
 
-export default class ServiceError
-  extends Error
-  implements ServiceErrorInterface
-{
+export class ServiceError extends Error implements ServiceErrorInterface {
   origin: ServiceErrorOrigin;
   message: string;
 

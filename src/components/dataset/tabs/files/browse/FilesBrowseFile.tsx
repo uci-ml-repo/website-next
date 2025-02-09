@@ -1,12 +1,12 @@
 import path from "path";
 import { useMemo } from "react";
 
-import FilesBrowseButton from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
+import { FilesBrowseButton } from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import fileToIcon from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import type { FileResponse } from "@/lib/types";
 
-export default function FilesBrowseFile({ file }: { file: FileResponse }) {
+export function FilesBrowseFile({ file }: { file: FileResponse }) {
   const { currentFile, setCurrentFile } = useFileContext();
 
   const icon = useMemo(() => fileToIcon(file), [file]);

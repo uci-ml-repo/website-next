@@ -3,18 +3,18 @@
 import { ChevronDownIcon, MessageSquareTextIcon } from "lucide-react";
 import React, { useState } from "react";
 
-import DiscussionCommentCreateButton from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
-import DiscussionCommentCreateInput from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
-import DiscussionComment from "@/components/discussion/comment/view/DiscussionComment";
-import DiscussionsOrderBy from "@/components/discussion/DiscussionsOrderBy";
+import { DiscussionCommentCreateButton } from "@/components/discussion/comment/create/DiscussionCommentCreateButton";
+import { DiscussionCommentCreateInput } from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
+import { DiscussionComment } from "@/components/discussion/comment/view/DiscussionComment";
+import { DiscussionsOrderBy } from "@/components/discussion/DiscussionsOrderBy";
 import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
-import BackToTop from "@/components/ui/back-to-top";
+import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DiscussionComments({
+export function DiscussionComments({
   discussion,
 }: {
   discussion: DiscussionResponse;

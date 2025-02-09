@@ -17,11 +17,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function ForgotPasswordForm({
+export function ForgotPasswordForm({
   form,
 }: {
   form: ReturnType<typeof useForm<FormSchema>>;

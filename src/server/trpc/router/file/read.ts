@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { fileAccessProcedure, router } from "@/server/trpc";
 
-const fileReadRouter = router({
+export const fileReadRouter = router({
   readFileInfinite: fileAccessProcedure
     .input(
       z.object({
@@ -35,5 +35,3 @@ const fileReadRouter = router({
       });
     }),
 });
-
-export default fileReadRouter;

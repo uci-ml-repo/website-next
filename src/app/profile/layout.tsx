@@ -4,8 +4,8 @@ import { SettingsIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
-import Main from "@/components/layout/Main";
-import ProfileHeader from "@/components/profile/ProfileHeader";
+import { Main } from "@/components/layout/Main";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import {
   LinearTabs,
   LinearTabsList,

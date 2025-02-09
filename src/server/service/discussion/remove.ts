@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion } from "@/db/schema";
-import ServiceError from "@/server/service/errors";
+import { ServiceError } from "@/server/service/errors";
 
-export default class DiscussionRemoveService {
+export class DiscussionRemoveService {
   async byId({ discussionId }: { discussionId: string }) {
     const queriedDiscussion = await db.query.discussion.findFirst({
       where: (discussion, { eq }) => eq(discussion.id, discussionId),

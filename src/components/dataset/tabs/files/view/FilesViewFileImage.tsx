@@ -2,7 +2,7 @@ import Image from "next/image";
 import path from "path";
 import { useEffect, useState } from "react";
 
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 type ImageDimensions = {
   height?: number;
@@ -24,7 +24,7 @@ const loadImageMetadata = (
   };
 };
 
-export default function FilesViewFileImage({ source }: { source: string }) {
+export function FilesViewFileImage({ source }: { source: string }) {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({});
 
   useEffect(() => {

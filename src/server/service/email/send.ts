@@ -1,6 +1,6 @@
-import EmailService from "@/server/service/email/index";
+import { EmailService } from "@/server/service/email/index";
 
-export default class EmailSendService extends EmailService {
+export class EmailSendService extends EmailService {
   async sendRegistrationEmail({
     email,
     name,

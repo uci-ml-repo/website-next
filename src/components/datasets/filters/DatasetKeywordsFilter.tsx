@@ -1,9 +1,9 @@
-import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
+import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-export default function DatasetKeywordsFilter({
+export function DatasetKeywordsFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,

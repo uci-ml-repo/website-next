@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 
 import styles from "./BackgroundGraph.module.css";
 
-const BackgroundGraph = ({
+export function BackgroundGraph({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
 
   const ANIMATION_DELAY = 0.01;
@@ -73,6 +73,4 @@ const BackgroundGraph = ({
       </svg>
     </div>
   );
-};
-
-export default BackgroundGraph;
+}

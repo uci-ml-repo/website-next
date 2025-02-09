@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
 import { formSchema } from "@/components/discussion/create/DiscussionCreateInput";
-import DiscussionDeleteDialog from "@/components/discussion/view/extended/DiscussionDeleteDialog";
-import MDXEditor from "@/components/editor/MDXEditor";
+import { DiscussionDeleteDialog } from "@/components/discussion/view/extended/DiscussionDeleteDialog";
+import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -21,12 +21,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { DATASET_DISCUSSION_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function DiscussionEdit({
+export function DiscussionEdit({
   discussion,
 }: {
   discussion: DiscussionResponse;

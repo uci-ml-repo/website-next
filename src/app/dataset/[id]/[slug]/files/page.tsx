@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import DatasetFiles from "@/components/dataset/tabs/files/DatasetFiles";
+import { DatasetFiles } from "@/components/dataset/tabs/files/DatasetFiles";
 import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
 import { datasetFilesPath } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";

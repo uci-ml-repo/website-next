@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 
 export namespace AssertOwner {
   export const dataset = async ({

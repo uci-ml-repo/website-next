@@ -20,7 +20,7 @@ import {
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { DirectoryEntity } from "@/server/service/file/find";
 
-export default function fileToIcon(
+export function fileToIcon(
   file: DirectoryEntity,
   renderImage: boolean = false,
 ) {

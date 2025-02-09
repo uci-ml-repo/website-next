@@ -4,7 +4,7 @@ import DatasetReportReason = Enums.DatasetReportReason;
 import { db } from "@/db";
 import { datasetReport, datasetReportResolution } from "@/db/schema";
 
-export default class DatasetReportService {
+export class DatasetReportService {
   async create({
     datasetId,
     reason,

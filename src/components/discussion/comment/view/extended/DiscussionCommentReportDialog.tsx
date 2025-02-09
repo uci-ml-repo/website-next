@@ -35,7 +35,7 @@ const formSchema = z.object({
   details: z.string().optional(),
 });
 
-export default function DiscussionCommentReportDialog({
+export function DiscussionCommentReportDialog({
   discussionCommentId,
   open,
   setOpen,

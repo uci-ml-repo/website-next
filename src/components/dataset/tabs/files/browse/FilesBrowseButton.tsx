@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export default function FilesBrowseButton({
+export function FilesBrowseButton({
   children,
   className,
   onClick,

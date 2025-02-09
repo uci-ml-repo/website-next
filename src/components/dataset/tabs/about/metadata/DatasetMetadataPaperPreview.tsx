@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import type { IntroductoryPaperSelect } from "@/db/types";
 
-export default function DatasetMetadataPaperPreview({
+export function DatasetMetadataPaperPreview({
   paper,
 }: {
   paper: IntroductoryPaperSelect;

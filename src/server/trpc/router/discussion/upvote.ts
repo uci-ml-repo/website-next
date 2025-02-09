@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const discussionUpvoteRouter = router({
+export const discussionUpvoteRouter = router({
   create: protectedProcedure
     .input(
       z.object({
@@ -30,5 +30,3 @@ const discussionUpvoteRouter = router({
       });
     }),
 });
-
-export default discussionUpvoteRouter;

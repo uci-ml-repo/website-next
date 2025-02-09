@@ -5,11 +5,7 @@ import path from "path";
 
 import { ABOUT_ROUTE, CONTACT_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 
-export default function EmailLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function EmailLayout({ children }: { children: React.ReactNode }) {
   if (!process.env.ORIGIN) {
     throw new Error("ORIGIN is not set");
   }

@@ -37,7 +37,7 @@ function transformRow({ upvotes, ...comment }: RawDiscussionComment) {
   };
 }
 
-export default class DiscussionCommentFindService {
+export class DiscussionCommentFindService {
   async byId(id: string, session?: Session | null) {
     return db.query.discussionComment
       .findFirst({

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import React from "react";
 
-import DiscussionCreateButton from "@/components/discussion/create/DiscussionCreateButton";
-import Discussions from "@/components/discussion/Discussions";
+import { DiscussionCreateButton } from "@/components/discussion/create/DiscussionCreateButton";
+import { Discussions } from "@/components/discussion/Discussions";
 import { Card, CardContent } from "@/components/ui/card";
 import { caller } from "@/server/trpc/query/server";
 

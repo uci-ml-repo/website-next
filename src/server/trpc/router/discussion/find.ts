@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 import { discussionQuery } from "@/server/schema/discussion";
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-const discussionFindRouter = router({
+export const discussionFindRouter = router({
   byId: procedure.input(z.string().uuid()).query(async ({ input, ctx }) => {
     return service.discussion.find.byId(input, ctx.session);
   }),
@@ -17,5 +17,3 @@ const discussionFindRouter = router({
     return service.discussion.find.byUserId(input, ctx.session);
   }),
 });
-
-export default discussionFindRouter;

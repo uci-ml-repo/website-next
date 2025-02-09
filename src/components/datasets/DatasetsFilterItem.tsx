@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export default function DatasetsFilterItem({
+export function DatasetsFilterItem({
   label,
   children,
   active,

@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 import { Enums } from "@/db/enums";
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const discussionRemoveRouter = router({
+export const discussionRemoveRouter = router({
   byId: protectedProcedure
     .meta({ requireRoles: [Enums.UserRole.ADMIN, "DISCUSSION_AUTHOR"] })
     .input(
@@ -18,5 +18,3 @@ const discussionRemoveRouter = router({
       });
     }),
 });
-
-export default discussionRemoveRouter;

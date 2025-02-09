@@ -1,8 +1,6 @@
 import { router } from "@/server/trpc";
-import keywordFindRouter from "@/server/trpc/router/keyword/find";
+import { keywordFindRouter } from "@/server/trpc/router/keyword/find";
 
-const keywordRouter = router({
+export const keywordRouter = router({
   find: keywordFindRouter,
 });
-
-export default keywordRouter;

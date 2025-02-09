@@ -8,15 +8,15 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-import DatasetAttributesFilter from "@/components/datasets/filters/DatasetAttributesFilter";
-import DatasetDataTypesFilter from "@/components/datasets/filters/DatasetDataTypesFilter";
-import DatasetFeatureCountFilter from "@/components/datasets/filters/DatasetFeatureCountFilter";
-import DatasetFeatureTypesFilter from "@/components/datasets/filters/DatasetFeatureTypesFilter";
-import DatasetInstanceCountFilter from "@/components/datasets/filters/DatasetInstanceCountFilter";
-import DatasetKeywordsFilter from "@/components/datasets/filters/DatasetKeywordsFilter";
-import DatasetPythonFilter from "@/components/datasets/filters/DatasetPythonFilter";
-import DatasetSubjectAreasFilter from "@/components/datasets/filters/DatasetSubjectAreasFilter";
-import DatasetTasksFilter from "@/components/datasets/filters/DatasetTasksFilter";
+import { DatasetAttributesFilter } from "@/components/datasets/filters/DatasetAttributesFilter";
+import { DatasetDataTypesFilter } from "@/components/datasets/filters/DatasetDataTypesFilter";
+import { DatasetFeatureCountFilter } from "@/components/datasets/filters/DatasetFeatureCountFilter";
+import { DatasetFeatureTypesFilter } from "@/components/datasets/filters/DatasetFeatureTypesFilter";
+import { DatasetInstanceCountFilter } from "@/components/datasets/filters/DatasetInstanceCountFilter";
+import { DatasetKeywordsFilter } from "@/components/datasets/filters/DatasetKeywordsFilter";
+import { DatasetPythonFilter } from "@/components/datasets/filters/DatasetPythonFilter";
+import { DatasetSubjectAreasFilter } from "@/components/datasets/filters/DatasetSubjectAreasFilter";
+import { DatasetTasksFilter } from "@/components/datasets/filters/DatasetTasksFilter";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -46,7 +46,7 @@ const datasetFilters: React.FC<DatasetFiltersProps>[] = [
   DatasetPythonFilter,
 ];
 
-export default function DatasetsFilters() {
+export function DatasetsFilters() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
 
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();

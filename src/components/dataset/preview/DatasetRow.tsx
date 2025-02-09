@@ -2,7 +2,7 @@ import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import DatasetHoverCard from "@/components/dataset/preview/DatasetHoverCard";
+import { DatasetHoverCard } from "@/components/dataset/preview/DatasetHoverCard";
 import {
   HoverCard,
   HoverCardContent,
@@ -22,7 +22,7 @@ type DatasetStat = {
   text: string | null;
 };
 
-export default function DatasetRow({
+export function DatasetRow({
   dataset,
   className,
   hoverCard,

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import type { DiscussionCommentResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -10,7 +10,7 @@ interface DiscussionDeleteDialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DiscussionCommentDeleteDialog({
+export function DiscussionCommentDeleteDialog({
   discussionComment,
   open,
   setOpen,

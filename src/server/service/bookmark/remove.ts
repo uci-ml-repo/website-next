@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { bookmark } from "@/db/schema";
 
-export default class BookmarkRemoveService {
+export class BookmarkRemoveService {
   async removeBookmark({
     datasetId,
     userId,

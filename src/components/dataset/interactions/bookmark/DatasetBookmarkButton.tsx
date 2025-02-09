@@ -2,11 +2,11 @@
 
 import { BookmarkIcon } from "lucide-react";
 
-import SignInRequired from "@/components/auth/SignInRequired";
+import { SignInRequired } from "@/components/auth/SignInRequired";
 import { useBookmark } from "@/components/dataset/interactions/bookmark/DatasetBookmarkedContext";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -15,9 +15,7 @@ interface DatasetBookmarkButtonProps {
   dataset: DatasetResponse;
 }
 
-export default function DatasetBookmarkButton({
-  dataset,
-}: DatasetBookmarkButtonProps) {
+export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
   const { isBookmarked, setIsBookmarked } = useBookmark();
 
   const util = trpc.useUtils();

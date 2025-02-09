@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
+import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { abbreviateDecimal } from "@/lib/utils";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
@@ -20,7 +20,7 @@ interface DatasetFilterDualSliderProps {
   onDropdownOpenChange: () => void;
 }
 
-export default function DatasetFilterDualSlider({
+export function DatasetFilterDualSlider({
   label,
   tooltipContent,
   filterMinKey,

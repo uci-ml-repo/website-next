@@ -3,11 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { DatasetResponse } from "@/lib/types";
 
-export default function DatasetSideData({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
   const blank = <div className="text-muted-foreground">&ndash;</div>;
 
   return (

@@ -1,13 +1,13 @@
 import React from "react";
 
-import DatasetFilterCheckbox from "@/components/datasets/checkbox/DatasetFilterCheckbox";
-import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
+import { DatasetFilterCheckbox } from "@/components/datasets/checkbox/DatasetFilterCheckbox";
+import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
 import { Enums } from "@/db/enums";
 import { enumToArray } from "@/lib/utils";
 
-export default function DatasetFeatureTypesFilter({
+export function DatasetTasksFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,
@@ -21,7 +21,7 @@ export default function DatasetFeatureTypesFilter({
     <DatasetsFilterItem
       label="Dataset Tasks"
       tooltipOpen={tooltipOpen}
-      tooltipContent="The tasks that the dataset can be used for"
+      tooltipContent="The tasks of the dataset"
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
       active={!!filters.tasks?.length}

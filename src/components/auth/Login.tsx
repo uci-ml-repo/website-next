@@ -5,7 +5,7 @@ import React, { useState, useTransition } from "react";
 import type { useForm } from "react-hook-form";
 
 import { credentialsLogin, providerLogin } from "@/actions/auth.actions";
-import AuthButton from "@/components/auth/AuthButton";
+import { AuthButton } from "@/components/auth/AuthButton";
 import type { LoginFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import TextDivider from "@/components/ui/text-divider";
+import { TextDivider } from "@/components/ui/text-divider";
 import { FORGOT_PASSWORD_ROUTE } from "@/lib/routes";
 
 interface LoginProps {
@@ -28,7 +28,7 @@ interface LoginProps {
   form: ReturnType<typeof useForm<LoginFormSchema>>;
 }
 
-export default function Login({ setTab, redirectTo, form }: LoginProps) {
+export function Login({ setTab, redirectTo, form }: LoginProps) {
   const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);

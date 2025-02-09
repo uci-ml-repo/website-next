@@ -36,7 +36,7 @@ const formSchema = z.object({
   details: z.string().min(1, { message: "Details are required" }),
 });
 
-export default function DatasetReportDialog({
+export function DatasetReportDialog({
   dataset,
   open,
   setOpen,

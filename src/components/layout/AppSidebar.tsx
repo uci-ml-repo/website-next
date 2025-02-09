@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { useEffect, useRef } from "react";
 
-import DatasetSidebarPreview from "@/components/dataset/preview/DatasetSidebarPreview";
+import { DatasetSidebarPreview } from "@/components/dataset/preview/DatasetSidebarPreview";
 import { Banner } from "@/components/icons";
 import { ThemeToggle } from "@/components/layout/sidebar/ThemeToggle";
 import { Separator } from "@/components/ui/separator";
@@ -43,7 +43,7 @@ import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function AppSidebar({ session }: { session: Session | null }) {
+export function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   const ref = useRef<HTMLDivElement>(null);

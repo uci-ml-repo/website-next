@@ -1,13 +1,13 @@
 import React from "react";
 
-import DatasetFilterCheckbox from "@/components/datasets/checkbox/DatasetFilterCheckbox";
-import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
+import { DatasetFilterCheckbox } from "@/components/datasets/checkbox/DatasetFilterCheckbox";
+import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
 import { Enums } from "@/db/enums";
 import { enumToArray } from "@/lib/utils";
 
-export default function DatasetDataTypesFilter({
+export function DatasetDataTypesFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,

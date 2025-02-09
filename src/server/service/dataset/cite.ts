@@ -1,8 +1,8 @@
 import { db } from "@/db";
 import type { AuthorSelect } from "@/db/types";
-import ServiceError from "@/server/service/errors";
+import { ServiceError } from "@/server/service/errors";
 
-export default class DatasetCiteService {
+export class DatasetCiteService {
   async byDatasetId(id: number) {
     const dataset = await db.query.dataset.findFirst({
       where: (dataset, { eq }) => eq(dataset.id, id),

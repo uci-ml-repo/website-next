@@ -31,7 +31,7 @@ type DatasetStat = {
   text: string | null;
 };
 
-export default function DatasetCard({ dataset, ref }: DatasetCardProps) {
+export function DatasetCard({ dataset, ref }: DatasetCardProps) {
   const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
 

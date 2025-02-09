@@ -1,4 +1,4 @@
-export default function FilesViewFileVideo({ source }: { source: string }) {
+export function FilesViewFileVideo({ source }: { source: string }) {
   return (
     <div className="relative flex-1">
       <video

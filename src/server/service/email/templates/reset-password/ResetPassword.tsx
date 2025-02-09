@@ -1,6 +1,6 @@
-import EmailTemplateLayout from "@/server/service/email/templates/EmailLayout";
+import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
-export default function ResetPassword({
+export function ResetPassword({
   name,
   resetLink,
 }: {
@@ -8,7 +8,7 @@ export default function ResetPassword({
   resetLink: string;
 }) {
   return (
-    <EmailTemplateLayout>
+    <EmailLayout>
       <p>Hello {name},</p>
       <p>
         To reset your UCI Machine Learning Repository password, please follow
@@ -24,6 +24,6 @@ export default function ResetPassword({
         change, you can ignore this message and continue using your current
         password.
       </p>
-    </EmailTemplateLayout>
+    </EmailLayout>
   );
 }

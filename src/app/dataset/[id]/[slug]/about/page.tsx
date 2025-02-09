@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
-import DatasetQuickStats from "@/components/dataset/tabs/about/DatasetQuickStats";
-import DatasetSideData from "@/components/dataset/tabs/about/DatasetSideData";
-import DatasetVariables from "@/components/dataset/tabs/about/DatasetVariables";
+import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
+import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
+import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariables";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
 import { caller } from "@/server/trpc/query/server";
 

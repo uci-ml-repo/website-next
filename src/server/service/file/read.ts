@@ -2,7 +2,7 @@ import AdmZip from "adm-zip";
 import fs from "fs-extra";
 import readline from "readline";
 
-import ServiceError from "@/server/service/errors";
+import { ServiceError } from "@/server/service/errors";
 
 interface ReadFileParams {
   absolutePath: string;
@@ -10,7 +10,7 @@ interface ReadFileParams {
   takeLines?: number;
 }
 
-export default class FileReadService {
+export class FileReadService {
   async readFileInfinite({
     absolutePath,
     cursor = 0,

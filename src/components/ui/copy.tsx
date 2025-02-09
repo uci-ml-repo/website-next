@@ -15,7 +15,7 @@ interface CopyProps {
   text: string;
 }
 
-export default function Copy({ text }: CopyProps) {
+export function Copy({ text }: CopyProps) {
   const [copied, setCopied] = useState(false);
   const triggerRef = useRef(null);
 

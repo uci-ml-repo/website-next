@@ -1,6 +1,6 @@
 import React from "react";
 
-import DatasetFilterCheckboxItem from "@/components/datasets/checkbox/DatasetFilterCheckboxItem";
+import { DatasetFilterCheckboxItem } from "@/components/datasets/checkbox/DatasetFilterCheckboxItem";
 
 interface DatasetFilterCheckboxProps<T extends string> {
   values: T[];
@@ -8,7 +8,7 @@ interface DatasetFilterCheckboxProps<T extends string> {
   isToggled: (value: T) => boolean;
 }
 
-export default function DatasetFilterCheckbox<T extends string>({
+export function DatasetFilterCheckbox<T extends string>({
   toggle,
   isToggled,
   values,

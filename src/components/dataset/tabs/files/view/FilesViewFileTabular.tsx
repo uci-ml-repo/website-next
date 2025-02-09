@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
-export default function FilesViewFilesTabular({
+export function FilesViewFilesTabular({
   lines,
   delimiter,
 }: {

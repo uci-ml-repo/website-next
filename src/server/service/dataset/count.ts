@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { dataset } from "@/db/schema";
 
-export default class DatasetCountService {
+export class DatasetCountService {
   async approved() {
     return db
       .select({ count: count() })

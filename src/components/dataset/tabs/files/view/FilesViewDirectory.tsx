@@ -1,11 +1,11 @@
 import path from "path";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import fileToIcon from "@/components/dataset/tabs/files/lib/FileToIcon";
-import Spinner from "@/components/ui/spinner";
+import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { Spinner } from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function FilesViewDirectory({
+export function FilesViewDirectory({
   directoryPath,
 }: {
   directoryPath?: string;

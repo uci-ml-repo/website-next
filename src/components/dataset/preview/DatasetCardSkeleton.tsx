@@ -14,7 +14,7 @@ interface DatasetCardSkeletonProps {
   children?: React.ReactNode;
 }
 
-export default function DatasetCardSkeleton({
+export function DatasetCardSkeleton({
   children,
   className,
 }: DatasetCardSkeletonProps) {

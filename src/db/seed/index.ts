@@ -13,7 +13,7 @@ import {
   user,
 } from "@/db/schema";
 import * as schema from "@/db/schema";
-import service from "@/server/service";
+import { service } from "@/server/service";
 
 import {
   datasetsSeed,

@@ -1,10 +1,10 @@
-import DatasetsFilterItem from "@/components/datasets/DatasetsFilterItem";
+import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-export default function DatasetPythonFilter({
+export function DatasetPythonFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,

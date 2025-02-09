@@ -18,7 +18,7 @@ import { Enums } from "@/db/enums";
 import { dataset, datasetView } from "@/db/schema";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
-import ServiceError from "@/server/service/errors";
+import { ServiceError } from "@/server/service/errors";
 
 const DATASET_WEIGHTS = sql`(SETWEIGHT(TO_TSVECTOR('simple', ${dataset.title}), 'A'))`;
 
@@ -74,7 +74,7 @@ function buildQuery(query: DatasetQuery) {
   return and(...conditions);
 }
 
-export default class DatasetFindService {
+export class DatasetFindService {
   async byId({
     datasetId,
     query,

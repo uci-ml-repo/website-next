@@ -3,11 +3,11 @@ import { forbidden, notFound, unauthorized } from "next/navigation";
 import { cache } from "react";
 
 import { auth } from "@/auth";
-import DatasetTitleGroup from "@/components/dataset/DatasetTitleGroup";
+import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetBookmarkProvider } from "@/components/dataset/interactions/bookmark/DatasetBookmarkedContext";
-import DatasetInteractions from "@/components/dataset/interactions/DatasetInteractions";
-import DatasetTabs from "@/components/dataset/tabs/DatasetTabs";
-import Main from "@/components/layout/Main";
+import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
+import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
+import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { Enums } from "@/db/enums";
 import { DATASET_ROUTE } from "@/lib/routes";

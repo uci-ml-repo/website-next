@@ -13,7 +13,7 @@ interface DatasetSidebarPreviewProps extends React.ComponentProps<"a"> {
   dataset: DatasetSelect;
 }
 
-export default function DatasetSidebarPreview({
+export function DatasetSidebarPreview({
   dataset,
   className,
   ...props

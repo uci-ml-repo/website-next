@@ -4,10 +4,10 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { emailVerificationToken, passwordResetToken, user } from "@/db/schema";
 import { formatEnum, generateToken } from "@/lib/utils";
-import service from "@/server/service";
-import ServiceError from "@/server/service/errors";
+import { service } from "@/server/service";
+import { ServiceError } from "@/server/service/errors";
 
-export default class UserCredentialsService {
+export class UserCredentialsService {
   async sendResetPasswordEmail({ email }: { email: string }) {
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),

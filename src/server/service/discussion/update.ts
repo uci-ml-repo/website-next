@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { discussion } from "@/db/schema";
 
-export default class DiscussionUpdateService {
+export class DiscussionUpdateService {
   async byId({
     id,
     title,

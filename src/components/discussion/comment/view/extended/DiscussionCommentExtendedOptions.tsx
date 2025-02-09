@@ -7,8 +7,8 @@ import {
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import DiscussionCommentDeleteDialog from "@/components/discussion/comment/view/extended/DiscussionCommentDeleteDialog";
-import DiscussionCommentReportDialog from "@/components/discussion/comment/view/extended/DiscussionCommentReportDialog";
+import { DiscussionCommentDeleteDialog } from "@/components/discussion/comment/view/extended/DiscussionCommentDeleteDialog";
+import { DiscussionCommentReportDialog } from "@/components/discussion/comment/view/extended/DiscussionCommentReportDialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { DiscussionCommentResponse } from "@/lib/types";
 
-export default function DiscussionCommentExtendedOptions({
+export function DiscussionCommentExtendedOptions({
   discussionComment,
   setIsEditing,
 }: {

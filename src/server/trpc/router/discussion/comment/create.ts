@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import service from "@/server/service";
+import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
-const discussionCommentCreateRouter = router({
+export const discussionCommentCreateRouter = router({
   fromData: protectedProcedure
     .meta({ requireRoles: ["VERIFIED"] })
     .input(
@@ -19,5 +19,3 @@ const discussionCommentCreateRouter = router({
       });
     }),
 });
-
-export default discussionCommentCreateRouter;

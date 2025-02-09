@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 
-import DiscussionComments from "@/components/discussion/comment/DiscussionComments";
-import DiscussionContent from "@/components/discussion/view/DiscussionContent.trsx";
-import DiscussionUpvote from "@/components/discussion/view/DiscussionUpvote";
-import DiscussionExtendedOptions from "@/components/discussion/view/extended/DiscussionExtendedOptions";
-import ProfileAvatar from "@/components/ui/profile-avatar";
-import ScrollToTop from "@/components/ui/scroll-to-top";
+import { DiscussionComments } from "@/components/discussion/comment/DiscussionComments";
+import { DiscussionContent } from "@/components/discussion/view/DiscussionContent.trsx";
+import { DiscussionUpvote } from "@/components/discussion/view/DiscussionUpvote";
+import { DiscussionExtendedOptions } from "@/components/discussion/view/extended/DiscussionExtendedOptions";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { timeSince } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 

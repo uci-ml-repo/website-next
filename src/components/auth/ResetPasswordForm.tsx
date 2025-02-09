@@ -15,11 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-export default function ResetPasswordForm({
+export function ResetPasswordForm({
   token,
   form,
 }: {

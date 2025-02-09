@@ -14,8 +14,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import ProfileAvatar from "@/components/ui/profile-avatar";
-import Spinner from "@/components/ui/spinner";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -29,7 +29,7 @@ export const formSchema = z.object({
   content: z.string().min(1, { message: "Content is required" }),
 });
 
-export default function DiscussionCommentCreateInput({
+export function DiscussionCommentCreateInput({
   discussionId,
   setIsCommenting,
   setOrderBy,

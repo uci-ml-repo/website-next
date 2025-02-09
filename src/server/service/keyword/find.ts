@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { Enums } from "@/db/enums";
 import { keyword } from "@/db/schema";
 
-export default class KeywordFindService {
+export class KeywordFindService {
   async approved() {
     return db
       .select()

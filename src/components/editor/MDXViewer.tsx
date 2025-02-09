@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-import Spinner from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 const MDXViewerComp = dynamic(
   () => import("@/components/editor/MDXViewerInit"),
@@ -20,6 +20,6 @@ export interface MDXViewerProps {
   markdown?: string;
 }
 
-export default function MDXViewer(props: MDXViewerProps) {
+export function MDXViewer(props: MDXViewerProps) {
   return <MDXViewerComp {...props} />;
 }

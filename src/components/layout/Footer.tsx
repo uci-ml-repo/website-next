@@ -34,7 +34,7 @@ function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
   );
 }
 
-export default function Footer() {
+export function Footer() {
   const linkGroups: FooterLinkGroupProps[] = [
     {
       title: "Our Project",

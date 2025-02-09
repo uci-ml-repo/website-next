@@ -2,9 +2,9 @@ import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
-import service from "@/server/service";
+import { service } from "@/server/service";
 
-export default class DiscussionUpvoteService {
+export class DiscussionUpvoteService {
   async create({
     userId,
     discussionId,

@@ -1,4 +1,4 @@
-export default function resetPassword({
+export function resetPassword({
   name,
   resetLink,
 }: {

@@ -4,11 +4,11 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import Main from "@/components/layout/Main";
+import { Main } from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
 import { HOME_ROUTE } from "@/lib/routes";
 
-export default function MdxLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

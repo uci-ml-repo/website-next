@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import path from "path";
 import React from "react";
 
-import DatasetInteractions from "@/components/dataset/interactions/DatasetInteractions";
+import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import {
   LinearTabs,
   LinearTabsList,
@@ -19,7 +19,7 @@ interface DatasetTabsProps {
   dataset: DatasetResponse;
 }
 
-export default function DatasetTabs({ basePath, dataset }: DatasetTabsProps) {
+export function DatasetTabs({ basePath, dataset }: DatasetTabsProps) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
