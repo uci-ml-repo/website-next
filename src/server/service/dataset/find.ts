@@ -187,6 +187,7 @@ export class DatasetFindService {
     return db
       .select()
       .from(datasetView)
+      .where(buildQuery(query))
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 11)
       .orderBy(...orderBy);

@@ -772,9 +772,9 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
                 JSONB_BUILD_OBJECT(
                   'id',
                   ${author.id},
-                  'first_name',
+                  'firstName',
                   ${author.firstName},
-                  'last_name',
+                  'lastName',
                   ${author.lastName},
                   'email',
                   ${author.email}
@@ -804,7 +804,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
                   ${variable.role},
                   'type',
                   ${variable.type},
-                  'missing_values',
+                  'missingValues',
                   ${variable.missingValues},
                   'units',
                   ${variable.units}
@@ -841,13 +841,13 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
               ${user.name},
               'email',
               ${user.email},
-              'email_verified',
+              'emailVerified',
               ${user.emailVerified},
               'image',
               ${user.image},
               'role',
               ${user.role},
-              'created_at',
+              'createdAt',
               ${user.createdAt}
             )
           FROM
@@ -868,11 +868,11 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
               ${paper.venue},
               'year',
               ${paper.year},
-              'citation_count',
+              'citationCount',
               ${paper.citationCount},
               'url',
               ${paper.url},
-              'dataset_id',
+              'datasetId',
               ${paper.datasetId}
             )
           FROM

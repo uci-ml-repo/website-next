@@ -102,20 +102,25 @@ export function DatasetHoverCard({ dataset }: { dataset: DatasetSelect }) {
         <CardDescription className="flex items-end">
           <TooltipProvider delayDuration={150}>
             <div className="grid w-full grid-flow-row grid-cols-1 md:grid-cols-2">
-              {datasetStats.map((stat, i) => (
-                <Tooltip key={i} disableHoverableContent>
-                  <TooltipTrigger
-                    className={cn(
-                      "flex items-center space-x-2 p-1 [&_svg]:size-4 [&_svg]:shrink-0",
-                      { "max-md:hidden": stat.mobileExclude },
-                    )}
-                  >
-                    {stat.icon}
-                    <span className="truncate">{stat.text}</span>
-                  </TooltipTrigger>
-                  <TooltipContent side="left">{stat.tooltip}</TooltipContent>
-                </Tooltip>
-              ))}
+              {datasetStats.map((stat, i) => {
+                if (stat.text)
+                  return (
+                    <Tooltip key={i} disableHoverableContent>
+                      <TooltipTrigger
+                        className={cn(
+                          "flex items-center space-x-2 p-1 [&_svg]:size-4 [&_svg]:shrink-0",
+                          { "max-md:hidden": stat.mobileExclude },
+                        )}
+                      >
+                        {stat.icon}
+                        <span className="truncate">{stat.text}</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="left">
+                        {stat.tooltip}
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+              })}
             </div>
           </TooltipProvider>
         </CardDescription>

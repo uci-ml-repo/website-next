@@ -75,12 +75,15 @@ export function DatasetRow({
             "hidden @md:block",
           )}
         >
-          {datasetStats.map((stat, i) => (
-            <div key={i} className="flex items-center space-x-1">
-              {stat.icon}
-              <span className="text-nowrap">{stat.text}</span>
-            </div>
-          ))}
+          {datasetStats.map((stat, i) => {
+            if (stat.text)
+              return (
+                <div key={i} className="flex items-center space-x-1">
+                  {stat.icon}
+                  <span className="text-nowrap">{stat.text}</span>
+                </div>
+              );
+          })}
         </div>
       </div>
     </Link>

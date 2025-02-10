@@ -729,9 +729,9 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
             JSONB_BUILD_OBJECT(
               'id',
               "author"."id",
-              'first_name',
+              'firstName',
               "author"."first_name",
-              'last_name',
+              'lastName',
               "author"."last_name",
               'email',
               "author"."email"
@@ -759,7 +759,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
               "variable"."role",
               'type',
               "variable"."type",
-              'missing_values',
+              'missingValues',
               "variable"."missing_values",
               'units',
               "variable"."units"
@@ -792,13 +792,13 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
           "user"."name",
           'email',
           "user"."email",
-          'email_verified',
+          'emailVerified',
           "user"."email_verified",
           'image',
           "user"."image",
           'role',
           "user"."role",
-          'created_at',
+          'createdAt',
           "user"."created_at"
         )
       FROM
@@ -817,11 +817,11 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
           "paper"."venue",
           'year',
           "paper"."year",
-          'citation_count',
+          'citationCount',
           "paper"."citation_count",
           'url',
           "paper"."url",
-          'dataset_id',
+          'datasetId',
           "paper"."dataset_id"
         )
       FROM
