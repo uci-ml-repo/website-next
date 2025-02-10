@@ -30,6 +30,7 @@ next-env.d.ts
 
 # legacy
 /legacy/db/dump.sql
+/legacy/db/current.sql
 /legacy/db/output
 /legacy/files/ignored
 /legacy/files/output

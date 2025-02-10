@@ -243,8 +243,8 @@ export const author = pgTable("author", {
   id: uuid("id").primaryKey().defaultRandom(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
-  email: text("email").notNull(),
-
+  email: text("email"),
+  institution: text("institution"),
   datasetId: integer("dataset_id").references(() => dataset.id),
 });
 
@@ -691,11 +691,12 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 export const session = pgTable("session", {
-  sessionToken: text("sessionToken").primaryKey(),
-  userId: uuid("userId")
+  sessionToken: text("session_token").primaryKey(),
+  userId: uuid("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -707,7 +708,7 @@ export const sessionRelations = relations(session, ({ one }) => ({
 
 export const emailVerificationToken = pgTable("email_verification_token", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("userId").notNull(),
+  userId: uuid("user_id").notNull(),
   token: text("token").notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });

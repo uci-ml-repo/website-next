@@ -8,6 +8,21 @@ CREATE EXTENSION if NOT EXISTS pg_trgm;
 ALTER TYPE users_role
 RENAME TO user_role;
 
+CREATE TYPE dataset_report_resolution_type AS ENUM('ignored', 'resolved');
+
+CREATE TYPE dataset_report_reason AS ENUM(
+  'missing_files_or_data',
+  'inaccurate_metadata',
+  'other'
+);
+
+CREATE TYPE discussion_report_reason AS ENUM(
+  'spam',
+  'unprofessional',
+  'inappropriate',
+  'other'
+);
+
 CREATE TYPE "approval_status" AS ENUM('pending', 'approved', 'rejected', 'draft');
 
 CREATE TYPE "dataset_characteristic" AS ENUM(
@@ -80,11 +95,10 @@ DROP TABLE variable_info;
 DROP TABLE auth_session;
 
 CREATE TABLE "session" (
-  "session_token" TEXT NOT NULL,
-  "user_id" TEXT NOT NULL,
-  "expires" TIMESTAMP(3) NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
-  "updatedAt" TIMESTAMP(3) NOT NULL
+  "session_token" TEXT PRIMARY KEY NOT NULL,
+  "user_id" uuid NOT NULL,
+  "expires" TIMESTAMP NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 -------------------------------------------------------------------------------
@@ -177,53 +191,53 @@ ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (i
 -------------------------------------------------------------------------------
 DROP SEQUENCE datasets_id_seq CASCADE;
 
-CREATE TABLE dataset (
-  id serial PRIMARY KEY,
-  title TEXT NOT NULL,
-  year_created INTEGER,
-  subtitle TEXT,
-  doi TEXT,
-  description TEXT,
-  subject_area dataset_subject_area,
-  instance_count INTEGER,
-  feature_count INTEGER,
-  has_graphics BOOLEAN DEFAULT FALSE NOT NULL,
-  is_available_python BOOLEAN DEFAULT FALSE NOT NULL,
-  external_link TEXT,
-  slug TEXT NOT NULL,
-  status approval_status DEFAULT 'draft'::approval_status NOT NULL,
-  view_count INTEGER DEFAULT 0 NOT NULL,
-  download_count INTEGER DEFAULT 0 NOT NULL,
-  variables_description TEXT,
-  data_types dataset_characteristic[],
-  tasks dataset_task[],
-  feature_types dataset_feature_type[],
-  size BIGINT,
-  file_count INTEGER,
-  user_id uuid NOT NULL CONSTRAINT dataset_user_id_user_id_fk REFERENCES "user",
-  donated_at TIMESTAMP DEFAULT NOW() NOT NULL,
-  updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT accepted_check CHECK (
-    (status = 'draft'::approval_status)
+CREATE TABLE "dataset" (
+  "id" serial PRIMARY KEY NOT NULL,
+  "title" TEXT NOT NULL,
+  "year_created" INTEGER,
+  "subtitle" TEXT,
+  "doi" TEXT,
+  "description" TEXT,
+  "subject_area" "dataset_subject_area",
+  "instance_count" INTEGER,
+  "feature_count" INTEGER,
+  "has_graphics" BOOLEAN DEFAULT FALSE NOT NULL,
+  "is_available_python" BOOLEAN DEFAULT FALSE NOT NULL,
+  "external_link" TEXT,
+  "slug" TEXT NOT NULL,
+  "status" "approval_status" DEFAULT 'draft' NOT NULL,
+  "view_count" INTEGER DEFAULT 0 NOT NULL,
+  "download_count" INTEGER DEFAULT 0 NOT NULL,
+  "variables_description" TEXT,
+  "data_types" "dataset_characteristic" [],
+  "tasks" "dataset_task" [],
+  "feature_types" "dataset_feature_type" [],
+  "size" BIGINT,
+  "file_count" INTEGER,
+  "user_id" uuid NOT NULL,
+  "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "accepted_check" CHECK (
+    "dataset"."status" = 'draft'
     OR (
-      (year_created IS NOT NULL)
-      AND (doi IS NOT NULL)
-      AND (instance_count IS NOT NULL)
-      AND (description IS NOT NULL)
-      AND (subject_area IS NOT NULL)
+      "dataset"."year_created" IS NOT NULL
+      AND "dataset"."doi" IS NOT NULL
+      AND "dataset"."instance_count" IS NOT NULL
+      AND "dataset"."description" IS NOT NULL
+      AND "dataset"."subject_area" IS NOT NULL
     )
   ),
-  CONSTRAINT files_check CHECK (
+  CONSTRAINT "files_check" CHECK (
     (
-      (external_link IS NULL)
-      AND (size IS NOT NULL)
-      AND (file_count IS NOT NULL)
+      "dataset"."external_link" IS NULL
+      AND "dataset"."size" IS NOT NULL
+      AND "dataset"."file_count" IS NOT NULL
     )
     OR (
-      (external_link IS NOT NULL)
-      AND (external_link ~* '^https?://'::TEXT)
-      AND (size IS NULL)
-      AND (file_count IS NULL)
+      "dataset"."external_link" IS NOT NULL
+      AND "dataset"."external_link" ~* '^https?://'
+      AND "dataset"."size" IS NULL
+      AND "dataset"."file_count" IS NULL
     )
   )
 );
@@ -432,13 +446,13 @@ CREATE TABLE variable (
 -- creators + dataset_creators -> author
 -------------------------------------------------------------------------------
 CREATE TABLE "author" (
-  "id" uuid NOT NULL,
+  "id" uuid NOT NULL DEFAULT gen_random_uuid (),
   "dataset_id" INTEGER NOT NULL,
-  "first_name" VARCHAR(255) NOT NULL,
-  "last_name" VARCHAR(255) NOT NULL,
-  "institution" VARCHAR(255),
-  "email" VARCHAR(255),
-  CONSTRAINT "dataset_authors_pkey" PRIMARY KEY ("id")
+  "first_name" TEXT NOT NULL,
+  "last_name" TEXT NOT NULL,
+  "institution" TEXT,
+  "email" TEXT,
+  CONSTRAINT "author_pkey" PRIMARY KEY ("id")
 );
 
 INSERT INTO
@@ -465,6 +479,18 @@ FROM
 DROP TABLE dataset_creators;
 
 DROP TABLE creators;
+
+DELETE FROM author
+WHERE
+  author.dataset_id NOT IN (
+    SELECT
+      id
+    FROM
+      dataset
+  );
+
+ALTER TABLE "author"
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 -------------------------------------------------------------------------------
 -- dataset_keyword + keyword
@@ -570,15 +596,15 @@ ADD CONSTRAINT dataset_keyword_keyword_id_keyword_id_fk FOREIGN KEY (keyword_id)
 -------------------------------------------------------------------------------
 -- paper
 -------------------------------------------------------------------------------
-CREATE TABLE paper (
-  id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
-  title TEXT NOT NULL,
-  authors TEXT[] NOT NULL,
-  venue TEXT NOT NULL,
+CREATE TABLE "paper" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "title" TEXT NOT NULL,
+  "authors" TEXT[] NOT NULL,
+  "venue" TEXT NOT NULL,
   "year" INTEGER NOT NULL,
-  citation_count INTEGER,
-  url TEXT NOT NULL,
-  dataset_id INTEGER NOT NULL CONSTRAINT paper_dataset_id_dataset_id_fk REFERENCES dataset
+  "citation_count" INTEGER,
+  "url" TEXT NOT NULL,
+  "dataset_id" INTEGER NOT NULL
 );
 
 INSERT INTO
@@ -601,10 +627,25 @@ SELECT
   dp.datasetid
 FROM
   dataset_papers dp
-  INNER JOIN native_papers np ON dp.foreignpaperid = np.id
+  INNER JOIN native_papers np ON dp.nativepaperid = np.id
   INNER JOIN donated_datasets dd ON dd.intropaperid = dp.datasetpapersid
 WHERE
-  dd.status = 'APPROVED';
+  dd.status = 'APPROVED'
+  AND np.url IS NOT NULL;
+
+DROP TABLE papers;
+
+DELETE FROM paper
+WHERE
+  paper.dataset_id NOT IN (
+    SELECT
+      id
+    FROM
+      dataset
+  );
+
+ALTER TABLE "paper"
+ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES dataset ("id") ON DELETE no action ON UPDATE no action;
 
 -------------------------------------------------------------------------------
 -- dataset bookmarks
@@ -621,160 +662,251 @@ CREATE TABLE "bookmark" (
 -------------------------------------------------------------------------------
 -- noinspection SqlResolve @ column/"keyword_id"
 -- noinspection SqlResolve @ column/"dataset_id"
-CREATE MATERIALIZED VIEW dataset_view AS
-SELECT
-  dataset.id,
-  dataset.title,
-  dataset.year_created,
-  dataset.subtitle,
-  dataset.doi,
-  dataset.description,
-  dataset.subject_area,
-  dataset.instance_count,
-  dataset.feature_count,
-  dataset.has_graphics,
-  dataset.is_available_python,
-  dataset.external_link,
-  dataset.slug,
-  dataset.status,
-  dataset.view_count,
-  dataset.download_count,
-  dataset.variables_description,
-  dataset.data_types,
-  dataset.tasks,
-  dataset.feature_types,
-  dataset.size,
-  dataset.file_count,
-  dataset.user_id,
-  dataset.donated_at,
-  dataset.updated_at,
-  COALESCE(
-    (
-      SELECT
-        ARRAY_AGG(keyword.name) AS array_agg
-      FROM
-        keyword
-        JOIN dataset_keyword dataset_keyword_1 ON dataset_keyword_1.keyword_id = keyword.id
-      WHERE
-        dataset_keyword_1.dataset_id = dataset.id
-    ),
-    ARRAY[]::TEXT[]
-  ) AS keywords,
-  COALESCE(
-    (
-      SELECT
-        ARRAY_AGG(
-          JSONB_BUILD_OBJECT(
-            'id',
-            author_1.id,
-            'first_name',
-            author_1.first_name,
-            'last_name',
-            author_1.last_name,
-            'email',
-            author_1.email
+CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
+  SELECT
+    "dataset"."id",
+    "dataset"."title",
+    "dataset"."year_created",
+    "dataset"."subtitle",
+    "dataset"."doi",
+    "dataset"."description",
+    "dataset"."subject_area",
+    "dataset"."instance_count",
+    "dataset"."feature_count",
+    "dataset"."has_graphics",
+    "dataset"."is_available_python",
+    "dataset"."external_link",
+    "dataset"."slug",
+    "dataset"."status",
+    "dataset"."view_count",
+    "dataset"."download_count",
+    "dataset"."variables_description",
+    "dataset"."data_types",
+    "dataset"."tasks",
+    "dataset"."feature_types",
+    "dataset"."size",
+    "dataset"."file_count",
+    "dataset"."user_id",
+    "dataset"."donated_at",
+    "dataset"."updated_at",
+    COALESCE(
+      (
+        SELECT
+          ARRAY_AGG("keyword"."name")
+        FROM
+          "keyword"
+          JOIN "dataset_keyword" ON "dataset_keyword"."keyword_id" = "keyword"."id"
+        WHERE
+          "dataset_keyword"."dataset_id" = "dataset"."id"
+      ),
+      ARRAY[]::TEXT[]
+    ) AS "keywords",
+    COALESCE(
+      (
+        SELECT
+          ARRAY_AGG(
+            JSONB_BUILD_OBJECT(
+              'id',
+              "author"."id",
+              'first_name',
+              "author"."first_name",
+              'last_name',
+              "author"."last_name",
+              'email',
+              "author"."email"
+            )
           )
-        ) AS array_agg
-      FROM
-        author author_1
-      WHERE
-        author_1.dataset_id = dataset.id
-    ),
-    ARRAY[]::jsonb[]
-  ) AS authors,
-  COALESCE(
-    (
-      SELECT
-        ARRAY_AGG(
-          JSONB_BUILD_OBJECT(
-            'id',
-            variable_1.id,
-            'name',
-            variable_1.name,
-            'description',
-            variable_1.description,
-            'role',
-            variable_1.role,
-            'type',
-            variable_1.type,
-            'missing_values',
-            variable_1.missing_values,
-            'units',
-            variable_1.units
+        FROM
+          "author"
+        WHERE
+          "author"."dataset_id" = "dataset"."id"
+      ),
+      ARRAY[]::jsonb[]
+    ) AS "authors",
+    COALESCE(
+      (
+        SELECT
+          ARRAY_AGG(
+            JSONB_BUILD_OBJECT(
+              'id',
+              "variable"."id",
+              'name',
+              "variable"."name",
+              'description',
+              "variable"."description",
+              'role',
+              "variable"."role",
+              'type',
+              "variable"."type",
+              'missing_values',
+              "variable"."missing_values",
+              'units',
+              "variable"."units"
+            )
           )
-        ) AS array_agg
-      FROM
-        variable variable_1
-      WHERE
-        variable_1.dataset_id = dataset.id
-    ),
-    ARRAY[]::jsonb[]
-  ) AS variables,
-  COALESCE(
+        FROM
+          "variable"
+        WHERE
+          "variable"."dataset_id" = "dataset"."id"
+      ),
+      ARRAY[]::jsonb[]
+    ) AS "variables",
+    COALESCE(
+      (
+        SELECT
+          ARRAY_AGG(LOWER("variable"."name"))
+        FROM
+          "variable"
+        WHERE
+          "variable"."dataset_id" = "dataset"."id"
+      ),
+      ARRAY[]::TEXT[]
+    ) AS "attributes",
     (
       SELECT
-        ARRAY_AGG(LOWER(variable_1.name)) AS array_agg
+        JSONB_BUILD_OBJECT(
+          'id',
+          "user"."id",
+          'name',
+          "user"."name",
+          'email',
+          "user"."email",
+          'email_verified',
+          "user"."email_verified",
+          'image',
+          "user"."image",
+          'role',
+          "user"."role",
+          'created_at',
+          "user"."created_at"
+        )
       FROM
-        variable variable_1
+        "user"
       WHERE
-        variable_1.dataset_id = dataset.id
-    ),
-    ARRAY[]::TEXT[]
-  ) AS attributes,
-  (
-    SELECT
-      JSONB_BUILD_OBJECT(
-        'id',
-        "user".id,
-        'name',
-        "user".name,
-        'email',
-        "user".email,
-        'email_verified',
-        "user".email_verified,
-        'image',
-        "user".image,
-        'role',
-        "user".role,
-        'created_at',
-        "user".created_at
-      ) AS jsonb_build_object
-    FROM
-      "user"
-    WHERE
-      "user".id = dataset.user_id
-  ) AS "user",
-  (
-    SELECT
-      JSONB_BUILD_OBJECT(
-        'title',
-        paper_1.title,
-        'authors',
-        paper_1.authors,
-        'venue',
-        paper_1.venue,
-        'year',
-        paper_1.year,
-        'citation_count',
-        paper_1.citation_count,
-        'url',
-        paper_1.url,
-        'dataset_id',
-        paper_1.dataset_id
-      ) AS jsonb_build_object
-    FROM
-      paper paper_1
-    WHERE
-      paper_1.dataset_id = dataset.id
-  ) AS introductory_paper
-FROM
-  dataset
-  LEFT JOIN paper ON dataset.id = paper.dataset_id
-  LEFT JOIN author ON dataset.id = author.dataset_id
-  LEFT JOIN variable ON dataset.id = variable.dataset_id
-  LEFT JOIN dataset_keyword ON dataset.id = dataset_keyword.dataset_id
-GROUP BY
-  dataset.id;
+        "user"."id" = "dataset"."user_id"
+    ) AS "user",
+    (
+      SELECT
+        JSONB_BUILD_OBJECT(
+          'title',
+          "paper"."title",
+          'authors',
+          "paper"."authors",
+          'venue',
+          "paper"."venue",
+          'year',
+          "paper"."year",
+          'citation_count',
+          "paper"."citation_count",
+          'url',
+          "paper"."url",
+          'dataset_id',
+          "paper"."dataset_id"
+        )
+      FROM
+        "paper"
+      WHERE
+        "paper"."dataset_id" = "dataset"."id"
+    ) AS "introductory_paper"
+  FROM
+    "dataset"
+    LEFT JOIN "paper" ON "dataset"."id" = "paper"."dataset_id"
+    LEFT JOIN "author" ON "dataset"."id" = "author"."dataset_id"
+    LEFT JOIN "variable" ON "dataset"."id" = "variable"."dataset_id"
+    LEFT JOIN "dataset_keyword" ON "dataset"."id" = "dataset_keyword"."dataset_id"
+  GROUP BY
+    "dataset"."id"
+);
+
+-------------------------------------------------------------------------------
+-- discussion
+-------------------------------------------------------------------------------
+CREATE TABLE "dataset_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "dataset_id" INTEGER NOT NULL,
+  "reason" "dataset_report_reason" NOT NULL,
+  "details" TEXT NOT NULL,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "dataset_report_resolution" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "report_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "type" "dataset_report_resolution_type" NOT NULL,
+  "comment" TEXT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "discussion" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "title" TEXT NOT NULL,
+  "content" TEXT NOT NULL,
+  "user_id" uuid NOT NULL,
+  "dataset_id" INTEGER NOT NULL,
+  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP
+);
+
+CREATE TABLE "discussion_comment" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "content" TEXT NOT NULL,
+  "user_id" uuid NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP
+);
+
+CREATE TABLE "discussion_comment_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "discussion_comment_id" uuid NOT NULL,
+  "reason" "discussion_report_reason" NOT NULL,
+  "details" TEXT,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "discussion_comment_report_resolution" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "report_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "type" "dataset_report_resolution_type" NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "discussion_comment_upvote" (
+  "user_id" uuid NOT NULL,
+  "discussion_comment_id" uuid NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "discussion_comment_upvote_user_id_discussion_comment_id_pk" PRIMARY KEY ("user_id", "discussion_comment_id")
+);
+
+CREATE TABLE "discussion_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "reason" "discussion_report_reason" NOT NULL,
+  "details" TEXT,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "discussion_report_resolution" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "report_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "type" "dataset_report_resolution_type" NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "discussion_upvote" (
+  "user_id" uuid NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "discussion_upvote_user_id_discussion_id_pk" PRIMARY KEY ("user_id", "discussion_id")
+);
 
 -------------------------------------------------------------------------------
 -- accounts, email_verification_token, password_reset_token
@@ -795,7 +927,7 @@ CREATE TABLE account (
 
 CREATE TABLE email_verification_token (
   id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
-  "userId" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
   token TEXT NOT NULL,
   expires TIMESTAMP NOT NULL
 );
@@ -810,6 +942,106 @@ CREATE TABLE password_reset_token (
 -- REFRESH MATERIALIZED VIEW
 -------------------------------------------------------------------------------
 REFRESH MATERIALIZED VIEW dataset_view;
+
+-------------------------------------------------------------------------------
+-- Remaining constraints
+-------------------------------------------------------------------------------
+-- noinspection SqlResolve
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "dataset"
+ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "dataset_report"
+ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "dataset_report_resolution"
+ADD CONSTRAINT "dataset_report_resolution_report_id_dataset_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."dataset_report" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "dataset_report_resolution"
+ADD CONSTRAINT "dataset_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion"
+ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion"
+ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment"
+ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment"
+ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment_report"
+ADD CONSTRAINT "discussion_comment_report_discussion_comment_id_discussion_id_f" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment_report_resolution"
+ADD CONSTRAINT "discussion_comment_report_resolution_report_id_discussion_comme" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_comment_report" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment_report_resolution"
+ADD CONSTRAINT "discussion_comment_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment_upvote"
+ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_comment_upvote"
+ADD CONSTRAINT "discussion_comment_upvote_discussion_comment_id_discussion_comm" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_report"
+ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_report_resolution"
+ADD CONSTRAINT "discussion_report_resolution_report_id_discussion_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_report" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_report_resolution"
+ADD CONSTRAINT "discussion_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_upvote"
+ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "discussion_upvote"
+ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+ALTER TABLE "session"
+ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+-- noinspection SqlResolve
+CREATE INDEX "discussion_search_index" ON "discussion" USING gin (
+  (
+    SETWEIGHT(TO_TSVECTOR('english', "title"), 'A') || SETWEIGHT(TO_TSVECTOR('english', "content"), 'D')
+  )
+);
+
+-- noinspection SqlResolve
+CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
+
+-- noinspection SqlResolve
+CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
 
 -------------------------------------------------------------------------------
 -- CLEANUP
@@ -831,8 +1063,6 @@ DROP TABLE foreign_papers CASCADE;
 DROP TABLE datasets_legacy;
 
 DROP SEQUENCE cuid_counter_seq;
-
-DROP SEQUENCE papers_id_seq CASCADE;
 
 DROP SEQUENCE users_id_seq CASCADE;
 
