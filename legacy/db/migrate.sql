@@ -159,6 +159,14 @@ RENAME TO "user";
 ALTER TABLE "user"
 ALTER COLUMN id type TEXT USING id::TEXT;
 
+ALTER INDEX idx_16577_primary
+RENAME TO user_pkey;
+
+DROP INDEX idx_16577_user_unique;
+
+ALTER TABLE "user"
+ADD CONSTRAINT user_email_unique UNIQUE (email);
+
 ALTER TABLE donated_datasets
 ALTER COLUMN userid type TEXT USING userid::TEXT;
 
@@ -501,6 +509,18 @@ RENAME TO keyword;
 ALTER TABLE keyword
 RENAME COLUMN keyword TO name;
 
+ALTER TABLE keyword
+ADD COLUMN created_at TIMESTAMP DEFAULT NOW() NOT NULL;
+
+DROP INDEX idx_16518_keyword;
+
+ALTER INDEX idx_16518_primary
+RENAME TO keyword_pkey;
+
+DROP INDEX idx_16445_datasetid;
+
+DROP INDEX idx_16445_keywordsid;
+
 ALTER TABLE dataset_keywords
 RENAME TO dataset_keyword;
 
@@ -651,10 +671,11 @@ ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFER
 -- dataset bookmarks
 -------------------------------------------------------------------------------
 CREATE TABLE "bookmark" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "user_id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
-  "bookmarked_at" TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
-  CONSTRAINT "dataset_bookmarks_pkey" PRIMARY KEY ("user_id", "dataset_id")
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "bookmark_user_id_dataset_id_unique" UNIQUE ("user_id", "dataset_id")
 );
 
 -------------------------------------------------------------------------------
@@ -925,12 +946,15 @@ CREATE TABLE account (
   session_state TEXT
 );
 
-CREATE TABLE email_verification_token (
-  id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
+CREATE TABLE "email_verification_token" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "user_id" uuid NOT NULL,
-  token TEXT NOT NULL,
-  expires TIMESTAMP NOT NULL
+  "token" TEXT NOT NULL,
+  "expires" TIMESTAMP NOT NULL
 );
+
+ALTER TABLE "email_verification_token"
+ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
 
 CREATE TABLE password_reset_token (
   token TEXT NOT NULL PRIMARY KEY,

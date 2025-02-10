@@ -708,7 +708,9 @@ export const sessionRelations = relations(session, ({ one }) => ({
 
 export const emailVerificationToken = pgTable("email_verification_token", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   token: text("token").notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
