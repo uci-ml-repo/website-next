@@ -22,6 +22,8 @@ const prettierPluginEmbedConfig = {
 const prettierPluginSqlConfig = {
   language: "postgresql",
   keywordCase: "upper",
+  dataTypeCase: "upper",
+  functionCase: "upper",
 };
 
 /**

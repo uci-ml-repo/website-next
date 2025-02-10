@@ -1,10 +1,9 @@
---  npx prisma migrate diff --from-empty --to-schema-datasource prisma/schema.prisma --script > prisma/generated.sql
 -------------------------------------------------------------------------------
 -- UTILS
 -------------------------------------------------------------------------------
-CREATE SEQUENCE IF NOT EXISTS cuid_counter_seq START 1 MINVALUE 1 MAXVALUE 999999999999999999 CYCLE;
+CREATE SEQUENCE if NOT EXISTS cuid_counter_seq start 1 minvalue 1 maxvalue 999999999999999999 cycle;
 
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION if NOT EXISTS pg_trgm;
 
 ALTER TYPE users_role
 RENAME TO user_role;
@@ -84,7 +83,7 @@ CREATE TABLE "session" (
   "session_token" TEXT NOT NULL,
   "user_id" TEXT NOT NULL,
   "expires" TIMESTAMP(3) NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
   "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
@@ -101,24 +100,24 @@ ALTER TABLE users
 RENAME COLUMN pass TO password;
 
 ALTER TABLE users
-ALTER COLUMN email TYPE VARCHAR(255),
+ALTER COLUMN email type VARCHAR(255),
 ALTER COLUMN email
 SET NOT NULL,
 ADD COLUMN email_verified TIMESTAMP(3),
 ADD COLUMN image TEXT,
 ADD COLUMN name TEXT,
-ALTER COLUMN role TYPE user_role USING role::user_role,
+ALTER COLUMN role type user_role USING role::user_role,
 ALTER COLUMN role
 SET DEFAULT 'basic',
 ALTER COLUMN role
 SET NOT NULL,
-ALTER COLUMN password TYPE VARCHAR(255),
-ADD COLUMN created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN updated_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER COLUMN password type VARCHAR(255),
+ADD COLUMN created_at TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
+ADD COLUMN updated_at TIMESTAMP(3) NOT NULL DEFAULT current_timestamp;
 
 UPDATE users
 SET
-  name = trim(concat(firstname, ' ', lastname));
+  name = TRIM(CONCAT(firstname, ' ', lastname));
 
 ALTER TABLE users
 ALTER COLUMN name
@@ -143,13 +142,13 @@ ALTER TABLE users
 RENAME TO "user";
 
 ALTER TABLE "user"
-ALTER COLUMN id TYPE text USING id::text;
+ALTER COLUMN id type TEXT USING id::TEXT;
 
 ALTER TABLE donated_datasets
-ALTER COLUMN userid TYPE text USING userid::text;
+ALTER COLUMN userid type TEXT USING userid::TEXT;
 
 ALTER TABLE donated_datasets
-ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN KEY (userid) REFERENCES "user" (id) ON UPDATE CASCADE;
+ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (id) ON UPDATE cascade;
 
 ALTER TABLE "user"
 ALTER COLUMN id
@@ -163,46 +162,46 @@ ALTER TABLE donated_datasets
 DROP CONSTRAINT donated_datasets_ibfk_1;
 
 ALTER TABLE "user"
-ALTER COLUMN id TYPE uuid USING id::uuid;
+ALTER COLUMN id type uuid USING id::uuid;
 
 ALTER TABLE donated_datasets
-ALTER COLUMN userid TYPE uuid USING userid::uuid;
+ALTER COLUMN userid type uuid USING userid::uuid;
 
 ALTER TABLE donated_datasets
-ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN KEY (userid) REFERENCES "user" (id);
+ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (id);
 
 -------------------------------------------------------------------------------
 -- datasets + donated_datasets -> dataset
 -- users.id -> donated_datasets.userid
 -------------------------------------------------------------------------------
-DROP SEQUENCE datasets_id_seq CASCADE;
+DROP SEQUENCE datasets_id_seq cascade;
 
 CREATE TABLE dataset (
   id serial PRIMARY KEY,
-  title text NOT NULL,
-  year_created integer,
-  subtitle text,
-  doi text,
-  description text,
+  title TEXT NOT NULL,
+  year_created INTEGER,
+  subtitle TEXT,
+  doi TEXT,
+  description TEXT,
   subject_area dataset_subject_area,
-  instance_count integer,
-  feature_count integer,
-  has_graphics boolean DEFAULT FALSE NOT NULL,
-  is_available_python boolean DEFAULT FALSE NOT NULL,
-  external_link text,
-  slug text NOT NULL,
+  instance_count INTEGER,
+  feature_count INTEGER,
+  has_graphics BOOLEAN DEFAULT FALSE NOT NULL,
+  is_available_python BOOLEAN DEFAULT FALSE NOT NULL,
+  external_link TEXT,
+  slug TEXT NOT NULL,
   status approval_status DEFAULT 'draft'::approval_status NOT NULL,
-  view_count integer DEFAULT 0 NOT NULL,
-  download_count integer DEFAULT 0 NOT NULL,
-  variables_description text,
+  view_count INTEGER DEFAULT 0 NOT NULL,
+  download_count INTEGER DEFAULT 0 NOT NULL,
+  variables_description TEXT,
   data_types dataset_characteristic[],
   tasks dataset_task[],
   feature_types dataset_feature_type[],
-  size bigint,
-  file_count integer,
+  size BIGINT,
+  file_count INTEGER,
   user_id uuid NOT NULL CONSTRAINT dataset_user_id_user_id_fk REFERENCES "user",
-  donated_at timestamp DEFAULT now() NOT NULL,
-  updated_at timestamp DEFAULT now() NOT NULL,
+  donated_at TIMESTAMP DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
   CONSTRAINT accepted_check CHECK (
     (status = 'draft'::approval_status)
     OR (
@@ -221,7 +220,7 @@ CREATE TABLE dataset (
     )
     OR (
       (external_link IS NOT NULL)
-      AND (external_link ~* '^https?://'::text)
+      AND (external_link ~* '^https?://'::TEXT)
       AND (size IS NULL)
       AND (file_count IS NULL)
     )
@@ -240,8 +239,8 @@ CREATE INDEX dataset_donated_at_index ON dataset (donated_at);
 
 -- noinspection SqlResolve
 CREATE INDEX dataset_ts_search_index ON dataset USING gin (
-  setweight(
-    to_tsvector('simple'::regconfig, title),
+  SETWEIGHT(
+    TO_TSVECTOR('simple'::regconfig, title),
     'A'::"char"
   )
 );
@@ -419,13 +418,13 @@ DROP TABLE descriptive_questions;
 -------------------------------------------------------------------------------
 CREATE TABLE variable (
   id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
-  name text NOT NULL,
-  description text NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
   role dataset_feature_role NOT NULL,
   type dataset_feature_type NOT NULL,
-  missing_values boolean NOT NULL,
-  units text,
-  dataset_id integer NOT NULL CONSTRAINT variable_dataset_id_dataset_id_fk REFERENCES dataset
+  missing_values BOOLEAN NOT NULL,
+  units TEXT,
+  dataset_id INTEGER NOT NULL CONSTRAINT variable_dataset_id_dataset_id_fk REFERENCES dataset
 );
 
 -------------------------------------------------------------------------------
@@ -469,61 +468,46 @@ DROP TABLE creators;
 -------------------------------------------------------------------------------
 -- dataset_keyword + keyword
 -------------------------------------------------------------------------------
-ALTER TABLE dataset_keywords
-DROP CONSTRAINT dataset_keywords_ibfk_1,
-DROP CONSTRAINT dataset_keywords_ibfk_2;
-
-ALTER TABLE dataset_keywords
-RENAME COLUMN datasetid TO dataset_id;
-
-ALTER TABLE dataset_keywords
-ADD CONSTRAINT dataset_keywords_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES dataset (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE dataset_keywords
-RENAME COLUMN keywordsid TO keyword_id;
-
-ALTER TABLE dataset_keywords
-ALTER COLUMN keyword_id TYPE TEXT USING keyword_id::TEXT;
-
-ALTER TABLE keywords
-ALTER COLUMN id TYPE TEXT USING id::TEXT;
-
-ALTER TABLE dataset_keywords
-ADD CONSTRAINT dataset_keywords_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-UPDATE keywords
-SET
-  id = gen_random_uuid (),
-  keyword = lower(keyword);
-
-ALTER TABLE keywords
-ALTER COLUMN status
-DROP DEFAULT,
-ALTER COLUMN status TYPE approval_status USING replace(lower(status), 'accepted', 'approved')::approval_status,
-ALTER COLUMN status
-SET DEFAULT 'pending'::approval_status;
-
-ALTER TABLE keywords
-RENAME COLUMN keyword TO name;
-
 ALTER TABLE keywords
 RENAME TO keyword;
+
+ALTER TABLE keyword
+RENAME COLUMN keyword TO name;
 
 ALTER TABLE dataset_keywords
 RENAME TO dataset_keyword;
 
+ALTER TABLE dataset_keyword
+RENAME COLUMN datasetid TO dataset_id;
+
+ALTER TABLE dataset_keyword
+RENAME COLUMN keywordsid TO keyword_id;
+
+ALTER TABLE dataset_keyword
+DROP CONSTRAINT idx_16445_primary;
+
+ALTER TABLE dataset_keyword
+DROP COLUMN datasetkeywordsid;
+
+ALTER TABLE keyword
+ALTER COLUMN status
+DROP DEFAULT,
+ALTER COLUMN status type approval_status USING REPLACE(LOWER(status), 'accepted', 'approved')::approval_status,
+ALTER COLUMN status
+SET DEFAULT 'pending'::approval_status;
+
 -------------------------------------------------------------------------------
--- dataset_papers
+-- paper
 -------------------------------------------------------------------------------
 CREATE TABLE paper (
   id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
-  title text NOT NULL,
+  title TEXT NOT NULL,
   authors TEXT[] NOT NULL,
-  venue text NOT NULL,
-  "year" integer NOT NULL,
-  citation_count integer,
+  venue TEXT NOT NULL,
+  "year" INTEGER NOT NULL,
+  citation_count INTEGER,
   url TEXT NOT NULL,
-  dataset_id integer NOT NULL CONSTRAINT paper_dataset_id_dataset_id_fk REFERENCES dataset
+  dataset_id INTEGER NOT NULL CONSTRAINT paper_dataset_id_dataset_id_fk REFERENCES dataset
 );
 
 INSERT INTO
@@ -539,7 +523,7 @@ INSERT INTO
 SELECT
   gen_random_uuid (),
   np.title,
-  string_to_array(np.authors, ', '),
+  STRING_TO_ARRAY(np.authors, ', '),
   np.venue,
   np.year,
   np.url,
@@ -557,13 +541,15 @@ WHERE
 CREATE TABLE "bookmark" (
   "user_id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
-  "bookmarked_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "bookmarked_at" TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
   CONSTRAINT "dataset_bookmarks_pkey" PRIMARY KEY ("user_id", "dataset_id")
 );
 
 -------------------------------------------------------------------------------
 -- dataset materialized view
 -------------------------------------------------------------------------------
+-- noinspection SqlResolve @ column/"keyword_id"
+-- noinspection SqlResolve @ column/"dataset_id"
 CREATE MATERIALIZED VIEW dataset_view AS
 SELECT
   dataset.id,
@@ -594,7 +580,7 @@ SELECT
   COALESCE(
     (
       SELECT
-        array_agg(keyword.name) AS array_agg
+        ARRAY_AGG(keyword.name) AS array_agg
       FROM
         keyword
         JOIN dataset_keyword dataset_keyword_1 ON dataset_keyword_1.keyword_id = keyword.id
@@ -606,8 +592,8 @@ SELECT
   COALESCE(
     (
       SELECT
-        array_agg(
-          jsonb_build_object(
+        ARRAY_AGG(
+          JSONB_BUILD_OBJECT(
             'id',
             author_1.id,
             'first_name',
@@ -628,8 +614,8 @@ SELECT
   COALESCE(
     (
       SELECT
-        array_agg(
-          jsonb_build_object(
+        ARRAY_AGG(
+          JSONB_BUILD_OBJECT(
             'id',
             variable_1.id,
             'name',
@@ -656,7 +642,7 @@ SELECT
   COALESCE(
     (
       SELECT
-        array_agg(lower(variable_1.name)) AS array_agg
+        ARRAY_AGG(LOWER(variable_1.name)) AS array_agg
       FROM
         variable variable_1
       WHERE
@@ -666,7 +652,7 @@ SELECT
   ) AS attributes,
   (
     SELECT
-      jsonb_build_object(
+      JSONB_BUILD_OBJECT(
         'id',
         "user".id,
         'name',
@@ -689,7 +675,7 @@ SELECT
   ) AS "user",
   (
     SELECT
-      jsonb_build_object(
+      JSONB_BUILD_OBJECT(
         'title',
         paper_1.title,
         'authors',
@@ -724,29 +710,29 @@ GROUP BY
 -------------------------------------------------------------------------------
 CREATE TABLE account (
   user_id uuid NOT NULL CONSTRAINT "account_user_id_user_id_fk" REFERENCES "user" ON DELETE cascade,
-  type text NOT NULL,
-  provider text NOT NULL,
-  provider_account_id text NOT NULL,
-  refresh_token text,
-  access_token text,
-  expires_at integer,
-  token_type text,
-  scope text,
-  id_token text,
-  session_state text
+  type TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  provider_account_id TEXT NOT NULL,
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at INTEGER,
+  token_type TEXT,
+  scope TEXT,
+  id_token TEXT,
+  session_state TEXT
 );
 
 CREATE TABLE email_verification_token (
   id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
   "userId" uuid NOT NULL,
-  token text NOT NULL,
-  expires timestamp NOT NULL
+  token TEXT NOT NULL,
+  expires TIMESTAMP NOT NULL
 );
 
 CREATE TABLE password_reset_token (
-  token text NOT NULL PRIMARY KEY,
+  token TEXT NOT NULL PRIMARY KEY,
   user_id uuid NOT NULL CONSTRAINT password_reset_token_user_id_user_id_fk REFERENCES "user",
-  expires timestamp NOT NULL
+  expires TIMESTAMP NOT NULL
 );
 
 -------------------------------------------------------------------------------
