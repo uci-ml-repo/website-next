@@ -136,7 +136,8 @@ DROP COLUMN accesstoken,
 DROP COLUMN google,
 DROP COLUMN github,
 DROP COLUMN googleid,
-DROP COLUMN githubid;
+DROP COLUMN githubid,
+DROP COLUMN updated_at;
 
 ALTER TABLE users
 RENAME TO "user";
@@ -148,7 +149,7 @@ ALTER TABLE donated_datasets
 ALTER COLUMN userid type TEXT USING userid::TEXT;
 
 ALTER TABLE donated_datasets
-ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (id) ON UPDATE cascade;
+ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (id) ON UPDATE CASCADE;
 
 ALTER TABLE "user"
 ALTER COLUMN id
@@ -174,7 +175,7 @@ ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (i
 -- datasets + donated_datasets -> dataset
 -- users.id -> donated_datasets.userid
 -------------------------------------------------------------------------------
-DROP SEQUENCE datasets_id_seq cascade;
+DROP SEQUENCE datasets_id_seq CASCADE;
 
 CREATE TABLE dataset (
   id serial PRIMARY KEY,
@@ -496,6 +497,76 @@ ALTER COLUMN status type approval_status USING REPLACE(LOWER(status), 'accepted'
 ALTER COLUMN status
 SET DEFAULT 'pending'::approval_status;
 
+ALTER TABLE dataset_keyword
+DROP CONSTRAINT dataset_keywords_ibfk_1;
+
+-- noinspection SqlResolve
+DELETE FROM dataset_keyword
+WHERE
+  dataset_id NOT IN (
+    SELECT
+      id
+    FROM
+      dataset
+  );
+
+-- noinspection SqlResolve
+ALTER TABLE dataset_keyword
+ADD CONSTRAINT dataset_keyword_dataset_id_dataset_id_fk FOREIGN KEY (dataset_id) REFERENCES dataset (id);
+
+ALTER TABLE dataset_keyword
+DROP CONSTRAINT dataset_keywords_ibfk_2;
+
+-- noinspection SqlResolve @ column/"keyword_id"
+ALTER TABLE dataset_keyword
+ALTER COLUMN keyword_id type TEXT USING keyword_id::TEXT;
+
+ALTER TABLE keyword
+ALTER COLUMN id type TEXT USING id::TEXT;
+
+-- noinspection SqlResolve
+ALTER TABLE dataset_keyword
+ADD CONSTRAINT dataset_keywords_ibfk_2_tmp FOREIGN KEY (keyword_id) REFERENCES keyword (id) ON UPDATE CASCADE;
+
+ALTER TABLE keyword
+ALTER COLUMN id
+SET DEFAULT gen_random_uuid ();
+
+UPDATE keyword
+SET
+  id = gen_random_uuid ();
+
+ALTER TABLE dataset_keyword
+DROP CONSTRAINT dataset_keywords_ibfk_2_tmp;
+
+ALTER TABLE keyword
+ALTER COLUMN id type uuid USING id::uuid;
+
+-- noinspection SqlResolve @ column/"keyword_id"
+ALTER TABLE dataset_keyword
+ALTER COLUMN keyword_id type uuid USING keyword_id::uuid;
+
+-- noinspection SqlResolve
+DELETE FROM dataset_keyword
+WHERE
+  ctid NOT IN (
+    SELECT
+      MIN(ctid)
+    FROM
+      dataset_keyword
+    GROUP BY
+      dataset_id,
+      keyword_id
+  );
+
+-- noinspection SqlResolve
+ALTER TABLE dataset_keyword
+ADD CONSTRAINT dataset_keyword_keyword_id_dataset_id_pk PRIMARY KEY (keyword_id, dataset_id);
+
+-- noinspection SqlResolve @ column/"keyword_id"
+ALTER TABLE dataset_keyword
+ADD CONSTRAINT dataset_keyword_keyword_id_keyword_id_fk FOREIGN KEY (keyword_id) REFERENCES keyword (id);
+
 -------------------------------------------------------------------------------
 -- paper
 -------------------------------------------------------------------------------
@@ -709,7 +780,7 @@ GROUP BY
 -- accounts, email_verification_token, password_reset_token
 -------------------------------------------------------------------------------
 CREATE TABLE account (
-  user_id uuid NOT NULL CONSTRAINT "account_user_id_user_id_fk" REFERENCES "user" ON DELETE cascade,
+  user_id uuid NOT NULL CONSTRAINT "account_user_id_user_id_fk" REFERENCES "user" ON DELETE CASCADE,
   type TEXT NOT NULL,
   provider TEXT NOT NULL,
   provider_account_id TEXT NOT NULL,
@@ -761,16 +832,14 @@ DROP TABLE datasets_legacy;
 
 DROP SEQUENCE cuid_counter_seq;
 
-DROP SEQUENCE dataset_keywords_datasetkeywordsid_seq CASCADE;
-
-DROP SEQUENCE keywords_id_seq CASCADE;
-
 DROP SEQUENCE papers_id_seq CASCADE;
 
 DROP SEQUENCE users_id_seq CASCADE;
+
+DROP SEQUENCE keywords_id_seq;
 
 DROP TYPE dataset_papers_type CASCADE;
 
 DROP TYPE edits_status CASCADE;
 
-DROP TYPE user_role CASCADE;
+DROP TYPE requests_status CASCADE;
