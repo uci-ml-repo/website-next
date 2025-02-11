@@ -283,7 +283,10 @@ export const keyword = pgTable(
 
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
-  (t) => [index("keyword_name_index").on(t.name)],
+  (t) => [
+    index("keyword_name_index").on(t.name),
+    index("keyword_status_index").on(t.status),
+  ],
 );
 
 export const keywordsRelations = relations(keyword, ({ many }) => ({

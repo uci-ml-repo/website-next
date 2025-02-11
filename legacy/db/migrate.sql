@@ -1079,11 +1079,11 @@ CREATE INDEX "discussion_search_index" ON "discussion" USING gin (
   )
 );
 
--- noinspection SqlResolve
 CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 
--- noinspection SqlResolve
 CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
+
+CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
 
 -------------------------------------------------------------------------------
 -- CLEANUP

@@ -40,6 +40,8 @@ export function DatasetKeywordsFilter({
       label="Keywords"
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
+      active={selectedKeywords.length > 0}
+      activeCount={selectedKeywords.length}
       tooltipOpen={tooltipOpen}
       tooltipContent="Keywords that describe the dataset"
       clearFilter={() => setFilters({ keywords: undefined })}

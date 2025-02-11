@@ -19,13 +19,13 @@ import { ServiceError } from "@/server/service/errors";
 
 function arrayContainsRaw(columnName: string, array: string[]) {
   return sql.raw(`
-   ${columnName} @> ${"'{" + array.join(",") + "}'"}
+   ${columnName} @> ${"$${" + array.join(",") + "}$$"}
 `);
 }
 
 function arrayOverlapsRaw(columnName: string, array: string[]) {
   return sql.raw(`
-   ${columnName} && ${"'{" + array.join(",") + "}'"}
+   ${columnName} && ${"$${" + array.join(",") + "}$$"}
 `);
 }
 
