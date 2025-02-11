@@ -79,7 +79,7 @@ export function Multiselect({
       <Ariakit.ComboboxPopover
         sameWidth
         gutter={4}
-        className="z-50 max-h-60 snap-y overflow-y-auto rounded-lg bg-card shadow"
+        className="z-40 max-h-60 snap-y overflow-y-auto rounded-lg bg-card shadow-lg border"
         aria-busy={isPending}
       >
         {matches.map((value) => (

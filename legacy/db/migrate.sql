@@ -298,134 +298,179 @@ WHERE
   dq.datasetid IS NULL;
 
 DO $$
-  DECLARE
-    rec RECORD;
-  BEGIN
-    FOR rec IN
-      SELECT dd.id,
-             lower(replace(status, 'FAILED', 'rejected'))::approval_status AS status,
-             coalesce(datedonated, CURRENT_TIMESTAMP)                      AS donated_at,   -- TODO populate null data
-             coalesce(
-               yearcreated,
-               extract(
-                 YEAR
-                 FROM
-                 CURRENT_TIMESTAMP
-               )::INTEGER
-             )                                                             AS year_created, -- TODO populate null data
-             name                                                          AS title,
-             trim(
-               concat(
-                 abstract,
-                 E'\n\n',
-                 dq.otherinfo,
-                 E'\n\n',
-                 dq.preprocessingdescription
-               )
-             )                                                             AS description,
-             replace(
-               replace(lower(area), ' ', '_'),
-               'physical_science',
-               'physics_and_chemistry'
-             )::dataset_subject_area                                       AS subject_area,
-             numinstances                                                  AS instance_count,
-             numfeatures                                                   AS feature_count,
-             coalesce(graphics, '') <> ''                                  AS has_graphics,
-             coalesce(isavailablepython, FALSE)                            AS is_available_python,
-             numhits                                                       AS view_count,
-             numdownloads                                                  AS download_count,
-             slug,
-             userid                                                        AS user_id,
-             CURRENT_TIMESTAMP                                             AS updated_at,
-             COALESCE(
-               (SELECT array_agg(x::dataset_characteristic)
-                FROM unnest(string_to_array(lower(dd.types), ', ')) x
-                WHERE x = ANY (enum_range(NULL::dataset_characteristic)::TEXT[])),
-               '{}'
-             )                                                             AS data_types,
-             COALESCE(
-               (SELECT array_agg(x::dataset_task)
-                FROM unnest(string_to_array(lower(dd.task), ', ')) x
-                WHERE x = ANY (enum_range(NULL::dataset_task)::TEXT[])),
-               '{}'
-             )                                                             AS tasks,
-             COALESCE(
-               (SELECT array_agg(x::dataset_feature_type)
-                FROM unnest(
-                       string_to_array(
-                         lower(replace(dd.featuretypes, 'Real', 'Continuous')),
-                         ', '
-                       )
-                     ) x
-                WHERE x = ANY (enum_range(NULL::dataset_feature_type)::TEXT[])),
-               '{}'
-             )                                                             AS feature_types,
-             regexp_replace(trim(doi), '^https?://doi.org/', '')           AS doi,
-             urllink                                                       AS external_link,
-             (SELECT count(*)
-              FROM dataset_file df
-                     INNER JOIN file_info fi ON fi.id = df.fileinfoid
-              WHERE fi.datasetid = dd.id)                                  AS file_count,
-             (SELECT compressedsize
-              FROM file_info fi
-              WHERE fi.datasetid = dd.id)                                  AS size
-      FROM donated_datasets dd
-             INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
-      WHERE slug NOTNULL
-      LOOP
-        BEGIN
-          INSERT INTO dataset (id,
-                               status,
-                               donated_at,
-                               year_created,
-                               title,
-                               description,
-                               subject_area,
-                               instance_count,
-                               feature_count,
-                               has_graphics,
-                               is_available_python,
-                               view_count,
-                               download_count,
-                               slug,
-                               user_id,
-                               updated_at,
-                               data_types,
-                               tasks,
-                               feature_types,
-                               doi,
-                               external_link,
-                               file_count,
-                               size)
-          VALUES (rec.id,
-                  rec.status,
-                  rec.donated_at,
-                  rec.year_created,
-                  rec.title,
-                  rec.description,
-                  rec.subject_area,
-                  rec.instance_count,
-                  rec.feature_count,
-                  rec.has_graphics,
-                  rec.is_available_python,
-                  rec.view_count,
-                  rec.download_count,
-                  rec.slug,
-                  rec.user_id,
-                  rec.updated_at,
-                  rec.data_types,
-                  rec.tasks,
-                  rec.feature_types,
-                  rec.doi,
-                  rec.external_link,
-                  rec.file_count,
-                  rec.size);
-        EXCEPTION
-          WHEN OTHERS THEN
-            RAISE NOTICE 'Skipping record for donated dataset with id: %, status: % due to error: %', rec.id, rec.status, SQLERRM;
-        END;
-      END LOOP;
-  END
+DECLARE rec RECORD;
+
+BEGIN FOR rec IN
+SELECT
+  dd.id,
+  LOWER(REPLACE(status, 'FAILED', 'rejected'))::approval_status AS status,
+  COALESCE(datedonated, CURRENT_TIMESTAMP) AS donated_at, -- TODO populate null data
+  COALESCE(
+    yearcreated,
+    EXTRACT(
+      YEAR
+      FROM
+        CURRENT_TIMESTAMP
+    )::INTEGER
+  ) AS year_created, -- TODO populate null data
+  name AS title,
+  TRIM(
+    CONCAT_WS(
+      E'\n\n',
+      abstract,
+      dq.otherinfo,
+      CASE
+        WHEN dq.preprocessingdescription IS NOT NULL THEN 'Preprocessing description: ' || dq.preprocessingdescription
+      END,
+      CASE
+        WHEN dq.sensitiveinfo IS NOT NULL THEN 'This dataset contains sensitive information: ' ||  regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '')
+      END,
+      CASE
+        WHEN dq.datasetcitation IS NOT NULL  THEN 'Citation information: ' || dq.datasetcitation
+      END
+    )
+  ) AS description,
+  REPLACE(
+    REPLACE(LOWER(area), ' ', '_'),
+    'physical_science',
+    'physics_and_chemistry'
+  )::dataset_subject_area AS subject_area,
+  numinstances AS instance_count,
+  numfeatures AS feature_count,
+  COALESCE(graphics, '') <> '' AS has_graphics,
+  COALESCE(isavailablepython, FALSE) AS is_available_python,
+  numhits AS view_count,
+  numdownloads AS download_count,
+  slug,
+  userid AS user_id,
+  CURRENT_TIMESTAMP AS updated_at,
+  COALESCE(
+    (
+      SELECT
+        ARRAY_AGG(x::dataset_characteristic)
+      FROM
+        UNNEST(STRING_TO_ARRAY(LOWER(dd.types), ', ')) x
+      WHERE
+        x = ANY (ENUM_RANGE(NULL::dataset_characteristic)::TEXT[])
+    ),
+    '{}'
+  ) AS data_types,
+  COALESCE(
+    (
+      SELECT
+        ARRAY_AGG(x::dataset_task)
+      FROM
+        UNNEST(STRING_TO_ARRAY(LOWER(dd.task), ', ')) x
+      WHERE
+        x = ANY (ENUM_RANGE(NULL::dataset_task)::TEXT[])
+    ),
+    '{}'
+  ) AS tasks,
+  COALESCE(
+    (
+      SELECT
+        ARRAY_AGG(x::dataset_feature_type)
+      FROM
+        UNNEST(
+          STRING_TO_ARRAY(
+            LOWER(REPLACE(dd.featuretypes, 'Real', 'Continuous')),
+            ', '
+          )
+        ) x
+      WHERE
+        x = ANY (ENUM_RANGE(NULL::dataset_feature_type)::TEXT[])
+    ),
+    '{}'
+  ) AS feature_types,
+  REGEXP_REPLACE(TRIM(doi), '^https?://doi.org/', '') AS doi,
+  urllink AS external_link,
+  (
+    SELECT
+      COUNT(*)
+    FROM
+      dataset_file df
+      INNER JOIN file_info fi ON fi.id = df.fileinfoid
+    WHERE
+      fi.datasetid = dd.id
+  ) AS file_count,
+  (
+    SELECT
+      compressedsize
+    FROM
+      file_info fi
+    WHERE
+      fi.datasetid = dd.id
+  ) AS size
+FROM
+  donated_datasets dd
+  INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
+WHERE
+  slug NOTNULL LOOP
+
+BEGIN
+INSERT INTO
+  dataset (
+    id,
+    status,
+    donated_at,
+    year_created,
+    title,
+    description,
+    subject_area,
+    instance_count,
+    feature_count,
+    has_graphics,
+    is_available_python,
+    view_count,
+    download_count,
+    slug,
+    user_id,
+    updated_at,
+    data_types,
+    tasks,
+    feature_types,
+    doi,
+    external_link,
+    file_count,
+    size
+  )
+VALUES
+  (
+    rec.id,
+    rec.status,
+    rec.donated_at,
+    rec.year_created,
+    rec.title,
+    rec.description,
+    rec.subject_area,
+    rec.instance_count,
+    rec.feature_count,
+    rec.has_graphics,
+    rec.is_available_python,
+    rec.view_count,
+    rec.download_count,
+    rec.slug,
+    rec.user_id,
+    rec.updated_at,
+    rec.data_types,
+    rec.tasks,
+    rec.feature_types,
+    rec.doi,
+    rec.external_link,
+    rec.file_count,
+    rec.size
+  );
+
+EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'Skipping record for donated dataset with id: %, status: % due to error: %',
+rec.id,
+rec.status,
+SQLERRM;
+
+END;
+
+END LOOP;
+
+END;
 $$;
 
 DROP TABLE descriptive_questions;
@@ -537,18 +582,6 @@ ALTER COLUMN status type approval_status USING REPLACE(LOWER(status), 'accepted'
 ALTER COLUMN status
 SET DEFAULT 'pending'::approval_status;
 
--- noinspection SqlResolve
-DELETE FROM keyword
-WHERE
-  NOT EXISTS (
-    SELECT
-      1
-    FROM
-      dataset_keyword
-    WHERE
-      dataset_keyword.keyword_id = keyword.id
-  );
-
 ALTER TABLE dataset_keyword
 DROP CONSTRAINT dataset_keywords_ibfk_1;
 
@@ -578,7 +611,21 @@ ALTER COLUMN id type TEXT USING id::TEXT;
 
 -- noinspection SqlResolve
 ALTER TABLE dataset_keyword
-ADD CONSTRAINT dataset_keywords_ibfk_2_tmp FOREIGN KEY (keyword_id) REFERENCES keyword (id) ON UPDATE CASCADE;
+ADD CONSTRAINT dataset_keywords_ibfk_2_tmp FOREIGN KEY (keyword_id) REFERENCES keyword (id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- noinspection SqlResolve
+DELETE FROM keyword
+WHERE
+  NOT EXISTS (
+    SELECT
+      1
+    FROM
+      dataset_keyword
+      INNER JOIN public.dataset d ON d.id = dataset_keyword.dataset_id
+    WHERE
+      dataset_keyword.keyword_id = keyword.id
+      AND d.status = 'approved'
+  );
 
 ALTER TABLE keyword
 ALTER COLUMN id

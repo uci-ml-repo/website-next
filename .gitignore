@@ -29,8 +29,8 @@ next-env.d.ts
 .idea
 
 # legacy
-/legacy/db/dump.sql
-/legacy/db/current.sql
+/legacy/db/*.sql
+!/legacy/db/migrate.sql
 /legacy/db/output
 /legacy/files/ignored
 /legacy/files/output
