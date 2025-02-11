@@ -84,7 +84,13 @@ export class DiscussionFindService {
       .then((discussions) => discussions.map(transformRow));
   }
 
-  async byUserId(userId: string, session: Session | null) {
+  async byUserId({
+    userId,
+    session,
+  }: {
+    userId: string;
+    session: Session | null;
+  }) {
     return db.query.discussion
       .findMany({
         where: (discussion, { eq }) => eq(discussion.userId, userId),

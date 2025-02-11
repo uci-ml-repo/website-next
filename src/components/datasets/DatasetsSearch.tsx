@@ -16,7 +16,7 @@ export function DatasetsSearch() {
   const { filters, setFilters, filterCount } = useQueryFilters<DatasetQuery>();
 
   const { inputValue, setInputValue, searchValue, handleChange } =
-    useDebouncedSearch();
+    useDebouncedSearch({ defaultValue: filters.search });
 
   const trueFilterCount =
     filterCount - (!!filters.search ? 1 : 0) - (!!filters.order ? 1 : 0);

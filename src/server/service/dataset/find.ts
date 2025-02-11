@@ -2,11 +2,9 @@ import {
   and,
   arrayContains,
   arrayOverlaps,
-  asc,
   count,
   desc,
   eq,
-  getTableColumns,
   gte,
   inArray,
   lte,
@@ -15,14 +13,14 @@ import {
 
 import { db } from "@/db";
 import { Enums } from "@/db/enums";
-import { dataset, datasetView } from "@/db/schema";
+import { datasetView } from "@/db/schema";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
-const DATASET_WEIGHTS = sql`
+const DATASET_VIEW_WEIGHTS = sql`
   SETWEIGHT(
-    TO_TSVECTOR('simple', ${dataset.title}),
+    TO_TSVECTOR('simple', ${datasetView.title}),
     'A'
   )
 `;
@@ -139,7 +137,7 @@ export class DatasetFindService {
     });
   }
 
-  async byUserId(userId: string) {
+  async byUserId({ userId }: { userId: string }) {
     return db
       .select()
       .from(datasetView)
@@ -182,14 +180,14 @@ export class DatasetFindService {
       ? Object.entries(query.order).map(([field, sort]) =>
           sortFunction(sort)(datasetView[field as keyof typeof query.order]),
         )
-      : [asc(datasetView.id)];
+      : [desc(datasetView.viewCount)];
 
     return db
       .select()
       .from(datasetView)
       .where(buildQuery(query))
       .offset(query.cursor ?? 0)
-      .limit(query.limit ? query.limit + 1 : 11)
+      .limit(query.limit ? query.limit + 1 : 10)
       .orderBy(...orderBy);
   }
 
@@ -206,34 +204,65 @@ export class DatasetFindService {
     `;
     const rank = sql`
       TS_RANK(
-        ${DATASET_WEIGHTS},
+        ${DATASET_VIEW_WEIGHTS},
         ${normalizedTsQuery}
       )
     `;
     const trigramSimilarity = sql`
       similarity (
-        ${dataset.title},
+        ${datasetView.title},
         ${query.search}
       )
     `;
 
-    const datasets = await db
+    return db
       .select({
-        ...getTableColumns(dataset),
+        id: datasetView.id,
+        title: datasetView.title,
+        yearCreated: datasetView.yearCreated,
+        subtitle: datasetView.subtitle,
+        doi: datasetView.doi,
+        description: datasetView.description,
+        subjectArea: datasetView.subjectArea,
+        instanceCount: datasetView.instanceCount,
+        featureCount: datasetView.featureCount,
+        hasGraphics: datasetView.hasGraphics,
+        isAvailablePython: datasetView.isAvailablePython,
+        externalLink: datasetView.externalLink,
+        slug: datasetView.slug,
+        status: datasetView.status,
+        viewCount: datasetView.viewCount,
+        downloadCount: datasetView.downloadCount,
+        variablesDescription: datasetView.variablesDescription,
+        dataTypes: datasetView.dataTypes,
+        tasks: datasetView.tasks,
+        featureTypes: datasetView.featureTypes,
+        size: datasetView.size,
+        fileCount: datasetView.fileCount,
+        userId: datasetView.userId,
+        donatedAt: datasetView.donatedAt,
+        updatedAt: datasetView.updatedAt,
+        keywords: datasetView.keywords,
+        authors: datasetView.authors,
+        variables: datasetView.variables,
+        attributes: datasetView.attributes,
+        user: datasetView.user,
+        introductoryPaper: datasetView.introductoryPaper,
         rank: rank.mapWith(Number),
         similarity: trigramSimilarity.mapWith(Number),
       })
-      .from(dataset)
+      .from(datasetView)
       .where(
         and(
+          buildQuery(query),
           query.search
             ? sql`
                 (
-                  ${DATASET_WEIGHTS} @@ ${normalizedTsQuery}
+                  ${DATASET_VIEW_WEIGHTS} @@ ${normalizedTsQuery}
                 )
                 OR (
                   similarity (
-                    ${dataset.title},
+                    ${datasetView.title},
                     ${query.search}
                   ) > 0.1
                 )
@@ -242,15 +271,15 @@ export class DatasetFindService {
         ),
       )
       .offset(query.cursor ?? 0)
-      .limit(query.limit ? query.limit + 1 : 11)
+      .limit(query.limit ? query.limit + 1 : 10)
       .orderBy((t) =>
         query.order
           ? Object.entries(query.order).map(([field, sort]) =>
-              sortFunction(sort)(dataset[field as keyof typeof query.order]),
+              sortFunction(sort)(
+                datasetView[field as keyof typeof query.order],
+              ),
             )
           : [desc(t.rank), desc(t.similarity), desc(t.viewCount)],
       );
-
-    return this.batch(datasets.map((d) => d.id));
   }
 }

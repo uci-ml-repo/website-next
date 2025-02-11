@@ -15,7 +15,9 @@ export default async function Page() {
     return unauthorized();
   }
 
-  const datasets = await caller.dataset.find.byUserId(session.user.id);
+  const datasets = await caller.dataset.find.byUserId({
+    userId: session.user.id,
+  });
 
   const endCard = (
     <Button asChild className="lift" variant="gold">

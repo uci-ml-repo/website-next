@@ -19,6 +19,7 @@ export const protectedProcedure = t.procedure
       draftDatasetId: z.string().optional(),
       discussionId: z.string().optional(),
       discussionCommentId: z.string().optional(),
+      userId: z.string().optional(),
     }),
   )
   .use(async ({ ctx, meta, input, next }) => {
@@ -45,7 +46,21 @@ export const protectedProcedure = t.procedure
       userRoles.add(MiddlewareRoles.VERIFIED);
     }
 
+    if (requireRoles.has(MiddlewareRoles.IS_USER_ID)) {
+      if (!input.userId) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
+      if (ctx.session.user.id === input.userId) {
+        userRoles.add(MiddlewareRoles.IS_USER_ID);
+      }
+    }
+
     if (requireRoles.has(MiddlewareRoles.DATASET_OWNER)) {
+      if (!input.datasetId) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
       await AssertOwner.dataset({
         datasetId: input.datasetId,
         userId: ctx.session.user.id,
@@ -55,6 +70,10 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
+      if (!input.discussionId) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
       await AssertOwner.discussion({
         discussionId: input.discussionId,
         userId: ctx.session.user.id,
@@ -64,6 +83,10 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR)) {
+      if (!input.discussionCommentId) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
       await AssertOwner.discussionComment({
         discussionCommentId: input.discussionCommentId,
         userId: ctx.session.user.id,

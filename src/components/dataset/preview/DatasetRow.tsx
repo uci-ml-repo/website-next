@@ -50,6 +50,7 @@ export function DatasetRow({
         className,
       )}
       href={DATASET_ROUTE(dataset)}
+      prefetch={false}
       {...props}
     >
       <Image

@@ -29,8 +29,12 @@ export default async function Layout({
   }
 
   const bookmarks = (await caller.bookmark.find.byUserQuery({})).bookmarks;
-  const datasets = await caller.dataset.find.byUserId(session.user.id);
-  const discussions = await caller.discussion.find.byUserId(session.user.id);
+  const datasets = await caller.dataset.find.byUserId({
+    userId: session.user.id,
+  });
+  const discussions = await caller.discussion.find.byUserId({
+    userId: session.user.id,
+  });
 
   return (
     <Main className="space-y-8">

@@ -127,6 +127,7 @@ export const dataset = pgTable(
     index("dataset_id_index").on(t.id),
     index("dataset_instance_count_index").on(t.instanceCount),
     index("dataset_feature_count_index").on(t.featureCount),
+    index("dataset_view_count_index").on(t.viewCount),
     index("dataset_donated_at_index").on(t.donatedAt),
     check(
       "accepted_check",

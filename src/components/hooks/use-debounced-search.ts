@@ -3,9 +3,17 @@
 import { debounce } from "lodash";
 import * as React from "react";
 
-export function useDebouncedSearch(debounceDelay = 175) {
-  const [inputValue, setInputValue] = React.useState("");
-  const [searchValue, setSearchValue] = React.useState("");
+interface UseDebouncedSearchOptions {
+  defaultValue?: string;
+  debounceDelay?: number;
+}
+
+export function useDebouncedSearch({
+  defaultValue = "",
+  debounceDelay = 175,
+}: UseDebouncedSearchOptions = {}) {
+  const [inputValue, setInputValue] = React.useState(defaultValue);
+  const [searchValue, setSearchValue] = React.useState(defaultValue);
 
   const debouncedSetSearchValue = React.useMemo(
     () =>

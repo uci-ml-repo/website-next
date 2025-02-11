@@ -2,8 +2,9 @@ import { z } from "zod";
 
 import { datasetQuery } from "@/server/schema/dataset";
 import { service } from "@/server/service";
-import { procedure, router } from "@/server/trpc";
+import { procedure, protectedProcedure, router } from "@/server/trpc";
 import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
+import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 export const datasetFindRouter = router({
   byId: datasetAccessProcedure
@@ -20,7 +21,10 @@ export const datasetFindRouter = router({
     return service.dataset.find.byQuery(input);
   }),
 
-  byUserId: procedure.input(z.string()).query(async ({ input }) => {
-    return service.dataset.find.byUserId(input);
-  }),
+  byUserId: protectedProcedure
+    .meta({ requireRoles: [MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID] })
+    .input(z.object({ userId: z.string().uuid() }))
+    .query(async ({ input }) => {
+      return service.dataset.find.byUserId(input);
+    }),
 });

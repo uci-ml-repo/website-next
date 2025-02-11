@@ -7,13 +7,9 @@ export namespace AssertOwner {
     datasetId,
     userId,
   }: {
-    datasetId: number | undefined;
+    datasetId: number;
     userId: string;
   }) => {
-    if (!datasetId) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
-    }
-
     const dataset = await service.dataset.find.byId({ datasetId });
 
     if (!dataset) {
@@ -29,13 +25,9 @@ export namespace AssertOwner {
     discussionId,
     userId,
   }: {
-    discussionId: string | undefined;
+    discussionId: string;
     userId: string;
   }) => {
-    if (!discussionId) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
-    }
-
     const discussion = await service.discussion.find.byId(discussionId);
 
     if (!discussion) {
@@ -51,13 +43,9 @@ export namespace AssertOwner {
     discussionCommentId,
     userId,
   }: {
-    discussionCommentId: string | undefined;
+    discussionCommentId: string;
     userId: string;
   }) => {
-    if (!discussionCommentId) {
-      throw new TRPCError({ code: "BAD_REQUEST" });
-    }
-
     const discussionComment =
       await service.discussion.comment.find.byId(discussionCommentId);
 

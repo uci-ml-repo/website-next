@@ -7,6 +7,7 @@ export const MiddlewareRoles = {
   DISCUSSION_AUTHOR: "DISCUSSION_AUTHOR",
   DISCUSSION_COMMENT_AUTHOR: "DISCUSSION_COMMENT_AUTHOR",
   VERIFIED: "VERIFIED",
+  IS_USER_ID: "IS_USER_ID",
   ...Enums.UserRole,
 } as const;
 

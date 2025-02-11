@@ -258,6 +258,8 @@ CREATE INDEX dataset_instance_count_index ON dataset (instance_count);
 
 CREATE INDEX dataset_feature_count_index ON dataset (feature_count);
 
+CREATE INDEX dataset_view_count_index ON dataset (view_count);
+
 CREATE INDEX dataset_donated_at_index ON dataset (donated_at);
 
 -- noinspection SqlResolve
@@ -838,6 +840,24 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
   GROUP BY
     "dataset"."id"
 );
+
+CREATE INDEX dataset_view_id_index ON dataset_view (id);
+
+CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
+
+CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
+
+CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
+
+-- noinspection SqlResolve
+CREATE INDEX dataset_view_ts_search_index ON dataset_view USING gin (
+  SETWEIGHT(
+    TO_TSVECTOR('simple'::regconfig, title),
+    'A'::"char"
+  )
+);
+
+CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
 
 -------------------------------------------------------------------------------
 -- discussion
