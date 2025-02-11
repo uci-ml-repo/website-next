@@ -537,6 +537,18 @@ ALTER COLUMN status type approval_status USING REPLACE(LOWER(status), 'accepted'
 ALTER COLUMN status
 SET DEFAULT 'pending'::approval_status;
 
+-- noinspection SqlResolve
+DELETE FROM keyword
+WHERE
+  NOT EXISTS (
+    SELECT
+      1
+    FROM
+      dataset_keyword
+    WHERE
+      dataset_keyword.keyword_id = keyword.id
+  );
+
 ALTER TABLE dataset_keyword
 DROP CONSTRAINT dataset_keywords_ibfk_1;
 
@@ -842,6 +854,8 @@ CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
 CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
 
 CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
+
+CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
 
 -------------------------------------------------------------------------------
 -- discussion

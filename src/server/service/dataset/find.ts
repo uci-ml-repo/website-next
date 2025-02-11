@@ -17,9 +17,15 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
-function arrayContains(columnName: string, array: string[]) {
+function arrayContainsRaw(columnName: string, array: string[]) {
   return sql.raw(`
    ${columnName} @> ${"'{" + array.join(",") + "}'"}
+`);
+}
+
+function arrayOverlapsRaw(columnName: string, array: string[]) {
+  return sql.raw(`
+   ${columnName} && ${"'{" + array.join(",") + "}'"}
 `);
 }
 
@@ -36,11 +42,11 @@ function buildQuery(query: DatasetQuery) {
   }
 
   if (query.keywords) {
-    conditions.push(arrayContains("keywords", query.keywords));
+    conditions.push(arrayOverlapsRaw("keywords", query.keywords));
   }
 
   if (query.attributes) {
-    conditions.push(arrayContains("attributes", query.attributes));
+    conditions.push(arrayContainsRaw("attributes", query.attributes));
   }
 
   if (query.dataTypes) {
