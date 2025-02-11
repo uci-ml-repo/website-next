@@ -1119,13 +1119,6 @@ ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("
 ALTER TABLE "session"
 ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
 
--- noinspection SqlResolve
-CREATE INDEX "discussion_search_index" ON "discussion" USING gin (
-  (
-    SETWEIGHT(TO_TSVECTOR('english', "title"), 'A') || SETWEIGHT(TO_TSVECTOR('english', "content"), 'D')
-  )
-);
-
 CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 
 CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");

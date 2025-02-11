@@ -9,6 +9,7 @@ const prettierConfig = {
     "prettier-plugin-tailwindcss",
     "prettier-plugin-sql",
     "prettier-plugin-embed",
+    "prettier-plugin-sh",
   ],
   tailwindFunctions: ["cva", "clsx", "cn"],
 };

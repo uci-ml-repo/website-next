@@ -1,4 +1,4 @@
 #!/bin/sh
 
 pnpm lint-staged
-pnpm tsc --noEmit --incremental false  --excludeDirectories '.next'
+pnpm tsc --noEmit --incremental false --excludeDirectories '.next'

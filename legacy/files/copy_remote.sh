@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source ../.env
+
+if [[ -z "$REMOTE_HOST" || -z "$STATIC_FILES_PATH" || -z "$COPY_TO_PATH" ]]; then
+  echo "Required variables are not set: HOST, STATIC_FILES_PATH, COPY_TO_PATH"
+  exit 1
+fi
+
+rm -rf "${COPY_TO_PATH:?}/*"
+
+echo "$REMOTE_HOST:$STATIC_FILES_PATH => $COPY_TO_PATH"
+
+# Find and exclude files larger than 512MB
+ssh "$REMOTE_HOST" "cd \"$STATIC_FILES_PATH\" && find . -type f -size +512M" > ignored
+rsync -az --info=progress2 --max-size=512M "$REMOTE_HOST:$STATIC_FILES_PATH/" "$COPY_TO_PATH/"
