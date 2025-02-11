@@ -32,13 +32,13 @@ export function DatasetRow({
     {
       icon: <Columns3Icon />,
       text: dataset.featureCount
-        ? `${abbreviateDecimal(dataset.featureCount)} Features`
+        ? `${abbreviateDecimal(dataset.featureCount)} ${dataset.featureCount === 1 ? "Feature" : "Features"}`
         : null,
     },
     {
       icon: <Rows3Icon />,
       text: dataset.instanceCount
-        ? `${abbreviateDecimal(dataset.instanceCount)} Instances`
+        ? `${abbreviateDecimal(dataset.instanceCount)} ${dataset.instanceCount === 1 ? "Instance" : "Instances"}`
         : null,
     },
   ];

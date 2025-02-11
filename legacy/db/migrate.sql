@@ -263,14 +263,6 @@ CREATE INDEX dataset_view_count_index ON dataset (view_count);
 CREATE INDEX dataset_donated_at_index ON dataset (donated_at);
 
 -- noinspection SqlResolve
-CREATE INDEX dataset_ts_search_index ON dataset USING gin (
-  SETWEIGHT(
-    TO_TSVECTOR('simple'::regconfig, title),
-    'A'::"char"
-  )
-);
-
--- noinspection SqlResolve
 CREATE INDEX dataset_trgm_search_index ON dataset USING gin (title gin_trgm_ops);
 
 INSERT INTO
@@ -311,7 +303,7 @@ DO $$
   BEGIN
     FOR rec IN
       SELECT dd.id,
-             lower(replace(status, 'FAILED', 'REJECTED'))::approval_status AS status,
+             lower(replace(status, 'FAILED', 'rejected'))::approval_status AS status,
              coalesce(datedonated, CURRENT_TIMESTAMP)                      AS donated_at,   -- TODO populate null data
              coalesce(
                yearcreated,
@@ -848,14 +840,6 @@ CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
 CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
 
 CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
-
--- noinspection SqlResolve
-CREATE INDEX dataset_view_ts_search_index ON dataset_view USING gin (
-  SETWEIGHT(
-    TO_TSVECTOR('simple'::regconfig, title),
-    'A'::"char"
-  )
-);
 
 CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
 

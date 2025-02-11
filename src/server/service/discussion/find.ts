@@ -12,16 +12,6 @@ import type {
 import type { DiscussionQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 
-const DISCUSSION_WEIGHTS = sql`
-  SETWEIGHT(
-    TO_TSVECTOR('english', ${discussion.title}),
-    'A'
-  ) || SETWEIGHT(
-    TO_TSVECTOR('english', ${discussion.content}),
-    'D'
-  )
-`;
-
 function buildQuery(query: DiscussionQuery) {
   let conditions = [];
 
@@ -164,22 +154,6 @@ export class DiscussionFindService {
     query: DiscussionQuery,
     session?: Session | null,
   ) {
-    const tsQuery = sql` PLAINTO_TSQUERY('english', ${query.search ?? ""}) `;
-    const normalizedTsQuery = sql`
-      CASE
-        WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
-          'english',
-          ${tsQuery}::TEXT || ':*'
-        )
-        ELSE ''
-      END
-    `;
-    const rank = sql`
-      TS_RANK(
-        ${DISCUSSION_WEIGHTS},
-        ${normalizedTsQuery}
-      )
-    `;
     const trigramSimilarity = sql`
       similarity (
         ${discussion.title},
@@ -193,7 +167,6 @@ export class DiscussionFindService {
         user: getTableColumns(user),
         dataset: getTableColumns(dataset),
         upvotes: getTableColumns(discussionUpvote),
-        rank: rank.mapWith(Number),
         similarity: trigramSimilarity.mapWith(Number),
       })
       .from(discussion)
@@ -211,22 +184,17 @@ export class DiscussionFindService {
           buildQuery(query),
           query.search
             ? sql`
-                (
-                  ${DISCUSSION_WEIGHTS} @@ ${normalizedTsQuery}
-                )
-                OR (
-                  similarity (
-                    ${discussion.title},
-                    ${query.search}
-                  ) > 0.1
-                )
+                similarity (
+                  ${discussion.title},
+                  ${query.search}
+                ) > 0.1
               `
             : undefined,
         ),
       )
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
-      .orderBy((t) => [desc(t.rank), desc(t.similarity), desc(t.createdAt)])
+      .orderBy((t) => [desc(t.similarity), desc(t.createdAt)])
       .then((rows) => rows.map(transformRow));
   }
 }

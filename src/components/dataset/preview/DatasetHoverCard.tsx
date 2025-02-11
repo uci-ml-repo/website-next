@@ -45,7 +45,7 @@ export function DatasetHoverCard({ dataset }: { dataset: DatasetSelect }) {
     {
       icon: <Columns3Icon />,
       text: dataset.featureCount
-        ? `${abbreviateDecimal(dataset.featureCount)} Features`
+        ? `${abbreviateDecimal(dataset.featureCount)} ${dataset.featureCount === 1 ? "Feature" : "Features"}`
         : null,
       tooltip: "Feature Count",
     },
@@ -58,7 +58,7 @@ export function DatasetHoverCard({ dataset }: { dataset: DatasetSelect }) {
     {
       icon: <Rows3Icon />,
       text: dataset.instanceCount
-        ? `${abbreviateDecimal(dataset.instanceCount)} Instances`
+        ? `${abbreviateDecimal(dataset.instanceCount)} ${dataset.instanceCount === 1 ? "Instance" : "Instances"}`
         : null,
       tooltip: "Instance Count",
     },

@@ -158,15 +158,6 @@ export const dataset = pgTable(
         )
       `,
     ),
-    index("dataset_ts_search_index").using(
-      "gin",
-      sql`
-        SETWEIGHT(
-          TO_TSVECTOR('simple', ${t.title}),
-          'A'
-        )
-      `,
-    ),
     index("dataset_trgm_search_index").using(
       "gin",
       sql`${t.title} gin_trgm_ops`,
@@ -402,20 +393,6 @@ export const discussion = pgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }),
   },
   (t) => [
-    index("discussion_search_index").using(
-      "gin",
-      sql`
-        (
-          SETWEIGHT(
-            TO_TSVECTOR('english', ${t.title}),
-            'A'
-          ) || SETWEIGHT(
-            TO_TSVECTOR('english', ${t.content}),
-            'D'
-          )
-        )
-      `,
-    ),
     index("discussion_trgm_search_index").using(
       "gin",
       sql`${t.title} gin_trgm_ops`,

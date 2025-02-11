@@ -134,7 +134,7 @@ export function DatasetsPreviewSearch() {
       <Card
         ref={cardRef}
         className={cn(
-          "absolute left-0 right-0 top-[calc(100%+1px)] z-10 shadow-2xl",
+          "absolute left-0 right-0 top-[calc(100%+1px)] z-10 shadow-2xl z-50",
           { hidden: !isFocused },
         )}
       >

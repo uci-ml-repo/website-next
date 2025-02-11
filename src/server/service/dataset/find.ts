@@ -18,13 +18,6 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
-const DATASET_VIEW_WEIGHTS = sql`
-  SETWEIGHT(
-    TO_TSVECTOR('simple', ${datasetView.title}),
-    'A'
-  )
-`;
-
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
@@ -110,16 +103,11 @@ export class DatasetFindService {
     return dataset;
   }
 
-  async batch(ids: number[]) {
+  async batch(ids: number[], query: DatasetQuery) {
     const datasets = await db
       .select()
       .from(datasetView)
-      .where(
-        and(
-          inArray(datasetView.id, ids),
-          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
-        ),
-      );
+      .where(and(inArray(datasetView.id, ids), buildQuery(query)));
 
     const datasetMap = new Map(
       datasets.map((dataset) => [dataset.id, dataset]),
@@ -192,22 +180,6 @@ export class DatasetFindService {
   }
 
   private async bySearchQuery(query: DatasetQuery) {
-    const tsQuery = sql` PLAINTO_TSQUERY('simple', ${query.search ?? ""}) `;
-    const normalizedTsQuery = sql`
-      CASE
-        WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
-          'simple',
-          ${tsQuery}::TEXT || ':*'
-        )
-        ELSE ''
-      END
-    `;
-    const rank = sql`
-      TS_RANK(
-        ${DATASET_VIEW_WEIGHTS},
-        ${normalizedTsQuery}
-      )
-    `;
     const trigramSimilarity = sql`
       similarity (
         ${datasetView.title},
@@ -215,59 +187,21 @@ export class DatasetFindService {
       )
     `;
 
-    return db
+    const datasets = await db
       .select({
         id: datasetView.id,
-        title: datasetView.title,
-        yearCreated: datasetView.yearCreated,
-        subtitle: datasetView.subtitle,
-        doi: datasetView.doi,
-        description: datasetView.description,
-        subjectArea: datasetView.subjectArea,
-        instanceCount: datasetView.instanceCount,
-        featureCount: datasetView.featureCount,
-        hasGraphics: datasetView.hasGraphics,
-        isAvailablePython: datasetView.isAvailablePython,
-        externalLink: datasetView.externalLink,
-        slug: datasetView.slug,
-        status: datasetView.status,
-        viewCount: datasetView.viewCount,
-        downloadCount: datasetView.downloadCount,
-        variablesDescription: datasetView.variablesDescription,
-        dataTypes: datasetView.dataTypes,
-        tasks: datasetView.tasks,
-        featureTypes: datasetView.featureTypes,
-        size: datasetView.size,
-        fileCount: datasetView.fileCount,
-        userId: datasetView.userId,
-        donatedAt: datasetView.donatedAt,
-        updatedAt: datasetView.updatedAt,
-        keywords: datasetView.keywords,
-        authors: datasetView.authors,
-        variables: datasetView.variables,
-        attributes: datasetView.attributes,
-        user: datasetView.user,
-        introductoryPaper: datasetView.introductoryPaper,
-        rank: rank.mapWith(Number),
         similarity: trigramSimilarity.mapWith(Number),
       })
       .from(datasetView)
       .where(
         and(
-          buildQuery(query),
-          query.search
-            ? sql`
-                (
-                  ${DATASET_VIEW_WEIGHTS} @@ ${normalizedTsQuery}
-                )
-                OR (
-                  similarity (
-                    ${datasetView.title},
-                    ${query.search}
-                  ) > 0.1
-                )
-              `
-            : undefined,
+          sql`
+            similarity (
+              ${datasetView.title},
+              ${query.search}
+            ) > 0.1
+          `,
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
         ),
       )
       .offset(query.cursor ?? 0)
@@ -279,7 +213,12 @@ export class DatasetFindService {
                 datasetView[field as keyof typeof query.order],
               ),
             )
-          : [desc(t.rank), desc(t.similarity), desc(t.viewCount)],
+          : [desc(t.similarity)],
       );
+
+    return this.batch(
+      datasets.map((d) => d.id),
+      query,
+    );
   }
 }

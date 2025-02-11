@@ -1,19 +1,14 @@
 "use client";
 
+import { getMaterializedViewConfig } from "drizzle-orm/pg-core";
+
 import { Main } from "@/components/layout/Main";
+import { datasetView } from "@/db/schema";
 
 export default function Test() {
-  return (
-    <Main>
-      <div className="flex h-screen flex-col">
-        <div className="h-20 bg-green-500">Top</div>
-        <div className="flex-grow overflow-y-auto bg-red-500">
-          <div className="text-6xl">Middle</div>
-          <div className="text-6xl">Middle</div>
-          <div className="text-6xl">Middle</div>
-        </div>
-        <div className="h-20 bg-green-500">Bottom</div>
-      </div>
-    </Main>
-  );
+  const cols = getMaterializedViewConfig(datasetView).selectedFields;
+
+  console.log(JSON.stringify(cols));
+
+  return <Main />;
 }
