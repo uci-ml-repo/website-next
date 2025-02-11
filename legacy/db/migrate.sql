@@ -707,7 +707,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     COALESCE(
       (
         SELECT
-          ARRAY_AGG("keyword"."name")
+          ARRAY_AGG("keyword"."name"::TEXT)
         FROM
           "keyword"
           JOIN "dataset_keyword" ON "dataset_keyword"."keyword_id" = "keyword"."id"

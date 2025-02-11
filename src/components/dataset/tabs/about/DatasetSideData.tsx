@@ -1,3 +1,4 @@
+import { UserIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -8,38 +9,41 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
   console.log(dataset.authors);
 
   return (
-    <div className="w-80 overflow-hidden space-y-6">
+    <div className="w-80 space-y-6">
       {/* Donated On */}
       <SideDatum title="Donated On">
-        <div>
-          {dataset.donatedAt.toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })}
-        </div>
+        {dataset.donatedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
       </SideDatum>
 
       {/* Keywords */}
-      <SideDatum title="Keywords ">
-        <div className="flex flex-wrap gap-1">
-          {dataset.keywords.length > 0 &&
-            dataset.keywords.map((keyword) => (
-              <Link
-                key={keyword}
-                href={DATASETS_QUERY({ keywords: [keyword] })}
-              >
-                <Badge variant="blue">{keyword}</Badge>
-              </Link>
-            ))}
-        </div>
+      <SideDatum title="Keywords" className="flex flex-wrap gap-1">
+        {dataset.keywords.length > 0 &&
+          dataset.keywords.map((keyword) => (
+            <Link
+              key={keyword}
+              href={DATASETS_QUERY({ keywords: [keyword] })}
+              className="hover:underline text-uci-blue"
+            >
+              <Badge variant="blue">{keyword}</Badge>
+            </Link>
+          ))}
       </SideDatum>
 
+      {/* Authors */}
       <SideDatum title="Authors">
         {dataset.authors.length > 0 &&
           dataset.authors.map((author) => (
             <div key={author.id}>
-              {author.firstName} {author.lastName}
+              <div className="flex space-x-1 items-center">
+                <UserIcon className="size-5 fill-foreground" />
+                <span>
+                  {author.firstName} {author.lastName}
+                </span>
+              </div>
             </div>
           ))}
       </SideDatum>
@@ -74,16 +78,18 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
 function SideDatum({
   title,
   children,
+  className,
 }: {
   title: string;
   children?: React.ReactNode;
+  className?: string;
 }) {
   const blank = <div className="text-muted-foreground">&ndash;</div>;
 
   return (
     <div className="space-y-2">
       <div className="text-lg font-bold">{title}</div>
-      {children ? children : blank}
+      <div className={className}>{children ? children : blank}</div>
     </div>
   );
 }

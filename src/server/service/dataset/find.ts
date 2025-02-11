@@ -1,6 +1,5 @@
 import {
   and,
-  arrayContains,
   arrayOverlaps,
   count,
   desc,
@@ -18,15 +17,30 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
+function arrayContains(columnName: string, array: string[]) {
+  return sql.raw(`
+   ${columnName} @> ${"'{" + array.join(",") + "}'"}
+`);
+}
+
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
+  if (query.search) {
+    conditions.push(sql`
+      similarity (
+        ${datasetView.title},
+        ${query.search}
+      ) > 0.1
+    `);
+  }
+
   if (query.keywords) {
-    conditions.push(arrayContains(datasetView.keywords, query.keywords));
+    conditions.push(arrayContains("keywords", query.keywords));
   }
 
   if (query.attributes) {
-    conditions.push(arrayContains(datasetView.attributes, query.attributes));
+    conditions.push(arrayContains("attributes", query.attributes));
   }
 
   if (query.dataTypes) {
@@ -103,11 +117,11 @@ export class DatasetFindService {
     return dataset;
   }
 
-  async batch(ids: number[], query: DatasetQuery) {
+  async batch(ids: number[]) {
     const datasets = await db
       .select()
       .from(datasetView)
-      .where(and(inArray(datasetView.id, ids), buildQuery(query)));
+      .where(and(inArray(datasetView.id, ids)));
 
     const datasetMap = new Map(
       datasets.map((dataset) => [dataset.id, dataset]),
@@ -201,7 +215,7 @@ export class DatasetFindService {
               ${query.search}
             ) > 0.1
           `,
-          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
+          buildQuery(query),
         ),
       )
       .offset(query.cursor ?? 0)
@@ -216,9 +230,6 @@ export class DatasetFindService {
           : [desc(t.similarity)],
       );
 
-    return this.batch(
-      datasets.map((d) => d.id),
-      query,
-    );
+    return this.batch(datasets.map((d) => d.id));
   }
 }

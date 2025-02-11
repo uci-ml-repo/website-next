@@ -70,10 +70,7 @@ export function DatasetsSearch() {
                 {(!!trueFilterCount || filters.search) && (
                   <div className="text-lg text-muted-foreground">
                     Found {data.count}{" "}
-                    {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
-                    {filters.search && `for '${filters.search}' `}
-                    {!!trueFilterCount &&
-                      `matching ${trueFilterCount} ${trueFilterCount === 1 ? "filter" : "filters"}`}
+                    {data.datasets.length === 1 ? "dataset" : "datasets"}
                   </div>
                 )}
                 <div>
