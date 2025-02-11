@@ -248,21 +248,6 @@ CREATE TABLE "dataset" (
   )
 );
 
-ALTER TABLE dataset owner TO postgres;
-
-CREATE INDEX dataset_id_index ON dataset (id);
-
-CREATE INDEX dataset_instance_count_index ON dataset (instance_count);
-
-CREATE INDEX dataset_feature_count_index ON dataset (feature_count);
-
-CREATE INDEX dataset_view_count_index ON dataset (view_count);
-
-CREATE INDEX dataset_donated_at_index ON dataset (donated_at);
-
--- noinspection SqlResolve
-CREATE INDEX dataset_trgm_search_index ON dataset USING gin (title gin_trgm_ops);
-
 INSERT INTO
   descriptive_questions (
     datasetid,
@@ -938,6 +923,8 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
 
 CREATE INDEX dataset_view_id_index ON dataset_view (id);
 
+CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
+
 CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
 
 CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
@@ -947,6 +934,10 @@ CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
 CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
 
 CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
+
+CREATE INDEX dataset_view_variable_names_index ON dataset_view USING gin (variable_names);
+
+CREATE INDEX dataset_view_status_index ON dataset_view (status);
 
 -------------------------------------------------------------------------------
 -- discussion

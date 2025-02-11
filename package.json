@@ -29,7 +29,7 @@
   "scripts": {
     "build": "next build",
     "db:migrate": "drizzle-kit migrate",
-    "db:reset": "docker compose down && docker compose up -d && sleep 1 && drizzle-kit push",
+    "db:reset": "docker compose down && docker compose up -d --build && sleep 1 && drizzle-kit push",
     "db:seed": "tsx ./src/db/seed/index.ts",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev --turbopack",

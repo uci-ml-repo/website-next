@@ -124,11 +124,6 @@ export const dataset = pgTable(
       .$onUpdate(() => new Date()),
   },
   (t) => [
-    index("dataset_id_index").on(t.id),
-    index("dataset_instance_count_index").on(t.instanceCount),
-    index("dataset_feature_count_index").on(t.featureCount),
-    index("dataset_view_count_index").on(t.viewCount),
-    index("dataset_donated_at_index").on(t.donatedAt),
     check(
       "accepted_check",
       sql`
@@ -157,10 +152,6 @@ export const dataset = pgTable(
           AND ${t.fileCount} IS NULL
         )
       `,
-    ),
-    index("dataset_trgm_search_index").using(
-      "gin",
-      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );
