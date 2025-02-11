@@ -1,4 +1,5 @@
 import GoogleAnalyticsService from "@/server/service/analytics";
+import { AttributeService } from "@/server/service/attribute";
 import { BookmarkService } from "@/server/service/bookmark";
 import { DatasetService } from "@/server/service/dataset";
 import { DiscussionService } from "@/server/service/discussion";
@@ -10,6 +11,7 @@ import { UserService } from "@/server/service/user";
 class RepositoryService {
   constructor(
     readonly analytics = new GoogleAnalyticsService(),
+    readonly attribute = new AttributeService(),
     readonly bookmark = new BookmarkService(),
     readonly dataset = new DatasetService(),
     readonly discussion = new DiscussionService(),

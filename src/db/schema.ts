@@ -799,7 +799,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           ARRAY[]::jsonb[]
         )
       `.as("variables") as SQL.Aliased<VariableSelect[]>,
-      attributes: sql`
+      variableNames: sql`
         COALESCE(
           (
             SELECT
@@ -811,7 +811,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
           ),
           ARRAY[]::TEXT[]
         )
-      `.as("attributes") as SQL.Aliased<string[]>,
+      `.as("variable_names") as SQL.Aliased<string[]>,
       user: sql`
         (
           SELECT

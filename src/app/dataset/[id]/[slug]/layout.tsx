@@ -71,16 +71,18 @@ export default async function Layout({
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
       <Main className="space-y-8">
-        <DatasetTitleGroup dataset={dataset} />
+        <div className="backdrop-gradient-blur space-y-6">
+          <DatasetTitleGroup dataset={dataset} />
 
-        <Card className="rounded-full md:hidden">
-          <DatasetInteractions
-            dataset={dataset}
-            className="w-full justify-around"
-          />
-        </Card>
+          <Card className="rounded-full md:hidden">
+            <DatasetInteractions
+              dataset={dataset}
+              className="w-full justify-around"
+            />
+          </Card>
 
-        <DatasetTabs basePath={basePath} dataset={dataset} />
+          <DatasetTabs basePath={basePath} dataset={dataset} />
+        </div>
 
         {children}
       </Main>

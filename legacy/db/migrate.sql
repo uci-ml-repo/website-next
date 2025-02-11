@@ -85,8 +85,6 @@ DROP TABLE requests;
 
 DROP TABLE tabular;
 
-DROP TABLE variables;
-
 DROP TABLE variable_info;
 
 -------------------------------------------------------------------------------
@@ -461,7 +459,7 @@ VALUES
     rec.size
   );
 
-EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'Skipping record for donated dataset with id: %, status: % due to error: %',
+EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'Skipping dataset id: %, status: %, error: %',
 rec.id,
 rec.status,
 SQLERRM;
@@ -488,6 +486,48 @@ CREATE TABLE variable (
   units TEXT,
   dataset_id INTEGER NOT NULL CONSTRAINT variable_dataset_id_dataset_id_fk REFERENCES dataset
 );
+
+INSERT INTO
+  variable (
+    id,
+    name,
+    description,
+    role,
+    type,
+    missing_values,
+    units,
+    dataset_id
+  )
+SELECT
+  gen_random_uuid (),
+  TRIM(name),
+  variables.description,
+  (
+    CASE
+      WHEN NOT (
+        LOWER(TRIM(role)) = ANY (ENUM_RANGE(NULL::dataset_feature_role)::TEXT[])
+      ) THEN 'feature'
+      ELSE LOWER(TRIM(role))
+    END
+  )::dataset_feature_role,
+  (
+    CASE
+      WHEN NOT (
+        LOWER(TRIM(type)) = ANY (ENUM_RANGE(NULL::dataset_feature_type)::TEXT[])
+      ) THEN 'other'
+      ELSE LOWER(TRIM(type))
+    END
+  )::dataset_feature_type,
+  missingvalues,
+  units,
+  datasetid
+FROM
+  variables
+  INNER JOIN dataset ON variables.datasetid = dataset.id
+WHERE
+  TRIM(name) != '';
+
+DROP TABLE variables;
 
 -------------------------------------------------------------------------------
 -- creators + dataset_creators -> author
@@ -626,6 +666,10 @@ WHERE
       dataset_keyword.keyword_id = keyword.id
       AND d.status = 'approved'
   );
+
+UPDATE keyword
+SET
+  name = TRIM(name);
 
 ALTER TABLE keyword
 ALTER COLUMN id
@@ -835,7 +879,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
           "variable"."dataset_id" = "dataset"."id"
       ),
       ARRAY[]::TEXT[]
-    ) AS "attributes",
+    ) AS "variable_names",
     (
       SELECT
         JSONB_BUILD_OBJECT(

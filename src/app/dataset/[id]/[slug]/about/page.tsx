@@ -20,8 +20,8 @@ export default async function Page({
   }
 
   return (
-    <div className="space-y-16">
-      <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
+    <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
+      <div className="space-y-16">
         <div className="w-full space-y-8">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">About Dataset</h2>
@@ -29,16 +29,16 @@ export default async function Page({
               {dataset.description}
             </div>
           </div>
+
           <DatasetQuickStats dataset={dataset} />
-          <hr className="lg:hidden" />
         </div>
 
-        <DatasetSideData dataset={dataset} />
+        <DatasetVariables dataset={dataset} />
+
+        <DatasetMetadata dataset={dataset} />
       </div>
 
-      <DatasetVariables dataset={dataset} />
-
-      <DatasetMetadata dataset={dataset} />
+      <DatasetSideData dataset={dataset} />
     </div>
   );
 }
