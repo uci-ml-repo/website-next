@@ -17,6 +17,7 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
+// FIXME: Couldn't get built-ins to work with materialized views
 function arrayContainsRaw(columnName: string, array: string[]) {
   return sql.raw(`
    ${columnName} @> ${"$${" + array.join(",") + "}$$"}
