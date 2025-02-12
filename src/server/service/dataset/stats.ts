@@ -1,20 +1,21 @@
-import { desc } from "drizzle-orm";
+import { desc, isNotNull } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dataset } from "@/db/schema";
+import { datasetView } from "@/db/schema";
 
 export class DatasetStatsService {
   async maxDataSize() {
     const [maxInstanceCount] = await db
       .select()
-      .from(dataset)
-      .orderBy(desc(dataset.instanceCount))
+      .from(datasetView)
+      .orderBy(desc(datasetView.instanceCount))
       .limit(1);
 
     const [maxFeatureCount] = await db
       .select()
-      .from(dataset)
-      .orderBy(desc(dataset.featureCount))
+      .from(datasetView)
+      .orderBy(desc(datasetView.featureCount))
+      .where(isNotNull(datasetView.featureCount))
       .limit(1);
 
     return {

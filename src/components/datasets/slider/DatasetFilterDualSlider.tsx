@@ -35,6 +35,9 @@ export function DatasetFilterDualSlider({
   const { filters, setFilters, debouncedSetFilters } =
     useQueryFilters<DatasetQuery>();
 
+  console.log(label);
+  console.log(maxRawValue);
+
   const [values, setValues] = useState<number[]>([0, 0]);
   const [initialized, setInitialized] = useState(false);
 
@@ -137,7 +140,7 @@ export function DatasetFilterDualSlider({
         });
       }}
     >
-      {maxRawValue ? (
+      {typeof maxRawValue === "number" ? (
         <div className="px-2">
           <DualRangeSlider
             label={(rawValue) => abbreviateDecimal(log(rawValue ?? 0), 2)}
