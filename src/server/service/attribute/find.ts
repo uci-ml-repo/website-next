@@ -35,6 +35,10 @@ export class AttributeFindService {
       .groupBy(sql`attribute`)
       .orderBy((t) => desc(t.count));
 
-    return attributes;
+    const attributeCountMap = new Map<string, number>(
+      attributes.map(({ attribute, count }) => [attribute, count]),
+    );
+
+    return attributeCountMap;
   }
 }

@@ -3,6 +3,7 @@ import { XIcon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import { motion } from "motion/react";
 import { useMemo, useState, useTransition } from "react";
+import { FixedSizeList as List } from "react-window";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -12,11 +13,16 @@ export function Multiselect({
   values,
   selectedValues,
   setSelectedValues,
+  rowHeight = 30,
+  maxListHeight = 240,
 }: {
   placeholder?: string;
   values: string[];
   selectedValues: string[];
   setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
+  rowHeight?: number;
+  maxListHeight?: number;
+  rowRenderer?: () => React.ReactNode;
 }) {
   const [isPending, startTransition] = useTransition();
   const [searchValue, setSearchValue] = useState("");
@@ -29,6 +35,8 @@ export function Multiselect({
     () => matchSorter(values, searchValue),
     [searchValue, values],
   );
+
+  const listHeight = Math.min(matches.length * rowHeight, maxListHeight);
 
   return (
     <Ariakit.ComboboxProvider
@@ -67,6 +75,7 @@ export function Multiselect({
           </motion.button>
         ))}
       </div>
+
       <Ariakit.Combobox
         placeholder={placeholder}
         className={cn(
@@ -79,24 +88,36 @@ export function Multiselect({
       <Ariakit.ComboboxPopover
         sameWidth
         gutter={4}
-        className="z-40 max-h-60 snap-y overflow-y-auto rounded-lg bg-card shadow-lg border"
+        className="z-40 snap-y overflow-y-auto rounded-lg bg-card shadow-lg border"
         aria-busy={isPending}
       >
-        {matches.map((value) => (
-          <Ariakit.ComboboxItem
-            key={value}
-            value={value}
-            focusOnHover
-            className={cn(
-              "flex cursor-pointer snap-start items-center space-x-0.5 p-1",
-              "data-[active-item]:bg-accent",
-            )}
+        {matches.length > 0 ? (
+          <List
+            height={listHeight}
+            itemCount={matches.length}
+            itemSize={rowHeight}
+            width="100%"
           >
-            <Ariakit.ComboboxItemCheck />
-            <span>{value}</span>
-          </Ariakit.ComboboxItem>
-        ))}
-        {!matches.length && (
+            {({ index, style }) => {
+              const value = searchValue ? matches[index] : values[index];
+              return (
+                <Ariakit.ComboboxItem
+                  key={value}
+                  value={value}
+                  focusOnHover
+                  style={style}
+                  className={cn(
+                    "flex cursor-pointer snap-start items-center space-x-0.5 p-1",
+                    "data-[active-item]:bg-accent overflow-hidden",
+                  )}
+                >
+                  <Ariakit.ComboboxItemCheck />
+                  <span className="truncate">{value}</span>
+                </Ariakit.ComboboxItem>
+              );
+            }}
+          </List>
+        ) : (
           <div className="p-2 text-muted-foreground">No results found</div>
         )}
       </Ariakit.ComboboxPopover>

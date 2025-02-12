@@ -57,7 +57,7 @@ export function DatasetKeywordsFilter({
           placeholder="Search keywords"
           selectedValues={selectedKeywords}
           setSelectedValues={setSelectedKeywords}
-          values={data.map((keyword) => keyword.name)}
+          values={data}
         />
       )}
     </DatasetsFilterItem>

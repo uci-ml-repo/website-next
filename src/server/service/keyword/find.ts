@@ -6,9 +6,13 @@ import { keyword } from "@/db/schema";
 
 export class KeywordFindService {
   async approved() {
-    return db
-      .select()
+    const keywords = await db
+      .select({
+        name: keyword.name,
+      })
       .from(keyword)
       .where(eq(keyword.status, Enums.ApprovalStatus.APPROVED));
+
+    return keywords.map((row) => row.name);
   }
 }

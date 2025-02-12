@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
+import { Multiselect } from "@/components/ui/multiselect";
 import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
@@ -20,23 +21,21 @@ export function DatasetAttributesFilter({
 
   useEffect(() => {
     if (selectedAttributes.length === 0) {
-      setFilters({ keywords: undefined });
+      setFilters({ attributes: undefined });
     } else {
-      setFilters({ keywords: selectedAttributes });
+      setFilters({ attributes: selectedAttributes });
     }
   }, [selectedAttributes, setFilters]);
 
   useEffect(() => {
-    if (typeof filters.keywords === "undefined") {
-      setFilters({ keywords: undefined });
+    if (typeof filters.attributes === "undefined") {
+      setFilters({ attributes: undefined });
       setSelectedAttributes([]);
     }
-  }, [filters.keywords, setFilters]);
+  }, [filters.attributes, setFilters]);
 
   const { data, isLoading } =
     trpc.variable.find.remainingFilters.useQuery(selectedAttributes);
-
-  console.log(data);
 
   return (
     <DatasetsFilterItem
@@ -52,14 +51,14 @@ export function DatasetAttributesFilter({
           <Spinner />
         </div>
       )}
-      {/*{data && (*/}
-      {/*  <Multiselect*/}
-      {/*    placeholder="Search keywords"*/}
-      {/*    selectedValues={selectedAttributes}*/}
-      {/*    setSelectedValues={setSelectedAttributes}*/}
-      {/*    values={data.map((attribute) => attribute.attribute)}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {data && (
+        <Multiselect
+          placeholder="Search keywords"
+          selectedValues={selectedAttributes}
+          setSelectedValues={setSelectedAttributes}
+          values={data.keys().toArray()}
+        />
+      )}
     </DatasetsFilterItem>
   );
 }
