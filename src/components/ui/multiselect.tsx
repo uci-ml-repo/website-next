@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { XIcon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import { motion } from "motion/react";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { FixedSizeList as List } from "react-window";
 
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,7 @@ export function Multiselect({
   maxListHeight = 240,
 }: {
   placeholder?: string;
-  values: string[];
+  values: string[] | Map<string, string | number>;
   selectedValues: string[];
   setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
   rowHeight?: number;
@@ -27,16 +27,26 @@ export function Multiselect({
   const [isPending, startTransition] = useTransition();
   const [searchValue, setSearchValue] = useState("");
 
-  const removeValue = (value: string) => {
-    setSelectedValues((prev) => prev.filter((v) => v !== value));
-  };
+  const listRef = useRef<List>(null);
+
+  const _values = values instanceof Map ? values.keys().toArray() : values;
 
   const matches = useMemo(
-    () => matchSorter(values, searchValue),
-    [searchValue, values],
+    () => matchSorter(_values, searchValue),
+    [_values, searchValue],
   );
 
   const listHeight = Math.min(matches.length * rowHeight, maxListHeight);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo(0);
+    }
+  }, [searchValue]);
+
+  const removeValue = (value: string) => {
+    setSelectedValues((prev) => prev.filter((v) => v !== value));
+  };
 
   return (
     <Ariakit.ComboboxProvider
@@ -97,9 +107,11 @@ export function Multiselect({
             itemCount={matches.length}
             itemSize={rowHeight}
             width="100%"
+            ref={listRef}
           >
             {({ index, style }) => {
-              const value = searchValue ? matches[index] : values[index];
+              const value = searchValue ? matches[index] : _values[index];
+
               return (
                 <Ariakit.ComboboxItem
                   key={value}
@@ -108,11 +120,20 @@ export function Multiselect({
                   style={style}
                   className={cn(
                     "flex cursor-pointer snap-start items-center space-x-0.5 p-1",
-                    "data-[active-item]:bg-accent overflow-hidden",
+                    "data-[active-item]:bg-accent overflow-hidden w-full",
                   )}
                 >
-                  <Ariakit.ComboboxItemCheck />
-                  <span className="truncate">{value}</span>
+                  <Ariakit.ComboboxItemCheck className="shrink-0" />
+                  {values instanceof Map ? (
+                    <span className="flex justify-between min-w-0 w-full space-x-2">
+                      <span className="truncate">{value}</span>
+                      <span className="text-muted-foreground">
+                        ({values.get(value)})
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="truncate">{value}</span>
+                  )}
                 </Ariakit.ComboboxItem>
               );
             }}

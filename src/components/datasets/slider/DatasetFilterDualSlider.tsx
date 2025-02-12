@@ -35,9 +35,6 @@ export function DatasetFilterDualSlider({
   const { filters, setFilters, debouncedSetFilters } =
     useQueryFilters<DatasetQuery>();
 
-  console.log(label);
-  console.log(maxRawValue);
-
   const [values, setValues] = useState<number[]>([0, 0]);
   const [initialized, setInitialized] = useState(false);
 

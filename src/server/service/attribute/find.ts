@@ -4,6 +4,7 @@ import {
   count,
   desc,
   eq,
+  gt,
   notInArray,
   sql,
 } from "drizzle-orm";
@@ -33,6 +34,7 @@ export class AttributeFindService {
         ),
       )
       .groupBy(sql`attribute`)
+      .having(gt(count(), 1))
       .orderBy((t) => desc(t.count));
 
     const attributeCountMap = new Map<string, number>(

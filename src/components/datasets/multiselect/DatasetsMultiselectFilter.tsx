@@ -15,7 +15,7 @@ interface GenericFilterProps extends DatasetFiltersProps {
   placeholder: string;
   filterKey: keyof DatasetQuery;
   useData: (selectedValues: string[]) => {
-    data: string | Map<string, string | number> | undefined;
+    data: string[] | Map<string, string | number> | undefined;
     isLoading: boolean;
     isError: boolean;
   };
@@ -54,15 +54,6 @@ export function DatasetMultiSelectFilter({
 
   const { data, isLoading, isError } = useData(selectedValues);
 
-  const values: string[] = data
-    ? data instanceof Map
-      ? data
-          .entries()
-          .map(([key, value]) => `${key} ${value}`)
-          .toArray()
-      : (data as unknown as string[])
-    : [];
-
   return (
     <DatasetsFilterItem
       label={label}
@@ -94,7 +85,7 @@ export function DatasetMultiSelectFilter({
           placeholder={placeholder}
           selectedValues={selectedValues}
           setSelectedValues={setSelectedValues}
-          values={values}
+          values={data ?? []}
         />
       )}
     </DatasetsFilterItem>
