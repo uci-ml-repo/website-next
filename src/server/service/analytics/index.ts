@@ -119,7 +119,7 @@ export class GoogleAnalyticsService {
     startDate = analyticsInceptionDate,
     endDate = "today",
   ) {
-    const dataset = await service.dataset.find.byId({ datasetId: id });
+    const dataset = await service.dataset.find.byId(id);
 
     if (!dataset) {
       throw new Error(`dataset with ID ${id} not found`);

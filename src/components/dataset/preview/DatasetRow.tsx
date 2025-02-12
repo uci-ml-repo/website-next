@@ -9,11 +9,11 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
+import type { DatasetPreviewResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
 
 interface DatasetRowProps extends React.ComponentProps<"a"> {
-  dataset: DatasetResponse;
+  dataset: DatasetPreviewResponse;
   hoverCard?: boolean;
 }
 

@@ -17,7 +17,7 @@ import {
   CarouselPrevious,
   CarouselScrollDots,
 } from "@/components/ui/carousel";
-import type { DatasetResponse } from "@/lib/types";
+import type { DatasetPreviewResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface DatasetGroupProps {
@@ -25,7 +25,7 @@ interface DatasetGroupProps {
   icon?: React.ReactNode;
   seeAllHref?: string;
   endCard?: React.ReactNode;
-  datasets: DatasetResponse[];
+  datasets: DatasetPreviewResponse[];
 }
 
 export function DatasetCardCarousel({

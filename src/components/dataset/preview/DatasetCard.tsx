@@ -17,8 +17,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { DatasetSelect } from "@/db/types";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
+import type { DatasetPreviewResponse } from "@/lib/types";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -27,7 +27,7 @@ import {
 } from "@/lib/utils";
 
 interface DatasetCardProps {
-  dataset: DatasetSelect;
+  dataset: DatasetPreviewResponse;
   ref?: React.Ref<HTMLDivElement>;
   className?: string;
 }

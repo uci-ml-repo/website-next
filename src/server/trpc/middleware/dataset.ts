@@ -12,9 +12,7 @@ const t = initTRPC.context<typeof createContext>().create({ transformer });
 export const datasetAccessProcedure = t.procedure
   .input(z.object({ datasetId: z.number() }))
   .use(async ({ input, ctx, next }) => {
-    const dataset = await service.dataset.find.byId({
-      datasetId: input.datasetId,
-    });
+    const dataset = await service.dataset.find.byId(input.datasetId);
 
     if (!dataset) {
       throw new TRPCError({ code: "NOT_FOUND" });

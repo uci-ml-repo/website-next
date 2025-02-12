@@ -91,23 +91,38 @@ function buildQuery(query: DatasetQuery) {
   return and(...conditions);
 }
 
+const previewSelect = {
+  id: datasetView.id,
+  title: datasetView.title,
+  yearCreated: datasetView.yearCreated,
+  subtitle: datasetView.subtitle,
+  description: datasetView.description,
+  subjectArea: datasetView.subjectArea,
+  instanceCount: datasetView.instanceCount,
+  featureCount: datasetView.featureCount,
+  hasGraphics: datasetView.hasGraphics,
+  isAvailablePython: datasetView.isAvailablePython,
+  externalLink: datasetView.externalLink,
+  slug: datasetView.slug,
+  status: datasetView.status,
+  viewCount: datasetView.viewCount,
+  downloadCount: datasetView.downloadCount,
+  dataTypes: datasetView.dataTypes,
+  tasks: datasetView.tasks,
+  featureTypes: datasetView.featureTypes,
+  size: datasetView.size,
+  fileCount: datasetView.fileCount,
+  userId: datasetView.userId,
+  donatedAt: datasetView.donatedAt,
+  updatedAt: datasetView.updatedAt,
+};
+
 export class DatasetFindService {
-  async byId({
-    datasetId,
-    query,
-  }: {
-    datasetId: number;
-    query?: DatasetQuery;
-  }) {
+  async byId(id: number) {
     const [dataset] = await db
       .select()
       .from(datasetView)
-      .where(
-        and(
-          query ? buildQuery(query) : undefined,
-          eq(datasetView.id, datasetId),
-        ),
-      );
+      .where(and(eq(datasetView.id, id)));
     return dataset;
   }
 
@@ -126,7 +141,7 @@ export class DatasetFindService {
 
   async batch(ids: number[]) {
     const datasets = await db
-      .select()
+      .select(previewSelect)
       .from(datasetView)
       .where(and(inArray(datasetView.id, ids)));
 
@@ -148,7 +163,7 @@ export class DatasetFindService {
 
   async byUserId({ userId }: { userId: string }) {
     return db
-      .select()
+      .select(previewSelect)
       .from(datasetView)
       .where(
         and(
@@ -192,7 +207,7 @@ export class DatasetFindService {
       : [desc(datasetView.viewCount)];
 
     return db
-      .select()
+      .select(previewSelect)
       .from(datasetView)
       .where(buildQuery(query))
       .offset(query.cursor ?? 0)

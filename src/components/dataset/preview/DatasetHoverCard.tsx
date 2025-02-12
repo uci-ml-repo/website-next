@@ -24,8 +24,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { DatasetSelect } from "@/db/types";
 import { DATASET_ROUTE } from "@/lib/routes";
+import type { DatasetPreviewResponse } from "@/lib/types";
 import {
   abbreviateDecimal,
   abbreviateFileSize,
@@ -40,7 +40,11 @@ type DatasetStat = {
   mobileExclude?: boolean;
 };
 
-export function DatasetHoverCard({ dataset }: { dataset: DatasetSelect }) {
+export function DatasetHoverCard({
+  dataset,
+}: {
+  dataset: DatasetPreviewResponse;
+}) {
   const datasetStats: DatasetStat[] = [
     {
       icon: <Columns3Icon />,

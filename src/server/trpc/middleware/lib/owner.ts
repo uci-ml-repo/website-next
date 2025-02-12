@@ -10,7 +10,7 @@ export namespace AssertOwner {
     datasetId: number;
     userId: string;
   }) => {
-    const dataset = await service.dataset.find.byId({ datasetId });
+    const dataset = await service.dataset.find.byId(datasetId);
 
     if (!dataset) {
       throw new TRPCError({ code: "NOT_FOUND" });

@@ -6,6 +6,10 @@ export type DatasetResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byId"]
 >;
 
+export type DatasetPreviewResponse = NonNullable<
+  RouterOutput["dataset"]["find"]["byQuery"]["datasets"][number]
+>;
+
 export type DatasetQueryResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byQuery"]
 >;
