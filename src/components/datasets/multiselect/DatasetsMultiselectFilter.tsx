@@ -54,11 +54,12 @@ export function DatasetMultiSelectFilter({
 
   const { data, isLoading, isError } = useData(selectedValues);
 
-  // If the data is a Map, transform it into an array of "key value" strings.
-  // Otherwise, assume it's already an array of strings.
   const values: string[] = data
     ? data instanceof Map
-      ? Array.from(data.entries()).map(([key, value]) => `${key} ${value}`)
+      ? data
+          .entries()
+          .map(([key, value]) => `${key} ${value}`)
+          .toArray()
       : (data as unknown as string[])
     : [];
 
