@@ -14,7 +14,7 @@ const prettierConfig = {
   tailwindFunctions: ["cva", "clsx", "cn"],
 };
 
-/** @type {import('prettier-plugin-embed').PrettierPluginEmbedOptions} */
+/** @type {import('prettier-plugin-embed').PluginEmbedOptions} */
 const prettierPluginEmbedConfig = {
   embeddedSqlTags: ["sql"],
 };
@@ -27,9 +27,7 @@ const prettierPluginSqlConfig = {
   functionCase: "upper",
 };
 
-/**
- * @type {import("prettier").Options}
- */
+/** @type {import("prettier").Options} */
 const config = {
   ...prettierConfig,
   ...prettierPluginEmbedConfig,
