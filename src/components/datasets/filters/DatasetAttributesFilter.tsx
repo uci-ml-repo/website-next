@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
+import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -32,8 +33,10 @@ export function DatasetAttributesFilter({
     }
   }, [filters.keywords, setFilters]);
 
-  const attributesQuery =
+  const { data, isLoading } =
     trpc.variable.find.remainingFilters.useQuery(selectedAttributes);
+
+  console.log(data);
 
   return (
     <DatasetsFilterItem
@@ -44,8 +47,19 @@ export function DatasetAttributesFilter({
       tooltipOpen={tooltipOpen}
       clearFilter={() => setFilters({ attributes: undefined })}
     >
-      <div>{JSON.stringify(attributesQuery.data ?? [])}</div>
-      {/*<Multiselect placeholder="Attribute" />*/}
+      {isLoading && (
+        <div className="h-10 flex w-full justify-center">
+          <Spinner />
+        </div>
+      )}
+      {/*{data && (*/}
+      {/*  <Multiselect*/}
+      {/*    placeholder="Search keywords"*/}
+      {/*    selectedValues={selectedAttributes}*/}
+      {/*    setSelectedValues={setSelectedAttributes}*/}
+      {/*    values={data.map((attribute) => attribute.attribute)}*/}
+      {/*  />*/}
+      {/*)}*/}
     </DatasetsFilterItem>
   );
 }

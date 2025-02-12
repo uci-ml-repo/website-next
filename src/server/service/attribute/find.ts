@@ -16,7 +16,7 @@ export class AttributeFindService {
   async remainingFilters(attributeFilters: string[]) {
     const attributes = await db
       .select({
-        attribute: sql`attribute`,
+        attribute: sql<string>`attribute`,
         count: count(),
       })
       .from(sql`

@@ -4,6 +4,7 @@ import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Multiselect } from "@/components/ui/multiselect";
+import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -18,7 +19,7 @@ export function DatasetKeywordsFilter({
     filters.keywords ?? [],
   );
 
-  const { data } = trpc.keyword.find.approved.useQuery();
+  const { data, isLoading } = trpc.keyword.find.approved.useQuery();
 
   useEffect(() => {
     if (selectedKeywords.length === 0) {
@@ -46,6 +47,11 @@ export function DatasetKeywordsFilter({
       tooltipContent="Keywords that describe the dataset"
       clearFilter={() => setFilters({ keywords: undefined })}
     >
+      {isLoading && (
+        <div className="h-10 flex w-full justify-center">
+          <Spinner />
+        </div>
+      )}
       {data && (
         <Multiselect
           placeholder="Search keywords"
