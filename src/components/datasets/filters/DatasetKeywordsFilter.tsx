@@ -1,65 +1,16 @@
-import { useEffect, useState } from "react";
-
-import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import { Multiselect } from "@/components/ui/multiselect";
-import { Spinner } from "@/components/ui/spinner";
-import type { DatasetQuery } from "@/server/schema/dataset";
+import { DatasetMultiSelectFilter } from "@/components/datasets/multiselect/DatasetsMultiselectFilter";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetKeywordsFilter({
-  tooltipOpen,
-  dropdownOpen,
-  onDropdownOpenChange,
-}: DatasetFiltersProps) {
-  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
-
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(
-    filters.keywords ?? [],
-  );
-
-  const { data, isLoading } = trpc.keyword.find.approved.useQuery();
-
-  useEffect(() => {
-    if (selectedKeywords.length === 0) {
-      setFilters({ keywords: undefined });
-    } else {
-      setFilters({ keywords: selectedKeywords });
-    }
-  }, [selectedKeywords, setFilters]);
-
-  useEffect(() => {
-    if (typeof filters.keywords === "undefined") {
-      setFilters({ keywords: undefined });
-      setSelectedKeywords([]);
-    }
-  }, [filters.keywords, setFilters]);
-
+export function DatasetKeywordsFilter(props: DatasetFiltersProps) {
   return (
-    <DatasetsFilterItem
+    <DatasetMultiSelectFilter
+      {...props}
       label="Keywords"
-      dropdownOpen={dropdownOpen}
-      onDropdownOpenChange={onDropdownOpenChange}
-      active={selectedKeywords.length > 0}
-      activeCount={selectedKeywords.length}
-      tooltipOpen={tooltipOpen}
       tooltipContent="Keywords that describe the dataset"
-      clearFilter={() => setFilters({ keywords: undefined })}
-    >
-      {isLoading && (
-        <div className="h-10 flex w-full justify-center">
-          <Spinner />
-        </div>
-      )}
-      {data && (
-        <Multiselect
-          placeholder="Search keywords"
-          selectedValues={selectedKeywords}
-          setSelectedValues={setSelectedKeywords}
-          values={data}
-        />
-      )}
-    </DatasetsFilterItem>
+      placeholder="Search keywords"
+      filterKey="keywords"
+      useData={() => trpc.keyword.find.approved.useQuery()}
+    />
   );
 }

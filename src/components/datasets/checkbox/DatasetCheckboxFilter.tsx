@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DatasetFilterCheckboxItem } from "@/components/datasets/checkbox/DatasetFilterCheckboxItem";
+import { DatasetCheckboxFilterItem } from "@/components/datasets/checkbox/DatasetCheckboxFilterItem";
 
 interface DatasetFilterCheckboxProps<T extends string> {
   values: T[];
@@ -8,7 +8,7 @@ interface DatasetFilterCheckboxProps<T extends string> {
   isToggled: (value: T) => boolean;
 }
 
-export function DatasetFilterCheckbox<T extends string>({
+export function DatasetCheckboxFilter<T extends string>({
   toggle,
   isToggled,
   values,
@@ -18,7 +18,7 @@ export function DatasetFilterCheckbox<T extends string>({
       {values.map((value, index) => (
         <React.Fragment key={value}>
           {index > 0 && <hr className="border-border/60" />}
-          <DatasetFilterCheckboxItem
+          <DatasetCheckboxFilterItem
             toggle={toggle}
             value={value}
             checked={isToggled(value)}

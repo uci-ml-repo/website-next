@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DatasetFilterCheckbox } from "@/components/datasets/checkbox/DatasetFilterCheckbox";
+import { DatasetCheckboxFilter } from "@/components/datasets/checkbox/DatasetCheckboxFilter";
 import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
@@ -28,7 +28,7 @@ export function DatasetSubjectAreasFilter({
       activeCount={filters.subjectAreas?.length}
       clearFilter={clear}
     >
-      <DatasetFilterCheckbox
+      <DatasetCheckboxFilter
         values={enumToArray(Enums.DatasetSubjectArea)}
         toggle={toggle}
         isToggled={isToggled}

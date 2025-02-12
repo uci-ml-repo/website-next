@@ -9,7 +9,7 @@ interface DatasetFilterCheckboxItemProps<T extends string> {
   checked: boolean;
 }
 
-export function DatasetFilterCheckboxItem<T extends string>({
+export function DatasetCheckboxFilterItem<T extends string>({
   toggle,
   value,
   checked,
