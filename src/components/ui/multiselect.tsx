@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { XIcon } from "lucide-react";
+import { CheckIcon, XIcon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
@@ -98,7 +98,7 @@ export function Multiselect({
       <Ariakit.ComboboxPopover
         sameWidth
         gutter={4}
-        className="z-40 snap-y overflow-y-auto rounded-lg bg-card shadow-lg border"
+        className="z-40 overflow-y-auto rounded-lg bg-card shadow-lg border"
         aria-busy={isPending}
       >
         {matches.length > 0 ? (
@@ -111,19 +111,30 @@ export function Multiselect({
           >
             {({ index, style }) => {
               const value = searchValue ? matches[index] : _values[index];
+              const active = selectedValues.includes(value);
 
               return (
-                <Ariakit.ComboboxItem
+                <div
                   key={value}
-                  value={value}
-                  focusOnHover
                   style={style}
+                  onClick={() => {
+                    if (selectedValues.includes(value)) {
+                      removeValue(value);
+                    } else {
+                      setSelectedValues((prev) => [...prev, value]);
+                    }
+                  }}
                   className={cn(
-                    "flex cursor-pointer snap-start items-center space-x-0.5 p-1",
-                    "data-[active-item]:bg-accent overflow-hidden w-full",
+                    "group flex cursor-pointer items-center space-x-0.5 p-1 pr-1.5",
+                    "hover:bg-accent focus:bg-accent overflow-hidden w-full",
+                    { "bg-accent": active },
                   )}
                 >
-                  <Ariakit.ComboboxItemCheck className="shrink-0" />
+                  <CheckIcon
+                    className={cn("shrink-0 size-4", {
+                      invisible: !active,
+                    })}
+                  />
                   {values instanceof Map ? (
                     <span className="flex justify-between min-w-0 w-full space-x-2">
                       <span className="truncate">{value}</span>
@@ -134,7 +145,7 @@ export function Multiselect({
                   ) : (
                     <span className="truncate">{value}</span>
                   )}
-                </Ariakit.ComboboxItem>
+                </div>
               );
             }}
           </List>

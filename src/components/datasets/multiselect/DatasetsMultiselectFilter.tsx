@@ -76,7 +76,7 @@ export function DatasetMultiSelectFilter({
         </Alert>
       )}
       {isLoading && (
-        <div className="h-10 flex w-full justify-center">
+        <div className="h-10 flex w-full justify-center items-center">
           <Spinner />
         </div>
       )}
