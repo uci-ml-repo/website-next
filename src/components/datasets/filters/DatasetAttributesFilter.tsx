@@ -11,7 +11,13 @@ export function DatasetAttributesFilter(props: DatasetFiltersProps) {
       placeholder="Search attributes"
       filterKey="attributes"
       useData={(selectedValues) =>
-        trpc.variable.find.remainingFilters.useQuery(selectedValues)
+        trpc.variable.find.remainingFilters.useQuery(selectedValues, {
+          trpc: {
+            context: {
+              skipBatch: true,
+            },
+          },
+        })
       }
     />
   );

@@ -4,7 +4,7 @@ import "client-only";
 
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpBatchLink, httpLink, splitLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import superjson from "superjson";
@@ -23,13 +23,7 @@ function getQueryClient() {
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
 
-function getUrl() {
-  const base = (() => {
-    if (typeof window !== "undefined") return "";
-    return "http://localhost:3000";
-  })();
-  return `${base}/api/trpc`;
-}
+const url = `/api/trpc`;
 
 export function TRPCProvider(
   props: Readonly<{
@@ -40,9 +34,18 @@ export function TRPCProvider(
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
-          transformer: superjson,
-          url: getUrl(),
+        splitLink({
+          condition(op) {
+            return Boolean(op.context.skipBatch);
+          },
+          true: httpLink({
+            transformer: superjson,
+            url,
+          }),
+          false: httpBatchLink({
+            transformer: superjson,
+            url,
+          }),
         }),
       ],
     }),

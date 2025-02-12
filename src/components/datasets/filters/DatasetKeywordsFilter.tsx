@@ -10,7 +10,15 @@ export function DatasetKeywordsFilter(props: DatasetFiltersProps) {
       tooltipContent="Keywords that describe the dataset"
       placeholder="Search keywords"
       filterKey="keywords"
-      useData={() => trpc.keyword.find.approved.useQuery()}
+      useData={() =>
+        trpc.keyword.find.approved.useQuery(undefined, {
+          trpc: {
+            context: {
+              skipBatch: true,
+            },
+          },
+        })
+      }
     />
   );
 }
