@@ -47,7 +47,7 @@ function buildQuery(query: DatasetQuery) {
   }
 
   if (query.attributes) {
-    conditions.push(arrayContainsRaw("attributes", query.attributes));
+    conditions.push(arrayContainsRaw("variable_names", query.attributes));
   }
 
   if (query.dataTypes) {
