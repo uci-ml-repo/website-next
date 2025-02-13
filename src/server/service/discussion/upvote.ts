@@ -2,7 +2,6 @@ import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
-import { service } from "@/server/service";
 
 export class DiscussionUpvoteService {
   async create({
@@ -20,7 +19,7 @@ export class DiscussionUpvoteService {
     await db
       .update(discussion)
       .set({
-        upvoteCount: await service.discussion.upvote.count(discussionId),
+        upvoteCount: await this.count(discussionId),
       })
       .where(eq(discussion.id, discussionId));
 
@@ -46,7 +45,7 @@ export class DiscussionUpvoteService {
     await db
       .update(discussion)
       .set({
-        upvoteCount: await service.discussion.upvote.count(discussionId),
+        upvoteCount: await this.count(discussionId),
       })
       .where(eq(discussion.id, discussionId));
 
