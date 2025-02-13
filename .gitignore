@@ -35,3 +35,6 @@ next-env.d.ts
 /legacy/files/ignored
 /legacy/files/output
 /legacy/files.*
+
+# test
+/src/app/test/page.tsx
