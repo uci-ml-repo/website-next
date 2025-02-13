@@ -26,6 +26,7 @@ export function Multiselect({
 }) {
   const [isPending, startTransition] = useTransition();
   const [searchValue, setSearchValue] = useState("");
+  const [comboboxOpen, setComboboxOpen] = useState(false);
 
   const listRef = useRef<List>(null);
 
@@ -50,6 +51,8 @@ export function Multiselect({
 
   return (
     <Ariakit.ComboboxProvider
+      open={comboboxOpen}
+      setOpen={setComboboxOpen}
       selectedValue={selectedValues}
       setSelectedValue={setSelectedValues}
       setValue={(value) => {
@@ -97,6 +100,7 @@ export function Multiselect({
 
       <Ariakit.ComboboxPopover
         sameWidth
+        preventBodyScroll
         gutter={4}
         className="z-40 overflow-y-auto rounded-lg bg-card shadow-lg border"
         aria-busy={isPending}
@@ -106,6 +110,7 @@ export function Multiselect({
             height={listHeight}
             itemCount={matches.length}
             itemSize={rowHeight}
+            overscanCount={10}
             width="100%"
             ref={listRef}
           >
@@ -114,9 +119,11 @@ export function Multiselect({
               const active = selectedValues.includes(value);
 
               return (
-                <div
+                <Ariakit.ComboboxItem
                   key={value}
+                  value={value}
                   style={style}
+                  focusOnHover
                   onClick={() => {
                     if (selectedValues.includes(value)) {
                       removeValue(value);
@@ -127,7 +134,7 @@ export function Multiselect({
                   className={cn(
                     "group flex cursor-pointer items-center space-x-0.5 p-1 pr-1.5",
                     "hover:bg-accent focus:bg-accent overflow-hidden w-full",
-                    { "bg-accent": active },
+                    "data-[active-item]:bg-accent",
                   )}
                 >
                   <CheckIcon
@@ -145,7 +152,7 @@ export function Multiselect({
                   ) : (
                     <span className="truncate">{value}</span>
                   )}
-                </div>
+                </Ariakit.ComboboxItem>
               );
             }}
           </List>
