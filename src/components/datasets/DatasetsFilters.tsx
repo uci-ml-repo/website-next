@@ -49,26 +49,12 @@ const datasetFilters: React.FC<DatasetFiltersProps>[] = [
 export function DatasetsFilters() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
 
-  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+  const { clearFilters, filterActive } = useQueryFilters<DatasetQuery>();
 
   const [openStates, setOpenStates] = useState<boolean[]>(
     Array(datasetFilters.length).fill(false),
   );
   const isAnyOpen = openStates.some((state) => state);
-
-  const filterActive = Object.entries(filters).some(
-    ([key, value]) => !["search", "order"].includes(key) && value !== undefined,
-  );
-
-  const clearFilters = () => {
-    const clearedFilters = Object.fromEntries(
-      Object.entries(filters).map(([key, value]) =>
-        ["search", "order"].includes(key) ? [key, value] : [key, undefined],
-      ),
-    );
-
-    setFilters(clearedFilters);
-  };
 
   return (
     <div className="mt-6 space-y-2">
@@ -117,12 +103,12 @@ export function DatasetsFilters() {
             </TooltipContent>
           </Tooltip>
         </div>
-        {filterActive && (
+        {filterActive({ except: ["search", "order"] }) && (
           <Button
             variant="secondary"
             size="xs"
             className="animate-in fade-in-0 hover:bg-destructive hover:text-destructive-foreground"
-            onClick={clearFilters}
+            onClick={() => clearFilters({ except: ["search", "order"] })}
           >
             <XIcon />
             Clear

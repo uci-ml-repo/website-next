@@ -5,6 +5,7 @@ import {
   desc,
   eq,
   gt,
+  notIlike,
   notInArray,
   sql,
 } from "drizzle-orm";
@@ -31,6 +32,8 @@ export class AttributeFindService {
           attributeFilters.length > 0
             ? arrayContains(datasetView.variableNames, attributeFilters)
             : undefined,
+          notIlike(sql`attribute`, "attribute%"),
+          notIlike(sql`attribute`, "variable%"),
         ),
       )
       .groupBy(sql`attribute`)

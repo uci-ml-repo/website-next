@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, Undo2Icon } from "lucide-react";
 import React, { useEffect } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
@@ -8,12 +8,14 @@ import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkele
 import { DatasetsSearchOrderBy } from "@/components/datasets/DatasetsSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
+import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetsSearch() {
-  const { filters, setFilters, filterCount } = useQueryFilters<DatasetQuery>();
+  const { filters, setFilters, filterCount, clearFilters } =
+    useQueryFilters<DatasetQuery>();
 
   const { inputValue, setInputValue, searchValue, handleChange } =
     useDebouncedSearch({ defaultValue: filters.search });
@@ -25,17 +27,13 @@ export function DatasetsSearch() {
     setFilters({ search: searchValue });
   }, [searchValue, setFilters]);
 
-  const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters);
+  useEffect(() => {
+    if (!filters.search) {
+      setInputValue("");
+    }
+  }, [filters.search, setInputValue]);
 
-  const { data: pureSearchData, isLoading: pureSearchIsLoading } =
-    trpc.dataset.find.byQuery.useQuery(
-      {
-        search: searchValue,
-      },
-      {
-        enabled: !!searchValue,
-      },
-    );
+  const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters);
 
   return (
     <div className="flex flex-1 flex-col p-1">
@@ -53,7 +51,7 @@ export function DatasetsSearch() {
           />
           <DatasetsSearchOrderBy />
         </div>
-        {isLoading && (
+        {isLoading ? (
           <div>
             {Array.from({ length: 5 }).map((_, index) => (
               <React.Fragment key={index}>
@@ -62,59 +60,35 @@ export function DatasetsSearch() {
               </React.Fragment>
             ))}
           </div>
-        )}
-        <div>
-          {data &&
-            (data.datasets.length > 0 ? (
-              <div>
-                {(!!trueFilterCount || filters.search) && (
-                  <div className="text-lg text-muted-foreground">
-                    Found {data.count}{" "}
-                    {data.datasets.length === 1 ? "dataset" : "datasets"}
-                  </div>
-                )}
-                <div>
-                  {data.datasets.map((dataset) => (
-                    <React.Fragment key={dataset.id}>
-                      <DatasetRow
-                        hoverCard
-                        dataset={dataset}
-                        className="rounded-none"
-                      />
-                      <hr />
-                    </React.Fragment>
-                  ))}
-                </div>
+        ) : data?.datasets.length ? (
+          <div>
+            {(!!trueFilterCount || filters.search) && (
+              <div className="text-lg text-muted-foreground">
+                Found {data.count}{" "}
+                {data.datasets.length === 1 ? "dataset" : "datasets"}
               </div>
-            ) : searchValue &&
-              ((pureSearchData && pureSearchData.datasets.length > 0) ||
-                pureSearchIsLoading) ? (
-              pureSearchData ? (
-                <div>
-                  <div>
-                    No datasets matching those filters, but these match your
-                    search
-                  </div>
-                  <div>
-                    {pureSearchData.datasets.map((dataset) => (
-                      <React.Fragment key={dataset.id}>
-                        <DatasetRow
-                          hoverCard
-                          dataset={dataset}
-                          className="rounded-none"
-                        />
-                        <hr />
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div>Shit outta luck</div>
-              )
-            ) : (
-              <div>Shit outta luck</div>
-            ))}
-        </div>
+            )}
+            <div>
+              {data.datasets.map((dataset) => (
+                <React.Fragment key={dataset.id}>
+                  <DatasetRow
+                    hoverCard
+                    dataset={dataset}
+                    className="rounded-none"
+                  />
+                  <hr />
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex h-20 flex-col items-center justify-center space-y-2">
+            <div className="text-muted-foreground">No datasets found</div>
+            <Button variant="secondary" onClick={() => clearFilters()}>
+              Clear search <Undo2Icon />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
