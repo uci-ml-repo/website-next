@@ -56,14 +56,23 @@ export function DatasetsFilterItem({
                         "group hover:bg-destructive focus:bg-destructive",
                         "transition-opacity animate-in fade-in-0",
                       )}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        clearFilter();
-                      }}
                       asChild
                     >
-                      <div>
+                      <div
+                        tabIndex={0}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          clearFilter();
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            clearFilter();
+                          }
+                        }}
+                      >
                         <div className="text-xs text-uci-blue-foreground group-hover:hidden group-focus:hidden">
                           {activeCount ?? <CheckIcon />}
                         </div>

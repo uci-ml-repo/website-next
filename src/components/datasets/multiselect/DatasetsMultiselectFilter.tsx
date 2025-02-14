@@ -6,7 +6,6 @@ import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters"
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Multiselect } from "@/components/ui/multiselect";
-import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
 interface GenericFilterProps extends DatasetFiltersProps {
@@ -75,19 +74,14 @@ export function DatasetMultiSelectFilter({
           </div>
         </Alert>
       )}
-      {isLoading && (
-        <div className="h-10 flex w-full justify-center items-center">
-          <Spinner />
-        </div>
-      )}
-      {data && (
-        <Multiselect
-          placeholder={placeholder}
-          selectedValues={selectedValues}
-          setSelectedValues={setSelectedValues}
-          values={data ?? []}
-        />
-      )}
+
+      <Multiselect
+        placeholder={placeholder}
+        selectedValues={selectedValues}
+        setSelectedValues={setSelectedValues}
+        values={data ?? []}
+        isLoading={isLoading}
+      />
     </DatasetsFilterItem>
   );
 }
