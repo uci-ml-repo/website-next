@@ -9,7 +9,7 @@ import type {
   paper,
   user,
   variable,
-} from "./schema";
+} from "@/db/schema";
 
 export type AcceptedDatasetRequiredFields =
   | "doi"

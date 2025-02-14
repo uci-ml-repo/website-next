@@ -1,4 +1,4 @@
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { DATASET_PYTHON_DATA_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import type { AcceptedDatasetResponse } from "@/lib/types";
 

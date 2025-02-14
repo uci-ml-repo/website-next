@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import type { AuthorSelect } from "@/db/types";
+import type { AuthorSelect } from "@/db/lib/types";
 import { ServiceError } from "@/server/service/errors";
 
 export class DatasetCiteService {

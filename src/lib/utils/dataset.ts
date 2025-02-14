@@ -1,4 +1,4 @@
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 
 /**
  * Get the path for a dataset's data files

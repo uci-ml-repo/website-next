@@ -98,7 +98,7 @@ export function Multiselect({
             className="p-0 w-[--radix-popover-trigger-width]"
           >
             <CommandList>
-              <CommandEmpty className="py-2 px-4 text-muted-foreground">
+              <CommandEmpty className="py-2 px-4 text-muted-foreground text-sm">
                 No results found
               </CommandEmpty>
               {!!matches.length && (
@@ -109,6 +109,7 @@ export function Multiselect({
                   itemSize={itemSize}
                   overscanCount={overscanCount}
                   width="100%"
+                  style={{ maxHeight: matches.length * itemSize }}
                 >
                   {({ index, style }) => {
                     const value = matches[index];

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 

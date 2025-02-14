@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import type { dataset, paper, user } from "@/db/schema";
 
 const dummyUserId = crypto.randomUUID();

@@ -1,5 +1,6 @@
 import {
   and,
+  arrayContains,
   arrayOverlaps,
   count,
   desc,
@@ -11,24 +12,12 @@ import {
 } from "drizzle-orm";
 
 import { db } from "@/db";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
+import { sqlArray } from "@/db/lib/utils";
 import { datasetView } from "@/db/schema";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
-
-// FIXME: Couldn't get built-ins to work with materialized views
-function arrayContainsRaw(columnName: string, array: string[]) {
-  return sql.raw(`
-   ${columnName} @> ${"$${" + array.join(",") + "}$$"}
-`);
-}
-
-function arrayOverlapsRaw(columnName: string, array: string[]) {
-  return sql.raw(`
-   ${columnName} && ${"$${" + array.join(",") + "}$$"}
-`);
-}
 
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
@@ -42,15 +31,19 @@ function buildQuery(query: DatasetQuery) {
     `);
   }
 
-  if (query.keywords) {
-    conditions.push(arrayOverlapsRaw("keywords", query.keywords));
+  if (query.keywords?.length) {
+    conditions.push(
+      arrayOverlaps(datasetView.keywords, sqlArray(query.keywords)),
+    );
   }
 
-  if (query.attributes) {
-    conditions.push(arrayContainsRaw("variable_names", query.attributes));
+  if (query.attributes?.length) {
+    conditions.push(
+      arrayContains(datasetView.variableNames, sqlArray(query.attributes)),
+    );
   }
 
-  if (query.dataTypes) {
+  if (query.dataTypes?.length) {
     conditions.push(arrayOverlaps(datasetView.dataTypes, query.dataTypes));
   }
 

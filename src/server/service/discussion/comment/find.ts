@@ -2,12 +2,12 @@ import type { Session } from "@auth/core/types";
 import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussionComment } from "@/db/schema";
 import type {
   DiscussionCommentUpvoteSelect,
   DiscussionSelect,
   UserSelect,
-} from "@/db/types";
+} from "@/db/lib/types";
+import { discussionComment } from "@/db/schema";
 import type { DiscussionCommentQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 

@@ -18,13 +18,13 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import type {
   AuthorSelect,
   PaperSelect,
   UserSelect,
   VariableSelect,
-} from "@/db/types";
+} from "@/db/lib/types";
 import { enumToArray } from "@/lib/utils";
 
 /**

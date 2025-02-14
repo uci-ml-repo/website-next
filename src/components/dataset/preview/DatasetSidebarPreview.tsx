@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import type { DatasetSelect } from "@/db/types";
+import type { DatasetSelect } from "@/db/lib/types";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 

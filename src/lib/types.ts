@@ -1,4 +1,4 @@
-import type { AcceptedDatasetRequiredFields } from "@/db/types";
+import type { AcceptedDatasetRequiredFields } from "@/db/lib/types";
 import type { RequireNonNullable } from "@/lib/utils";
 import type { RouterOutput } from "@/server/trpc/router";
 

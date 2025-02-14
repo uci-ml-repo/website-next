@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { PaperSelect } from "@/db/types";
+import type { PaperSelect } from "@/db/lib/types";
 
 export function DatasetMetadataPaperPreview({ paper }: { paper: PaperSelect }) {
   return (

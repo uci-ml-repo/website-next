@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { keyword } from "@/db/schema";
 
 export class KeywordFindService {

@@ -7,7 +7,7 @@ import { v4 as uuid } from "uuid";
 
 import authConfig from "@/auth.config";
 import { db } from "@/db";
-import type { UserRole } from "@/db/enums";
+import type { UserRole } from "@/db/lib/enums";
 import { account, session, user } from "@/db/schema";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import { service } from "@/server/service";

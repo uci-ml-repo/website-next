@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 

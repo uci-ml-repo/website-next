@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 
 import { Badge } from "@/components/ui/badge";
 import { ProfileAvatar } from "@/components/ui/profile-avatar";
-import type { UserRole } from "@/db/enums";
+import type { UserRole } from "@/db/lib/enums";
 
 export function ProfileHeader({ session }: { session: Session }) {
   return (

@@ -9,7 +9,7 @@ import { DatasetInteractions } from "@/components/dataset/interactions/DatasetIn
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";

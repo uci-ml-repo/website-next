@@ -2,13 +2,13 @@ import type { Session } from "@auth/core/types";
 import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
 import type {
   DatasetSelect,
   DiscussionSelect,
   DiscussionUpvoteSelect,
   UserSelect,
-} from "@/db/types";
+} from "@/db/lib/types";
+import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
 import type { DiscussionQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 

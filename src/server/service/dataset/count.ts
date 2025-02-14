@@ -1,7 +1,7 @@
 import { count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { dataset } from "@/db/schema";
 
 export class DatasetCountService {

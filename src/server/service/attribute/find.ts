@@ -11,7 +11,8 @@ import {
 } from "drizzle-orm";
 
 import { db } from "@/db";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
+import { sqlArray } from "@/db/lib/utils";
 import { datasetView } from "@/db/schema";
 
 export class AttributeFindService {
@@ -30,7 +31,10 @@ export class AttributeFindService {
           eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
           notInArray(sql`attribute`, attributeFilters),
           attributeFilters.length > 0
-            ? arrayContains(datasetView.variableNames, attributeFilters)
+            ? arrayContains(
+                datasetView.variableNames,
+                sqlArray(attributeFilters),
+              )
             : undefined,
           notIlike(sql`attribute`, "attribute%"),
           notIlike(sql`attribute`, "variable%"),

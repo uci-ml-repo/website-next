@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import type {
   AcceptedDatasetResponse,
   DatasetPreviewResponse,

@@ -4,7 +4,7 @@ import { DatasetCheckboxFilter } from "@/components/datasets/checkbox/DatasetChe
 import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
 import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { enumToArray } from "@/lib/utils";
 
 export function DatasetTasksFilter({

@@ -1,7 +1,7 @@
 import { forbidden } from "next/navigation";
 
 import { auth, signIn } from "@/auth";
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";
 
 export default async function Layout({

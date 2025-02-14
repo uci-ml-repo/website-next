@@ -1,5 +1,5 @@
-import type { ReportResolutionType } from "@/db/enums";
-import { Enums } from "@/db/enums";
+import type { ReportResolutionType } from "@/db/lib/enums";
+import { Enums } from "@/db/lib/enums";
 import DiscussionReportReason = Enums.DiscussionReportReason;
 import { db } from "@/db";
 import { discussionReport, discussionReportResolution } from "@/db/schema";

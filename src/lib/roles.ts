@@ -1,4 +1,4 @@
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 
 export const PRIVILEGED_ROLES: Set<Enums.UserRole> = new Set([
   Enums.UserRole.ADMIN,

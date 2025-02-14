@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { Enums } from "@/db/enums";
+import { Enums } from "@/db/lib/enums";
 import { enumToArray } from "@/lib/utils";
 import { order } from "@/server/schema/lib/order";
 
