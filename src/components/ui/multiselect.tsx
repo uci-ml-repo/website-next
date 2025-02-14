@@ -1,11 +1,19 @@
-import * as Ariakit from "@ariakit/react";
-import { CheckIcon, XIcon } from "lucide-react";
+import { CommandEmpty } from "cmdk";
+import { Check, XIcon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import { motion } from "motion/react";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useState } from "react";
+import * as React from "react";
 import { FixedSizeList as List } from "react-window";
 
 import { Badge } from "@/components/ui/badge";
+import { Command, CommandItem, CommandList } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 export function Multiselect({
@@ -13,31 +21,28 @@ export function Multiselect({
   values,
   selectedValues,
   setSelectedValues,
-  rowHeight = 30,
-  maxListHeight = 240,
+  itemSize = 28,
+  height = 240,
+  overscanCount = 5,
 }: {
   placeholder?: string;
   values: string[] | Map<string, string | number>;
   selectedValues: string[];
   setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
-  rowHeight?: number;
-  maxListHeight?: number;
-  rowRenderer?: () => React.ReactNode;
+  itemSize?: number;
+  height?: number;
+  overscanCount?: number;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const [searchValue, setSearchValue] = useState("");
-  const [comboboxOpen, setComboboxOpen] = useState(false);
-
-  const listRef = useRef<List>(null);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
+  const listRef = React.useRef<List>(null);
 
   const _values = values instanceof Map ? values.keys().toArray() : values;
 
   const matches = useMemo(
     () => matchSorter(_values, searchValue),
-    [_values, searchValue],
+    [searchValue, _values],
   );
-
-  const listHeight = Math.min(matches.length * rowHeight, maxListHeight);
 
   useEffect(() => {
     if (listRef.current) {
@@ -50,17 +55,7 @@ export function Multiselect({
   };
 
   return (
-    <Ariakit.ComboboxProvider
-      open={comboboxOpen}
-      setOpen={setComboboxOpen}
-      selectedValue={selectedValues}
-      setSelectedValue={setSelectedValues}
-      setValue={(value) => {
-        startTransition(() => {
-          setSearchValue(value);
-        });
-      }}
-    >
+    <div>
       <div
         className={cn("flex flex-wrap gap-1.5", {
           "mb-2": selectedValues.length,
@@ -89,77 +84,74 @@ export function Multiselect({
         ))}
       </div>
 
-      <Ariakit.Combobox
-        placeholder={placeholder}
-        className={cn(
-          "flex w-full rounded-full border border-input bg-input-background px-3 py-1 text-sm shadow-sm transition-colors",
-          "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-          "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-        )}
-      />
-
-      <Ariakit.ComboboxPopover
-        sameWidth
-        preventBodyScroll
-        gutter={4}
-        className="z-40 overflow-y-auto rounded-lg bg-card shadow-lg border"
-        aria-busy={isPending}
-      >
-        {matches.length > 0 ? (
-          <List
-            height={listHeight}
-            itemCount={matches.length}
-            itemSize={rowHeight}
-            overscanCount={10}
-            width="100%"
-            ref={listRef}
+      <Command className="overflow-visible">
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+          <Input
+            variantSize="sm"
+            placeholder={placeholder}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => setPopoverOpen(true)}
+          />
+          <PopoverTrigger tabIndex={-1} className="-mt-[1px] h-[1px]" />
+          <PopoverContent
+            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="p-0 w-[--radix-popover-trigger-width]"
           >
-            {({ index, style }) => {
-              const value = searchValue ? matches[index] : _values[index];
-              const active = selectedValues.includes(value);
-
-              return (
-                <Ariakit.ComboboxItem
-                  key={value}
-                  value={value}
-                  style={style}
-                  focusOnHover
-                  onClick={() => {
-                    if (selectedValues.includes(value)) {
-                      removeValue(value);
-                    } else {
-                      setSelectedValues((prev) => [...prev, value]);
-                    }
-                  }}
-                  className={cn(
-                    "group flex cursor-pointer items-center space-x-0.5 p-1 pr-1.5",
-                    "hover:bg-accent focus:bg-accent overflow-hidden w-full",
-                    "data-[active-item]:bg-accent",
-                  )}
+            <CommandList>
+              <CommandEmpty className="py-2 px-4 text-muted-foreground">
+                No results found
+              </CommandEmpty>
+              {!!matches.length && (
+                <List
+                  ref={listRef}
+                  height={height}
+                  itemCount={matches.length}
+                  itemSize={itemSize}
+                  overscanCount={overscanCount}
+                  width="100%"
                 >
-                  <CheckIcon
-                    className={cn("shrink-0 size-4", {
-                      invisible: !active,
-                    })}
-                  />
-                  {values instanceof Map ? (
-                    <span className="flex justify-between min-w-0 w-full space-x-2">
-                      <span className="truncate">{value}</span>
-                      <span className="text-muted-foreground">
-                        ({values.get(value)})
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="truncate">{value}</span>
-                  )}
-                </Ariakit.ComboboxItem>
-              );
-            }}
-          </List>
-        ) : (
-          <div className="p-2 text-muted-foreground">No results found</div>
-        )}
-      </Ariakit.ComboboxPopover>
-    </Ariakit.ComboboxProvider>
+                  {({ index, style }) => {
+                    const value = matches[index];
+                    return (
+                      <CommandItem
+                        key={value}
+                        value={value}
+                        className="cursor-pointer gap-0.5 pl-1.5"
+                        onSelect={(selectValue) => {
+                          if (!selectedValues.includes(selectValue)) {
+                            setSelectedValues((prev) => [...prev, selectValue]);
+                          } else {
+                            setSelectedValues((prev) =>
+                              prev.filter((v) => v !== selectValue),
+                            );
+                          }
+                        }}
+                        style={style}
+                      >
+                        <Check
+                          className={cn("size-3.5", {
+                            invisible: !selectedValues.includes(value),
+                          })}
+                        />
+                        {values instanceof Map ? (
+                          <span className="flex justify-between min-w-0 w-full space-x-1">
+                            <span className="truncate">{value}</span>
+                            <span className="text-muted-foreground">
+                              ({values.get(value)})
+                            </span>
+                          </span>
+                        ) : (
+                          <span className="truncate">{value}</span>
+                        )}
+                      </CommandItem>
+                    );
+                  }}
+                </List>
+              )}
+            </CommandList>
+          </PopoverContent>
+        </Popover>
+      </Command>
+    </div>
   );
 }

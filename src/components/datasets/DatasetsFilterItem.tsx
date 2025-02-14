@@ -87,7 +87,7 @@ export function DatasetsFilterItem({
             <div />
           </TooltipTrigger>
         </CollapsibleTrigger>
-        <CollapsibleContent forceMount>
+        <CollapsibleContent>
           <motion.div
             initial={{ height: 0 }}
             animate={dropdownOpen ? { height: "auto" } : {}}
