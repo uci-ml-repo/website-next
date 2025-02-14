@@ -116,6 +116,7 @@
     "react-dom": "19.0.0",
     "react-hook-form": "7.54.2",
     "react-split": "2.0.14",
+    "react-window": "1.8.11",
     "server-only": "0.0.1",
     "slugify": "1.6.6",
     "superjson": "2.2.2",
