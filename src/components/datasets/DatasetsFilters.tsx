@@ -71,6 +71,7 @@ export function DatasetsFilters() {
               onClick={(event) => {
                 event.preventDefault();
               }}
+              aria-label="Filters Help"
             >
               <CircleHelpIcon className="size-[18px] cursor-help" />
             </TooltipTrigger>
@@ -94,6 +95,7 @@ export function DatasetsFilters() {
                   }
                 }}
                 className="text-muted-foreground"
+                aria-label={isAnyOpen ? "Collapse All" : "Expand All"}
               >
                 {isAnyOpen ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
               </Button>

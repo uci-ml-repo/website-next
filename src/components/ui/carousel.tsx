@@ -346,7 +346,12 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
                   ? "h-2 w-4 bg-secondary-foreground/50"
                   : "size-2 bg-secondary-foreground/20",
                 {
-                  "size-1.5":
+                  "bg-secondary-foreground/15":
+                    index === minSlide - SHOW_NODES_SIDES + 1 ||
+                    index === maxSlide + SHOW_NODES_SIDES - 1,
+                },
+                {
+                  "size-1.5 bg-secondary-foreground/10":
                     index === minSlide - SHOW_NODES_SIDES ||
                     index === maxSlide + SHOW_NODES_SIDES,
                 },

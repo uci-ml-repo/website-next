@@ -20,7 +20,10 @@ export function DatasetCheckboxFilterItem<T extends string>({
       onClick={() => toggle(!checked, value)}
     >
       <div>{formatEnum(value)}</div>
-      <Checkbox checked={checked} />
+      <Checkbox
+        checked={checked}
+        aria-label={"Filter by " + formatEnum(value)}
+      />
     </div>
   );
 }

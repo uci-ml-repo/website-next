@@ -48,6 +48,7 @@ export function DatasetsSearch() {
             setValue={setInputValue}
             onChange={handleChange}
             containerClassName="w-full"
+            aria-label="Search datasets"
           />
           <DatasetsSearchOrderBy />
         </div>

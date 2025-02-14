@@ -28,6 +28,7 @@ export function DatasetPythonFilter({
           onCheckedChange={(checked) =>
             setFilters({ python: checked as boolean })
           }
+          aria-label="Filter by Python availability"
         />
       </div>
     </DatasetsFilterItem>

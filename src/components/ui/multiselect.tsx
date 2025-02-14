@@ -88,15 +88,19 @@ export function Multiselect({
         ))}
       </div>
 
-      <Command className="overflow-visible">
+      <Command className="overflow-visible" label={placeholder}>
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <Input
             variantSize="sm"
             placeholder={placeholder}
             onChange={(e) => setSearchValue(e.target.value)}
             onFocus={() => setPopoverOpen(true)}
+            aria-label={placeholder}
           />
-          <PopoverTrigger tabIndex={-1} className="-mt-[5px] h-[1px] pb-1" />
+          <PopoverTrigger
+            tabIndex={-1}
+            className="-mt-[5px] h-[1px] pb-1 invisible"
+          />
           <PopoverContent
             onOpenAutoFocus={(event) => event.preventDefault()}
             className="p-0 w-[--radix-popover-trigger-width]"
