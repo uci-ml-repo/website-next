@@ -40,7 +40,7 @@ export function Multiselect({
   const _values = values instanceof Map ? values.keys().toArray() : values;
 
   const matches = useMemo(
-    () => matchSorter(_values, searchValue),
+    () => (searchValue ? matchSorter(_values, searchValue) : _values),
     [searchValue, _values],
   );
 
