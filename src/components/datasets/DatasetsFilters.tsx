@@ -54,6 +54,7 @@ export function DatasetsFilters() {
   const [openStates, setOpenStates] = useState<boolean[]>(
     Array(datasetFilters.length).fill(false),
   );
+
   const isAnyOpen = openStates.some((state) => state);
 
   return (
@@ -105,12 +106,12 @@ export function DatasetsFilters() {
             </TooltipContent>
           </Tooltip>
         </div>
-        {filterActive({ except: ["search", "order"] }) && (
+        {filterActive({ except: ["order"] }) && (
           <Button
             variant="secondary"
             size="xs"
             className="animate-in fade-in-0 hover:bg-destructive hover:text-destructive-foreground"
-            onClick={() => clearFilters({ except: ["search", "order"] })}
+            onClick={() => clearFilters({ except: ["order"] })}
           >
             <XIcon />
             Clear

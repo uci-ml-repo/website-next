@@ -6,10 +6,8 @@ import { DATASETS_QUERY } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 
 export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
-  console.log(dataset.authors);
-
   return (
-    <div className="w-80 space-y-6">
+    <div className="min-w-56 space-y-6">
       {/* Donated On */}
       <SideDatum title="Donated On">
         {dataset.donatedAt.toLocaleString("en-GB", {
@@ -34,13 +32,13 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
       </SideDatum>
 
       {/* Authors */}
-      <SideDatum title="Authors">
+      <SideDatum title="Authors" className="space-y-1">
         {dataset.authors.length > 0 &&
           dataset.authors.map((author) => (
             <div key={author.id}>
               <div className="flex space-x-1 items-center">
-                <UserIcon className="size-5 fill-foreground" />
-                <span>
+                <UserIcon className="size-5 fill-foreground shrink-0" />
+                <span className="truncate">
                   {author.firstName} {author.lastName}
                 </span>
               </div>

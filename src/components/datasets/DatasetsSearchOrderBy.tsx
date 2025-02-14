@@ -3,10 +3,11 @@ import {
   ClockIcon,
   Columns3Icon,
   Rows3Icon,
+  SearchIcon,
   TrendingUpIcon,
 } from "lucide-react";
+import React from "react";
 
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import {
   Select,
   SelectContent,
@@ -14,9 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { DatasetQuery } from "@/server/schema/dataset";
 
-const orderByOptions: Record<
+export const orderByOptions: Record<
   string,
   { icon: React.ReactNode; name: string; sort?: "asc" | "desc" }
 > = {
@@ -27,27 +27,33 @@ const orderByOptions: Record<
   title: { icon: <ArrowDownAZIcon />, name: "Title", sort: "asc" },
 };
 
-export function DatasetsSearchOrderBy() {
-  const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+interface DatasetsSearchOrderByProps {
+  value: string;
+  onChange: (newValue: string) => void;
+  searchActive: boolean;
+}
 
-  const defaultValue = Object.keys(filters.order || {})[0] || "viewCount";
-
+export function DatasetsSearchOrderBy({
+  value,
+  onChange,
+  searchActive,
+}: DatasetsSearchOrderByProps) {
   return (
     <div className="space-y-1">
       <div className="text-sm text-muted-foreground">Sort By</div>
-      <Select
-        defaultValue={defaultValue}
-        onValueChange={(value) => {
-          setFilters({ order: { [value]: orderByOptions[value].sort } });
-        }}
-      >
+      <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="w-40" size="lg">
           <SelectValue />
         </SelectTrigger>
-
         <SelectContent>
-          {Object.entries(orderByOptions).map(([value, { icon, name }]) => (
-            <SelectItem key={value} value={value} size="lg">
+          {searchActive && (
+            <SelectItem value="relevance" size="lg">
+              <SearchIcon />
+              <span>Relevance</span>
+            </SelectItem>
+          )}
+          {Object.entries(orderByOptions).map(([orderKey, { icon, name }]) => (
+            <SelectItem key={orderKey} value={orderKey} size="lg">
               {icon}
               <span>{name}</span>
             </SelectItem>

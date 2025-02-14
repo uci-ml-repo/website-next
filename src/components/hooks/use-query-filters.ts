@@ -13,6 +13,16 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const [filterCount, setFilterCount] = useState<number>(0);
 
+  const filterCountExcept = useCallback(
+    ({ except = [] }: { except?: (keyof T)[] } = {}) => {
+      return searchParams
+        .entries()
+        .filter(([key]) => !except.includes(key))
+        .toArray().length;
+    },
+    [searchParams],
+  );
+
   const filters = useMemo(() => {
     const result: Partial<T> = {};
     for (const [key, value] of searchParams.entries()) {
@@ -23,6 +33,8 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
+      console.log(JSON.stringify(newFilters));
+
       const params = buildQueryFilters({ ...filters, ...newFilters });
 
       const url = `${pathname}?${params.toString()}`;
@@ -58,6 +70,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     setFilters,
     debouncedSetFilters,
     filterCount,
+    filterCountExcept,
     clearFilters,
     filterActive,
   };

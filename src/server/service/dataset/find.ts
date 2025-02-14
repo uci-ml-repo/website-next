@@ -69,10 +69,10 @@ function buildSearchQuery(search: string) {
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
-  if (query.search) {
-    const { searchCondition } = buildSearchQuery(query.search);
-    conditions.push(searchCondition);
-  }
+  // if (query.search) {
+  //   const { searchCondition } = buildSearchQuery(query.search);
+  //   conditions.push(searchCondition);
+  // }
 
   if (query.keywords?.length) {
     conditions.push(
@@ -252,9 +252,7 @@ export class DatasetFindService {
   }
 
   private async bySearchQuery(query: DatasetTextSearchQuery) {
-    const { trigramSimilarity, tsRank, searchCondition } = buildSearchQuery(
-      query.search,
-    );
+    const { trigramSimilarity, tsRank } = buildSearchQuery(query.search);
 
     const datasets = await db
       .select({
@@ -263,7 +261,7 @@ export class DatasetFindService {
         rank: tsRank.mapWith(Number),
       })
       .from(datasetView)
-      .where(and(searchCondition, buildQuery(query)))
+      .where(buildQuery(query))
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
       .orderBy((t) =>

@@ -1,37 +1,87 @@
 "use client";
 
 import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
-import { DatasetsSearchOrderBy } from "@/components/datasets/DatasetsSearchOrderBy";
+import {
+  DatasetsSearchOrderBy,
+  orderByOptions,
+} from "@/components/datasets/DatasetsSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetsSearch() {
-  const { filters, setFilters, filterCount, clearFilters } =
+  const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
+
+  const [localSearch, setLocalSearch] = useState<string>(filters.search || "");
+  const [localOrder, setLocalOrder] = useState<string>(
+    filters.search
+      ? "relevance"
+      : Object.keys(filters.order || {})[0] || "viewCount",
+  );
 
   const { inputValue, setInputValue, searchValue, handleChange } =
     useDebouncedSearch({ defaultValue: filters.search });
+  const filterCount = filterCountExcept({ except: ["search", "order"] });
 
-  const trueFilterCount =
-    filterCount - (!!filters.search ? 1 : 0) - (!!filters.order ? 1 : 0);
-
+  // When the debounced search value changes, update the local search state.
   useEffect(() => {
-    setFilters({ search: searchValue });
-  }, [searchValue, setFilters]);
+    if (localSearch === searchValue) return;
+
+    if (searchValue && !localSearch) {
+      setLocalOrder("relevance");
+    } else if (!searchValue && localSearch && localOrder === "relevance") {
+      setLocalOrder("viewCount");
+    }
+    setLocalSearch(searchValue);
+  }, [searchValue, localSearch, localOrder]);
+
+  // Update the URL filters in one go whenever the local search or order changes.
+  useEffect(() => {
+    const orderFilter =
+      localOrder === "relevance"
+        ? undefined
+        : { [localOrder]: orderByOptions[localOrder].sort };
+
+    const currentSearch = filters.search || "";
+    const currentOrder = filters.order
+      ? Object.keys(filters.order)[0]
+      : filters.search
+        ? "relevance"
+        : "viewCount";
+
+    if (localSearch === currentSearch && localOrder === currentOrder) return;
+
+    setFilters({ search: localSearch, order: orderFilter });
+  }, [localSearch, localOrder, filters, setFilters]);
 
   useEffect(() => {
     if (!filters.search) {
       setInputValue("");
     }
   }, [filters.search, setInputValue]);
+
+  const handleOrderChange = (newOrder: string) => {
+    if (localOrder !== newOrder) {
+      setLocalOrder(newOrder);
+    }
+  };
 
   const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters);
 
@@ -50,7 +100,11 @@ export function DatasetsSearch() {
             containerClassName="w-full"
             aria-label="Search datasets"
           />
-          <DatasetsSearchOrderBy />
+          <DatasetsSearchOrderBy
+            value={localOrder}
+            onChange={handleOrderChange}
+            searchActive={!!localSearch}
+          />
         </div>
         {isLoading ? (
           <div>
@@ -62,25 +116,49 @@ export function DatasetsSearch() {
             ))}
           </div>
         ) : data?.datasets.length ? (
-          <div>
-            {(!!trueFilterCount || filters.search) && (
-              <div className="text-lg text-muted-foreground">
-                Found {data.count}{" "}
-                {data.datasets.length === 1 ? "dataset" : "datasets"}
-              </div>
-            )}
+          <div className="space-y-4">
             <div>
-              {data.datasets.map((dataset) => (
-                <React.Fragment key={dataset.id}>
-                  <DatasetRow
-                    hoverCard
-                    dataset={dataset}
-                    className="rounded-none"
-                  />
-                  <hr />
-                </React.Fragment>
-              ))}
+              {(!!filterCount || filters.search) && (
+                <div className="text-lg text-muted-foreground">
+                  Found {data.count}{" "}
+                  {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
+                  {filters.search ? `for '${filters.search}'` : ""}{" "}
+                  {filterCount
+                    ? `matching ${filterCount} ${
+                        filterCount === 1 ? "filter" : "filters"
+                      }`
+                    : ""}
+                </div>
+              )}
+              <div>
+                {data.datasets.map((dataset) => (
+                  <React.Fragment key={dataset.id}>
+                    <DatasetRow
+                      hoverCard
+                      dataset={dataset}
+                      className="rounded-none"
+                    />
+                    <hr />
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
+            <Pagination className="justify-end">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         ) : (
           <div className="flex h-20 flex-col items-center justify-center space-y-2">

@@ -46,7 +46,7 @@ export function DatasetRow({
   const row = (
     <Link
       className={cn(
-        "group flex w-full items-center space-x-3 rounded-2xl p-4 @container hover:bg-accent focus:bg-accent",
+        "group flex w-full items-center space-x-3 rounded-2xl p-4 @container hover:bg-accent",
         className,
       )}
       href={DATASET_ROUTE(dataset)}
@@ -92,11 +92,12 @@ export function DatasetRow({
 
   if (hoverCard) {
     return (
-      <HoverCard openDelay={250} closeDelay={250}>
+      <HoverCard openDelay={400} closeDelay={200}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
         <HoverCardContent
           className="w-[50dvw] min-w-64 max-w-xl !p-0"
           align="end"
+          side="top"
         >
           <DatasetHoverCard dataset={dataset} />
         </HoverCardContent>
