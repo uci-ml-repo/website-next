@@ -32,4 +32,7 @@ export const datasetQuery = z.object({
   python: z.boolean().optional(),
 });
 
+export const datasetTextSearchQuery = datasetQuery.required({ search: true });
+
 export type DatasetQuery = z.infer<typeof datasetQuery>;
+export type DatasetTextSearchQuery = z.infer<typeof datasetTextSearchQuery>;

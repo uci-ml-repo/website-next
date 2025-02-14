@@ -35,8 +35,8 @@ export interface DatasetFiltersProps {
 }
 
 const datasetFilters: React.FC<DatasetFiltersProps>[] = [
-  DatasetKeywordsFilter,
   DatasetAttributesFilter,
+  DatasetKeywordsFilter,
   DatasetDataTypesFilter,
   DatasetSubjectAreasFilter,
   DatasetTasksFilter,

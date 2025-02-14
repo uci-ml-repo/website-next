@@ -15,21 +15,59 @@ import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { sqlArray } from "@/db/lib/utils";
 import { datasetView } from "@/db/schema";
-import type { DatasetQuery } from "@/server/schema/dataset";
+import type {
+  DatasetQuery,
+  DatasetTextSearchQuery,
+} from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
+function buildSearchQuery(search: string) {
+  const tsQuery = sql` PLAINTO_TSQUERY('simple', ${search ?? ""}) `;
+  const normalizedTsQuery = sql`
+    CASE
+      WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
+        'simple',
+        ${tsQuery}::TEXT || ':*'
+      )
+      ELSE ''
+    END
+  `;
+  const tsWeights = sql`
+    SETWEIGHT(
+      TO_TSVECTOR('simple', ${datasetView.title}),
+      'A'
+    )
+  `;
+  const tsRank = sql`
+    TS_RANK(
+      ${tsWeights},
+      ${normalizedTsQuery}
+    )
+  `;
+  const trigramSimilarity = sql`
+    similarity (
+      ${datasetView.title},
+      ${search}
+    )
+  `;
+  const searchCondition = sql`
+    ${tsWeights} @@ ${normalizedTsQuery}
+    OR similarity (
+      ${datasetView.title},
+      ${search}
+    ) > 0
+  `;
+
+  return {
+    tsRank,
+    trigramSimilarity,
+    searchCondition,
+  };
+}
+
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
-
-  if (query.search) {
-    conditions.push(sql`
-      similarity (
-        ${datasetView.title},
-        ${query.search}
-      ) > 0.1
-    `);
-  }
 
   if (query.keywords?.length) {
     conditions.push(
@@ -169,7 +207,7 @@ export class DatasetFindService {
   async byQuery(query: DatasetQuery) {
     let datasets;
     if (query.search) {
-      datasets = await this.bySearchQuery(query);
+      datasets = await this.bySearchQuery(query as DatasetTextSearchQuery);
     } else {
       datasets = await this.byRawQuery(query);
     }
@@ -208,31 +246,19 @@ export class DatasetFindService {
       .orderBy(...orderBy);
   }
 
-  private async bySearchQuery(query: DatasetQuery) {
-    const trigramSimilarity = sql`
-      similarity (
-        ${datasetView.title},
-        ${query.search}
-      )
-    `;
+  private async bySearchQuery(query: DatasetTextSearchQuery) {
+    const { trigramSimilarity, tsRank, searchCondition } = buildSearchQuery(
+      query.search,
+    );
 
     const datasets = await db
       .select({
         id: datasetView.id,
         similarity: trigramSimilarity.mapWith(Number),
+        rank: tsRank.mapWith(Number),
       })
       .from(datasetView)
-      .where(
-        and(
-          sql`
-            similarity (
-              ${datasetView.title},
-              ${query.search}
-            ) > 0.1
-          `,
-          buildQuery(query),
-        ),
-      )
+      .where(and(searchCondition, buildQuery(query)))
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
       .orderBy((t) =>
@@ -242,7 +268,7 @@ export class DatasetFindService {
                 datasetView[field as keyof typeof query.order],
               ),
             )
-          : [desc(t.similarity)],
+          : [desc(t.rank), desc(t.similarity)],
       );
 
     return this.batch(datasets.map((d) => d.id));
