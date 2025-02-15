@@ -64,7 +64,7 @@ export function DatasetMultiSelectFilter({
       activeCount={selectedValues.length}
       clearFilter={() => setFilters({ [filterKey]: undefined })}
     >
-      {isError && (
+      {isError ? (
         <Alert variant="destructive">
           <div className="flex items-center space-x-2">
             <AlertCircleIcon className="size-4" />
@@ -73,15 +73,15 @@ export function DatasetMultiSelectFilter({
             </AlertDescription>
           </div>
         </Alert>
+      ) : (
+        <Multiselect
+          placeholder={placeholder}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+          values={data ?? []}
+          isLoading={isLoading}
+        />
       )}
-
-      <Multiselect
-        placeholder={placeholder}
-        selectedValues={selectedValues}
-        setSelectedValues={setSelectedValues}
-        values={data ?? []}
-        isLoading={isLoading}
-      />
     </DatasetsFilterItem>
   );
 }
