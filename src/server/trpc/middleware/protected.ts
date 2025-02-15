@@ -18,7 +18,7 @@ export const protectedProcedure = t.procedure
       datasetId: z.number().optional(),
       draftDatasetId: z.string().optional(),
       discussionId: z.string().optional(),
-      discussionCommentId: z.string().optional(),
+      commentId: z.string().optional(),
       userId: z.string().optional(),
     }),
   )
@@ -82,17 +82,17 @@ export const protectedProcedure = t.procedure
       userRoles.add(MiddlewareRoles.DISCUSSION_AUTHOR);
     }
 
-    if (requireRoles.has(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR)) {
-      if (!input.discussionCommentId) {
+    if (requireRoles.has(MiddlewareRoles.COMMENT_AUTHOR)) {
+      if (!input.commentId) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
 
       await AssertOwner.discussionComment({
-        discussionCommentId: input.discussionCommentId,
+        commentId: input.commentId,
         userId: ctx.session.user.id,
       });
 
-      userRoles.add(MiddlewareRoles.DISCUSSION_COMMENT_AUTHOR);
+      userRoles.add(MiddlewareRoles.COMMENT_AUTHOR);
     }
 
     if (requireRoles.isDisjointFrom(userRoles)) {

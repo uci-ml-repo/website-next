@@ -3,34 +3,34 @@ import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import type {
-  DiscussionCommentUpvoteSelect,
+  CommentUpvoteSelect,
   DiscussionSelect,
   UserSelect,
 } from "@/db/lib/types";
-import { discussionComment } from "@/db/schema";
-import type { DiscussionCommentQuery } from "@/server/schema/discussion";
+import { comment } from "@/db/schema";
+import type { CommentQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 
-function buildQuery(query: DiscussionCommentQuery) {
+function buildQuery(query: CommentQuery) {
   let conditions = [];
   if (query.userId) {
-    conditions.push(eq(discussionComment.userId, query.userId));
+    conditions.push(eq(comment.userId, query.userId));
   }
 
   if (query.discussionId) {
-    conditions.push(eq(discussionComment.discussionId, query.discussionId));
+    conditions.push(eq(comment.discussionId, query.discussionId));
   }
 
   return and(...conditions);
 }
 
-type RawDiscussionComment = typeof discussionComment.$inferSelect & {
+type RawComment = typeof comment.$inferSelect & {
   user: UserSelect;
   discussion: DiscussionSelect;
-  upvotes: DiscussionCommentUpvoteSelect[];
+  upvotes: CommentUpvoteSelect[];
 };
 
-function transformRow({ upvotes, ...comment }: RawDiscussionComment) {
+function transformRow({ upvotes, ...comment }: RawComment) {
   return {
     ...comment,
     upvoted: upvotes ? upvotes.length > 0 : false,
@@ -39,9 +39,9 @@ function transformRow({ upvotes, ...comment }: RawDiscussionComment) {
 
 export class DiscussionCommentFindService {
   async byId(id: string, session?: Session | null) {
-    return db.query.discussionComment
+    return db.query.comment
       .findFirst({
-        where: (discussionComment, { eq }) => eq(discussionComment.id, id),
+        where: (comment, { eq }) => eq(comment.id, id),
         with: {
           user: true,
           discussion: true,
@@ -55,16 +55,14 @@ export class DiscussionCommentFindService {
       .then((comment) => (comment ? transformRow(comment) : null));
   }
 
-  async byQuery(query: DiscussionCommentQuery, session?: Session | null) {
+  async byQuery(query: CommentQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
-          sortFunction(sort)(
-            discussionComment[orderBy as keyof typeof query.order],
-          ),
+          sortFunction(sort)(comment[orderBy as keyof typeof query.order]),
         )
-      : [asc(discussionComment.createdAt)];
+      : [asc(comment.createdAt)];
 
-    const discussionComments = await db.query.discussionComment
+    const comments = await db.query.comment
       .findMany({
         where: buildQuery(query),
         orderBy,
@@ -83,18 +81,18 @@ export class DiscussionCommentFindService {
       .then((comments) => comments.map(transformRow));
 
     let nextCursor: number | undefined = undefined;
-    if (query.limit && discussionComments.length > query.limit) {
-      discussionComments.pop();
+    if (query.limit && comments.length > query.limit) {
+      comments.pop();
       nextCursor = (query.cursor ?? 0) + query.limit;
     }
 
     const [countQuery] = await db
       .select({ count: count() })
-      .from(discussionComment)
+      .from(comment)
       .where(buildQuery(query));
 
     return {
-      discussionComments,
+      comments,
       count: countQuery.count,
       nextCursor,
     };

@@ -1,55 +1,40 @@
 import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussionComment, discussionCommentUpvote } from "@/db/schema";
+import { comment, commentUpvote } from "@/db/schema";
 
 export class DiscussionCommentUpvoteService {
-  async create({
-    discussionCommentId,
-    userId,
-  }: {
-    discussionCommentId: string;
-    userId: string;
-  }) {
+  async create({ commentId, userId }: { commentId: string; userId: string }) {
     return await db.transaction(async (tx) => {
       await tx
-        .update(discussionComment)
+        .update(comment)
         .set({
-          upvoteCount: sql`${discussionComment.upvoteCount} + 1`,
+          upvoteCount: sql`${comment.upvoteCount} + 1`,
         })
-        .where(eq(discussionComment.id, discussionCommentId));
+        .where(eq(comment.id, commentId));
 
-      return tx.insert(discussionCommentUpvote).values({
-        discussionCommentId,
+      return tx.insert(commentUpvote).values({
+        commentId,
         userId,
       });
     });
   }
 
-  async remove({
-    discussionCommentId,
-    userId,
-  }: {
-    discussionCommentId: string;
-    userId: string;
-  }) {
+  async remove({ commentId, userId }: { commentId: string; userId: string }) {
     return await db.transaction(async (tx) => {
       await tx
-        .update(discussionComment)
+        .update(comment)
         .set({
-          upvoteCount: sql`${discussionComment.upvoteCount} - 1`,
+          upvoteCount: sql`${comment.upvoteCount} - 1`,
         })
-        .where(eq(discussionComment.id, discussionCommentId));
+        .where(eq(comment.id, commentId));
 
       return tx
-        .delete(discussionCommentUpvote)
+        .delete(commentUpvote)
         .where(
           and(
-            eq(discussionCommentUpvote.userId, userId),
-            eq(
-              discussionCommentUpvote.discussionCommentId,
-              discussionCommentId,
-            ),
+            eq(commentUpvote.userId, userId),
+            eq(commentUpvote.commentId, commentId),
           ),
         );
     });

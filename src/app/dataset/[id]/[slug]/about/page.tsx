@@ -25,7 +25,7 @@ export default async function Page({
         <div className="w-full space-y-8">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">About Dataset</h2>
-            <div className="break-words whitespace-pre-wrap">
+            <div className="whitespace-pre-wrap break-words">
               {dataset.description}
             </div>
           </div>

@@ -24,7 +24,7 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
             <Link
               key={keyword}
               href={DATASETS_QUERY({ keywords: [keyword] })}
-              className="hover:underline text-uci-blue"
+              className="text-uci-blue hover:underline"
             >
               <Badge variant="blue">{keyword}</Badge>
             </Link>
@@ -36,8 +36,8 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
         {dataset.authors.length > 0 &&
           dataset.authors.map((author) => (
             <div key={author.id}>
-              <div className="flex space-x-1 items-center">
-                <UserIcon className="size-5 fill-foreground shrink-0" />
+              <div className="flex items-center space-x-1">
+                <UserIcon className="size-5 shrink-0 fill-foreground" />
                 <span className="truncate">
                   {author.firstName} {author.lastName}
                 </span>

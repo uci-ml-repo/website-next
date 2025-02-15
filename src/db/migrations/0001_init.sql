@@ -66,7 +66,7 @@ CREATE TYPE "public"."dataset_report_resolution_type" AS ENUM('ignored', 'resolv
 CREATE TYPE "public"."user_role" AS ENUM('admin', 'librarian', 'curator', 'basic');
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "account" (
+CREATE TABLE "account" (
   "user_id" uuid NOT NULL,
   "type" TEXT NOT NULL,
   "provider" TEXT NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "author" (
+CREATE TABLE "author" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "first_name" TEXT NOT NULL,
   "last_name" TEXT NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS "author" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "bookmark" (
+CREATE TABLE "bookmark" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "user_id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
@@ -100,7 +100,45 @@ CREATE TABLE IF NOT EXISTS "bookmark" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "dataset" (
+CREATE TABLE "comment" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "content" TEXT NOT NULL,
+  "user_id" uuid NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP
+);
+
+--> statement-breakpoint
+CREATE TABLE "comment_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "comment_id" uuid NOT NULL,
+  "reason" "discussion_report_reason" NOT NULL,
+  "details" TEXT,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "comment_report_resolution" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "report_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "type" "dataset_report_resolution_type" NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "comment_upvote" (
+  "user_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
+);
+
+--> statement-breakpoint
+CREATE TABLE "dataset" (
   "id" serial PRIMARY KEY NOT NULL,
   "title" TEXT NOT NULL,
   "year_created" INTEGER,
@@ -118,9 +156,9 @@ CREATE TABLE IF NOT EXISTS "dataset" (
   "view_count" INTEGER DEFAULT 0 NOT NULL,
   "download_count" INTEGER DEFAULT 0 NOT NULL,
   "variables_description" TEXT,
-  "data_types" dataset_characteristic[],
-  "tasks" dataset_task[],
-  "feature_types" dataset_feature_type[],
+  "data_types" "dataset_characteristic" [],
+  "tasks" "dataset_task" [],
+  "feature_types" "dataset_feature_type" [],
   "size" BIGINT,
   "file_count" INTEGER,
   "user_id" uuid NOT NULL,
@@ -152,14 +190,14 @@ CREATE TABLE IF NOT EXISTS "dataset" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "dataset_keyword" (
+CREATE TABLE "dataset_keyword" (
   "keyword_id" uuid NOT NULL,
   "dataset_id" INTEGER NOT NULL,
   CONSTRAINT "dataset_keyword_keyword_id_dataset_id_pk" PRIMARY KEY ("keyword_id", "dataset_id")
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "dataset_report" (
+CREATE TABLE "dataset_report" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "dataset_id" INTEGER NOT NULL,
   "reason" "dataset_report_reason" NOT NULL,
@@ -169,7 +207,7 @@ CREATE TABLE IF NOT EXISTS "dataset_report" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "dataset_report_resolution" (
+CREATE TABLE "dataset_report_resolution" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "report_id" uuid NOT NULL,
   "user_id" uuid NOT NULL,
@@ -179,7 +217,7 @@ CREATE TABLE IF NOT EXISTS "dataset_report_resolution" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion" (
+CREATE TABLE "discussion" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "title" TEXT NOT NULL,
   "content" TEXT NOT NULL,
@@ -191,45 +229,7 @@ CREATE TABLE IF NOT EXISTS "discussion" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_comment" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "content" TEXT NOT NULL,
-  "user_id" uuid NOT NULL,
-  "discussion_id" uuid NOT NULL,
-  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "updated_at" TIMESTAMP
-);
-
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_comment_report" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
-  "reason" "discussion_report_reason" NOT NULL,
-  "details" TEXT,
-  "user_id" uuid,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_comment_report_resolution" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "report_id" uuid NOT NULL,
-  "user_id" uuid NOT NULL,
-  "type" "dataset_report_resolution_type" NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_comment_upvote" (
-  "user_id" uuid NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "discussion_comment_upvote_user_id_discussion_comment_id_pk" PRIMARY KEY ("user_id", "discussion_comment_id")
-);
-
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_report" (
+CREATE TABLE "discussion_report" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "discussion_id" uuid NOT NULL,
   "reason" "discussion_report_reason" NOT NULL,
@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS "discussion_report" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_report_resolution" (
+CREATE TABLE "discussion_report_resolution" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "report_id" uuid NOT NULL,
   "user_id" uuid NOT NULL,
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS "discussion_report_resolution" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "discussion_upvote" (
+CREATE TABLE "discussion_upvote" (
   "user_id" uuid NOT NULL,
   "discussion_id" uuid NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS "discussion_upvote" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "email_verification_token" (
+CREATE TABLE "email_verification_token" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "user_id" uuid NOT NULL,
   "token" TEXT NOT NULL,
@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS "email_verification_token" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "keyword" (
+CREATE TABLE "keyword" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "status" "approval_status" NOT NULL,
   "name" TEXT NOT NULL,
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS "keyword" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "paper" (
+CREATE TABLE "paper" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "title" TEXT NOT NULL,
   "authors" TEXT[] NOT NULL,
@@ -284,14 +284,14 @@ CREATE TABLE IF NOT EXISTS "paper" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "password_reset_token" (
+CREATE TABLE "password_reset_token" (
   "token" TEXT PRIMARY KEY NOT NULL,
   "user_id" uuid NOT NULL,
   "expires" TIMESTAMP NOT NULL
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "session" (
+CREATE TABLE "session" (
   "session_token" TEXT PRIMARY KEY NOT NULL,
   "user_id" uuid NOT NULL,
   "expires" TIMESTAMP NOT NULL,
@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS "session" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE "user" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "name" TEXT NOT NULL,
   "email" TEXT NOT NULL,
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 );
 
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "variable" (
+CREATE TABLE "variable" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "name" TEXT NOT NULL,
   "description" TEXT NOT NULL,
@@ -324,265 +324,129 @@ CREATE TABLE IF NOT EXISTS "variable" (
 );
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "account"
-  ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "author"
-  ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "bookmark"
-  ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "bookmark"
-  ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
+ALTER TABLE "comment"
+ADD CONSTRAINT "comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment"
+ADD CONSTRAINT "comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment_report"
+ADD CONSTRAINT "comment_report_comment_id_discussion_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment_report_resolution"
+ADD CONSTRAINT "comment_report_resolution_report_id_comment_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."comment_report" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment_report_resolution"
+ADD CONSTRAINT "comment_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment_upvote"
+ADD CONSTRAINT "comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "comment_upvote"
+ADD CONSTRAINT "comment_upvote_comment_id_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."comment" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
 ALTER TABLE "dataset"
-  ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "dataset_keyword"
-  ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "dataset_keyword"
-  ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "dataset_report"
-  ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "dataset_report_resolution"
-  ADD CONSTRAINT "dataset_report_resolution_report_id_dataset_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."dataset_report" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_report_resolution_report_id_dataset_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."dataset_report" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "dataset_report_resolution"
-  ADD CONSTRAINT "dataset_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "dataset_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion"
-  ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion"
-  ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment"
-  ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment"
-  ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment_report"
-  ADD CONSTRAINT "discussion_comment_report_discussion_comment_id_discussion_id_fk" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment_report_resolution"
-  ADD CONSTRAINT "discussion_comment_report_resolution_report_id_discussion_comment_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_comment_report" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment_report_resolution"
-  ADD CONSTRAINT "discussion_comment_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment_upvote"
-  ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
-ALTER TABLE "discussion_comment_upvote"
-  ADD CONSTRAINT "discussion_comment_upvote_discussion_comment_id_discussion_comment_id_fk" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
---> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion_report"
-  ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion_report_resolution"
-  ADD CONSTRAINT "discussion_report_resolution_report_id_discussion_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_report" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_report_resolution_report_id_discussion_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_report" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion_report_resolution"
-  ADD CONSTRAINT "discussion_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion_upvote"
-  ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "discussion_upvote"
-  ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "email_verification_token"
-  ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "paper"
-  ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "password_reset_token"
-  ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "session"
-  ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
 
 --> statement-breakpoint
-DO $$
-BEGIN
 ALTER TABLE "variable"
-  ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
+
+--> statement-breakpoint
+CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
 
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);

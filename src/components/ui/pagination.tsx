@@ -57,7 +57,7 @@ const PaginationLink = ({
         size,
       }),
       {
-        "cursor-default hover:bg-background text-muted-foreground hover:text-muted-foreground":
+        "cursor-default text-muted-foreground hover:bg-background hover:text-muted-foreground":
           disabled,
       },
       className,

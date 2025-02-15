@@ -37,7 +37,7 @@ export function DiscussionComments({
       },
     );
 
-  const comments = data?.pages.flatMap((page) => page.discussionComments) || [];
+  const comments = data?.pages.flatMap((page) => page.comments) || [];
   const totalCount = data?.pages[0]?.count || 0;
 
   const { triggerFetchNextPage } = useInfiniteScroll({

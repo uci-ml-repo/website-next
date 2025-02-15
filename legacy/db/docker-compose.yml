@@ -94,7 +94,7 @@ services:
     command: >
       sh -c "
         psql -h postgres -U postgres -d mlrepo -q -f /migrate.sql &&
-        pg_dump -h postgres -U postgres -d mlrepo --data-only --file=/output/out.sql
+        pg_dump -h postgres -U postgres -d mlrepo --data-only -Fc --file=/output/out.dump
       "
     volumes:
       - ./migrate.sql:/migrate.sql

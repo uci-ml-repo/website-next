@@ -12,7 +12,7 @@ export const discussionCommentUpvoteRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       return service.discussion.comment.upvote.create({
-        discussionCommentId: input.discussionCommentId,
+        commentId: input.discussionCommentId,
         userId: ctx.user.id,
       });
     }),
@@ -25,7 +25,7 @@ export const discussionCommentUpvoteRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       return service.discussion.comment.upvote.remove({
-        discussionCommentId: input.discussionCommentId,
+        commentId: input.discussionCommentId,
         userId: ctx.user.id,
       });
     }),

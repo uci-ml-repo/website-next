@@ -59,7 +59,7 @@ export function DiscussionCommentReportDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createReportMutation.mutate({
-      discussionCommentId,
+      commentId: discussionCommentId,
       userId: session.data?.user?.id,
       ...values,
     });

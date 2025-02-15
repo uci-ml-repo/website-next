@@ -12,7 +12,7 @@ BEGIN
 END
 \$\$;"
 
-psql --dbname="$DATABASE_URL" -f ./output/out.sql
+pg_restore --dbname="$DATABASE_URL" --data-only ./output/out.dump
 
 psql --dbname="$DATABASE_URL" -c "DO \$\$
 DECLARE

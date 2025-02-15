@@ -1,13 +1,13 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { discussionComment } from "@/db/schema";
+import { comment } from "@/db/schema";
 
 export class DiscussionCommentUpdateService {
   async byId({ id, content }: { id: string; content: string }) {
     return db
-      .update(discussionComment)
+      .update(comment)
       .set({ content, updatedAt: new Date() })
-      .where(eq(discussionComment.id, id));
+      .where(eq(comment.id, id));
   }
 }

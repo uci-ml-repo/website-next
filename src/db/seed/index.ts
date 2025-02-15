@@ -5,10 +5,10 @@ import { reset, seed } from "drizzle-seed";
 
 import { db } from "@/db";
 import {
+  comment,
   dataset,
   datasetView,
   discussion,
-  discussionComment,
   paper,
   user,
 } from "@/db/schema";
@@ -64,23 +64,25 @@ async function main() {
 
   const discussions = await db.select().from(discussion);
 
-  await seed(db, { discussionComment }, { count: 1_000 }).refine((f) => ({
-    discussionComment: {
-      columns: {
-        createdAt: f.date({ maxDate: new Date("01-01-2024") }),
-        updatedAt: f.date({
-          minDate: new Date("01-01-2024"),
-          maxDate: new Date(),
-        }),
-        discussionId: f.valuesFromArray({
-          values: discussions.map((d) => d.id),
-        }),
-        userId: f.valuesFromArray({ values: users.map((u) => u.id) }),
-        upvoteCount: f.valuesFromArray({ values: [0] }),
-        content: f.loremIpsum({ sentencesCount: 5 }),
+  await seed(db, { discussionComment: comment }, { count: 1_000 }).refine(
+    (f) => ({
+      discussionComment: {
+        columns: {
+          createdAt: f.date({ maxDate: new Date("01-01-2024") }),
+          updatedAt: f.date({
+            minDate: new Date("01-01-2024"),
+            maxDate: new Date(),
+          }),
+          discussionId: f.valuesFromArray({
+            values: discussions.map((d) => d.id),
+          }),
+          userId: f.valuesFromArray({ values: users.map((u) => u.id) }),
+          upvoteCount: f.valuesFromArray({ values: [0] }),
+          content: f.loremIpsum({ sentencesCount: 5 }),
+        },
       },
-    },
-  }));
+    }),
+  );
 
   for (const d of datasets) {
     await service.dataset.update.zipSize(d);

@@ -11,7 +11,7 @@ export const discussionQuery = z.object({
   cursor: z.number().optional(),
 });
 
-export const discussionCommentQuery = z.object({
+export const commentQuery = z.object({
   discussionId: z.string().optional(),
   userId: z.string().optional(),
   order: order(["createdAt", "upvoteCount"]).optional(),
@@ -20,4 +20,4 @@ export const discussionCommentQuery = z.object({
 });
 
 export type DiscussionQuery = z.infer<typeof discussionQuery>;
-export type DiscussionCommentQuery = z.infer<typeof discussionCommentQuery>;
+export type CommentQuery = z.infer<typeof commentQuery>;

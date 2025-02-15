@@ -6,9 +6,9 @@ import { protectedProcedure, router } from "@/server/trpc";
 
 export const discussionCommentRemoveRouter = router({
   byId: protectedProcedure
-    .meta({ requireRoles: [Enums.UserRole.ADMIN, "DISCUSSION_COMMENT_AUTHOR"] })
-    .input(z.object({ discussionCommentId: z.string() }))
+    .meta({ requireRoles: [Enums.UserRole.ADMIN, "COMMENT_AUTHOR"] })
+    .input(z.object({ commentId: z.string() }))
     .mutation(async ({ input }) => {
-      return service.discussion.comment.remove.byId(input.discussionCommentId);
+      return service.discussion.comment.remove.byId(input.commentId);
     }),
 });

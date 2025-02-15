@@ -9,7 +9,7 @@ export const discussionCommentReportRouter = router({
   create: procedure
     .input(
       z.object({
-        discussionCommentId: z.string(),
+        commentId: z.string(),
         reason: z.enum(enumToArray(Enums.DiscussionReportReason)),
         details: z.string().optional(),
         userId: z.string().optional(),

@@ -12,9 +12,9 @@ export function sqlArray(array: string[], castTo: string = "text") {
   }
 
   return sql.join([
-    sql`'{`,
+    sql.raw(`'{`),
     sql.join(items, sql`,`),
-    sql`}'`,
+    sql.raw(`}'`),
     sql.raw(`::${castTo}[]`),
   ]);
 }

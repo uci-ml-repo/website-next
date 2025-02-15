@@ -26,7 +26,7 @@ export function DiscussionCommentDeleteDialog({
   });
 
   function removeDiscussionComment() {
-    removeMutation.mutate({ discussionCommentId: discussionComment.id });
+    removeMutation.mutate({ commentId: discussionComment.id });
   }
 
   return (

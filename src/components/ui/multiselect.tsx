@@ -99,19 +99,19 @@ export function Multiselect({
           />
           <PopoverTrigger
             tabIndex={-1}
-            className="-mt-[5px] h-[1px] pb-1 invisible"
+            className="invisible -mt-[5px] h-[1px] pb-1"
           />
           <PopoverContent
             onOpenAutoFocus={(event) => event.preventDefault()}
-            className="p-0 w-[--radix-popover-trigger-width]"
+            className="w-[--radix-popover-trigger-width] p-0"
           >
             {isLoading ? (
-              <div className="h-10 flex w-full justify-center items-center">
+              <div className="flex h-10 w-full items-center justify-center">
                 <Spinner />
               </div>
             ) : (
               <CommandList>
-                <CommandEmpty className="py-2 px-4 text-muted-foreground text-sm">
+                <CommandEmpty className="px-4 py-2 text-sm text-muted-foreground">
                   No results found
                 </CommandEmpty>
                 {!!matches.length && (
@@ -151,7 +151,7 @@ export function Multiselect({
                             })}
                           />
                           {values instanceof Map ? (
-                            <span className="flex justify-between min-w-0 w-full space-x-1">
+                            <span className="flex w-full min-w-0 justify-between space-x-1">
                               <span className="truncate">{value}</span>
                               <span className="text-muted-foreground">
                                 ({values.get(value)})

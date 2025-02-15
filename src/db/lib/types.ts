@@ -1,9 +1,9 @@
 import type {
   author,
+  commentUpvote,
   dataset,
   datasetKeyword,
   discussion,
-  discussionCommentUpvote,
   discussionUpvote,
   keyword,
   paper,
@@ -39,5 +39,4 @@ export type DiscussionSelect = typeof discussion.$inferSelect;
 
 export type DiscussionUpvoteSelect = typeof discussionUpvote.$inferSelect;
 
-export type DiscussionCommentUpvoteSelect =
-  typeof discussionCommentUpvote.$inferSelect;
+export type CommentUpvoteSelect = typeof commentUpvote.$inferSelect;

@@ -971,7 +971,7 @@ CREATE TABLE "discussion" (
   "updated_at" TIMESTAMP
 );
 
-CREATE TABLE "discussion_comment" (
+CREATE TABLE "comment" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "content" TEXT NOT NULL,
   "user_id" uuid NOT NULL,
@@ -981,16 +981,16 @@ CREATE TABLE "discussion_comment" (
   "updated_at" TIMESTAMP
 );
 
-CREATE TABLE "discussion_comment_report" (
+CREATE TABLE "comment_report" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
   "reason" "discussion_report_reason" NOT NULL,
   "details" TEXT,
   "user_id" uuid,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-CREATE TABLE "discussion_comment_report_resolution" (
+CREATE TABLE "comment_report_resolution" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "report_id" uuid NOT NULL,
   "user_id" uuid NOT NULL,
@@ -998,11 +998,11 @@ CREATE TABLE "discussion_comment_report_resolution" (
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-CREATE TABLE "discussion_comment_upvote" (
+CREATE TABLE "comment_upvote" (
   "user_id" uuid NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "discussion_comment_upvote_user_id_discussion_comment_id_pk" PRIMARY KEY ("user_id", "discussion_comment_id")
+  CONSTRAINT "comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
 );
 
 CREATE TABLE "discussion_report" (
@@ -1103,32 +1103,32 @@ ALTER TABLE "discussion"
 ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "comment"
+ADD CONSTRAINT "comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "comment"
+ADD CONSTRAINT "comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment_report"
-ADD CONSTRAINT "discussion_comment_report_discussion_comment_id_discussion_id_f" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "comment_report"
+ADD CONSTRAINT "comment_report_comment_id_discussion_id_f" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment_report_resolution"
-ADD CONSTRAINT "discussion_comment_report_resolution_report_id_discussion_comme" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_comment_report" ("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "comment_report_resolution"
+ADD CONSTRAINT "comment_report_resolution_report_id_discussion_comme" FOREIGN KEY ("report_id") REFERENCES "public"."comment_report" ("id") ON DELETE no action ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment_report_resolution"
-ADD CONSTRAINT "discussion_comment_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "comment_report_resolution"
+ADD CONSTRAINT "comment_report_resolution_report_id_comment_report_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "comment_upvote"
+ADD CONSTRAINT "comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_discussion_comment_id_discussion_comm" FOREIGN KEY ("discussion_comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "comment_upvote"
+ADD CONSTRAINT "comment_upvote_comment_id_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."comment" ("id") ON DELETE cascade ON UPDATE no action;
 
 -- noinspection SqlResolve
 ALTER TABLE "discussion_report"
