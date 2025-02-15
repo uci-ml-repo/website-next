@@ -32,6 +32,7 @@ import {
 import {
   ADMIN_ROUTE,
   CONTRIBUTE_ROUTE,
+  DATASET_BASE_ROUTE,
   DATASETS_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
@@ -109,7 +110,10 @@ export function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton activePath={DATASETS_ROUTE} asChild>
+            <SidebarMenuButton
+              activePath={RegExp(`^${DATASET_BASE_ROUTE}`)}
+              asChild
+            >
               <Link href={DATASETS_ROUTE}>
                 <DatabaseIcon />
                 <span>Datasets</span>

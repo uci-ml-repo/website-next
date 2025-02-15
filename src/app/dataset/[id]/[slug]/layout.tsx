@@ -66,8 +66,6 @@ export default async function Layout({
       })
     : false;
 
-  const basePath = DATASET_ROUTE(dataset);
-
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
       <Main className="space-y-8">
@@ -81,7 +79,7 @@ export default async function Layout({
             />
           </Card>
 
-          <DatasetTabs basePath={basePath} dataset={dataset} />
+          <DatasetTabs basePath={DATASET_ROUTE(dataset)} dataset={dataset} />
         </div>
 
         {children}

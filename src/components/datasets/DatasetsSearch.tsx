@@ -21,7 +21,6 @@ export function DatasetsSearch() {
   const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
 
-  const [localSearch, setLocalSearch] = useState<string>(filters.search || "");
   const [localOrder, setLocalOrder] = useState<string>(
     filters.search
       ? "relevance"
@@ -30,23 +29,21 @@ export function DatasetsSearch() {
 
   const { inputValue, setInputValue, searchValue, handleChange } =
     useDebouncedSearch({ defaultValue: filters.search });
+
   const filterCount = filterCountExcept({
     except: ["search", "order", "limit", "cursor"],
   });
 
-  // When the debounced search value changes, update the local search state.
+  // Optionally adjust the local order based on searchValue.
   useEffect(() => {
-    if (localSearch === searchValue) return;
-
-    if (searchValue && !localSearch) {
+    if (searchValue && localOrder !== "relevance") {
       setLocalOrder("relevance");
-    } else if (!searchValue && localSearch && localOrder === "relevance") {
+    } else if (!searchValue && localOrder === "relevance") {
       setLocalOrder("viewCount");
     }
-    setLocalSearch(searchValue);
-  }, [searchValue, localSearch, localOrder]);
+  }, [searchValue, localOrder]);
 
-  // Update the URL filters whenever the local search changes.
+  // Update the URL filters whenever the debounced search value changes.
   useEffect(() => {
     const orderFilter =
       localOrder === "relevance"
@@ -60,10 +57,10 @@ export function DatasetsSearch() {
         ? "relevance"
         : "viewCount";
 
-    if (localSearch === currentSearch && localOrder === currentOrder) return;
+    if (searchValue === currentSearch && localOrder === currentOrder) return;
 
-    setFilters({ search: localSearch, order: orderFilter });
-  }, [localSearch, localOrder, filters, setFilters]);
+    setFilters({ search: searchValue, order: orderFilter });
+  }, [searchValue, localOrder, filters, setFilters]);
 
   useEffect(() => {
     if (!filters.search) {
@@ -100,7 +97,7 @@ export function DatasetsSearch() {
           <DatasetsSearchOrderBy
             value={localOrder}
             onChange={handleOrderChange}
-            searchActive={!!localSearch}
+            searchActive={!!inputValue}
           />
         </div>
 

@@ -5,12 +5,14 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 
 export const DATASETS_ROUTE = "/datasets";
 
+export const DATASET_BASE_ROUTE = "/dataset";
+
 export function DATASETS_QUERY(query: DatasetQuery) {
   return DATASETS_ROUTE + "?" + buildQueryFilters(query).toString();
 }
 
 export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {
-  return `/dataset/${id}/${slug}`;
+  return `${DATASET_BASE_ROUTE}/${id}/${slug}`;
 }
 
 export function DATASET_DISCUSSIONS_ROUTE({
