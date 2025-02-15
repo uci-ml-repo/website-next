@@ -57,6 +57,7 @@ export async function GET(
           "Content-Type": contentType,
           "Content-Length": fileSize.toString(),
           "Accept-Ranges": "bytes",
+          "Content-Disposition": `inline; filename="${path.basename(filePath)}"`,
         },
       });
     } catch (error: unknown) {

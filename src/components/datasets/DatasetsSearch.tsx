@@ -13,15 +13,7 @@ import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { SmartPagination } from "@/components/ui/smart-pagination";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -38,7 +30,9 @@ export function DatasetsSearch() {
 
   const { inputValue, setInputValue, searchValue, handleChange } =
     useDebouncedSearch({ defaultValue: filters.search });
-  const filterCount = filterCountExcept({ except: ["search", "order"] });
+  const filterCount = filterCountExcept({
+    except: ["search", "order", "limit", "cursor"],
+  });
 
   // When the debounced search value changes, update the local search state.
   useEffect(() => {
@@ -52,7 +46,7 @@ export function DatasetsSearch() {
     setLocalSearch(searchValue);
   }, [searchValue, localSearch, localOrder]);
 
-  // Update the URL filters in one go whenever the local search or order changes.
+  // Update the URL filters whenever the local search changes.
   useEffect(() => {
     const orderFilter =
       localOrder === "relevance"
@@ -85,6 +79,9 @@ export function DatasetsSearch() {
 
   const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters);
 
+  const limit = filters.limit || 10;
+  const offset = filters.cursor || 0;
+
   return (
     <div className="flex flex-1 flex-col p-1">
       <h1 className="text-2xl font-bold">Browse datasets</h1>
@@ -116,7 +113,7 @@ export function DatasetsSearch() {
             ))}
           </div>
         ) : data?.datasets.length ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
               {(!!filterCount || filters.search) && (
                 <div className="text-lg text-muted-foreground">
@@ -143,22 +140,13 @@ export function DatasetsSearch() {
                 ))}
               </div>
             </div>
-            <Pagination className="justify-end">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+
+            <SmartPagination
+              totalCount={data.count}
+              limit={limit}
+              offset={offset}
+              onPageChange={(newOffset) => setFilters({ cursor: newOffset })}
+            />
           </div>
         ) : (
           <div className="flex h-20 flex-col items-center justify-center space-y-2">

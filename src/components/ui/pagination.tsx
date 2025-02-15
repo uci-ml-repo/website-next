@@ -36,6 +36,7 @@ PaginationItem.displayName = "PaginationItem";
 
 type PaginationLinkProps = {
   isActive?: boolean;
+  disabled?: boolean;
 } & Pick<ButtonProps, "size"> &
   React.ComponentProps<"a">;
 
@@ -43,6 +44,7 @@ const PaginationLink = ({
   className,
   isActive,
   size = "icon",
+  disabled,
   ...props
 }: PaginationLinkProps) => (
   <a
@@ -50,8 +52,13 @@ const PaginationLink = ({
     className={cn(
       buttonVariants({
         variant: isActive ? "outline" : "ghost",
+        pill: true,
         size,
       }),
+      {
+        "cursor-default hover:bg-background text-muted-foreground hover:text-muted-foreground":
+          disabled,
+      },
       className,
     )}
     {...props}
@@ -69,7 +76,7 @@ const PaginationPrevious = ({
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <ChevronLeft className="h-4 w-4" />
+    <ChevronLeft className="size-4" />
     <span>Previous</span>
   </PaginationLink>
 );
@@ -86,7 +93,7 @@ const PaginationNext = ({
     {...props}
   >
     <span>Next</span>
-    <ChevronRight className="h-4 w-4" />
+    <ChevronRight className="size-4" />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -97,10 +104,10 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex size-9 items-center justify-center", className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <MoreHorizontal className="size-4" />
     <span className="sr-only">More pages</span>
   </span>
 );

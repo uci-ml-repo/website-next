@@ -139,13 +139,13 @@ body {
 .backdrop-gradient-blur::before {
   content: "";
   position: absolute;
-  top: -6%;
-  left: -6%;
-  width: 112%;
-  height: 112%;
+  top: -20px;
+  left: -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
   border-radius: inherit;
   background: radial-gradient(
-    hsl(var(--background) / 1) 80%,
+    hsl(var(--background) / 1) 85%,
     hsl(var(--background) / 0) 100%
   );
   z-index: -1;
