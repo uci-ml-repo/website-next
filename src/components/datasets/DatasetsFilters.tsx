@@ -106,7 +106,7 @@ export function DatasetsFilters() {
             </TooltipContent>
           </Tooltip>
         </div>
-        {filterActive({ except: ["order"] }) && (
+        {filterActive({ except: ["order", "limit", "cursor"] }) && (
           <Button
             variant="secondary"
             size="xs"

@@ -38,7 +38,7 @@ type PaginationLinkProps = {
   isActive?: boolean;
   disabled?: boolean;
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">;
+  React.ComponentProps<"button">;
 
 const PaginationLink = ({
   className,
@@ -47,11 +47,12 @@ const PaginationLink = ({
   disabled,
   ...props
 }: PaginationLinkProps) => (
-  <a
+  <button
     aria-current={isActive ? "page" : undefined}
+    disabled={disabled}
     className={cn(
       buttonVariants({
-        variant: isActive ? "outline" : "ghost",
+        variant: isActive ? "blue" : "ghost",
         pill: true,
         size,
       }),
@@ -68,31 +69,33 @@ PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({
   className,
+  showText,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: React.ComponentProps<typeof PaginationLink> & { showText?: boolean }) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5", className)}
+    size={showText ? "default" : "icon"}
+    className={cn({ "gap-1 pl-2.5": showText }, className)}
     {...props}
   >
     <ChevronLeft className="size-4" />
-    <span>Previous</span>
+    {showText && <span>Previous</span>}
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
   className,
+  showText,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: React.ComponentProps<typeof PaginationLink> & { showText?: boolean }) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5", className)}
+    size={showText ? "default" : "icon"}
+    className={cn({ "gap-1 pl-2.5": showText }, className)}
     {...props}
   >
-    <span>Next</span>
+    {showText && <span>Next</span>}
     <ChevronRight className="size-4" />
   </PaginationLink>
 );

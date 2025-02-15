@@ -103,6 +103,7 @@ export function DatasetsSearch() {
             searchActive={!!localSearch}
           />
         </div>
+
         {isLoading ? (
           <div>
             {Array.from({ length: 5 }).map((_, index) => (
