@@ -69,19 +69,19 @@ export function Multiselect({
             key={value}
             layout
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="group rounded-full"
+            className="group rounded-full max-w-full overflow-hidden"
             onClick={() => removeValue(value)}
           >
             <Badge
               variant="blue"
               className={cn(
-                "cursor-pointer space-x-0.5 pr-1",
+                "cursor-pointer space-x-0.5 pr-1 max-w-full",
                 "animate-in fade-in-0 zoom-in-50",
                 "group-hover:border-muted-foreground group-hover:bg-muted group-hover:text-muted-foreground",
                 "group-focus:border-muted-foreground group-focus:bg-muted group-focus:text-muted-foreground",
               )}
             >
-              <span>{value}</span>
+              <span className="truncate">{value}</span>
               <XIcon className="size-3 text-muted-foreground group-hover:text-destructive group-focus:text-destructive" />
             </Badge>
           </motion.button>

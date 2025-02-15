@@ -56,7 +56,7 @@ function buildSearchQuery(search: string) {
     OR similarity (
       ${datasetView.title},
       ${search}
-    ) > 0.1
+    ) > 0.05
   `;
 
   return {
@@ -69,10 +69,10 @@ function buildSearchQuery(search: string) {
 function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
-  // if (query.search) {
-  //   const { searchCondition } = buildSearchQuery(query.search);
-  //   conditions.push(searchCondition);
-  // }
+  if (query.search) {
+    const { searchCondition } = buildSearchQuery(query.search);
+    conditions.push(searchCondition);
+  }
 
   if (query.keywords?.length) {
     conditions.push(

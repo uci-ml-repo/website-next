@@ -9,17 +9,28 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const perPageOptions = [10, 25, 50, 100];
 
 export function SmartPagination({
   totalCount,
   limit,
   offset,
   onPageChange,
+  onLimitChange, // new prop for changing the page limit
 }: {
   totalCount: number;
   limit: number;
   offset: number;
   onPageChange: (offset: number) => void;
+  onLimitChange: (newLimit: number) => void;
 }) {
   const totalPages = Math.ceil(totalCount / limit) || 1;
   const currentPage = Math.floor(offset / limit) + 1;
@@ -59,9 +70,38 @@ export function SmartPagination({
   };
 
   return (
-    <Pagination className="justify-end">
+    <Pagination className="justify-end space-x-2">
+      <div className="flex items-center space-x-2">
+        <div className="text-sm text-nowrap text-muted-foreground">
+          Results Per Page
+        </div>
+
+        <Select
+          value={limit.toString()} // use the current limit as the value
+          onValueChange={(value) => {
+            // update the limit and reset offset to 0
+            onLimitChange(Number(value));
+          }}
+        >
+          <SelectTrigger className="w-20">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {perPageOptions.map((option) => (
+              <SelectItem
+                key={option}
+                className="cursor-pointer"
+                value={option.toString()}
+              >
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <PaginationContent>
-        <PaginationItem className="cursor-pointer">
+        <PaginationItem>
           <PaginationPrevious
             onClick={() => onPageChange(Math.max(offset - limit, 0))}
             disabled={offset === 0}
@@ -71,7 +111,7 @@ export function SmartPagination({
         {paginationItems.map((item, index) => {
           if (typeof item === "number") {
             return (
-              <PaginationItem key={index} className="cursor-pointer">
+              <PaginationItem key={index}>
                 <PaginationLink
                   onClick={() => handlePageChange(item)}
                   isActive={item === currentPage}
@@ -89,7 +129,7 @@ export function SmartPagination({
           }
         })}
 
-        <PaginationItem className="cursor-pointer">
+        <PaginationItem>
           <PaginationNext
             onClick={() =>
               onPageChange(Math.min(offset + limit, (totalPages - 1) * limit))

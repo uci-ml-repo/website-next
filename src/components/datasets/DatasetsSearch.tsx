@@ -147,6 +147,9 @@ export function DatasetsSearch() {
               limit={limit}
               offset={offset}
               onPageChange={(newOffset) => setFilters({ cursor: newOffset })}
+              onLimitChange={(newLimit) =>
+                setFilters({ limit: newLimit, cursor: 0 })
+              }
             />
           </div>
         ) : (

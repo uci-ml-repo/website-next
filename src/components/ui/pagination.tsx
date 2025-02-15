@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
 
-import { type ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -47,17 +47,14 @@ const PaginationLink = ({
   disabled,
   ...props
 }: PaginationLinkProps) => (
-  <button
+  <Button
     aria-current={isActive ? "page" : undefined}
     disabled={disabled}
+    variant={isActive ? "blue" : "ghost"}
+    size={size}
     className={cn(
-      buttonVariants({
-        variant: isActive ? "blue" : "ghost",
-        pill: true,
-        size,
-      }),
       {
-        "cursor-default text-muted-foreground hover:bg-background hover:text-muted-foreground":
+        "text-muted-foreground hover:bg-background hover:text-muted-foreground":
           disabled,
       },
       className,
