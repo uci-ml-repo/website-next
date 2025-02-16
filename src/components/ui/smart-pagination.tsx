@@ -101,7 +101,8 @@ export function SmartPagination({
 
       <PaginationContent>
         <div className="mr-2 text-sm text-muted-foreground">
-          {offset} &ndash; {offset + limit} of {totalCount}
+          {offset} &ndash; {Math.min(totalCount, offset + limit)} of{" "}
+          {totalCount}
         </div>
         <PaginationItem>
           <PaginationPrevious

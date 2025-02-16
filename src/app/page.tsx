@@ -42,7 +42,7 @@ export default async function Page() {
         <div className="flex flex-wrap gap-4">
           <NavButton
             label="Explore All Datasets"
-            variant="gold"
+            variant="blue"
             icon={<ListIcon />}
             href={DATASETS_ROUTE}
           />
