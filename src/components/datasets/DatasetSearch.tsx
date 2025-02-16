@@ -5,10 +5,11 @@ import React, { useEffect, useState } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
+import { DatasetFiltersMobile } from "@/components/datasets/DatasetFiltersMobile";
 import {
-  DatasetsSearchOrderBy,
+  DatasetSearchOrderBy,
   orderByOptions,
-} from "@/components/datasets/DatasetsSearchOrderBy";
+} from "@/components/datasets/DatasetSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import { SmartPagination } from "@/components/ui/smart-pagination";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetsSearch() {
+export function DatasetSearch() {
   const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
 
@@ -82,9 +83,9 @@ export function DatasetsSearch() {
 
   return (
     <div className="flex flex-1 flex-col p-1">
-      <h1 className="text-2xl font-bold">Browse datasets</h1>
+      <h1 className="text-2xl font-bold max-xl:pb-2">Browse datasets</h1>
       <div className="space-y-4">
-        <div className="flex w-full items-end justify-between space-x-4">
+        <div className="flex w-full flex-col items-end justify-between gap-4 md:flex-row">
           <InputClearable
             variantSize="lg"
             placeholder="Search datasets"
@@ -95,11 +96,21 @@ export function DatasetsSearch() {
             containerClassName="w-full"
             aria-label="Search datasets"
           />
-          <DatasetsSearchOrderBy
-            value={localOrder}
-            onChange={handleOrderChange}
-            searchActive={!!inputValue}
-          />
+          <div className="flex items-end max-xl:justify-between max-md:w-full">
+            <div className="mr-4 xl:hidden">
+              <DatasetFiltersMobile />
+            </div>
+            <div>
+              <div className="mb-1 text-sm text-muted-foreground max-xl:hidden">
+                Sort By
+              </div>
+              <DatasetSearchOrderBy
+                value={localOrder}
+                onChange={handleOrderChange}
+                searchActive={!!inputValue}
+              />
+            </div>
+          </div>
         </div>
 
         {!data && isLoading ? (

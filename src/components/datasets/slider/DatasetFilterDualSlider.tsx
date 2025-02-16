@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
+import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 import { Spinner } from "@/components/ui/spinner";
@@ -15,9 +15,9 @@ interface DatasetFilterDualSliderProps {
   maxRawValue: number | undefined;
   step?: number;
   exponent?: number;
-  tooltipOpen: boolean;
-  dropdownOpen: boolean;
-  onDropdownOpenChange: () => void;
+  tooltipOpen?: boolean;
+  dropdownOpen?: boolean;
+  onDropdownOpenChange?: () => void;
 }
 
 export function DatasetFilterDualSlider({
@@ -113,7 +113,7 @@ export function DatasetFilterDualSlider({
   }, [values, log, debouncedSetFilters, filterMinKey, filterMaxKey, maxLog]);
 
   return (
-    <DatasetsFilterItem
+    <DatasetFilterItem
       label={label}
       tooltipOpen={tooltipOpen}
       tooltipContent={tooltipContent}
@@ -143,6 +143,6 @@ export function DatasetFilterDualSlider({
           <Spinner />
         </div>
       )}
-    </DatasetsFilterItem>
+    </DatasetFilterItem>
   );
 }

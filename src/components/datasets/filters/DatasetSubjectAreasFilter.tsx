@@ -1,8 +1,8 @@
 import React from "react";
 
 import { DatasetCheckboxFilter } from "@/components/datasets/checkbox/DatasetCheckboxFilter";
-import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
-import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
+import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
+import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
 import { useToggleFilter } from "@/components/hooks/use-toggle-filter";
 import { Enums } from "@/db/lib/enums";
 import { enumToArray } from "@/lib/utils";
@@ -11,14 +11,14 @@ export function DatasetSubjectAreasFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,
-}: DatasetFiltersProps) {
+}: DatasetFilterProps) {
   const { filters, toggle, isToggled, clear } = useToggleFilter<
     "subjectAreas",
     Enums.DatasetSubjectArea
   >("subjectAreas");
 
   return (
-    <DatasetsFilterItem
+    <DatasetFilterItem
       label="Subject Area"
       tooltipOpen={tooltipOpen}
       tooltipContent="The subject area of the dataset"
@@ -33,6 +33,6 @@ export function DatasetSubjectAreasFilter({
         toggle={toggle}
         isToggled={isToggled}
       />
-    </DatasetsFilterItem>
+    </DatasetFilterItem>
   );
 }

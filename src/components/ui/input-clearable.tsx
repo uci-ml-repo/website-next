@@ -79,12 +79,7 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div
-        className={cn(
-          "relative flex min-w-fit items-center",
-          containerClassName,
-        )}
-      >
+      <div className={cn("relative flex items-center", containerClassName)}>
         {Icon && (
           <span
             className={cn(

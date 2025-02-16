@@ -1,14 +1,14 @@
 import { AlertCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { DatasetsFilterItem } from "@/components/datasets/DatasetsFilterItem";
-import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
+import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
+import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Multiselect } from "@/components/ui/multiselect";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-interface GenericFilterProps extends DatasetFiltersProps {
+interface GenericFilterProps extends DatasetFilterProps {
   label: string;
   tooltipContent: string;
   placeholder: string;
@@ -54,7 +54,7 @@ export function DatasetMultiSelectFilter({
   const { data, isLoading, isError } = useData(selectedValues);
 
   return (
-    <DatasetsFilterItem
+    <DatasetFilterItem
       label={label}
       tooltipContent={tooltipContent}
       dropdownOpen={dropdownOpen}
@@ -82,6 +82,6 @@ export function DatasetMultiSelectFilter({
           isLoading={isLoading}
         />
       )}
-    </DatasetsFilterItem>
+    </DatasetFilterItem>
   );
 }

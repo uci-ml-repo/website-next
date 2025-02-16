@@ -1,8 +1,8 @@
-import type { DatasetFiltersProps } from "@/components/datasets/DatasetsFilters";
+import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
 import { DatasetFilterDualSlider } from "@/components/datasets/slider/DatasetFilterDualSlider";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFeatureCountFilter(props: DatasetFiltersProps) {
+export function DatasetFeatureCountFilter(props: DatasetFilterProps) {
   const { data } = trpc.dataset.stats.maxDataSize.useQuery(undefined, {
     trpc: {
       context: {

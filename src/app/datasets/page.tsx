@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { DatasetsFilters } from "@/components/datasets/DatasetsFilters";
-import { DatasetsSearch } from "@/components/datasets/DatasetsSearch";
+import { DatasetFiltersDesktop } from "@/components/datasets/DatasetFiltersDesktop";
+import { DatasetSearch } from "@/components/datasets/DatasetSearch";
 import { Main } from "@/components/layout/Main";
 
 export const metadata: Metadata = { title: "Datasets" };
@@ -9,11 +9,11 @@ export const metadata: Metadata = { title: "Datasets" };
 export default function Page() {
   return (
     <Main>
-      <div className="backdrop-gradient-blur flex space-x-4">
-        <div className="w-72 max-lg:hidden">
-          <DatasetsFilters />
+      <div className="backdrop-gradient-blur flex">
+        <div className="mr-4 w-72 max-xl:hidden">
+          <DatasetFiltersDesktop />
         </div>
-        <DatasetsSearch />
+        <DatasetSearch />
       </div>
     </Main>
   );

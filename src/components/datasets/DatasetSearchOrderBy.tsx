@@ -33,33 +33,30 @@ interface DatasetsSearchOrderByProps {
   searchActive: boolean;
 }
 
-export function DatasetsSearchOrderBy({
+export function DatasetSearchOrderBy({
   value,
   onChange,
   searchActive,
 }: DatasetsSearchOrderByProps) {
   return (
-    <div className="space-y-1">
-      <div className="text-sm text-muted-foreground">Sort By</div>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-40" size="lg">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {searchActive && (
-            <SelectItem value="relevance" size="lg">
-              <SearchIcon />
-              <span>Relevance</span>
-            </SelectItem>
-          )}
-          {Object.entries(orderByOptions).map(([orderKey, { icon, name }]) => (
-            <SelectItem key={orderKey} value={orderKey} size="lg">
-              {icon}
-              <span>{name}</span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="w-40" size="lg">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {searchActive && (
+          <SelectItem value="relevance" size="lg">
+            <SearchIcon />
+            <span>Relevance</span>
+          </SelectItem>
+        )}
+        {Object.entries(orderByOptions).map(([orderKey, { icon, name }]) => (
+          <SelectItem key={orderKey} value={orderKey} size="lg">
+            {icon}
+            <span>{name}</span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

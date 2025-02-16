@@ -70,7 +70,7 @@ export function SmartPagination({
   };
 
   return (
-    <Pagination className="justify-between space-x-2">
+    <Pagination className="flex justify-between gap-x-2 gap-y-4 max-md:flex-col-reverse">
       <div className="flex items-center space-x-2">
         <div className="text-nowrap text-sm text-muted-foreground">
           Results per page
@@ -82,7 +82,7 @@ export function SmartPagination({
             onLimitChange(Number(value));
           }}
         >
-          <SelectTrigger size="sm">
+          <SelectTrigger size="sm" className="w-fit">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -99,48 +99,50 @@ export function SmartPagination({
         </Select>
       </div>
 
-      <PaginationContent>
-        <div className="mr-2 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 max-md:flex-col-reverse">
+        <div className="mr-2 text-nowrap text-sm text-muted-foreground">
           {offset} &ndash; {Math.min(totalCount, offset + limit)} of{" "}
           {totalCount}
         </div>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={() => onPageChange(Math.max(offset - limit, 0))}
-            disabled={offset === 0}
-          />
-        </PaginationItem>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => onPageChange(Math.max(offset - limit, 0))}
+              disabled={offset === 0}
+            />
+          </PaginationItem>
 
-        {paginationItems.map((item, index) => {
-          if (typeof item === "number") {
-            return (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={() => handlePageChange(item)}
-                  isActive={item === currentPage}
-                >
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          } else {
-            return (
-              <PaginationItem key={index}>
-                <PaginationEllipsis />
-              </PaginationItem>
-            );
-          }
-        })}
-
-        <PaginationItem>
-          <PaginationNext
-            onClick={() =>
-              onPageChange(Math.min(offset + limit, (totalPages - 1) * limit))
+          {paginationItems.map((item, index) => {
+            if (typeof item === "number") {
+              return (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    onClick={() => handlePageChange(item)}
+                    isActive={item === currentPage}
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            } else {
+              return (
+                <PaginationItem key={index}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              );
             }
-            disabled={offset + limit >= totalCount}
-          />
-        </PaginationItem>
-      </PaginationContent>
+          })}
+
+          <PaginationItem>
+            <PaginationNext
+              onClick={() =>
+                onPageChange(Math.min(offset + limit, (totalPages - 1) * limit))
+              }
+              disabled={offset + limit >= totalCount}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </div>
     </Pagination>
   );
 }

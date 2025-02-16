@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export function DatasetsFilterItem({
+export function DatasetFilterItem({
   label,
   children,
   active,
@@ -30,10 +30,10 @@ export function DatasetsFilterItem({
   active?: boolean;
   activeCount?: number;
   clearFilter: () => void;
-  dropdownOpen: boolean;
-  onDropdownOpenChange: () => void;
-  tooltipOpen: boolean;
-  tooltipContent: string;
+  dropdownOpen?: boolean;
+  onDropdownOpenChange?: () => void;
+  tooltipOpen?: boolean;
+  tooltipContent?: string;
 }) {
   return (
     <Tooltip open={tooltipOpen}>

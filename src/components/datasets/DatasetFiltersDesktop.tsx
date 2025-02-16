@@ -8,19 +8,13 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-import { DatasetAttributesFilter } from "@/components/datasets/filters/DatasetAttributesFilter";
-import { DatasetDataTypesFilter } from "@/components/datasets/filters/DatasetDataTypesFilter";
-import { DatasetFeatureCountFilter } from "@/components/datasets/filters/DatasetFeatureCountFilter";
-import { DatasetFeatureTypesFilter } from "@/components/datasets/filters/DatasetFeatureTypesFilter";
-import { DatasetInstanceCountFilter } from "@/components/datasets/filters/DatasetInstanceCountFilter";
-import { DatasetKeywordsFilter } from "@/components/datasets/filters/DatasetKeywordsFilter";
-import { DatasetPythonFilter } from "@/components/datasets/filters/DatasetPythonFilter";
-import { DatasetSubjectAreasFilter } from "@/components/datasets/filters/DatasetSubjectAreasFilter";
-import { DatasetTasksFilter } from "@/components/datasets/filters/DatasetTasksFilter";
+import {
+  DatasetFilterContent,
+  datasetFilters,
+} from "@/components/datasets/DatasetFiltersContent";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -28,25 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-export interface DatasetFiltersProps {
-  tooltipOpen: boolean;
-  dropdownOpen: boolean;
-  onDropdownOpenChange: () => void;
-}
-
-const datasetFilters: React.FC<DatasetFiltersProps>[] = [
-  DatasetAttributesFilter,
-  DatasetKeywordsFilter,
-  DatasetDataTypesFilter,
-  DatasetSubjectAreasFilter,
-  DatasetTasksFilter,
-  DatasetFeatureTypesFilter,
-  DatasetFeatureCountFilter,
-  DatasetInstanceCountFilter,
-  DatasetPythonFilter,
-];
-
-export function DatasetsFilters() {
+export function DatasetFiltersDesktop() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
 
   const { clearFilters, filterActive } = useQueryFilters<DatasetQuery>();
@@ -119,20 +95,11 @@ export function DatasetsFilters() {
         )}
       </div>
       <Card className="overflow-hidden shadow-none">
-        {datasetFilters.map((Filter, index) => (
-          <React.Fragment key={index}>
-            {index > 0 && <Separator />}
-            <Filter
-              tooltipOpen={tooltipsOpen}
-              dropdownOpen={openStates[index]}
-              onDropdownOpenChange={() =>
-                setOpenStates((prev) =>
-                  prev.map((state, i) => (i === index ? !state : state)),
-                )
-              }
-            />
-          </React.Fragment>
-        ))}
+        <DatasetFilterContent
+          tooltipsOpen={tooltipsOpen}
+          openStates={openStates}
+          setOpenStates={setOpenStates}
+        />
       </Card>
     </div>
   );

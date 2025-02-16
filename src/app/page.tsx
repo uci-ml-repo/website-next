@@ -9,7 +9,7 @@ import Link from "next/link";
 import React from "react";
 
 import { DatasetCardCarousel } from "@/components/dataset/preview/DatasetCardCarousel";
-import { DatasetsPreviewSearch } from "@/components/datasets/DatasetsPreviewSearch";
+import { DatasetPreviewSearch } from "@/components/datasets/DatasetPreviewSearch";
 import { Banner } from "@/components/icons";
 import { Main } from "@/components/layout/Main";
 import type { ButtonProps } from "@/components/ui/button";
@@ -53,7 +53,7 @@ export default async function Page() {
             href={CONTRIBUTE_ROUTE}
           />
         </div>
-        <DatasetsPreviewSearch />
+        <DatasetPreviewSearch />
       </div>
 
       <div className="space-y-12">
