@@ -1,62 +1,68 @@
-import { and, count, eq } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
 
 export class DiscussionUpvoteService {
   async create({
-    userId,
     discussionId,
+    userId,
   }: {
-    userId: string;
     discussionId: string;
+    userId: string;
   }) {
-    const upvote = await db.insert(discussionUpvote).values({
-      discussionId,
-      userId,
+    return await db.transaction(async (tx) => {
+      try {
+        await tx.insert(discussionUpvote).values({
+          discussionId,
+          userId,
+        });
+      } catch {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+
+      await tx
+        .update(discussion)
+        .set({
+          upvoteCount: sql`${discussion.upvoteCount} + 1`,
+        })
+        .where(eq(discussion.id, discussionId));
     });
-
-    await db
-      .update(discussion)
-      .set({
-        upvoteCount: await this.count(discussionId),
-      })
-      .where(eq(discussion.id, discussionId));
-
-    return upvote;
   }
 
   async remove({
-    userId,
     discussionId,
+    userId,
   }: {
-    userId: string;
     discussionId: string;
+    userId: string;
   }) {
-    const upvote = await db
-      .delete(discussionUpvote)
-      .where(
-        and(
-          eq(discussionUpvote.userId, userId),
-          eq(discussionUpvote.discussionId, discussionId),
-        ),
-      );
+    return await db.transaction(async (tx) => {
+      const [upvote] = await tx
+        .delete(discussionUpvote)
+        .where(
+          and(
+            eq(discussionUpvote.userId, userId),
+            eq(discussionUpvote.discussionId, discussionId),
+          ),
+        )
+        .returning();
 
-    await db
-      .update(discussion)
-      .set({
-        upvoteCount: await this.count(discussionId),
-      })
-      .where(eq(discussion.id, discussionId));
+      if (!upvote) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
 
-    return upvote;
-  }
-
-  async count(discussionId: string) {
-    return db
-      .select({ count: count() })
-      .from(discussionUpvote)
-      .where(eq(discussionUpvote.discussionId, discussionId))
-      .then((res) => res[0].count);
+      await tx
+        .update(discussion)
+        .set({
+          upvoteCount: sql`${discussion.upvoteCount} - 1`,
+        })
+        .where(eq(discussion.id, discussionId));
+    });
   }
 }

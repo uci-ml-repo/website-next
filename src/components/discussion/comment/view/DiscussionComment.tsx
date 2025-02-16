@@ -8,7 +8,7 @@ import { DiscussionCommentExtendedOptions } from "@/components/discussion/commen
 import { Expandable } from "@/components/ui/expandable";
 import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import type { DiscussionCommentResponse } from "@/lib/types";
-import { timeSince } from "@/lib/utils";
+import { cn, timeSince } from "@/lib/utils";
 
 export function DiscussionComment({
   discussionComment,
@@ -48,14 +48,12 @@ export function DiscussionComment({
         </div>
       </div>
 
-      <div>
+      <div className={cn("flex items-center space-x-2", { hidden: isEditing })}>
         <DiscussionCommentUpvote discussionComment={discussionComment} />
-        <div className="flex justify-end">
-          <DiscussionCommentExtendedOptions
-            discussionComment={discussionComment}
-            setIsEditing={setIsEditing}
-          />
-        </div>
+        <DiscussionCommentExtendedOptions
+          discussionComment={discussionComment}
+          setIsEditing={setIsEditing}
+        />
       </div>
     </div>
   );

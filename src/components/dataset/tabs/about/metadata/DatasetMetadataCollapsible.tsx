@@ -35,7 +35,7 @@ export function DatasetMetadataCollapsible({
         initial={{ height: 0, paddingBottom: 0 }}
         animate={isOpen ? { height: "fit-content", paddingBottom: 24 } : {}}
         className="overflow-y-hidden px-2"
-        transition={{ duration: 0.15, ease: "easeInOut" }}
+        transition={{ duration: 0.1 }}
       >
         {children}
       </motion.div>

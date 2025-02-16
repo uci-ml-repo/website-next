@@ -64,7 +64,7 @@ export function DiscussionCommentUpvote({
       <Button
         variant={isUpvoted ? "gold" : "secondary"}
         size="sm"
-        className="m-2 flex items-center"
+        className="flex items-center"
         disabled={isPending}
         aria-label={isUpvoted ? "Remove upvote" : "Upvote comment"}
       >
