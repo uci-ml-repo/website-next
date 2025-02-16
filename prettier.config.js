@@ -6,12 +6,11 @@ const prettierConfig = {
   tabWidth: 2,
   plugins: [
     "prettier-plugin-packagejson",
-    "prettier-plugin-tailwindcss",
     "prettier-plugin-sql",
     "prettier-plugin-embed",
     "prettier-plugin-sh",
+    "prettier-plugin-tailwindcss",
   ],
-  tailwindFunctions: ["cva", "clsx", "cn"],
 };
 
 /** @type {import('prettier-plugin-embed').PluginEmbedOptions} */
@@ -27,11 +26,17 @@ const prettierPluginSqlConfig = {
   functionCase: "upper",
 };
 
+/** @type {import('prettier-plugin-tailwindcss').PluginOptions} */
+const prettierPluginTailwindCssConfig = {
+  tailwindFunctions: ["cva", "clsx", "cn"],
+};
+
 /** @type {import("prettier").Options} */
 const config = {
   ...prettierConfig,
   ...prettierPluginEmbedConfig,
   ...prettierPluginSqlConfig,
+  ...prettierPluginTailwindCssConfig,
 };
 
 export default config;

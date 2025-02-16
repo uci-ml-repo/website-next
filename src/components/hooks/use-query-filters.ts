@@ -33,8 +33,6 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
-      console.log(JSON.stringify(newFilters));
-
       const params = buildQueryFilters({ ...filters, ...newFilters });
 
       const url = `${pathname}?${params.toString()}`;

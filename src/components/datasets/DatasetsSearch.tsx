@@ -34,7 +34,6 @@ export function DatasetsSearch() {
     except: ["search", "order", "limit", "cursor"],
   });
 
-  // Optionally adjust the local order based on searchValue.
   useEffect(() => {
     if (searchValue && localOrder !== "relevance") {
       setLocalOrder("relevance");
@@ -59,7 +58,7 @@ export function DatasetsSearch() {
 
     if (searchValue === currentSearch && localOrder === currentOrder) return;
 
-    setFilters({ search: searchValue, order: orderFilter });
+    setFilters({ search: searchValue, order: orderFilter, cursor: 0 });
   }, [searchValue, localOrder, filters, setFilters]);
 
   useEffect(() => {
@@ -103,7 +102,7 @@ export function DatasetsSearch() {
 
         {isLoading ? (
           <div>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {Array.from({ length: filters.limit ?? 10 }).map((_, index) => (
               <React.Fragment key={index}>
                 <DatasetRowSkeleton />
                 <hr />

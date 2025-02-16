@@ -24,7 +24,7 @@ export function SmartPagination({
   limit,
   offset,
   onPageChange,
-  onLimitChange, // new prop for changing the page limit
+  onLimitChange,
 }: {
   totalCount: number;
   limit: number;
@@ -70,20 +70,19 @@ export function SmartPagination({
   };
 
   return (
-    <Pagination className="justify-end space-x-2">
+    <Pagination className="justify-between space-x-2">
       <div className="flex items-center space-x-2">
-        <div className="text-sm text-nowrap text-muted-foreground">
-          Results Per Page
+        <div className="text-nowrap text-sm text-muted-foreground">
+          Results per page
         </div>
 
         <Select
-          value={limit.toString()} // use the current limit as the value
+          value={limit.toString()}
           onValueChange={(value) => {
-            // update the limit and reset offset to 0
             onLimitChange(Number(value));
           }}
         >
-          <SelectTrigger className="w-20">
+          <SelectTrigger size="sm">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -101,6 +100,9 @@ export function SmartPagination({
       </div>
 
       <PaginationContent>
+        <div className="mr-2 text-sm text-muted-foreground">
+          {offset} &ndash; {offset + limit} of {totalCount}
+        </div>
         <PaginationItem>
           <PaginationPrevious
             onClick={() => onPageChange(Math.max(offset - limit, 0))}

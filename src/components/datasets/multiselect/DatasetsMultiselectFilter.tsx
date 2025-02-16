@@ -38,9 +38,9 @@ export function DatasetMultiSelectFilter({
 
   useEffect(() => {
     if (selectedValues.length === 0) {
-      setFilters({ [filterKey]: undefined });
+      setFilters({ [filterKey]: undefined, cursor: 0 });
     } else {
-      setFilters({ [filterKey]: selectedValues });
+      setFilters({ [filterKey]: selectedValues, cursor: 0 });
     }
   }, [selectedValues, setFilters, filterKey]);
 

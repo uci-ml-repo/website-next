@@ -19,7 +19,7 @@ export function useToggleFilter<K extends keyof DatasetQuery, T>(filterKey: K) {
   const toggle = (checked: boolean, value: T) => {
     const current = filters[filterKey] as T[] | undefined;
     const updated = toggleFilter(current, checked, value);
-    setFilters({ [filterKey]: updated } as Partial<DatasetQuery>);
+    setFilters({ [filterKey]: updated, cursor: 0 } as Partial<DatasetQuery>);
   };
 
   const clear = () => {

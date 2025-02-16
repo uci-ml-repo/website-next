@@ -134,6 +134,7 @@ export function DatasetFilterDualSlider({
         setFilters({
           [filterMinKey]: undefined,
           [filterMaxKey]: undefined,
+          cursor: 0,
         });
       }}
     >

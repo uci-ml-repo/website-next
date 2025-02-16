@@ -13,6 +13,7 @@ import {
   user,
 } from "@/db/schema";
 import * as schema from "@/db/schema";
+import { logger } from "@/lib/logger";
 import { service } from "@/server/service";
 
 import {
@@ -92,6 +93,6 @@ async function main() {
 }
 
 main().then(() => {
-  console.log("Seeding complete");
+  logger.info("Seeding complete");
   process.exit(0);
 });

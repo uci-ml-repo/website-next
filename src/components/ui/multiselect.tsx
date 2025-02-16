@@ -69,13 +69,13 @@ export function Multiselect({
             key={value}
             layout
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="group rounded-full max-w-full overflow-hidden"
+            className="group max-w-full overflow-hidden rounded-full"
             onClick={() => removeValue(value)}
           >
             <Badge
               variant="blue"
               className={cn(
-                "cursor-pointer space-x-0.5 pr-1 max-w-full",
+                "max-w-full cursor-pointer space-x-0.5 pr-1",
                 "animate-in fade-in-0 zoom-in-50",
                 "group-hover:border-muted-foreground group-hover:bg-muted group-hover:text-muted-foreground",
                 "group-focus:border-muted-foreground group-focus:bg-muted group-focus:text-muted-foreground",
