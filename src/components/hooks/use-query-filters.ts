@@ -44,7 +44,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   );
 
   const debouncedSetFilters = useMemo(
-    () => debounce(setFilters, 175),
+    () => debounce(setFilters, 100),
     [setFilters],
   );
 

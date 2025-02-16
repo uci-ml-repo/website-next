@@ -26,7 +26,7 @@ export function DatasetPythonFilter({
         <Checkbox
           checked={!!filters.python}
           onCheckedChange={(checked) =>
-            setFilters({ python: checked as boolean })
+            setFilters({ python: checked as boolean, cursor: undefined })
           }
           aria-label="Filter by Python availability"
         />

@@ -63,7 +63,7 @@ const DualRangeSlider = React.forwardRef<
     const rightLabelRef = React.useRef<HTMLSpanElement>(null);
     const [isCollision, setIsCollision] = React.useState(false);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       if (leftLabelRef.current && rightLabelRef.current) {
         const leftRect = leftLabelRef.current.getBoundingClientRect();
         const rightRect = rightLabelRef.current.getBoundingClientRect();

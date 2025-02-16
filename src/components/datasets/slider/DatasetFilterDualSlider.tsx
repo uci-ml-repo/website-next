@@ -103,24 +103,15 @@ export function DatasetFilterDualSlider({
   }, [filters, filterMinKey, filterMaxKey, maxRawValue, initialized]);
 
   useEffect(() => {
-    if (maxRawValue) {
-      const minCurved = log(values[0]);
-      const maxCurved = log(values[1]);
+    const minCurved = log(values[0]);
+    const maxCurved = log(values[1]);
 
-      debouncedSetFilters({
-        [filterMinKey]: minCurved === 0 ? undefined : minCurved,
-        [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
-      });
-    }
-  }, [
-    maxRawValue,
-    values,
-    log,
-    debouncedSetFilters,
-    filterMinKey,
-    filterMaxKey,
-    maxLog,
-  ]);
+    debouncedSetFilters({
+      [filterMinKey]: minCurved === 0 ? undefined : minCurved,
+      [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
+      cursor: 0,
+    });
+  }, [values, log, debouncedSetFilters, filterMinKey, filterMaxKey, maxLog]);
 
   return (
     <DatasetsFilterItem
@@ -138,17 +129,16 @@ export function DatasetFilterDualSlider({
         });
       }}
     >
-      {typeof maxRawValue === "number" ? (
-        <div className="px-2">
-          <DualRangeSlider
-            label={(rawValue) => abbreviateDecimal(log(rawValue ?? 0), 2)}
-            value={values}
-            onValueChange={setValues}
-            step={step ?? maxRawValue / 200}
-            min={0}
-            max={maxRawValue}
-          />
-        </div>
+      {maxRawValue !== undefined ? (
+        <DualRangeSlider
+          label={(rawValue) => abbreviateDecimal(log(rawValue ?? 0), 2)}
+          value={values}
+          onValueChange={setValues}
+          step={step ?? maxRawValue / 200}
+          min={0}
+          max={maxRawValue}
+          className="px-2"
+        />
       ) : (
         <div className="flex h-14 w-full items-center justify-center">
           <Spinner />
