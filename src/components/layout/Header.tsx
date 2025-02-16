@@ -39,7 +39,7 @@ export function Header({ session }: { session: Session | null }) {
   return (
     <header
       className={cn(
-        "z-40 h-[--header-height] max-md:fixed max-md:left-0 max-md:right-0 max-md:top-0",
+        "z-50 h-[--header-height] max-md:fixed max-md:left-0 max-md:right-0 max-md:top-0",
         "transition-shadow ease-in-out max-md:overflow-y-hidden md:!h-18",
         { "bg-background shadow-md": isMobile && hasScrolled },
       )}

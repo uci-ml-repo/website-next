@@ -29,7 +29,7 @@ export function DatasetVariables({ dataset }: { dataset: DatasetResponse }) {
               <TableHead>Type</TableHead>
               <TableHead className="max-md:hidden">Description</TableHead>
               <TableHead>Units</TableHead>
-              <TableHead>Missing Values</TableHead>
+              <TableHead className="text-nowrap">Missing Values</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

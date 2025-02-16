@@ -14,7 +14,7 @@ export function DatasetMetadataAuthors({ authors }: AuthorsSectionProps) {
     <div className="space-y-4">
       {!!authors.length ? (
         authors.map((author) => (
-          <div key={author.id}>
+          <div key={author.id} className="space-y-1">
             <div className="flex items-center space-x-2">
               <UserIcon className="size-5 fill-foreground" />
               <div>
@@ -23,7 +23,7 @@ export function DatasetMetadataAuthors({ authors }: AuthorsSectionProps) {
                 </span>
               </div>
             </div>
-            <div className="ml-6">
+            <div className="ml-7">
               <div className="text-sm text-muted-foreground">
                 <span>Email: </span>
                 {author.email ? (
