@@ -10,6 +10,7 @@ import { useState } from "react";
 import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
 import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
 import { DatasetMetadataIntroductoryPaper } from "@/components/dataset/tabs/about/metadata/DatasetMetadataIntroductoryPaper";
+import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
 
 export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
@@ -46,24 +47,25 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
           <FileChartColumnIcon className="size-6" />
           <h2 className="text-2xl font-bold">Metadata</h2>
         </div>
-        <button
+        <Button
           onClick={() => {
             setOpenStates([...openStates].fill(!isAnyOpen));
           }}
+          variant="ghost"
           className="max-xxs:hidden"
         >
           {isAnyOpen ? (
             <>
               <ChevronsDownUpIcon className="size-6" />
-              Collapse All
+              <span>Collapse All</span>
             </>
           ) : (
             <>
               <ChevronsUpDownIcon className="size-6" />
-              Expand All
+              <span>Expand All</span>
             </>
           )}
-        </button>
+        </Button>
       </div>
       <div>
         <hr />
