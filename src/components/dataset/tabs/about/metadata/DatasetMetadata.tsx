@@ -4,73 +4,26 @@ import {
   ChevronsDownUpIcon,
   ChevronsUpDownIcon,
   FileChartColumnIcon,
-  UserIcon,
 } from "lucide-react";
 import { useState } from "react";
 
+import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
 import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
-import { DatasetMetadataPaperPreview } from "@/components/dataset/tabs/about/metadata/DatasetMetadataPaperPreview";
-import { Button } from "@/components/ui/button";
+import { DatasetMetadataIntroductoryPaper } from "@/components/dataset/tabs/about/metadata/DatasetMetadataIntroductoryPaper";
 import type { DatasetResponse } from "@/lib/types";
 
 export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
-  const blank = <div className="text-muted-foreground">&ndash;</div>;
-
   const datasetMetadataContent: { title: string; children: React.ReactNode }[] =
     [
       {
         title: "Introductory Paper",
         children: (
-          <>
-            {dataset.introductoryPaper ? (
-              <DatasetMetadataPaperPreview paper={dataset.introductoryPaper} />
-            ) : (
-              blank
-            )}
-          </>
+          <DatasetMetadataIntroductoryPaper paper={dataset.introductoryPaper} />
         ),
       },
       {
         title: "Authors",
-        children: (
-          <div className="space-y-4">
-            {dataset.authors.map((author) => (
-              <div key={author.id}>
-                <div className="flex items-center space-x-1">
-                  <UserIcon className="size-5 fill-foreground" />
-                  <div>
-                    <span>
-                      {author.firstName} {author.lastName}
-                    </span>
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <div className="text-sm text-muted-foreground">
-                    <span>Email: </span>
-                    {author.email ? (
-                      <a
-                        href={`mailto:${author.email}`}
-                        className="hover:underline"
-                      >
-                        {author.email}
-                      </a>
-                    ) : (
-                      <span className="text-muted-foreground">&ndash;</span>
-                    )}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <span>Institution: </span>
-                    {author.institution ? (
-                      <span>{author.institution}</span>
-                    ) : (
-                      <span>&ndash;</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ),
+        children: <DatasetMetadataAuthors authors={dataset.authors} />,
       },
     ];
 
@@ -93,8 +46,7 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
           <FileChartColumnIcon className="size-6" />
           <h2 className="text-2xl font-bold">Metadata</h2>
         </div>
-        <Button
-          variant="ghost"
+        <button
           onClick={() => {
             setOpenStates([...openStates].fill(!isAnyOpen));
           }}
@@ -111,7 +63,7 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
               Expand All
             </>
           )}
-        </Button>
+        </button>
       </div>
       <div>
         <hr />

@@ -23,8 +23,8 @@ for item in "$COPY_TO_PATH"/{public,private}/*; do
     if [[ -f "$jpg_file" && ! -f "$item/thumbnail.png" ]]; then
       convert "$jpg_file" "$png_file"
       cp "$png_file" "$item/thumbnail.png"
-      rm -rf "$item/Thumbnails"
     fi
+    rm -rf "$item/Thumbnails"
   fi
   for zip_file in "$item"/*.zip; do
     if [ -f "$zip_file" ]; then

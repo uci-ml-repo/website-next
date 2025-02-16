@@ -103,13 +103,13 @@ export function DatasetFilterDualSlider({
   }, [filters, filterMinKey, filterMaxKey, maxRawValue, initialized]);
 
   useEffect(() => {
+    console.log("X");
     const minCurved = log(values[0]);
     const maxCurved = log(values[1]);
 
     debouncedSetFilters({
       [filterMinKey]: minCurved === 0 ? undefined : minCurved,
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
-      cursor: 0,
     });
   }, [values, log, debouncedSetFilters, filterMinKey, filterMaxKey, maxLog]);
 
@@ -129,6 +129,12 @@ export function DatasetFilterDualSlider({
         });
       }}
     >
+      <div className="bg-destructive-muted">
+        <div>{values}</div>
+        <div>{filterMaxKey}</div>
+        <div>{filterMinKey}</div>
+        <div>{maxLog}</div>
+      </div>
       {maxRawValue !== undefined ? (
         <DualRangeSlider
           label={(rawValue) => abbreviateDecimal(log(rawValue ?? 0), 2)}
