@@ -440,15 +440,15 @@ VALUES
     rec.feature_types,
     rec.doi,
     rec.external_link,
-    rec.file_count,
-    rec.size
+    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.file_count END,
+    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.size END
   );
 
-EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'Skipping dataset id: %, status: %, error: %',
-rec.id,
-rec.status,
-SQLERRM;
-
+EXCEPTION WHEN OTHERS THEN
+  IF rec.status = 'approved' THEN
+    RAISE NOTICE 'Skipping dataset id: %, status: %, error: %',
+      rec.id, rec.status, SQLERRM;
+  END IF;
 END;
 
 END LOOP;

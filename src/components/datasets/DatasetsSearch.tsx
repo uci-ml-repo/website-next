@@ -73,7 +73,12 @@ export function DatasetsSearch() {
     }
   };
 
-  const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters);
+  const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
+    filters,
+    {
+      placeholderData: (prev) => prev,
+    },
+  );
 
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
@@ -100,9 +105,9 @@ export function DatasetsSearch() {
           />
         </div>
 
-        {isLoading ? (
+        {!data && isLoading ? (
           <div>
-            {Array.from({ length: filters.limit ?? 10 }).map((_, index) => (
+            {Array.from({ length: limit }).map((_, index) => (
               <React.Fragment key={index}>
                 <DatasetRowSkeleton />
                 <hr />
@@ -112,7 +117,7 @@ export function DatasetsSearch() {
         ) : data?.datasets.length ? (
           <div className="space-y-6">
             <div>
-              {(!!filterCount || filters.search) && (
+              {(!!filterCount || filters.search) && !isFetching && (
                 <div className="text-lg text-muted-foreground">
                   Found {data.count}{" "}
                   {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
