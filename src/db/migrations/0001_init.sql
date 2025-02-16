@@ -315,7 +315,7 @@ CREATE TABLE "user" (
 CREATE TABLE "variable" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "name" TEXT NOT NULL,
-  "description" TEXT NOT NULL,
+  "description" TEXT,
   "role" "dataset_feature_role" NOT NULL,
   "type" "dataset_feature_type" NOT NULL,
   "missing_values" BOOLEAN NOT NULL,
@@ -509,7 +509,9 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
               'lastName',
               "author"."last_name",
               'email',
-              "author"."email"
+              "author"."email",
+              'institution',
+              "author"."institution"
             )
           )
         FROM

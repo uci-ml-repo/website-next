@@ -464,7 +464,7 @@ DROP TABLE descriptive_questions;
 CREATE TABLE variable (
   id uuid DEFAULT gen_random_uuid () NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
-  description TEXT NOT NULL,
+  description TEXT,
   role dataset_feature_role NOT NULL,
   type dataset_feature_type NOT NULL,
   missing_values BOOLEAN NOT NULL,
@@ -486,7 +486,7 @@ INSERT INTO
 SELECT
   gen_random_uuid (),
   TRIM(name),
-  variables.description,
+  NULLIF(TRIM(variables.description), ''),
   (
     CASE
       WHEN NOT (
@@ -504,7 +504,7 @@ SELECT
     END
   )::dataset_feature_type,
   missingvalues,
-  units,
+  NULLIF(TRIM(units), ''),
   datasetid
 FROM
   variables
@@ -816,7 +816,9 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
               'lastName',
               "author"."last_name",
               'email',
-              "author"."email"
+              "author"."email",
+              'institution',
+              "author"."institution"
             )
           )
         FROM

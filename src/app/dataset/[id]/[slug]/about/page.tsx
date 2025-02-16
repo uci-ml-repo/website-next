@@ -4,6 +4,7 @@ import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickS
 import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
 import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariables";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
+import { Expandable } from "@/components/ui/expandable";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -22,12 +23,12 @@ export default async function Page({
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
       <div className="w-full space-y-16">
-        <div className="w-full space-y-8">
+        <div className="w-full space-y-10">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">About Dataset</h2>
-            <div className="whitespace-pre-wrap break-words">
+            <Expandable className="whitespace-pre-wrap break-words">
               {dataset.description}
-            </div>
+            </Expandable>
           </div>
 
           <DatasetQuickStats dataset={dataset} />

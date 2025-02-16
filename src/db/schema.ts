@@ -243,10 +243,10 @@ export const authorsRelations = relations(author, ({ one }) => ({
 export const variable = pgTable("variable", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  description: text("description").notNull(),
   role: datasetFeatureRole("role").notNull(),
   type: datasetFeatureType("type").notNull(),
   missingValues: boolean("missing_values").notNull(),
+  description: text("description"),
   units: text("units"),
 
   datasetId: integer("dataset_id")
@@ -736,7 +736,9 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
                   'lastName',
                   ${author.lastName},
                   'email',
-                  ${author.email}
+                  ${author.email},
+                  'institution',
+                  ${author.institution}
                 )
               )
             FROM

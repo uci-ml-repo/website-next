@@ -4,6 +4,7 @@ import {
   ChevronsDownUpIcon,
   ChevronsUpDownIcon,
   FileChartColumnIcon,
+  UserIcon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -29,16 +30,48 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
           </>
         ),
       },
-      // {
-      //   title: "Papers Citing this Dataset",
-      //   children: (
-      //     <div className="space-y-4">
-      //       <div className="text-sm text-muted-foreground">
-      //         This list may be incomplete
-      //       </div>
-      //     </div>
-      //   ),
-      // },
+      {
+        title: "Authors",
+        children: (
+          <div className="space-y-4">
+            {dataset.authors.map((author) => (
+              <div key={author.id}>
+                <div className="flex items-center space-x-1">
+                  <UserIcon className="size-5 fill-foreground" />
+                  <div>
+                    <span>
+                      {author.firstName} {author.lastName}
+                    </span>
+                  </div>
+                </div>
+                <div className="ml-6">
+                  <div className="text-sm text-muted-foreground">
+                    <span>Email: </span>
+                    {author.email ? (
+                      <a
+                        href={`mailto:${author.email}`}
+                        className="hover:underline"
+                      >
+                        {author.email}
+                      </a>
+                    ) : (
+                      <span className="text-muted-foreground">&ndash;</span>
+                    )}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    <span>Institution: </span>
+                    {author.institution ? (
+                      <span>{author.institution}</span>
+                    ) : (
+                      <span>&ndash;</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ),
+      },
     ];
 
   const [openStates, setOpenStates] = useState<boolean[]>(

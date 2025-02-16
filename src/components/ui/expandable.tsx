@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface ExpandableContentProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ interface ExpandableContentProps {
 
 export function Expandable({
   children,
-  truncationHeight = 600,
+  truncationHeight = 500,
   gradientHeight = Math.max(30, truncationHeight / 6),
   className = "",
 }: ExpandableContentProps) {
@@ -44,7 +45,7 @@ export function Expandable({
     <div>
       <div
         ref={contentRef}
-        className={`relative overflow-hidden ${className}`}
+        className={cn(`relative overflow-hidden`, className)}
         style={{ maxHeight: isExpanded ? "none" : `${truncationHeight}px` }}
       >
         {children}
