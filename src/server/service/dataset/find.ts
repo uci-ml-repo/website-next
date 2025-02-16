@@ -52,11 +52,13 @@ function buildSearchQuery(search: string) {
     )
   `;
   const searchCondition = sql`
-    ${tsWeights} @@ ${normalizedTsQuery}
-    OR similarity (
-      ${datasetView.title},
-      ${search}
-    ) > 0.05
+    (
+      ${tsWeights} @@ ${normalizedTsQuery}
+      OR similarity (
+        ${datasetView.title},
+        ${search}
+      ) > 0.05
+    )
   `;
 
   return {
