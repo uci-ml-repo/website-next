@@ -65,8 +65,7 @@ export function fileToIcon(
     case ".csv":
     case ".tsv":
     case ".data":
-    case ".xls":
-    case ".xlsx":
+    case ".test":
       return <FileSpreadsheetIcon />;
     case ".json":
     case ".yaml":
