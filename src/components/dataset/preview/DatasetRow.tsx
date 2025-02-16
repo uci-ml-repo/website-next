@@ -58,7 +58,7 @@ export function DatasetRow({
         alt={`${dataset.title} thumbnail`}
         width={200}
         height={200}
-        className="mt-[1px] size-12 rounded-lg object-cover dark:brightness-90"
+        className="size-12 rounded-lg object-cover dark:brightness-90"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
         <div className="min-w-0">
@@ -92,7 +92,7 @@ export function DatasetRow({
 
   if (hoverCard) {
     return (
-      <HoverCard openDelay={400} closeDelay={200}>
+      <HoverCard openDelay={700} closeDelay={200}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
         <HoverCardContent
           className="w-[50dvw] min-w-64 max-w-xl !p-0"

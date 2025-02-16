@@ -1,7 +1,9 @@
+import { AlertCircleIcon } from "lucide-react";
 import path from "path";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -32,7 +34,14 @@ export function FilesViewDirectory({
   }
 
   if (isError || !data) {
-    return <div className="p-4">Error loading directory</div>;
+    return (
+      <Alert variant="destructive" className="m-4">
+        <div className="flex items-center space-x-2">
+          <AlertCircleIcon className="size-4" />
+          <AlertDescription>Error loading directory</AlertDescription>
+        </div>
+      </Alert>
+    );
   }
 
   return (
