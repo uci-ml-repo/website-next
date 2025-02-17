@@ -83,11 +83,10 @@ export function DatasetSearch() {
 
   return (
     <div className="flex flex-1 flex-col p-1">
-      <h1 className="text-2xl font-bold max-xl:pb-2">Browse datasets</h1>
+      <h1 className="text-2xl font-bold max-lg:pb-2">Browse datasets</h1>
       <div className="space-y-4">
         <div className="flex w-full flex-col items-end justify-between gap-4 md:flex-row">
           <InputClearable
-            variantSize="lg"
             placeholder="Search datasets"
             icon={SearchIcon}
             value={inputValue}
@@ -96,12 +95,12 @@ export function DatasetSearch() {
             containerClassName="w-full"
             aria-label="Search datasets"
           />
-          <div className="flex items-end max-xl:justify-between max-md:w-full">
-            <div className="mr-4 xl:hidden">
+          <div className="flex items-end max-lg:justify-between max-md:w-full">
+            <div className="mr-4 lg:hidden">
               <DatasetFiltersMobile />
             </div>
             <div>
-              <div className="mb-1 text-sm text-muted-foreground max-xl:hidden">
+              <div className="mb-1 text-sm text-muted-foreground max-md:hidden">
                 Sort By
               </div>
               <DatasetSearchOrderBy

@@ -18,6 +18,6 @@ export const audioExtensions = [".mp3", ".wav", ".oga"];
 export const tabularToDelimiter: Record<string, string | RegExp> = {
   ".tsv": "\t",
   ".csv": ",",
-  ".data": /, |,|\s+/,
-  ".test": /, |,|\s+/,
+  ".data": /,(?=(?:[^"]*"[^"]*")*[^"]*$)|\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/,
+  ".text": /,(?=(?:[^"]*"[^"]*")*[^"]*$)|\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/,
 };

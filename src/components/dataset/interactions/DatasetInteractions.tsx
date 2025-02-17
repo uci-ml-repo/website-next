@@ -35,7 +35,10 @@ export function DatasetInteractions({
   ];
 
   return (
-    <div className={cn("flex items-center space-x-4", className)} {...props}>
+    <div
+      className={cn("flex items-center space-x-4 p-0.5", className)}
+      {...props}
+    >
       <TooltipProvider delayDuration={300} disableHoverableContent>
         {activity.map((activityItem) => (
           <Tooltip key={activityItem.tooltip}>

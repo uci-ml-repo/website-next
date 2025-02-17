@@ -20,16 +20,17 @@ export function DatasetFiltersMobile() {
     Array(datasetFilters.length).fill(false),
   );
 
-  // const isAnyOpen = openStates.some((state) => state);
-
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size="lg" variant="blue" className="xl:hidden">
+        <Button variant="blue" className="lg:hidden" size="lg">
           <FilterIcon /> Filters
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="max-h-[90svh] overflow-y-auto">
+      <SheetContent
+        side="bottom"
+        className="max-h-[90svh] overflow-y-auto bg-card"
+      >
         <SheetTitle>Filters</SheetTitle>
 
         <DatasetFilterContent

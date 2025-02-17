@@ -10,7 +10,7 @@ import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
 import { Card } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
-import { DATASETS_ROUTE } from "@/lib/routes";
+import { DATASETS_QUERY } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -69,7 +69,7 @@ export function DatasetPreviewSearch() {
     if (e.key === "Escape") {
       e.currentTarget.blur();
     } else if (e.key === "Enter") {
-      redirect(DATASETS_ROUTE);
+      redirect(DATASETS_QUERY({ search: inputValue }));
     } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
       const focusableItems = cardRef.current?.querySelectorAll(
@@ -140,7 +140,7 @@ export function DatasetPreviewSearch() {
       >
         {inputValue && (
           <Link
-            href={DATASETS_ROUTE}
+            href={DATASETS_QUERY({ search: inputValue })}
             className="flex w-full items-center space-x-2 truncate rounded-2xl p-4 text-lg font-bold decoration-2 hover:bg-accent hover:underline focus:bg-accent focus:underline"
             data-focusable="true"
             tabIndex={0}
@@ -158,7 +158,7 @@ export function DatasetPreviewSearch() {
           ))
         ) : (
           <div className="truncate p-4 text-lg text-muted-foreground">
-            Begin typing to search&hellip;
+            Begin typing to search
           </div>
         )}
 

@@ -51,6 +51,10 @@ export function DatasetMultiSelectFilter({
     }
   }, [filters, setFilters, filterKey]);
 
+  useEffect(() => {
+    setSelectedValues((filters[filterKey] as string[]) ?? []);
+  }, [filterKey, filters, setSelectedValues]);
+
   const { data, isLoading, isError } = useData(selectedValues);
 
   return (

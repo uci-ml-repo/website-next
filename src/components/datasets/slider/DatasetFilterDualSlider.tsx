@@ -110,7 +110,15 @@ export function DatasetFilterDualSlider({
       [filterMinKey]: minCurved === 0 ? undefined : minCurved,
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
     });
-  }, [values, log, debouncedSetFilters, filterMinKey, filterMaxKey, maxLog]);
+  }, [
+    values,
+    log,
+    debouncedSetFilters,
+    filterMinKey,
+    filterMaxKey,
+    maxLog,
+    filters,
+  ]);
 
   return (
     <DatasetFilterItem

@@ -7,7 +7,7 @@ import type { DatasetResponse } from "@/lib/types";
 
 export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
   return (
-    <div className="min-w-56 space-y-6">
+    <div className="w-56 shrink-0 space-y-6">
       {/* Donated On */}
       <SideDatum title="Donated On">
         {dataset.donatedAt.toLocaleString("en-GB", {

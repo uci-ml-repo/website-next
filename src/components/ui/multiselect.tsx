@@ -94,7 +94,11 @@ export function Multiselect({
             variantSize="sm"
             placeholder={placeholder}
             onChange={(e) => setSearchValue(e.target.value)}
-            onFocus={() => setPopoverOpen(true)}
+            onFocus={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setPopoverOpen(true);
+            }}
             aria-label={placeholder}
           />
           <PopoverTrigger

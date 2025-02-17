@@ -92,7 +92,7 @@ export function DatasetRow({
 
   if (hoverCard) {
     return (
-      <HoverCard openDelay={700} closeDelay={200}>
+      <HoverCard openDelay={500} closeDelay={200}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
         <HoverCardContent
           className="w-[50dvw] min-w-64 max-w-xl !p-0"
