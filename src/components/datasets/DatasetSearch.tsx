@@ -23,6 +23,8 @@ export function DatasetSearch() {
   const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
 
+  const [autoOrder, setAutoOrder] = useState(true);
+
   const [localOrder, setLocalOrder] = useState<string>(
     filters.search
       ? "relevance"
@@ -32,6 +34,7 @@ export function DatasetSearch() {
   const handleOrderChange = (newOrder: string) => {
     if (localOrder !== newOrder) {
       setLocalOrder(newOrder);
+      setAutoOrder(false);
     }
   };
 
@@ -46,12 +49,17 @@ export function DatasetSearch() {
     useDebouncedSearch({ defaultValue: filters.search });
 
   useEffect(() => {
-    if (searchValue && localOrder !== "relevance") {
-      setLocalOrder("relevance");
-    } else if (!searchValue && localOrder === "relevance") {
-      setLocalOrder("viewCount");
+    if (searchValue) {
+      if (autoOrder && localOrder !== "relevance") {
+        setLocalOrder("relevance");
+      }
+    } else {
+      setAutoOrder(true);
+      if (localOrder === "relevance") {
+        setLocalOrder("viewCount");
+      }
     }
-  }, [searchValue, localOrder]);
+  }, [searchValue, autoOrder, localOrder]);
 
   useEffect(() => {
     if (!filters.search) {
@@ -59,7 +67,7 @@ export function DatasetSearch() {
     }
   }, [filters.search, setInputValue]);
 
-  // Update the URL filters whenever the debounced search value changes.
+  // Update the URL filters whenever the debounced search value or localOrder changes.
   useEffect(() => {
     const order =
       localOrder === "relevance"
