@@ -1,12 +1,13 @@
 "use client";
 
 import { FilterIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   DatasetFilterContent,
   datasetFilters,
 } from "@/components/datasets/DatasetFiltersContent";
+import { useIsBreakpoint } from "@/components/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -20,8 +21,18 @@ export function DatasetFiltersMobile() {
     Array(datasetFilters.length).fill(false),
   );
 
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const breakpoint = useIsBreakpoint(1024);
+
+  useEffect(() => {
+    if (!breakpoint) {
+      setSheetOpen(false);
+    }
+  }, [breakpoint]);
+
   return (
-    <Sheet>
+    <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
         <Button variant="blue" className="lg:hidden" size="lg">
           <FilterIcon /> Filters
