@@ -3,6 +3,7 @@
 import { FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
+import { DatasetFiltersClear } from "@/components/datasets/DatasetFiltersClear";
 import {
   DatasetFilterContent,
   datasetFilters,
@@ -38,13 +39,17 @@ export function DatasetFiltersMobile() {
           <FilterIcon /> Filters
         </Button>
       </SheetTrigger>
+
       <SheetContent
         forceMount
-        side="bottom"
-        className="max-h-[90svh] overflow-y-auto bg-card"
+        side="right"
+        className="overflow-y-auto bg-card p-0"
         aria-describedby={undefined}
       >
-        <SheetTitle>Filters</SheetTitle>
+        <SheetTitle className="flex items-center justify-between p-4 pt-10">
+          <div>Filters</div>
+          <DatasetFiltersClear />
+        </SheetTitle>
 
         <DatasetFilterContent
           openStates={openStates}

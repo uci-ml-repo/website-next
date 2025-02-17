@@ -62,9 +62,12 @@ export function DatasetSearch() {
     setFilters({ search: searchValue, order: order, cursor: 0 });
   }, [searchValue, filters, setFilters, localOrder]);
 
-  const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters, {
-    placeholderData: (prev) => prev,
-  });
+  const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
+    filters,
+    {
+      placeholderData: (prev) => prev,
+    },
+  );
 
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
@@ -115,7 +118,7 @@ export function DatasetSearch() {
               <div className="text-lg text-muted-foreground">
                 Found {data.count}{" "}
                 {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
-                {filters.search ? `for '${filters.search}'` : ""}{" "}
+                {filters.search && !isFetching ? `for '${filters.search}'` : ""}{" "}
                 {filterCount
                   ? `matching ${filterCount} ${
                       filterCount === 1 ? "filter" : "filters"

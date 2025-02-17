@@ -99,6 +99,11 @@ export function Multiselect({
               e.stopPropagation();
               setPopoverOpen(true);
             }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setPopoverOpen(true);
+            }}
             aria-label={placeholder}
           />
           <PopoverTrigger

@@ -4,15 +4,14 @@ import {
   ChevronsDownUpIcon,
   ChevronsUpDownIcon,
   CircleHelpIcon,
-  XIcon,
 } from "lucide-react";
 import React, { useState } from "react";
 
+import { DatasetFiltersClear } from "@/components/datasets/DatasetFiltersClear";
 import {
   DatasetFilterContent,
   datasetFilters,
 } from "@/components/datasets/DatasetFiltersContent";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -20,12 +19,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { DatasetQuery } from "@/server/schema/dataset";
 
 export function DatasetFiltersDesktop() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
-
-  const { clearFilters, filterActive } = useQueryFilters<DatasetQuery>();
 
   const [openStates, setOpenStates] = useState<boolean[]>(
     Array(datasetFilters.length).fill(false),
@@ -82,17 +78,7 @@ export function DatasetFiltersDesktop() {
             </TooltipContent>
           </Tooltip>
         </div>
-        {filterActive({ except: ["order", "limit", "cursor"] }) && (
-          <Button
-            variant="secondary"
-            size="xs"
-            className="animate-in fade-in-0 hover:bg-destructive hover:text-destructive-foreground"
-            onClick={() => clearFilters({ except: ["order"] })}
-          >
-            <XIcon />
-            Clear
-          </Button>
-        )}
+        <DatasetFiltersClear />
       </div>
       <Card className="overflow-hidden shadow-none">
         <DatasetFilterContent
