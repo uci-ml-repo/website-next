@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   audioExtensions,
   imageExtensions,
+  pdfExtensions,
   tabularToDelimiter,
   videoExtensions,
 } from "@/components/dataset/tabs/files/lib/extensions";
@@ -12,6 +13,7 @@ import { FilesViewFileImage } from "@/components/dataset/tabs/files/view/FilesVi
 import { FilesViewFilesTabular } from "@/components/dataset/tabs/files/view/FilesViewFileTabular";
 import { FilesViewFileText } from "@/components/dataset/tabs/files/view/FilesViewFileText";
 import { FilesViewFileVideo } from "@/components/dataset/tabs/files/view/FilesViewFileVideo";
+import { FilesViewFilePDF } from "@/components/dataset/tabs/files/view/FilesViewPDF";
 import { Alert } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
@@ -89,6 +91,8 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     <FilesViewFileVideo source={contentPath} />
   ) : audioExtensions.includes(extension) ? (
     <FilesViewFileAudio source={contentPath} />
+  ) : pdfExtensions.includes(extension) ? (
+    <FilesViewFilePDF source={contentPath} />
   ) : (
     <div
       ref={containerRef}

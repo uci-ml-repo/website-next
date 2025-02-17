@@ -68,7 +68,7 @@ function buildSearchQuery(search: string) {
   };
 }
 
-function buildQuery(query: DatasetQuery) {
+export function buildQuery(query: DatasetQuery) {
   const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
   if (query.search) {

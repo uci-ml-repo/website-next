@@ -14,9 +14,17 @@ import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { sqlArray } from "@/db/lib/utils";
 import { datasetView } from "@/db/schema";
+import type { DatasetQuery } from "@/server/schema/dataset";
+import { buildQuery } from "@/server/service/dataset/find";
 
 export class AttributeFindService {
-  async remainingFilters(attributeFilters: string[]) {
+  async remainingFilters({
+    attributeFilters,
+    query,
+  }: {
+    attributeFilters: string[];
+    query?: DatasetQuery;
+  }) {
     const attributes = await db
       .select({
         attribute: sql<string>`attribute`,
@@ -28,7 +36,9 @@ export class AttributeFindService {
       `)
       .where(
         and(
-          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
+          query
+            ? buildQuery(query)
+            : eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
           notInArray(sql`attribute`, attributeFilters),
           attributeFilters.length > 0
             ? arrayContains(
