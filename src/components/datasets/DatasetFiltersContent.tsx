@@ -1,12 +1,7 @@
 import React from "react";
 
 import { DatasetAttributesFilter } from "@/components/datasets/filters/DatasetAttributesFilter";
-import { DatasetDataTypesFilter } from "@/components/datasets/filters/DatasetDataTypesFilter";
-import { DatasetFeatureTypesFilter } from "@/components/datasets/filters/DatasetFeatureTypesFilter";
 import { DatasetKeywordsFilter } from "@/components/datasets/filters/DatasetKeywordsFilter";
-import { DatasetPythonFilter } from "@/components/datasets/filters/DatasetPythonFilter";
-import { DatasetSubjectAreasFilter } from "@/components/datasets/filters/DatasetSubjectAreasFilter";
-import { DatasetTasksFilter } from "@/components/datasets/filters/DatasetTasksFilter";
 import { Separator } from "@/components/ui/separator";
 
 export interface DatasetFilterProps {
@@ -18,13 +13,13 @@ export interface DatasetFilterProps {
 export const datasetFilters: React.FC<DatasetFilterProps>[] = [
   DatasetAttributesFilter,
   DatasetKeywordsFilter,
-  DatasetDataTypesFilter,
-  DatasetSubjectAreasFilter,
-  DatasetTasksFilter,
-  DatasetFeatureTypesFilter,
+  // DatasetDataTypesFilter,
+  // DatasetSubjectAreasFilter,
+  // DatasetTasksFilter,
+  // DatasetFeatureTypesFilter,
   // DatasetFeatureCountFilter,
   // DatasetInstanceCountFilter,
-  DatasetPythonFilter,
+  // DatasetPythonFilter,
 ];
 
 export function DatasetFilterContent({

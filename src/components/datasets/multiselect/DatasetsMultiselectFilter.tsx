@@ -39,12 +39,17 @@ export function DatasetMultiSelectFilter({
   );
 
   useEffect(() => {
-    if (selectedValues.length === 0) {
-      setFilters({ [filterKey]: undefined });
+    if (filterValues !== selectedValues) {
+      setFilters({
+        [filterKey]: selectedValues.length ? selectedValues : undefined,
+        cursor: 0,
+      });
     } else {
-      setFilters({ [filterKey]: selectedValues });
+      setFilters({
+        [filterKey]: selectedValues.length ? selectedValues : undefined,
+      });
     }
-  }, [selectedValues, filterKey, setFilters]);
+  }, [selectedValues, filterKey, setFilters, filterValues]);
 
   useEffect(() => {
     setSelectedValues((filterValues as string[]) ?? []);
