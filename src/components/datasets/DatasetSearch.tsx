@@ -15,6 +15,7 @@ import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { SmartPagination } from "@/components/ui/smart-pagination";
+import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -51,6 +52,12 @@ export function DatasetSearch() {
       setLocalOrder("viewCount");
     }
   }, [searchValue, localOrder]);
+
+  useEffect(() => {
+    if (!filters.search) {
+      setInputValue("");
+    }
+  }, [filters.search, setInputValue]);
 
   // Update the URL filters whenever the debounced search value changes.
   useEffect(() => {
@@ -115,10 +122,11 @@ export function DatasetSearch() {
         ) : data?.datasets.length ? (
           <div className="space-y-6">
             <div>
-              <div className="text-lg text-muted-foreground">
-                Found {data.count}{" "}
+              <div className="flex items-center text-lg text-muted-foreground">
+                Found{" "}
+                {isFetching ? <Spinner className="mx-1 size-5" /> : data.count}{" "}
                 {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
-                {filters.search && !isFetching ? `for '${filters.search}'` : ""}{" "}
+                {filters.search && !isLoading ? `for '${filters.search}'` : ""}{" "}
                 {filterCount
                   ? `matching ${filterCount} ${
                       filterCount === 1 ? "filter" : "filters"
