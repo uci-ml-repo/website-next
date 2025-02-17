@@ -18,7 +18,7 @@ export function FilesViewFilesTabular({
                 <pre className="text-muted-foreground">{index + 1}</pre>
               </TableCell>
 
-              {cells.map((cell, index) => (
+              {cells.slice(0, 50).map((cell, index) => (
                 <TableCell
                   key={index}
                   className={index % 2 == 1 ? "bg-muted/50" : ""}
@@ -26,6 +26,11 @@ export function FilesViewFilesTabular({
                   <pre>{cell}</pre>
                 </TableCell>
               ))}
+              {cells.length > 50 && (
+                <TableCell className="bg-muted/50">
+                  <pre>...</pre>
+                </TableCell>
+              )}
             </TableRow>
           );
         })}

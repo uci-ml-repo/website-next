@@ -175,6 +175,14 @@ body {
   @apply !bg-background [&_span]:!text-primary;
 }
 
+._toolbarToggleItem_uazmk_206 {
+  @apply focus-visible:!ring-2;
+}
+
+._toolbarButton_uazmk_237 {
+  @apply focus-visible:!ring-2;
+}
+
 .mdx-readonly ._selectTrigger_uazmk_307 {
   @apply !w-fit;
 }
