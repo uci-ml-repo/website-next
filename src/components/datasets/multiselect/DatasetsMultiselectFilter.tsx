@@ -13,6 +13,7 @@ interface GenericFilterProps extends DatasetFilterProps {
   tooltipContent: string;
   placeholder: string;
   filterKey: keyof DatasetQuery;
+  filterValues: string[] | undefined;
   useData: (selectedValues: string[]) => {
     data: string[] | Map<string, string | number> | undefined;
     isLoading: boolean;
@@ -25,6 +26,7 @@ export function DatasetMultiSelectFilter({
   tooltipContent,
   placeholder,
   filterKey,
+  filterValues,
   useData,
   tooltipOpen,
   dropdownOpen,
@@ -38,22 +40,15 @@ export function DatasetMultiSelectFilter({
 
   useEffect(() => {
     if (selectedValues.length === 0) {
-      setFilters({ [filterKey]: undefined, cursor: 0 });
-    } else {
-      setFilters({ [filterKey]: selectedValues, cursor: 0 });
-    }
-  }, [selectedValues, setFilters, filterKey]);
-
-  useEffect(() => {
-    if (typeof filters[filterKey] === "undefined") {
       setFilters({ [filterKey]: undefined });
-      setSelectedValues([]);
+    } else {
+      setFilters({ [filterKey]: selectedValues });
     }
-  }, [filters, setFilters, filterKey]);
+  }, [selectedValues, filterKey, setFilters]);
 
   useEffect(() => {
-    setSelectedValues((filters[filterKey] as string[]) ?? []);
-  }, [filterKey, filters, setSelectedValues]);
+    setSelectedValues((filterValues as string[]) ?? []);
+  }, [filterValues]);
 
   const { data, isLoading, isError } = useData(selectedValues);
 

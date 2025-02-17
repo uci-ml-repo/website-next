@@ -60,7 +60,7 @@ export function DatasetSearch() {
         : { [localOrder]: orderByOptions[localOrder].sort };
 
     setFilters({ search: searchValue, order: order, cursor: 0 });
-  }, [searchValue, filters, setFilters, localOrder]);
+  }, [searchValue, setFilters, localOrder]);
 
   const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
     filters,

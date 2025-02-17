@@ -31,15 +31,23 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
-      console.log(JSON.stringify(newFilters));
-      const params = buildQueryFilters({ ...filters, ...newFilters });
+      const currentParams = new URLSearchParams(window.location.search);
+      const currentFilters: Partial<T> = {};
+      for (const [key, value] of currentParams.entries()) {
+        currentFilters[key as keyof T] = jsonOrString(value) as T[keyof T];
+      }
 
+      const mergedFilters = { ...currentFilters, ...newFilters };
+
+      console.log(mergedFilters);
+
+      const params = buildQueryFilters(mergedFilters);
       const url = `${pathname}?${params.toString()}`;
 
       router.push(url, { scroll: false });
       setFilterCount(Array.from(params.entries()).length);
     },
-    [filters, pathname, router],
+    [pathname, router],
   );
 
   const clearFilters = ({ except = [] }: { except?: (keyof T)[] } = {}) => {
