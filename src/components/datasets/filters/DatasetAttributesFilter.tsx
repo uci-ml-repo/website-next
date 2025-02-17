@@ -1,12 +1,8 @@
 import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
 import { DatasetMultiSelectFilter } from "@/components/datasets/multiselect/DatasetsMultiselectFilter";
-import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetAttributesFilter(props: DatasetFilterProps) {
-  const { filters } = useQueryFilters<DatasetQuery>();
-
   return (
     <DatasetMultiSelectFilter
       {...props}
@@ -16,7 +12,7 @@ export function DatasetAttributesFilter(props: DatasetFilterProps) {
       filterKey="attributes"
       useData={(selectedValues) =>
         trpc.variable.find.remainingFilters.useQuery(
-          { attributeFilters: selectedValues, query: filters },
+          { attributeFilters: selectedValues },
           {
             trpc: {
               context: {

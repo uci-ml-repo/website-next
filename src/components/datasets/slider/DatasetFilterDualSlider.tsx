@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
@@ -10,7 +10,9 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 interface DatasetFilterDualSliderProps {
   label: string;
   tooltipContent: string;
+  filterMin: number | undefined;
   filterMinKey: keyof DatasetQuery;
+  filterMax: number | undefined;
   filterMaxKey: keyof DatasetQuery;
   maxRawValue: number | undefined;
   step?: number;
@@ -23,7 +25,9 @@ interface DatasetFilterDualSliderProps {
 export function DatasetFilterDualSlider({
   label,
   tooltipContent,
+  filterMin,
   filterMinKey,
+  filterMax,
   filterMaxKey,
   maxRawValue,
   step,
@@ -32,11 +36,9 @@ export function DatasetFilterDualSlider({
   dropdownOpen,
   onDropdownOpenChange,
 }: DatasetFilterDualSliderProps) {
-  const { filters, setFilters, debouncedSetFilters } =
-    useQueryFilters<DatasetQuery>();
+  const { setFilters } = useQueryFilters<DatasetQuery>();
 
   const [values, setValues] = useState<number[]>([0, 0]);
-  const [initialized, setInitialized] = useState(false);
 
   const log = useCallback(
     (raw: number) => {
@@ -69,56 +71,23 @@ export function DatasetFilterDualSlider({
   const maxLog = useMemo(() => log(maxRawValue ?? 0), [maxRawValue, log]);
 
   useEffect(() => {
-    if (maxRawValue && !initialized) {
+    if (maxRawValue) {
       setValues([
-        filters[filterMinKey] !== undefined
-          ? exp(filters[filterMinKey] as number)
-          : 0,
-        filters[filterMaxKey] !== undefined
-          ? exp(filters[filterMaxKey] as number)
-          : maxRawValue,
+        filterMin !== undefined ? exp(filterMin) : 0,
+        filterMax !== undefined ? exp(filterMax) : maxRawValue,
       ]);
-      setInitialized(true);
     }
-  }, [maxRawValue, filters, filterMinKey, filterMaxKey, exp, initialized]);
-
-  const prevFiltersRef = useRef(filters);
-
-  useEffect(() => {
-    if (!initialized || !maxRawValue) return;
-
-    if (
-      prevFiltersRef.current[filterMinKey] !== filters[filterMinKey] &&
-      filters[filterMinKey] === undefined
-    ) {
-      setValues((prev) => [0, prev[1]]);
-    }
-    if (
-      prevFiltersRef.current[filterMaxKey] !== filters[filterMaxKey] &&
-      filters[filterMaxKey] === undefined
-    ) {
-      setValues((prev) => [prev[0], maxRawValue]);
-    }
-    prevFiltersRef.current = filters;
-  }, [filters, filterMinKey, filterMaxKey, maxRawValue, initialized]);
+  }, [maxRawValue, filterMin, filterMax, exp]);
 
   useEffect(() => {
     const minCurved = log(values[0]);
     const maxCurved = log(values[1]);
 
-    debouncedSetFilters({
+    setFilters({
       [filterMinKey]: minCurved === 0 ? undefined : minCurved,
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
     });
-  }, [
-    values,
-    log,
-    debouncedSetFilters,
-    filterMinKey,
-    filterMaxKey,
-    maxLog,
-    filters,
-  ]);
+  }, [values, setFilters, log, filterMinKey, filterMaxKey, maxLog]);
 
   return (
     <DatasetFilterItem
@@ -127,7 +96,7 @@ export function DatasetFilterDualSlider({
       tooltipContent={tooltipContent}
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
-      active={!!filters[filterMinKey] || !!filters[filterMaxKey]}
+      active={!!filterMin || !!filterMax}
       clearFilter={() => {
         setFilters({
           [filterMinKey]: undefined,

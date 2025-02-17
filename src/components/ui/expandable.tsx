@@ -29,7 +29,7 @@ export function Expandable({
 
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        if (entry.target.scrollHeight > truncationHeight) {
+        if (entry.target.scrollHeight > truncationHeight + 20) {
           setNeedsTruncation(true);
         } else {
           setNeedsTruncation(false);
@@ -45,7 +45,7 @@ export function Expandable({
     <div>
       <div
         ref={contentRef}
-        className={cn(`relative overflow-hidden`, className)}
+        className={cn(`relative overflow-y-hidden`, className)}
         style={{ maxHeight: isExpanded ? "none" : `${truncationHeight}px` }}
       >
         {children}

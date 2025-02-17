@@ -1,6 +1,5 @@
 "use client";
 
-import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
@@ -15,10 +14,9 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const filterCountExcept = useCallback(
     ({ except = [] }: { except?: (keyof T)[] } = {}) => {
-      return searchParams
-        .entries()
-        .filter(([key]) => !except.includes(key))
-        .toArray().length;
+      return Array.from(searchParams.entries()).filter(
+        ([key]) => !except.includes(key),
+      ).length;
     },
     [searchParams],
   );
@@ -33,19 +31,15 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
+      console.log(JSON.stringify(newFilters));
       const params = buildQueryFilters({ ...filters, ...newFilters });
 
       const url = `${pathname}?${params.toString()}`;
 
-      router.replace(url, { scroll: false });
-      setFilterCount(params.entries().toArray().length);
+      router.push(url, { scroll: false });
+      setFilterCount(Array.from(params.entries()).length);
     },
     [filters, pathname, router],
-  );
-
-  const debouncedSetFilters = useMemo(
-    () => debounce(setFilters, 100),
-    [setFilters],
   );
 
   const clearFilters = ({ except = [] }: { except?: (keyof T)[] } = {}) => {
@@ -66,7 +60,6 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   return {
     filters,
     setFilters,
-    debouncedSetFilters,
     filterCount,
     filterCountExcept,
     clearFilters,

@@ -121,7 +121,7 @@ export const LinearTabsList = React.forwardRef<
       ref={(node) => {
         containerRef.current = node;
         if (typeof forwardedRef === "function") {
-          forwardedRef(node);
+          forwardedRef(node as null);
         } else if (forwardedRef) {
           (
             forwardedRef as React.MutableRefObject<HTMLDivElement | null>

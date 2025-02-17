@@ -1,13 +1,16 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import * as React from "react";
 
 import { Main } from "@/components/layout/Main";
 
 export default function Test() {
+  const params = useSearchParams();
   return (
     <Main>
-      <button onClick={() => console.log(Date.now())}> X</button>
+      <div>{typeof params.entries()}</div>
+      <div>{JSON.stringify(Array.from(params.entries()))}</div>
     </Main>
   );
 }

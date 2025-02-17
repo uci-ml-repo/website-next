@@ -28,12 +28,21 @@ export function DatasetSearch() {
       : Object.keys(filters.order || {})[0] || "viewCount",
   );
 
+  const handleOrderChange = (newOrder: string) => {
+    if (localOrder !== newOrder) {
+      setLocalOrder(newOrder);
+    }
+  };
+
+  const filterCount =
+    filterCountExcept({
+      except: ["search", "order", "limit", "cursor"],
+    }) -
+    +(!!filters.instanceCountMax && !!filters.instanceCountMin) -
+    +(!!filters.featureCountMax && !!filters.featureCountMin);
+
   const { inputValue, setInputValue, searchValue, handleChange } =
     useDebouncedSearch({ defaultValue: filters.search });
-
-  const filterCount = filterCountExcept({
-    except: ["search", "order", "limit", "cursor"],
-  });
 
   useEffect(() => {
     if (searchValue && localOrder !== "relevance") {
@@ -45,34 +54,13 @@ export function DatasetSearch() {
 
   // Update the URL filters whenever the debounced search value changes.
   useEffect(() => {
-    const orderFilter =
+    const order =
       localOrder === "relevance"
         ? undefined
         : { [localOrder]: orderByOptions[localOrder].sort };
 
-    const currentSearch = filters.search || "";
-    const currentOrder = filters.order
-      ? Object.keys(filters.order)[0]
-      : filters.search
-        ? "relevance"
-        : "viewCount";
-
-    if (searchValue === currentSearch && localOrder === currentOrder) return;
-
-    setFilters({ search: searchValue, order: orderFilter, cursor: 0 });
-  }, [searchValue, localOrder, filters, setFilters]);
-
-  useEffect(() => {
-    if (!filters.search) {
-      setInputValue("");
-    }
-  }, [filters.search, setInputValue]);
-
-  const handleOrderChange = (newOrder: string) => {
-    if (localOrder !== newOrder) {
-      setLocalOrder(newOrder);
-    }
-  };
+    setFilters({ search: searchValue, order: order, cursor: 0 });
+  }, [searchValue, filters, setFilters, localOrder]);
 
   const { data, isLoading } = trpc.dataset.find.byQuery.useQuery(filters, {
     placeholderData: (prev) => prev,

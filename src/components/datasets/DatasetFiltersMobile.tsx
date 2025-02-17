@@ -42,6 +42,7 @@ export function DatasetFiltersMobile() {
         forceMount
         side="bottom"
         className="max-h-[90svh] overflow-y-auto bg-card"
+        aria-describedby={undefined}
       >
         <SheetTitle>Filters</SheetTitle>
 

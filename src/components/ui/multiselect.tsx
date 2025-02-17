@@ -40,7 +40,7 @@ export function Multiselect({
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
   const listRef = React.useRef<List>(null);
 
-  const _values = values instanceof Map ? values.keys().toArray() : values;
+  const _values = values instanceof Map ? Array.from(values.keys()) : values;
 
   const matches = useMemo(
     () => (searchValue ? matchSorter(_values, searchValue) : _values),
@@ -106,6 +106,7 @@ export function Multiselect({
             className="invisible -mt-[5px] h-[1px] pb-1"
           />
           <PopoverContent
+            avoidCollisions={false}
             onOpenAutoFocus={(event) => event.preventDefault()}
             className="w-[--radix-popover-trigger-width] p-0"
           >
