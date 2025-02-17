@@ -144,7 +144,6 @@ export function DatasetFilterDualSlider({
           step={step ?? maxRawValue / 200}
           min={0}
           max={maxRawValue}
-          className="px-2"
         />
       ) : (
         <div className="flex h-14 w-full items-center justify-center">

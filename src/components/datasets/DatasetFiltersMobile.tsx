@@ -39,6 +39,7 @@ export function DatasetFiltersMobile() {
         </Button>
       </SheetTrigger>
       <SheetContent
+        forceMount
         side="bottom"
         className="max-h-[90svh] overflow-y-auto bg-card"
       >
