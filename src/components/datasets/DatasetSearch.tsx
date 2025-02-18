@@ -61,12 +61,6 @@ export function DatasetSearch() {
     }
   }, [searchValue, autoOrder, localOrder]);
 
-  useEffect(() => {
-    if (!filters.search) {
-      setInputValue("");
-    }
-  }, [filters.search, setInputValue]);
-
   // Update the URL filters whenever the debounced search value or localOrder changes.
   useEffect(() => {
     const order =
