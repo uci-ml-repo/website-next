@@ -17,6 +17,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import {
@@ -35,6 +41,7 @@ interface DatasetCardProps {
 type DatasetStat = {
   icon: React.ReactNode;
   text: string | null;
+  tooltip?: string;
 };
 
 export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
@@ -45,22 +52,26 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
     {
       icon: <MicroscopeIcon />,
       text: dataset.tasks ? formatEnum(dataset.tasks) : null,
+      tooltip: "Dataset Tasks",
     },
     {
       icon: <Columns3Icon />,
       text: dataset.featureCount
         ? `${abbreviateDecimal(dataset.featureCount)} Features`
         : null,
+      tooltip: "Number of Features",
     },
     {
       icon: <Rows3Icon />,
       text: dataset.instanceCount
         ? `${abbreviateDecimal(dataset.instanceCount)} Instances`
         : null,
+      tooltip: "Number of Instances",
     },
     {
       icon: <CalendarDaysIcon />,
       text: dataset.yearCreated ? dataset.yearCreated.toString() : null,
+      tooltip: "Year Created",
     },
   ];
 
@@ -93,18 +104,25 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
               </p>
             </CardDescription>
           </div>
-          <CardDescription className="flex items-end">
-            <div className="w-full space-y-1">
-              {datasetStats.map((stat, i) => (
-                <div
-                  key={i}
-                  className="flex items-center space-x-2 [&_svg]:size-4"
-                >
-                  {stat.icon}
-                  <span className="truncate">{stat.text}</span>
-                </div>
-              ))}
-            </div>
+          <CardDescription className="space-y-1">
+            <TooltipProvider>
+              {datasetStats.map(
+                (stat, i) =>
+                  stat.text && (
+                    <Tooltip key={i} delayDuration={200}>
+                      <TooltipTrigger className="flex items-center space-x-2 [&_svg]:size-4">
+                        {stat.icon}
+                        <span className="truncate">{stat.text}</span>
+                      </TooltipTrigger>
+                      {stat.tooltip && (
+                        <TooltipContent side="left">
+                          {stat.tooltip}
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  ),
+              )}
+            </TooltipProvider>
           </CardDescription>
         </CardContent>
         <CardFooter className="h-10 justify-between border-t py-2.5 @container">
