@@ -43,7 +43,7 @@ export function DatasetFiltersMobile() {
       <SheetContent
         forceMount
         side="right"
-        className="overflow-y-auto bg-card p-0"
+        className="bg-card p-0"
         aria-describedby={undefined}
       >
         <SheetTitle className="flex items-center justify-between p-4 pt-10">
@@ -55,6 +55,7 @@ export function DatasetFiltersMobile() {
           openStates={openStates}
           setOpenStates={setOpenStates}
         />
+        <hr />
       </SheetContent>
     </Sheet>
   );
