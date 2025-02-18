@@ -34,7 +34,7 @@ export function fileToIcon(
           alt={file.path}
           width={80}
           height={80}
-          className="max-h-full object-contain"
+          className="object-contain"
         />
       );
     }

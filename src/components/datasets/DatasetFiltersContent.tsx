@@ -1,6 +1,7 @@
 import React from "react";
 
 import { DatasetAttributesFilter } from "@/components/datasets/filters/DatasetAttributesFilter";
+import { DatasetDataTypesFilter } from "@/components/datasets/filters/DatasetDataTypesFilter";
 import { DatasetKeywordsFilter } from "@/components/datasets/filters/DatasetKeywordsFilter";
 import { Separator } from "@/components/ui/separator";
 
@@ -13,7 +14,7 @@ export interface DatasetFilterProps {
 export const datasetFilters: React.FC<DatasetFilterProps>[] = [
   DatasetAttributesFilter,
   DatasetKeywordsFilter,
-  // DatasetDataTypesFilter,
+  DatasetDataTypesFilter,
   // DatasetSubjectAreasFilter,
   // DatasetTasksFilter,
   // DatasetFeatureTypesFilter,

@@ -39,7 +39,7 @@ export function DatasetMultiSelectFilter({
   );
 
   useEffect(() => {
-    if (filterValues !== selectedValues) {
+    if (JSON.stringify(filterValues ?? []) !== JSON.stringify(selectedValues)) {
       setFilters({
         [filterKey]: selectedValues.length ? selectedValues : undefined,
         cursor: 0,
