@@ -1,7 +1,7 @@
+import { DatasetCheckboxFilterItem } from "@/components/datasets/checkbox/DatasetCheckboxFilterItem";
 import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
 import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
-import { Checkbox } from "@/components/ui/checkbox";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
 export function DatasetPythonFilter({
@@ -21,16 +21,11 @@ export function DatasetPythonFilter({
       active={filters.python}
       clearFilter={() => setFilters({ python: undefined })}
     >
-      <div className="flex w-full items-center justify-between">
-        <span>Available for Python import</span>
-        <Checkbox
-          checked={!!filters.python}
-          onCheckedChange={(checked) =>
-            setFilters({ python: checked as boolean, cursor: undefined })
-          }
-          aria-label="Filter by Python availability"
-        />
-      </div>
+      <DatasetCheckboxFilterItem
+        toggle={(checked) => setFilters({ python: checked, cursor: undefined })}
+        value="Available for Python import"
+        checked={!!filters.python}
+      />
     </DatasetFilterItem>
   );
 }
