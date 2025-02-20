@@ -36,14 +36,15 @@ export function DatasetFiltersMobile() {
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
         <Button variant="blue" className="lg:hidden" size="lg">
-          <FilterIcon /> Filters
+          <FilterIcon />
+          <span className="max-xxs:hidden">Filters</span>
         </Button>
       </SheetTrigger>
 
       <SheetContent
         forceMount
         side="right"
-        className="bg-card p-0"
+        className="overflow-y-auto bg-card p-0"
         aria-describedby={undefined}
       >
         <SheetTitle className="flex items-center justify-between p-4 pt-10">

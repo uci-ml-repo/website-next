@@ -114,6 +114,7 @@ export function Multiselect({
             avoidCollisions={false}
             onOpenAutoFocus={(event) => event.preventDefault()}
             className="w-[--radix-popover-trigger-width] p-0"
+            portal={false}
           >
             {isLoading ? (
               <div className="flex h-10 w-full items-center justify-center">

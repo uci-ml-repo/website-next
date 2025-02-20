@@ -18,7 +18,7 @@ export function DatasetCheckboxFilterItem<T extends string>({
 }: DatasetFilterCheckboxItemProps<T>) {
   return (
     <div
-      className="flex w-full cursor-pointer items-center justify-between py-1"
+      className="flex w-full cursor-pointer items-center justify-between space-x-1 py-1"
       onClick={() => toggle(!checked, value)}
     >
       <div>{formatEnum(value)}</div>
