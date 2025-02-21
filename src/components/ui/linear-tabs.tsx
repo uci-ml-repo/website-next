@@ -73,7 +73,7 @@ export function LinearTabs({
 }
 
 const linearTabsListVariants = cva(
-  "relative inline-flex h-fit w-full items-center justify-start py-1 text-muted-foreground",
+  "relative inline-flex h-fit w-fit items-center justify-start py-1 text-muted-foreground",
   {
     variants: {
       variant: {
@@ -104,16 +104,35 @@ export const LinearTabsList = React.forwardRef<
   React.useEffect(() => {
     if (!containerRef.current) return;
 
-    const activeTrigger = containerRef.current.querySelector(
-      `[data-value="${activeValue}"]`,
-    ) as HTMLElement | null;
+    const updateIndicator = () => {
+      if (!containerRef.current) return;
 
-    if (activeTrigger) {
-      const { offsetLeft, offsetWidth } = activeTrigger;
-      setIndicatorStyle({ x: offsetLeft, width: offsetWidth });
-    } else {
-      setIndicatorStyle({ x: 0, width: 0 });
-    }
+      const activeTrigger = containerRef.current.querySelector(
+        `[data-value="${activeValue}"]`,
+      ) as HTMLElement | null;
+      if (activeTrigger) {
+        setIndicatorStyle({
+          x: activeTrigger.offsetLeft,
+          width: activeTrigger.offsetWidth,
+        });
+      } else {
+        setIndicatorStyle({ x: 0, width: 0 });
+      }
+    };
+
+    updateIndicator();
+
+    const observer = new ResizeObserver(() => {
+      updateIndicator();
+    });
+    observer.observe(containerRef.current);
+
+    window.addEventListener("resize", updateIndicator);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateIndicator);
+    };
   }, [activeValue]);
 
   return (
