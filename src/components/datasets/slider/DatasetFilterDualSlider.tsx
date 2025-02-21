@@ -39,6 +39,7 @@ export function DatasetFilterDualSlider({
   const { setFilters } = useQueryFilters<DatasetQuery>();
 
   const [values, setValues] = useState<number[]>([0, 0]);
+  const [initialized, setInitialized] = useState<boolean>(false);
 
   const log = useCallback(
     (raw: number) => {
@@ -80,14 +81,34 @@ export function DatasetFilterDualSlider({
   }, [maxRawValue, filterMin, filterMax, exp]);
 
   useEffect(() => {
+    if (!values || (values[0] === 0 && values[1] === 0)) return;
+
+    if (!initialized) {
+      setInitialized(true);
+      return;
+    }
+
     const minCurved = log(values[0]);
     const maxCurved = log(values[1]);
 
     setFilters({
       [filterMinKey]: minCurved === 0 ? undefined : minCurved,
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
+      cursor: 0,
     });
-  }, [values, setFilters, log, filterMinKey, filterMaxKey, maxLog]);
+  }, [
+    values,
+    setFilters,
+    log,
+    filterMinKey,
+    filterMaxKey,
+    maxLog,
+    initialized,
+  ]);
+
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
 
   return (
     <DatasetFilterItem
