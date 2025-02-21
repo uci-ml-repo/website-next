@@ -14,7 +14,7 @@ export function DatasetTitleGroup({ dataset }: { dataset: DatasetResponse }) {
     <div className="flex items-center justify-between">
       <div className="w-full space-y-6">
         <div className="space-y-4">
-          <h1 className="backdrop-gradient-blur text-pretty text-3xl font-bold text-foreground sm:text-4xl">
+          <h1 className="text-pretty text-3xl font-bold text-foreground">
             {dataset.title}
           </h1>
           {dataset.subtitle && (

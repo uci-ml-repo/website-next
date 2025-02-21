@@ -16,9 +16,7 @@ const logoVariants = cva(cn("w-fit"), {
     textColor: {
       default: "[&>div]:text-uci-blue [&>svg]:fill-primary",
       mono: "[&>div]:text-primary [&>svg]:fill-primary",
-      monoForeground:
-        "[&>div]:text-primary-foreground [&>svg]:fill-primary-foreground",
-      monoUciBlueForeground:
+      "blue-foreground":
         "[&>div]:text-uci-blue-foreground [&>svg]:fill-uci-blue-foreground",
     },
   },

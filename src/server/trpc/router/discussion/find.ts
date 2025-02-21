@@ -14,6 +14,10 @@ export const discussionFindRouter = router({
     return service.discussion.find.byQuery(input, ctx.session);
   }),
 
+  countByQuery: procedure.input(discussionQuery).query(async ({ input }) => {
+    return service.discussion.find.countByQuery(input);
+  }),
+
   byUserId: protectedProcedure
     .meta({
       requireRoles: [MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID],

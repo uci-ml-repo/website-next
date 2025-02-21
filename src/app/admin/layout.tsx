@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { forbidden } from "next/navigation";
 
 import { auth, signIn } from "@/auth";
+import { AdminTabs } from "@/components/admin/AdminTabs";
+import { Main } from "@/components/layout/Main";
 import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";
+
+export const metadata: Metadata = {
+  title: "Admin",
+};
 
 export default async function Layout({
   children,
@@ -19,5 +26,13 @@ export default async function Layout({
     return forbidden();
   }
 
-  return <>{children}</>;
+  return (
+    <Main className="space-y-8">
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <AdminTabs />
+      </div>
+      {children}
+    </Main>
+  );
 }

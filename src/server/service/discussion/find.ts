@@ -124,6 +124,15 @@ export class DiscussionFindService {
     };
   }
 
+  async countByQuery(query: DiscussionQuery) {
+    const [countQuery] = await db
+      .select({ count: count() })
+      .from(discussion)
+      .where(buildQuery(query));
+
+    return countQuery.count;
+  }
+
   private async byRawQuery(query: DiscussionQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>

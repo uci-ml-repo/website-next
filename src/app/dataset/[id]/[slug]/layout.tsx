@@ -10,7 +10,6 @@ import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { Enums } from "@/db/lib/enums";
-import { DATASET_ROUTE } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
@@ -79,7 +78,7 @@ export default async function Layout({
             />
           </Card>
 
-          <DatasetTabs basePath={DATASET_ROUTE(dataset)} dataset={dataset} />
+          <DatasetTabs dataset={dataset} />
         </div>
 
         {children}

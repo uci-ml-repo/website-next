@@ -11,25 +11,24 @@ import {
   LinearTabsTrigger,
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
+import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetTabsProps {
-  basePath: string;
   dataset: DatasetResponse;
 }
 
-export function DatasetTabs({ basePath, dataset }: DatasetTabsProps) {
+export function DatasetTabs({ dataset }: DatasetTabsProps) {
+  const basePath = DATASET_ROUTE(dataset);
+
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
 
-  const discussionCountQuery = trpc.discussion.find.byQuery.useQuery({
+  const { data: discussionCount } = trpc.discussion.find.countByQuery.useQuery({
     datasetId: dataset.id,
   });
-
-  const discussionCount =
-    discussionCountQuery?.data?.discussions.length ?? null;
 
   return (
     <LinearTabs

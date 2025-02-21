@@ -79,7 +79,7 @@ export function Footer() {
                 <Anteater className="mr-4 h-1/2 fill-uci-blue-foreground max-lg:hidden" />
                 <Banner
                   variant="logo"
-                  textColor="monoUciBlueForeground"
+                  textColor="blue-foreground"
                   className="w-56"
                 />
               </div>

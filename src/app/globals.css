@@ -65,12 +65,12 @@ body {
     --accent: 0 0% 20%;
     --accent-foreground: 0 0% 90%;
     --muted: 0 0% 16%;
-    --muted-foreground: 0 0% 50%;
+    --muted-foreground: 0 0% 58%;
     --destructive: 0 62.8% 52%;
-    --destructive-muted: 0 84% 42%;
+    --destructive-muted: 0 84% 66%;
     --destructive-foreground: 0 0% 98%;
     --positive: 114 49% 42%;
-    --uci-blue: 209 70% 44%;
+    --uci-blue: 209 70% 40%;
     --uci-blue-foreground: 0 0% 90%;
     --uci-gold: 48 99% 51%;
     --uci-gold-foreground: 0 0% 9%;
@@ -139,10 +139,10 @@ body {
 .backdrop-gradient-blur::before {
   content: "";
   position: absolute;
-  top: -10px;
-  left: -10px;
-  width: calc(100% + 20px);
-  height: calc(100% + 20px);
+  top: -15px;
+  left: -15px;
+  width: calc(100% + 30px);
+  height: calc(100% + 30px);
   border-radius: inherit;
   background: radial-gradient(
     hsl(var(--background) / 1) 85%,
