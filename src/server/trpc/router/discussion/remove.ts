@@ -12,9 +12,9 @@ export const discussionRemoveRouter = router({
         discussionId: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
-      return service.discussion.remove.byId({
+    .mutation(({ input }) =>
+      service.discussion.remove.byId({
         discussionId: input.discussionId,
-      });
-    }),
+      }),
+    ),
 });

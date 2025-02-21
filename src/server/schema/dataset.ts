@@ -32,7 +32,12 @@ export const datasetQuery = z.object({
   python: z.boolean().optional(),
 });
 
-export const datasetTextSearchQuery = datasetQuery.required({ search: true });
+export const privilegedDatasetQuery = datasetQuery.extend({
+  status: z.enum(enumToArray(Enums.ApprovalStatus)).optional(),
+});
+
+export const datasetSearchQuery = datasetQuery.required({ search: true });
 
 export type DatasetQuery = z.infer<typeof datasetQuery>;
-export type DatasetTextSearchQuery = z.infer<typeof datasetTextSearchQuery>;
+export type PrivilegedDatasetQuery = z.infer<typeof privilegedDatasetQuery>;
+export type DatasetSearchQuery = z.infer<typeof datasetSearchQuery>;

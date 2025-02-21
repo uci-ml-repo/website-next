@@ -595,17 +595,31 @@ export const commentReportResolutionRelations = relations(
 /**
  * User tables
  */
-export const user = pgTable("user", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: timestamp("email_verified", { mode: "date" }),
-  password: text("password"),
-  image: text("image"),
-  role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
+export const user = pgTable(
+  "user",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: timestamp("email_verified", { mode: "date" }),
+    password: text("password"),
+    image: text("image"),
+    role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
 
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-});
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("user_role_index").on(t.role),
+    index("user_email_trgm_search_index").using(
+      "gin",
+      sql`${t.email} gin_trgm_ops`,
+    ),
+    index("user_name_trgm_search_index").using(
+      "gin",
+      sql`${t.name} gin_trgm_ops`,
+    ),
+  ],
+);
 
 export const userRelations = relations(user, ({ many }) => ({
   datasets: many(dataset),

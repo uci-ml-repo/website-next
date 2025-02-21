@@ -6,41 +6,37 @@ import { procedure, protectedProcedure, router } from "@/server/trpc";
 export const userCredentialsRouter = router({
   sendResetPasswordEmail: procedure
     .input(z.object({ email: z.string() }))
-    .mutation(async ({ input }) => {
-      return service.user.credentials.sendResetPasswordEmail({
+    .mutation(({ input }) =>
+      service.user.credentials.sendResetPasswordEmail({
         email: input.email,
-      });
-    }),
+      }),
+    ),
 
-  sendVerificationEmail: protectedProcedure.mutation(async ({ ctx }) => {
-    return service.user.credentials.sendVerificationEmail({
+  sendVerificationEmail: protectedProcedure.mutation(({ ctx }) =>
+    service.user.credentials.sendVerificationEmail({
       userId: ctx.user.id,
       email: ctx.user.email,
       name: ctx.user.name,
-    });
-  }),
+    }),
+  ),
 
   getEmailVerificationToken: procedure
     .input(z.object({ token: z.string() }))
-    .query(async ({ input }) => {
-      return service.user.credentials.getEmailVerificationToken(input.token);
-    }),
+    .query(({ input }) =>
+      service.user.credentials.getEmailVerificationToken(input.token),
+    ),
 
   getResetPasswordToken: procedure
     .input(z.object({ token: z.string() }))
-    .query(async ({ input }) => {
-      return service.user.credentials.getResetPasswordToken(input.token);
-    }),
+    .query(({ input }) =>
+      service.user.credentials.getResetPasswordToken(input.token),
+    ),
 
   resetPassword: procedure
     .input(z.object({ password: z.string(), token: z.string() }))
-    .mutation(async ({ input }) => {
-      return service.user.credentials.resetPassword(input);
-    }),
+    .mutation(({ input }) => service.user.credentials.resetPassword(input)),
 
   verifyEmail: procedure
     .input(z.object({ token: z.string() }))
-    .mutation(async ({ input }) => {
-      return service.user.credentials.verifyEmail(input);
-    }),
+    .mutation(({ input }) => service.user.credentials.verifyEmail(input)),
 });

@@ -202,7 +202,15 @@ export const LinearTabsTrigger = React.forwardRef<
               <div className="flex items-center space-x-2">
                 <span>{children}</span>
                 <Badge variant={badgeVariant}>
-                  {badgeValue ?? <Spinner className="size-4" />}
+                  {badgeValue !== null ? (
+                    typeof badgeValue === "number" ? (
+                      badgeValue.toLocaleString()
+                    ) : (
+                      badgeValue
+                    )
+                  ) : (
+                    <Spinner className="size-4" />
+                  )}
                 </Badge>
               </div>
             ) : (

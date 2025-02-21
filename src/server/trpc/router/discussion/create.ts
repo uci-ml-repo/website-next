@@ -13,10 +13,10 @@ export const discussionCreateRouter = router({
         content: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
-      return service.discussion.create.fromData({
+    .mutation(({ input, ctx }) =>
+      service.discussion.create.fromData({
         userId: ctx.user.id,
         ...input,
-      });
-    }),
+      }),
+    ),
 });

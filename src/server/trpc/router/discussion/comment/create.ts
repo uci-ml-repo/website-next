@@ -12,10 +12,10 @@ export const discussionCommentCreateRouter = router({
         content: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
-      return service.discussion.comment.create.fromData({
+    .mutation(({ input, ctx }) =>
+      service.discussion.comment.create.fromData({
         userId: ctx.user.id,
         ...input,
-      });
-    }),
+      }),
+    ),
 });

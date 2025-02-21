@@ -12,26 +12,26 @@ export const fileReadRouter = router({
         takeLines: z.number().optional(),
       }),
     )
-    .query(async ({ ctx, input }) => {
-      return service.file.read.readFileInfinite({
+    .query(({ ctx, input }) =>
+      service.file.read.readFileInfinite({
         ...input,
         absolutePath: ctx.realPath,
-      });
-    }),
+      }),
+    ),
 
   stats: fileAccessProcedure
     .input(z.object({ path: z.string() }))
-    .query(async ({ ctx }) => {
-      return service.file.read.stats({
+    .query(({ ctx }) =>
+      service.file.read.stats({
         absolutePath: ctx.realPath,
-      });
-    }),
+      }),
+    ),
 
   zipStats: fileAccessProcedure
     .input(z.object({ path: z.string() }))
-    .query(async ({ ctx }) => {
-      return service.file.read.zipStats({
+    .query(({ ctx }) =>
+      service.file.read.zipStats({
         absolutePath: ctx.realPath,
-      });
-    }),
+      }),
+    ),
 });

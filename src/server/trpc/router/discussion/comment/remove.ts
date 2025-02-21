@@ -8,7 +8,7 @@ export const discussionCommentRemoveRouter = router({
   byId: protectedProcedure
     .meta({ requireRoles: [Enums.UserRole.ADMIN, "COMMENT_AUTHOR"] })
     .input(z.object({ commentId: z.string() }))
-    .mutation(async ({ input }) => {
-      return service.discussion.comment.remove.byId(input.commentId);
-    }),
+    .mutation(({ input }) =>
+      service.discussion.comment.remove.byId(input.commentId),
+    ),
 });

@@ -7,16 +7,16 @@ import { protectedProcedure, router } from "@/server/trpc";
 export const bookmarkFindRouter = router({
   byUserQuery: protectedProcedure
     .input(bookmarkQuery)
-    .query(async ({ input, ctx }) => {
-      return service.bookmark.find.byUserQuery(input, ctx.user);
-    }),
+    .query(({ input, ctx }) =>
+      service.bookmark.find.byUserQuery(input, ctx.user),
+    ),
 
   isBookmarked: protectedProcedure
     .input(z.object({ datasetId: z.number(), userId: z.string() }))
-    .query(async ({ input }) => {
-      return service.bookmark.find.isBookmarked({
+    .query(({ input }) =>
+      service.bookmark.find.isBookmarked({
         datasetId: input.datasetId,
         userId: input.userId,
-      });
-    }),
+      }),
+    ),
 });

@@ -10,12 +10,12 @@ export const discussionCommentUpvoteRouter = router({
         discussionCommentId: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
-      return service.discussion.comment.upvote.create({
+    .mutation(({ input, ctx }) =>
+      service.discussion.comment.upvote.create({
         commentId: input.discussionCommentId,
         userId: ctx.user.id,
-      });
-    }),
+      }),
+    ),
 
   remove: protectedProcedure
     .input(
@@ -23,10 +23,10 @@ export const discussionCommentUpvoteRouter = router({
         discussionCommentId: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
-      return service.discussion.comment.upvote.remove({
+    .mutation(({ input, ctx }) =>
+      service.discussion.comment.upvote.remove({
         commentId: input.discussionCommentId,
         userId: ctx.user.id,
-      });
-    }),
+      }),
+    ),
 });

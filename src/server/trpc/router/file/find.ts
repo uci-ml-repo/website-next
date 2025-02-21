@@ -6,13 +6,11 @@ import { fileAccessProcedure, router } from "@/server/trpc";
 export const fileFindRouter = router({
   list: fileAccessProcedure
     .input(z.object({ path: z.string() }))
-    .query(async ({ ctx }) => {
-      return service.file.find.list(ctx.realPath);
-    }),
+    .query(({ ctx }) => service.file.find.list(ctx.realPath)),
 
   search: fileAccessProcedure
     .input(z.object({ path: z.string(), search: z.string() }))
-    .query(async ({ ctx, input }) => {
-      return service.file.find.search(ctx.realPath, input.search);
-    }),
+    .query(({ ctx, input }) =>
+      service.file.find.search(ctx.realPath, input.search),
+    ),
 });

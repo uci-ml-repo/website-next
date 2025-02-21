@@ -15,9 +15,7 @@ export const discussionReportRouter = router({
         userId: z.string().optional(),
       }),
     )
-    .mutation(async ({ input }) => {
-      return service.discussion.report.create(input);
-    }),
+    .mutation(({ input }) => service.discussion.report.create(input)),
 
   resolve: procedure
     .input(
@@ -27,7 +25,5 @@ export const discussionReportRouter = router({
         type: z.enum(enumToArray(Enums.ReportResolutionType)),
       }),
     )
-    .mutation(async ({ input }) => {
-      return service.discussion.report.resolve(input);
-    }),
+    .mutation(({ input }) => service.discussion.report.resolve(input)),
 });

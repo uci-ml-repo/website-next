@@ -6,10 +6,10 @@ import { protectedProcedure, router } from "@/server/trpc";
 export const bookmarkCreateRouter = router({
   addBookmark: protectedProcedure
     .input(z.object({ datasetId: z.number() }))
-    .mutation(async ({ input, ctx }) => {
-      return service.bookmark.create.addBookmark({
+    .mutation(({ input, ctx }) =>
+      service.bookmark.create.addBookmark({
         datasetId: input.datasetId,
         userId: ctx.user.id,
-      });
-    }),
+      }),
+    ),
 });

@@ -449,13 +449,22 @@ CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
 CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
 
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
+CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "keyword_name_index" ON "keyword" USING btree ("name");
+CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
 
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "keyword_status_index" ON "keyword" USING btree ("status");
+CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
+
+--> statement-breakpoint
+CREATE INDEX "user_role_index" ON "user" USING btree ("role");
+
+--> statement-breakpoint
+CREATE INDEX "user_email_trgm_search_index" ON "user" USING gin ("email" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "user_name_trgm_search_index" ON "user" USING gin ("name" gin_trgm_ops);
 
 --> statement-breakpoint
 CREATE MATERIALIZED VIEW "public"."dataset_view" AS (

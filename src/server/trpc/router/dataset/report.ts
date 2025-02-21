@@ -15,9 +15,7 @@ export const datasetReportRouter = router({
         userId: z.string().optional(),
       }),
     )
-    .mutation(async ({ input }) => {
-      return service.dataset.report.create(input);
-    }),
+    .mutation(({ input }) => service.dataset.report.create(input)),
 
   resolve: procedure
     .input(
@@ -28,7 +26,5 @@ export const datasetReportRouter = router({
         comment: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
-      return service.dataset.report.resolve(input);
-    }),
+    .mutation(({ input }) => service.dataset.report.resolve(input)),
 });

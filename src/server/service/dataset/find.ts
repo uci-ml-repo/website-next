@@ -17,7 +17,8 @@ import { sqlArray } from "@/db/lib/utils";
 import { datasetView } from "@/db/schema";
 import type {
   DatasetQuery,
-  DatasetTextSearchQuery,
+  DatasetSearchQuery,
+  PrivilegedDatasetQuery,
 } from "@/server/schema/dataset";
 import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
@@ -68,8 +69,11 @@ function buildSearchQuery(search: string) {
   };
 }
 
-export function buildQuery(query: DatasetQuery) {
-  const conditions = [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
+export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
+  const conditions =
+    "status" in query && query.status
+      ? [eq(datasetView.status, query.status)]
+      : [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
 
   if (query.search) {
     const { searchCondition } = buildSearchQuery(query.search);
@@ -214,7 +218,7 @@ export class DatasetFindService {
   async byQuery(query: DatasetQuery) {
     let datasets;
     if (query.search) {
-      datasets = await this.bySearchQuery(query as DatasetTextSearchQuery);
+      datasets = await this.bySearchQuery(query as DatasetSearchQuery);
     } else {
       datasets = await this.byRawQuery(query);
     }
@@ -237,6 +241,15 @@ export class DatasetFindService {
     };
   }
 
+  async countByQuery(query: DatasetQuery) {
+    const [countQuery] = await db
+      .select({ count: count() })
+      .from(datasetView)
+      .where(buildQuery(query));
+
+    return countQuery.count;
+  }
+
   private async byRawQuery(query: DatasetQuery) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([field, sort]) =>
@@ -253,7 +266,7 @@ export class DatasetFindService {
       .orderBy(...orderBy);
   }
 
-  private async bySearchQuery(query: DatasetTextSearchQuery) {
+  private async bySearchQuery(query: DatasetSearchQuery) {
     const { trigramSimilarity, tsRank } = buildSearchQuery(query.search);
 
     const datasets = await db

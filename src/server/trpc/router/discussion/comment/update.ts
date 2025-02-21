@@ -7,7 +7,5 @@ export const discussionCommentUpdateRouter = router({
   byId: protectedProcedure
     .meta({ requireRoles: ["COMMENT_AUTHOR"] })
     .input(z.object({ id: z.string(), content: z.string() }))
-    .mutation(async ({ input }) => {
-      return service.discussion.comment.update.byId(input);
-    }),
+    .mutation(({ input }) => service.discussion.comment.update.byId(input)),
 });
