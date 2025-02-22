@@ -4,6 +4,17 @@ import { protectedProcedure, router } from "@/server/trpc";
 import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 export const userFindRouter = router({
+  byQuery: protectedProcedure
+    .meta({
+      requireRoles: [
+        MiddlewareRoles.ADMIN,
+        MiddlewareRoles.CURATOR,
+        MiddlewareRoles.LIBRARIAN,
+      ],
+    })
+    .input(userQuery)
+    .query(({ input }) => service.user.find.byQuery(input)),
+
   countByQuery: protectedProcedure
     .meta({
       requireRoles: [

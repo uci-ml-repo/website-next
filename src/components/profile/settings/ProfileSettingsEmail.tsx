@@ -30,7 +30,7 @@ export function ProfileSettingsEmail() {
       <h3 className="text-lg font-bold">Your Email Address</h3>
 
       {session ? (
-        <>
+        <div className="space-y-2">
           <div className="space-y-2">
             <div className="truncate text-lg text-muted-foreground">
               {session.user.email}
@@ -63,7 +63,7 @@ export function ProfileSettingsEmail() {
               </button>
             </Alert>
           )}
-        </>
+        </div>
       ) : (
         <div className="flex h-10 items-center">
           <Spinner />

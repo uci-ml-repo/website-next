@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -25,7 +26,9 @@ export function ProfileSettingsDelete() {
 
   const userDeleteMutation = trpc.user.remove.byId.useMutation();
 
-  const deleting = userDeleteMutation.isPending || userDeleteMutation.isSuccess;
+  const confirmed = confirmInput.trim() !== session?.user.email;
+  const isDeleting =
+    userDeleteMutation.isPending || userDeleteMutation.isSuccess;
 
   function deleteAccount() {
     if (!session) return;
@@ -47,16 +50,14 @@ export function ProfileSettingsDelete() {
       </div>
 
       {session ? (
-        <Dialog>
+        <Dialog onOpenChange={(open) => !open && setConfirmInput("")}>
           <DialogTrigger asChild>
             <Button variant="outline-destructive">Delete Account</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogTitle>Permanently delete your account</DialogTitle>
             <DialogHeader>
-              <div className="text-destructive">
-                Warning: this action cannot be undone.
-              </div>
+              <div>Warning: this action cannot be undone.</div>
               <ul className="list-inside list-disc">
                 <li>
                   You will no longer have access to any datasets donated by you
@@ -69,7 +70,7 @@ export function ProfileSettingsDelete() {
               <div>
                 For account related questions{" "}
                 <Link href={CONTACT_ROUTE} className="underline">
-                  Contact us
+                  contact us
                 </Link>
               </div>
               <div className="space-y-1">
@@ -85,13 +86,17 @@ export function ProfileSettingsDelete() {
             </div>
 
             <DialogFooter className="items-center !justify-between gap-4">
-              <Button variant="secondary">Cancel</Button>
+              <DialogClose asChild>
+                <Button variant="secondary" disabled={isDeleting}>
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button
                 variant="destructive"
-                disabled={confirmInput !== session.user.email || deleting}
+                disabled={confirmed || isDeleting}
                 onClick={deleteAccount}
               >
-                {deleting && <Spinner />} Delete account
+                {isDeleting && <Spinner />} Delete account
               </Button>
             </DialogFooter>
           </DialogContent>

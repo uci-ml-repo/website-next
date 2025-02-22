@@ -1,6 +1,8 @@
 import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
+import { userColumns, userSelect } from "@/db/lib/types";
+import { accountSelect } from "@/db/lib/types/account";
 import { account, datasetView, user } from "@/db/schema";
 import type { UserQuery, UserSearchQuery } from "@/server/schema/user";
 import { ServiceError } from "@/server/service/errors";
@@ -57,12 +59,15 @@ function buildQuery(query: UserQuery) {
 
 export class UserFindService {
   async byId(id: string) {
-    return (await db.select().from(user).where(eq(user.id, id)))[0];
+    return db.query.user.findFirst({
+      where: eq(user.id, id),
+      columns: userColumns,
+    });
   }
 
   async batch(ids: string[]) {
     const users = await db
-      .select()
+      .select(userSelect)
       .from(user)
       .where(and(inArray(user.id, ids)));
 
@@ -81,7 +86,10 @@ export class UserFindService {
   }
 
   async accounts(userId: string) {
-    return db.select().from(account).where(eq(account.userId, userId));
+    return db
+      .select(accountSelect)
+      .from(account)
+      .where(eq(account.userId, userId));
   }
 
   async byQuery(query: UserQuery) {
@@ -121,7 +129,7 @@ export class UserFindService {
 
   private async byRawQuery(query: UserQuery) {
     return db
-      .select()
+      .select(userSelect)
       .from(user)
       .where(buildQuery(query))
       .limit(query.limit ?? 10)

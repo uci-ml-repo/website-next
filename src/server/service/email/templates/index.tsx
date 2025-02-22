@@ -2,16 +2,30 @@ import { render } from "@react-email/render";
 import path from "path";
 
 import { RESET_PASSWORD_ROUTE, VERIFY_EMAIL_ROUTE } from "@/lib/routes";
-import { Registration } from "@/server/service/email/templates/registration/Registration";
-import { registration } from "@/server/service/email/templates/registration/registration";
-import { resetPassword } from "@/server/service/email/templates/reset-password/reset-password";
-import { resetPasswordProviders } from "@/server/service/email/templates/reset-password/reset-password-providers";
-import { resetPasswordSuccess } from "@/server/service/email/templates/reset-password/reset-password-success";
-import { ResetPassword } from "@/server/service/email/templates/reset-password/ResetPassword";
-import { ResetPasswordProviders } from "@/server/service/email/templates/reset-password/ResetPasswordProviders";
-import { ResetPasswordSuccess } from "@/server/service/email/templates/reset-password/ResetPasswordSuccess";
-import { verificationEmail } from "@/server/service/email/templates/verification-email/verification-email";
-import { VerificationEmail } from "@/server/service/email/templates/verification-email/VerificationEmail";
+import {
+  AccountDeletion,
+  accountDeletion,
+} from "@/server/service/email/templates/account-deletion/AccountDeletion";
+import {
+  Registration,
+  registration,
+} from "@/server/service/email/templates/registration/Registration";
+import {
+  ResetPassword,
+  resetPassword,
+} from "@/server/service/email/templates/reset-password/ResetPassword";
+import {
+  ResetPasswordProviders,
+  resetPasswordProviders,
+} from "@/server/service/email/templates/reset-password/ResetPasswordProviders";
+import {
+  ResetPasswordSuccess,
+  resetPasswordSuccess,
+} from "@/server/service/email/templates/reset-password/ResetPasswordSuccess";
+import {
+  VerificationEmail,
+  verificationEmail,
+} from "@/server/service/email/templates/verification-email/VerificationEmail";
 
 export class EmailTemplateService {
   async registration(name: string) {
@@ -63,6 +77,7 @@ export class EmailTemplateService {
       VERIFY_EMAIL_ROUTE,
       token,
     );
+
     return {
       html: await render(
         <VerificationEmail name={name} verificationLink={verificationLink} />,
@@ -75,6 +90,13 @@ export class EmailTemplateService {
     return {
       html: await render(<ResetPasswordSuccess name={name} />),
       text: resetPasswordSuccess({ name }),
+    };
+  }
+
+  async accountDeletion({ name }: { name: string }) {
+    return {
+      html: await render(<AccountDeletion name={name} />),
+      text: accountDeletion({ name }),
     };
   }
 }

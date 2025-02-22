@@ -1,5 +1,3 @@
-import process from "node:process";
-
 import path from "path";
 
 import { SIGN_IN_ROUTE } from "@/lib/routes";
@@ -31,12 +29,20 @@ export function ResetPasswordSuccess({ name }: { name: string }) {
         If you did not perform this action, contact{" "}
         <a
           className="text-blue-500 hover:underline"
-          href={`mailto:${process.env.GOOGLE_EMAIL}`}
+          href="mailto:ml-repository@ics.uci.edu"
         >
-          {process.env.GOOGLE_EMAIL}
+          ml-repository@ics.uci.edu
         </a>
         .
       </p>
     </EmailLayout>
   );
+}
+
+export function resetPasswordSuccess({ name }: { name: string }) {
+  return `Hello ${name},
+
+You have successfully reset your password. You can now log in using your new password.
+
+If you did not perform this action, contact ml-repository@ics.uci.edu.`;
 }

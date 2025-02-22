@@ -102,4 +102,22 @@ export class EmailSendService extends EmailService {
       text,
     });
   }
+
+  async sendAccountDeletionEmail({
+    email,
+    name,
+  }: {
+    email: string;
+    name: string;
+  }) {
+    const { html, text } = await this.template.accountDeletion({ name });
+
+    await this.sendEmail({
+      from: process.env.GOOGLE_EMAIL,
+      to: email,
+      subject: "Account Deletion - UCI Machine Learning Repository",
+      html,
+      text,
+    });
+  }
 }
