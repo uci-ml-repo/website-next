@@ -1,7 +1,8 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, getTableColumns, inArray, sql } from "drizzle-orm";
 import type { Session } from "next-auth";
 
 import { db } from "@/db";
+import { datasetPreviewSelect } from "@/db/lib/types";
 import { bookmark, dataset, datasetView } from "@/db/schema";
 import type { BookmarkQuery } from "@/server/schema/bookmark";
 
@@ -15,7 +16,10 @@ const DATASET_WEIGHTS = sql`
 export class BookmarkFindService {
   async batch(ids: string[]) {
     return db
-      .select()
+      .select({
+        bookmark: getTableColumns(bookmark),
+        dataset: datasetPreviewSelect,
+      })
       .from(bookmark)
       .where(inArray(bookmark.id, ids))
       .innerJoin(datasetView, eq(bookmark.datasetId, datasetView.id))
@@ -23,18 +27,13 @@ export class BookmarkFindService {
   }
 
   async byUserQuery(query: BookmarkQuery, user: Session["user"]) {
-    if (query.search) {
-      return this.byUserSearchQuery(query, user);
-    }
+    let bookmarks;
 
-    const bookmarks = await db
-      .select()
-      .from(bookmark)
-      .where(eq(bookmark.userId, user.id))
-      .innerJoin(datasetView, eq(bookmark.datasetId, datasetView.id))
-      .orderBy(desc(bookmark.createdAt))
-      .offset(query.cursor ?? 0)
-      .limit(query.limit ? query.limit + 1 : 11);
+    if (query.search) {
+      bookmarks = await this.byUserSearchQuery(query, user);
+    } else {
+      bookmarks = await this.byUserRawQuery(query, user);
+    }
 
     let nextCursor: number | undefined = undefined;
     if (query.limit && bookmarks.length > query.limit) {
@@ -43,6 +42,20 @@ export class BookmarkFindService {
     }
 
     return { bookmarks, nextCursor };
+  }
+
+  private async byUserRawQuery(query: BookmarkQuery, user: Session["user"]) {
+    return db
+      .select({
+        bookmark: getTableColumns(bookmark),
+        dataset: datasetPreviewSelect,
+      })
+      .from(bookmark)
+      .where(eq(bookmark.userId, user.id))
+      .innerJoin(datasetView, eq(bookmark.datasetId, datasetView.id))
+      .orderBy(desc(bookmark.createdAt))
+      .offset(query.cursor ?? 0)
+      .limit(query.limit ? query.limit + 1 : 11);
   }
 
   private async byUserSearchQuery(query: BookmarkQuery, user: Session["user"]) {
@@ -100,15 +113,7 @@ export class BookmarkFindService {
       .limit(query.limit ? query.limit + 1 : 10)
       .orderBy((t) => [desc(t.rank), desc(t.similarity), desc(t.createdAt)]);
 
-    const bookmarks = await this.batch(bookmarkIds.map(({ id }) => id));
-
-    let nextCursor: number | undefined = undefined;
-    if (query.limit && bookmarks.length > query.limit) {
-      bookmarks.pop();
-      nextCursor = (query.cursor ?? 0) + query.limit;
-    }
-
-    return { bookmarks, nextCursor };
+    return this.batch(bookmarkIds.map(({ id }) => id));
   }
 
   async isBookmarked({

@@ -1,12 +1,10 @@
-import type { PgColumn } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 import type { z } from "zod";
 
+import { selectColumns } from "@/db/lib/utils";
 import { user } from "@/db/schema";
 
-export const userSelect: Partial<
-  Record<keyof typeof user.$inferSelect, PgColumn>
-> = {
+export const userSelect = {
   id: user.id,
   name: user.name,
   email: user.email,
@@ -16,18 +14,8 @@ export const userSelect: Partial<
   role: user.role,
 };
 
-export const userSelectColumns: Record<keyof UserSelect, true> = {
-  id: true,
-  name: true,
-  email: true,
-  emailVerified: true,
-  image: true,
-  createdAt: true,
-  role: true,
-};
+export const userColumns = selectColumns(userSelect);
 
-export const userSelectSchema = createSelectSchema(user).omit({
-  password: true,
-});
+export const userSchema = createSelectSchema(user).pick(userColumns);
 
-export type UserSelect = z.infer<typeof userSelectSchema>;
+export type UserSelect = z.infer<typeof userSchema>;
