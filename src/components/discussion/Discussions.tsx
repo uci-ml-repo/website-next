@@ -46,7 +46,11 @@ export function Discussions({
             : { createdAt: "desc" },
         limit: 15,
       },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        staleTime: 0,
+        refetchOnMount: true,
+      },
     );
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
