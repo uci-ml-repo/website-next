@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronUpIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ interface DiscussionUpvoteProps {
 
 export function DiscussionUpvote({ discussion }: DiscussionUpvoteProps) {
   const [isUpvoted, setIsUpvoted] = useState<boolean>(discussion.upvoted);
+
   const [upvoteCount, setUpvoteCount] = useState<number>(
     discussion.upvoteCount,
   );
@@ -51,6 +52,11 @@ export function DiscussionUpvote({ discussion }: DiscussionUpvoteProps) {
     }
   }
 
+  useEffect(() => {
+    setIsUpvoted(discussion.upvoted);
+    setUpvoteCount(discussion.upvoteCount);
+  }, [discussion.upvoted, discussion.upvoteCount]);
+
   return (
     <SignInRequired
       title="Sign in to upvote discussions"
@@ -62,6 +68,7 @@ export function DiscussionUpvote({ discussion }: DiscussionUpvoteProps) {
         size="sm"
         disabled={isPending}
         aria-label={isUpvoted ? "Remove upvote" : "Upvote discussion"}
+        className="shadow-none"
       >
         {isPending ? <Spinner /> : <ChevronUpIcon />}
         <span>{upvoteCount.toLocaleString()}</span>

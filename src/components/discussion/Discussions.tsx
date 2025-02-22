@@ -107,7 +107,7 @@ export function Discussions({
             <React.Fragment key={discussion.id}>
               <DiscussionPreview
                 discussion={discussion}
-                showOnDataset={!!userId}
+                showDatasetTitle={!!userId}
               />
               <hr />
             </React.Fragment>

@@ -8,10 +8,10 @@ import { timeSince } from "@/lib/utils";
 
 export function DiscussionPreview({
   discussion,
-  showOnDataset,
+  showDatasetTitle,
 }: {
   discussion: DiscussionResponse;
-  showOnDataset?: boolean;
+  showDatasetTitle?: boolean;
 }) {
   return (
     <div className="group flex justify-between space-x-2 hover:bg-accent">
@@ -35,7 +35,7 @@ export function DiscussionPreview({
               {discussion.updatedAt && (
                 <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
               )}
-              {showOnDataset && (
+              {showDatasetTitle && (
                 <span>&middot; {discussion.dataset.title}</span>
               )}
             </span>

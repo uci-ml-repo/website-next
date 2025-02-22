@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
 import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
+import { DatasetMetadataDonor } from "@/components/dataset/tabs/about/metadata/DatasetMetadataDonor";
 import { DatasetMetadataIntroductoryPaper } from "@/components/dataset/tabs/about/metadata/DatasetMetadataIntroductoryPaper";
 import { Button } from "@/components/ui/button";
 import type { DatasetResponse } from "@/lib/types";
@@ -25,6 +26,10 @@ export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
       {
         title: "Authors",
         children: <DatasetMetadataAuthors authors={dataset.authors} />,
+      },
+      {
+        title: "Donor",
+        children: <DatasetMetadataDonor donor={dataset.user} />,
       },
     ];
 

@@ -31,7 +31,9 @@ export function DiscussionsOrderBy({
 
   return (
     <div className={cn("flex items-center space-x-2", className)}>
-      <div className="text-nowrap text-sm text-muted-foreground">Sort by:</div>
+      <div className="text-nowrap text-sm text-muted-foreground max-xxs:hidden">
+        Sort by:
+      </div>
       <Select value={orderBy} onValueChange={handleChange}>
         <SelectTrigger className="h-10 w-40">
           <SelectValue />

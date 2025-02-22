@@ -165,6 +165,7 @@ export class DatasetFindService {
       .select()
       .from(datasetView)
       .where(and(eq(datasetView.id, id)));
+
     return dataset;
   }
 

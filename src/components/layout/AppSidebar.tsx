@@ -82,7 +82,14 @@ export function AppSidebar({ session }: { session: Session | null }) {
 
   const bookmarksQuery = trpc.bookmark.find.byUserQuery.useQuery(
     {},
-    { enabled: !!session?.user },
+    {
+      enabled: !!session?.user,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
   );
 
   return (

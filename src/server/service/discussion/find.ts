@@ -3,11 +3,11 @@ import { and, asc, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import type {
-  DatasetSelect,
   DiscussionSelect,
   DiscussionUpvoteSelect,
   UserSelect,
 } from "@/db/lib/types";
+import { userSelect, userSelectColumns } from "@/db/lib/types";
 import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
 import type { DiscussionQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
@@ -28,7 +28,11 @@ function buildQuery(query: DiscussionQuery) {
 
 type RawDiscussion = DiscussionSelect & {
   user: UserSelect;
-  dataset: DatasetSelect;
+  dataset: {
+    id: number;
+    slug: string;
+    title: string;
+  };
   upvotes: DiscussionUpvoteSelect[] | DiscussionUpvoteSelect | null;
 };
 
@@ -45,8 +49,16 @@ export class DiscussionFindService {
       .findFirst({
         where: (discussion, { eq }) => eq(discussion.id, id),
         with: {
-          user: true,
-          dataset: true,
+          user: {
+            columns: userSelectColumns,
+          },
+          dataset: {
+            columns: {
+              id: true,
+              slug: true,
+              title: true,
+            },
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
@@ -62,8 +74,16 @@ export class DiscussionFindService {
       .findMany({
         where: (discussion, { inArray }) => inArray(discussion.id, ids),
         with: {
-          user: true,
-          dataset: true,
+          user: {
+            columns: userSelectColumns,
+          },
+          dataset: {
+            columns: {
+              id: true,
+              slug: true,
+              title: true,
+            },
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
@@ -85,8 +105,16 @@ export class DiscussionFindService {
       .findMany({
         where: (discussion, { eq }) => eq(discussion.userId, userId),
         with: {
-          user: true,
-          dataset: true,
+          user: {
+            columns: userSelectColumns,
+          },
+          dataset: {
+            columns: {
+              id: true,
+              slug: true,
+              title: true,
+            },
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
@@ -145,8 +173,16 @@ export class DiscussionFindService {
         where: buildQuery(query),
         orderBy: orderBy,
         with: {
-          user: true,
-          dataset: true,
+          user: {
+            columns: userSelectColumns,
+          },
+          dataset: {
+            columns: {
+              id: true,
+              slug: true,
+              title: true,
+            },
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
@@ -173,8 +209,12 @@ export class DiscussionFindService {
     return db
       .select({
         ...getTableColumns(discussion),
-        user: getTableColumns(user),
-        dataset: getTableColumns(dataset),
+        user: userSelect,
+        dataset: {
+          id: dataset.id,
+          slug: dataset.slug,
+          title: dataset.title,
+        },
         upvotes: getTableColumns(discussionUpvote),
         similarity: trigramSimilarity.mapWith(Number),
       })
