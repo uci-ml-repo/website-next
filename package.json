@@ -27,14 +27,14 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:reset": "docker compose down && docker compose up -d --build",
-    "db:seed": "tsx ./src/db/seed/index.ts",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev --turbopack",
     "email:dev": "dotenv -e .env -- email dev --dir ./src/server/service/email/templates",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint --fix",
+    "lint": "eslint --fix --no-warn-ignored",
     "prepare": "husky",
     "start": "dotenv -e .env -- next start"
   },

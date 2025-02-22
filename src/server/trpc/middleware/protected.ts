@@ -88,7 +88,7 @@ export const protectedProcedure = t.procedure
       }
 
       await AssertOwner.discussionComment({
-        commentId: input.commentId,
+        discussionCommentId: input.commentId,
         userId: ctx.session.user.id,
       });
 

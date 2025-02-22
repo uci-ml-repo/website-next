@@ -21,8 +21,6 @@ export const discussionReportRouter = router({
     .input(
       z.object({
         reportId: z.string(),
-        userId: z.string(),
-        type: z.enum(enumToArray(Enums.ReportResolutionType)),
       }),
     )
     .mutation(({ input }) => service.discussion.report.resolve(input)),

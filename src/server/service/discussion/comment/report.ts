@@ -1,43 +1,34 @@
 import { db } from "@/db";
-import type { ReportResolutionType } from "@/db/lib/enums";
 import { Enums } from "@/db/lib/enums";
 import DiscussionReportReason = Enums.DiscussionReportReason;
-import { commentReport, commentReportResolution } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
+import { discussionCommentReport } from "@/db/schema";
 
 export class DiscussionCommentReportService {
   async create({
-    commentId,
+    discussionCommentId,
     reason,
     details,
     userId,
   }: {
-    commentId: string;
+    discussionCommentId: string;
     reason: DiscussionReportReason;
     details?: string;
     userId?: string;
   }) {
-    return db.insert(commentReport).values({
-      commentId,
+    return db.insert(discussionCommentReport).values({
+      discussionCommentId,
       reason,
       details,
       userId,
     });
   }
 
-  async resolve({
-    reportId,
-    userId,
-    type,
-  }: {
-    reportId: string;
-    userId: string;
-    type: ReportResolutionType;
-    comment: string;
-  }) {
-    return db.insert(commentReportResolution).values({
-      reportId,
-      userId,
-      type,
-    });
+  async resolve({ reportId }: { reportId: string }) {
+    return db
+      .delete(discussionCommentReport)
+      .where(eq(discussionCommentReport.id, reportId))
+      .returning();
   }
 }

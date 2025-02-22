@@ -1,8 +1,9 @@
-import type { ReportResolutionType } from "@/db/lib/enums";
 import { Enums } from "@/db/lib/enums";
 import DatasetReportReason = Enums.DatasetReportReason;
+import { eq } from "drizzle-orm";
+
 import { db } from "@/db";
-import { datasetReport, datasetReportResolution } from "@/db/schema";
+import { datasetReport } from "@/db/schema";
 
 export class DatasetReportService {
   async create({
@@ -24,22 +25,10 @@ export class DatasetReportService {
     });
   }
 
-  async resolve({
-    reportId,
-    userId,
-    type,
-    comment,
-  }: {
-    reportId: string;
-    userId: string;
-    type: ReportResolutionType;
-    comment: string;
-  }) {
-    return db.insert(datasetReportResolution).values({
-      reportId,
-      userId,
-      type,
-      comment,
-    });
+  async resolve({ reportId }: { reportId: string }) {
+    return db
+      .delete(datasetReport)
+      .where(eq(datasetReport.id, reportId))
+      .returning();
   }
 }

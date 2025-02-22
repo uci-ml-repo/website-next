@@ -24,6 +24,7 @@ import type {
   UserSelect,
   VariableSelect,
 } from "@/db/lib/types";
+import { baseUUID } from "@/db/lib/utils/uuid";
 import { enumToArray } from "@/lib/utils";
 
 /**
@@ -71,11 +72,6 @@ export const discussionReportReason = pgEnum(
   enumToArray(Enums.DiscussionReportReason),
 );
 
-export const reportResolutionType = pgEnum(
-  "dataset_report_resolution_type",
-  enumToArray(Enums.ReportResolutionType),
-);
-
 /**
  * Dataset tables
  */
@@ -113,7 +109,8 @@ export const dataset = pgTable(
     fileCount: integer("file_count"),
 
     userId: uuid("user_id")
-      .references(() => user.id)
+      .references(() => user.id, { onDelete: "set default" })
+      .default(baseUUID)
       .notNull(),
 
     donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
@@ -175,7 +172,7 @@ export const datasetReport = pgTable("dataset_report", {
     .references(() => dataset.id),
   reason: datasetReportReason("reason").notNull(),
   details: text("details").notNull(),
-  userId: uuid("user_id"),
+  userId: uuid("user_id").references(() => user.id),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -188,35 +185,7 @@ export const datasetReportRelations = relations(datasetReport, ({ one }) => ({
     fields: [datasetReport.userId],
     references: [user.id],
   }),
-  resolution: one(datasetReportResolution),
 }));
-
-export const datasetReportResolution = pgTable("dataset_report_resolution", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  reportId: uuid("report_id")
-    .notNull()
-    .references(() => datasetReport.id),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => user.id),
-  type: reportResolutionType("type").notNull(),
-  comment: text("comment").notNull(),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-});
-
-export const datasetReportResolutionRelations = relations(
-  datasetReportResolution,
-  ({ one }) => ({
-    report: one(datasetReport, {
-      fields: [datasetReportResolution.reportId],
-      references: [datasetReport.id],
-    }),
-    user: one(user, {
-      fields: [datasetReportResolution.userId],
-      references: [user.id],
-    }),
-  }),
-);
 
 /**
  * Author tables
@@ -399,20 +368,20 @@ export const discussionRelations = relations(discussion, ({ one, many }) => ({
     fields: [discussion.userId],
     references: [user.id],
   }),
-  comments: many(comment),
+  comments: many(discussionComment),
   dataset: one(dataset, {
     fields: [discussion.datasetId],
     references: [dataset.id],
   }),
 }));
 
-export const comment = pgTable("comment", {
+export const discussionComment = pgTable("discussion_comment", {
   id: uuid("id").primaryKey().defaultRandom(),
   content: text("content").notNull(),
 
   userId: uuid("user_id")
     .notNull()
-    .references(() => user.id),
+    .references(() => user.id, { onDelete: "cascade" }),
   discussionId: uuid("discussion_id")
     .notNull()
     .references(() => discussion.id, { onDelete: "cascade" }),
@@ -423,24 +392,27 @@ export const comment = pgTable("comment", {
   updatedAt: timestamp("updated_at", { mode: "date" }),
 });
 
-export const commentRelations = relations(comment, ({ one, many }) => ({
-  upvotes: many(commentUpvote),
-  user: one(user, {
-    fields: [comment.userId],
-    references: [user.id],
+export const discussionCommentRelations = relations(
+  discussionComment,
+  ({ one, many }) => ({
+    upvotes: many(discussionCommentUpvote),
+    user: one(user, {
+      fields: [discussionComment.userId],
+      references: [user.id],
+    }),
+    discussion: one(discussion, {
+      fields: [discussionComment.discussionId],
+      references: [discussion.id],
+    }),
   }),
-  discussion: one(discussion, {
-    fields: [comment.discussionId],
-    references: [discussion.id],
-  }),
-}));
+);
 
 export const discussionUpvote = pgTable(
   "discussion_upvote",
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, { onDelete: "cascade" }),
     discussionId: uuid("discussion_id")
       .notNull()
       .references(() => discussion.id, { onDelete: "cascade" }),
@@ -463,30 +435,33 @@ export const discussionUpvoteRelations = relations(
   }),
 );
 
-export const commentUpvote = pgTable(
-  "comment_upvote",
+export const discussionCommentUpvote = pgTable(
+  "discussion_comment_upvote",
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => user.id),
-    commentId: uuid("comment_id")
+      .references(() => user.id, { onDelete: "cascade" }),
+    discussionCommentId: uuid("comment_id")
       .notNull()
-      .references(() => comment.id, { onDelete: "cascade" }),
+      .references(() => discussionComment.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
-  (t) => [primaryKey({ columns: [t.userId, t.commentId] })],
+  (t) => [primaryKey({ columns: [t.userId, t.discussionCommentId] })],
 );
 
-export const commentUpvoteRelations = relations(commentUpvote, ({ one }) => ({
-  user: one(user, {
-    fields: [commentUpvote.userId],
-    references: [user.id],
+export const discussionCommentUpvoteRelations = relations(
+  discussionCommentUpvote,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [discussionCommentUpvote.userId],
+      references: [user.id],
+    }),
+    comment: one(discussionComment, {
+      fields: [discussionCommentUpvote.discussionCommentId],
+      references: [discussionComment.id],
+    }),
   }),
-  comment: one(comment, {
-    fields: [commentUpvote.commentId],
-    references: [comment.id],
-  }),
-}));
+);
 
 export const discussionReport = pgTable("discussion_report", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -495,7 +470,7 @@ export const discussionReport = pgTable("discussion_report", {
     .references(() => discussion.id, { onDelete: "cascade" }),
   reason: discussionReportReason("reason").notNull(),
   details: text("details"),
-  userId: uuid("user_id"),
+  userId: uuid("user_id").references(() => user.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -510,83 +485,29 @@ export const discussionReportRelations = relations(
       fields: [discussionReport.userId],
       references: [user.id],
     }),
-    resolution: one(discussionReportResolution),
   }),
 );
 
-export const discussionReportResolution = pgTable(
-  "discussion_report_resolution",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    reportId: uuid("report_id")
-      .notNull()
-      .references(() => discussionReport.id),
-    userId: uuid("user_id")
-      .notNull()
-      .references(() => user.id),
-    type: reportResolutionType("type").notNull(),
-    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-  },
-);
-
-export const discussionReportResolutionRelations = relations(
-  discussionReportResolution,
-  ({ one }) => ({
-    report: one(discussionReport, {
-      fields: [discussionReportResolution.reportId],
-      references: [discussionReport.id],
-    }),
-    user: one(user, {
-      fields: [discussionReportResolution.userId],
-      references: [user.id],
-    }),
-  }),
-);
-
-export const commentReport = pgTable("comment_report", {
+export const discussionCommentReport = pgTable("discussion_comment_report", {
   id: uuid("id").primaryKey().defaultRandom(),
-  commentId: uuid("comment_id")
+  discussionCommentId: uuid("comment_id")
     .notNull()
     .references(() => discussion.id, { onDelete: "cascade" }),
   reason: discussionReportReason("reason").notNull(),
   details: text("details"),
-  userId: uuid("user_id"),
+  userId: uuid("user_id").references(() => user.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const commentReportRelations = relations(commentReport, ({ one }) => ({
-  comment: one(comment, {
-    fields: [commentReport.commentId],
-    references: [comment.id],
-  }),
-  user: one(user, {
-    fields: [commentReport.userId],
-    references: [user.id],
-  }),
-  resolution: one(commentReportResolution),
-}));
-
-export const commentReportResolution = pgTable("comment_report_resolution", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  reportId: uuid("report_id")
-    .notNull()
-    .references(() => commentReport.id),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => user.id),
-  type: reportResolutionType("type").notNull(),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-});
-
-export const commentReportResolutionRelations = relations(
-  commentReportResolution,
+export const commentReportRelations = relations(
+  discussionCommentReport,
   ({ one }) => ({
-    report: one(commentReport, {
-      fields: [commentReportResolution.reportId],
-      references: [commentReport.id],
+    comment: one(discussionComment, {
+      fields: [discussionCommentReport.discussionCommentId],
+      references: [discussionComment.id],
     }),
     user: one(user, {
-      fields: [commentReportResolution.userId],
+      fields: [discussionCommentReport.userId],
       references: [user.id],
     }),
   }),
@@ -701,7 +622,7 @@ export const emailVerificationTokenRelations = relations(
 export const passwordResetToken = pgTable("password_reset_token", {
   token: text("token").notNull().primaryKey(),
   userId: uuid("user_id")
-    .references(() => user.id)
+    .references(() => user.id, { onDelete: "cascade" })
     .notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });

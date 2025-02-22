@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { comment } from "@/db/schema";
+import { discussionComment } from "@/db/schema";
 
 export class DiscussionCommentCreateService {
   async fromData({
@@ -11,7 +11,7 @@ export class DiscussionCommentCreateService {
     userId: string;
     discussionId: string;
   }) {
-    return db.insert(comment).values({
+    return db.insert(discussionComment).values({
       content,
       userId,
       discussionId,

@@ -2,14 +2,20 @@ import { TRPCError } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { comment, commentUpvote } from "@/db/schema";
+import { discussionComment, discussionCommentUpvote } from "@/db/schema";
 
 export class DiscussionCommentUpvoteService {
-  async create({ commentId, userId }: { commentId: string; userId: string }) {
+  async create({
+    discussionCommentId,
+    userId,
+  }: {
+    discussionCommentId: string;
+    userId: string;
+  }) {
     return await db.transaction(async (tx) => {
       try {
-        await tx.insert(commentUpvote).values({
-          commentId,
+        await tx.insert(discussionCommentUpvote).values({
+          discussionCommentId,
           userId,
         });
       } catch {
@@ -19,22 +25,31 @@ export class DiscussionCommentUpvoteService {
       }
 
       await tx
-        .update(comment)
+        .update(discussionComment)
         .set({
-          upvoteCount: sql`${comment.upvoteCount} + 1`,
+          upvoteCount: sql`${discussionComment.upvoteCount} + 1`,
         })
-        .where(eq(comment.id, commentId));
+        .where(eq(discussionComment.id, discussionCommentId));
     });
   }
 
-  async remove({ commentId, userId }: { commentId: string; userId: string }) {
+  async remove({
+    discussionCommentId,
+    userId,
+  }: {
+    discussionCommentId: string;
+    userId: string;
+  }) {
     return await db.transaction(async (tx) => {
       const [upvote] = await tx
-        .delete(commentUpvote)
+        .delete(discussionCommentUpvote)
         .where(
           and(
-            eq(commentUpvote.userId, userId),
-            eq(commentUpvote.commentId, commentId),
+            eq(discussionCommentUpvote.userId, userId),
+            eq(
+              discussionCommentUpvote.discussionCommentId,
+              discussionCommentId,
+            ),
           ),
         )
         .returning();
@@ -46,11 +61,11 @@ export class DiscussionCommentUpvoteService {
       }
 
       await tx
-        .update(comment)
+        .update(discussionComment)
         .set({
-          upvoteCount: sql`${comment.upvoteCount} - 1`,
+          upvoteCount: sql`${discussionComment.upvoteCount} - 1`,
         })
-        .where(eq(comment.id, commentId));
+        .where(eq(discussionComment.id, discussionCommentId));
     });
   }
 }

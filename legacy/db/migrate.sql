@@ -8,8 +8,6 @@ CREATE EXTENSION if NOT EXISTS pg_trgm;
 ALTER TYPE users_role
 RENAME TO user_role;
 
-CREATE TYPE dataset_report_resolution_type AS ENUM('ignored', 'resolved');
-
 CREATE TYPE dataset_report_reason AS ENUM(
   'missing_files_or_data',
   'inaccurate_metadata',
@@ -178,6 +176,33 @@ SET DEFAULT gen_random_uuid ();
 UPDATE "user"
 SET
   id = gen_random_uuid ();
+
+UPDATE "user"
+SET
+  id = '00000000-0000-0000-0000-000000000000'
+WHERE
+  email = 'ucirepository@gmail.com';
+
+-- noinspection SqlResolve
+UPDATE donated_datasets
+SET
+  userid = (
+    SELECT
+      id
+    FROM
+      "user"
+    WHERE
+      email = 'ucirepository@gmail.com'
+  )
+WHERE
+  userid = (
+    SELECT
+      id
+    FROM
+      "user"
+    WHERE
+      email = 'dwjiang@uci.edu'
+  );
 
 ALTER TABLE donated_datasets
 DROP CONSTRAINT donated_datasets_ibfk_1;
@@ -953,15 +978,6 @@ CREATE TABLE "dataset_report" (
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-CREATE TABLE "dataset_report_resolution" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "report_id" uuid NOT NULL,
-  "user_id" uuid NOT NULL,
-  "type" "dataset_report_resolution_type" NOT NULL,
-  "comment" TEXT NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
 CREATE TABLE "discussion" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "title" TEXT NOT NULL,
@@ -973,7 +989,7 @@ CREATE TABLE "discussion" (
   "updated_at" TIMESTAMP
 );
 
-CREATE TABLE "comment" (
+CREATE TABLE "discussion_comment" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
   "content" TEXT NOT NULL,
   "user_id" uuid NOT NULL,
@@ -983,28 +999,20 @@ CREATE TABLE "comment" (
   "updated_at" TIMESTAMP
 );
 
-CREATE TABLE "comment_report" (
+CREATE TABLE "discussion_comment_report" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "comment_id" uuid NOT NULL,
+  "discussion_comment_id" uuid NOT NULL,
   "reason" "discussion_report_reason" NOT NULL,
   "details" TEXT,
   "user_id" uuid,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-CREATE TABLE "comment_report_resolution" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "report_id" uuid NOT NULL,
+CREATE TABLE "discussion_comment_upvote" (
   "user_id" uuid NOT NULL,
-  "type" "dataset_report_resolution_type" NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
-CREATE TABLE "comment_upvote" (
-  "user_id" uuid NOT NULL,
-  "comment_id" uuid NOT NULL,
+  "discussion_comment_id" uuid NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
+  CONSTRAINT "discussion_comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "discussion_comment_id")
 );
 
 CREATE TABLE "discussion_report" (
@@ -1013,14 +1021,6 @@ CREATE TABLE "discussion_report" (
   "reason" "discussion_report_reason" NOT NULL,
   "details" TEXT,
   "user_id" uuid,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
-CREATE TABLE "discussion_report_resolution" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "report_id" uuid NOT NULL,
-  "user_id" uuid NOT NULL,
-  "type" "dataset_report_resolution_type" NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
@@ -1089,62 +1089,6 @@ ALTER TABLE "dataset_report"
 ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
 
 -- noinspection SqlResolve
-ALTER TABLE "dataset_report_resolution"
-ADD CONSTRAINT "dataset_report_resolution_report_id_dataset_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."dataset_report" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "dataset_report_resolution"
-ADD CONSTRAINT "dataset_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment"
-ADD CONSTRAINT "comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment"
-ADD CONSTRAINT "comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment_report"
-ADD CONSTRAINT "comment_report_comment_id_discussion_id_f" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment_report_resolution"
-ADD CONSTRAINT "comment_report_resolution_report_id_discussion_comme" FOREIGN KEY ("report_id") REFERENCES "public"."comment_report" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment_report_resolution"
-ADD CONSTRAINT "comment_report_resolution_report_id_comment_report_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment_upvote"
-ADD CONSTRAINT "comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "comment_upvote"
-ADD CONSTRAINT "comment_upvote_comment_id_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."comment" ("id") ON DELETE cascade ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "discussion_report"
-ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "discussion_report_resolution"
-ADD CONSTRAINT "discussion_report_resolution_report_id_discussion_report_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."discussion_report" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
-ALTER TABLE "discussion_report_resolution"
-ADD CONSTRAINT "discussion_report_resolution_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
--- noinspection SqlResolve
 ALTER TABLE "discussion_upvote"
 ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
@@ -1192,3 +1136,29 @@ DROP TYPE dataset_papers_type CASCADE;
 DROP TYPE edits_status CASCADE;
 
 DROP TYPE requests_status CASCADE;
+
+--
+-- --> statement-breakpoint
+-- CREATE INDEX dataset_view_text_search_index ON dataset_view USING gin (
+--   SETWEIGHT(
+--     TO_TSVECTOR('simple'::regconfig, title),
+--     'A'::"char"
+--   )
+-- );
+-- CREATE INDEX dataset_view_id_index ON dataset_view (id);
+--
+-- CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
+--
+-- CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
+--
+-- CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
+--
+-- CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
+--
+-- CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
+--
+-- CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
+--
+-- CREATE INDEX dataset_view_variable_names_index ON dataset_view USING gin (variable_names);
+--
+-- CREATE INDEX dataset_view_status_index ON dataset_view (status);

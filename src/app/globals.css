@@ -31,7 +31,7 @@ body {
     --uci-gold: 48 99% 51%;
     --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 88%;
-    --input: 0 0% 90%;
+    --input: 0 0% 86%;
     --input-background: 0 0% 100%;
     --ring: 0 0% 4%;
     --chart-1: 2 76% 61%;
@@ -75,7 +75,7 @@ body {
     --uci-gold: 48 99% 51%;
     --uci-gold-foreground: 0 0% 9%;
     --border: 0 0% 22%;
-    --input: 0 0% 22%;
+    --input: 0 0% 30%;
     --input-background: 0 0% 5%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
@@ -112,7 +112,7 @@ body {
 
 .lift {
   @apply ease-out hover:scale-[1.01] hover:shadow-md;
-  transition: transform 250ms;
+  transition: all 250ms;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

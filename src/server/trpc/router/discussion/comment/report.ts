@@ -9,7 +9,7 @@ export const discussionCommentReportRouter = router({
   create: procedure
     .input(
       z.object({
-        commentId: z.string(),
+        discussionCommentId: z.string(),
         reason: z.enum(enumToArray(Enums.DiscussionReportReason)),
         details: z.string().optional(),
         userId: z.string().optional(),
@@ -21,9 +21,6 @@ export const discussionCommentReportRouter = router({
     .input(
       z.object({
         reportId: z.string(),
-        userId: z.string(),
-        type: z.enum(enumToArray(Enums.ReportResolutionType)),
-        comment: z.string(),
       }),
     )
     .mutation(async ({ input }) =>

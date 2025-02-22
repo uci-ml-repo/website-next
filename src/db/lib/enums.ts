@@ -73,11 +73,6 @@ export namespace Enums {
     INAPPROPRIATE = "inappropriate",
     OTHER = "other",
   }
-
-  export enum ReportResolutionType {
-    IGNORED = "ignored",
-    RESOLVED = "resolved",
-  }
 }
 
 export type UserRole = (typeof Enums.UserRole)[keyof typeof Enums.UserRole];
@@ -105,6 +100,3 @@ export type DatasetReportReason =
 
 export type DiscussionReportReason =
   (typeof Enums.DiscussionReportReason)[keyof typeof Enums.DiscussionReportReason];
-
-export type ReportResolutionType =
-  (typeof Enums.ReportResolutionType)[keyof typeof Enums.ReportResolutionType];

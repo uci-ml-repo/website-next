@@ -1,5 +1,5 @@
 {
-  "id": "b21ec8cf-66a8-4c00-8e59-fa553b3e68b4",
+  "id": "133b9b31-3580-4585-ad21-29470b6470b8",
   "prevId": "cafccad8-4ada-484c-ba6b-149c2372d9f2",
   "version": "7",
   "dialect": "postgresql",
@@ -89,7 +89,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.author": {
       "name": "author",
@@ -147,7 +149,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.bookmark": {
       "name": "bookmark",
@@ -209,7 +213,9 @@
           "columns": ["user_id", "dataset_id"]
         }
       },
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.dataset": {
       "name": "dataset",
@@ -358,7 +364,8 @@
           "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'00000000-0000-0000-0000-000000000000'"
         },
         "donated_at": {
           "name": "donated_at",
@@ -383,12 +390,13 @@
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "set default",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
       "checkConstraints": {
         "accepted_check": {
           "name": "accepted_check",
@@ -398,7 +406,8 @@
           "name": "files_check",
           "value": "\n        (\n          \"dataset\".\"external_link\" IS NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n          AND \"dataset\".\"file_count\" IS NOT NULL\n        )\n        OR (\n          \"dataset\".\"external_link\" IS NOT NULL\n          AND \"dataset\".\"external_link\" ~* '^https?://'\n          AND \"dataset\".\"size\" IS NULL\n          AND \"dataset\".\"file_count\" IS NULL\n        )\n      "
         }
-      }
+      },
+      "isRLSEnabled": false
     },
     "public.dataset_keyword": {
       "name": "dataset_keyword",
@@ -445,7 +454,9 @@
         }
       },
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.dataset_report": {
       "name": "dataset_report",
@@ -501,70 +512,10 @@
           "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.dataset_report_resolution": {
-      "name": "dataset_report_resolution",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
         },
-        "report_id": {
-          "name": "report_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "dataset_report_resolution_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "comment": {
-          "name": "comment",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "dataset_report_resolution_report_id_dataset_report_id_fk": {
-          "name": "dataset_report_resolution_report_id_dataset_report_id_fk",
-          "tableFrom": "dataset_report_resolution",
-          "tableTo": "dataset_report",
-          "columnsFrom": ["report_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "dataset_report_resolution_user_id_user_id_fk": {
-          "name": "dataset_report_resolution_user_id_user_id_fk",
-          "tableFrom": "dataset_report_resolution",
+        "dataset_report_user_id_user_id_fk": {
+          "name": "dataset_report_user_id_user_id_fk",
+          "tableFrom": "dataset_report",
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
@@ -574,7 +525,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion": {
       "name": "discussion",
@@ -671,7 +624,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion_comment": {
       "name": "discussion_comment",
@@ -731,7 +686,7 @@
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "discussion_comment_discussion_id_discussion_id_fk": {
@@ -746,7 +701,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion_comment_report": {
       "name": "discussion_comment_report",
@@ -759,8 +716,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "discussion_comment_id": {
-          "name": "discussion_comment_id",
+        "comment_id": {
+          "name": "comment_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -794,82 +751,30 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "discussion_comment_report_discussion_comment_id_discussion_id_fk": {
-          "name": "discussion_comment_report_discussion_comment_id_discussion_id_fk",
+        "discussion_comment_report_comment_id_discussion_id_fk": {
+          "name": "discussion_comment_report_comment_id_discussion_id_fk",
           "tableFrom": "discussion_comment_report",
           "tableTo": "discussion",
-          "columnsFrom": ["discussion_comment_id"],
+          "columnsFrom": ["comment_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.discussion_comment_report_resolution": {
-      "name": "discussion_comment_report_resolution",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
         },
-        "report_id": {
-          "name": "report_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "dataset_report_resolution_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "discussion_comment_report_resolution_report_id_discussion_comment_report_id_fk": {
-          "name": "discussion_comment_report_resolution_report_id_discussion_comment_report_id_fk",
-          "tableFrom": "discussion_comment_report_resolution",
-          "tableTo": "discussion_comment_report",
-          "columnsFrom": ["report_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "discussion_comment_report_resolution_user_id_user_id_fk": {
-          "name": "discussion_comment_report_resolution_user_id_user_id_fk",
-          "tableFrom": "discussion_comment_report_resolution",
+        "discussion_comment_report_user_id_user_id_fk": {
+          "name": "discussion_comment_report_user_id_user_id_fk",
+          "tableFrom": "discussion_comment_report",
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion_comment_upvote": {
       "name": "discussion_comment_upvote",
@@ -881,8 +786,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "discussion_comment_id": {
-          "name": "discussion_comment_id",
+        "comment_id": {
+          "name": "comment_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -903,27 +808,29 @@
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "discussion_comment_upvote_discussion_comment_id_discussion_comment_id_fk": {
-          "name": "discussion_comment_upvote_discussion_comment_id_discussion_comment_id_fk",
+        "discussion_comment_upvote_comment_id_discussion_comment_id_fk": {
+          "name": "discussion_comment_upvote_comment_id_discussion_comment_id_fk",
           "tableFrom": "discussion_comment_upvote",
           "tableTo": "discussion_comment",
-          "columnsFrom": ["discussion_comment_id"],
+          "columnsFrom": ["comment_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "discussion_comment_upvote_user_id_discussion_comment_id_pk": {
-          "name": "discussion_comment_upvote_user_id_discussion_comment_id_pk",
-          "columns": ["user_id", "discussion_comment_id"]
+        "discussion_comment_upvote_user_id_comment_id_pk": {
+          "name": "discussion_comment_upvote_user_id_comment_id_pk",
+          "columns": ["user_id", "comment_id"]
         }
       },
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion_report": {
       "name": "discussion_report",
@@ -979,74 +886,22 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.discussion_report_resolution": {
-      "name": "discussion_report_resolution",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
         },
-        "report_id": {
-          "name": "report_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "dataset_report_resolution_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "discussion_report_resolution_report_id_discussion_report_id_fk": {
-          "name": "discussion_report_resolution_report_id_discussion_report_id_fk",
-          "tableFrom": "discussion_report_resolution",
-          "tableTo": "discussion_report",
-          "columnsFrom": ["report_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "discussion_report_resolution_user_id_user_id_fk": {
-          "name": "discussion_report_resolution_user_id_user_id_fk",
-          "tableFrom": "discussion_report_resolution",
+        "discussion_report_user_id_user_id_fk": {
+          "name": "discussion_report_user_id_user_id_fk",
+          "tableFrom": "discussion_report",
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.discussion_upvote": {
       "name": "discussion_upvote",
@@ -1080,7 +935,7 @@
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "discussion_upvote_discussion_id_discussion_id_fk": {
@@ -1100,7 +955,9 @@
         }
       },
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.email_verification_token": {
       "name": "email_verification_token",
@@ -1146,7 +1003,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.keyword": {
       "name": "keyword",
@@ -1215,7 +1074,9 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.paper": {
       "name": "paper",
@@ -1285,7 +1146,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.password_reset_token": {
       "name": "password_reset_token",
@@ -1318,13 +1181,15 @@
           "tableTo": "user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.session": {
       "name": "session",
@@ -1370,7 +1235,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.user": {
       "name": "user",
@@ -1429,7 +1296,53 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_role_index": {
+          "name": "user_role_index",
+          "columns": [
+            {
+              "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_email_trgm_search_index": {
+          "name": "user_email_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"email\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "user_name_trgm_search_index": {
+          "name": "user_name_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"name\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
@@ -1439,7 +1352,9 @@
           "columns": ["email"]
         }
       },
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.variable": {
       "name": "variable",
@@ -1454,12 +1369,6 @@
         },
         "name": {
           "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -1483,6 +1392,12 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "units": {
           "name": "units",
@@ -1511,7 +1426,9 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -1584,11 +1501,6 @@
       "schema": "public",
       "values": ["spam", "unprofessional", "inappropriate", "other"]
     },
-    "public.dataset_report_resolution_type": {
-      "name": "dataset_report_resolution_type",
-      "schema": "public",
-      "values": ["ignored", "resolved"]
-    },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
@@ -1597,6 +1509,8 @@
   },
   "schemas": {},
   "sequences": {},
+  "roles": {},
+  "policies": {},
   "views": {
     "public.dataset_view": {
       "columns": {
@@ -1743,7 +1657,8 @@
           "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'00000000-0000-0000-0000-000000000000'"
         },
         "donated_at": {
           "name": "donated_at",
@@ -1760,7 +1675,7 @@
           "default": "now()"
         }
       },
-      "definition": "select \"dataset\".\"id\", \"dataset\".\"title\", \"dataset\".\"year_created\", \"dataset\".\"subtitle\", \"dataset\".\"doi\", \"dataset\".\"description\", \"dataset\".\"subject_area\", \"dataset\".\"instance_count\", \"dataset\".\"feature_count\", \"dataset\".\"has_graphics\", \"dataset\".\"is_available_python\", \"dataset\".\"external_link\", \"dataset\".\"slug\", \"dataset\".\"status\", \"dataset\".\"view_count\", \"dataset\".\"download_count\", \"dataset\".\"variables_description\", \"dataset\".\"data_types\", \"dataset\".\"tasks\", \"dataset\".\"feature_types\", \"dataset\".\"size\", \"dataset\".\"file_count\", \"dataset\".\"user_id\", \"dataset\".\"donated_at\", \"dataset\".\"updated_at\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\"keyword\".\"name\")\n            FROM\n              \"keyword\"\n              JOIN \"dataset_keyword\" ON \"dataset_keyword\".\"keyword_id\" = \"keyword\".\"id\"\n            WHERE\n              \"dataset_keyword\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::TEXT[]\n        )\n       as \"keywords\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\n                JSONB_BUILD_OBJECT(\n                  'id',\n                  \"author\".\"id\",\n                  'firstName',\n                  \"author\".\"first_name\",\n                  'lastName',\n                  \"author\".\"last_name\",\n                  'email',\n                  \"author\".\"email\"\n                )\n              )\n            FROM\n              \"author\"\n            WHERE\n              \"author\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::jsonb[]\n        )\n       as \"authors\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\n                JSONB_BUILD_OBJECT(\n                  'id',\n                  \"variable\".\"id\",\n                  'name',\n                  \"variable\".\"name\",\n                  'description',\n                  \"variable\".\"description\",\n                  'role',\n                  \"variable\".\"role\",\n                  'type',\n                  \"variable\".\"type\",\n                  'missingValues',\n                  \"variable\".\"missing_values\",\n                  'units',\n                  \"variable\".\"units\"\n                )\n              )\n            FROM\n              \"variable\"\n            WHERE\n              \"variable\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::jsonb[]\n        )\n       as \"variables\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(LOWER(\"variable\".\"name\"))\n            FROM\n              \"variable\"\n            WHERE\n              \"variable\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::TEXT[]\n        )\n       as \"variable_names\", \n        (\n          SELECT\n            JSONB_BUILD_OBJECT(\n              'id',\n              \"user\".\"id\",\n              'name',\n              \"user\".\"name\",\n              'email',\n              \"user\".\"email\",\n              'emailVerified',\n              \"user\".\"email_verified\",\n              'image',\n              \"user\".\"image\",\n              'role',\n              \"user\".\"role\",\n              'createdAt',\n              \"user\".\"created_at\"\n            )\n          FROM\n            \"user\"\n          WHERE\n            \"user\".\"id\" = \"dataset\".\"user_id\"\n        )\n       as \"user\", \n        (\n          SELECT\n            JSONB_BUILD_OBJECT(\n              'title',\n              \"paper\".\"title\",\n              'authors',\n              \"paper\".\"authors\",\n              'venue',\n              \"paper\".\"venue\",\n              'year',\n              \"paper\".\"year\",\n              'citationCount',\n              \"paper\".\"citation_count\",\n              'url',\n              \"paper\".\"url\",\n              'datasetId',\n              \"paper\".\"dataset_id\"\n            )\n          FROM\n            \"paper\"\n          WHERE\n            \"paper\".\"dataset_id\" = \"dataset\".\"id\"\n        )\n       as \"introductory_paper\" from \"dataset\" left join \"paper\" on \"dataset\".\"id\" = \"paper\".\"dataset_id\" left join \"author\" on \"dataset\".\"id\" = \"author\".\"dataset_id\" left join \"variable\" on \"dataset\".\"id\" = \"variable\".\"dataset_id\" left join \"dataset_keyword\" on \"dataset\".\"id\" = \"dataset_keyword\".\"dataset_id\" group by \"dataset\".\"id\"",
+      "definition": "select \"dataset\".\"id\", \"dataset\".\"title\", \"dataset\".\"year_created\", \"dataset\".\"subtitle\", \"dataset\".\"doi\", \"dataset\".\"description\", \"dataset\".\"subject_area\", \"dataset\".\"instance_count\", \"dataset\".\"feature_count\", \"dataset\".\"has_graphics\", \"dataset\".\"is_available_python\", \"dataset\".\"external_link\", \"dataset\".\"slug\", \"dataset\".\"status\", \"dataset\".\"view_count\", \"dataset\".\"download_count\", \"dataset\".\"variables_description\", \"dataset\".\"data_types\", \"dataset\".\"tasks\", \"dataset\".\"feature_types\", \"dataset\".\"size\", \"dataset\".\"file_count\", \"dataset\".\"user_id\", \"dataset\".\"donated_at\", \"dataset\".\"updated_at\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\"keyword\".\"name\")\n            FROM\n              \"keyword\"\n              JOIN \"dataset_keyword\" ON \"dataset_keyword\".\"keyword_id\" = \"keyword\".\"id\"\n            WHERE\n              \"dataset_keyword\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::TEXT[]\n        )\n       as \"keywords\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\n                JSONB_BUILD_OBJECT(\n                  'id',\n                  \"author\".\"id\",\n                  'firstName',\n                  \"author\".\"first_name\",\n                  'lastName',\n                  \"author\".\"last_name\",\n                  'email',\n                  \"author\".\"email\",\n                  'institution',\n                  \"author\".\"institution\"\n                )\n              )\n            FROM\n              \"author\"\n            WHERE\n              \"author\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::jsonb[]\n        )\n       as \"authors\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(\n                JSONB_BUILD_OBJECT(\n                  'id',\n                  \"variable\".\"id\",\n                  'name',\n                  \"variable\".\"name\",\n                  'description',\n                  \"variable\".\"description\",\n                  'role',\n                  \"variable\".\"role\",\n                  'type',\n                  \"variable\".\"type\",\n                  'missingValues',\n                  \"variable\".\"missing_values\",\n                  'units',\n                  \"variable\".\"units\"\n                )\n              )\n            FROM\n              \"variable\"\n            WHERE\n              \"variable\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::jsonb[]\n        )\n       as \"variables\", \n        COALESCE(\n          (\n            SELECT\n              ARRAY_AGG(LOWER(\"variable\".\"name\"))\n            FROM\n              \"variable\"\n            WHERE\n              \"variable\".\"dataset_id\" = \"dataset\".\"id\"\n          ),\n          ARRAY[]::TEXT[]\n        )\n       as \"variable_names\", \n        (\n          SELECT\n            JSONB_BUILD_OBJECT(\n              'id',\n              \"user\".\"id\",\n              'name',\n              \"user\".\"name\",\n              'email',\n              \"user\".\"email\",\n              'emailVerified',\n              \"user\".\"email_verified\",\n              'image',\n              \"user\".\"image\",\n              'role',\n              \"user\".\"role\",\n              'createdAt',\n              \"user\".\"created_at\"\n            )\n          FROM\n            \"user\"\n          WHERE\n            \"user\".\"id\" = \"dataset\".\"user_id\"\n        )\n       as \"user\", \n        (\n          SELECT\n            JSONB_BUILD_OBJECT(\n              'title',\n              \"paper\".\"title\",\n              'authors',\n              \"paper\".\"authors\",\n              'venue',\n              \"paper\".\"venue\",\n              'year',\n              \"paper\".\"year\",\n              'citationCount',\n              \"paper\".\"citation_count\",\n              'url',\n              \"paper\".\"url\",\n              'datasetId',\n              \"paper\".\"dataset_id\"\n            )\n          FROM\n            \"paper\"\n          WHERE\n            \"paper\".\"dataset_id\" = \"dataset\".\"id\"\n        )\n       as \"introductory_paper\" from \"dataset\" left join \"paper\" on \"dataset\".\"id\" = \"paper\".\"dataset_id\" left join \"author\" on \"dataset\".\"id\" = \"author\".\"dataset_id\" left join \"variable\" on \"dataset\".\"id\" = \"variable\".\"dataset_id\" left join \"dataset_keyword\" on \"dataset\".\"id\" = \"dataset_keyword\".\"dataset_id\" group by \"dataset\".\"id\"",
       "name": "dataset_view",
       "schema": "public",
       "isExisting": false,

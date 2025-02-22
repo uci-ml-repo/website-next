@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { usePoll } from "@/components/hooks/use-poll";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -27,49 +26,49 @@ export function ProfileSettingsEmail() {
   }, 5000);
 
   return (
-    <Card>
-      <CardContent className="space-y-2 px-4">
-        <h3 className="text-lg font-bold">Email</h3>
+    <div>
+      <h3 className="text-lg font-bold">Your Email Address</h3>
 
-        {session ? (
-          <>
-            <div className="flex h-10 items-center justify-between text-lg">
-              <div>{session.user.email}</div>
-              {session.user.emailVerified ? (
-                <div className="flex items-center space-x-1 text-positive">
-                  <CheckIcon />
-                  <span>Verified</span>
-                </div>
-              ) : (
-                !verifyEmailMutation.isSuccess && (
-                  <Button
-                    variant="gold"
-                    onClick={onClickVerifyEmail}
-                    disabled={verifyEmailMutation.isPending}
-                  >
-                    {verifyEmailMutation.isPending && <Spinner />} Verify Email
-                  </Button>
-                )
-              )}
+      {session ? (
+        <>
+          <div className="space-y-2">
+            <div className="truncate text-lg text-muted-foreground">
+              {session.user.email}
             </div>
-            {verifyEmailMutation.isSuccess && !session.user.emailVerified && (
-              <Alert
-                variant="positive"
-                className="flex items-center justify-between"
-              >
-                <div>Verification email sent</div>
-                <button onClick={onClickVerifyEmail} className="text-link">
-                  Resend
-                </button>
-              </Alert>
+            {session.user.emailVerified ? (
+              <div className="flex items-center space-x-1 text-base text-positive">
+                <CheckIcon className="size-5" />
+                <span>Verified</span>
+              </div>
+            ) : (
+              !verifyEmailMutation.isSuccess && (
+                <Button
+                  variant="outline"
+                  onClick={onClickVerifyEmail}
+                  disabled={verifyEmailMutation.isPending}
+                >
+                  {verifyEmailMutation.isPending && <Spinner />} Verify Email
+                </Button>
+              )
             )}
-          </>
-        ) : (
-          <div className="flex h-10 items-center">
-            <Spinner />
           </div>
-        )}
-      </CardContent>
-    </Card>
+          {verifyEmailMutation.isSuccess && !session.user.emailVerified && (
+            <Alert
+              variant="positive"
+              className="flex items-center justify-between"
+            >
+              <div>Verification email sent</div>
+              <button onClick={onClickVerifyEmail} className="text-link">
+                Resend
+              </button>
+            </Alert>
+          )}
+        </>
+      ) : (
+        <div className="flex h-10 items-center">
+          <Spinner />
+        </div>
+      )}
+    </div>
   );
 }

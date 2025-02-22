@@ -21,9 +21,6 @@ export const datasetReportRouter = router({
     .input(
       z.object({
         reportId: z.string(),
-        userId: z.string(),
-        type: z.enum(enumToArray(Enums.ReportResolutionType)),
-        comment: z.string(),
       }),
     )
     .mutation(({ input }) => service.dataset.report.resolve(input)),

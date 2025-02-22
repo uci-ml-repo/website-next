@@ -79,7 +79,7 @@ export function DiscussionEdit({
           Edit: {discussion.title}
         </div>
         <Button
-          variant="ghostDestructive"
+          variant="ghost-destructive"
           size="icon"
           onClick={() => setDeleteDialogOpen(true)}
           className="shrink-0"

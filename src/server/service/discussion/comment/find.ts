@@ -4,24 +4,24 @@ import { and, asc, count, eq } from "drizzle-orm";
 import { db } from "@/db";
 import type { CommentUpvoteSelect, UserSelect } from "@/db/lib/types";
 import { userColumns } from "@/db/lib/types";
-import { comment } from "@/db/schema";
+import { discussionComment, discussionCommentUpvote } from "@/db/schema";
 import type { CommentQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 
 function buildQuery(query: CommentQuery) {
   let conditions = [];
   if (query.userId) {
-    conditions.push(eq(comment.userId, query.userId));
+    conditions.push(eq(discussionComment.userId, query.userId));
   }
 
   if (query.discussionId) {
-    conditions.push(eq(comment.discussionId, query.discussionId));
+    conditions.push(eq(discussionComment.discussionId, query.discussionId));
   }
 
   return and(...conditions);
 }
 
-type RawComment = typeof comment.$inferSelect & {
+type RawComment = typeof discussionComment.$inferSelect & {
   user: UserSelect;
   upvotes: CommentUpvoteSelect[];
 };
@@ -35,16 +35,16 @@ function transformRow({ upvotes, ...comment }: RawComment) {
 
 export class DiscussionCommentFindService {
   async byId(id: string, session?: Session | null) {
-    return db.query.comment
+    return db.query.discussionComment
       .findFirst({
-        where: (comment, { eq }) => eq(comment.id, id),
+        where: eq(discussionComment.id, id),
         with: {
           user: {
             columns: userColumns,
           },
           upvotes: session
             ? {
-                where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
+                where: eq(discussionCommentUpvote.userId, session.user.id),
               }
             : undefined,
         },
@@ -55,11 +55,13 @@ export class DiscussionCommentFindService {
   async byQuery(query: CommentQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
-          sortFunction(sort)(comment[orderBy as keyof typeof query.order]),
+          sortFunction(sort)(
+            discussionComment[orderBy as keyof typeof query.order],
+          ),
         )
-      : [asc(comment.createdAt)];
+      : [asc(discussionComment.createdAt)];
 
-    const comments = await db.query.comment
+    const comments = await db.query.discussionComment
       .findMany({
         where: buildQuery(query),
         orderBy,
@@ -86,7 +88,7 @@ export class DiscussionCommentFindService {
 
     const [countQuery] = await db
       .select({ count: count() })
-      .from(comment)
+      .from(discussionComment)
       .where(buildQuery(query));
 
     return {

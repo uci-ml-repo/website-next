@@ -40,14 +40,14 @@ export namespace AssertOwner {
   };
 
   export const discussionComment = async ({
-    commentId,
+    discussionCommentId,
     userId,
   }: {
-    commentId: string;
+    discussionCommentId: string;
     userId: string;
   }) => {
     const discussionComment =
-      await service.discussion.comment.find.byId(commentId);
+      await service.discussion.comment.find.byId(discussionCommentId);
 
     if (!discussionComment) {
       throw new TRPCError({ code: "NOT_FOUND" });

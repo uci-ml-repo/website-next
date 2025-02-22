@@ -1,7 +1,7 @@
 import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { datasetView, user } from "@/db/schema";
+import { account, datasetView, user } from "@/db/schema";
 import type { UserQuery, UserSearchQuery } from "@/server/schema/user";
 import { ServiceError } from "@/server/service/errors";
 
@@ -57,9 +57,7 @@ function buildQuery(query: UserQuery) {
 
 export class UserFindService {
   async byId(id: string) {
-    return db.query.user.findFirst({
-      where: (user, { eq }) => eq(user.id, id),
-    });
+    return (await db.select().from(user).where(eq(user.id, id)))[0];
   }
 
   async batch(ids: string[]) {
@@ -83,9 +81,7 @@ export class UserFindService {
   }
 
   async accounts(userId: string) {
-    return db.query.account.findMany({
-      where: (account, { eq }) => eq(account.userId, userId),
-    });
+    return db.select().from(account).where(eq(account.userId, userId));
   }
 
   async byQuery(query: UserQuery) {
