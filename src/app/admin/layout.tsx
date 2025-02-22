@@ -4,8 +4,8 @@ import { forbidden } from "next/navigation";
 import { auth, signIn } from "@/auth";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { Main } from "@/components/layout/Main";
-import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";
+import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -22,7 +22,7 @@ export default async function Layout({
     return signIn(undefined, { redirectTo: ADMIN_ROUTE });
   }
 
-  if (session.user.role !== Enums.UserRole.ADMIN) {
+  if (!isPriviliged(session.user.role)) {
     return forbidden();
   }
 
