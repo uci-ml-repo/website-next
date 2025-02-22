@@ -35,7 +35,7 @@ export function DiscussionsOrderBy({
         Sort by:
       </div>
       <Select value={orderBy} onValueChange={handleChange}>
-        <SelectTrigger className="h-10 w-40">
+        <SelectTrigger className="w-40" size="lg">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

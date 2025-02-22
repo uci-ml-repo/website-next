@@ -7,7 +7,7 @@ import { DiscussionCommentCreateButton } from "@/components/discussion/comment/c
 import { DiscussionCommentCreateInput } from "@/components/discussion/comment/create/DiscussionCommentCreateInput";
 import { DiscussionComment } from "@/components/discussion/comment/view/DiscussionComment";
 import { DiscussionsOrderBy } from "@/components/discussion/DiscussionsOrderBy";
-import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
+import { useInfinitePagination } from "@/components/hooks/use-infinite-pagination";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -40,7 +40,7 @@ export function DiscussionComments({
   const comments = data?.pages.flatMap((page) => page.comments) || [];
   const totalCount = data?.pages[0]?.count || 0;
 
-  const { triggerFetchNextPage } = useInfiniteScroll({
+  const { triggerFetchNextPage } = useInfinitePagination({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,

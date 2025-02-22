@@ -3,7 +3,7 @@ import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { userColumns, userSelect } from "@/db/lib/types";
 import { accountSelect } from "@/db/lib/types/account";
-import { account, datasetView, user } from "@/db/schema";
+import { account, user } from "@/db/schema";
 import type { UserQuery, UserSearchQuery } from "@/server/schema/user";
 import { ServiceError } from "@/server/service/errors";
 
@@ -142,7 +142,7 @@ export class UserFindService {
 
     const users = await db
       .select({
-        id: datasetView.id,
+        id: user.id,
         similarity: trigramSimilarity.mapWith(Number),
       })
       .from(user)

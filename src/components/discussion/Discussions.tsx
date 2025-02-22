@@ -7,7 +7,7 @@ import { DiscussionCreateButton } from "@/components/discussion/create/Discussio
 import { DiscussionsOrderBy } from "@/components/discussion/DiscussionsOrderBy";
 import { DiscussionPreview } from "@/components/discussion/preview/DiscussionPreview";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
-import { useInfiniteScroll } from "@/components/hooks/use-infinite-scroll";
+import { useInfinitePagination } from "@/components/hooks/use-infinite-pagination";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -53,9 +53,11 @@ export function Discussions({
       },
     );
 
+  const discussionsCount = data?.pages[0].count;
+
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
 
-  const { triggerFetchNextPage } = useInfiniteScroll({
+  const { triggerFetchNextPage } = useInfinitePagination({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -75,7 +77,7 @@ export function Discussions({
           />
         </div>
 
-        <div className="max-sm: flex justify-between gap-4 max-sm:w-full max-sm:flex-row-reverse">
+        <div className="justify-between gap-4 max-sm:flex max-sm:w-full max-sm:flex-row-reverse">
           <DiscussionsOrderBy
             orderBy={orderBy}
             setOrderBy={setOrderBy}
@@ -101,9 +103,8 @@ export function Discussions({
         <div className="w-full">
           {searchValue && data && (
             <div className="text-lg text-muted-foreground">
-              Found {discussions.length}
-              {hasNextPage && "+"}{" "}
-              {discussions.length === 1 ? "discussion" : "discussions"} for '
+              Found {discussionsCount}{" "}
+              {discussionsCount === 1 ? "discussion" : "discussions"} for '
               {searchValue}'
             </div>
           )}

@@ -14,7 +14,7 @@ import {
   userColumns,
   userSelect,
 } from "@/db/lib/types";
-import { dataset, discussion, discussionUpvote, user } from "@/db/schema";
+import { datasetView, discussion, discussionUpvote, user } from "@/db/schema";
 import type { DiscussionQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
 
@@ -206,7 +206,7 @@ export class DiscussionFindService {
       })
       .from(discussion)
       .innerJoin(user, eq(discussion.userId, user.id))
-      .innerJoin(dataset, eq(discussion.datasetId, dataset.id))
+      .innerJoin(datasetView, eq(discussion.datasetId, datasetView.id))
       .leftJoin(
         discussionUpvote,
         and(
@@ -222,7 +222,7 @@ export class DiscussionFindService {
                 similarity (
                   ${discussion.title},
                   ${query.search}
-                ) > 0.1
+                ) > 0.05
               `
             : undefined,
         ),

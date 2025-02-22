@@ -7,7 +7,7 @@ type UseInfiniteScrollProps = {
   rootMargin?: string;
 };
 
-export function useInfiniteScroll({
+export function useInfinitePagination({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
