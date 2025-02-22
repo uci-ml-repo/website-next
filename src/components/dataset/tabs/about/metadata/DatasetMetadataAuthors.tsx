@@ -18,9 +18,7 @@ export function DatasetMetadataAuthors({ authors }: AuthorsSectionProps) {
             <div className="flex items-center space-x-2">
               <UserIcon className="size-5 fill-foreground" />
               <div>
-                <span>
-                  {author.firstName} {author.lastName}
-                </span>
+                {author.firstName} {author.lastName}
               </div>
             </div>
             <div className="ml-7">

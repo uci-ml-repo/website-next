@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 const perPageOptions = [10, 25, 50, 100];
 
@@ -119,6 +120,7 @@ export function SmartPagination({
                   <PaginationLink
                     onClick={() => handlePageChange(item)}
                     isActive={item === currentPage}
+                    className={cn({ "text-xs": totalCount >= 100 })}
                   >
                     {item}
                   </PaginationLink>

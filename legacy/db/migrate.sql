@@ -179,7 +179,9 @@ SET
 
 UPDATE "user"
 SET
-  id = '00000000-0000-0000-0000-000000000000'
+  id = '00000000-0000-0000-0000-000000000000',
+  firstname = 'UCI Machine Learning Repository',
+  lastname = ''
 WHERE
   email = 'ucirepository@gmail.com';
 

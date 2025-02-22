@@ -46,7 +46,7 @@ export function ProfileSettingsEmail() {
                   <TooltipTrigger>
                     <CheckIcon className="size-5 text-positive" />
                   </TooltipTrigger>
-                  <TooltipContent>Verified</TooltipContent>
+                  <TooltipContent>Email Verified</TooltipContent>
                 </Tooltip>
               )}
             </div>

@@ -27,12 +27,7 @@ function buildSearchQuery(search: string) {
     ) / 2
   `;
 
-  const searchCondition = sql`
-    (
-      ${nameTrigramSimilarity} > 0.05
-      OR ${emailTrigramSimilarity} > 0.05
-    )
-  `;
+  const searchCondition = sql`(${trigramSimilarity} > 0.1)`;
 
   return {
     nameTrigramSimilarity,

@@ -1,12 +1,10 @@
 "use client";
 
-import { ChevronDownIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import { SearchIcon, Undo2Icon } from "lucide-react";
 import React, { useState } from "react";
 
-import { UserPreview } from "@/components/admin/users/UserPreview";
+import { UserRow } from "@/components/admin/users/UserRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
-import { useInfinitePagination } from "@/components/hooks/use-infinite-pagination";
-import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import {
@@ -16,43 +14,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SmartPagination } from "@/components/ui/smart-pagination";
 import { Spinner } from "@/components/ui/spinner";
-import type { Enums } from "@/db/lib/enums";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Enums } from "@/db/lib/enums";
+import { formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
+const UserRole = Enums.UserRole;
+
 export default function Page() {
-  const [roleFilter, setRoleFilter] = useState<Enums.UserRole | "any">();
+  const [roleFilter, setRoleFilter] = useState<Enums.UserRole | "all">();
+  const [limit, setLimit] = useState<number>(25);
+  const [offset, setOffset] = useState<number>(0);
 
   const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
     useDebouncedSearch();
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    trpc.user.find.byQuery.useInfiniteQuery(
-      {
-        search: searchValue,
-        role: roleFilter === "any" ? undefined : roleFilter,
-        limit: 15,
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-      },
-    );
-
-  const users = data?.pages.flatMap((page) => page.users) || [];
-
-  const { triggerFetchNextPage } = useInfinitePagination({
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+  const { data, isLoading } = trpc.user.find.byQuery.useQuery({
+    search: searchValue,
+    role: roleFilter === "all" ? undefined : roleFilter,
+    limit,
+    cursor: offset,
   });
 
   return (
-    <div className="space-y-4">
+    <div className="max-w-full space-y-4 overflow-x-auto">
       <div className="flex flex-col items-center gap-4 sm:flex-row">
         <div className="w-full">
           <InputClearable
             icon={SearchIcon}
-            placeholder="Search by name or email"
+            placeholder="Search users by email or name"
             aria-label="Search users"
             value={inputValue}
             setValue={setInputValue}
@@ -62,23 +60,23 @@ export default function Page() {
 
         <div className="flex items-center justify-end space-x-4 max-sm:w-full">
           <div className="text-nowrap text-sm text-muted-foreground max-xxs:hidden">
-            Sort by:
+            Filter Roles:
           </div>
           <Select
-            value={roleFilter || "any"}
+            value={roleFilter || "all"}
             onValueChange={(value) =>
-              setRoleFilter(value as Enums.UserRole | "any")
+              setRoleFilter(value as Enums.UserRole | "all")
             }
           >
             <SelectTrigger className="w-32" size="lg">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="any">Any</SelectItem>
-              <SelectItem value="admin">Admin</SelectItem>
-              <SelectItem value="librarian">Librarian</SelectItem>
-              <SelectItem value="curator">Curator</SelectItem>
-              <SelectItem value="basic">Basic</SelectItem>
+              <SelectItem value="all">All Roles</SelectItem>
+              <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+              <SelectItem value={UserRole.LIBRARIAN}>Librarian</SelectItem>
+              <SelectItem value={UserRole.CURATOR}>Curator</SelectItem>
+              <SelectItem value={UserRole.BASIC}>Basic</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -88,7 +86,7 @@ export default function Page() {
         <div className="flex h-20 w-full items-center justify-center">
           <Spinner className="size-10" />
         </div>
-      ) : users.length === 0 ? (
+      ) : data && data.users.length === 0 ? (
         <div className="flex h-20 flex-col items-center justify-center space-y-2">
           <div className="text-muted-foreground">No users found</div>
           <Button variant="secondary" onClick={clearSearch}>
@@ -96,37 +94,43 @@ export default function Page() {
           </Button>
         </div>
       ) : (
-        <div className="w-full">
-          {searchValue && data && (
-            <div className="text-lg text-muted-foreground">
-              Found {users.length}
-              {hasNextPage && "+"} {users.length === 1 ? "user" : "users"} for '
-              {searchValue}'
-            </div>
-          )}
-          {users.map((user) => (
-            <React.Fragment key={user.id}>
-              <UserPreview user={user} />
-              <hr />
-            </React.Fragment>
-          ))}
-        </div>
+        data && (
+          <div className="w-full space-y-2">
+            {data.users && (
+              <div className="text-lg text-muted-foreground">
+                Found {data.count} {data.count === 1 ? "user" : "users"}{" "}
+                {searchValue && `for '${searchValue}'`}
+                {roleFilter &&
+                  roleFilter !== "all" &&
+                  ` with role '${formatEnum(roleFilter)}'`}
+              </div>
+            )}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="max-sm:hidden">Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead className="w-32">Role</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.users.map((user) => (
+                  <UserRow user={user} key={user.id} />
+                ))}
+              </TableBody>
+            </Table>
+            {data.count && (
+              <SmartPagination
+                totalCount={data.count}
+                limit={limit}
+                offset={offset}
+                onLimitChange={setLimit}
+                onPageChange={setOffset}
+              />
+            )}
+          </div>
+        )
       )}
-
-      {isFetchingNextPage && (
-        <div className="flex h-12 items-center justify-center">
-          <Spinner />
-        </div>
-      )}
-
-      <div className="flex items-center justify-between">
-        {hasNextPage && !isFetchingNextPage && (
-          <Button onClick={triggerFetchNextPage} variant="blue">
-            <ChevronDownIcon /> View more
-          </Button>
-        )}
-        {users.length > 10 && <BackToTop />}
-      </div>
     </div>
   );
 }

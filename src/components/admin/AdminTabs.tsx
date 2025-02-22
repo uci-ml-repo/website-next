@@ -23,8 +23,6 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
       status: Enums.ApprovalStatus.PENDING,
     });
 
-  const { data: userCount } = trpc.user.find.countByQuery.useQuery({});
-
   return (
     <LinearTabs
       defaultValue={activeTab}
@@ -67,7 +65,6 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
           {role === Enums.UserRole.ADMIN && (
             <LinearTabsTrigger
               value="users"
-              badgeValue={userCount ?? null}
               link={path.join(ADMIN_ROUTE, "users")}
             >
               Users
