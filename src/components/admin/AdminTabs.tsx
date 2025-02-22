@@ -13,7 +13,7 @@ import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-export function AdminTabs() {
+export function AdminTabs({ role }: { role: Enums.UserRole }) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[1] || "overview";
@@ -57,20 +57,22 @@ export function AdminTabs() {
           </LinearTabsTrigger>
 
           <LinearTabsTrigger
-            value="users"
-            badgeValue={userCount ?? null}
-            link={path.join(ADMIN_ROUTE, "users")}
-          >
-            Users
-          </LinearTabsTrigger>
-
-          <LinearTabsTrigger
             value="reports"
             badgeValue={0}
             link={path.join(ADMIN_ROUTE, "reports")}
           >
             Reports
           </LinearTabsTrigger>
+
+          {role === Enums.UserRole.ADMIN && (
+            <LinearTabsTrigger
+              value="users"
+              badgeValue={userCount ?? null}
+              link={path.join(ADMIN_ROUTE, "users")}
+            >
+              Users
+            </LinearTabsTrigger>
+          )}
         </LinearTabsList>
       </div>
 

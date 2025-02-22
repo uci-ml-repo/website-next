@@ -79,6 +79,7 @@ export function LoginRegister() {
 
   const registerForm = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
+    mode: "onChange",
     defaultValues: {
       email: "",
       name: "",
