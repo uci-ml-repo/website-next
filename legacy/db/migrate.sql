@@ -1001,7 +1001,7 @@ CREATE TABLE "discussion_comment" (
 
 CREATE TABLE "discussion_comment_report" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
   "reason" "discussion_report_reason" NOT NULL,
   "details" TEXT,
   "user_id" uuid,
@@ -1010,9 +1010,9 @@ CREATE TABLE "discussion_comment_report" (
 
 CREATE TABLE "discussion_comment_upvote" (
   "user_id" uuid NOT NULL,
-  "discussion_comment_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "discussion_comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "discussion_comment_id")
+  CONSTRAINT "discussion_comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
 );
 
 CREATE TABLE "discussion_report" (
