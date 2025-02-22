@@ -2,11 +2,8 @@ import type { Session } from "@auth/core/types";
 import { and, asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import type {
-  CommentUpvoteSelect,
-  DiscussionSelect,
-  UserSelect,
-} from "@/db/lib/types";
+import type { CommentUpvoteSelect, UserSelect } from "@/db/lib/types";
+import { userColumns } from "@/db/lib/types";
 import { comment } from "@/db/schema";
 import type { CommentQuery } from "@/server/schema/discussion";
 import { sortFunction } from "@/server/schema/lib/order";
@@ -26,7 +23,6 @@ function buildQuery(query: CommentQuery) {
 
 type RawComment = typeof comment.$inferSelect & {
   user: UserSelect;
-  discussion: DiscussionSelect;
   upvotes: CommentUpvoteSelect[];
 };
 
@@ -43,8 +39,9 @@ export class DiscussionCommentFindService {
       .findFirst({
         where: (comment, { eq }) => eq(comment.id, id),
         with: {
-          user: true,
-          discussion: true,
+          user: {
+            columns: userColumns,
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
@@ -67,8 +64,9 @@ export class DiscussionCommentFindService {
         where: buildQuery(query),
         orderBy,
         with: {
-          user: true,
-          discussion: true,
+          user: {
+            columns: userColumns,
+          },
           upvotes: session
             ? {
                 where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
