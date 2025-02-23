@@ -99,8 +99,6 @@ export const dataset = pgTable(
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count").default(0).notNull(),
 
-    variablesDescription: text("variables_description"),
-
     dataTypes: datasetDataType("data_types").array(),
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
@@ -243,6 +241,10 @@ export const keyword = pgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [
+    index("keyword_trgm_search_index").using(
+      "gin",
+      sql`${t.name} gin_trgm_ops`,
+    ),
     index("keyword_name_index").on(t.name),
     index("keyword_status_index").on(t.status),
   ],

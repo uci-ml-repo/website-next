@@ -83,8 +83,6 @@ DROP TABLE requests;
 
 DROP TABLE tabular;
 
-DROP TABLE variable_info;
-
 -------------------------------------------------------------------------------
 -- auth_session -> sessions
 -------------------------------------------------------------------------------
@@ -241,7 +239,6 @@ CREATE TABLE "dataset" (
   "status" "approval_status" DEFAULT 'draft' NOT NULL,
   "view_count" INTEGER DEFAULT 0 NOT NULL,
   "download_count" INTEGER DEFAULT 0 NOT NULL,
-  "variables_description" TEXT,
   "data_types" "dataset_characteristic" [],
   "tasks" "dataset_task" [],
   "feature_types" "dataset_feature_type" [],
@@ -337,6 +334,12 @@ SELECT
       END,
       CASE
         WHEN dq.datasetcitation IS NOT NULL  THEN 'Citation information: ' || dq.datasetcitation
+      END,
+      CASE
+        WHEN vi.classlabels IS NOT NULL THEN 'Variables Info: ' || vi.otherinfo
+      END,
+      CASE
+        WHEN vi.otherinfo IS NOT NULL THEN 'Class labels: ' || vi.classlabels
       END
     )
   ) AS description,
@@ -414,6 +417,7 @@ SELECT
 FROM
   donated_datasets dd
   INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
+  LEFT JOIN variable_info vi ON dd.id = vi.datasetid
 WHERE
   slug NOTNULL LOOP
 
@@ -810,7 +814,6 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     "dataset"."status",
     "dataset"."view_count",
     "dataset"."download_count",
-    "dataset"."variables_description",
     "dataset"."data_types",
     "dataset"."tasks",
     "dataset"."feature_types",
@@ -1115,6 +1118,8 @@ DROP TABLE dataset_notes;
 
 DROP TABLE dataset_file;
 
+DROP TABLE variable_info;
+
 DROP TABLE file_info;
 
 DROP TABLE donated_datasets;
@@ -1139,7 +1144,6 @@ DROP TYPE edits_status CASCADE;
 
 DROP TYPE requests_status CASCADE;
 
---
 -- --> statement-breakpoint
 -- CREATE INDEX dataset_view_text_search_index ON dataset_view USING gin (
 --   SETWEIGHT(
@@ -1147,20 +1151,30 @@ DROP TYPE requests_status CASCADE;
 --     'A'::"char"
 --   )
 -- );
+--
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_id_index ON dataset_view (id);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_variable_names_index ON dataset_view USING gin (variable_names);
 --
+-- --> statement-breakpoint
 -- CREATE INDEX dataset_view_status_index ON dataset_view (status);

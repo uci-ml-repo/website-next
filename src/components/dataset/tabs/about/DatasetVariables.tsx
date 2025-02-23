@@ -16,13 +16,7 @@ export function DatasetVariables({ dataset }: { dataset: DatasetResponse }) {
       <h2 className="text-2xl font-bold">Variables</h2>
 
       <Expandable className="space-y-2" truncationHeight={300}>
-        {!dataset.variablesDescription && !dataset.variables.length && (
-          <div className="text-muted-foreground">No information</div>
-        )}
-        {dataset.variablesDescription && (
-          <div className="break-words">{dataset.variablesDescription}</div>
-        )}
-        {dataset.variables.length > 0 && (
+        {dataset.variables.length > 0 ? (
           <Table className="overflow-x-auto">
             <TableHeader>
               <TableRow>
@@ -52,6 +46,8 @@ export function DatasetVariables({ dataset }: { dataset: DatasetResponse }) {
               ))}
             </TableBody>
           </Table>
+        ) : (
+          <div className="text-muted-foreground">No information</div>
         )}
       </Expandable>
     </div>

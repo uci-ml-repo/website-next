@@ -1,10 +1,13 @@
 import { notFound } from "next/navigation";
 
+import { auth } from "@/auth";
 import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
 import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
+import { DatasetSideStatus } from "@/components/dataset/tabs/about/DatasetSideStatus";
 import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariables";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
 import { Expandable } from "@/components/ui/expandable";
+import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -12,6 +15,8 @@ export default async function Page({
 }: {
   params: Promise<{ id: string; slug: string }>;
 }) {
+  const session = await auth();
+
   const { id } = await params;
 
   const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
@@ -39,7 +44,12 @@ export default async function Page({
         <DatasetMetadata dataset={dataset} />
       </div>
 
-      <DatasetSideData dataset={dataset} />
+      <div className="w-56 shrink-0 space-y-6">
+        <DatasetSideData dataset={dataset} />
+        {isPriviliged(session?.user.role) && (
+          <DatasetSideStatus status={dataset.status} />
+        )}
+      </div>
     </div>
   );
 }

@@ -114,7 +114,6 @@ CREATE TABLE "dataset" (
   "status" "approval_status" DEFAULT 'draft' NOT NULL,
   "view_count" INTEGER DEFAULT 0 NOT NULL,
   "download_count" INTEGER DEFAULT 0 NOT NULL,
-  "variables_description" TEXT,
   "data_types" "dataset_characteristic" [],
   "tasks" "dataset_task" [],
   "feature_types" "dataset_feature_type" [],
@@ -400,6 +399,9 @@ ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") RE
 CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 
 --> statement-breakpoint
+CREATE INDEX "keyword_trgm_search_index" ON "keyword" USING gin ("name" gin_trgm_ops);
+
+--> statement-breakpoint
 CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
 
 --> statement-breakpoint
@@ -433,7 +435,6 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     "dataset"."status",
     "dataset"."view_count",
     "dataset"."download_count",
-    "dataset"."variables_description",
     "dataset"."data_types",
     "dataset"."tasks",
     "dataset"."feature_types",

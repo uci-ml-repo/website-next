@@ -2,15 +2,13 @@ import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { DatasetStatusBadge } from "@/components/dataset/DatasetStatusBadge";
 import { DatasetHoverCard } from "@/components/dataset/preview/DatasetHoverCard";
-import type { BadgeVariant } from "@/components/ui/badge";
-import { Badge } from "@/components/ui/badge";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
@@ -117,25 +115,4 @@ export function DatasetRow({
   }
 
   return row;
-}
-
-function DatasetStatusBadge({ status }: { status: string }) {
-  let variant: BadgeVariant;
-
-  switch (status) {
-    case Enums.ApprovalStatus.APPROVED:
-      variant = "positive";
-      break;
-    case Enums.ApprovalStatus.PENDING:
-      variant = "gold";
-      break;
-    case Enums.ApprovalStatus.DRAFT:
-      variant = "secondary";
-      break;
-    case Enums.ApprovalStatus.REJECTED:
-      variant = "destructive";
-      break;
-  }
-
-  return <Badge variant={variant}>{status.toUpperCase()}</Badge>;
 }
