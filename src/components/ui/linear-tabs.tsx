@@ -174,9 +174,7 @@ LinearTabsList.displayName = "LinearTabsList";
 interface LinearTabsBorderProps extends React.HTMLAttributes<HTMLHRElement> {}
 
 export function TabsListBorder({ className, ...props }: LinearTabsBorderProps) {
-  return (
-    <hr className={cn("-mt-[2px] mb-6 border-[1px]", className)} {...props} />
-  );
+  return <hr className={cn("-mt-[2px] border-[1px]", className)} {...props} />;
 }
 
 type TriggerElement = React.ReactElement<{

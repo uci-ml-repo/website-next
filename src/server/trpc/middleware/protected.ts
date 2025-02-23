@@ -47,10 +47,6 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.IS_USER_ID)) {
-      if (!input.userId) {
-        throw new TRPCError({ code: "BAD_REQUEST" });
-      }
-
       if (ctx.session.user.id === input.userId) {
         userRoles.add(MiddlewareRoles.IS_USER_ID);
       }

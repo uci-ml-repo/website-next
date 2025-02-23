@@ -1,19 +1,12 @@
 "use client";
 
-import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Undo2Icon } from "lucide-react";
 
 import { UserRow } from "@/components/admin/users/UserRow";
-import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
+import { useSimpleSearch } from "@/components/hooks/use-simple-search";
+import type { Option } from "@/components/search/SimpleSearch";
+import { SimpleSearch } from "@/components/search/SimpleSearch";
 import { Button } from "@/components/ui/button";
-import { InputClearable } from "@/components/ui/input-clearable";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { SmartPagination } from "@/components/ui/smart-pagination";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -30,69 +23,53 @@ import { trpc } from "@/server/trpc/query/client";
 const UserRole = Enums.UserRole;
 
 export default function Page() {
-  const [roleFilter, setRoleFilter] = useState<Enums.UserRole | "all">();
-  const [limit, setLimit] = useState<number>(25);
-  const [offset, setOffset] = useState<number>(0);
+  const {
+    filter: roleFilter,
+    setFilter: setRoleFilter,
+    offset: cursor,
+    setOffset: setCursor,
+    limit,
+    setLimit,
+    inputValue,
+    setInputValue,
+    searchValue,
+    handleSearchChange,
+    clear,
+  } = useSimpleSearch<Enums.UserRole>({
+    defaultFilter: "all",
+    defaultLimit: 25,
+  });
 
-  const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
-    useDebouncedSearch();
+  const filterOptions: Option[] = [
+    { value: "all", label: "All Roles" },
+    { value: UserRole.ADMIN, label: "Admin" },
+    { value: UserRole.LIBRARIAN, label: "Librarian" },
+    { value: UserRole.CURATOR, label: "Curator" },
+    { value: UserRole.BASIC, label: "Basic" },
+  ];
 
   const { data, isLoading } = trpc.user.find.byQuery.useQuery({
     search: searchValue,
     role: roleFilter === "all" ? undefined : roleFilter,
     limit,
-    cursor: offset,
+    cursor,
   });
-
-  function clear() {
-    clearSearch();
-    setOffset(0);
-    setRoleFilter("all");
-  }
-
-  useEffect(() => {
-    setOffset(0);
-  }, [inputValue]);
 
   return (
     <div className="max-w-full space-y-4">
-      <div className="flex flex-col items-center gap-4 sm:flex-row">
-        <div className="w-full">
-          <InputClearable
-            icon={SearchIcon}
-            placeholder="Search users by email or name"
-            aria-label="Search users"
-            value={inputValue}
-            setValue={setInputValue}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="flex items-center justify-end space-x-4 max-sm:w-full">
-          <div className="text-nowrap text-sm text-muted-foreground max-xxs:hidden">
-            Filter Roles:
-          </div>
-          <Select
-            value={roleFilter || "all"}
-            onValueChange={(value) => {
-              setRoleFilter(value as Enums.UserRole | "all");
-              setOffset(0);
-            }}
-          >
-            <SelectTrigger className="w-32" size="lg">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Roles</SelectItem>
-              <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-              <SelectItem value={UserRole.LIBRARIAN}>Librarian</SelectItem>
-              <SelectItem value={UserRole.CURATOR}>Curator</SelectItem>
-              <SelectItem value={UserRole.BASIC}>Basic</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
+      <SimpleSearch
+        searchValue={inputValue}
+        setSearchValue={setInputValue}
+        handleSearchChange={handleSearchChange}
+        searchPlaceholder="Search users by email or name"
+        filterLabel="Filter Roles:"
+        filterValue={roleFilter || "all"}
+        onFilterChange={(value) => {
+          setRoleFilter(value as Enums.UserRole | "all");
+          setCursor(0);
+        }}
+        filterOptions={filterOptions}
+      />
       {isLoading ? (
         <div className="flex h-20 w-full items-center justify-center">
           <Spinner className="size-10" />
@@ -136,9 +113,9 @@ export default function Page() {
               <SmartPagination
                 totalCount={data.count}
                 limit={limit}
-                offset={offset}
+                offset={cursor}
                 onLimitChange={setLimit}
-                onPageChange={setOffset}
+                onPageChange={setCursor}
               />
             )}
           </div>

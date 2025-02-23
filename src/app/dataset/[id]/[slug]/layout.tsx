@@ -67,7 +67,7 @@ export default async function Layout({
 
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
-      <Main className="space-y-8">
+      <Main className="space-y-6">
         <div className="backdrop-gradient-blur space-y-6">
           <DatasetTitleGroup dataset={dataset} />
 

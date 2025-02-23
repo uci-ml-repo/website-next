@@ -30,7 +30,7 @@ export interface InputProps
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   iconPosition?: "left" | "right";
   containerClassName?: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: (value: string) => void;
 }
 
 const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
