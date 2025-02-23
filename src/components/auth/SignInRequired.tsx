@@ -57,7 +57,7 @@ export function SignInRequired({
         </div>
       ) : authedRedirect ? (
         <div>
-          <Link href={authedRedirect} onClick={onClick} tabIndex={-1}>
+          <Link href={authedRedirect} onClick={onClick}>
             {children}
           </Link>
         </div>

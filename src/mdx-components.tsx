@@ -3,21 +3,17 @@ import type { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-type HeadingProps = ComponentPropsWithoutRef<"h1">;
-type ParagraphProps = ComponentPropsWithoutRef<"p">;
-type AnchorProps = ComponentPropsWithoutRef<"a">;
-
 const components = {
-  h1: (props: HeadingProps) => (
-    <h1 className="my-6 text-4xl font-bold text-uci-blue" {...props} />
+  h1: (props: ComponentPropsWithoutRef<"h1">) => (
+    <h1 className="my-6 text-3xl font-bold text-uci-blue" {...props} />
   ),
-  h2: (props: HeadingProps) => (
+  h2: (props: ComponentPropsWithoutRef<"h2">) => (
     <h2 className="mb-2 mt-4 text-2xl font-bold text-uci-blue" {...props} />
   ),
-  p: (props: ParagraphProps) => (
+  p: (props: ComponentPropsWithoutRef<"p">) => (
     <p className="mb-6 text-lg text-foreground" {...props} />
   ),
-  a: ({ href, children, ...props }: AnchorProps) => {
+  a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
     if (!href) {
       return <a>{children}</a>;
     }
@@ -33,6 +29,19 @@ const components = {
       </Link>
     );
   },
+  ol: (props: ComponentPropsWithoutRef<"ol">) => (
+    <ol
+      className="list-inside list-decimal space-y-4 py-2 text-lg"
+      {...props}
+    />
+  ),
+  ul: (props: ComponentPropsWithoutRef<"ul">) => (
+    <ul className="list-inside list-disc space-y-4 py-2 text-lg" {...props} />
+  ),
+  li: (props: ComponentPropsWithoutRef<"li">) => <li className="" {...props} />,
+  strong: (props: ComponentPropsWithoutRef<"strong">) => (
+    <strong className="font-semibold" {...props} />
+  ),
 };
 
 declare global {

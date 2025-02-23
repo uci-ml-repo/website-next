@@ -60,15 +60,17 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
       </SideDatum>
 
       {/* License */}
-      <SideDatum title="License">
-        <Link
-          href="https://creativecommons.org/licenses/by/4.0/"
-          target="_blank"
-          className="text-muted-foreground underline underline-offset-2"
-        >
-          CC BY 4.0
-        </Link>
-      </SideDatum>
+      {!dataset.externalLink && (
+        <SideDatum title="License">
+          <Link
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            className="text-muted-foreground underline underline-offset-2"
+          >
+            CC BY 4.0
+          </Link>
+        </SideDatum>
+      )}
     </div>
   );
 }
