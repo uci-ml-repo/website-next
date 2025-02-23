@@ -71,10 +71,17 @@ function buildSearchQuery(search: string) {
 }
 
 export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
-  const conditions =
-    "status" in query && query.status
-      ? [eq(datasetView.status, query.status)]
-      : [eq(datasetView.status, Enums.ApprovalStatus.APPROVED)];
+  const conditions = [];
+
+  if ("status" in query && query.status) {
+    conditions.push(inArray(datasetView.status, query.status));
+  } else {
+    conditions.push(eq(datasetView.status, Enums.ApprovalStatus.APPROVED));
+  }
+
+  if ("userId" in query && query.userId) {
+    conditions.push(eq(datasetView.userId, query.userId));
+  }
 
   if (query.search) {
     const { searchCondition } = buildSearchQuery(query.search);
@@ -179,19 +186,7 @@ export class DatasetFindService {
     });
   }
 
-  async byUserId({ userId }: { userId: string }) {
-    return db
-      .select(datasetPreviewSelect)
-      .from(datasetView)
-      .where(
-        and(
-          eq(datasetView.userId, userId),
-          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
-        ),
-      );
-  }
-
-  async byQuery(query: DatasetQuery) {
+  async byQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     let datasets;
     if (query.search) {
       datasets = await this.bySearchQuery(query as DatasetSearchQuery);
@@ -217,7 +212,7 @@ export class DatasetFindService {
     };
   }
 
-  async countByQuery(query: DatasetQuery) {
+  async countByQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(datasetView)
@@ -226,7 +221,7 @@ export class DatasetFindService {
     return countQuery.count;
   }
 
-  private async byRawQuery(query: DatasetQuery) {
+  private async byRawQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([field, sort]) =>
           sortFunction(sort)(datasetView[field as keyof typeof query.order]),

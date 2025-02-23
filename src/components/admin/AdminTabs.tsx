@@ -20,7 +20,7 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
 
   const { data: datasetCount } =
     trpc.dataset.find.privilegedCountByQuery.useQuery({
-      status: Enums.ApprovalStatus.PENDING,
+      status: [Enums.ApprovalStatus.PENDING],
     });
 
   return (

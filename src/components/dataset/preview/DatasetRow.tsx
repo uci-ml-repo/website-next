@@ -3,11 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { DatasetHoverCard } from "@/components/dataset/preview/DatasetHoverCard";
+import type { BadgeVariant } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
@@ -15,6 +18,7 @@ import { abbreviateDecimal, cn } from "@/lib/utils";
 interface DatasetRowProps extends React.ComponentProps<"a"> {
   dataset: DatasetPreviewResponse;
   hoverCard?: boolean;
+  displayStatus?: boolean;
 }
 
 type DatasetStat = {
@@ -25,6 +29,7 @@ type DatasetStat = {
 export function DatasetRow({
   dataset,
   className,
+  displayStatus,
   hoverCard,
   ...props
 }: DatasetRowProps) {
@@ -61,31 +66,37 @@ export function DatasetRow({
         className="size-12 rounded-lg object-cover dark:brightness-90"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
-        <div className="min-w-0">
-          <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus:underline">
-            {dataset.title}
+        <div className="w-full">
+          <div className="flex items-center space-x-2">
+            {displayStatus && <DatasetStatusBadge status={dataset.status} />}
+
+            <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus:underline">
+              {dataset.title}
+            </div>
           </div>
           <div className="truncate text-sm text-muted-foreground">
             {dataset.subtitle ?? dataset.description}
           </div>
         </div>
-        <div
-          className={cn(
-            "grid w-36 shrink-0 grid-cols-1 grid-rows-2 gap-x-4 gap-y-1 text-muted-foreground",
-            "[&_svg]:size-4 [&_svg]:shrink-0",
-            "hidden @md:block",
-          )}
-        >
-          {datasetStats.map((stat, i) => {
-            if (stat.text)
-              return (
-                <div key={i} className="flex items-center space-x-1">
-                  {stat.icon}
-                  <span className="text-nowrap">{stat.text}</span>
-                </div>
-              );
-          })}
-        </div>
+        {datasetStats.some((stat) => !!stat.text) && (
+          <div
+            className={cn(
+              "grid w-36 shrink-0 grid-cols-1 grid-rows-2 gap-x-4 gap-y-1 text-muted-foreground",
+              "[&_svg]:size-4 [&_svg]:shrink-0",
+              "hidden @md:block",
+            )}
+          >
+            {datasetStats.map((stat, i) => {
+              if (stat.text)
+                return (
+                  <div key={i} className="flex items-center space-x-1">
+                    {stat.icon}
+                    <span className="text-nowrap">{stat.text}</span>
+                  </div>
+                );
+            })}
+          </div>
+        )}
       </div>
     </Link>
   );
@@ -106,4 +117,25 @@ export function DatasetRow({
   }
 
   return row;
+}
+
+function DatasetStatusBadge({ status }: { status: string }) {
+  let variant: BadgeVariant;
+
+  switch (status) {
+    case Enums.ApprovalStatus.APPROVED:
+      variant = "positive";
+      break;
+    case Enums.ApprovalStatus.PENDING:
+      variant = "gold";
+      break;
+    case Enums.ApprovalStatus.DRAFT:
+      variant = "secondary";
+      break;
+    case Enums.ApprovalStatus.REJECTED:
+      variant = "destructive";
+      break;
+  }
+
+  return <Badge variant={variant}>{status.toUpperCase()}</Badge>;
 }

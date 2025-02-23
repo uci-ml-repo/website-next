@@ -65,15 +65,16 @@ export default function Page() {
         </Card>
       ) : (
         <>
-          <InputClearable
-            variantSize="lg"
-            placeholder="Search bookmarks"
-            icon={SearchIcon}
-            value={inputValue}
-            setValue={setInputValue}
-            onChange={handleChange}
-          />
-
+          {data && data.pages[0].bookmarks.length > 0 && (
+            <InputClearable
+              variantSize="lg"
+              placeholder="Search bookmarks"
+              icon={SearchIcon}
+              value={inputValue}
+              setValue={setInputValue}
+              onChange={handleChange}
+            />
+          )}
           {isLoading ? (
             <div className="flex h-20 w-full items-center justify-center">
               <Spinner className="size-10" />

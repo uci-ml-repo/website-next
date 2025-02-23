@@ -34,8 +34,8 @@ export const datasetFindRouter = router({
     .input(privilegedDatasetQuery)
     .query(({ input }) => service.dataset.find.countByQuery(input)),
 
-  byUserId: protectedProcedure
+  privilegedByQuery: protectedProcedure
     .meta({ requireRoles: [MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID] })
-    .input(z.object({ userId: z.string().uuid() }))
-    .query(({ input }) => service.dataset.find.byUserId(input)),
+    .input(privilegedDatasetQuery)
+    .query(({ input }) => service.dataset.find.byQuery(input)),
 });

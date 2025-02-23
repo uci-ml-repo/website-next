@@ -12,7 +12,9 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground",
         destructive:
           "border-destructive bg-destructive/5 text-destructive shadow",
-        blue: "bg-blue border-uci-blue bg-uci-blue/5 text-uci-blue shadow",
+        positive: "border-positive bg-positive/5 text-positive shadow",
+        blue: "border-uci-blue bg-uci-blue/5 text-uci-blue shadow",
+        gold: "border-uci-gold bg-uci-gold/5 text-uci-gold shadow brightness-[.8]",
         outline: "text-foreground",
       },
       size: {
@@ -26,6 +28,8 @@ const badgeVariants = cva(
     },
   },
 );
+
+export type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,

@@ -1,7 +1,7 @@
 "use client";
 
 import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { UserRow } from "@/components/admin/users/UserRow";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
@@ -44,8 +44,18 @@ export default function Page() {
     cursor: offset,
   });
 
+  function clear() {
+    clearSearch();
+    setOffset(0);
+    setRoleFilter("all");
+  }
+
+  useEffect(() => {
+    setOffset(0);
+  }, [inputValue]);
+
   return (
-    <div className="max-w-full space-y-4 overflow-x-auto">
+    <div className="max-w-full space-y-4">
       <div className="flex flex-col items-center gap-4 sm:flex-row">
         <div className="w-full">
           <InputClearable
@@ -64,9 +74,10 @@ export default function Page() {
           </div>
           <Select
             value={roleFilter || "all"}
-            onValueChange={(value) =>
-              setRoleFilter(value as Enums.UserRole | "all")
-            }
+            onValueChange={(value) => {
+              setRoleFilter(value as Enums.UserRole | "all");
+              setOffset(0);
+            }}
           >
             <SelectTrigger className="w-32" size="lg">
               <SelectValue />
@@ -89,7 +100,7 @@ export default function Page() {
       ) : data && data.users.length === 0 ? (
         <div className="flex h-20 flex-col items-center justify-center space-y-2">
           <div className="text-muted-foreground">No users found</div>
-          <Button variant="secondary" onClick={clearSearch}>
+          <Button variant="secondary" onClick={clear}>
             Clear search <Undo2Icon />
           </Button>
         </div>
@@ -105,20 +116,22 @@ export default function Page() {
                   ` with role '${formatEnum(roleFilter)}'`}
               </div>
             )}
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="max-sm:hidden">Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead className="w-32">Role</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.users.map((user) => (
-                  <UserRow user={user} key={user.id} />
-                ))}
-              </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="max-sm:hidden">Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead className="w-32">Role</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data.users.map((user) => (
+                    <UserRow user={user} key={user.id} />
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
             {data.count && (
               <SmartPagination
                 totalCount={data.count}

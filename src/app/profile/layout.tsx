@@ -29,7 +29,7 @@ export default async function Layout({
   }
 
   const bookmarks = (await caller.bookmark.find.byUserQuery({})).bookmarks;
-  const datasets = await caller.dataset.find.byUserId({
+  const datasets = await caller.dataset.find.privilegedByQuery({
     userId: session.user.id,
   });
   const discussions = await caller.discussion.find.byUserId({
@@ -55,7 +55,7 @@ export default async function Layout({
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="datasets"
-            badgeValue={datasets.length}
+            badgeValue={datasets.count}
             link={path.join(PROFILE_ROUTE, "datasets")}
           >
             Datasets
