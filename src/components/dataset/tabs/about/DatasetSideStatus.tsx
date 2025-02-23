@@ -8,7 +8,10 @@ export function DatasetSideStatus({
 }) {
   return (
     <div className="space-y-2">
-      <div className="text-lg font-bold">Status</div>
+      <div>
+        <span className="text-lg font-bold">Status</span>{" "}
+        <span className="text-sm text-muted-foreground">(Admin)</span>
+      </div>
       <DatasetStatusBadge status={status} />
     </div>
   );
