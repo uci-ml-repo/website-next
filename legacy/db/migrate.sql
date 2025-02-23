@@ -336,10 +336,10 @@ SELECT
         WHEN dq.datasetcitation IS NOT NULL  THEN 'Citation information: ' || dq.datasetcitation
       END,
       CASE
-        WHEN vi.classlabels IS NOT NULL THEN 'Variables Info: ' || vi.otherinfo
+        WHEN vi.classlabels IS NOT NULL THEN 'Variables Info:' || E'\n'|| vi.otherinfo
       END,
       CASE
-        WHEN vi.otherinfo IS NOT NULL THEN 'Class labels: ' || vi.classlabels
+        WHEN vi.otherinfo IS NOT NULL THEN 'Class labels:' || E'\n\n'|| vi.classlabels
       END
     )
   ) AS description,
