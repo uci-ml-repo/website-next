@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { forbidden, notFound, unauthorized } from "next/navigation";
+import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
 import { cache } from "react";
 
 import { auth } from "@/auth";
@@ -10,6 +10,7 @@ import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { Enums } from "@/db/lib/enums";
+import { DATASET_ROUTE } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
@@ -43,8 +44,12 @@ export default async function Layout({
   const { id, slug } = await params;
 
   const dataset = await getDataset(Number(id));
-  if (!dataset || dataset.slug !== decodeURIComponent(slug)) {
+  if (!dataset) {
     return notFound();
+  }
+
+  if (dataset.slug !== decodeURIComponent(slug)) {
+    return redirect(DATASET_ROUTE(dataset));
   }
 
   if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
