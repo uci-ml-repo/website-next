@@ -103,7 +103,8 @@ export const dataset = pgTable(
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
 
-    size: bigint("size", { mode: "number" }),
+    compressedSize: bigint("compressed_size", { mode: "number" }),
+    uncompressedSize: bigint("uncompressed_size", { mode: "number" }),
     fileCount: integer("file_count"),
 
     userId: uuid("user_id")
@@ -136,13 +137,15 @@ export const dataset = pgTable(
       sql`
         (
           ${t.externalLink} IS NULL
-          AND ${t.size} IS NOT NULL
+          AND ${t.compressedSize} IS NOT NULL
+          AND ${t.uncompressedSize} IS NOT NULL
           AND ${t.fileCount} IS NOT NULL
         )
         OR (
           ${t.externalLink} IS NOT NULL
           AND ${t.externalLink} ~* '^https?://'
-          AND ${t.size} IS NULL
+          AND ${t.compressedSize} IS NULL
+          AND ${t.uncompressedSize} IS NULL
           AND ${t.fileCount} IS NULL
         )
       `,

@@ -1,5 +1,5 @@
-import AdmZip from "adm-zip";
 import fs from "fs-extra";
+import StreamZip from "node-stream-zip";
 import readline from "readline";
 
 import { ServiceError } from "@/server/service/errors";
@@ -71,14 +71,26 @@ export class FileReadService {
       };
     }
 
-    const size = fs.statSync(absolutePath).size;
-    const fileCount = new AdmZip(absolutePath)
-      .getEntries()
-      .filter((entry) => !entry.isDirectory).length;
+    const zip = new StreamZip.async({ file: absolutePath });
+
+    const entries = Object.entries(await zip.entries());
+
+    let uncompressedSize = 0;
+    let fileCount = 0;
+
+    for (const [_path, entry] of entries) {
+      if (!entry.isDirectory) {
+        uncompressedSize += entry.size;
+        fileCount++;
+      }
+    }
+
+    await zip.close();
 
     return {
-      size,
       fileCount,
+      uncompressedSize,
+      compressedSize: fs.statSync(absolutePath).size,
     };
   }
 }

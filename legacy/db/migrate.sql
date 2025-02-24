@@ -242,7 +242,8 @@ CREATE TABLE "dataset" (
   "data_types" "dataset_characteristic" [],
   "tasks" "dataset_task" [],
   "feature_types" "dataset_feature_type" [],
-  "size" BIGINT,
+  "compressed_size" BIGINT,
+  "uncompressed_size" BIGINT,
   "file_count" INTEGER,
   "user_id" uuid NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -260,13 +261,14 @@ CREATE TABLE "dataset" (
   CONSTRAINT "files_check" CHECK (
     (
       "dataset"."external_link" IS NULL
-      AND "dataset"."size" IS NOT NULL
+      AND "dataset"."compressed_size" IS NOT NULL
+      AND "dataset"."uncompressed_size" IS NOT NULL
       AND "dataset"."file_count" IS NOT NULL
     )
     OR (
       "dataset"."external_link" IS NOT NULL
       AND "dataset"."external_link" ~* '^https?://'
-      AND "dataset"."size" IS NULL
+      AND "dataset"."uncompressed_size" IS NULL
       AND "dataset"."file_count" IS NULL
     )
   )
@@ -413,7 +415,15 @@ SELECT
       file_info fi
     WHERE
       fi.datasetid = dd.id
-  ) AS size
+  ) AS compressed_size,
+  (
+    SELECT
+      uncompressedsize
+    FROM
+      file_info fi
+    WHERE
+      fi.datasetid = dd.id
+  ) AS uncompressed_size
 FROM
   donated_datasets dd
   INNER JOIN descriptive_questions dq ON dd.id = dq.datasetid
@@ -446,7 +456,8 @@ INSERT INTO
     doi,
     external_link,
     file_count,
-    size
+    compressed_size,
+    uncompressed_size
   )
 VALUES
   (
@@ -472,7 +483,8 @@ VALUES
     rec.doi,
     rec.external_link,
     CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.file_count END,
-    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.size END
+    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.compressed_size END,
+    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.uncompressed_size END
   );
 
 EXCEPTION WHEN OTHERS THEN
@@ -817,7 +829,8 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     "dataset"."data_types",
     "dataset"."tasks",
     "dataset"."feature_types",
-    "dataset"."size",
+    "dataset"."compressed_size",
+    "dataset"."uncompressed_size",
     "dataset"."file_count",
     "dataset"."user_id",
     "dataset"."donated_at",

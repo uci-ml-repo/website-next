@@ -3,10 +3,12 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
 import { FilesBrowse } from "@/components/dataset/tabs/files/browse/FilesBrowse";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { FilesView } from "@/components/dataset/tabs/files/view/FilesView";
 import { useIsMobile } from "@/components/hooks/use-mobile";
+import { Card, CardContent } from "@/components/ui/card";
 import { Split } from "@/components/ui/split";
 import type { DatasetResponse } from "@/lib/types";
 
@@ -30,7 +32,11 @@ export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
     }
   }, [currentFile, isMobile]);
 
-  return (
+  if (!dataset.uncompressedSize) {
+    return null;
+  }
+
+  return dataset.uncompressedSize < 100_000_000 ? (
     <div className="flex h-full flex-col space-y-2">
       <div className="flex justify-between md:hidden">
         <button
@@ -64,5 +70,14 @@ export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
         </div>
       </Split>
     </div>
+  ) : (
+    <Card>
+      <CardContent className="flex flex-col items-center justify-center space-y-2 p-8">
+        <div className="text-pretty text-center">
+          Dataset is too large to browse.
+        </div>
+        <DatasetDownloadButton dataset={dataset} className="w-fit" />
+      </CardContent>
+    </Card>
   );
 }

@@ -26,13 +26,4 @@ for item in "$COPY_TO_PATH"/{public,private}/*; do
     fi
     rm -rf "$item/Thumbnails"
   fi
-  for zip_file in "$item"/*.zip; do
-    if [ -f "$zip_file" ]; then
-      folder_name=$(basename "$zip_file" .zip)
-      unzip_folder="$item/$folder_name"
-      if [ ! -d "$unzip_folder" ]; then
-        unzip -o "$zip_file" -d "$unzip_folder"
-      fi
-    fi
-  done
 done
