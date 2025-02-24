@@ -1,8 +1,6 @@
 import { ArrowRightIcon, LinkIcon, UploadIcon } from "lucide-react";
-import type { Metadata } from "next";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
-import { Main } from "@/components/layout/Main";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   CONTRIBUTE_DONATION_ROUTE,
@@ -10,8 +8,6 @@ import {
 } from "@/lib/routes";
 
 import Contribution from "./contribution.mdx";
-
-export const metadata: Metadata = { title: "Contribute" };
 
 export default function Page() {
   const options = [
@@ -30,7 +26,7 @@ export default function Page() {
   ];
 
   return (
-    <Main className="!max-w-4xl space-y-6">
+    <div className="space-y-6">
       <Contribution />
       <div className="space-y-2 pt-6">
         <div className="text-muted-foreground">
@@ -57,7 +53,7 @@ export default function Page() {
           ))}
         </div>
       </div>
-    </Main>
+    </div>
   );
 }
 

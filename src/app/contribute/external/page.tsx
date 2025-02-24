@@ -1,17 +1,27 @@
 import { PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 
+import { auth, signIn } from "@/auth";
 import { SignInRequired } from "@/components/auth/SignInRequired";
-import { Main } from "@/components/layout/Main";
 import { Button } from "@/components/ui/button";
-import { CONTRIBUTE_EXTERNAL_FORM_ROUTE } from "@/lib/routes";
+import {
+  CONTRIBUTE_DONATION_ROUTE,
+  CONTRIBUTE_EXTERNAL_FORM_ROUTE,
+} from "@/lib/routes";
 
 import Policy from "./policy.mdx";
+
 export const metadata: Metadata = { title: "Contribute" };
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return signIn(undefined, { redirectTo: CONTRIBUTE_DONATION_ROUTE });
+  }
+
   return (
-    <Main className="!max-w-4xl space-y-10">
+    <div>
       <div>
         <Policy />
       </div>
@@ -30,6 +40,6 @@ export default function Page() {
           </Button>
         </SignInRequired>
       </div>
-    </Main>
+    </div>
   );
 }

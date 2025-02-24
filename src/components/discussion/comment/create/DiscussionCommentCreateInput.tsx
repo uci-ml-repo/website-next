@@ -105,6 +105,7 @@ export function DiscussionCommentCreateInput({
               <div className="flex items-center justify-end space-x-2">
                 <Button
                   variant="secondary"
+                  disabled={isSubmitting}
                   onClick={() =>
                     isDirty ? setCancelDialogOpen(true) : setIsCommenting(false)
                   }

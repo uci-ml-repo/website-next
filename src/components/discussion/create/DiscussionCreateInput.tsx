@@ -134,6 +134,7 @@ export function DiscussionCreateInput({
           <div className="flex items-center justify-between">
             <Button
               variant="secondary"
+              disabled={isSubmitting || isSubmitSuccessful}
               onClick={() =>
                 isDirty
                   ? setCancelDialogOpen(true)
