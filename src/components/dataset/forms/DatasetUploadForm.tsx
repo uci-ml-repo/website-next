@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
   title: z
@@ -29,7 +30,7 @@ const formSchema = z.object({
 
 export type FormData = z.infer<typeof formSchema>;
 
-export function ZipFileUploadForm() {
+export function DatasetUploadForm() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "", zipFile: null },
@@ -37,8 +38,12 @@ export function ZipFileUploadForm() {
 
   const zipFile = form.watch("zipFile");
 
+  const datasetCreationMutation = trpc.dataset.create.initial.useMutation();
+
   const onSubmit = (values: FormData) => {
-    console.log(values);
+    datasetCreationMutation.mutate({
+      title: values.title,
+    });
   };
 
   return (

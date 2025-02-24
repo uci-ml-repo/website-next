@@ -6,7 +6,7 @@ import React, { useCallback } from "react";
 import { type FileRejection, useDropzone } from "react-dropzone";
 import type { useForm } from "react-hook-form";
 
-import type { FormData } from "@/components/dataset/forms/ZipFileUploadForm";
+import type { FormData } from "@/components/dataset/forms/DatasetUploadForm";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -118,7 +118,7 @@ export function ZipFileUploadFormItem({
             </div>
           ) : (
             <div className="space-y-1">
-              <div className="text-lg font-bold">
+              <div className="text-pretty text-lg font-bold">
                 Drag & drop a file to upload (.zip)
               </div>
               <div className="text-muted-foreground">or</div>

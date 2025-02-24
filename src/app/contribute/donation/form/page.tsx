@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ZipFileUploadForm } from "@/components/dataset/forms/ZipFileUploadForm";
+import { DatasetUploadForm } from "@/components/dataset/forms/DatasetUploadForm";
 import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
 export default function Page() {
@@ -13,7 +13,7 @@ export default function Page() {
           donation process. Once uploaded, you can add more details and submit
           your dataset for review.
         </div>
-        <ZipFileUploadForm />
+        <DatasetUploadForm />
       </div>
       <div className="text-sm text-muted-foreground">
         <div>
