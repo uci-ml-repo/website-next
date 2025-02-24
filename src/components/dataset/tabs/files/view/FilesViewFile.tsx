@@ -1,5 +1,5 @@
 import path from "path";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   audioExtensions,
@@ -23,8 +23,6 @@ import { trpc } from "@/server/trpc/query/client";
 export function FilesViewFile({ file }: { file: DirectoryEntity }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [cachedLines, setCachedLines] = useState<string[]>([]);
-
   const readFileQuery = trpc.file.read.readFileInfinite.useInfiniteQuery(
     {
       path: file.path,
@@ -35,18 +33,13 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     },
   );
 
+  const lines = readFileQuery.data?.pages.flatMap((page) => page.lines) || [];
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
     }
   }, [file]);
-
-  useEffect(() => {
-    const lines = readFileQuery.data?.pages.flatMap((page) => page.lines) || [];
-    if (lines.length > 0 || !readFileQuery.isFetching) {
-      setCachedLines(lines);
-    }
-  }, [readFileQuery.data?.pages, readFileQuery.isFetching]);
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const element = event.currentTarget;
@@ -74,7 +67,7 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     return <Alert variant="destructive">Error loading file contents</Alert>;
   }
 
-  if (cachedLines.length === 0 && !readFileQuery.hasNextPage) {
+  if (lines.length === 0 && !readFileQuery.hasNextPage) {
     return (
       <div className="min-w-fit p-4">
         <Alert className="text-nowrap">File is empty</Alert>
@@ -101,11 +94,11 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     >
       {Object.keys(tabularToDelimiter).includes(extension) ? (
         <FilesViewFilesTabular
-          lines={cachedLines}
+          lines={lines}
           delimiter={tabularToDelimiter[extension]}
         />
       ) : (
-        <FilesViewFileText lines={cachedLines} />
+        <FilesViewFileText lines={lines} />
       )}
 
       {readFileQuery.isFetchingNextPage && (
