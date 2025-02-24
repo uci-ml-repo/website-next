@@ -5,7 +5,7 @@ import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
 export default function Page() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       <div className="space-y-6">
         <h1 className="text-3xl font-bold text-uci-blue">Upload Dataset</h1>
         <div className="text-lg">
