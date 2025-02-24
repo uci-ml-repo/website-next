@@ -41,6 +41,7 @@ export function DatasetFilterItem({
         open={dropdownOpen}
         onOpenChange={onDropdownOpenChange}
         className="w-full"
+        defaultOpen={active}
       >
         <CollapsibleTrigger className="flex w-full cursor-pointer items-center hover:bg-accent">
           <div className="flex w-full items-center justify-between p-4">

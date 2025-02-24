@@ -12,6 +12,7 @@ import {
   DatasetFilterContent,
   datasetFilters,
 } from "@/components/datasets/DatasetFiltersContent";
+import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -19,13 +20,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { DatasetQuery } from "@/server/schema/dataset";
 
 export function DatasetFiltersDesktop() {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
-
-  const [openStates, setOpenStates] = useState<boolean[]>(
-    Array(datasetFilters.length).fill(false),
-  );
+  const { filters } = useQueryFilters<DatasetQuery>();
+  const [openStates, setOpenStates] = useState<boolean[]>([
+    !!filters.attributes?.length,
+    !!filters.keywords?.length,
+    !!filters.dataTypes?.length,
+    !!filters.subjectAreas?.length,
+    !!filters.tasks?.length,
+    !!filters.featureTypes?.length,
+    !!filters.featureCountMax || !!filters.featureCountMin,
+    !!filters.instanceCountMax || !!filters.instanceCountMin,
+    !!filters.python,
+  ]);
 
   const isAnyOpen = openStates.some((state) => state);
 

@@ -4,26 +4,78 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
-  cn(
-    "flex w-full rounded-md border border-input bg-input-background py-1 text-base shadow-sm transition-colors",
-    "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-    "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-  ),
+  "w-full border border-input bg-input-background py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variantSize: {
-        sm: "h-8 px-4 text-sm",
-        default: "h-10 px-5 text-base",
-        lg: "h-11 px-6 text-lg",
-        xl: "h-12 px-6 text-lg",
+        sm: "h-8 text-sm",
+        default: "h-10 text-base",
+        lg: "h-11 text-lg",
+        xl: "h-12 text-lg",
       },
       pill: {
         true: "rounded-full",
         false: "rounded-md",
       },
     },
+    compoundVariants: [
+      { variantSize: "sm", pill: true, class: "px-4" },
+      { variantSize: "sm", pill: false, class: "px-2" },
+      { variantSize: "default", pill: true, class: "px-5" },
+      { variantSize: "default", pill: false, class: "px-3" },
+      { variantSize: "lg", pill: true, class: "px-6" },
+      { variantSize: "lg", pill: false, class: "px-4" },
+      { variantSize: "xl", pill: true, class: "px-6" },
+      { variantSize: "xl", pill: false, class: "px-4" },
+    ],
     defaultVariants: {
       variantSize: "default",
+      pill: true,
+    },
+  },
+);
+
+export const iconPadding = {
+  left: {
+    sm: { pill: "pl-8", nonPill: "pl-6" },
+    default: { pill: "pl-10", nonPill: "pl-8" },
+    lg: { pill: "pl-12", nonPill: "pl-10" },
+    xl: { pill: "pl-12", nonPill: "pl-10" },
+  },
+  right: {
+    sm: { pill: "pr-8", nonPill: "pr-6" },
+    default: { pill: "pr-10", nonPill: "pr-8" },
+    lg: { pill: "pr-12", nonPill: "pr-10" },
+    xl: { pill: "pr-12", nonPill: "pr-10" },
+  },
+};
+
+const iconVariants = cva(
+  "absolute flex items-center justify-center text-muted-foreground",
+  {
+    variants: {
+      variantSize: {
+        sm: "h-4 w-4",
+        default: "h-5 w-5",
+        lg: "h-6 w-6",
+        xl: "h-6 w-6",
+      },
+      iconPosition: {
+        left: "left-2",
+        right: "right-2",
+      },
+    },
+    compoundVariants: [
+      { variantSize: "default", iconPosition: "left", class: "left-3" },
+      { variantSize: "lg", iconPosition: "left", class: "left-3" },
+      { variantSize: "xl", iconPosition: "left", class: "left-4" },
+      { variantSize: "default", iconPosition: "right", class: "right-3" },
+      { variantSize: "lg", iconPosition: "right", class: "right-3" },
+      { variantSize: "xl", iconPosition: "right", class: "right-4" },
+    ],
+    defaultVariants: {
+      variantSize: "default",
+      iconPosition: "left",
     },
   },
 );
@@ -43,81 +95,43 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       className,
       containerClassName,
-      variantSize,
+      variantSize = "default",
+      pill = true,
       icon: Icon,
       iconPosition = "left",
-      pill = true,
       onIconClick,
       iconButtonProps,
-      value,
-      onChange,
       ...props
     },
     ref,
   ) => {
-    const iconSize = {
-      sm: "size-4",
-      default: "size-5",
-      lg: "size-6",
-      xl: "size-6",
-    };
-
-    const iconOffset = {
-      left: {
-        sm: "left-2",
-        default: "left-3",
-        lg: "left-3",
-        xl: "left-4",
-      },
-      right: {
-        sm: "right-2",
-        default: "right-3",
-        lg: "right-3",
-        xl: "right-4",
-      },
-    };
-
-    const iconInputPadding = {
-      sm: iconPosition === "left" ? "pl-8" : "pr-8",
-      default: iconPosition === "left" ? "pl-10" : "pr-10",
-      lg: iconPosition === "left" ? "pl-12" : "pr-12",
-      xl: iconPosition === "left" ? "pl-12" : "pr-12",
-    };
-
+    const extraPadding = Icon
+      ? iconPadding[iconPosition][variantSize ?? "default"][
+          pill ? "pill" : "nonPill"
+        ]
+      : "";
     return (
       <div className={cn("relative flex items-center", containerClassName)}>
         <input
+          ref={ref}
           className={cn(
             inputVariants({ variantSize, pill, className }),
-            Icon ? iconInputPadding[variantSize || "default"] : "",
+            extraPadding,
           )}
-          ref={ref}
-          value={value}
-          onChange={onChange}
           {...props}
         />
         {Icon &&
           (onIconClick ? (
             <button
               type="button"
-              className={cn(
-                "absolute z-20 flex cursor-pointer items-center justify-center text-muted-foreground",
-                iconSize[variantSize ?? "default"],
-                iconOffset[iconPosition][variantSize ?? "default"],
-              )}
+              className={cn(iconVariants({ variantSize, iconPosition }))}
               onClick={onIconClick}
               {...iconButtonProps}
             >
               <Icon />
             </button>
           ) : (
-            <span
-              className={cn(
-                "pointer-events-none absolute flex items-center justify-center text-muted-foreground",
-                iconSize[variantSize ?? "default"],
-                iconOffset[iconPosition][variantSize ?? "default"],
-              )}
-            >
+            <span className={cn(iconVariants({ variantSize, iconPosition }))}>
               <Icon />
             </span>
           ))}
@@ -128,4 +142,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 
-export { Input, inputVariants };
+export { iconVariants, Input, inputVariants };

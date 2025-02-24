@@ -106,10 +106,6 @@ export function DatasetFilterDualSlider({
     initialized,
   ]);
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
-
   return (
     <DatasetFilterItem
       label={label}

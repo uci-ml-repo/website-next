@@ -39,8 +39,6 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
       const mergedFilters = { ...currentFilters, ...newFilters };
 
-      console.log(mergedFilters);
-
       const params = buildQueryFilters(mergedFilters);
       const url = `${pathname}?${params.toString()}`;
 

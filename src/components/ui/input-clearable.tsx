@@ -1,47 +1,29 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps } from "class-variance-authority";
 import { CircleXIcon } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const inputClearableVariants = cva(
-  "flex w-full rounded-md border border-input bg-input-background px-6 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-  {
-    variants: {
-      variantSize: {
-        sm: "h-9 text-sm",
-        default: "h-10 text-base",
-        lg: "h-11 px-6 text-lg",
-        xl: "h-12 px-6 text-lg",
-      },
-      pill: {
-        true: "rounded-full",
-      },
-    },
-    defaultVariants: {
-      variantSize: "default",
-    },
-  },
-);
+import { iconPadding, iconVariants, inputVariants } from "./input"; // adjust the import path as needed
 
-export interface InputProps
+export interface InputClearableProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputClearableVariants> {
+    VariantProps<typeof inputVariants> {
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   iconPosition?: "left" | "right";
   containerClassName?: string;
   setValue: (value: string) => void;
 }
 
-const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
+const InputClearable = React.forwardRef<HTMLInputElement, InputClearableProps>(
   (
     {
       className,
       containerClassName,
-      variantSize,
+      variantSize = "default",
+      pill = true,
       icon: Icon,
       iconPosition = "left",
-      pill = true,
       value,
       setValue,
       onChange,
@@ -49,60 +31,44 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const iconSize = {
-      sm: "size-4",
-      default: "size-5",
-      lg: "size-6",
-      xl: "size-6",
-    };
-
-    const iconOffset = {
-      left: {
-        sm: "left-2",
-        default: "left-3",
-        lg: "left-3",
-        xl: "left-4",
-      },
-      right: {
-        sm: "right-2",
-        default: "right-3",
-        lg: "right-3",
-        xl: "right-4",
-      },
-    };
-
-    const iconInputPadding = {
-      sm: iconPosition === "left" ? "pl-8" : "pr-8",
-      default: iconPosition === "left" ? "pl-10" : "pr-10",
-      lg: iconPosition === "left" ? "pl-12" : "pr-12",
-      xl: iconPosition === "left" ? "pl-12" : "pr-12",
-    };
+    const extraIconPadding = Icon
+      ? iconPadding[iconPosition][variantSize ?? "default"][
+          pill ? "pill" : "nonPill"
+        ]
+      : "";
+    const clearButtonPadding = value ? "pr-10" : "";
 
     return (
       <div className={cn("relative flex items-center", containerClassName)}>
-        {Icon && (
+        {Icon && iconPosition === "left" && (
           <span
-            className={cn(
-              "pointer-events-none absolute flex items-center justify-center text-muted-foreground",
-              iconSize[variantSize ?? "default"],
-              iconOffset[iconPosition][variantSize ?? "default"],
-            )}
+            className={cn(iconVariants({ variantSize, iconPosition: "left" }))}
           >
             <Icon />
           </span>
         )}
         <input
-          className={cn(
-            inputClearableVariants({ variantSize, pill, className }),
-            Icon ? iconInputPadding[variantSize || "default"] : "",
-            value ? "pr-10" : "",
-          )}
           ref={ref}
+          className={cn(
+            inputVariants({ variantSize, pill, className }),
+            Icon && extraIconPadding,
+            clearButtonPadding,
+          )}
           value={value}
           onChange={onChange}
           autoComplete="off"
           {...props}
         />
+        {Icon && iconPosition === "right" && (
+          <span
+            className={cn(
+              iconVariants({ variantSize, iconPosition: "right" }),
+              value && "mr-4",
+            )}
+          >
+            <Icon />
+          </span>
+        )}
         {value && (
           <button
             type="button"
@@ -113,7 +79,17 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
             className="absolute right-3 flex items-center justify-center text-muted-foreground"
             aria-label="Clear input"
           >
-            <CircleXIcon className="size-5" />
+            <CircleXIcon
+              className={
+                variantSize === "sm"
+                  ? "size-4"
+                  : variantSize === "default"
+                    ? "size-5"
+                    : variantSize === "lg"
+                      ? "size-6"
+                      : "size-6"
+              }
+            />
           </button>
         )}
       </div>
@@ -121,6 +97,6 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputProps>(
   },
 );
 
-InputClearable.displayName = "Input";
+InputClearable.displayName = "InputClearable";
 
-export { InputClearable, inputClearableVariants };
+export { InputClearable };
