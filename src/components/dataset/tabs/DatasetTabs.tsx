@@ -26,7 +26,7 @@ export function DatasetTabs({ dataset }: DatasetTabsProps) {
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
 
-  const { data: discussionCount } = trpc.discussion.find.countByQuery.useQuery({
+  const { data: discussions } = trpc.discussion.find.byQuery.useQuery({
     datasetId: dataset.id,
   });
 
@@ -54,7 +54,7 @@ export function DatasetTabs({ dataset }: DatasetTabsProps) {
 
           <LinearTabsTrigger
             value="discussions"
-            badgeValue={discussionCount}
+            badgeValue={discussions?.count ?? null}
             link={path.join(basePath, "discussions")}
           >
             Discussions

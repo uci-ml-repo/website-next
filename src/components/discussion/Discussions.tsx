@@ -65,7 +65,7 @@ export function Discussions({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col items-center gap-4 sm:flex-row">
+      <div className="flex flex-col items-center gap-4 md:flex-row">
         <div className="w-full">
           <InputClearable
             icon={SearchIcon}
@@ -77,7 +77,7 @@ export function Discussions({
           />
         </div>
 
-        <div className="justify-between gap-4 max-sm:flex max-sm:w-full max-sm:flex-row-reverse">
+        <div className="flex justify-between gap-4 max-md:w-full max-md:flex-row-reverse">
           <DiscussionsOrderBy
             orderBy={orderBy}
             setOrderBy={setOrderBy}

@@ -34,22 +34,28 @@ export function DiscussionDeleteDialog({
     redirect(path.join(DATASET_ROUTE(discussion.dataset), "discussions"));
   }
 
+  const pending = removeMutation.isPending || removeMutation.isSuccess;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent aria-describedby={undefined}>
-        <DialogTitle>Delete Comment</DialogTitle>
+        <DialogTitle>Delete Discussion</DialogTitle>
         <div>Are you sure you want to delete this discussion?</div>
         <div>This action can not be undone.</div>
         <div className="flex justify-between">
-          <Button variant="secondary" onClick={() => setOpen(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setOpen(false)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
             variant="destructive"
-            disabled={removeMutation.isPending}
+            disabled={pending}
             onClick={removeDiscussion}
           >
-            {removeMutation.isPending && <Spinner />}
+            {pending && <Spinner />}
             Delete
           </Button>
         </div>
