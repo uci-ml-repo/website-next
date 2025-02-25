@@ -1,6 +1,6 @@
 "use client";
 
-import { UploadIcon, XIcon } from "lucide-react";
+import { FolderArchiveIcon, UploadIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useCallback } from "react";
 import { type FileRejection, useDropzone } from "react-dropzone";
@@ -19,8 +19,10 @@ import { abbreviateFileSize, cn } from "@/lib/utils";
 
 export function ZipFileUploadFormItem({
   form,
+  disabled,
 }: {
   form: ReturnType<typeof useForm<FormData>>;
+  disabled?: boolean;
 }) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -69,7 +71,7 @@ export function ZipFileUploadFormItem({
       <FormLabel className="text-lg">Upload Data</FormLabel>
       <div className="space-y-2 pb-2 text-muted-foreground">
         <p>
-          Please upload a single zip file containing the entire contents of your
+          Upload a single zip file containing the entire contents of your
           dataset, including any additional files and documentation.
         </p>
         <p>
@@ -90,7 +92,7 @@ export function ZipFileUploadFormItem({
             { "cursor-pointer": !zipFile },
           )}
         >
-          <input {...getInputProps()} disabled={!!zipFile} />
+          <input {...getInputProps()} disabled={!!zipFile || disabled} />
           {isDragActive ? (
             <div className="flex flex-col items-center space-y-2">
               <UploadIcon />
@@ -98,10 +100,13 @@ export function ZipFileUploadFormItem({
             </div>
           ) : zipFile ? (
             <div className="flex w-full items-center justify-between space-x-1">
-              <span className="space-x-1 truncate text-lg font-bold">
-                {zipFile.name}
-              </span>
-              <span className="flex flex-1 justify-start text-nowrap text-muted-foreground">
+              <div className="flex items-center space-x-1 overflow-hidden">
+                <FolderArchiveIcon className="shrink-0" />
+                <span className="truncate text-lg font-bold">
+                  {zipFile.name}
+                </span>
+              </div>
+              <span className="flex flex-1 justify-start text-nowrap text-muted-foreground max-xs:hidden">
                 ({abbreviateFileSize(zipFile.size)})
               </span>
               <Button
@@ -112,6 +117,7 @@ export function ZipFileUploadFormItem({
                   form.setValue("zipFile", null);
                   event.stopPropagation();
                 }}
+                disabled={disabled}
               >
                 <XIcon />
               </Button>

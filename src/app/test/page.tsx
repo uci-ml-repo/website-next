@@ -1,14 +1,14 @@
 "use client";
 
+import axios from "axios";
 import * as React from "react";
 
 import { Main } from "@/components/layout/Main";
-import { trpc } from "@/server/trpc/query/client";
 
 export default function Test() {
-  const { data } = trpc.file.read.zipStats.useQuery({
-    path: "/public/42.zip",
+  axios.post("/api/static/private/test.txt").then((response) => {
+    console.log(response.data);
   });
 
-  return <Main>{JSON.stringify(data)}</Main>;
+  return <Main>TEST</Main>;
 }

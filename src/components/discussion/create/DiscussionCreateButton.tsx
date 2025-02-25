@@ -10,14 +10,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { DatasetIdentificationSelect } from "@/db/lib/types";
+import { DATASET_DISCUSSION_CREATE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export function DiscussionCreateButton({
   className,
   tooltip,
+  dataset,
 }: {
   className?: string;
   tooltip?: boolean;
+  dataset: DatasetIdentificationSelect;
 }) {
   const CreateButton = () => (
     <Button
@@ -37,7 +41,7 @@ export function DiscussionCreateButton({
       signInBody="To create discussions and access other features, please sign in."
       emailVerificationTitle="Verify your email to create discussions"
       emailVerificationBody="To create discussions, please verify your email."
-      verifiedRedirect="discussions/create"
+      verifiedRedirect={DATASET_DISCUSSION_CREATE_ROUTE(dataset)}
     >
       {tooltip ? (
         <TooltipProvider>

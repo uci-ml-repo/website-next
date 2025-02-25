@@ -91,7 +91,7 @@ export const dataset = pgTable(
     hasGraphics: boolean("has_graphics").default(false).notNull(),
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
-    slug: text("slug").notNull(),
+    slug: text("slug").notNull().unique(),
     status: approvalStatus("status")
       .default(Enums.ApprovalStatus.DRAFT)
       .notNull(),
@@ -135,18 +135,21 @@ export const dataset = pgTable(
     check(
       "files_check",
       sql`
-        (
-          ${t.externalLink} IS NULL
-          AND ${t.compressedSize} IS NOT NULL
-          AND ${t.uncompressedSize} IS NOT NULL
-          AND ${t.fileCount} IS NOT NULL
-        )
+        ${t.status} = 'draft'
         OR (
-          ${t.externalLink} IS NOT NULL
-          AND ${t.externalLink} ~* '^https?://'
-          AND ${t.compressedSize} IS NULL
-          AND ${t.uncompressedSize} IS NULL
-          AND ${t.fileCount} IS NULL
+          (
+            ${t.externalLink} IS NULL
+            AND ${t.compressedSize} IS NOT NULL
+            AND ${t.uncompressedSize} IS NOT NULL
+            AND ${t.fileCount} IS NOT NULL
+          )
+          OR (
+            ${t.externalLink} IS NOT NULL
+            AND ${t.externalLink} ~ * '^https?://'
+            AND ${t.compressedSize} IS NULL
+            AND ${t.uncompressedSize} IS NULL
+            AND ${t.fileCount} IS NULL
+          )
         )
       `,
     ),
@@ -686,7 +689,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
             WHERE
               ${author.datasetId} = ${dataset.id}
           ),
-          ARRAY[]::jsonb[]
+          ARRAY[]::JSONB[]
         )
       `.as("authors"),
       variables: sql<VariableSelect[]>`
@@ -716,7 +719,7 @@ export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
             WHERE
               ${variable.datasetId} = ${dataset.id}
           ),
-          ARRAY[]::jsonb[]
+          ARRAY[]::JSONB[]
         )
       `.as("variables"),
       variableNames: sql<string[]>`

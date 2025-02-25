@@ -1,8 +1,6 @@
 -------------------------------------------------------------------------------
 -- UTILS
 -------------------------------------------------------------------------------
-CREATE SEQUENCE if NOT EXISTS cuid_counter_seq start 1 minvalue 1 maxvalue 999999999999999999 cycle;
-
 CREATE EXTENSION if NOT EXISTS pg_trgm;
 
 ALTER TYPE users_role
@@ -222,6 +220,38 @@ ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (i
 -------------------------------------------------------------------------------
 DROP SEQUENCE datasets_id_seq CASCADE;
 
+DO $$
+  DECLARE
+    dataset_ids integer[] := ARRAY[387, 497];
+  BEGIN
+    DELETE FROM dataset_creators
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM dataset_notes
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM descriptive_questions
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM dataset_file USING file_info
+    WHERE file_info.datasetid = ANY(dataset_ids)
+      AND dataset_file.fileinfoid = file_info.id;
+
+    DELETE FROM file_info
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM variable_info
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM variables
+    WHERE datasetid = ANY(dataset_ids);
+
+    DELETE FROM donated_datasets
+    WHERE id = ANY(dataset_ids);
+  END
+$$;
+
+-- duplicate slugs
 CREATE TABLE "dataset" (
   "id" serial PRIMARY KEY NOT NULL,
   "title" TEXT NOT NULL,
@@ -248,6 +278,7 @@ CREATE TABLE "dataset" (
   "user_id" uuid NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "accepted_check" CHECK (
     "dataset"."status" = 'draft'
     OR (
@@ -259,17 +290,20 @@ CREATE TABLE "dataset" (
     )
   ),
   CONSTRAINT "files_check" CHECK (
-    (
-      "dataset"."external_link" IS NULL
-      AND "dataset"."compressed_size" IS NOT NULL
-      AND "dataset"."uncompressed_size" IS NOT NULL
-      AND "dataset"."file_count" IS NOT NULL
-    )
+    "dataset"."status" = 'draft'
     OR (
-      "dataset"."external_link" IS NOT NULL
-      AND "dataset"."external_link" ~* '^https?://'
-      AND "dataset"."uncompressed_size" IS NULL
-      AND "dataset"."file_count" IS NULL
+      (
+        "dataset"."external_link" IS NULL
+        AND "dataset"."compressed_size" IS NOT NULL
+        AND "dataset"."uncompressed_size" IS NOT NULL
+        AND "dataset"."file_count" IS NOT NULL
+      )
+      OR (
+        "dataset"."external_link" IS NOT NULL
+        AND "dataset"."external_link" ~* '^https?://'
+        AND "dataset"."uncompressed_size" IS NULL
+        AND "dataset"."file_count" IS NULL
+      )
     )
   )
 );
@@ -869,7 +903,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
         WHERE
           "author"."dataset_id" = "dataset"."id"
       ),
-      ARRAY[]::jsonb[]
+      ARRAY[]::JSONB[]
     ) AS "authors",
     COALESCE(
       (
@@ -897,7 +931,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
         WHERE
           "variable"."dataset_id" = "dataset"."id"
       ),
-      ARRAY[]::jsonb[]
+      ARRAY[]::JSONB[]
     ) AS "variables",
     COALESCE(
       (
@@ -964,9 +998,11 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     LEFT JOIN "dataset_keyword" ON "dataset"."id" = "dataset_keyword"."dataset_id"
   GROUP BY
     "dataset"."id"
-);
+)
+WITH
+  DATA;
 
-CREATE INDEX dataset_view_id_index ON dataset_view (id);
+CREATE UNIQUE INDEX dataset_view_id_index ON dataset_view (id);
 
 CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
 
@@ -1145,8 +1181,6 @@ DROP TABLE foreign_papers CASCADE;
 
 DROP TABLE datasets_legacy;
 
-DROP SEQUENCE cuid_counter_seq;
-
 DROP SEQUENCE users_id_seq CASCADE;
 
 DROP SEQUENCE keywords_id_seq;
@@ -1166,7 +1200,7 @@ DROP TYPE requests_status CASCADE;
 -- );
 --
 -- --> statement-breakpoint
--- CREATE INDEX dataset_view_id_index ON dataset_view (id);
+-- CREATE UNIQUE INDEX dataset_view_id_index ON dataset_view (id);
 --
 -- --> statement-breakpoint
 -- CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);

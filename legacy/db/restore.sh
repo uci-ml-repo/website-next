@@ -23,3 +23,5 @@ BEGIN
     END LOOP;
 END
 \$\$;"
+
+psql --dbname="$DATABASE_URL" -c "SELECT setval('dataset_id_seq', (SELECT MAX(id) FROM dataset));"

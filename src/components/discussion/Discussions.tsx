@@ -84,7 +84,9 @@ export function Discussions({
             clearSearch={clearSearch}
             className="flex justify-end"
           />
-          {allowCreate && <DiscussionCreateButton tooltip />}
+          {allowCreate && (
+            <DiscussionCreateButton tooltip dataset={discussions[0].dataset} />
+          )}
         </div>
       </div>
 

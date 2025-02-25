@@ -36,7 +36,7 @@ export default async function Page({
           <div className="text-muted-foreground">
             There are no discussions yet
           </div>
-          <DiscussionCreateButton />
+          <DiscussionCreateButton dataset={dataset} />
         </div>
       </CardContent>
     </Card>

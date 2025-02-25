@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { UploadIcon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { DATASET_RELATIVE_ZIP_PATH } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
@@ -38,13 +40,17 @@ export function DatasetUploadForm() {
 
   const zipFile = form.watch("zipFile");
 
-  const datasetCreationMutation = trpc.dataset.create.initial.useMutation();
+  const datasetCreateMutation = trpc.dataset.create.initial.useMutation();
 
-  const onSubmit = (values: FormData) => {
-    datasetCreationMutation.mutate({
+  const pending = datasetCreateMutation.isPending;
+
+  async function onSubmit(values: FormData) {
+    const createdDataset = await datasetCreateMutation.mutateAsync({
       title: values.title,
     });
-  };
+
+    await axios.post(DATASET_RELATIVE_ZIP_PATH(createdDataset));
+  }
 
   return (
     <Form {...form}>
@@ -56,7 +62,12 @@ export function DatasetUploadForm() {
             <FormItem>
               <FormLabel className="text-lg">Dataset Title</FormLabel>
               <FormControl>
-                <Input pill={false} className="font-bold" {...field} />
+                <Input
+                  pill={false}
+                  className="font-bold"
+                  {...field}
+                  disabled={pending}
+                />
               </FormControl>
               <FormMessage className="text-sm" />
             </FormItem>
@@ -65,7 +76,9 @@ export function DatasetUploadForm() {
         <FormField
           control={form.control}
           name="zipFile"
-          render={() => <ZipFileUploadFormItem form={form} />}
+          render={() => (
+            <ZipFileUploadFormItem form={form} disabled={pending} />
+          )}
         />
         <Button
           type="submit"

@@ -123,6 +123,7 @@ CREATE TABLE "dataset" (
   "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "accepted_check" CHECK (
     "dataset"."status" = 'draft'
     OR (
@@ -134,18 +135,21 @@ CREATE TABLE "dataset" (
     )
   ),
   CONSTRAINT "files_check" CHECK (
-    (
-      "dataset"."external_link" IS NULL
-      AND "dataset"."compressed_size" IS NOT NULL
-      AND "dataset"."uncompressed_size" IS NOT NULL
-      AND "dataset"."file_count" IS NOT NULL
-    )
+    "dataset"."status" = 'draft'
     OR (
-      "dataset"."external_link" IS NOT NULL
-      AND "dataset"."external_link" ~* '^https?://'
-      AND "dataset"."compressed_size" IS NULL
-      AND "dataset"."uncompressed_size" IS NULL
-      AND "dataset"."file_count" IS NULL
+      (
+        "dataset"."external_link" IS NULL
+        AND "dataset"."compressed_size" IS NOT NULL
+        AND "dataset"."uncompressed_size" IS NOT NULL
+        AND "dataset"."file_count" IS NOT NULL
+      )
+      OR (
+        "dataset"."external_link" IS NOT NULL
+        AND "dataset"."external_link" ~* '^https?://'
+        AND "dataset"."compressed_size" IS NULL
+        AND "dataset"."uncompressed_size" IS NULL
+        AND "dataset"."file_count" IS NULL
+      )
     )
   )
 );
@@ -481,7 +485,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
         WHERE
           "author"."dataset_id" = "dataset"."id"
       ),
-      ARRAY[]::jsonb[]
+      ARRAY[]::JSONB[]
     ) AS "authors",
     COALESCE(
       (
@@ -509,7 +513,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
         WHERE
           "variable"."dataset_id" = "dataset"."id"
       ),
-      ARRAY[]::jsonb[]
+      ARRAY[]::JSONB[]
     ) AS "variables",
     COALESCE(
       (
@@ -587,7 +591,7 @@ CREATE INDEX dataset_view_text_search_index ON dataset_view USING gin (
 );
 
 --> statement-breakpoint
-CREATE INDEX dataset_view_id_index ON dataset_view (id);
+CREATE UNIQUE INDEX dataset_view_id_index ON dataset_view (id);
 
 --> statement-breakpoint
 CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
