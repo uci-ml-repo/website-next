@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { DATASET_RELATIVE_ZIP_PATH } from "@/lib/routes";
+import { DATASET_ZIP_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
@@ -49,7 +49,7 @@ export function DatasetUploadForm() {
       title: values.title,
     });
 
-    await axios.post(DATASET_RELATIVE_ZIP_PATH(createdDataset));
+    await axios.post(DATASET_ZIP_ROUTE(createdDataset));
   }
 
   return (
