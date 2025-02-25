@@ -108,15 +108,17 @@ export async function POST(
       }
 
       const datasetRegex = RegExp(
-        String.raw`^${process.env.STATIC_FILES_DIRECTORY}\/private|public\/(\d+)`,
+        String.raw`^${process.env.STATIC_FILES_DIRECTORY}\/(private|public)\/(?<datasetId>\d+)`,
       );
       const isDatasetPath = datasetRegex.test(filePath);
 
-      const datasetId = parseInt(datasetRegex.exec(filePath)?.[1] ?? "", 10);
+      const datasetId = Number(datasetRegex.exec(filePath)?.groups?.datasetId);
 
       if (!isDatasetPath || isNaN(datasetId)) {
         return NextResponse.json(
-          { error: "Invalid dataset upload path" },
+          {
+            error: "Invalid dataset upload path",
+          },
           { status: 400 },
         );
       }
