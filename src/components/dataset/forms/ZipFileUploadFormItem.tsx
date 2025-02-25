@@ -1,5 +1,6 @@
 "use client";
 
+import type { AxiosProgressEvent } from "axios";
 import { FolderArchiveIcon, UploadIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useCallback } from "react";
@@ -14,15 +15,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ProgressCircle } from "@/components/ui/progress-circle";
 import { CONTACT_ROUTE } from "@/lib/routes";
-import { abbreviateFileSize, cn } from "@/lib/utils";
+import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
 
 export function ZipFileUploadFormItem({
   form,
   disabled,
+  uploadProgress,
+  onUploadCancel,
 }: {
   form: ReturnType<typeof useForm<FormData>>;
   disabled?: boolean;
+  uploadProgress?: AxiosProgressEvent;
+  onUploadCancel?: () => void;
 }) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -106,21 +112,48 @@ export function ZipFileUploadFormItem({
                   {zipFile.name}
                 </span>
               </div>
-              <span className="flex flex-1 justify-start text-nowrap text-muted-foreground max-xs:hidden">
-                ({abbreviateFileSize(zipFile.size)})
-              </span>
-              <Button
-                variant="outline-destructive"
-                size="icon"
-                className="shrink-0"
-                onClick={(event) => {
-                  form.setValue("zipFile", null);
-                  event.stopPropagation();
-                }}
-                disabled={disabled}
-              >
-                <XIcon />
-              </Button>
+
+              {uploadProgress &&
+              uploadProgress.estimated &&
+              uploadProgress.total &&
+              uploadProgress.progress ? (
+                <div className="flex items-center text-muted-foreground">
+                  <div className="mr-2 text-nowrap">
+                    {abbreviateFileSize(uploadProgress.loaded)}/
+                    {abbreviateFileSize(uploadProgress.total)}
+                  </div>
+                  {uploadProgress.estimated > 0 && (
+                    <div>({abbreviateTime(uploadProgress.estimated)})</div>
+                  )}
+                  <ProgressCircle progress={uploadProgress.progress} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onUploadCancel}
+                    type="button"
+                  >
+                    <XIcon />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <div className="text-nowrap text-muted-foreground">
+                    {abbreviateFileSize(zipFile.size)}
+                  </div>
+                  <Button
+                    variant="outline-destructive"
+                    size="icon"
+                    className="shrink-0"
+                    onClick={(event) => {
+                      form.setValue("zipFile", null);
+                      event.stopPropagation();
+                    }}
+                    disabled={disabled}
+                  >
+                    <XIcon />
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-1">

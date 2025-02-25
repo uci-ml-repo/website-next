@@ -72,7 +72,7 @@ export async function GET(
   });
 }
 
-export async function POST(
+export async function PUT(
   req: NextRequest,
   ctx: { params: Promise<{ path: string[] }> },
 ) {

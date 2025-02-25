@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { AxiosProgressEvent } from "axios";
 import axios from "axios";
 import { UploadIcon } from "lucide-react";
 import React from "react";
@@ -33,6 +34,9 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>;
 
 export function DatasetUploadForm() {
+  const [uploadProgress, setUploadProgress] =
+    React.useState<AxiosProgressEvent>();
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "", zipFile: null },
@@ -42,15 +46,31 @@ export function DatasetUploadForm() {
 
   const datasetCreateMutation = trpc.dataset.create.initial.useMutation();
 
-  const pending = datasetCreateMutation.isPending;
+  const controller = new AbortController();
 
   async function onSubmit(values: FormData) {
+    if (!values.zipFile) return;
+
     const createdDataset = await datasetCreateMutation.mutateAsync({
       title: values.title,
     });
 
-    await axios.post(DATASET_ZIP_ROUTE(createdDataset));
+    await axios.putForm(
+      DATASET_ZIP_ROUTE(createdDataset),
+      {
+        file: values.zipFile,
+      },
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          setUploadProgress(progressEvent);
+        },
+        signal: controller.signal,
+      },
+    );
   }
+
+  const pending = form.formState.isSubmitting || form.formState.isLoading;
 
   return (
     <Form {...form}>
@@ -77,7 +97,11 @@ export function DatasetUploadForm() {
           control={form.control}
           name="zipFile"
           render={() => (
-            <ZipFileUploadFormItem form={form} disabled={pending} />
+            <ZipFileUploadFormItem
+              form={form}
+              disabled={pending}
+              uploadProgress={uploadProgress}
+            />
           )}
         />
         <Button
