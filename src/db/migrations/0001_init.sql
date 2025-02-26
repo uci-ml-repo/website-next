@@ -117,8 +117,7 @@ CREATE TABLE "dataset" (
   "data_types" "dataset_characteristic" [],
   "tasks" "dataset_task" [],
   "feature_types" "dataset_feature_type" [],
-  "compressed_size" BIGINT,
-  "uncompressed_size" BIGINT,
+  "size" BIGINT,
   "file_count" INTEGER,
   "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -139,15 +138,13 @@ CREATE TABLE "dataset" (
     OR (
       (
         "dataset"."external_link" IS NULL
-        AND "dataset"."compressed_size" IS NOT NULL
-        AND "dataset"."uncompressed_size" IS NOT NULL
+        AND "dataset"."size" IS NOT NULL
         AND "dataset"."file_count" IS NOT NULL
       )
       OR (
         "dataset"."external_link" IS NOT NULL
         AND "dataset"."external_link" ~* '^https?://'
-        AND "dataset"."compressed_size" IS NULL
-        AND "dataset"."uncompressed_size" IS NULL
+        AND "dataset"."size" IS NULL
         AND "dataset"."file_count" IS NULL
       )
     )
@@ -445,8 +442,7 @@ CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
     "dataset"."data_types",
     "dataset"."tasks",
     "dataset"."feature_types",
-    "dataset"."compressed_size",
-    "dataset"."uncompressed_size",
+    "dataset"."size",
     "dataset"."file_count",
     "dataset"."user_id",
     "dataset"."donated_at",

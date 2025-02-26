@@ -12,6 +12,10 @@ export default async function Page({
   const { id } = await params;
 
   try {
+    if (!Number(id)) {
+      return notFound();
+    }
+
     const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
     redirect(DATASET_ROUTE({ id: dataset.id, slug: dataset.slug }));
   } catch (error) {

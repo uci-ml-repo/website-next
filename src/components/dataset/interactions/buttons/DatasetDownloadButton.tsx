@@ -60,9 +60,9 @@ export function DatasetDownloadButton({
         <DownloadIcon />
         <div>
           <span>Download</span>
-          {dataset && dataset.compressedSize && (
+          {dataset && dataset.size && (
             <span className="ml-1 text-sm">
-              ({abbreviateFileSize(dataset.compressedSize)})
+              ({abbreviateFileSize(dataset.size)})
             </span>
           )}
         </div>

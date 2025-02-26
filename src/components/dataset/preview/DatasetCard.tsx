@@ -134,7 +134,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             <Badge variant="secondary">External</Badge>
           ) : (
             <>
-              {dataset.fileCount !== null && dataset.compressedSize !== null ? (
+              {dataset.fileCount !== null && dataset.size !== null ? (
                 <div className="flex items-center space-x-1">
                   <span className="hidden @3xs:block">
                     {dataset.fileCount === 1
@@ -142,7 +142,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
                       : `${dataset.fileCount} Files`}
                   </span>
                   <span className="hidden @3xs:block">&middot;</span>
-                  <span>{abbreviateFileSize(dataset.compressedSize)}</span>
+                  <span>{abbreviateFileSize(dataset.size)}</span>
                 </div>
               ) : (
                 <Badge variant="destructive">Missing Files</Badge>

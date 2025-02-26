@@ -34,7 +34,8 @@
     "dev": "next dev --turbopack",
     "email:dev": "dotenv -e .env -- email dev --dir ./src/server/service/email/templates",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint --fix --no-warn-ignored",
+    "lint": "eslint --fix",
+    "tscheck": "tsc --noEmit --incremental false --excludeDirectories '.next'",
     "prepare": "husky",
     "start": "dotenv -e .env -- next start"
   },

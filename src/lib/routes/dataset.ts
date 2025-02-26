@@ -9,14 +9,23 @@ export const DATASETS_ROUTE = "/datasets";
 
 export const DATASET_BASE_ROUTE = "/dataset";
 
+/**
+ * @example "/datasets?search=iris"
+ */
 export function DATASETS_QUERY(query: DatasetQuery) {
-  return path.join(DATASETS_ROUTE) + "?" + buildQueryFilters(query).toString();
+  return DATASETS_ROUTE + "?" + buildQueryFilters(query).toString();
 }
 
+/**
+ * @example "/dataset/53/iris"
+ */
 export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {
   return path.join(DATASET_BASE_ROUTE, String(id), slug);
 }
 
+/**
+ * @example "/dataset/53/iris/discussions"
+ */
 export function DATASET_DISCUSSIONS_ROUTE({
   id,
   slug,
@@ -27,6 +36,9 @@ export function DATASET_DISCUSSIONS_ROUTE({
   return path.join(DATASET_ROUTE({ id, slug }), "discussions");
 }
 
+/**
+ * @example "/dataset/53/iris/discussions/[uuid]"
+ */
 export function DATASET_DISCUSSION_ROUTE({
   id,
   slug,
@@ -39,6 +51,9 @@ export function DATASET_DISCUSSION_ROUTE({
   return path.join(DATASET_DISCUSSIONS_ROUTE({ id, slug }), discussionId);
 }
 
+/**
+ * @example "/dataset/53/iris/discussions/create"
+ */
 export function DATASET_DISCUSSION_CREATE_ROUTE({
   id,
   slug,
@@ -49,6 +64,9 @@ export function DATASET_DISCUSSION_CREATE_ROUTE({
   return path.join(DATASET_DISCUSSIONS_ROUTE({ id, slug }), "create");
 }
 
+/**
+ * @example "/dataset/53/iris/discussions/[uuid]/edit"
+ */
 export function DATASET_DISCUSSION_EDIT_ROUTE({
   id,
   slug,
@@ -64,6 +82,22 @@ export function DATASET_DISCUSSION_EDIT_ROUTE({
   );
 }
 
+/**
+ * @example "/api/static/public/53"
+ */
+export function DATASET_FILES_ROUTE({
+  id,
+  status,
+}: {
+  id: number;
+  status: string;
+}) {
+  return path.join(STATIC_FILES_ROUTE, DATASET_RELATIVE_PATH({ id, status }));
+}
+
+/**
+ * @example "/api/static/public/53/thumbnail.png"
+ */
 export function DATASET_THUMBNAIL_ROUTE({
   status,
   hasGraphics,
@@ -81,6 +115,9 @@ export function DATASET_THUMBNAIL_ROUTE({
   );
 }
 
+/**
+ * @example "/public/53"
+ */
 export function DATASET_RELATIVE_PATH({
   id,
   status,
@@ -95,16 +132,24 @@ export function DATASET_RELATIVE_PATH({
   );
 }
 
-export function DATASET_FILES_ROUTE({
+/**
+ * @example "/public/53/iris"
+ */
+export function DATASET_RELATIVE_UNZIPPED_PATH({
   id,
+  slug,
   status,
 }: {
   id: number;
+  slug: string;
   status: string;
 }) {
-  return path.join(STATIC_FILES_ROUTE, DATASET_RELATIVE_PATH({ id, status }));
+  return path.join(DATASET_RELATIVE_PATH({ id, status }), slug);
 }
 
+/**
+ * @example "/api/static/public/53/data.csv"
+ */
 export function DATASET_PYTHON_DATA_ROUTE({
   id,
   status,
@@ -115,6 +160,9 @@ export function DATASET_PYTHON_DATA_ROUTE({
   return path.join(DATASET_FILES_ROUTE({ id, status }), "data.csv");
 }
 
+/**
+ * @example "/api/static/public/53/iris.zip"
+ */
 export function DATASET_ZIP_ROUTE({
   id,
   slug,
