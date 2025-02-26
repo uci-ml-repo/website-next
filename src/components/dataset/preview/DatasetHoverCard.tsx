@@ -155,7 +155,7 @@ export function DatasetHoverCard({
                 <span>{abbreviateFileSize(dataset.size)}</span>
               </div>
             ) : (
-              <Badge variant="destructive">Missing Files</Badge>
+              <Badge variant="secondary">Missing Files</Badge>
             )}
           </>
         )}
