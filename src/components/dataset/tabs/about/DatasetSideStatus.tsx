@@ -8,6 +8,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Enums } from "@/db/lib/enums";
+import { cn } from "@/lib/utils";
 
 export function DatasetSideStatus({
   status,
@@ -58,7 +59,11 @@ export function DatasetSideStatus({
                 <React.Fragment key={option.value}>
                   <hr />
 
-                  <li className="space-y-1 p-2">
+                  <li
+                    className={cn("space-y-1 p-2", {
+                      "bg-muted": status === option.value,
+                    })}
+                  >
                     <DatasetStatusBadge status={option.value} />
                     <div className="text-sm text-muted-foreground">
                       {option.tooltip}
