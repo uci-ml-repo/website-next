@@ -138,11 +138,7 @@ export function DatasetSearch() {
               <div>
                 {data.datasets.map((dataset) => (
                   <React.Fragment key={dataset.id}>
-                    <DatasetRow
-                      hoverCard
-                      dataset={dataset}
-                      className="rounded-none"
-                    />
+                    <DatasetRow hoverCard dataset={dataset} />
                     <hr />
                   </React.Fragment>
                 ))}

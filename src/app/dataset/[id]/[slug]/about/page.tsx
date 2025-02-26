@@ -29,11 +29,15 @@ export default async function Page({
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
       <div className="w-full space-y-16">
         <div className="w-full space-y-10">
-          <div className="space-y-2">
+          <div>
             <h2 className="text-2xl font-bold">About Dataset</h2>
-            <Expandable className="whitespace-pre-wrap break-words">
-              {dataset.description}
-            </Expandable>
+            {dataset.description ? (
+              <Expandable className="whitespace-pre-wrap break-words">
+                {dataset.description}
+              </Expandable>
+            ) : (
+              <div className="text-muted-foreground">No information</div>
+            )}
           </div>
 
           <DatasetQuickStats dataset={dataset} />
@@ -45,10 +49,10 @@ export default async function Page({
       </div>
 
       <div className="w-56 shrink-0 space-y-6">
-        <DatasetSideData dataset={dataset} />
         {isPriviliged(session?.user.role) && (
           <DatasetSideStatus status={dataset.status} />
         )}
+        <DatasetSideData dataset={dataset} />
       </div>
     </div>
   );

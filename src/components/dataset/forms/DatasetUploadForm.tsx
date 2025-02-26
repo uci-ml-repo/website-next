@@ -1,14 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { AxiosProgressEvent } from "axios";
-import axios from "axios";
-import { UploadIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { ZipFileUploadFormItem } from "@/components/dataset/forms/ZipFileUploadFormItem";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { DATASET_ZIP_ROUTE } from "@/lib/routes";
+import { DATASET_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
@@ -28,49 +26,56 @@ const formSchema = z.object({
     .string({ message: "Title is required" })
     .min(1, { message: "Title is required" })
     .max(100, { message: "Title must be less than 100 characters" }),
-  zipFile: z.instanceof(File, { message: "A zip file is required" }).nullable(),
+  // zipFile: z.instanceof(File, { message: "A zip file is required" }).nullable(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
 
 export function DatasetUploadForm() {
-  const [uploadProgress, setUploadProgress] =
-    React.useState<AxiosProgressEvent>();
+  // const [uploadProgress, setUploadProgress] =
+  //   React.useState<AxiosProgressEvent>();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { title: "", zipFile: null },
+    defaultValues: { title: "" },
   });
 
-  const zipFile = form.watch("zipFile");
+  // const zipFile = form.watch("zipFile");
 
   const datasetCreateMutation = trpc.dataset.create.initial.useMutation();
 
-  const controller = new AbortController();
+  // const controller = new AbortController();
 
   async function onSubmit(values: FormData) {
-    if (!values.zipFile) return;
+    // if (!values.zipFile) return;
 
-    const createdDataset = await datasetCreateMutation.mutateAsync({
+    const dataset = await datasetCreateMutation.mutateAsync({
       title: values.title,
     });
 
-    await axios.putForm(
-      DATASET_ZIP_ROUTE(createdDataset),
-      {
-        file: values.zipFile,
-      },
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (progressEvent) => {
-          setUploadProgress(progressEvent);
-        },
-        signal: controller.signal,
-      },
-    );
+    redirect(DATASET_ROUTE(dataset));
+
+    // await axios.putForm(
+    //   DATASET_ZIP_ROUTE(createdDataset),
+    //   {
+    //     file: values.zipFile,
+    //   },
+    //   {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //     onUploadProgress: (progressEvent) => {
+    //       setUploadProgress(progressEvent);
+    //     },
+    //     signal: controller.signal,
+    //   },
+    // );
   }
 
-  const pending = form.formState.isSubmitting || form.formState.isLoading;
+  // function uploadCancel() {
+  //   controller.abort();
+  // }
+
+  const pending =
+    form.formState.isSubmitting || form.formState.isSubmitSuccessful;
 
   return (
     <Form {...form}>
@@ -93,24 +98,25 @@ export function DatasetUploadForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="zipFile"
-          render={() => (
-            <ZipFileUploadFormItem
-              form={form}
-              disabled={pending}
-              uploadProgress={uploadProgress}
-            />
-          )}
-        />
+        {/*<FormField*/}
+        {/*  control={form.control}*/}
+        {/*  name="zipFile"*/}
+        {/*  render={() => (*/}
+        {/*    <ZipFileUploadFormItem*/}
+        {/*      form={form}*/}
+        {/*      disabled={pending}*/}
+        {/*      uploadProgress={uploadProgress}*/}
+        {/*      onUploadCancel={uploadCancel}*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*/>*/}
         <Button
           type="submit"
           variant="gold"
           className="lift w-full"
-          disabled={form.formState.isSubmitting || !zipFile}
+          disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting ? <Spinner /> : <UploadIcon />} Upload
+          {form.formState.isSubmitting ? <Spinner /> : <PlusIcon />} Create
         </Button>
       </form>
     </Form>

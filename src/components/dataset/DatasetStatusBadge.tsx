@@ -22,7 +22,7 @@ export function DatasetStatusBadge({
       variant = "secondary";
       break;
     case Enums.ApprovalStatus.REJECTED:
-      variant = "destructive";
+      variant = "destructive-muted";
       break;
   }
 

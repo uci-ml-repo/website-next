@@ -1,6 +1,7 @@
 "use client";
 
 import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import path from "path";
 import { useState } from "react";
 
@@ -21,6 +22,8 @@ export function DatasetExtendedOptions({
 }: {
   dataset: DatasetResponse;
 }) {
+  const { data: session } = useSession();
+
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   async function copyLink() {
@@ -54,10 +57,12 @@ export function DatasetExtendedOptions({
               <span>Copy Link</span>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem destructive onClick={() => setIsDialogOpen(true)}>
-            <FlagIcon />
-            <span>Report Issue</span>
-          </DropdownMenuItem>
+          {(!session || session.user.id !== dataset.userId) && (
+            <DropdownMenuItem destructive onClick={() => setIsDialogOpen(true)}>
+              <FlagIcon />
+              <span>Report Issue</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DatasetReportDialog

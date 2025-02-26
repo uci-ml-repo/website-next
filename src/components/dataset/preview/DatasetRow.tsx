@@ -49,7 +49,7 @@ export function DatasetRow({
   const row = (
     <Link
       className={cn(
-        "group flex w-full items-center space-x-3 rounded-2xl p-4 @container hover:bg-accent",
+        "group flex w-full items-center space-x-3 p-4 @container hover:bg-accent",
         className,
       )}
       href={DATASET_ROUTE(dataset)}

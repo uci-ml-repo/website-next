@@ -12,7 +12,9 @@ import {
   LinearTabsTrigger,
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
+import { Enums } from "@/db/lib/enums";
 import { PROFILE_ROUTE } from "@/lib/routes";
+import { enumToArray } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
 export const metadata: Metadata = { title: "Profile" };
@@ -31,6 +33,7 @@ export default async function Layout({
   const bookmarks = (await caller.bookmark.find.byUserQuery({})).bookmarks;
   const datasets = await caller.dataset.find.privilegedByQuery({
     userId: session.user.id,
+    status: enumToArray(Enums.ApprovalStatus),
   });
   const discussions = await caller.discussion.find.byUserId({
     userId: session.user.id,

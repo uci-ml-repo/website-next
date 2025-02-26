@@ -10,9 +10,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
 import { trpc } from "@/server/trpc/query/client";
 import ApprovalStatus = Enums.ApprovalStatus;
+import React from "react";
+
 import { useSimpleSearch } from "@/components/hooks/use-simple-search";
 import type { Option } from "@/components/search/SimpleSearch";
 import { SimpleSearch } from "@/components/search/SimpleSearch";
+import { enumToArray } from "@/lib/utils";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -45,7 +48,7 @@ export default function Page() {
     {
       search: searchValue,
       userId: session?.user?.id,
-      status: status === "all" ? undefined : [status],
+      status: status === "all" ? enumToArray(Enums.ApprovalStatus) : [status],
       limit,
       cursor,
     },
@@ -83,7 +86,10 @@ export default function Page() {
           <div className="space-y-2">
             <div>
               {data.datasets.map((dataset) => (
-                <DatasetRow key={dataset.id} dataset={dataset} displayStatus />
+                <React.Fragment key={dataset.id}>
+                  <DatasetRow hoverCard dataset={dataset} displayStatus />
+                  <hr />
+                </React.Fragment>
               ))}
             </div>
             {data.count && (

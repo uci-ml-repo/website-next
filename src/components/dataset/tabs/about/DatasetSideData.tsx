@@ -11,8 +11,8 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
       {/* Donated On */}
       <SideDatum title="Donated On">
         {dataset.donatedAt.toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "long",
+          day: "numeric",
+          month: "short",
           year: "numeric",
         })}
       </SideDatum>
