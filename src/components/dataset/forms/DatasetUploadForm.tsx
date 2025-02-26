@@ -87,12 +87,7 @@ export function DatasetUploadForm() {
             <FormItem>
               <FormLabel className="text-lg">Dataset Title</FormLabel>
               <FormControl>
-                <Input
-                  pill={false}
-                  className="font-bold"
-                  {...field}
-                  disabled={pending}
-                />
+                <Input className="font-bold" {...field} disabled={pending} />
               </FormControl>
               <FormMessage className="text-sm" />
             </FormItem>

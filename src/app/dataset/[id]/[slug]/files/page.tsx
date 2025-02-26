@@ -16,28 +16,33 @@ export default async function Page({
   const { id } = await params;
 
   const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
-  const unzippedFilesExists = await caller.file.find.exists({
-    path: DATASET_RELATIVE_UNZIPPED_PATH(dataset),
-  });
 
   if (!dataset) {
     return notFound();
   }
 
-  return unzippedFilesExists ? (
+  try {
+    await caller.file.find.exists({
+      path: DATASET_RELATIVE_UNZIPPED_PATH(dataset),
+    });
+  } catch {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center space-y-2 p-8">
+          <div className="text-pretty text-center">
+            <div>Dataset files are not available to browse</div>
+          </div>
+          <DatasetDownloadButton dataset={dataset} className="w-fit" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
     <FileProvider
       initialPath={{ path: datasetFilesPath(dataset), type: "directory" }}
     >
       <DatasetFiles dataset={dataset} />
     </FileProvider>
-  ) : (
-    <Card>
-      <CardContent className="flex flex-col items-center justify-center space-y-2 p-8">
-        <div className="text-pretty text-center">
-          Dataset is too large to browse.
-        </div>
-        <DatasetDownloadButton dataset={dataset} className="w-fit" />
-      </CardContent>
-    </Card>
   );
 }

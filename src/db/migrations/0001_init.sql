@@ -148,6 +148,16 @@ CREATE TABLE "dataset" (
         AND "dataset"."file_count" IS NULL
       )
     )
+  ),
+  CONSTRAINT "files_exist_parity" CHECK (
+    (
+      "dataset"."file_count" IS NULL
+      AND "dataset"."size" IS NULL
+    )
+    OR (
+      "dataset"."file_count" IS NOT NULL
+      AND "dataset"."size" IS NOT NULL
+    )
   )
 );
 

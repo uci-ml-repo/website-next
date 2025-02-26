@@ -15,34 +15,31 @@ export default function Page() {
       href: CONTRIBUTE_DONATION_ROUTE,
       Icon: UploadIcon,
       title: "Upload Dataset",
-      description: "Upload a dataset to the repository.",
     },
     {
       href: CONTRIBUTE_EXTERNAL_ROUTE,
       Icon: LinkIcon,
       title: "Link External Dataset",
-      description: "Link a dataset from an external website.",
     },
   ];
 
   return (
-    <div className="space-y-6">
-      <Contribution />
-      <div className="space-y-2 pt-6">
+    <div className="space-y-8">
+      <div>
+        <Contribution />
+      </div>
+      <div className="space-y-2">
         <div className="text-muted-foreground">
-          Select a contribution option below:
+          Select a way to contribute below:
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          {options.map(({ href, Icon, title, description }) => (
+        <div className="grid grid-cols-2 gap-4 max-lg:grid-cols-1">
+          {options.map(({ href, Icon, title }) => (
             <DonationOption key={href} href={href}>
               <div className="flex items-center space-x-2">
                 <div className="mx-auto">
                   <div className="flex items-center justify-center space-x-2 text-lg font-semibold">
-                    <Icon className="size-5" />
+                    <Icon className="size-5 shrink-0" />
                     <span>{title}</span>
-                  </div>
-                  <div className="text-pretty text-sm text-muted-foreground">
-                    {description}
                   </div>
                 </div>
                 <div className="flex justify-end">
@@ -52,6 +49,22 @@ export default function Page() {
             </DonationOption>
           ))}
         </div>
+      </div>
+      <div className="pace-y-2 text-muted-foreground">
+        <div>Need help deciding?</div>
+        <ul className="ml-6 list-disc space-y-2">
+          <li>
+            Choose <span className="font-bold">Upload Dataset</span> if you
+            would like to upload a dataset to the UCI Machine Learning
+            repository, making it publicly available for others to download
+            directly from our website.
+          </li>
+          <li>
+            Choose <span className="font-bold">Link External Dataset</span> if
+            you would like to link a dataset from an external website. The UCI
+            Machine Learning repository will direct users to the external page.
+          </li>
+        </ul>
       </div>
     </div>
   );
@@ -66,7 +79,7 @@ function DonationOption({
 }) {
   return (
     <SignInRequired
-      title="Sign in to contribute datasets"
+      title="An account is required to contribute datasets"
       body="To beigin the dataset contribution process, plase sign in."
       authedRedirect={href}
     >

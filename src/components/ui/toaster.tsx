@@ -18,10 +18,12 @@ export function Toaster() {
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
-            <div className="grid gap-1">
+            <div className="max-w-full space-y-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (
-                <ToastDescription>{description}</ToastDescription>
+                <ToastDescription className="overflow-hidden overflow-ellipsis">
+                  {description}
+                </ToastDescription>
               )}
             </div>
             {action}

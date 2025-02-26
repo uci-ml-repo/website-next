@@ -150,6 +150,19 @@ export const dataset = pgTable(
         )
       `,
     ),
+    check(
+      "files_exist_parity",
+      sql`
+        (
+          ${t.fileCount} IS NULL
+          AND ${t.size} IS NULL
+        )
+        OR (
+          ${t.fileCount} IS NOT NULL
+          AND ${t.size} IS NOT NULL
+        )
+      `,
+    ),
   ],
 );
 
