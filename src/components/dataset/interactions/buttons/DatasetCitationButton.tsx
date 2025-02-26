@@ -2,9 +2,10 @@
 
 import "highlight.js/styles/github-dark.min.css";
 
-import { BookMarkedIcon } from "lucide-react";
+import { BookMarkedIcon, InfoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Copy } from "@/components/ui/copy";
 import {
@@ -23,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { Enums } from "@/db/lib/enums";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -65,7 +67,7 @@ export function DatasetCitationButton({ dataset }: DatasetCitationButtonProps) {
           <DialogTitle>Cite Dataset</DialogTitle>
         </DialogHeader>
         <div className="-m-1 space-y-4 overflow-hidden p-1">
-          <div className="relative overflow-x-auto rounded-lg bg-muted p-2">
+          <div className="relative min-h-11 overflow-x-auto rounded-lg bg-muted p-2">
             {citations ? (
               <>
                 <pre className="whitespace-pre-wrap pr-12 text-sm">
@@ -79,6 +81,15 @@ export function DatasetCitationButton({ dataset }: DatasetCitationButtonProps) {
               </div>
             )}
           </div>
+
+          {dataset.status === Enums.ApprovalStatus.DRAFT && (
+            <Alert variant="blue">
+              <div className="flex items-center space-x-1">
+                <InfoIcon className="size-5" />
+                <span>To populate citation data, add dataset metadata</span>
+              </div>
+            </Alert>
+          )}
 
           <div className="flex items-center space-x-2">
             <div>Style:</div>

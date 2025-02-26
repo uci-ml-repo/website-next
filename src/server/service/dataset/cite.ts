@@ -46,7 +46,7 @@ class Citation {
   private readonly id: number;
   private readonly title: string;
   private readonly authors: AuthorSelect[];
-  private readonly yearCreated: number;
+  private readonly yearCreated: number | null;
   private readonly doi: string | null;
 
   constructor({
@@ -65,7 +65,7 @@ class Citation {
     this.id = id;
     this.title = title;
     this.authors = authors;
-    this.yearCreated = yearCreated ?? 0;
+    this.yearCreated = yearCreated;
     this.doi = doi;
   }
 
@@ -170,15 +170,16 @@ class Citation {
       listFormatter: Citation.shortConjunction,
     });
 
-    const year = `(${this.yearCreated}).`;
+    const year = this.yearCreated ? `(${this.yearCreated}).` : undefined;
     const title = `${this.title} [Dataset].`;
     const authorsYearTitle = this.authors.length
-      ? `${formattedAuthors} ${year} ${title}`
-      : `${title} ${year}`;
+      ? `${formattedAuthors} ${year ? `${year} ` : ""}${title}`
+      : `${title}${year ? ` ${year}` : ""}`;
     const source = `${Citation.source}.`;
     const doi = this.doi ? `${Citation.doiLinkPrefix}${this.doi}.` : "";
 
-    const citation = `${authorsYearTitle} ${source} ${doi}`;
+    const parts = [authorsYearTitle, source, doi].filter((part) => !!part);
+    const citation = parts.join(" ");
     return citation.trim();
   }
 
@@ -198,10 +199,11 @@ class Citation {
     const authors = this.authors.length ? `${formattedAuthors}.` : "";
     const title = `"${this.title}."`;
     const source = `${Citation.source},`;
-    const year = `${this.yearCreated},`;
+    const year = this.yearCreated ? `${this.yearCreated},` : undefined;
     const doi = this.doi ? `${Citation.doiLinkPrefix}${this.doi}.` : "";
 
-    const mla = `${authors} ${title} ${source} ${year} ${doi}`;
+    const parts = [authors, title, source, year, doi].filter((part) => !!part);
+    const mla = parts.join(" ");
     return mla.trim();
   }
 
@@ -217,15 +219,16 @@ class Citation {
       subsequentAuthorsFormatter: Citation.firstLast,
     });
 
-    const year = `${this.yearCreated}.`;
+    const year = this.yearCreated ? `${this.yearCreated}.` : undefined;
     const title = `${this.title}.`;
     const authorsYearTitle = this.authors.length
-      ? `${formattedAuthors}. ${year} ${title}`
-      : `${title} ${year}`;
+      ? `${formattedAuthors}. ${year ? `${year} ` : ""}${title}`
+      : `${title}${year ? ` ${year}` : ""}`;
     const source = `${Citation.source}.`;
     const doi = this.doi ? `${Citation.doiLinkPrefix}${this.doi}.` : "";
 
-    const chicago = `${authorsYearTitle} ${source} ${doi}`;
+    const parts = [authorsYearTitle, source, doi].filter((part) => !!part);
+    const chicago = parts.join(" ");
     return chicago.trim();
   }
 
@@ -245,13 +248,14 @@ class Citation {
 
     const authors = this.authors.length ? `${formattedAuthors}.` : "";
     const title = `${this.title} [dataset].`;
-    const year = `${this.yearCreated}.`;
+    const year = this.yearCreated ? `${this.yearCreated}.` : undefined;
     const source = `${Citation.source}.`;
     const doi = this.doi
       ? `Available from: ${Citation.doiLinkPrefix}${this.doi}.`
       : "";
 
-    const vancouver = `${authors} ${title} ${year} ${source} ${doi}`;
+    const parts = [authors, title, year, source, doi].filter((part) => !!part);
+    const vancouver = parts.join(" ");
     return vancouver.trim();
   }
 
@@ -270,13 +274,16 @@ class Citation {
 
     const authors = this.authors.length ? `${formattedAuthors}.` : "";
     const title = `"${this.title},"`;
-    const source = `${Citation.source},`;
-    const year = `${this.yearCreated}.`;
+    const source = `${Citation.source}${this.yearCreated ? "," : "."}`;
+    const year = this.yearCreated ? `${this.yearCreated}.` : undefined;
     const doi = this.doi
       ? `Available: ${Citation.doiLinkPrefix}${this.doi}.`
       : "";
 
-    const ieee = `${authors} ${title} ${source} ${year} [Online]. ${doi}`;
+    const parts = [authors, title, source, year, "[Online].", doi].filter(
+      (part) => !!part,
+    );
+    const ieee = parts.join(" ");
     return ieee.trim();
   }
 
@@ -302,14 +309,16 @@ class Citation {
       ? formatField("author", formattedAuthors)
       : "";
     const title = formatField("title", `{${this.title}}`);
-    const year = formatField("year", this.yearCreated);
+    const year = this.yearCreated
+      ? formatField("year", this.yearCreated)
+      : undefined;
     const howPublished = formatField("howpublished", Citation.source);
     const doi = this.doi
       ? formatField("note", `{DOI}: ${Citation.doiLinkPrefix}${this.doi}`)
       : "";
 
     const fields = [identifier, authors, title, year, howPublished, doi]
-      .filter((field) => field !== "")
+      .filter((field) => !!field)
       .join(",\n");
 
     return `@misc{${fields}\n}`;
