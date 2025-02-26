@@ -4,7 +4,6 @@ import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons
 import { DatasetFiles } from "@/components/dataset/tabs/files/DatasetFiles";
 import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
 import { Card, CardContent } from "@/components/ui/card";
-import { DATASET_RELATIVE_UNZIPPED_PATH } from "@/lib/routes";
 import { datasetFilesPath } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
@@ -21,11 +20,7 @@ export default async function Page({
     return notFound();
   }
 
-  try {
-    await caller.file.find.exists({
-      path: DATASET_RELATIVE_UNZIPPED_PATH(dataset),
-    });
-  } catch {
+  if (dataset.fileCount === null) {
     return (
       <Card>
         <CardContent className="flex flex-col items-center justify-center space-y-2 p-8">

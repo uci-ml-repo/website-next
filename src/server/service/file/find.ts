@@ -75,8 +75,4 @@ export class FileFindService {
 
     return directoryEntities;
   }
-
-  async exists(absolutePath: string) {
-    return fs.existsSync(absolutePath);
-  }
 }

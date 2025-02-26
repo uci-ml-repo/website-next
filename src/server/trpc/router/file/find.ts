@@ -13,8 +13,4 @@ export const fileFindRouter = router({
     .query(({ ctx, input }) =>
       service.file.find.search(ctx.realPath, input.search),
     ),
-
-  exists: fileAccessProcedure
-    .input(z.object({ path: z.string() }))
-    .query(({ ctx }) => service.file.find.exists(ctx.realPath)),
 });
