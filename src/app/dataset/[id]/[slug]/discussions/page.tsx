@@ -13,7 +13,12 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
+  let dataset;
+  try {
+    dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
+  } catch {
+    dataset = null;
+  }
 
   if (!dataset) {
     return notFound();

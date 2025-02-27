@@ -4,9 +4,11 @@ import { db } from "@/db";
 
 export class DatasetViewService {
   async refresh(id?: number) {
-    db.execute(sql`
+    db.execute(
+      sql.raw(`
       SELECT
         refresh_dataset_view (${id})
-    `);
+    `),
+    );
   }
 }

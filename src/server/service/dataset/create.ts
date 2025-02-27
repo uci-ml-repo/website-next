@@ -28,7 +28,7 @@ export class DatasetCreateService {
 
     const slug = modifier === -1 ? baseSlug : `${baseSlug}-${modifier + 1}`;
 
-    return await db.transaction(async (tx) => {
+    const createdDataset = await db.transaction(async (tx) => {
       if (!process.env.STATIC_FILES_DIRECTORY) {
         throw new Error("Storage path is not defined");
       }
@@ -43,13 +43,15 @@ export class DatasetCreateService {
         DATASET_RELATIVE_PATH(createdDataset),
       );
 
-      await service.dataset.view.refresh(createdDataset.id);
-
       if (!fs.existsSync(directoryPath)) {
         fs.mkdirSync(directoryPath);
       }
 
       return createdDataset;
     });
+
+    await service.dataset.view.refresh(createdDataset.id);
+
+    return createdDataset;
   }
 }
