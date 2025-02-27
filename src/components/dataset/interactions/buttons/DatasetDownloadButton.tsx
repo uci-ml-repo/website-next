@@ -42,6 +42,10 @@ export function DatasetDownloadButton({
     );
   }
 
+  if (dataset.fileCount === null) {
+    return <div>No</div>;
+  }
+
   return (
     <Button
       variant="blue"

@@ -86,9 +86,7 @@ export function DatasetCitationButton({ dataset }: DatasetCitationButtonProps) {
             <Alert variant="blue">
               <div className="flex items-center space-x-1">
                 <InfoIcon className="size-5" />
-                <span>
-                  To populate citation data, add dataset year and authors.
-                </span>
+                <span>To populate citation data, add dataset metadata.</span>
               </div>
             </Alert>
           )}

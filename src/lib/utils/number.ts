@@ -38,5 +38,5 @@ export function abbreviateTime(seconds: number) {
     unit = "d";
   }
 
-  return `${Math.ceil(value)}${unit}`;
+  return `${Math.ceil(value)} ${unit}`;
 }

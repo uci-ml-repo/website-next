@@ -4,6 +4,7 @@ import { unauthorized } from "next/navigation";
 import { auth } from "@/auth";
 import { ProfileSettingsDelete } from "@/components/profile/settings/ProfileSettingsDelete";
 import { ProfileSettingsEmail } from "@/components/profile/settings/ProfileSettingsEmail";
+import { TabHeader } from "@/components/ui/tab-header";
 
 export default async function Page() {
   const session = await auth();
@@ -14,11 +15,7 @@ export default async function Page() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center space-x-2">
-        <SettingsIcon className="size-6 sm:size-7" />
-        <h2 className="text-2xl font-bold">Profile Settings</h2>
-      </div>
-
+      <TabHeader title="Profile Settings" icon={SettingsIcon} />
       <div className="space-y-6">
         <ProfileSettingsEmail />
         <hr />

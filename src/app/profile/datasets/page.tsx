@@ -1,109 +1,49 @@
-"use client";
+import { DatabaseIcon, PlusIcon } from "lucide-react";
+import Link from "next/link";
+import { unauthorized } from "next/navigation";
 
-import { Undo2Icon } from "lucide-react";
-import { useSession } from "next-auth/react";
-
-import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
+import { auth } from "@/auth";
+import { ProfileDatasetsSearch } from "@/components/profile/datasets/ProfileDatasetsSearch";
 import { Button } from "@/components/ui/button";
-import { SmartPagination } from "@/components/ui/smart-pagination";
-import { Spinner } from "@/components/ui/spinner";
+import { Card, CardContent } from "@/components/ui/card";
+import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
-import { trpc } from "@/server/trpc/query/client";
-import ApprovalStatus = Enums.ApprovalStatus;
-import React from "react";
-
-import { useSimpleSearch } from "@/components/hooks/use-simple-search";
-import type { Option } from "@/components/search/SimpleSearch";
-import { SimpleSearch } from "@/components/search/SimpleSearch";
+import { CONTRIBUTE_ROUTE } from "@/lib/routes";
 import { enumToArray } from "@/lib/utils";
+import { caller } from "@/server/trpc/query/server";
 
-export default function Page() {
-  const { data: session } = useSession();
-  const {
-    filter: status,
-    setFilter: setStatus,
-    offset: cursor,
-    setOffset: setCursor,
-    limit,
-    setLimit,
-    inputValue,
-    setInputValue,
-    searchValue,
-    handleSearchChange,
-    clear,
-  } = useSimpleSearch<ApprovalStatus>({
-    defaultFilter: "all",
-    defaultLimit: 10,
+export default async function Page() {
+  const session = await auth();
+
+  if (!session) {
+    return unauthorized();
+  }
+
+  const datasetCount = await caller.dataset.find.privilegedCountByQuery({
+    userId: session.user.id,
+    status: enumToArray(Enums.ApprovalStatus),
   });
 
-  const filterOptions: Option[] = [
-    { value: "all", label: "All" },
-    { value: ApprovalStatus.APPROVED, label: "Approved" },
-    { value: ApprovalStatus.PENDING, label: "Pending" },
-    { value: ApprovalStatus.DRAFT, label: "Drafts" },
-    { value: ApprovalStatus.REJECTED, label: "Rejected" },
-  ];
-
-  const { data, isLoading } = trpc.dataset.find.privilegedByQuery.useQuery(
-    {
-      search: searchValue,
-      userId: session?.user?.id,
-      status: status === "all" ? enumToArray(Enums.ApprovalStatus) : [status],
-      limit,
-      cursor,
-    },
-    { enabled: !!session?.user },
-  );
-
-  return (
-    <div className="max-w-full space-y-4">
-      <SimpleSearch
-        searchValue={inputValue}
-        setSearchValue={setInputValue}
-        handleSearchChange={handleSearchChange}
-        searchPlaceholder="Search datasets"
-        filterLabel="Filter Status:"
-        filterValue={status || "all"}
-        onFilterChange={(value) => {
-          setStatus(value as ApprovalStatus | "all");
-          setCursor(0);
-        }}
-        filterOptions={filterOptions}
-      />
-      {isLoading ? (
-        <div className="flex h-20 w-full items-center justify-center">
-          <Spinner className="size-10" />
-        </div>
-      ) : data && data.datasets.length === 0 ? (
-        <div className="flex h-20 flex-col items-center justify-center space-y-2">
-          <div className="text-muted-foreground">No datasets found</div>
-          <Button variant="secondary" onClick={clear}>
-            Clear search <Undo2Icon />
-          </Button>
-        </div>
-      ) : (
-        data && (
-          <div className="space-y-2">
-            <div>
-              {data.datasets.map((dataset) => (
-                <React.Fragment key={dataset.id}>
-                  <DatasetRow hoverCard dataset={dataset} displayStatus />
-                  <hr />
-                </React.Fragment>
-              ))}
+  if (datasetCount === 0) {
+    return (
+      <div className="space-y-4">
+        <TabHeader icon={DatabaseIcon} title="Your Datasets" />
+        <Card className="w-full bg-muted">
+          <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
+            <div className="text-muted-foreground">
+              You currently have no datasets.
             </div>
-            {data.count && (
-              <SmartPagination
-                totalCount={data.count}
-                limit={limit}
-                offset={cursor}
-                onLimitChange={setLimit}
-                onPageChange={setCursor}
-              />
-            )}
-          </div>
-        )
-      )}
-    </div>
-  );
+            <Button variant="gold" className="lift" asChild>
+              <Link href={CONTRIBUTE_ROUTE} className="flex items-center">
+                <PlusIcon />
+                <span>Contribute a dataset</span>
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return <ProfileDatasetsSearch session={session} />;
 }

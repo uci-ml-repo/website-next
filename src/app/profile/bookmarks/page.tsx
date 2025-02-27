@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
+import { TabHeader } from "@/components/ui/tab-header";
 import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -45,11 +46,11 @@ export default function Page() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center space-x-2">
-        <BookmarkIcon className="size-6 fill-uci-gold sm:size-7" />
-        <h2 className="text-2xl font-bold">Bookmarks</h2>
-      </div>
-
+      <TabHeader
+        title="Bookmarks"
+        icon={BookmarkIcon}
+        className="[&>svg]:fill-uci-gold"
+      />
       {!isLoading && !(data && data.pages[0].bookmarks.length > 0) ? (
         <Card className="w-full bg-muted">
           <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">

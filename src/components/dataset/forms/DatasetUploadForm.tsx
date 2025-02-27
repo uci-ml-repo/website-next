@@ -26,53 +26,25 @@ const formSchema = z.object({
     .string({ message: "Title is required" })
     .min(1, { message: "Title is required" })
     .max(100, { message: "Title must be less than 100 characters" }),
-  // zipFile: z.instanceof(File, { message: "A zip file is required" }).nullable(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
 
 export function DatasetUploadForm() {
-  // const [uploadProgress, setUploadProgress] =
-  //   React.useState<AxiosProgressEvent>();
-
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "" },
   });
 
-  // const zipFile = form.watch("zipFile");
-
   const datasetCreateMutation = trpc.dataset.create.initial.useMutation();
 
-  // const controller = new AbortController();
-
   async function onSubmit(values: FormData) {
-    // if (!values.zipFile) return;
-
     const dataset = await datasetCreateMutation.mutateAsync({
       title: values.title,
     });
 
     redirect(DATASET_ROUTE(dataset));
-
-    // await axios.putForm(
-    //   DATASET_ZIP_ROUTE(createdDataset),
-    //   {
-    //     file: values.zipFile,
-    //   },
-    //   {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //     onUploadProgress: (progressEvent) => {
-    //       setUploadProgress(progressEvent);
-    //     },
-    //     signal: controller.signal,
-    //   },
-    // );
   }
-
-  // function uploadCancel() {
-  //   controller.abort();
-  // }
 
   const pending =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful;
@@ -93,18 +65,6 @@ export function DatasetUploadForm() {
             </FormItem>
           )}
         />
-        {/*<FormField*/}
-        {/*  control={form.control}*/}
-        {/*  name="zipFile"*/}
-        {/*  render={() => (*/}
-        {/*    <ZipFileUploadFormItem*/}
-        {/*      form={form}*/}
-        {/*      disabled={pending}*/}
-        {/*      uploadProgress={uploadProgress}*/}
-        {/*      onUploadCancel={uploadCancel}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*/>*/}
         <Button
           type="submit"
           variant="gold"

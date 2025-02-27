@@ -29,6 +29,7 @@ export const datasetFindRouter = router({
         MiddlewareRoles.ADMIN,
         MiddlewareRoles.CURATOR,
         MiddlewareRoles.LIBRARIAN,
+        MiddlewareRoles.IS_USER_ID,
       ],
     })
     .input(privilegedDatasetQuery)

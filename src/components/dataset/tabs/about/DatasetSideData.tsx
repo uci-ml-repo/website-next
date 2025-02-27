@@ -8,15 +8,6 @@ import type { DatasetResponse } from "@/lib/types";
 export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
   return (
     <div className="space-y-6">
-      {/* Donated On */}
-      <SideDatum title="Donated On">
-        {dataset.donatedAt.toLocaleString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })}
-      </SideDatum>
-
       {/* Keywords */}
       <SideDatum title="Keywords" className="flex flex-wrap gap-1">
         {dataset.keywords.length > 0 &&
@@ -44,6 +35,18 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
               </div>
             </div>
           ))}
+      </SideDatum>
+
+      {/* Year Created */}
+      <SideDatum title="Year Created">{dataset.yearCreated}</SideDatum>
+
+      {/* Donated On */}
+      <SideDatum title="Donated On">
+        {dataset.donatedAt.toLocaleString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })}
       </SideDatum>
 
       {/* DOI */}
