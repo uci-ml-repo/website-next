@@ -5,6 +5,7 @@ import { DatasetFindService } from "@/server/service/dataset/find";
 import { DatasetReportService } from "@/server/service/dataset/report";
 import { DatasetStatsService } from "@/server/service/dataset/stats";
 import { DatasetUpdateService } from "@/server/service/dataset/update";
+import { DatasetViewService } from "@/server/service/dataset/view";
 
 export class DatasetService {
   constructor(
@@ -15,5 +16,6 @@ export class DatasetService {
     readonly report = new DatasetReportService(),
     readonly stats = new DatasetStatsService(),
     readonly update = new DatasetUpdateService(),
+    readonly view = new DatasetViewService(),
   ) {}
 }

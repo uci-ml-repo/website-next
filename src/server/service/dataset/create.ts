@@ -4,15 +4,12 @@ import path from "path";
 import slugify from "slugify";
 
 import { db } from "@/db";
-import { dataset, datasetView } from "@/db/schema";
+import { dataset } from "@/db/schema";
 import { DATASET_RELATIVE_PATH } from "@/lib/routes";
+import { service } from "@/server/service";
 
 export class DatasetCreateService {
   async initial({ title, userId }: { title: string; userId: string }) {
-    if (!process.env.STATIC_FILES_DIRECTORY) {
-      throw new Error("Storage path is not defined");
-    }
-
     const baseSlug = slugify(title, { replacement: "+", lower: true });
 
     const existingSlugs = await db
@@ -31,22 +28,28 @@ export class DatasetCreateService {
 
     const slug = modifier === -1 ? baseSlug : `${baseSlug}-${modifier + 1}`;
 
-    const [createdDataset] = await db
-      .insert(dataset)
-      .values({ title, userId, slug })
-      .returning();
+    return await db.transaction(async (tx) => {
+      if (!process.env.STATIC_FILES_DIRECTORY) {
+        throw new Error("Storage path is not defined");
+      }
 
-    await db.refreshMaterializedView(datasetView).concurrently();
+      const [createdDataset] = await tx
+        .insert(dataset)
+        .values({ title, userId, slug })
+        .returning();
 
-    const directoryPath = path.join(
-      process.env.STATIC_FILES_DIRECTORY,
-      DATASET_RELATIVE_PATH(createdDataset),
-    );
+      const directoryPath = path.join(
+        process.env.STATIC_FILES_DIRECTORY,
+        DATASET_RELATIVE_PATH(createdDataset),
+      );
 
-    if (!fs.existsSync(directoryPath)) {
-      fs.mkdirSync(directoryPath);
-    }
+      await service.dataset.view.refresh(createdDataset.id);
 
-    return createdDataset;
+      if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath);
+      }
+
+      return createdDataset;
+    });
   }
 }

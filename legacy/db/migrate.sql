@@ -118,8 +118,7 @@ SET DEFAULT 'basic',
 ALTER COLUMN role
 SET NOT NULL,
 ALTER COLUMN password type VARCHAR(255),
-ADD COLUMN created_at TIMESTAMP(3) NOT NULL DEFAULT current_timestamp,
-ADD COLUMN updated_at TIMESTAMP(3) NOT NULL DEFAULT current_timestamp;
+ADD COLUMN created_at TIMESTAMP(3) NOT NULL DEFAULT current_timestamp;
 
 UPDATE users
 SET
@@ -142,8 +141,7 @@ DROP COLUMN accesstoken,
 DROP COLUMN google,
 DROP COLUMN github,
 DROP COLUMN googleid,
-DROP COLUMN githubid,
-DROP COLUMN updated_at;
+DROP COLUMN githubid;
 
 ALTER TABLE users
 RENAME TO "user";
@@ -220,6 +218,7 @@ ADD CONSTRAINT donated_datasets_ibfk_1 FOREIGN key (userid) REFERENCES "user" (i
 -------------------------------------------------------------------------------
 DROP SEQUENCE datasets_id_seq CASCADE;
 
+-- duplicate slugs
 DO $$
   DECLARE
     dataset_ids integer[] := ARRAY[387, 497];
@@ -251,7 +250,6 @@ DO $$
   END
 $$;
 
--- duplicate slugs
 CREATE TABLE "dataset" (
   "id" serial PRIMARY KEY NOT NULL,
   "title" TEXT NOT NULL,
@@ -276,7 +274,6 @@ CREATE TABLE "dataset" (
   "file_count" INTEGER,
   "user_id" uuid NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "accepted_check" CHECK (
     "dataset"."status" = 'draft'
@@ -400,7 +397,6 @@ SELECT
   numdownloads AS download_count,
   slug,
   userid AS user_id,
-  CURRENT_TIMESTAMP AS updated_at,
   COALESCE(
     (
       SELECT
@@ -483,7 +479,6 @@ INSERT INTO
     download_count,
     slug,
     user_id,
-    updated_at,
     data_types,
     tasks,
     feature_types,
@@ -509,7 +504,6 @@ VALUES
     rec.download_count,
     rec.slug,
     rec.user_id,
-    rec.updated_at,
     rec.data_types,
     rec.tasks,
     rec.feature_types,
@@ -836,186 +830,326 @@ CREATE TABLE "bookmark" (
 );
 
 -------------------------------------------------------------------------------
--- dataset materialized view
+-- dataset view
 -------------------------------------------------------------------------------
--- noinspection SqlResolve @ column/"keyword_id"
--- noinspection SqlResolve @ column/"dataset_id"
-CREATE MATERIALIZED VIEW "public"."dataset_view" AS (
-  SELECT
-    "dataset"."id",
-    "dataset"."title",
-    "dataset"."year_created",
-    "dataset"."subtitle",
-    "dataset"."doi",
-    "dataset"."description",
-    "dataset"."subject_area",
-    "dataset"."instance_count",
-    "dataset"."feature_count",
-    "dataset"."has_graphics",
-    "dataset"."is_available_python",
-    "dataset"."external_link",
-    "dataset"."slug",
-    "dataset"."status",
-    "dataset"."view_count",
-    "dataset"."download_count",
-    "dataset"."data_types",
-    "dataset"."tasks",
-    "dataset"."feature_types",
-    "dataset"."size",
-    "dataset"."file_count",
-    "dataset"."user_id",
-    "dataset"."donated_at",
-    "dataset"."updated_at",
-    COALESCE(
-      (
-        SELECT
-          ARRAY_AGG("keyword"."name"::TEXT)
-        FROM
-          "keyword"
-          JOIN "dataset_keyword" ON "dataset_keyword"."keyword_id" = "keyword"."id"
-        WHERE
-          "dataset_keyword"."dataset_id" = "dataset"."id"
-      ),
-      ARRAY[]::TEXT[]
-    ) AS "keywords",
-    COALESCE(
-      (
-        SELECT
-          ARRAY_AGG(
-            JSONB_BUILD_OBJECT(
-              'id',
-              "author"."id",
-              'firstName',
-              "author"."first_name",
-              'lastName',
-              "author"."last_name",
-              'email',
-              "author"."email",
-              'institution',
-              "author"."institution"
-            )
-          )
-        FROM
-          "author"
-        WHERE
-          "author"."dataset_id" = "dataset"."id"
-      ),
-      ARRAY[]::JSONB[]
-    ) AS "authors",
-    COALESCE(
-      (
-        SELECT
-          ARRAY_AGG(
-            JSONB_BUILD_OBJECT(
-              'id',
-              "variable"."id",
-              'name',
-              "variable"."name",
-              'description',
-              "variable"."description",
-              'role',
-              "variable"."role",
-              'type',
-              "variable"."type",
-              'missingValues',
-              "variable"."missing_values",
-              'units',
-              "variable"."units"
-            )
-          )
-        FROM
-          "variable"
-        WHERE
-          "variable"."dataset_id" = "dataset"."id"
-      ),
-      ARRAY[]::JSONB[]
-    ) AS "variables",
-    COALESCE(
-      (
-        SELECT
-          ARRAY_AGG(LOWER("variable"."name"))
-        FROM
-          "variable"
-        WHERE
-          "variable"."dataset_id" = "dataset"."id"
-      ),
-      ARRAY[]::TEXT[]
-    ) AS "variable_names",
-    (
-      SELECT
-        JSONB_BUILD_OBJECT(
-          'id',
-          "user"."id",
-          'name',
-          "user"."name",
-          'email',
-          "user"."email",
-          'emailVerified',
-          "user"."email_verified",
-          'image',
-          "user"."image",
-          'role',
-          "user"."role",
-          'createdAt',
-          "user"."created_at"
-        )
-      FROM
-        "user"
-      WHERE
-        "user"."id" = "dataset"."user_id"
-    ) AS "user",
-    (
-      SELECT
-        JSONB_BUILD_OBJECT(
-          'title',
-          "paper"."title",
-          'authors',
-          "paper"."authors",
-          'venue',
-          "paper"."venue",
-          'year',
-          "paper"."year",
-          'citationCount',
-          "paper"."citation_count",
-          'url',
-          "paper"."url",
-          'datasetId',
-          "paper"."dataset_id"
-        )
-      FROM
-        "paper"
-      WHERE
-        "paper"."dataset_id" = "dataset"."id"
-    ) AS "introductory_paper"
-  FROM
-    "dataset"
-    LEFT JOIN "paper" ON "dataset"."id" = "paper"."dataset_id"
-    LEFT JOIN "author" ON "dataset"."id" = "author"."dataset_id"
-    LEFT JOIN "variable" ON "dataset"."id" = "variable"."dataset_id"
-    LEFT JOIN "dataset_keyword" ON "dataset"."id" = "dataset_keyword"."dataset_id"
-  GROUP BY
-    "dataset"."id"
-)
+--> statement-breakpoint
+CREATE TABLE "dataset_view" (
+  "id" INTEGER PRIMARY KEY NOT NULL,
+  "title" TEXT NOT NULL,
+  "year_created" INTEGER,
+  "subtitle" TEXT,
+  "doi" TEXT,
+  "description" TEXT,
+  "subject_area" "dataset_subject_area",
+  "instance_count" INTEGER,
+  "feature_count" INTEGER,
+  "has_graphics" BOOLEAN NOT NULL,
+  "is_available_python" BOOLEAN NOT NULL,
+  "external_link" TEXT,
+  "slug" TEXT NOT NULL,
+  "status" "approval_status" NOT NULL,
+  "view_count" INTEGER NOT NULL,
+  "download_count" INTEGER NOT NULL,
+  "data_types" "dataset_characteristic" [],
+  "tasks" "dataset_task" [],
+  "feature_types" "dataset_feature_type" [],
+  "size" BIGINT,
+  "file_count" INTEGER,
+  "user_id" uuid NOT NULL,
+  "donated_at" TIMESTAMP NOT NULL,
+  "keywords" TEXT[] NOT NULL,
+  "authors" JSONB[] NOT NULL,
+  "variables" JSONB[] NOT NULL,
+  "variable_names" TEXT[] NOT NULL,
+  "user" JSONB NOT NULL,
+  "introductory_paper" JSONB
+);
+
+CREATE OR REPLACE FUNCTION refresh_dataset_view ("source_dataset_id" INTEGER DEFAULT NULL) RETURNS void AS $$
+BEGIN
 WITH
-  DATA;
+  "computed" AS (
+    SELECT
+      "d"."id",
+      "d"."title",
+      "d"."year_created",
+      "d"."subtitle",
+      "d"."doi",
+      "d"."description",
+      "d"."subject_area",
+      "d"."instance_count",
+      "d"."feature_count",
+      "d"."has_graphics",
+      "d"."is_available_python",
+      "d"."external_link",
+      "d"."slug",
+      "d"."status",
+      "d"."view_count",
+      "d"."download_count",
+      "d"."data_types",
+      "d"."tasks",
+      "d"."feature_types",
+      "d"."size",
+      "d"."file_count",
+      "d"."user_id",
+      "d"."donated_at",
+      COALESCE(
+        (
+          SELECT
+            ARRAY_AGG("k"."name")
+          FROM
+            "keyword" "k"
+            JOIN "dataset_keyword" "dk" ON "dk"."keyword_id" = "k"."id"
+          WHERE
+            "dk"."dataset_id" = "d"."id"
+        ),
+        ARRAY[]::TEXT[]
+      ) AS "keywords",
+      COALESCE(
+        (
+          SELECT
+            ARRAY_AGG(
+              JSONB_BUILD_OBJECT(
+                'id',
+                "a"."id",
+                'firstName',
+                "a"."first_name",
+                'lastName',
+                "a"."last_name",
+                'email',
+                "a"."email",
+                'institution',
+                "a"."institution"
+              )
+            )
+          FROM
+            "author" "a"
+          WHERE
+            "a"."dataset_id" = "d"."id"
+        ),
+        ARRAY[]::JSONB[]
+      ) AS "authors",
+      COALESCE(
+        (
+          SELECT
+            ARRAY_AGG(
+              JSONB_BUILD_OBJECT(
+                'id',
+                "v"."id",
+                'name',
+                "v"."name",
+                'description',
+                "v"."description",
+                'role',
+                "v"."role",
+                'type',
+                "v"."type",
+                'missingValues',
+                "v"."missing_values",
+                'units',
+                "v"."units"
+              )
+            )
+          FROM
+            "variable" "v"
+          WHERE
+            "v"."dataset_id" = "d"."id"
+        ),
+        ARRAY[]::JSONB[]
+      ) AS "variables",
+      COALESCE(
+        (
+          SELECT
+            ARRAY_AGG(LOWER("v"."name"))
+          FROM
+            "variable" "v"
+          WHERE
+            "v"."dataset_id" = "d"."id"
+        ),
+        ARRAY[]::TEXT[]
+      ) AS "variable_names",
+      (
+        SELECT
+          JSONB_BUILD_OBJECT(
+            'id',
+            "u"."id",
+            'name',
+            "u"."name",
+            'email',
+            "u"."email",
+            'emailVerified',
+            "u"."email_verified",
+            'image',
+            "u"."image",
+            'role',
+            "u"."role",
+            'createdAt',
+            "u"."created_at"
+          )
+        FROM
+          "user" "u"
+        WHERE
+          "u"."id" = "d"."user_id"
+      ) AS "user",
+      (
+        SELECT
+          JSONB_BUILD_OBJECT(
+            'title',
+            "p"."title",
+            'authors',
+            "p"."authors",
+            'venue',
+            "p"."venue",
+            'year',
+            "p"."year",
+            'citationCount',
+            "p"."citation_count",
+            'url',
+            "p"."url",
+            'datasetId',
+            "p"."dataset_id"
+          )
+        FROM
+          "paper" "p"
+        WHERE
+          "p"."dataset_id" = "d"."id"
+      ) AS "introductory_paper"
+    FROM
+      "dataset" "d"
+    WHERE
+      (
+        "source_dataset_id" IS NULL
+        OR "d"."id" = "source_dataset_id"
+      )
+  )
+INSERT INTO
+  "dataset_view" (
+    "id",
+    "title",
+    "year_created",
+    "subtitle",
+    "doi",
+    "description",
+    "subject_area",
+    "instance_count",
+    "feature_count",
+    "has_graphics",
+    "is_available_python",
+    "external_link",
+    "slug",
+    "status",
+    "view_count",
+    "download_count",
+    "data_types",
+    "tasks",
+    "feature_types",
+    "size",
+    "file_count",
+    "user_id",
+    "donated_at",
+    "keywords",
+    "authors",
+    "variables",
+    "variable_names",
+    "user",
+    "introductory_paper"
+  )
+SELECT
+  "id",
+  "title",
+  "year_created",
+  "subtitle",
+  "doi",
+  "description",
+  "subject_area",
+  "instance_count",
+  "feature_count",
+  "has_graphics",
+  "is_available_python",
+  "external_link",
+  "slug",
+  "status",
+  "view_count",
+  "download_count",
+  "data_types",
+  "tasks",
+  "feature_types",
+  "size",
+  "file_count",
+  "user_id",
+  "donated_at",
+  "keywords",
+  "authors",
+  "variables",
+  "variable_names",
+  "user",
+  "introductory_paper"
+FROM
+  "computed"
+ON CONFLICT ("id") DO UPDATE
+SET
+  (
+    "title",
+    "year_created",
+    "subtitle",
+    "doi",
+    "description",
+    "subject_area",
+    "instance_count",
+    "feature_count",
+    "has_graphics",
+    "is_available_python",
+    "external_link",
+    "slug",
+    "status",
+    "view_count",
+    "download_count",
+    "data_types",
+    "tasks",
+    "feature_types",
+    "size",
+    "file_count",
+    "user_id",
+    "donated_at",
+    "keywords",
+    "authors",
+    "variables",
+    "variable_names",
+    "user",
+    "introductory_paper"
+  ) = (
+    EXCLUDED."title",
+    EXCLUDED."year_created",
+    EXCLUDED."subtitle",
+    EXCLUDED."doi",
+    EXCLUDED."description",
+    EXCLUDED."subject_area",
+    EXCLUDED."instance_count",
+    EXCLUDED."feature_count",
+    EXCLUDED."has_graphics",
+    EXCLUDED."is_available_python",
+    EXCLUDED."external_link",
+    EXCLUDED."slug",
+    EXCLUDED."status",
+    EXCLUDED."view_count",
+    EXCLUDED."download_count",
+    EXCLUDED."data_types",
+    EXCLUDED."tasks",
+    EXCLUDED."feature_types",
+    EXCLUDED."size",
+    EXCLUDED."file_count",
+    EXCLUDED."user_id",
+    EXCLUDED."donated_at",
+    EXCLUDED."keywords",
+    EXCLUDED."authors",
+    EXCLUDED."variables",
+    EXCLUDED."variable_names",
+    EXCLUDED."user",
+    EXCLUDED."introductory_paper"
+  );
 
-CREATE UNIQUE INDEX dataset_view_id_index ON dataset_view (id);
-
-CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
-
-CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
-
-CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
-
-CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
-
-CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
-
-CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
-
-CREATE INDEX dataset_view_variable_names_index ON dataset_view USING gin (variable_names);
-
-CREATE INDEX dataset_view_status_index ON dataset_view (status);
+END;
+$$ LANGUAGE plpgsql;
 
 -------------------------------------------------------------------------------
 -- discussion
@@ -1116,11 +1250,6 @@ CREATE TABLE password_reset_token (
 );
 
 -------------------------------------------------------------------------------
--- REFRESH MATERIALIZED VIEW
--------------------------------------------------------------------------------
-REFRESH MATERIALIZED VIEW dataset_view;
-
--------------------------------------------------------------------------------
 -- Remaining constraints
 -------------------------------------------------------------------------------
 -- noinspection SqlResolve
@@ -1188,37 +1317,8 @@ DROP TYPE edits_status CASCADE;
 
 DROP TYPE requests_status CASCADE;
 
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_text_search_index ON dataset_view USING gin (
---   SETWEIGHT(
---     TO_TSVECTOR('simple'::regconfig, title),
---     'A'::"char"
---   )
--- );
---
--- --> statement-breakpoint
--- CREATE UNIQUE INDEX dataset_view_id_index ON dataset_view (id);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_view_count_index ON dataset_view (view_count);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_donated_at_index ON dataset_view (donated_at);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_instance_count_index ON dataset_view (instance_count);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_feature_count_index ON dataset_view (feature_count);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_trgm_search_index ON dataset_view USING gin (title gin_trgm_ops);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_keywords_index ON dataset_view USING gin (keywords);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_variable_names_index ON dataset_view USING gin (variable_names);
---
--- --> statement-breakpoint
--- CREATE INDEX dataset_view_status_index ON dataset_view (status);
+-------------------------------------------------------------------------------
+-- REFRESH VIEW
+-------------------------------------------------------------------------------
+SELECT
+  refresh_dataset_view ();

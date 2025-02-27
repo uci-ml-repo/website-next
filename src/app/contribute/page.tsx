@@ -43,7 +43,7 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <ArrowRightIcon className="text-muted-foreground" />
+                  <ArrowRightIcon />
                 </div>
               </div>
             </DonationOption>
@@ -83,7 +83,7 @@ function DonationOption({
       body="To beigin the dataset contribution process, plase sign in."
       authedRedirect={href}
     >
-      <Card className="lift-lg flex h-full justify-center text-center transition-all hover:bg-uci-gold">
+      <Card className="lift-lg flex h-full justify-center text-center transition-all hover:bg-uci-gold hover:text-uci-gold-foreground">
         <CardContent className="w-full space-y-1 p-6">{children}</CardContent>
       </Card>
     </SignInRequired>

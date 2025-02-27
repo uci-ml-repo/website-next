@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
 import { cache } from "react";
 
@@ -15,18 +14,27 @@ import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return caller.dataset.find.byId({ datasetId: id });
+  try {
+    if (!Number(id)) {
+      return null;
+    }
+
+    return await caller.dataset.find.byId({ datasetId: id });
+  } catch {
+    return null;
+  }
 });
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string; slug: string }>;
-}): Promise<Metadata> {
-  const { id, slug } = await params;
+}) {
+  const { id } = await params;
+
   const dataset = await getDataset(Number(id));
 
-  if (!dataset || dataset.slug !== decodeURIComponent(slug)) {
+  if (!dataset) {
     return { title: "Not Found" };
   }
 
@@ -44,6 +52,7 @@ export default async function Layout({
   const { id, slug } = await params;
 
   const dataset = await getDataset(Number(id));
+
   if (!dataset) {
     return notFound();
   }

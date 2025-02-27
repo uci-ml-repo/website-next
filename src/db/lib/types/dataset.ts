@@ -43,7 +43,6 @@ export const datasetPreviewSelect = {
   fileCount: datasetView.fileCount,
   userId: datasetView.userId,
   donatedAt: datasetView.donatedAt,
-  updatedAt: datasetView.updatedAt,
 };
 
 export const datasetIdentificationSelectColumns = selectColumns(

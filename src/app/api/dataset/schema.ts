@@ -80,7 +80,7 @@ export function datasetToPythonMetadata(
       ? "yes"
       : "no",
     year_of_dataset_creation: dataset.yearCreated,
-    last_updated: dataset.updatedAt.toString(),
+    last_updated: dataset.donatedAt.toString(), // TODO: use edits to infer
     dataset_doi: dataset.doi,
     creators: dataset.authors.map(
       (author) => `${author.firstName} ${author.lastName}`,

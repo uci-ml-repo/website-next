@@ -1,13 +1,13 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
-import { eq, getTableColumns, relations, sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   boolean,
   check,
   index,
   integer,
+  jsonb,
   pgEnum,
-  pgMaterializedView,
   pgTable,
   primaryKey,
   serial,
@@ -80,7 +80,6 @@ export const dataset = pgTable(
   {
     id: serial("id").primaryKey(),
     title: text("title").notNull(),
-
     yearCreated: integer("year_created"),
     subtitle: text("subtitle"),
     doi: text("doi"),
@@ -95,27 +94,18 @@ export const dataset = pgTable(
     status: approvalStatus("status")
       .default(Enums.ApprovalStatus.DRAFT)
       .notNull(),
-
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count").default(0).notNull(),
-
     dataTypes: datasetDataType("data_types").array(),
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
-
     size: bigint("size", { mode: "number" }),
     fileCount: integer("file_count"),
-
     userId: uuid("user_id")
       .references(() => user.id, { onDelete: "set default" })
       .default(baseUUID)
       .notNull(),
-
     donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-      .notNull()
-      .defaultNow()
-      .$onUpdate(() => new Date()),
   },
   (t) => [
     check(
@@ -162,6 +152,56 @@ export const dataset = pgTable(
           AND ${t.size} IS NOT NULL
         )
       `,
+    ),
+  ],
+);
+
+export const datasetView = pgTable(
+  "dataset_view",
+  {
+    id: integer("id")
+      .primaryKey()
+      .references(() => dataset.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    yearCreated: integer("year_created"),
+    subtitle: text("subtitle"),
+    doi: text("doi"),
+    description: text("description"),
+    subjectArea: datasetSubjectArea("subject_area"),
+    instanceCount: integer("instance_count"),
+    featureCount: integer("feature_count"),
+    hasGraphics: boolean("has_graphics").notNull(),
+    isAvailablePython: boolean("is_available_python").notNull(),
+    externalLink: text("external_link"),
+    slug: text("slug").notNull(),
+    status: approvalStatus("status").notNull(),
+    viewCount: integer("view_count").notNull(),
+    downloadCount: integer("download_count").notNull(),
+    dataTypes: datasetDataType("data_types").array(),
+    tasks: datasetTask("tasks").array(),
+    featureTypes: datasetFeatureType("feature_types").array(),
+    size: bigint("size", { mode: "number" }),
+    fileCount: integer("file_count"),
+    userId: uuid("user_id").notNull(),
+    donatedAt: timestamp("donated_at", { mode: "date" }).notNull(),
+    keywords: text("keywords").array().notNull().$type<string[]>(),
+    authors: jsonb("authors").array().notNull().$type<AuthorSelect[]>(),
+    variables: jsonb("variables").array().notNull().$type<VariableSelect[]>(),
+    variableNames: text("variable_names").array().notNull().$type<string>(),
+    user: jsonb("user").notNull().$type<UserSelect>(),
+    introductoryPaper: jsonb("introductory_paper").$type<PaperSelect>(),
+  },
+  (t) => [
+    index("dataset_view_view_count_index").on(t.viewCount),
+    index("dataset_view_donated_at_index").on(t.donatedAt),
+    index("dataset_view_instance_count_index").on(t.instanceCount),
+    index("dataset_view_feature_count_index").on(t.featureCount),
+    index("dataset_view_keywords_index").using("gin", t.keywords),
+    index("dataset_view_variable_names_index").using("gin", t.variableNames),
+    index("dataset_view_status_index").on(t.status),
+    index("dataset_view_trgm_search_index").using(
+      "gin",
+      sql`${t.title} gin_trgm_ops`,
     ),
   ],
 );
@@ -654,152 +694,3 @@ export const passwordResetTokenRelations = relations(
     }),
   }),
 );
-
-/**
- * Materialized views
- */
-export const datasetView = pgMaterializedView("dataset_view").as((qb) => {
-  return qb
-    .select({
-      ...getTableColumns(dataset),
-      keywords: sql<string[]>`
-        COALESCE(
-          (
-            SELECT
-              ARRAY_AGG(${keyword.name})
-            FROM
-              ${keyword}
-              JOIN ${datasetKeyword} ON ${datasetKeyword.keywordId} = ${keyword.id}
-            WHERE
-              ${datasetKeyword.datasetId} = ${dataset.id}
-          ),
-          ARRAY[]::TEXT[]
-        )
-      `.as("keywords"),
-      authors: sql<AuthorSelect[]>`
-        COALESCE(
-          (
-            SELECT
-              ARRAY_AGG(
-                JSONB_BUILD_OBJECT(
-                  'id',
-                  ${author.id},
-                  'firstName',
-                  ${author.firstName},
-                  'lastName',
-                  ${author.lastName},
-                  'email',
-                  ${author.email},
-                  'institution',
-                  ${author.institution}
-                )
-              )
-            FROM
-              ${author}
-            WHERE
-              ${author.datasetId} = ${dataset.id}
-          ),
-          ARRAY[]::JSONB[]
-        )
-      `.as("authors"),
-      variables: sql<VariableSelect[]>`
-        COALESCE(
-          (
-            SELECT
-              ARRAY_AGG(
-                JSONB_BUILD_OBJECT(
-                  'id',
-                  ${variable.id},
-                  'name',
-                  ${variable.name},
-                  'description',
-                  ${variable.description},
-                  'role',
-                  ${variable.role},
-                  'type',
-                  ${variable.type},
-                  'missingValues',
-                  ${variable.missingValues},
-                  'units',
-                  ${variable.units}
-                )
-              )
-            FROM
-              ${variable}
-            WHERE
-              ${variable.datasetId} = ${dataset.id}
-          ),
-          ARRAY[]::JSONB[]
-        )
-      `.as("variables"),
-      variableNames: sql<string[]>`
-        COALESCE(
-          (
-            SELECT
-              ARRAY_AGG(LOWER(${variable.name}))
-            FROM
-              ${variable}
-            WHERE
-              ${variable.datasetId} = ${dataset.id}
-          ),
-          ARRAY[]::TEXT[]
-        )
-      `.as("variable_names"),
-      user: sql<UserSelect>`
-        (
-          SELECT
-            JSONB_BUILD_OBJECT(
-              'id',
-              ${user.id},
-              'name',
-              ${user.name},
-              'email',
-              ${user.email},
-              'emailVerified',
-              ${user.emailVerified},
-              'image',
-              ${user.image},
-              'role',
-              ${user.role},
-              'createdAt',
-              ${user.createdAt}
-            )
-          FROM
-            ${user}
-          WHERE
-            ${user.id} = ${dataset.userId}
-        )
-      `.as("user"),
-      introductoryPaper: sql<PaperSelect>`
-        (
-          SELECT
-            JSONB_BUILD_OBJECT(
-              'title',
-              ${paper.title},
-              'authors',
-              ${paper.authors},
-              'venue',
-              ${paper.venue},
-              'year',
-              ${paper.year},
-              'citationCount',
-              ${paper.citationCount},
-              'url',
-              ${paper.url},
-              'datasetId',
-              ${paper.datasetId}
-            )
-          FROM
-            ${paper}
-          WHERE
-            ${paper.datasetId} = ${dataset.id}
-        )
-      `.as("introductory_paper"),
-    })
-    .from(dataset)
-    .leftJoin(paper, eq(dataset.id, paper.datasetId))
-    .leftJoin(author, eq(dataset.id, author.datasetId))
-    .leftJoin(variable, eq(dataset.id, variable.datasetId))
-    .leftJoin(datasetKeyword, eq(dataset.id, datasetKeyword.datasetId))
-    .groupBy(dataset.id);
-});
