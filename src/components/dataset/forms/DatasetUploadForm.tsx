@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -31,19 +31,23 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>;
 
 export function DatasetUploadForm() {
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "" },
   });
 
-  const datasetCreateMutation = trpc.dataset.create.initial.useMutation();
+  const datasetCreateMutation = trpc.dataset.create.initial.useMutation({
+    onSuccess: (dataset) => {
+      router.push(DATASET_ROUTE(dataset));
+    },
+  });
 
   async function onSubmit(values: FormData) {
-    const dataset = await datasetCreateMutation.mutateAsync({
+    await datasetCreateMutation.mutateAsync({
       title: values.title,
     });
-
-    redirect(DATASET_ROUTE(dataset));
   }
 
   const pending =
@@ -69,9 +73,9 @@ export function DatasetUploadForm() {
           type="submit"
           variant="gold"
           className="lift w-full"
-          disabled={form.formState.isSubmitting}
+          disabled={pending}
         >
-          {form.formState.isSubmitting ? <Spinner /> : <PlusIcon />} Create
+          {pending ? <Spinner /> : <PlusIcon />} Create Dataset
         </Button>
       </form>
     </Form>
