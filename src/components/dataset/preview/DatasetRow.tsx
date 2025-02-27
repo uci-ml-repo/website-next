@@ -64,7 +64,7 @@ export function DatasetRow({
         className="size-12 rounded-lg object-cover dark:brightness-90"
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
-        <div className="w-full">
+        <div className="min-w-0">
           <div className="flex items-center space-x-2">
             {displayStatus && <DatasetStatusBadge status={dataset.status} />}
 
@@ -84,15 +84,15 @@ export function DatasetRow({
               "hidden @md:block",
             )}
           >
-            {datasetStats.map((stat, i) => {
-              if (stat.text)
-                return (
+            {datasetStats.map(
+              (stat, i) =>
+                stat.text && (
                   <div key={i} className="flex items-center space-x-1">
                     {stat.icon}
                     <span className="text-nowrap">{stat.text}</span>
                   </div>
-                );
-            })}
+                ),
+            )}
           </div>
         )}
       </div>
