@@ -38,7 +38,6 @@ const adapter = DrizzleAdapter(db, {
 
 export const authOptions = NextAuth({
   adapter,
-  ...authConfig,
   providers: [
     ...authConfig.providers,
     CredentialsProvider({
