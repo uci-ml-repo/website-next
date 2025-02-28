@@ -1,4 +1,3 @@
-import { SettingsIcon } from "lucide-react";
 import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -15,7 +14,7 @@ export default async function Page() {
 
   return (
     <div className="space-y-8">
-      <TabHeader title="Profile Settings" icon={SettingsIcon} />
+      <TabHeader title="Profile Settings" />
       <div className="space-y-6">
         <ProfileSettingsEmail />
         <hr />
