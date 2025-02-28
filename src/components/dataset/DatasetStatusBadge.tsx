@@ -19,7 +19,7 @@ export function DatasetStatusBadge({
       variant = "gold";
       break;
     case Enums.ApprovalStatus.DRAFT:
-      variant = "secondary";
+      variant = "secondary-strong";
       break;
     case Enums.ApprovalStatus.REJECTED:
       variant = "destructive-muted";
