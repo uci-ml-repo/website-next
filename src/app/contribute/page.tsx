@@ -1,10 +1,12 @@
 import { ArrowRightIcon, LinkIcon, UploadIcon } from "lucide-react";
+import Link from "next/link";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   CONTRIBUTE_DONATION_ROUTE,
   CONTRIBUTE_EXTERNAL_ROUTE,
+  PROFILE_DATASETS_ROUTE,
 } from "@/lib/routes";
 
 import Contribution from "./contribution.mdx";
@@ -50,7 +52,7 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <div className="pace-y-2 text-muted-foreground">
+      <div className="space-y-2 text-muted-foreground">
         <div>Need help deciding?</div>
         <ul className="ml-6 list-disc space-y-2">
           <li>
@@ -65,6 +67,13 @@ export default function Page() {
             Machine Learning repository will direct users to the external page.
           </li>
         </ul>
+      </div>
+      <div className="text-muted-foreground">
+        View donated datasets on{" "}
+        <Link href={PROFILE_DATASETS_ROUTE} className="underline">
+          your profile
+        </Link>
+        .
       </div>
     </div>
   );
