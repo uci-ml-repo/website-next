@@ -36,7 +36,7 @@ export function DatasetFilterDualSlider({
   dropdownOpen,
   onDropdownOpenChange,
 }: DatasetFilterDualSliderProps) {
-  const { setFilters } = useQueryFilters<DatasetQuery>();
+  const { setFilters, debouncedSetFilters } = useQueryFilters<DatasetQuery>();
 
   const [values, setValues] = useState<number[]>([0, 0]);
   const [initialized, setInitialized] = useState<boolean>(false);
@@ -60,7 +60,7 @@ export function DatasetFilterDualSlider({
 
   const exp = useCallback(
     (curved: number) => {
-      if (!maxRawValue || maxRawValue <= 0 || curved <= 0) return 0;
+      if (!maxRawValue || maxRawValue <= 1 || curved <= 1) return curved;
       const raw =
         maxRawValue *
         Math.pow(Math.log(curved) / Math.log(maxRawValue), 1 / exponent);
@@ -91,14 +91,14 @@ export function DatasetFilterDualSlider({
     const minCurved = log(values[0]);
     const maxCurved = log(values[1]);
 
-    setFilters({
+    debouncedSetFilters({
       [filterMinKey]: minCurved === 0 ? undefined : minCurved,
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
       cursor: 0,
     });
   }, [
     values,
-    setFilters,
+    debouncedSetFilters,
     log,
     filterMinKey,
     filterMaxKey,

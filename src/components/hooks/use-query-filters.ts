@@ -1,7 +1,8 @@
 "use client";
 
+import debounce from "lodash/debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { buildQueryFilters, jsonOrString } from "@/lib/utils";
 
@@ -48,6 +49,17 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
     [pathname, router],
   );
 
+  const debouncedSetFilters = useMemo(
+    () => debounce((newFilters: Partial<T>) => setFilters(newFilters), 100),
+    [setFilters],
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedSetFilters.cancel();
+    };
+  }, [debouncedSetFilters]);
+
   const clearFilters = ({ except = [] }: { except?: (keyof T)[] } = {}) => {
     const clearedFilters = (Object.keys(filters) as (keyof T)[]).reduce<
       Partial<T>
@@ -66,6 +78,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   return {
     filters,
     setFilters,
+    debouncedSetFilters,
     filterCount,
     filterCountExcept,
     clearFilters,

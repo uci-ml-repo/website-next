@@ -1,6 +1,7 @@
-import { desc, isNotNull } from "drizzle-orm";
+import { and, desc, eq, isNotNull } from "drizzle-orm";
 
 import { db } from "@/db";
+import { Enums } from "@/db/lib/enums";
 import { datasetView } from "@/db/schema";
 
 export class DatasetStatsService {
@@ -9,13 +10,24 @@ export class DatasetStatsService {
       .select()
       .from(datasetView)
       .orderBy(desc(datasetView.instanceCount))
+      .where(
+        and(
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
+          isNotNull(datasetView.instanceCount),
+        ),
+      )
       .limit(1);
 
     const [maxFeatureCount] = await db
       .select()
       .from(datasetView)
+      .where(
+        and(
+          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
+          isNotNull(datasetView.featureCount),
+        ),
+      )
       .orderBy(desc(datasetView.featureCount))
-      .where(isNotNull(datasetView.featureCount))
       .limit(1);
 
     return {
