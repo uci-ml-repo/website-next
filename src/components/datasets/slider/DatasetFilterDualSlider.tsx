@@ -43,24 +43,26 @@ export function DatasetFilterDualSlider({
 
   const log = useCallback(
     (raw: number) => {
-      if (raw > 0 && maxRawValue && maxRawValue > 0) {
-        const ratio = raw / maxRawValue;
-        return Math.round(
-          Number(
-            Math.round(
-              Math.pow(maxRawValue, Math.pow(ratio, exponent)),
-            ).toPrecision(2),
-          ),
-        );
+      if (raw === 0 || !maxRawValue) {
+        return 0;
       }
-      return 0;
+      const ratio = raw / maxRawValue;
+      return Math.round(
+        Number(
+          Math.round(
+            Math.pow(maxRawValue, Math.pow(ratio, exponent)),
+          ).toPrecision(2),
+        ),
+      );
     },
     [maxRawValue, exponent],
   );
 
   const exp = useCallback(
     (curved: number) => {
-      if (!maxRawValue || maxRawValue <= 1 || curved <= 1) return curved;
+      if (!maxRawValue || maxRawValue <= 1 || curved <= 1) {
+        return curved;
+      }
       const raw =
         maxRawValue *
         Math.pow(Math.log(curved) / Math.log(maxRawValue), 1 / exponent);
