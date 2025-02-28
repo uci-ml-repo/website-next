@@ -63,18 +63,18 @@ export default async function Layout({
             Bookmarks
           </LinearTabsTrigger>
           <LinearTabsTrigger
-            value="datasets"
-            badgeValue={datasets.count}
-            link={path.join(PROFILE_ROUTE, "datasets")}
-          >
-            Datasets
-          </LinearTabsTrigger>
-          <LinearTabsTrigger
             value="discussions"
             badgeValue={discussions.length}
             link={path.join(PROFILE_ROUTE, "discussions")}
           >
             Discussions
+          </LinearTabsTrigger>
+          <LinearTabsTrigger
+            value="datasets"
+            badgeValue={datasets.count}
+            link={path.join(PROFILE_ROUTE, "datasets")}
+          >
+            Datasets
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="settings"

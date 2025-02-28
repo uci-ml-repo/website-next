@@ -70,11 +70,12 @@ export function DatasetDiscardDialog({
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
             </Link>
+            .
           </div>
           <div className="select-none space-y-1">
             <div>
               To confirm, type <span className="font-bold">delete me</span>{" "}
-              below
+              below.
             </div>
             <Input
               onChange={(e) => setConfirmInput(e.target.value)}

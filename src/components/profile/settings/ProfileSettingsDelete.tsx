@@ -82,11 +82,12 @@ export function ProfileSettingsDelete() {
                 <Link href={CONTACT_ROUTE} className="underline">
                   contact us
                 </Link>
+                .
               </div>
               <div className="select-none space-y-1">
                 <div>
                   To confirm, type your email{" "}
-                  <span className="font-bold">{session.user.email}</span> below
+                  <span className="font-bold">{session.user.email}</span> below.
                 </div>
                 <Input
                   onChange={(e) => setConfirmInput(e.target.value)}
