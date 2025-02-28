@@ -153,5 +153,3 @@ export class GoogleAnalyticsService {
     return views;
   }
 }
-
-export default GoogleAnalyticsService;

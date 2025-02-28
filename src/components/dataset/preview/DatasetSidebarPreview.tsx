@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { DatasetPreviewSelect } from "@/db/lib/types";
-import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
+import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 interface DatasetSidebarPreviewProps extends React.ComponentProps<"a"> {
@@ -40,7 +40,7 @@ export function DatasetSidebarPreview({
           {...props}
         >
           <Image
-            src={DATASET_THUMBNAIL_ROUTE(dataset)}
+            src={DATASET_API_THUMBNAIL_ROUTE(dataset)}
             alt={`${dataset.title} thumbnail`}
             height={100}
             width={100}

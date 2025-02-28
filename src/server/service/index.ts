@@ -1,4 +1,4 @@
-import GoogleAnalyticsService from "@/server/service/analytics";
+import { GoogleAnalyticsService } from "@/server/service/analytics";
 import { AttributeService } from "@/server/service/attribute";
 import { BookmarkService } from "@/server/service/bookmark";
 import { DatasetService } from "@/server/service/dataset";

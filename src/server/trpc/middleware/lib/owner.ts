@@ -17,7 +17,7 @@ export namespace AssertOwner {
     }
 
     if (dataset.userId !== userId) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({ code: "FORBIDDEN" });
     }
   };
 
@@ -35,7 +35,7 @@ export namespace AssertOwner {
     }
 
     if (discussion.userId !== userId) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({ code: "FORBIDDEN" });
     }
   };
 
@@ -54,7 +54,7 @@ export namespace AssertOwner {
     }
 
     if (discussionComment.userId !== userId) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({ code: "FORBIDDEN" });
     }
   };
 }

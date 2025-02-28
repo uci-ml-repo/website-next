@@ -9,7 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
+import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
 
@@ -57,7 +57,7 @@ export function DatasetRow({
       {...props}
     >
       <Image
-        src={DATASET_THUMBNAIL_ROUTE(dataset)}
+        src={DATASET_API_THUMBNAIL_ROUTE(dataset)}
         alt={`${dataset.title} thumbnail`}
         width={200}
         height={200}

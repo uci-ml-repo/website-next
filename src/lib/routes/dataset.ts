@@ -24,6 +24,19 @@ export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {
 }
 
 /**
+ * @example "/dataset/53/iris/files"
+ */
+export function DATASET_FILES_ROUTE({
+  id,
+  slug,
+}: {
+  id: number;
+  slug: string;
+}) {
+  return path.join(DATASET_ROUTE({ id, slug }), "files");
+}
+
+/**
  * @example "/dataset/53/iris/discussions"
  */
 export function DATASET_DISCUSSIONS_ROUTE({
@@ -85,7 +98,7 @@ export function DATASET_DISCUSSION_EDIT_ROUTE({
 /**
  * @example "/api/static/public/53"
  */
-export function DATASET_FILES_ROUTE({
+export function DATASET_API_FILES_ROUTE({
   id,
   status,
 }: {
@@ -98,7 +111,7 @@ export function DATASET_FILES_ROUTE({
 /**
  * @example "/api/static/public/53/thumbnail.png"
  */
-export function DATASET_THUMBNAIL_ROUTE({
+export function DATASET_API_THUMBNAIL_ROUTE({
   status,
   hasGraphics,
   id,
@@ -109,7 +122,7 @@ export function DATASET_THUMBNAIL_ROUTE({
 }) {
   return path.join(
     hasGraphics
-      ? DATASET_FILES_ROUTE({ id, status })
+      ? DATASET_API_FILES_ROUTE({ id, status })
       : path.join(STATIC_FILES_ROUTE, "default"),
     "thumbnail.png",
   );
@@ -150,20 +163,20 @@ export function DATASET_RELATIVE_UNZIPPED_PATH({
 /**
  * @example "/api/static/public/53/data.csv"
  */
-export function DATASET_PYTHON_DATA_ROUTE({
+export function DATASET_API_PYTHON_DATA_ROUTE({
   id,
   status,
 }: {
   id: number;
   status: string;
 }) {
-  return path.join(DATASET_FILES_ROUTE({ id, status }), "data.csv");
+  return path.join(DATASET_API_FILES_ROUTE({ id, status }), "data.csv");
 }
 
 /**
  * @example "/api/static/public/53/iris.zip"
  */
-export function DATASET_ZIP_ROUTE({
+export function DATASET_API_ZIP_ROUTE({
   id,
   slug,
   status,
@@ -172,5 +185,5 @@ export function DATASET_ZIP_ROUTE({
   slug: string;
   status: string;
 }) {
-  return path.join(DATASET_FILES_ROUTE({ id, status }), `${slug}.zip`);
+  return path.join(DATASET_API_FILES_ROUTE({ id, status }), `${slug}.zip`);
 }

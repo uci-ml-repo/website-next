@@ -26,12 +26,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CONTACT_ROUTE, DATASET_ZIP_ROUTE } from "@/lib/routes";
+import { CONTACT_ROUTE, DATASET_API_ZIP_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
+import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
-  zipFile: z.instanceof(File, { message: "A zip file is required" }).nullable(),
+  zipFile: z.instanceof(File, { message: "A zip file is required" }),
 });
 
 export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
@@ -43,7 +44,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      zipFile: null,
+      zipFile: undefined,
     },
   });
 
@@ -78,7 +79,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     [form],
   );
 
-  const zipFile = form.watch("zipFile");
+  const zipStatsMutation = trpc.dataset.update.zipStats.useMutation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.zipFile) return;
@@ -86,7 +87,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     controllerRef.current = new AbortController();
 
     await axios.putForm(
-      DATASET_ZIP_ROUTE(dataset),
+      DATASET_API_ZIP_ROUTE(dataset),
       {
         file: values.zipFile,
       },
@@ -98,6 +99,17 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
         signal: controllerRef.current.signal,
       },
     );
+
+    zipStatsMutation.mutate({
+      datasetId: dataset.id,
+    });
+  }
+
+  function cancelUpload() {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+      setUploadProgress(undefined);
+    }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -112,15 +124,11 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
   const pending =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful;
 
-  function cancelUpload() {
-    if (controllerRef.current) {
-      controllerRef.current.abort();
-      setUploadProgress(undefined);
-    }
-  }
+  const zipFile = form.watch("zipFile");
 
   return (
     <Form {...form}>
+      {JSON.stringify(uploadProgress, null, 2)}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
@@ -128,20 +136,20 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
           render={() => (
             <FormItem>
               <FormLabel className="text-lg">Upload Dataset Files</FormLabel>
-              <div className="space-y-2 pb-2 text-muted-foreground">
-                <p>
+              <div className="pb-2 text-muted-foreground">
+                <div>
                   Upload a single zip file containing the entire contents of
                   your dataset, including any additional files and
                   documentation.
-                </p>
-                <p>
+                </div>
+                <div>
                   Note: the maximum upload size is 512MB. If your dataset is
                   larger than this, please{" "}
                   <Link href={CONTACT_ROUTE} className="underline">
                     contact us
                   </Link>
                   .
-                </p>
+                </div>
               </div>
               <FormControl>
                 <div
@@ -167,28 +175,35 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
                         </span>
                       </div>
 
-                      {uploadProgress &&
-                      uploadProgress.estimated &&
-                      uploadProgress.total &&
-                      uploadProgress.progress ? (
+                      {uploadProgress ? (
                         <div className="flex items-center text-muted-foreground">
-                          <div className="mr-2 text-nowrap">
-                            {abbreviateFileSize(uploadProgress.loaded)}/
-                            {abbreviateFileSize(uploadProgress.total)}
-                          </div>
-                          {uploadProgress.estimated > 0 && (
-                            <div>
-                              ({abbreviateTime(uploadProgress.estimated)})
+                          {uploadProgress.loaded && uploadProgress.total && (
+                            <div className="mr-2 text-nowrap">
+                              {abbreviateFileSize(uploadProgress.loaded)}/
+                              {abbreviateFileSize(uploadProgress.total)}
                             </div>
                           )}
-                          <ProgressCircle progress={uploadProgress.progress} />
+                          {uploadProgress.estimated &&
+                            uploadProgress.estimated > 0 && (
+                              <div>
+                                ({abbreviateTime(uploadProgress.estimated)})
+                              </div>
+                            )}
+                          {uploadProgress.progress && (
+                            <ProgressCircle
+                              progress={uploadProgress.progress}
+                            />
+                          )}
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={cancelUpload}
                                 type="button"
+                                onClick={cancelUpload}
+                                className={cn({
+                                  invisible: uploadProgress.progress === 1,
+                                })}
                               >
                                 <XIcon />
                               </Button>
@@ -208,7 +223,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
                                 size="icon"
                                 className="shrink-0"
                                 onClick={(event) => {
-                                  form.setValue("zipFile", null);
+                                  form.reset();
                                   event.stopPropagation();
                                 }}
                                 disabled={pending}

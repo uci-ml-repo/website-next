@@ -3,7 +3,7 @@ import { z } from "zod";
 import { datasetQuery, privilegedDatasetQuery } from "@/server/schema/dataset";
 import { service } from "@/server/service";
 import { procedure, protectedProcedure, router } from "@/server/trpc";
-import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
+import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset-access";
 import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 export const datasetFindRouter = router({

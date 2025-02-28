@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DATASET_ROUTE, DATASET_THUMBNAIL_ROUTE } from "@/lib/routes";
+import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import {
   abbreviateDecimal,
@@ -45,7 +45,7 @@ type DatasetStat = {
 };
 
 export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
-  const thumbnail = DATASET_THUMBNAIL_ROUTE(dataset);
+  const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
 
   const datasetStats: DatasetStat[] = [

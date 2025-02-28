@@ -1,12 +1,12 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
-import { DownloadIcon, ExternalLinkIcon } from "lucide-react";
+import { DownloadIcon, ExternalLinkIcon, UploadIcon } from "lucide-react";
 import Link from "next/link";
 
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { DATASET_ZIP_ROUTE } from "@/lib/routes";
+import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize, cn } from "@/lib/utils";
 
@@ -43,7 +43,13 @@ export function DatasetDownloadButton({
   }
 
   if (dataset.fileCount === null) {
-    return <div>No</div>;
+    return (
+      <Button asChild variant="gold" size="lg" className="lift w-full">
+        <Link href={DATASET_FILES_ROUTE(dataset)}>
+          <UploadIcon /> Upload Dataset Files
+        </Link>
+      </Button>
+    );
   }
 
   return (
@@ -60,7 +66,7 @@ export function DatasetDownloadButton({
       }
       {...props}
     >
-      <a href={DATASET_ZIP_ROUTE(dataset)} download>
+      <a href={DATASET_API_ZIP_ROUTE(dataset)} download>
         <DownloadIcon />
         <div>
           <span>Download</span>

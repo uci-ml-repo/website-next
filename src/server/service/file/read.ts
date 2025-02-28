@@ -66,8 +66,8 @@ export class FileReadService {
   async zipStats({ absolutePath }: { absolutePath: string }) {
     if (!fs.pathExistsSync(absolutePath)) {
       return {
-        size: null,
         fileCount: null,
+        size: null,
       };
     }
 
@@ -77,11 +77,10 @@ export class FileReadService {
 
     let uncompressedSize = 0;
     let fileCount = 0;
-
     for (const [_path, entry] of entries) {
       if (!entry.isDirectory) {
-        uncompressedSize += entry.size;
         fileCount++;
+        uncompressedSize += entry.size;
       }
     }
 
@@ -89,8 +88,8 @@ export class FileReadService {
 
     return {
       fileCount,
+      size: fs.statSync(absolutePath).size,
       uncompressedSize,
-      compressedSize: fs.statSync(absolutePath).size,
     };
   }
 }
