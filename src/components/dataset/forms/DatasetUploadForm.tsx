@@ -7,6 +7,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -38,9 +39,20 @@ export function DatasetUploadForm() {
     defaultValues: { title: "" },
   });
 
-  const datasetCreateMutation = trpc.dataset.create.initial.useMutation({
-    onSuccess: (dataset) => {
+  const datasetCreateMutation = trpc.dataset.create.draft.useMutation({
+    onSuccess: async (dataset) => {
       router.push(DATASET_ROUTE(dataset));
+      toast({
+        title: "Dataset draft created successfully",
+        description: "You can view your datasets on your profile",
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error creating dataset",
+        description: error.message,
+      });
     },
   });
 

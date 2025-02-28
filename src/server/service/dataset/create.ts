@@ -9,7 +9,7 @@ import { DATASET_RELATIVE_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 
 export class DatasetCreateService {
-  async initial({ title, userId }: { title: string; userId: string }) {
+  async draft({ title, userId }: { title: string; userId: string }) {
     const baseSlug = slugify(title, { replacement: "+", lower: true });
 
     const existingSlugs = await db

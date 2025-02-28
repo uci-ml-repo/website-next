@@ -4,9 +4,9 @@ import { service } from "@/server/service";
 import { protectedProcedure, router } from "@/server/trpc";
 
 export const datasetCreateRouter = router({
-  initial: protectedProcedure
+  draft: protectedProcedure
     .input(z.object({ title: z.string() }))
     .mutation(({ input, ctx }) =>
-      service.dataset.create.initial({ ...input, userId: ctx.user.id }),
+      service.dataset.create.draft({ ...input, userId: ctx.user.id }),
     ),
 });
