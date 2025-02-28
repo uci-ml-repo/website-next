@@ -223,7 +223,7 @@ export const datasetReport = pgTable("dataset_report", {
   id: uuid("id").primaryKey().defaultRandom(),
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => dataset.id),
+    .references(() => dataset.id, { onDelete: "cascade" }),
   reason: datasetReportReason("reason").notNull(),
   details: text("details").notNull(),
   userId: uuid("user_id").references(() => user.id),
@@ -250,7 +250,9 @@ export const author = pgTable("author", {
   lastName: text("last_name").notNull(),
   email: text("email"),
   institution: text("institution"),
-  datasetId: integer("dataset_id").references(() => dataset.id),
+  datasetId: integer("dataset_id").references(() => dataset.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const authorsRelations = relations(author, ({ one }) => ({
@@ -274,7 +276,7 @@ export const variable = pgTable("variable", {
 
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => dataset.id),
+    .references(() => dataset.id, { onDelete: "cascade" }),
 });
 
 export const variableRelations = relations(variable, ({ one }) => ({
@@ -318,7 +320,7 @@ export const datasetKeyword = pgTable(
       .references(() => keyword.id),
     datasetId: integer("dataset_id")
       .notNull()
-      .references(() => dataset.id),
+      .references(() => dataset.id, { onDelete: "cascade" }),
   },
   (t) => [primaryKey({ columns: [t.keywordId, t.datasetId] })],
 );
@@ -350,7 +352,7 @@ export const paper = pgTable("paper", {
 
   datasetId: integer("dataset_id")
     .notNull()
-    .references(() => dataset.id),
+    .references(() => dataset.id, { onDelete: "cascade" }),
 });
 
 export const paperRelations = relations(paper, ({ one }) => ({
@@ -372,7 +374,7 @@ export const bookmark = pgTable(
       .references(() => user.id),
     datasetId: integer("dataset_id")
       .notNull()
-      .references(() => dataset.id),
+      .references(() => dataset.id, { onDelete: "cascade" }),
 
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },

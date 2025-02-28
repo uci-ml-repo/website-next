@@ -4,18 +4,74 @@ import readline from "readline";
 
 import { ServiceError } from "@/server/service/errors";
 
-interface ReadFileParams {
-  absolutePath: string;
-  cursor?: number;
-  takeLines?: number;
-}
-
 export class FileReadService {
-  async readFileInfinite({
+  async readZippedFile({
+    absoluteZipPath,
+    relativeFilePath,
+    cursor = 0,
+    takeLines = 50,
+  }: {
+    absoluteZipPath: string;
+    relativeFilePath: string;
+    cursor?: number;
+    takeLines?: number;
+  }) {
+    if (!fs.pathExistsSync(absoluteZipPath)) {
+      throw new ServiceError({
+        origin: "File",
+        message: `Invalid zip file path: ${absoluteZipPath}`,
+      });
+    }
+
+    const zip = new StreamZip.async({ file: absoluteZipPath });
+    try {
+      const entries = await zip.entries();
+      if (!entries[relativeFilePath]) {
+        throw new ServiceError({
+          origin: "File",
+          message: `File ${relativeFilePath} not found in zip ${absoluteZipPath}`,
+        });
+      }
+
+      const fileStream = await zip.stream(relativeFilePath);
+
+      const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+      });
+
+      let index = 0;
+      const lines: string[] = [];
+      for await (const line of rl) {
+        if (index >= cursor && lines.length < takeLines) {
+          lines.push(line);
+        } else if (lines.length >= takeLines) {
+          break;
+        }
+        index++;
+      }
+
+      await zip.close();
+
+      const hasMoreLines = lines.length === takeLines;
+      return {
+        lines,
+        cursor: hasMoreLines ? cursor + takeLines : undefined,
+      };
+    } finally {
+      await zip.close();
+    }
+  }
+
+  async readFile({
     absolutePath,
     cursor = 0,
     takeLines = 50,
-  }: ReadFileParams) {
+  }: {
+    absolutePath: string;
+    cursor?: number;
+    takeLines?: number;
+  }) {
     if (!fs.pathExistsSync(absolutePath)) {
       throw new ServiceError({
         origin: "File",

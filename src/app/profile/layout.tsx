@@ -44,11 +44,17 @@ export default async function Layout({
       <ProfileHeader session={session} />
 
       <LinearTabs
-        defaultValue="bookmarks"
+        defaultValue="overview"
         routerStore={PROFILE_ROUTE}
         routerSegment={1}
       >
         <LinearTabsList className="space-x-10 overflow-x-auto">
+          <LinearTabsTrigger
+            value="overview"
+            link={path.join(PROFILE_ROUTE, "overview")}
+          >
+            Overview
+          </LinearTabsTrigger>
           <LinearTabsTrigger
             value="bookmarks"
             badgeValue={bookmarks.length}

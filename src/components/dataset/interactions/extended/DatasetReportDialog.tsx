@@ -45,7 +45,7 @@ export function DatasetReportDialog({
 }: {
   dataset: DatasetResponse;
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const session = useSession();
 

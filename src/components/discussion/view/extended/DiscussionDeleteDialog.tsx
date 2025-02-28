@@ -39,9 +39,11 @@ export function DiscussionDeleteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent aria-describedby={undefined}>
-        <DialogTitle>Delete Discussion</DialogTitle>
-        <div>Are you sure you want to delete this discussion?</div>
-        <div>This action can not be undone.</div>
+        <DialogTitle>Delete discussion?</DialogTitle>
+        <div>
+          <div>Confirm deletion of this discussion?</div>
+          <div>This action can not be undone.</div>
+        </div>
         <div className="flex justify-between">
           <Button
             variant="secondary"

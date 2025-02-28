@@ -13,7 +13,7 @@ export const fileReadRouter = router({
       }),
     )
     .query(({ ctx, input }) =>
-      service.file.read.readFileInfinite({
+      service.file.read.readFile({
         ...input,
         absolutePath: ctx.realPath,
       }),

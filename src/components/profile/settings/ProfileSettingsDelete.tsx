@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,20 +25,29 @@ export function ProfileSettingsDelete() {
 
   const [confirmInput, setConfirmInput] = useState<string>("");
 
-  const userDeleteMutation = trpc.user.remove.byId.useMutation();
+  const userDeleteMutation = trpc.user.remove.byId.useMutation({
+    onError: (error) => {
+      toast({
+        title: "Error deleting profile",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
-  const confirmed = confirmInput.trim() !== session?.user.email;
+  const confirmed = confirmInput.trim() === session?.user.email;
+
   const isDeleting =
     userDeleteMutation.isPending || userDeleteMutation.isSuccess;
 
-  function deleteAccount() {
+  async function deleteAccount() {
     if (!session) return;
 
     userDeleteMutation.mutate({
       userId: session.user.id,
     });
 
-    signOut({ redirect: true, redirectTo: HOME_ROUTE });
+    await signOut({ redirect: true, redirectTo: HOME_ROUTE });
   }
 
   return (
@@ -66,14 +76,14 @@ export function ProfileSettingsDelete() {
               </ul>
             </DialogHeader>
 
-            <div className="space-y-4 text-muted-foreground">
-              <div>
+            <div className="space-y-4">
+              <div className="text-muted-foreground">
                 For account related questions{" "}
                 <Link href={CONTACT_ROUTE} className="underline">
                   contact us
                 </Link>
               </div>
-              <div className="space-y-1">
+              <div className="select-none space-y-1">
                 <div>
                   To confirm, type your email{" "}
                   <span className="font-bold">{session.user.email}</span> below
@@ -93,7 +103,7 @@ export function ProfileSettingsDelete() {
               </DialogClose>
               <Button
                 variant="destructive"
-                disabled={confirmed || isDeleting}
+                disabled={!confirmed || isDeleting}
                 onClick={deleteAccount}
               >
                 {isDeleting && <Spinner />} Delete account

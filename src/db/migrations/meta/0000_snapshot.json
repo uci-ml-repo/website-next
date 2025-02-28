@@ -1,5 +1,5 @@
 {
-  "id": "b25341cb-ca76-4c5f-969c-a3da437eec66",
+  "id": "5cc193fe-af6c-44b2-9a6e-8b5747c1a7f2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -143,7 +143,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -201,7 +201,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -440,7 +440,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -507,7 +507,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "dataset_report_user_id_user_id_fk": {
@@ -704,7 +704,7 @@
           "name": "introductory_paper",
           "type": "jsonb",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {
@@ -768,21 +768,6 @@
           "method": "btree",
           "with": {}
         },
-        "dataset_view_trgm_search_index": {
-          "name": "dataset_view_trgm_search_index",
-          "columns": [
-            {
-              "expression": "\"title\" gin_trgm_ops",
-              "asc": true,
-              "isExpression": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "gin",
-          "with": {}
-        },
         "dataset_view_keywords_index": {
           "name": "dataset_view_keywords_index",
           "columns": [
@@ -826,6 +811,21 @@
           "isUnique": false,
           "concurrently": false,
           "method": "btree",
+          "with": {}
+        },
+        "dataset_view_trgm_search_index": {
+          "name": "dataset_view_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"title\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
           "with": {}
         }
       },
@@ -1472,7 +1472,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -1752,7 +1752,7 @@
           "tableTo": "dataset",
           "columnsFrom": ["dataset_id"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

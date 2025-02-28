@@ -1,4 +1,4 @@
-CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+CREATE EXTENSION "pg_trgm";
 
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
 
@@ -211,6 +211,286 @@ CREATE TABLE "dataset_view" (
   "user" JSONB NOT NULL,
   "introductory_paper" JSONB
 );
+
+--> statement-breakpoint
+CREATE TABLE "discussion" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "title" TEXT NOT NULL,
+  "content" TEXT NOT NULL,
+  "user_id" uuid NOT NULL,
+  "dataset_id" INTEGER NOT NULL,
+  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP
+);
+
+--> statement-breakpoint
+CREATE TABLE "discussion_comment" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "content" TEXT NOT NULL,
+  "user_id" uuid NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "updated_at" TIMESTAMP
+);
+
+--> statement-breakpoint
+CREATE TABLE "discussion_comment_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "comment_id" uuid NOT NULL,
+  "reason" "discussion_report_reason" NOT NULL,
+  "details" TEXT,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "discussion_comment_upvote" (
+  "user_id" uuid NOT NULL,
+  "comment_id" uuid NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "discussion_comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
+);
+
+--> statement-breakpoint
+CREATE TABLE "discussion_report" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "reason" "discussion_report_reason" NOT NULL,
+  "details" TEXT,
+  "user_id" uuid,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "discussion_upvote" (
+  "user_id" uuid NOT NULL,
+  "discussion_id" uuid NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "discussion_upvote_user_id_discussion_id_pk" PRIMARY KEY ("user_id", "discussion_id")
+);
+
+--> statement-breakpoint
+CREATE TABLE "email_verification_token" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "user_id" uuid NOT NULL,
+  "token" TEXT NOT NULL,
+  "expires" TIMESTAMP NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "keyword" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "status" "approval_status" NOT NULL,
+  "name" TEXT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "paper" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "title" TEXT NOT NULL,
+  "authors" TEXT[] NOT NULL,
+  "venue" TEXT NOT NULL,
+  "year" INTEGER NOT NULL,
+  "citation_count" INTEGER,
+  "url" TEXT NOT NULL,
+  "dataset_id" INTEGER NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "password_reset_token" (
+  "token" TEXT PRIMARY KEY NOT NULL,
+  "user_id" uuid NOT NULL,
+  "expires" TIMESTAMP NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "session" (
+  "session_token" TEXT PRIMARY KEY NOT NULL,
+  "user_id" uuid NOT NULL,
+  "expires" TIMESTAMP NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "user" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "name" TEXT NOT NULL,
+  "email" TEXT NOT NULL,
+  "email_verified" TIMESTAMP,
+  "password" TEXT,
+  "image" TEXT,
+  "role" "user_role" DEFAULT 'basic' NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  CONSTRAINT "user_email_unique" UNIQUE ("email")
+);
+
+--> statement-breakpoint
+CREATE TABLE "variable" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "name" TEXT NOT NULL,
+  "role" "dataset_feature_role" NOT NULL,
+  "type" "dataset_feature_type" NOT NULL,
+  "missing_values" BOOLEAN NOT NULL,
+  "description" TEXT,
+  "units" TEXT,
+  "dataset_id" INTEGER NOT NULL
+);
+
+--> statement-breakpoint
+ALTER TABLE "account"
+ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "author"
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset"
+ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset_keyword"
+ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset_keyword"
+ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset_report"
+ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset_report"
+ADD CONSTRAINT "dataset_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "dataset_view"
+ADD CONSTRAINT "dataset_view_id_dataset_id_fk" FOREIGN KEY ("id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion"
+ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion"
+ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment"
+ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment"
+ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment_report"
+ADD CONSTRAINT "discussion_comment_report_comment_id_discussion_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment_report"
+ADD CONSTRAINT "discussion_comment_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment_upvote"
+ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_comment_upvote"
+ADD CONSTRAINT "discussion_comment_upvote_comment_id_discussion_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_report"
+ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_report"
+ADD CONSTRAINT "discussion_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_upvote"
+ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "discussion_upvote"
+ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "email_verification_token"
+ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "paper"
+ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "password_reset_token"
+ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "session"
+ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "variable"
+ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_view_count_index" ON "dataset_view" USING btree ("view_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_donated_at_index" ON "dataset_view" USING btree ("donated_at");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_instance_count_index" ON "dataset_view" USING btree ("instance_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_feature_count_index" ON "dataset_view" USING btree ("feature_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_keywords_index" ON "dataset_view" USING gin ("keywords");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_variable_names_index" ON "dataset_view" USING gin ("variable_names");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_status_index" ON "dataset_view" USING btree ("status");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_trgm_search_index" ON "dataset_view" USING gin ("title" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "keyword_trgm_search_index" ON "keyword" USING gin ("name" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
+
+--> statement-breakpoint
+CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
+
+--> statement-breakpoint
+CREATE INDEX "user_role_index" ON "user" USING btree ("role");
+
+--> statement-breakpoint
+CREATE INDEX "user_email_trgm_search_index" ON "user" USING gin ("email" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "user_name_trgm_search_index" ON "user" USING gin ("name" gin_trgm_ops);
 
 --> statement-breakpoint
 CREATE OR REPLACE FUNCTION refresh_dataset_view ("source_dataset_id" INTEGER DEFAULT NULL) RETURNS void AS $$
@@ -498,283 +778,3 @@ SET
 
 END;
 $$ LANGUAGE plpgsql;
-
---> statement-breakpoint
-CREATE TABLE "discussion" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "title" TEXT NOT NULL,
-  "content" TEXT NOT NULL,
-  "user_id" uuid NOT NULL,
-  "dataset_id" INTEGER NOT NULL,
-  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "updated_at" TIMESTAMP
-);
-
---> statement-breakpoint
-CREATE TABLE "discussion_comment" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "content" TEXT NOT NULL,
-  "user_id" uuid NOT NULL,
-  "discussion_id" uuid NOT NULL,
-  "upvote_count" INTEGER DEFAULT 0 NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "updated_at" TIMESTAMP
-);
-
---> statement-breakpoint
-CREATE TABLE "discussion_comment_report" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "comment_id" uuid NOT NULL,
-  "reason" "discussion_report_reason" NOT NULL,
-  "details" TEXT,
-  "user_id" uuid,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "discussion_comment_upvote" (
-  "user_id" uuid NOT NULL,
-  "comment_id" uuid NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "discussion_comment_upvote_user_id_comment_id_pk" PRIMARY KEY ("user_id", "comment_id")
-);
-
---> statement-breakpoint
-CREATE TABLE "discussion_report" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "discussion_id" uuid NOT NULL,
-  "reason" "discussion_report_reason" NOT NULL,
-  "details" TEXT,
-  "user_id" uuid,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "discussion_upvote" (
-  "user_id" uuid NOT NULL,
-  "discussion_id" uuid NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "discussion_upvote_user_id_discussion_id_pk" PRIMARY KEY ("user_id", "discussion_id")
-);
-
---> statement-breakpoint
-CREATE TABLE "email_verification_token" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "user_id" uuid NOT NULL,
-  "token" TEXT NOT NULL,
-  "expires" TIMESTAMP NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "keyword" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "status" "approval_status" NOT NULL,
-  "name" TEXT NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "paper" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "title" TEXT NOT NULL,
-  "authors" TEXT[] NOT NULL,
-  "venue" TEXT NOT NULL,
-  "year" INTEGER NOT NULL,
-  "citation_count" INTEGER,
-  "url" TEXT NOT NULL,
-  "dataset_id" INTEGER NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "password_reset_token" (
-  "token" TEXT PRIMARY KEY NOT NULL,
-  "user_id" uuid NOT NULL,
-  "expires" TIMESTAMP NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "session" (
-  "session_token" TEXT PRIMARY KEY NOT NULL,
-  "user_id" uuid NOT NULL,
-  "expires" TIMESTAMP NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL
-);
-
---> statement-breakpoint
-CREATE TABLE "user" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "name" TEXT NOT NULL,
-  "email" TEXT NOT NULL,
-  "email_verified" TIMESTAMP,
-  "password" TEXT,
-  "image" TEXT,
-  "role" "user_role" DEFAULT 'basic' NOT NULL,
-  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "user_email_unique" UNIQUE ("email")
-);
-
---> statement-breakpoint
-CREATE TABLE "variable" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "name" TEXT NOT NULL,
-  "role" "dataset_feature_role" NOT NULL,
-  "type" "dataset_feature_type" NOT NULL,
-  "missing_values" BOOLEAN NOT NULL,
-  "description" TEXT,
-  "units" TEXT,
-  "dataset_id" INTEGER NOT NULL
-);
-
---> statement-breakpoint
-ALTER TABLE "account"
-ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "author"
-ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset"
-ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset_keyword"
-ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset_keyword"
-ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset_report"
-ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset_report"
-ADD CONSTRAINT "dataset_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "dataset_view"
-ADD CONSTRAINT "dataset_view_id_dataset_id_fk" FOREIGN KEY ("id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment_report"
-ADD CONSTRAINT "discussion_comment_report_comment_id_discussion_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment_report"
-ADD CONSTRAINT "discussion_comment_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_comment_id_discussion_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_report"
-ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_report"
-ADD CONSTRAINT "discussion_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "email_verification_token"
-ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "paper"
-ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "password_reset_token"
-ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "session"
-ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
---> statement-breakpoint
-ALTER TABLE "variable"
-ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_view_count_index" ON "dataset_view" USING btree ("view_count");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_donated_at_index" ON "dataset_view" USING btree ("donated_at");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_instance_count_index" ON "dataset_view" USING btree ("instance_count");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_feature_count_index" ON "dataset_view" USING btree ("feature_count");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_trgm_search_index" ON "dataset_view" USING gin ("title" gin_trgm_ops);
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_keywords_index" ON "dataset_view" USING gin ("keywords");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_variable_names_index" ON "dataset_view" USING gin ("variable_names");
-
---> statement-breakpoint
-CREATE INDEX "dataset_view_status_index" ON "dataset_view" USING btree ("status");
-
---> statement-breakpoint
-CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
-
---> statement-breakpoint
-CREATE INDEX "keyword_trgm_search_index" ON "keyword" USING gin ("name" gin_trgm_ops);
-
---> statement-breakpoint
-CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
-
---> statement-breakpoint
-CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
-
---> statement-breakpoint
-CREATE INDEX "user_role_index" ON "user" USING btree ("role");
-
---> statement-breakpoint
-CREATE INDEX "user_email_trgm_search_index" ON "user" USING gin ("email" gin_trgm_ops);
-
---> statement-breakpoint
-CREATE INDEX "user_name_trgm_search_index" ON "user" USING gin ("name" gin_trgm_ops);
