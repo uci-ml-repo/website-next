@@ -30,12 +30,14 @@ export default async function Layout({
     return signIn(undefined, { redirectTo: PROFILE_ROUTE });
   }
 
-  const bookmarks = (await caller.bookmark.find.byUserQuery({})).bookmarks;
+  const bookmarks = await caller.bookmark.find.byUserQuery({});
+
   const datasets = await caller.dataset.find.privilegedByQuery({
     userId: session.user.id,
     status: enumToArray(Enums.ApprovalStatus),
   });
-  const discussions = await caller.discussion.find.byUserId({
+
+  const discussions = await caller.discussion.find.byQuery({
     userId: session.user.id,
   });
 
@@ -57,14 +59,14 @@ export default async function Layout({
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="bookmarks"
-            badgeValue={bookmarks.length}
+            badgeValue={bookmarks.count}
             link={path.join(PROFILE_ROUTE, "bookmarks")}
           >
             Bookmarks
           </LinearTabsTrigger>
           <LinearTabsTrigger
             value="discussions"
-            badgeValue={discussions.length}
+            badgeValue={discussions.count}
             link={path.join(PROFILE_ROUTE, "discussions")}
           >
             Discussions

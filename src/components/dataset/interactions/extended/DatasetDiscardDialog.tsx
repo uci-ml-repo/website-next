@@ -57,7 +57,10 @@ export function DatasetDiscardDialog({
       <DialogContent>
         <DialogTitle>Discard {dataset.title}?</DialogTitle>
         <DialogHeader>
-          <div>Warning: this action cannot be undone.</div>
+          <div>
+            <span className="text-destructive">Warning:</span> this action
+            cannot be undone.
+          </div>
           <ul className="list-inside list-disc">
             <li>All associated files will be removed</li>
             <li>Associated metadata will be deleted</li>

@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
@@ -51,4 +52,30 @@ function Badge({ className, variant, size, ...props }: BadgeProps) {
   );
 }
 
-export { Badge, badgeVariants };
+function SpinnerBadge({
+  variant,
+  value,
+}: {
+  variant?: BadgeVariant;
+  value?: string | number | null;
+}) {
+  if (value === undefined) {
+    return null;
+  }
+
+  return (
+    <Badge variant={variant}>
+      {value !== null ? (
+        typeof value === "number" ? (
+          value.toLocaleString()
+        ) : (
+          value
+        )
+      ) : (
+        <Spinner className="size-4" />
+      )}
+    </Badge>
+  );
+}
+
+export { Badge, badgeVariants, SpinnerBadge };

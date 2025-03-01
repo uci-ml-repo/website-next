@@ -161,7 +161,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
               <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
                 <Link href={PROFILE_ROUTE}>
                   <UserIcon />
-                  <span>Profile</span>
+                  <span>Profile & Work</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -2,8 +2,7 @@ import { z } from "zod";
 
 import { discussionQuery } from "@/server/schema/discussion";
 import { service } from "@/server/service";
-import { procedure, protectedProcedure, router } from "@/server/trpc";
-import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
+import { procedure, router } from "@/server/trpc";
 
 export const discussionFindRouter = router({
   byId: procedure
@@ -21,16 +20,4 @@ export const discussionFindRouter = router({
   countByQuery: procedure
     .input(discussionQuery)
     .query(({ input }) => service.discussion.find.countByQuery(input)),
-
-  byUserId: protectedProcedure
-    .meta({
-      requireRoles: [MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID],
-    })
-    .input(z.object({ userId: z.string().uuid() }))
-    .query(({ input, ctx }) =>
-      service.discussion.find.byUserId({
-        userId: input.userId,
-        session: ctx.session,
-      }),
-    ),
 });

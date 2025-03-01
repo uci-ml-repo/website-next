@@ -8,7 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
-import { Badge } from "@/components/ui/badge";
+import { Badge, SpinnerBadge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { abbreviateDecimal, cn } from "@/lib/utils";
 
@@ -163,7 +163,7 @@ export const LinearTabsList = React.forwardRef<
       )}
       <motion.span
         animate={indicatorStyle}
-        transition={{ ease: "easeOut", duration: 0.2 }}
+        transition={{ ease: "easeOut", duration: 0.175 }}
         className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
       />
     </TabsPrimitive.List>
@@ -219,17 +219,7 @@ export const LinearTabsTrigger = React.forwardRef<
             {badgeValue !== undefined ? (
               <div className="flex items-center space-x-2">
                 <span>{children}</span>
-                <Badge variant={badgeVariant}>
-                  {badgeValue !== null ? (
-                    typeof badgeValue === "number" ? (
-                      badgeValue.toLocaleString()
-                    ) : (
-                      badgeValue
-                    )
-                  ) : (
-                    <Spinner className="size-4" />
-                  )}
-                </Badge>
+                <SpinnerBadge variant={badgeVariant} value={badgeValue} />
               </div>
             ) : (
               children

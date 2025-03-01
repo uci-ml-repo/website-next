@@ -1,4 +1,12 @@
-import { and, desc, eq, getTableColumns, inArray, sql } from "drizzle-orm";
+import {
+  and,
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  inArray,
+  sql,
+} from "drizzle-orm";
 import type { Session } from "next-auth";
 
 import { db } from "@/db";
@@ -41,7 +49,12 @@ export class BookmarkFindService {
       nextCursor = (query.cursor ?? 0) + query.limit;
     }
 
-    return { bookmarks, nextCursor };
+    const [countQuery] = await db
+      .select({ count: count() })
+      .from(bookmark)
+      .where(eq(bookmark.userId, user.id));
+
+    return { bookmarks, nextCursor, count: countQuery.count };
   }
 
   private async byUserRawQuery(query: BookmarkQuery, user: Session["user"]) {

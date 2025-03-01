@@ -67,58 +67,6 @@ export class DiscussionFindService {
       .then((discussion) => (discussion ? transformRow(discussion) : null));
   }
 
-  async batch(ids: string[], session?: Session | null) {
-    return db.query.discussion
-      .findMany({
-        where: (discussion, { inArray }) => inArray(discussion.id, ids),
-        with: {
-          user: {
-            columns: userColumns,
-          },
-          dataset: {
-            columns: {
-              id: true,
-              slug: true,
-              title: true,
-            },
-          },
-          upvotes: session
-            ? {
-                where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
-              }
-            : undefined,
-        },
-      })
-      .then((discussions) => discussions.map(transformRow));
-  }
-
-  async byUserId({
-    userId,
-    session,
-  }: {
-    userId: string;
-    session: Session | null;
-  }) {
-    return db.query.discussion
-      .findMany({
-        where: (discussion, { eq }) => eq(discussion.userId, userId),
-        with: {
-          user: {
-            columns: userColumns,
-          },
-          dataset: {
-            columns: datasetIdentificationSelectColumns,
-          },
-          upvotes: session
-            ? {
-                where: (upvote, { eq }) => eq(upvote.userId, session.user.id),
-              }
-            : undefined,
-        },
-      })
-      .then((discussions) => discussions.map(transformRow));
-  }
-
   async byQuery(query: DiscussionQuery, session?: Session | null) {
     let discussions;
 

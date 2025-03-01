@@ -55,7 +55,7 @@ export function ProfileSettingsDelete() {
       <div>
         <h3 className="text-lg font-bold">Delete Account</h3>
         <p className="text-lg text-muted-foreground">
-          Permanently delete you UCI Machine Learning Repository account
+          Permanently delete you UCI Machine Learning Repository account.
         </p>
       </div>
 
@@ -67,7 +67,10 @@ export function ProfileSettingsDelete() {
           <DialogContent>
             <DialogTitle>Permanently delete your account</DialogTitle>
             <DialogHeader>
-              <div>Warning: this action cannot be undone.</div>
+              <div>
+                <span className="text-destructive">Warning:</span> this action
+                cannot be undone.
+              </div>
               <ul className="list-inside list-disc">
                 <li>
                   You will no longer have access to any datasets donated by you

@@ -13,6 +13,7 @@ export const PROFILE_ROUTE = "/profile";
 export const PROFILE_SETTINGS_ROUTE = "/profile/settings";
 export const PROFILE_BOOKMARKS_ROUTE = "/profile/bookmarks";
 export const PROFILE_DATASETS_ROUTE = "/profile/datasets";
+export const PROFILE_DISCUSSIONS_ROUTE = "/profile/discussions";
 export const CONTRIBUTE_ROUTE = "/contribute";
 export const CONTRIBUTE_EXTERNAL_ROUTE = "/contribute/external";
 export const CONTRIBUTE_DONATION_ROUTE = "/contribute/donation";
