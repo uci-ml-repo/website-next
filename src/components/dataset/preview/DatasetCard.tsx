@@ -88,7 +88,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             width={350}
             height={100}
             priority
-            className="h-[100px] w-full rounded-t-2xl object-cover object-center dark:brightness-90"
+            className="h-[95px] w-full rounded-t-2xl object-cover object-center dark:brightness-90"
           />
         </CardHeader>
         <CardContent className="flex flex-1 flex-col space-y-2">
@@ -99,7 +99,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
               </div>
             </CardTitle>
             <CardDescription>
-              <p className="line-clamp-2">
+              <p className="line-clamp-2 text-sm">
                 {dataset.subtitle ?? dataset.description}
               </p>
             </CardDescription>
@@ -112,7 +112,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
                     <Tooltip key={i} delayDuration={200}>
                       <TooltipTrigger className="flex items-center space-x-2 [&_svg]:size-4">
                         {stat.icon}
-                        <span className="truncate">{stat.text}</span>
+                        <span className="truncate text-sm">{stat.text}</span>
                       </TooltipTrigger>
                       {stat.tooltip && (
                         <TooltipContent side="left">
@@ -125,7 +125,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             </TooltipProvider>
           </CardDescription>
         </CardContent>
-        <CardFooter className="h-10 justify-between border-t py-2.5 @container">
+        <CardFooter className="h-9 justify-between border-t py-2.5 @container">
           <div className="flex items-center space-x-1">
             <EyeIcon />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
