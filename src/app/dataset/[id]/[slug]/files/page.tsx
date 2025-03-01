@@ -46,9 +46,12 @@ export default async function Page({
         <CardContent className="flex h-[130px] items-center justify-center bg-muted">
           <div className="space-y-3 text-center">
             <div className="text-muted-foreground">
-              There are no discussions yet
+              <div>
+                Files not available for browsing. Download the dataset to view
+                them locally.
+              </div>
             </div>
-            <DatasetDownloadButton dataset={dataset} />
+            <DatasetDownloadButton dataset={dataset} className="w-fit" />
           </div>
         </CardContent>
       </Card>

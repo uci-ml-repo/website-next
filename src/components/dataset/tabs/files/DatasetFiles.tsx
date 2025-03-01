@@ -13,7 +13,7 @@ import type { DatasetResponse } from "@/lib/types";
 export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
   const [splitSizes, setSplitSizes] = useState<[number, number]>([20, 80]);
 
-  const { currentFile } = useFileContext();
+  const { currentEntry } = useFileContext();
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -25,10 +25,10 @@ export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
   }, [isMobile]);
 
   useEffect(() => {
-    if (isMobile && currentFile.type === "file") {
+    if (isMobile && currentEntry.type === "file") {
       setSplitSizes([0, 100]);
     }
-  }, [currentFile, isMobile]);
+  }, [currentEntry, isMobile]);
 
   return (
     <div className="flex h-full flex-col space-y-2">

@@ -5,25 +5,22 @@ import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
+import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export function FilesViewDirectory({
-  directoryPath,
+  directoryEntry,
 }: {
-  directoryPath?: string;
+  directoryEntry: Entry;
 }) {
-  const { setCurrentFile } = useFileContext();
+  const { setCurrentEntry } = useFileContext();
 
   const { data, isLoading, isError } = trpc.file.find.list.useQuery(
-    { path: directoryPath ?? "" },
+    { path: directoryEntry.path ?? "" },
     {
-      enabled: !!directoryPath,
+      enabled: !!directoryEntry,
     },
   );
-
-  if (!directoryPath) {
-    return <div className="p-4">No directory selected</div>;
-  }
 
   if (isLoading) {
     return (
@@ -47,21 +44,21 @@ export function FilesViewDirectory({
   return (
     <div className="h-full overflow-auto">
       <div className="flex flex-wrap gap-2 p-4">
-        {data.map((directoryEntity) => {
+        {data.map((entry) => {
           return (
             <button
-              key={directoryEntity.path}
-              onClick={() => setCurrentFile(directoryEntity)}
+              key={entry.path}
+              onClick={() => setCurrentEntry(entry)}
               className="lift h-28 w-32 shrink-0 rounded-md border"
-              title={path.basename(directoryEntity.path)}
+              title={path.basename(entry.path)}
             >
               <div className="flex h-full w-full flex-col p-2">
                 <div className="flex min-h-16 items-center justify-center [&>svg]:size-10">
-                  {fileToIcon(directoryEntity, true)}
+                  {fileToIcon(entry, true)}
                 </div>
                 <div className="flex h-full items-end">
                   <div className="line-clamp-2 w-full overflow-hidden text-ellipsis break-all px-2 text-xs">
-                    {path.basename(directoryEntity.path)}
+                    {path.basename(entry.path)}
                   </div>
                 </div>
               </div>

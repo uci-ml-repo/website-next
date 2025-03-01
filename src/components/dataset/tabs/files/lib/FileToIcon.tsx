@@ -18,12 +18,9 @@ import {
   videoExtensions,
 } from "@/components/dataset/tabs/files/lib/extensions";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import type { DirectoryEntity } from "@/server/service/file/find";
+import type { Entry } from "@/server/service/file/find";
 
-export function fileToIcon(
-  file: DirectoryEntity,
-  renderImage: boolean = false,
-) {
+export function fileToIcon(file: Entry, renderImage: boolean = false) {
   const extension = path.extname(file.path);
 
   if (imageExtensions.includes(extension)) {

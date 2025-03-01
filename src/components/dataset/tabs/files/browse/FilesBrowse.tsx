@@ -12,7 +12,7 @@ import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
 import type { DatasetResponse } from "@/lib/types";
 import { datasetFilesPath } from "@/lib/utils";
-import type { DirectoryEntity } from "@/server/service/file/find";
+import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
@@ -63,7 +63,7 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const isLoading =
     rootDirectoryQuery.isLoading || searchQuery.isLoading || isDebouncing;
 
-  const data: DirectoryEntity[] =
+  const data: Entry[] =
     debouncedSearchTerm.length > 0 && searchQuery.data
       ? searchQuery.data
       : (rootDirectoryQuery.data ?? []);

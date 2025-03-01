@@ -4,15 +4,12 @@ import path from "path";
 
 type DirectoryEntityType = "directory" | "file" | null;
 
-export interface DirectoryEntity {
+export interface Entry {
   path: string;
   type: DirectoryEntityType;
 }
 
-function nodeToDirectoryEntity(
-  node: fs.Dirent,
-  absolutePath: string,
-): DirectoryEntity {
+function nodeToDirectoryEntity(node: fs.Dirent, absolutePath: string): Entry {
   if (!process.env.STATIC_FILES_DIRECTORY) {
     throw new Error("STATIC_FILES_DIRECTORY is not set");
   }
@@ -28,7 +25,7 @@ function nodeToDirectoryEntity(
   };
 }
 
-function sortDirectoryEntities(a: DirectoryEntity, b: DirectoryEntity) {
+function sortDirectoryEntities(a: Entry, b: Entry) {
   if (a.type === "directory" && b.type !== "directory") {
     return -1;
   } else if (a.type !== "directory" && b.type === "directory") {
@@ -47,10 +44,7 @@ export class FileFindService {
       .sort(sortDirectoryEntities);
   }
 
-  async search(
-    absolutePath: string,
-    search: string,
-  ): Promise<DirectoryEntity[]> {
+  async search(absolutePath: string, search: string): Promise<Entry[]> {
     if (!process.env.STATIC_FILES_DIRECTORY) {
       throw new Error("STATIC_FILES_DIRECTORY is not set");
     }
@@ -60,7 +54,7 @@ export class FileFindService {
       dot: true,
     });
 
-    const directoryEntities: DirectoryEntity[] = [];
+    const directoryEntities: Entry[] = [];
     for (const filePath of filePaths) {
       const stat = await fs.stat(filePath);
       directoryEntities.push({

@@ -5,7 +5,7 @@ import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { FilesViewDirectory } from "@/components/dataset/tabs/files/view/FilesViewDirectory";
 import { FilesViewDownloadButton } from "@/components/dataset/tabs/files/view/FilesViewDownloadButton";
 import { FilesViewFile } from "@/components/dataset/tabs/files/view/FilesViewFile";
-import { FilesViewLinkGroups } from "@/components/dataset/tabs/files/view/FilesViewLinkGroups";
+import { FilesViewPath } from "@/components/dataset/tabs/files/view/FilesViewPath";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
@@ -14,24 +14,24 @@ import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export function FilesView({ dataset }: { dataset: DatasetResponse }) {
-  const { currentFile, fileHistory, back, fileForwardHistory, forward } =
+  const { currentEntry, fileHistory, back, fileForwardHistory, forward } =
     useFileContext();
 
   const directoryQuery = trpc.file.find.list.useQuery(
     {
-      path: currentFile.path,
+      path: currentEntry.path,
     },
     {
-      enabled: currentFile.type === "directory",
+      enabled: currentEntry.type === "directory",
     },
   );
 
   const fileStatsQuery = trpc.file.read.stats.useQuery(
     {
-      path: currentFile.path,
+      path: currentEntry.path,
     },
     {
-      enabled: currentFile.type === "file",
+      enabled: currentEntry.type === "file",
     },
   );
 
@@ -60,10 +60,10 @@ export function FilesView({ dataset }: { dataset: DatasetResponse }) {
             </Button>
           </div>
           <div className="min-w-0 flex-1">
-            <FilesViewLinkGroups dataset={dataset} />
+            <FilesViewPath dataset={dataset} />
           </div>
           <div className="whitespace-nowrap text-sm text-muted-foreground">
-            {currentFile.type === "directory" ? (
+            {currentEntry.type === "directory" ? (
               directoryQuery.data ? (
                 <span className="mr-1">
                   ({directoryQuery.data?.length} items)
@@ -72,7 +72,7 @@ export function FilesView({ dataset }: { dataset: DatasetResponse }) {
                 <Spinner className="size-4" />
               )
             ) : (
-              currentFile.type === "file" &&
+              currentEntry.type === "file" &&
               (fileStatsQuery.data ? (
                 <>({abbreviateFileSize(fileStatsQuery.data?.size)})</>
               ) : (
@@ -82,17 +82,17 @@ export function FilesView({ dataset }: { dataset: DatasetResponse }) {
           </div>
         </div>
 
-        {currentFile.type === "file" && (
+        {currentEntry.type === "file" && (
           <FilesViewDownloadButton
-            path={path.join(STATIC_FILES_ROUTE, currentFile.path)}
+            path={path.join(STATIC_FILES_ROUTE, currentEntry.path)}
           />
         )}
       </div>
       <>
-        {currentFile.type === "directory" ? (
-          <FilesViewDirectory directoryPath={currentFile.path} />
-        ) : currentFile.type === "file" ? (
-          <FilesViewFile file={currentFile} />
+        {currentEntry.type === "directory" ? (
+          <FilesViewDirectory directoryEntry={currentEntry} />
+        ) : currentEntry.type === "file" ? (
+          <FilesViewFile fileEntry={currentEntry} />
         ) : (
           <div>Unknown file type</div>
         )}

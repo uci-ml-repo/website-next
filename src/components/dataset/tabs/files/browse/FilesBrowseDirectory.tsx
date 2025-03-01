@@ -14,15 +14,15 @@ export function FilesBrowseDirectory({
 }: {
   directory: FileResponse;
 }) {
-  const { currentFile, setCurrentFile } = useFileContext();
+  const { currentEntry, setCurrentEntry } = useFileContext();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    if (currentFile.path.startsWith(directory.path + "/")) {
+    if (currentEntry.path.startsWith(directory.path + "/")) {
       setIsExpanded(true);
     }
-  }, [currentFile.path, directory.path]);
+  }, [currentEntry.path, directory.path]);
 
   const directoryQuery = trpc.file.find.list.useQuery(
     {
@@ -40,9 +40,9 @@ export function FilesBrowseDirectory({
       <FilesBrowseButton
         chevron
         chevronDown={isExpanded}
-        className={currentFile.path === directory.path ? "bg-accent/50" : ""}
+        className={currentEntry.path === directory.path ? "bg-accent/50" : ""}
         onClick={() => {
-          setCurrentFile(directory);
+          setCurrentEntry(directory);
           setIsExpanded((prev) => !prev);
         }}
       >

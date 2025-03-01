@@ -17,15 +17,15 @@ import { FilesViewFilePDF } from "@/components/dataset/tabs/files/view/FilesView
 import { Alert } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import type { DirectoryEntity } from "@/server/service/file/find";
+import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesViewFile({ file }: { file: DirectoryEntity }) {
+export function FilesViewFile({ fileEntry }: { fileEntry: Entry }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const readFileQuery = trpc.file.read.readFileInfinite.useInfiniteQuery(
     {
-      path: file.path,
+      path: fileEntry.path,
       takeLines: 50,
     },
     {
@@ -39,7 +39,7 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
     }
-  }, [file]);
+  }, [fileEntry]);
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const element = event.currentTarget;
@@ -75,8 +75,8 @@ export function FilesViewFile({ file }: { file: DirectoryEntity }) {
     );
   }
 
-  const extension = path.extname(file.path);
-  const contentPath = path.join(STATIC_FILES_ROUTE, file.path);
+  const extension = path.extname(fileEntry.path);
+  const contentPath = path.join(STATIC_FILES_ROUTE, fileEntry.path);
 
   return imageExtensions.includes(extension) ? (
     <FilesViewFileImage source={contentPath} />

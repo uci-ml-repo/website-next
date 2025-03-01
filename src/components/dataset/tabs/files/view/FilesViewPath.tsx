@@ -3,22 +3,23 @@ import path from "path";
 import React from "react";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
+import { DATASET_RELATIVE_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { cn, datasetFilesPath } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-export function FilesViewLinkGroups({
+export function FilesViewPath({
   dataset,
   className,
 }: {
   dataset: DatasetResponse;
   className?: string;
 }) {
-  const { currentFile, setCurrentFile } = useFileContext();
+  const { currentEntry, setCurrentEntry } = useFileContext();
 
-  const basePath = datasetFilesPath(dataset);
+  const basePath = DATASET_RELATIVE_PATH(dataset);
 
-  const relativePath = currentFile.path.startsWith(basePath)
-    ? currentFile.path.slice(basePath.length + 1)
+  const relativePath = currentEntry.path.startsWith(basePath)
+    ? currentEntry.path.slice(basePath.length + 1)
     : "";
 
   const pathParts = relativePath ? relativePath.split("/") : [];
@@ -44,7 +45,7 @@ export function FilesViewLinkGroups({
               <button
                 className="text-link"
                 onClick={() => {
-                  setCurrentFile({
+                  setCurrentEntry({
                     path: basePath,
                     type: "directory",
                   });
@@ -60,7 +61,7 @@ export function FilesViewLinkGroups({
               <button
                 className="text-link hover:underline"
                 onClick={() => {
-                  setCurrentFile({
+                  setCurrentEntry({
                     path: cumulativePath,
                     type: "directory",
                   });
