@@ -79,6 +79,10 @@ export default async function Layout({
       })
     : false;
 
+  const discussionCount = await caller.discussion.find.countByQuery({
+    datasetId: dataset.id,
+  });
+
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
       <Main className="space-y-6">
@@ -92,7 +96,7 @@ export default async function Layout({
             />
           </Card>
 
-          <DatasetTabs dataset={dataset} />
+          <DatasetTabs dataset={dataset} discussionCount={discussionCount} />
         </div>
 
         {children}
