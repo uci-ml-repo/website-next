@@ -32,7 +32,7 @@ export function OverviewCard({
       {children && (
         <>
           <hr />
-          <CardContent className="flex flex-1 flex-col space-y-2 bg-muted p-2">
+          <CardContent className="flex flex-1 flex-col bg-muted p-2">
             {children}
           </CardContent>
         </>
@@ -52,7 +52,7 @@ export function OverviewCardViewMore({
     <div className="flex flex-1 items-end">
       <Link
         href={href}
-        className="flex h-10 w-fit items-center space-x-2 px-1.5 text-muted-foreground hover:underline"
+        className="flex w-fit items-center space-x-2 px-1.5 text-muted-foreground hover:underline"
       >
         <EllipsisIcon className="size-7" />
         <span>{text}</span>
