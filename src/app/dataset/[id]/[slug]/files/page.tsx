@@ -48,7 +48,7 @@ export default async function Page({
             <div className="text-muted-foreground">
               <div>
                 Files not available for browsing. Download the dataset to view
-                them locally.
+                files locally.
               </div>
             </div>
             <DatasetDownloadButton dataset={dataset} className="w-fit" />
