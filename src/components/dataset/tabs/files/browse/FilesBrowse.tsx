@@ -1,11 +1,11 @@
 "use client";
 
-import debounce from "lodash/debounce";
 import { CircleXIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
 import { FilesBrowseDirectory } from "@/components/dataset/tabs/files/browse/FilesBrowseDirectory";
 import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
+import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -16,35 +16,8 @@ import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
-  const [searchValue, setSearchValue] = React.useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = React.useState("");
-  const [isDebouncing, setIsDebouncing] = React.useState(false);
-
-  const debounceSetSearchTerm = React.useMemo(
-    () =>
-      debounce((value: string) => {
-        setDebouncedSearchTerm(value);
-        setIsDebouncing(false);
-      }, 100),
-    [],
-  );
-
-  React.useEffect(() => {
-    return () => {
-      debounceSetSearchTerm.cancel();
-    };
-  }, [debounceSetSearchTerm]);
-
-  React.useEffect(() => {
-    if (searchValue.trim() === "") {
-      setDebouncedSearchTerm("");
-      setIsDebouncing(false);
-      debounceSetSearchTerm.cancel();
-    } else {
-      setIsDebouncing(true);
-      debounceSetSearchTerm(searchValue);
-    }
-  }, [searchValue, debounceSetSearchTerm]);
+  const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
+    useDebouncedSearch();
 
   const rootDirectoryQuery = trpc.file.find.list.useQuery({
     path: DATASET_FILES_UNZIPPED_PATH(dataset),
@@ -53,18 +26,17 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const searchQuery = trpc.file.find.search.useQuery(
     {
       path: DATASET_FILES_UNZIPPED_PATH(dataset),
-      search: debouncedSearchTerm,
+      search: searchValue,
     },
     {
-      enabled: debouncedSearchTerm.length > 0,
+      enabled: searchValue.length > 0,
     },
   );
 
-  const isLoading =
-    rootDirectoryQuery.isLoading || searchQuery.isLoading || isDebouncing;
+  const isLoading = rootDirectoryQuery.isLoading || searchQuery.isLoading;
 
   const data: Entry[] =
-    debouncedSearchTerm.length > 0 && searchQuery.data
+    searchValue.length > 0 && searchQuery.data
       ? searchQuery.data
       : (rootDirectoryQuery.data ?? []);
 
@@ -72,15 +44,14 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
     <>
       <div className="sticky left-0 top-0 flex h-12 shrink-0 items-center border-b-2 bg-muted px-2">
         <InputClearable
-          variantSize="sm"
           icon={SearchIcon}
           placeholder="Search files"
           aria-label="Search files"
           className="h-8 rounded-lg bg-background"
           containerClassName="w-full"
-          value={searchValue}
-          setValue={setSearchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          value={inputValue}
+          setValue={setInputValue}
+          onChange={handleChange}
         />
       </div>
       <div className="h-full w-full overflow-auto bg-muted">
@@ -90,16 +61,12 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
           </div>
         ) : data.length === 0 ? (
           <div className="p-2">
-            {debouncedSearchTerm.length === 0 ? (
+            {searchValue.length === 0 ? (
               <Alert>No files</Alert>
             ) : (
               <Alert className="flex min-w-fit items-center justify-between gap-2 text-nowrap">
                 <span className="text-muted-foreground">No results</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSearchValue("")}
-                >
+                <Button variant="ghost" size="sm" onClick={clearSearch}>
                   <CircleXIcon />
                   <span>Clear search</span>
                 </Button>
@@ -108,28 +75,24 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
           </div>
         ) : (
           <div className="min-w-fit space-y-2 p-2">
-            {debouncedSearchTerm.length > 0 && (
+            {searchValue.length > 0 && (
               <div className="text-muted-foreground">Search Results:</div>
             )}
             <div>
-              {data.map((directoryEntity) => {
-                if (directoryEntity.type === "directory") {
-                  return (
-                    <FilesBrowseDirectory
-                      key={directoryEntity.path}
-                      directory={directoryEntity}
-                    />
-                  );
-                } else if (directoryEntity.type === "file") {
-                  return (
-                    <FilesBrowseFile
-                      file={directoryEntity}
-                      key={directoryEntity.path}
-                    />
-                  );
-                }
-                return null;
-              })}
+              {data.map((directoryEntity) =>
+                directoryEntity.type === "directory" ? (
+                  <FilesBrowseDirectory
+                    key={directoryEntity.path}
+                    directory={directoryEntity}
+                  />
+                ) : directoryEntity.type === "file" ? (
+                  <FilesBrowseFile
+                    file={directoryEntity}
+                    key={directoryEntity.path}
+                    displayFullPath={!!searchValue}
+                  />
+                ) : null,
+              )}
             </div>
           </div>
         )}

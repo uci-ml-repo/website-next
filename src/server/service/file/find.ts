@@ -32,6 +32,10 @@ function sortDirectoryEntities(a: Entry, b: Entry) {
     return 1;
   }
 
+  if (path.dirname(a.path) !== path.dirname(b.path)) {
+    return path.dirname(a.path).localeCompare(path.dirname(b.path));
+  }
+
   return path.basename(a.path).localeCompare(path.basename(b.path));
 }
 

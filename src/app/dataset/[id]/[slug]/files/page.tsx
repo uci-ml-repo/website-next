@@ -59,7 +59,7 @@ export default async function Page({
 
   return (
     <FileProvider
-      initialPath={{
+      rootEntry={{
         path: DATASET_FILES_UNZIPPED_PATH(dataset),
         type: "directory",
       }}
