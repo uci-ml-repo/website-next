@@ -10,6 +10,7 @@ import { type FileRejection, useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -86,19 +87,28 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
 
     controllerRef.current = new AbortController();
 
-    await axios.putForm(
-      DATASET_API_ZIP_ROUTE(dataset),
-      {
-        file: values.zipFile,
-      },
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (progressEvent) => {
-          setUploadProgress(progressEvent);
+    try {
+      await axios.putForm(
+        DATASET_API_ZIP_ROUTE(dataset),
+        {
+          file: values.zipFile,
         },
-        signal: controllerRef.current.signal,
-      },
-    );
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(progressEvent);
+          },
+          signal: controllerRef.current.signal,
+        },
+      );
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error uploading dataset",
+        description: (error as Error).message,
+      });
+      return;
+    }
 
     zipStatsMutation.mutate({
       datasetId: dataset.id,
@@ -128,7 +138,6 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
 
   return (
     <Form {...form}>
-      {JSON.stringify(uploadProgress, null, 2)}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}

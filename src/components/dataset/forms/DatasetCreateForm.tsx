@@ -25,13 +25,13 @@ import { trpc } from "@/server/trpc/query/client";
 const formSchema = z.object({
   title: z
     .string({ message: "Title is required" })
-    .min(1, { message: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" })
     .max(100, { message: "Title must be less than 100 characters" }),
 });
 
 export type FormData = z.infer<typeof formSchema>;
 
-export function DatasetUploadForm() {
+export function DatasetCreateForm() {
   const router = useRouter();
 
   const form = useForm<FormData>({
