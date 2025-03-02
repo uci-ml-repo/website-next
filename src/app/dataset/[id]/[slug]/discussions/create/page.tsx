@@ -2,7 +2,7 @@ import { unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
 import { VerificationError } from "@/components/auth/VerificationError";
-import { DiscussionCreateInput } from "@/components/discussion/create/DiscussionCreateInput";
+import { DiscussionCreateForm } from "@/components/discussion/create/DiscussionCreateForm";
 
 export default async function Page({
   params,
@@ -20,5 +20,5 @@ export default async function Page({
     return <VerificationError />;
   }
 
-  return <DiscussionCreateInput datasetId={Number(id)} datasetSlug={slug} />;
+  return <DiscussionCreateForm datasetId={Number(id)} datasetSlug={slug} />;
 }

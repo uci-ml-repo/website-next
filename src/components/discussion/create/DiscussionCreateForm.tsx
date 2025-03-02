@@ -26,7 +26,7 @@ import {
 } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DiscussionCreateInputProps {
+interface DiscussionCreateFormProps {
   datasetId: number;
   datasetSlug: string;
 }
@@ -39,10 +39,10 @@ export const formSchema = z.object({
   content: z.string().min(1, { message: "Content is required" }),
 });
 
-export function DiscussionCreateInput({
+export function DiscussionCreateForm({
   datasetId,
   datasetSlug,
-}: DiscussionCreateInputProps) {
+}: DiscussionCreateFormProps) {
   const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -57,8 +57,8 @@ export function DiscussionCreateInput({
   const utils = trpc.useUtils();
 
   const createMutation = trpc.discussion.create.fromData.useMutation({
-    onSuccess: (data) => {
-      utils.discussion.find.byQuery.invalidate({
+    onSuccess: async (data) => {
+      await utils.discussion.find.countByQuery.invalidate({
         datasetId,
       });
 

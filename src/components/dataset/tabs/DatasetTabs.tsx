@@ -13,18 +13,31 @@ import {
 } from "@/components/ui/linear-tabs";
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
+import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetTabsProps {
   dataset: DatasetResponse;
-  discussionCount: number;
+  initialDiscussionCount: number;
 }
 
-export function DatasetTabs({ dataset, discussionCount }: DatasetTabsProps) {
+export function DatasetTabs({
+  dataset,
+  initialDiscussionCount,
+}: DatasetTabsProps) {
   const basePath = DATASET_ROUTE(dataset);
 
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[3] || "about";
+
+  const { data: discussionCount } = trpc.discussion.find.countByQuery.useQuery(
+    {
+      datasetId: dataset.id,
+    },
+    {
+      placeholderData: initialDiscussionCount,
+    },
+  );
 
   return (
     <LinearTabs

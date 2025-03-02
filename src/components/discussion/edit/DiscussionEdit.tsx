@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { formSchema } from "@/components/discussion/create/DiscussionCreateInput";
+import { formSchema } from "@/components/discussion/create/DiscussionCreateForm";
 import { DiscussionDeleteDialog } from "@/components/discussion/view/extended/DiscussionDeleteDialog";
 import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";

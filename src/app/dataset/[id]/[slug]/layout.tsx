@@ -96,7 +96,10 @@ export default async function Layout({
             />
           </Card>
 
-          <DatasetTabs dataset={dataset} discussionCount={discussionCount} />
+          <DatasetTabs
+            dataset={dataset}
+            initialDiscussionCount={discussionCount}
+          />
         </div>
 
         {children}
