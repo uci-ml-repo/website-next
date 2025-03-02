@@ -44,7 +44,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { temporaryOpen, setTemporaryOpen } = useSidebar();
+  const { temporaryOpen, setTemporaryOpen, open } = useSidebar();
 
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -52,8 +52,10 @@ export function AppSidebar({ session }: { session: Session | null }) {
     if (!hoverTimerRef.current) {
       hoverTimerRef.current = setTimeout(
         () => {
-          setTemporaryOpen(true);
-          hoverTimerRef.current = null;
+          if (!open) {
+            setTemporaryOpen(true);
+            hoverTimerRef.current = null;
+          }
         },
         temporaryOpen ? 0 : 150,
       );
