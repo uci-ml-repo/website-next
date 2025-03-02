@@ -67,7 +67,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
           message = "File type must be .zip";
           break;
         case "file-too-large":
-          message = "Maximum upload size is 512MB.";
+          message = "Maximum upload size is 1GB.";
           break;
         default:
           message = "An error occurred while uploading the file.";
@@ -118,7 +118,7 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     multiple: false,
     accept: { "application/zip": [".zip"] },
     maxFiles: 1,
-    maxSize: 512 * 1024 * 1024,
+    maxSize: 1024 * 1024 * 1024, // 1 GB
   });
 
   const pending =

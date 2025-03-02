@@ -10,8 +10,8 @@ import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
+import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
-import { datasetFilesPath } from "@/lib/utils";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -47,12 +47,12 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   }, [searchValue, debounceSetSearchTerm]);
 
   const rootDirectoryQuery = trpc.file.find.list.useQuery({
-    path: datasetFilesPath(dataset),
+    path: DATASET_FILES_UNZIPPED_PATH(dataset),
   });
 
   const searchQuery = trpc.file.find.search.useQuery(
     {
-      path: datasetFilesPath(dataset),
+      path: DATASET_FILES_UNZIPPED_PATH(dataset),
       search: debouncedSearchTerm,
     },
     {

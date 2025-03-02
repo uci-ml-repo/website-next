@@ -5,8 +5,7 @@ import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons
 import { DatasetFiles } from "@/components/dataset/tabs/files/DatasetFiles";
 import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
 import { Card, CardContent } from "@/components/ui/card";
-import { DATASET_RELATIVE_UNZIPPED_PATH } from "@/lib/routes";
-import { datasetFilesPath } from "@/lib/utils";
+import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -34,7 +33,7 @@ export default async function Page({
   let unzippedExists;
   try {
     unzippedExists = await caller.file.find.exists({
-      path: DATASET_RELATIVE_UNZIPPED_PATH(dataset),
+      path: DATASET_FILES_UNZIPPED_PATH(dataset),
     });
   } catch {
     unzippedExists = false;
@@ -60,7 +59,10 @@ export default async function Page({
 
   return (
     <FileProvider
-      initialPath={{ path: datasetFilesPath(dataset), type: "directory" }}
+      initialPath={{
+        path: DATASET_FILES_UNZIPPED_PATH(dataset),
+        type: "directory",
+      }}
     >
       <DatasetFiles dataset={dataset} />
     </FileProvider>

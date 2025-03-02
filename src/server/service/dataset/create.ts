@@ -5,7 +5,7 @@ import slugify from "slugify";
 
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
-import { DATASET_RELATIVE_PATH } from "@/lib/routes";
+import { DATASET_FILES_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 
 export class DatasetCreateService {
@@ -40,7 +40,7 @@ export class DatasetCreateService {
 
       const directoryPath = path.join(
         process.env.STATIC_FILES_DIRECTORY,
-        DATASET_RELATIVE_PATH(createdDataset),
+        DATASET_FILES_PATH(createdDataset),
       );
 
       if (!fs.existsSync(directoryPath)) {

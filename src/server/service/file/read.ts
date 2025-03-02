@@ -124,6 +124,7 @@ export class FileReadService {
       return {
         fileCount: null,
         size: null,
+        uncompressedSize: null,
       };
     }
 

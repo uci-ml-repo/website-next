@@ -3,7 +3,7 @@ import path from "path";
 import React from "react";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import { DATASET_RELATIVE_PATH } from "@/lib/routes";
+import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export function FilesViewPath({
 }) {
   const { currentEntry, setCurrentEntry } = useFileContext();
 
-  const basePath = DATASET_RELATIVE_PATH(dataset);
+  const basePath = DATASET_FILES_UNZIPPED_PATH(dataset);
 
   const relativePath = currentEntry.path.startsWith(basePath)
     ? currentEntry.path.slice(basePath.length + 1)

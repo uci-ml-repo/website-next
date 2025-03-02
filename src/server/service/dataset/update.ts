@@ -3,7 +3,7 @@ import path from "path";
 
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
-import { datasetFilesPath } from "@/lib/utils";
+import { DATASET_FILES_ZIP_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 
 export class DatasetUpdateService {
@@ -15,7 +15,7 @@ export class DatasetUpdateService {
     const zipStats = await service.file.read.zipStats({
       absolutePath: path.join(
         process.env.STATIC_FILES_DIRECTORY,
-        datasetFilesPath(input) + ".zip",
+        DATASET_FILES_ZIP_PATH(input),
       ),
     });
 

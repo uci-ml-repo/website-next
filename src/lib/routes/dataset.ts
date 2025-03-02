@@ -105,7 +105,7 @@ export function DATASET_API_FILES_ROUTE({
   id: number;
   status: string;
 }) {
-  return path.join(STATIC_FILES_ROUTE, DATASET_RELATIVE_PATH({ id, status }));
+  return path.join(STATIC_FILES_ROUTE, DATASET_FILES_PATH({ id, status }));
 }
 
 /**
@@ -123,7 +123,7 @@ export function DATASET_API_THUMBNAIL_ROUTE({
   return path.join(
     hasGraphics
       ? DATASET_API_FILES_ROUTE({ id, status })
-      : path.join(STATIC_FILES_ROUTE, "default"),
+      : path.join(STATIC_FILES_ROUTE, "public", "default"),
     "thumbnail.png",
   );
 }
@@ -131,7 +131,7 @@ export function DATASET_API_THUMBNAIL_ROUTE({
 /**
  * @example "/public/53"
  */
-export function DATASET_RELATIVE_PATH({
+export function DATASET_FILES_PATH({
   id,
   status,
 }: {
@@ -148,7 +148,7 @@ export function DATASET_RELATIVE_PATH({
 /**
  * @example "/public/53/iris"
  */
-export function DATASET_RELATIVE_UNZIPPED_PATH({
+export function DATASET_FILES_UNZIPPED_PATH({
   id,
   slug,
   status,
@@ -157,7 +157,18 @@ export function DATASET_RELATIVE_UNZIPPED_PATH({
   slug: string;
   status: string;
 }) {
-  return path.join(DATASET_RELATIVE_PATH({ id, status }), slug);
+  return path.join(DATASET_FILES_PATH({ id, status }), slug);
+}
+
+/**
+ * @example "/public/53/iris.zip"
+ */
+export function DATASET_FILES_ZIP_PATH(input: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return DATASET_FILES_UNZIPPED_PATH(input) + ".zip";
 }
 
 /**
