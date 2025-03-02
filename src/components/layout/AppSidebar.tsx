@@ -13,15 +13,13 @@ import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { useEffect, useRef } from "react";
 
-import { DatasetSidebarPreview } from "@/components/dataset/preview/DatasetSidebarPreview";
 import { Banner } from "@/components/icons";
+import { SidebarBookmarks } from "@/components/layout/sidebar/SidebarBookmarks";
 import { ThemeToggle } from "@/components/layout/sidebar/ThemeToggle";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -36,21 +34,17 @@ import {
   DATASETS_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
-  PROFILE_BOOKMARKS_ROUTE,
   PROFILE_ROUTE,
   SIGN_IN_ROUTE,
 } from "@/lib/routes";
-import { cn } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
-import { trpc } from "@/server/trpc/query/client";
 
 export function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { temporaryOpen, setTemporaryOpen, open, openMobile } = useSidebar();
-  const openState = open || temporaryOpen || openMobile;
+  const { temporaryOpen, setTemporaryOpen } = useSidebar();
 
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -79,18 +73,6 @@ export function AppSidebar({ session }: { session: Session | null }) {
       window.scrollTo(0, 0);
     }
   }, [pathname]);
-
-  const { data: bookmarks } = trpc.bookmark.find.byUserQuery.useQuery(
-    {},
-    {
-      enabled: !!session?.user,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
-    },
-  );
 
   return (
     <Sidebar ref={ref} className="flex flex-col overflow-y-hidden">
@@ -181,34 +163,9 @@ export function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuItem>
           )}
         </SidebarMenu>
-        {bookmarks && bookmarks.bookmarks.length > 0 ? (
-          <SidebarOpenVisible className="min-h-0 flex-1 overflow-y-auto pt-2">
-            <SidebarGroup className="hidden h-full flex-col overflow-hidden [@media_(min-height:460px)]:flex">
-              <SidebarGroupLabel asChild>
-                <Link
-                  href={PROFILE_BOOKMARKS_ROUTE}
-                  className="mx-2 h-fit w-fit text-sm hover:underline"
-                >
-                  Bookmarks
-                </Link>
-              </SidebarGroupLabel>
-              <ul className="flex min-h-0 flex-col overflow-y-auto px-2 pt-1">
-                {bookmarks.bookmarks.map((datasetBookmark) => (
-                  <li key={datasetBookmark.dataset.id}>
-                    <DatasetSidebarPreview
-                      dataset={datasetBookmark.dataset}
-                      className={cn("transition-all duration-100", {
-                        "-mb-8": !openState,
-                      })}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </SidebarGroup>
-          </SidebarOpenVisible>
-        ) : (
-          <div className="flex-1" />
-        )}
+
+        <SidebarBookmarks session={session} />
+
         <SidebarFooter>
           <SidebarOpenVisible className="flex items-center justify-between p-4 pb-6">
             <span className="text-sm text-muted-foreground">Theme</span>

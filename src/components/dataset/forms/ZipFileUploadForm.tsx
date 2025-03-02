@@ -135,7 +135,9 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
           name="zipFile"
           render={() => (
             <FormItem>
-              <FormLabel className="text-lg">Upload Dataset Files</FormLabel>
+              <FormLabel className="text-2xl font-bold">
+                Upload Dataset Files
+              </FormLabel>
               <div className="pb-2 text-muted-foreground">
                 <div>
                   Upload a single zip file containing the entire contents of
