@@ -13,6 +13,7 @@ export async function ProfileBookmarksOverview() {
   const bookmarksQuery = await caller.bookmark.find.byUserQuery({
     limit: 3,
   });
+
   const bookmarkCount = bookmarksQuery.count;
 
   return (
@@ -28,6 +29,7 @@ export async function ProfileBookmarksOverview() {
               <DatasetMiniRow
                 key={datasetBookmark.bookmark.id}
                 dataset={datasetBookmark.dataset}
+                className="lift"
               />
             ))}
           </div>

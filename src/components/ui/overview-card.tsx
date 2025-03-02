@@ -4,6 +4,7 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface OverviewCardProps {
   title: string;
@@ -19,14 +20,19 @@ export function OverviewCard({
   href,
 }: OverviewCardProps) {
   return (
-    <Card className="flex flex-col overflow-hidden">
+    <Card
+      className={cn(
+        "flex flex-col overflow-hidden",
+        "lift-transition has-[.parent-lift:hover]:scale-[1.01] has-[.parent-lift:hover]:shadow-md",
+      )}
+    >
       <Link href={href}>
-        <CardTitle className="group flex items-center justify-between p-3 hover:bg-accent">
+        <CardTitle className="parent-lift group flex items-center justify-between p-3 hover:bg-accent">
           <div className="flex items-center space-x-2">
             {icon}
             <span className="group-hover:underline">{title}</span>
           </div>
-          <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
+          <ArrowRightIcon />
         </CardTitle>
       </Link>
       {children && (
