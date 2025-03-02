@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export function FilesBrowseButton({
+export function DatasetFileTreeButton({
   children,
   className,
   onClick,

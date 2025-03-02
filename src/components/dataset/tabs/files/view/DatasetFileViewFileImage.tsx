@@ -24,7 +24,7 @@ const loadImageMetadata = (
   };
 };
 
-export function FilesViewFileImage({ source }: { source: string }) {
+export function DatasetFileViewFileImage({ source }: { source: string }) {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({});
 
   useEffect(() => {

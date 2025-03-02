@@ -1,12 +1,12 @@
 import path from "path";
 import { useMemo } from "react";
 
-import { FilesBrowseButton } from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
 import type { Entry } from "@/server/service/file/find";
 
-export function FilesBrowseFile({
+export function DatasetFileTreeFile({
   file,
   displayFullPath,
 }: {
@@ -21,7 +21,7 @@ export function FilesBrowseFile({
   const fileName = path.basename(file.path);
 
   return (
-    <FilesBrowseButton
+    <DatasetFileTreeButton
       onClick={() => setCurrentEntry(file)}
       className={currentEntry.path === file.path ? "bg-accent/50" : ""}
     >
@@ -34,6 +34,6 @@ export function FilesBrowseFile({
           <span>{fileName}</span>
         </span>
       </div>
-    </FilesBrowseButton>
+    </DatasetFileTreeButton>
   );
 }

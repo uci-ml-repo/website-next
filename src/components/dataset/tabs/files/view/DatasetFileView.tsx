@@ -2,10 +2,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
-import { FilesViewDirectory } from "@/components/dataset/tabs/files/view/FilesViewDirectory";
-import { FilesViewDownloadButton } from "@/components/dataset/tabs/files/view/FilesViewDownloadButton";
-import { FilesViewFile } from "@/components/dataset/tabs/files/view/FilesViewFile";
-import { FilesViewPath } from "@/components/dataset/tabs/files/view/FilesViewPath";
+import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/view/DatasetFileViewDirectory";
+import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/view/DatasetFileViewDownloadButton";
+import { DatasetFileViewFile } from "@/components/dataset/tabs/files/view/DatasetFileViewFile";
+import { DatasetFileViewPath } from "@/components/dataset/tabs/files/view/DatasetFileViewPath";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
@@ -13,7 +13,7 @@ import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesView({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetFileView({ dataset }: { dataset: DatasetResponse }) {
   const { currentEntry, fileHistory, back, fileForwardHistory, forward } =
     useFileContext();
 
@@ -60,7 +60,7 @@ export function FilesView({ dataset }: { dataset: DatasetResponse }) {
             </Button>
           </div>
           <div className="min-w-0 flex-1">
-            <FilesViewPath dataset={dataset} />
+            <DatasetFileViewPath dataset={dataset} />
           </div>
           <div className="whitespace-nowrap text-sm text-muted-foreground">
             {currentEntry.type === "directory" ? (
@@ -83,16 +83,16 @@ export function FilesView({ dataset }: { dataset: DatasetResponse }) {
         </div>
 
         {currentEntry.type === "file" && (
-          <FilesViewDownloadButton
+          <DatasetFileViewDownloadButton
             path={path.join(STATIC_FILES_ROUTE, currentEntry.path)}
           />
         )}
       </div>
       <>
         {currentEntry.type === "directory" ? (
-          <FilesViewDirectory directoryEntry={currentEntry} />
+          <DatasetFileViewDirectory directoryEntry={currentEntry} />
         ) : currentEntry.type === "file" ? (
-          <FilesViewFile fileEntry={currentEntry} />
+          <DatasetFileViewFile fileEntry={currentEntry} />
         ) : (
           <div>Unknown file type</div>
         )}

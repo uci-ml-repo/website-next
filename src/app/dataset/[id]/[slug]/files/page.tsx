@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { ZipFileUploadForm } from "@/components/dataset/forms/ZipFileUploadForm";
+import { ZipFileUploadForm } from "@/components/dataset/forms/upload/ZipFileUploadForm";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
-import { DatasetFiles } from "@/components/dataset/tabs/files/DatasetFiles";
+import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/DatasetFilesBrowse";
 import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
@@ -27,19 +27,15 @@ export default async function Page({
   }
 
   if (dataset.fileCount === null || dataset.unzipped === null) {
-    return <ZipFileUploadForm dataset={dataset} />;
+    return (
+      <ZipFileUploadForm
+        dataset={dataset}
+        processing={dataset.unzipped === null}
+      />
+    );
   }
 
-  let unzippedExists;
-  try {
-    unzippedExists = await caller.file.find.exists({
-      path: DATASET_FILES_UNZIPPED_PATH(dataset),
-    });
-  } catch {
-    unzippedExists = false;
-  }
-
-  if (!unzippedExists) {
+  if (dataset.unzipped === false) {
     return (
       <Card className="w-full">
         <CardContent className="flex h-[130px] items-center justify-center bg-muted">
@@ -64,7 +60,7 @@ export default async function Page({
         type: "directory",
       }}
     >
-      <DatasetFiles dataset={dataset} />
+      <DatasetFilesBrowse dataset={dataset} />
     </FileProvider>
   );
 }

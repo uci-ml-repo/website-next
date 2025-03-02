@@ -1,15 +1,15 @@
 import path from "path";
 import { useEffect, useMemo, useState } from "react";
 
-import { FilesBrowseButton } from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
-import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
+import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
 import { Spinner } from "@/components/ui/spinner";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesBrowseDirectory({ directory }: { directory: Entry }) {
+export function DatasetFileTreeDirectory({ directory }: { directory: Entry }) {
   const { currentEntry, setCurrentEntry } = useFileContext();
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -33,7 +33,7 @@ export function FilesBrowseDirectory({ directory }: { directory: Entry }) {
 
   return (
     <div>
-      <FilesBrowseButton
+      <DatasetFileTreeButton
         chevron
         chevronDown={isExpanded}
         className={currentEntry.path === directory.path ? "bg-accent/50" : ""}
@@ -44,7 +44,7 @@ export function FilesBrowseDirectory({ directory }: { directory: Entry }) {
       >
         {icon}
         <span>{path.basename(directory.path)}</span>
-      </FilesBrowseButton>
+      </DatasetFileTreeButton>
 
       {isExpanded && (
         <div className="flex">
@@ -58,14 +58,14 @@ export function FilesBrowseDirectory({ directory }: { directory: Entry }) {
                 directoryQuery.data.map((directoryEntity) => {
                   if (directoryEntity.type === "directory") {
                     return (
-                      <FilesBrowseDirectory
+                      <DatasetFileTreeDirectory
                         key={directoryEntity.path}
                         directory={directoryEntity}
                       />
                     );
                   } else if (directoryEntity.type === "file") {
                     return (
-                      <FilesBrowseFile
+                      <DatasetFileTreeFile
                         file={directoryEntity}
                         key={directoryEntity.path}
                       />

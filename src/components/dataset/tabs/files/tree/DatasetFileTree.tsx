@@ -3,8 +3,8 @@
 import { CircleXIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
-import { FilesBrowseDirectory } from "@/components/dataset/tabs/files/browse/FilesBrowseDirectory";
-import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBrowseFile";
+import { DatasetFileTreeDirectory } from "@/components/dataset/tabs/files/tree/DatasetFileTreeDirectory";
+import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import type { DatasetResponse } from "@/lib/types";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetFileTree({ dataset }: { dataset: DatasetResponse }) {
   const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
     useDebouncedSearch();
 
@@ -81,12 +81,12 @@ export function FilesBrowse({ dataset }: { dataset: DatasetResponse }) {
             <div>
               {data.map((directoryEntity) =>
                 directoryEntity.type === "directory" ? (
-                  <FilesBrowseDirectory
+                  <DatasetFileTreeDirectory
                     key={directoryEntity.path}
                     directory={directoryEntity}
                   />
                 ) : directoryEntity.type === "file" ? (
-                  <FilesBrowseFile
+                  <DatasetFileTreeFile
                     file={directoryEntity}
                     key={directoryEntity.path}
                     displayFullPath={!!searchValue}

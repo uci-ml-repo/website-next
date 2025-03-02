@@ -7,7 +7,7 @@ import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function FilesViewPath({
+export function DatasetFileViewPath({
   dataset,
   className,
 }: {

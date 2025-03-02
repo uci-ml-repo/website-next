@@ -4,9 +4,7 @@ source ../.env
 
 echo "$REMOTE_HOST"
 
-DUMP_FILE=$(ssh "$REMOTE_HOST" "~/db_dump.sh")
-
-if [ $? -ne 0 ]; then
+if ! DUMP_FILE=$(ssh "$REMOTE_HOST" '$HOME/db_dump.sh'); then
   echo "Error: Failed to execute db_dump.sh on $REMOTE_HOST"
   exit 1
 fi

@@ -8,7 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesViewDirectory({
+export function DatasetFileViewDirectory({
   directoryEntry,
 }: {
   directoryEntry: Entry;

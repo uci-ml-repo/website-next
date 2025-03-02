@@ -524,6 +524,7 @@ WITH
       "d"."file_count",
       "d"."user_id",
       "d"."donated_at",
+      "d"."unzipped",
       COALESCE(
         (
           SELECT
@@ -678,6 +679,7 @@ INSERT INTO
     "file_count",
     "user_id",
     "donated_at",
+    "unzipped",
     "keywords",
     "authors",
     "variables",
@@ -709,6 +711,7 @@ SELECT
   "file_count",
   "user_id",
   "donated_at",
+  "unzipped",
   "keywords",
   "authors",
   "variables",
@@ -742,6 +745,7 @@ SET
     "file_count",
     "user_id",
     "donated_at",
+    "unzipped",
     "keywords",
     "authors",
     "variables",
@@ -771,6 +775,7 @@ SET
     EXCLUDED."file_count",
     EXCLUDED."user_id",
     EXCLUDED."donated_at",
+    EXCLUDED."unzipped",
     EXCLUDED."keywords",
     EXCLUDED."authors",
     EXCLUDED."variables",

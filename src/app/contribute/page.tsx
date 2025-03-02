@@ -1,7 +1,7 @@
 import { ArrowRightIcon, LinkIcon, UploadIcon } from "lucide-react";
 import Link from "next/link";
 
-import { SignInRequired } from "@/components/auth/SignInRequired";
+import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   CONTRIBUTE_DONATION_ROUTE,
@@ -87,14 +87,16 @@ function DonationOption({
   href: string;
 }) {
   return (
-    <SignInRequired
-      title="An account is required to contribute datasets"
-      body="To beigin the dataset contribution process, plase sign in."
-      authedRedirect={href}
+    <VerificationRequired
+      signInTitle="An account is required to contribute datasets"
+      signInBody="To beigin the dataset contribution process, plase sign in."
+      verificationTitle="Verify your email to contribute datasets"
+      verificationBody="To contribute datasets, you must verify your email."
+      verifiedRedirect={href}
     >
       <Card className="lift-lg flex h-full justify-center text-center transition-all hover:bg-uci-gold hover:text-uci-gold-foreground">
         <CardContent className="w-full space-y-1 p-6">{children}</CardContent>
       </Card>
-    </SignInRequired>
+    </VerificationRequired>
   );
 }

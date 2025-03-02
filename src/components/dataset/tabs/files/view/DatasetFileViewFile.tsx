@@ -8,19 +8,19 @@ import {
   tabularToDelimiter,
   videoExtensions,
 } from "@/components/dataset/tabs/files/lib/extensions";
-import { FilesViewFileAudio } from "@/components/dataset/tabs/files/view/FilesViewFileAudio";
-import { FilesViewFileImage } from "@/components/dataset/tabs/files/view/FilesViewFileImage";
-import { FilesViewFilesTabular } from "@/components/dataset/tabs/files/view/FilesViewFileTabular";
-import { FilesViewFileText } from "@/components/dataset/tabs/files/view/FilesViewFileText";
-import { FilesViewFileVideo } from "@/components/dataset/tabs/files/view/FilesViewFileVideo";
-import { FilesViewFilePDF } from "@/components/dataset/tabs/files/view/FilesViewPDF";
+import { DatasetFileViewFileAudio } from "@/components/dataset/tabs/files/view/DatasetFileViewFileAudio";
+import { DatasetFileViewFileImage } from "@/components/dataset/tabs/files/view/DatasetFileViewFileImage";
+import { FilesViewFilePDF } from "@/components/dataset/tabs/files/view/DatasetFileViewFilePDF";
+import { DatasetFileViewFileTabular } from "@/components/dataset/tabs/files/view/DatasetFileViewFileTabular";
+import { DatasetFileViewFileText } from "@/components/dataset/tabs/files/view/DatasetFileViewFileText";
+import { DatasetFileViewFileVideo } from "@/components/dataset/tabs/files/view/DatasetFileViewFileVideo";
 import { Alert } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesViewFile({ fileEntry }: { fileEntry: Entry }) {
+export function DatasetFileViewFile({ fileEntry }: { fileEntry: Entry }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const readFileQuery = trpc.file.read.readFileInfinite.useInfiniteQuery(
@@ -79,11 +79,11 @@ export function FilesViewFile({ fileEntry }: { fileEntry: Entry }) {
   const contentPath = path.join(STATIC_FILES_ROUTE, fileEntry.path);
 
   return imageExtensions.includes(extension) ? (
-    <FilesViewFileImage source={contentPath} />
+    <DatasetFileViewFileImage source={contentPath} />
   ) : videoExtensions.includes(extension) ? (
-    <FilesViewFileVideo source={contentPath} />
+    <DatasetFileViewFileVideo source={contentPath} />
   ) : audioExtensions.includes(extension) ? (
-    <FilesViewFileAudio source={contentPath} />
+    <DatasetFileViewFileAudio source={contentPath} />
   ) : pdfExtensions.includes(extension) ? (
     <FilesViewFilePDF source={contentPath} />
   ) : (
@@ -93,12 +93,12 @@ export function FilesViewFile({ fileEntry }: { fileEntry: Entry }) {
       className="h-full overflow-auto"
     >
       {Object.keys(tabularToDelimiter).includes(extension) ? (
-        <FilesViewFilesTabular
+        <DatasetFileViewFileTabular
           lines={lines}
           delimiter={tabularToDelimiter[extension]}
         />
       ) : (
-        <FilesViewFileText lines={lines} />
+        <DatasetFileViewFileText lines={lines} />
       )}
 
       {readFileQuery.isFetchingNextPage && (
