@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 
-import type { FileResponse } from "@/lib/types";
 import type { Entry } from "@/server/service/file/find";
 
 interface FileContextProps {
@@ -32,17 +31,14 @@ export function FileProvider({
   initialPath,
 }: {
   children: ReactNode;
-  initialPath: FileResponse;
+  initialPath: Entry;
 }) {
-  const [currentFile, setCurrentFileState] =
-    useState<FileResponse>(initialPath);
+  const [currentFile, setCurrentFileState] = useState<Entry>(initialPath);
 
-  const [fileHistory, setFileHistory] = useState<FileResponse[]>([]);
-  const [fileForwardHistory, setFileForwardHistory] = useState<FileResponse[]>(
-    [],
-  );
+  const [fileHistory, setFileHistory] = useState<Entry[]>([]);
+  const [fileForwardHistory, setFileForwardHistory] = useState<Entry[]>([]);
 
-  const setCurrentFile = (newDirectory: FileResponse) => {
+  const setCurrentFile = (newDirectory: Entry) => {
     setFileHistory((prevHistory) => [...prevHistory, currentFile]);
     setCurrentFileState(newDirectory);
     setFileForwardHistory([]);

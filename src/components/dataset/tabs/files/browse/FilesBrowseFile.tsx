@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { FilesBrowseButton } from "@/components/dataset/tabs/files/browse/FilesBrowseButton";
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
-import type { FileResponse } from "@/lib/types";
+import type { Entry } from "@/server/service/file/find";
 
-export function FilesBrowseFile({ file }: { file: FileResponse }) {
+export function FilesBrowseFile({ file }: { file: Entry }) {
   const { currentEntry, setCurrentEntry } = useFileContext();
 
   const icon = useMemo(() => fileToIcon(file), [file]);

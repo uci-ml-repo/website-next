@@ -6,14 +6,10 @@ import { FilesBrowseFile } from "@/components/dataset/tabs/files/browse/FilesBro
 import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import { Spinner } from "@/components/ui/spinner";
-import type { FileResponse } from "@/lib/types";
+import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function FilesBrowseDirectory({
-  directory,
-}: {
-  directory: FileResponse;
-}) {
+export function FilesBrowseDirectory({ directory }: { directory: Entry }) {
   const { currentEntry, setCurrentEntry } = useFileContext();
 
   const [isExpanded, setIsExpanded] = useState(false);
