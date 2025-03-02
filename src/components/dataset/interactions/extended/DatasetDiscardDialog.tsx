@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { toast } from "@/components/hooks/use-toast";
+import { AlertIrreversible } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -56,11 +57,8 @@ export function DatasetDiscardDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogTitle>Discard {dataset.title}?</DialogTitle>
-        <DialogHeader>
-          <div>
-            <span className="text-destructive">Warning:</span> this action
-            cannot be undone.
-          </div>
+        <DialogHeader className="space-y-4">
+          <AlertIrreversible />
           <ul className="list-inside list-disc">
             <li>All associated files will be removed</li>
             <li>Associated metadata will be deleted</li>

@@ -43,7 +43,7 @@ export function ProfileSettingsEmail() {
               </div>
               {session.user.emailVerified && (
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger aria-label="Email Verified">
                     <CheckIcon className="size-5 text-positive" />
                   </TooltipTrigger>
                   <TooltipContent>Email Verified</TooltipContent>

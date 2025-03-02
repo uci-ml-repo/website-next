@@ -38,7 +38,7 @@ export function OverviewCard({
       {children && (
         <>
           <hr />
-          <CardContent className="flex flex-1 flex-col bg-muted p-2">
+          <CardContent className="flex min-h-32 flex-1 flex-col bg-muted p-2">
             {children}
           </CardContent>
         </>

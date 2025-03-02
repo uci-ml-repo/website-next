@@ -39,7 +39,7 @@ export function UserRow({ user }: { user: UserSelect }) {
           <div>{user.email}</div>
           {user.emailVerified && (
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger aria-label="Email Verified">
                 <CheckIcon className="size-5 text-positive" />
               </TooltipTrigger>
               <TooltipContent>Email Verified</TooltipContent>

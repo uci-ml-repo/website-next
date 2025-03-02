@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import { AlertCircleIcon } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -59,4 +60,16 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertDescription, AlertTitle };
+const AlertIrreversible = () => (
+  <Alert variant="destructive">
+    <div className="flex items-center space-x-2">
+      <AlertCircleIcon className="size-5" />
+      <div>
+        <span className="font-bold">Warning:</span> this action cannot be
+        undone.
+      </div>
+    </div>
+  </Alert>
+);
+
+export { Alert, AlertDescription, AlertIrreversible, AlertTitle };
