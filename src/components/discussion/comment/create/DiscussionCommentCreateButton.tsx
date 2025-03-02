@@ -1,6 +1,6 @@
 import { PlusIcon } from "lucide-react";
 
-import { EmailVerificationRequired } from "@/components/auth/EmailVerificationRequired";
+import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -14,17 +14,17 @@ export function DiscussionCommentCreateButton({
   className?: string;
 }) {
   return (
-    <EmailVerificationRequired
+    <VerificationRequired
       signInTitle="Sign in to comment"
       signInBody="To comment and access other features, please sign in."
-      emailVerificationTitle="Verify your email to comment"
-      emailVerificationBody="To comment, please verify your email."
+      verificationTitle="Verify your email to comment"
+      verificationBody="To comment, please verify your email."
       verifiedAction={() => setIsCommenting(true)}
     >
       <Button variant="secondary" className={cn("lift", className)}>
         <PlusIcon />
         <span>{text}</span>
       </Button>
-    </EmailVerificationRequired>
+    </VerificationRequired>
   );
 }

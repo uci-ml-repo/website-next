@@ -19,19 +19,19 @@ import { PROFILE_SETTINGS_ROUTE } from "@/lib/routes";
 interface EmailVerificationRequiredProps {
   signInTitle: string;
   signInBody: string;
-  emailVerificationTitle: string;
-  emailVerificationBody: string;
+  verificationTitle: string;
+  verificationBody: string;
   verifiedAction?: () => void;
   verifiedRedirect?: string;
   disabled?: boolean;
   children: React.ReactNode;
 }
 
-export function EmailVerificationRequired({
+export function VerificationRequired({
   signInTitle,
   signInBody,
-  emailVerificationTitle,
-  emailVerificationBody,
+  verificationTitle,
+  verificationBody,
   disabled,
   children,
   verifiedAction,
@@ -78,9 +78,9 @@ export function EmailVerificationRequired({
       <Dialog open={verifyDialogOpen} onOpenChange={setVerifyDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogHeader>
-            <DialogTitle>{emailVerificationTitle}</DialogTitle>
+            <DialogTitle>{verificationTitle}</DialogTitle>
           </DialogHeader>
-          <p>{emailVerificationBody}</p>
+          <p>{verificationBody}</p>
           <DialogFooter className="items-center !justify-between gap-4">
             <DialogClose asChild>
               <Button

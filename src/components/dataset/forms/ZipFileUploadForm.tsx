@@ -27,7 +27,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CONTACT_ROUTE, DATASET_API_ZIP_ROUTE } from "@/lib/routes";
+import {
+  CONTACT_ROUTE,
+  DATASET_API_ZIP_ROUTE,
+  DATASET_FILES_ZIP_PATH,
+} from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -80,7 +84,17 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     [form],
   );
 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    onDropRejected,
+    multiple: false,
+    accept: { "application/zip": [".zip"] },
+    maxFiles: 1,
+    maxSize: 1024 * 1024 * 1024, // 1 GB
+  });
+
   const zipStatsMutation = trpc.dataset.update.zipStats.useMutation();
+  const unzipMutation = trpc.file.zip.unzip.useMutation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.zipFile) return;
@@ -113,6 +127,15 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     zipStatsMutation.mutate({
       datasetId: dataset.id,
     });
+
+    console.log("A");
+
+    unzipMutation.mutate({
+      path: DATASET_FILES_ZIP_PATH(dataset),
+      datasetId: dataset.id,
+    });
+
+    console.log("B");
   }
 
   function cancelUpload() {
@@ -121,15 +144,6 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
       setUploadProgress(undefined);
     }
   }
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    onDropRejected,
-    multiple: false,
-    accept: { "application/zip": [".zip"] },
-    maxFiles: 1,
-    maxSize: 1024 * 1024 * 1024, // 1 GB
-  });
 
   const pending =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful;

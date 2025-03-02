@@ -2,7 +2,7 @@ import { PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
-import { SignInRequired } from "@/components/auth/SignInRequired";
+import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { Button } from "@/components/ui/button";
 import {
   CONTRIBUTE_DONATION_ROUTE,
@@ -22,23 +22,23 @@ export default async function Page() {
 
   return (
     <div>
-      <div>
-        <Policy />
-      </div>
+      <Policy />
 
       <div className="space-y-2">
         <div className="text-muted-foreground">
           By clicking below, you agree to the linking policy.
         </div>
-        <SignInRequired
-          title="Sign in to link external datasets"
-          body="To beigin the dataset linking process, plase sign in."
-          authedRedirect={CONTRIBUTE_EXTERNAL_FORM_ROUTE}
+        <VerificationRequired
+          signInBody="Sign in to link external datasets"
+          signInTitle="To beigin the dataset linking process, plase sign in."
+          verificationTitle="Verify your email to link external datasets"
+          verificationBody="To link external datasets, please verify your email address."
+          verifiedRedirect={CONTRIBUTE_EXTERNAL_FORM_ROUTE}
         >
           <Button className="lift w-full" variant="gold" size="lg">
             <PlusIcon /> Link External Dataset
           </Button>
-        </SignInRequired>
+        </VerificationRequired>
       </div>
     </div>
   );

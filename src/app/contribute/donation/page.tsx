@@ -2,7 +2,7 @@ import { PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
-import { SignInRequired } from "@/components/auth/SignInRequired";
+import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { Button } from "@/components/ui/button";
 import {
   CONTRIBUTE_DONATION_FORM_ROUTE,
@@ -21,23 +21,23 @@ export default async function Page() {
 
   return (
     <div>
-      <div>
-        <Policy />
-      </div>
+      <Policy />
 
       <div className="space-y-2">
         <div className="text-muted-foreground">
           By continuing, you agree to the donation policy.
         </div>
-        <SignInRequired
-          title="Sign in to donate datasets"
-          body="To beigin the dataset donation process, plase sign in."
-          authedRedirect={CONTRIBUTE_DONATION_FORM_ROUTE}
+        <VerificationRequired
+          signInTitle="Sign in to donate datasets"
+          signInBody="To beigin the dataset donation process, plase sign in."
+          verificationTitle="Verify your email to donate datasets"
+          verificationBody="To donate datasets, please verify your email address."
+          verifiedRedirect={CONTRIBUTE_DONATION_FORM_ROUTE}
         >
           <Button className="lift w-full" variant="gold" size="lg">
             <PlusIcon /> Donate Dataset
           </Button>
-        </SignInRequired>
+        </VerificationRequired>
       </div>
     </div>
   );

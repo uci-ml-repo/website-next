@@ -1,16 +1,21 @@
+import { eq } from "drizzle-orm";
 import fs from "fs-extra";
 import path from "path";
 import yauzl from "yauzl";
 
+import { db } from "@/db";
+import { dataset } from "@/db/schema";
 import { service } from "@/server/service";
 
 export class FileZipService {
   async unzip({
     absolutePath,
+    datasetId,
     unzipPath = absolutePath.replace(/\.zip$/, ""),
     limitSize = 5 * 1024 * 1024 * 1024, // 5 GB
   }: {
     absolutePath: string;
+    datasetId: number;
     unzipPath?: string;
     limitSize?: number;
   }) {
@@ -18,6 +23,11 @@ export class FileZipService {
     let cancelled = false;
 
     const zipStats = await service.file.read.zipStats({ absolutePath });
+
+    await db
+      .update(dataset)
+      .set({ unzipped: false })
+      .where(eq(dataset.id, datasetId));
 
     if (!zipStats?.uncompressedSize || zipStats.uncompressedSize > limitSize) {
       return {
@@ -120,6 +130,11 @@ export class FileZipService {
         message: (error as Error).message,
       };
     }
+
+    await db
+      .update(dataset)
+      .set({ unzipped: true })
+      .where(eq(dataset.id, datasetId));
 
     return {
       success: true,

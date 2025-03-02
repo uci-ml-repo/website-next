@@ -106,6 +106,7 @@ export const dataset = pgTable(
       .default(baseUUID)
       .notNull(),
     donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
+    unzipped: boolean("unzipped"),
   },
   (t) => [
     check(
@@ -190,6 +191,7 @@ export const datasetView = pgTable(
     variableNames: text("variable_names").array().notNull().$type<string>(),
     user: jsonb("user").notNull().$type<UserSelect>(),
     introductoryPaper: jsonb("introductory_paper").$type<PaperSelect>(),
+    unzipped: boolean("unzipped"),
   },
   (t) => [
     index("dataset_view_view_count_index").on(t.viewCount),

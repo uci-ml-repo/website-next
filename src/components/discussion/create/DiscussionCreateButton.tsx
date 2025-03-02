@@ -2,7 +2,7 @@
 
 import { PlusIcon } from "lucide-react";
 
-import { EmailVerificationRequired } from "@/components/auth/EmailVerificationRequired";
+import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -36,11 +36,11 @@ export function DiscussionCreateButton({
   );
 
   return (
-    <EmailVerificationRequired
+    <VerificationRequired
       signInTitle="Sign in to create discussions"
       signInBody="To create discussions and access other features, please sign in."
-      emailVerificationTitle="Verify your email to create discussions"
-      emailVerificationBody="To create discussions, please verify your email."
+      verificationTitle="Verify your email to create discussions"
+      verificationBody="To create discussions, please verify your email."
       verifiedRedirect={DATASET_DISCUSSION_CREATE_ROUTE(dataset)}
     >
       {tooltip ? (
@@ -57,6 +57,6 @@ export function DiscussionCreateButton({
       ) : (
         <CreateButton />
       )}
-    </EmailVerificationRequired>
+    </VerificationRequired>
   );
 }

@@ -1,5 +1,6 @@
-CREATE EXTENSION "pg_trgm";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
+--> statement-breakpoint
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
 
 --> statement-breakpoint
@@ -123,6 +124,7 @@ CREATE TABLE "dataset" (
   "file_count" INTEGER,
   "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "unzipped" BOOLEAN,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "accepted_check" CHECK (
     "dataset"."status" = 'draft'
@@ -209,7 +211,8 @@ CREATE TABLE "dataset_view" (
   "variables" JSONB[] NOT NULL,
   "variable_names" TEXT[] NOT NULL,
   "user" JSONB NOT NULL,
-  "introductory_paper" JSONB
+  "introductory_paper" JSONB,
+  "unzipped" BOOLEAN
 );
 
 --> statement-breakpoint

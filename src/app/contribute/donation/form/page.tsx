@@ -1,9 +1,17 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
+import { auth } from "@/auth";
 import { DatasetCreateForm } from "@/components/dataset/forms/DatasetCreateForm";
 import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+
+  if (!session?.user.emailVerified) {
+    return redirect(CONTRIBUTE_DONATION_ROUTE);
+  }
+
   return (
     <div className="space-y-8">
       <div className="space-y-6">

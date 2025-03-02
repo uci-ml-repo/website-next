@@ -9,7 +9,7 @@ import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 const t = initTRPC
   .context<typeof createContext>()
-  .meta<{ requireRoles?: MiddlewareRole[] }>()
+  .meta<{ requireRoles?: MiddlewareRole[] }>() // TODO: switch to just MiddlewareRole[]
   .create({ transformer });
 
 export const protectedProcedure = t.procedure

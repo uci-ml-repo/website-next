@@ -20,6 +20,9 @@ export const fileZipRouter = router({
         });
       }
 
-      return service.file.zip.unzip({ absolutePath: ctx.realPath });
+      return service.file.zip.unzip({
+        absolutePath: ctx.realPath,
+        datasetId: input.datasetId,
+      });
     }),
 });

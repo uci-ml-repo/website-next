@@ -1,5 +1,5 @@
 {
-  "id": "5cc193fe-af6c-44b2-9a6e-8b5747c1a7f2",
+  "id": "778f5c29-17fd-48be-892e-613abc190448",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -367,6 +367,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "unzipped": {
+          "name": "unzipped",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -703,6 +709,12 @@
         "introductory_paper": {
           "name": "introductory_paper",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unzipped": {
+          "name": "unzipped",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         }
