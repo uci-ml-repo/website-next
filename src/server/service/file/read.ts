@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs-extra";
 import StreamZip from "node-stream-zip";
 import readline from "readline";
@@ -16,13 +17,6 @@ export class FileReadService {
     cursor?: number;
     takeLines?: number;
   }) {
-    if (!fs.pathExistsSync(absoluteZipPath)) {
-      throw new ServiceError({
-        origin: "File",
-        message: `Invalid zip file path: ${absoluteZipPath}`,
-      });
-    }
-
     const zip = new StreamZip.async({ file: absoluteZipPath });
     try {
       const entries = await zip.entries();
@@ -72,13 +66,6 @@ export class FileReadService {
     cursor?: number;
     takeLines?: number;
   }) {
-    if (!fs.pathExistsSync(absolutePath)) {
-      throw new ServiceError({
-        origin: "File",
-        message: `Invalid file path: ${absolutePath}`,
-      });
-    }
-
     const fileStream = fs.createReadStream(absolutePath);
     const rl = readline.createInterface({
       input: fileStream,
@@ -120,14 +107,6 @@ export class FileReadService {
   }
 
   async zipStats({ absolutePath }: { absolutePath: string }) {
-    if (!fs.pathExistsSync(absolutePath)) {
-      return {
-        fileCount: null,
-        size: null,
-        uncompressedSize: null,
-      };
-    }
-
     const zip = new StreamZip.async({ file: absolutePath });
 
     const entries = Object.entries(await zip.entries());
@@ -148,5 +127,22 @@ export class FileReadService {
       size: fs.statSync(absolutePath).size,
       uncompressedSize,
     };
+  }
+
+  async checksum({
+    absolutePath,
+    algorithm = "sha512",
+  }: {
+    absolutePath: string;
+    algorithm?: string;
+  }) {
+    return new Promise((resolve, reject) => {
+      const hash = crypto.createHash(algorithm);
+      const stream = fs.createReadStream(absolutePath);
+
+      stream.on("data", (chunk) => hash.update(chunk));
+      stream.on("end", () => resolve(hash.digest("hex")));
+      stream.on("error", (err) => reject(err));
+    });
   }
 }

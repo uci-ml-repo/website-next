@@ -128,14 +128,10 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
       datasetId: dataset.id,
     });
 
-    console.log("A");
-
     unzipMutation.mutate({
       path: DATASET_FILES_ZIP_PATH(dataset),
       datasetId: dataset.id,
     });
-
-    console.log("B");
   }
 
   function cancelUpload() {

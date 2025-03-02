@@ -34,4 +34,12 @@ export const fileReadRouter = router({
         absolutePath: ctx.realPath,
       }),
     ),
+
+  checksum: fileAccessProcedure
+    .input(z.object({ path: z.string() }))
+    .query(({ ctx }) =>
+      service.file.read.checksum({
+        absolutePath: ctx.realPath,
+      }),
+    ),
 });

@@ -26,7 +26,7 @@ export default async function Page({
     return notFound();
   }
 
-  if (dataset.fileCount === null) {
+  if (dataset.fileCount === null || dataset.unzipped === null) {
     return <ZipFileUploadForm dataset={dataset} />;
   }
 
