@@ -14,7 +14,7 @@ source ../.env
 
 echo "Formatting $COPY_TO_PATH"
 
-cp -rf ./data/default "$COPY_TO_PATH"
+cp -rf ./data/default "$COPY_TO_PATH"/public/default
 
 for item in "$COPY_TO_PATH"/{public,private}/*; do
   if [ -d "$item" ]; then
