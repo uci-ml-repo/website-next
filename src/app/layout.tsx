@@ -66,8 +66,6 @@ export default async function Layout({
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
-            <BackgroundGraph className="absolute right-0 top-0 -z-10 max-md:hidden" />
-
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
@@ -76,6 +74,8 @@ export default async function Layout({
               enableSystem
               disableTransitionOnChange
             >
+              <BackgroundGraph className="absolute right-0 top-0 -z-10 max-md:hidden" />
+
               <SidebarProvider>
                 <AppSidebar session={session} />
                 <div

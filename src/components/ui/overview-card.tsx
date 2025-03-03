@@ -23,7 +23,7 @@ export function OverviewCard({
     <Card
       className={cn(
         "flex flex-col overflow-hidden",
-        "lift-transition has-[.parent-lift:hover]:scale-[1.01] has-[.parent-lift:hover]:shadow-md",
+        "lift-transition will-change-transform has-[.parent-lift:hover]:scale-[1.01] has-[.parent-lift:hover]:shadow-md",
       )}
     >
       <Link href={href}>

@@ -117,7 +117,8 @@ body {
 }
 
 .lift {
-  @apply lift-transition cursor-pointer ease-out hover:scale-[1.01] hover:shadow-md;
+  @apply lift-transition cursor-pointer ease-out hover:scale-[1.02] hover:shadow-md;
+  will-change: transform;
 }
 
 .lift-lg {

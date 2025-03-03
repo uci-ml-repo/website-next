@@ -3,7 +3,7 @@ import React from "react";
 
 import { DiscussionCreateButton } from "@/components/discussion/create/DiscussionCreateButton";
 import { Discussions } from "@/components/discussion/Discussions";
-import { Card, CardContent } from "@/components/ui/card";
+import { AlternativeCard } from "@/components/ui/card";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -35,15 +35,13 @@ export default async function Page({
   return hasDiscussions ? (
     <Discussions datasetId={dataset.id} allowCreate />
   ) : (
-    <Card className="w-full overflow-hidden">
-      <CardContent className="flex h-32 items-center justify-center bg-muted">
-        <div className="space-y-3 text-center">
-          <div className="text-muted-foreground">
-            There are no discussions yet. Be the first to discuss this dataset!
-          </div>
-          <DiscussionCreateButton dataset={dataset} />
+    <AlternativeCard>
+      <div className="space-y-3 text-center">
+        <div className="text-muted-foreground">
+          There are no discussions yet. Be the first to discuss this dataset!
         </div>
-      </CardContent>
-    </Card>
+        <DiscussionCreateButton dataset={dataset} />
+      </div>
+    </AlternativeCard>
   );
 }

@@ -3,6 +3,7 @@
 import { PlusIcon } from "lucide-react";
 
 import { VerificationRequired } from "@/components/auth/VerificationRequired";
+import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -14,21 +15,25 @@ import type { DatasetIdentificationSelect } from "@/db/lib/types";
 import { DATASET_DISCUSSION_CREATE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
+interface DiscussionCreateButtonProps extends ButtonProps {
+  className?: string;
+  tooltip?: boolean;
+  dataset: DatasetIdentificationSelect;
+}
+
 export function DiscussionCreateButton({
   className,
   tooltip,
   dataset,
-}: {
-  className?: string;
-  tooltip?: boolean;
-  dataset: DatasetIdentificationSelect;
-}) {
+  ...props
+}: DiscussionCreateButtonProps) {
   const CreateButton = () => (
     <Button
       variant="gold"
-      size={tooltip ? "icon-lg" : "lg"}
+      size={tooltip ? "icon-lg" : "default"}
       className={cn("lift", className)}
       aria-label="Start discussion"
+      {...props}
     >
       <PlusIcon />
       {!tooltip && <span>Start Discussion</span>}
