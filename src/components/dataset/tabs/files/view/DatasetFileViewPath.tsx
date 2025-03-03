@@ -2,7 +2,7 @@ import { HouseIcon } from "lucide-react";
 import path from "path";
 import React from "react";
 
-import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
 import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ export function DatasetFileViewPath({
   dataset: DatasetResponse;
   className?: string;
 }) {
-  const { currentEntry, setCurrentEntry } = useFileContext();
+  const { currentEntry, setCurrentEntry } = useDatasetFiles();
 
   const basePath = DATASET_FILES_UNZIPPED_PATH(dataset);
 

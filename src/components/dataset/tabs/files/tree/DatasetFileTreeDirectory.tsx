@@ -1,7 +1,7 @@
 import path from "path";
 import { useEffect, useMemo, useState } from "react";
 
-import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
 import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
@@ -10,7 +10,7 @@ import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetFileTreeDirectory({ directory }: { directory: Entry }) {
-  const { currentEntry, setCurrentEntry } = useFileContext();
+  const { currentEntry, setCurrentEntry } = useDatasetFiles();
 
   const [isExpanded, setIsExpanded] = useState(false);
 

@@ -94,7 +94,7 @@ function DonationOption({
       verificationBody="To contribute datasets, you must verify your email."
       verifiedRedirect={href}
     >
-      <Card className="lift-lg flex h-full justify-center text-center transition-all hover:bg-uci-gold hover:text-uci-gold-foreground">
+      <Card className="lift flex h-full justify-center text-center transition-all hover:bg-uci-gold hover:text-uci-gold-foreground">
         <CardContent className="w-full space-y-1 p-6">{children}</CardContent>
       </Card>
     </VerificationRequired>

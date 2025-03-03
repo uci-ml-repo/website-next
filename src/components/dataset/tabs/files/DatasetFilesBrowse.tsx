@@ -3,7 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { useFileContext } from "@/components/dataset/tabs/files/FilesContext";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
 import { DatasetFileTree } from "@/components/dataset/tabs/files/tree/DatasetFileTree";
 import { DatasetFileView } from "@/components/dataset/tabs/files/view/DatasetFileView";
 import { useIsMobile } from "@/components/hooks/use-mobile";
@@ -13,7 +13,7 @@ import type { DatasetResponse } from "@/lib/types";
 export function DatasetFilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   const [splitSizes, setSplitSizes] = useState<[number, number]>([20, 80]);
 
-  const { currentEntry } = useFileContext();
+  const { currentEntry } = useDatasetFiles();
   const isMobile = useIsMobile();
 
   useEffect(() => {

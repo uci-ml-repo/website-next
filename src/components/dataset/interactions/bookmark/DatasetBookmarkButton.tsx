@@ -4,7 +4,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { BookmarkIcon } from "lucide-react";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
-import { useBookmark } from "@/components/dataset/context/DatasetBookmarkedContext";
+import { useDatasetBookmark } from "@/components/dataset/context/DatasetBookmarkContext";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -17,7 +17,7 @@ interface DatasetBookmarkButtonProps {
 }
 
 export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
-  const { isBookmarked, setIsBookmarked } = useBookmark();
+  const { isBookmarked, setIsBookmarked } = useDatasetBookmark();
 
   const util = trpc.useUtils();
 

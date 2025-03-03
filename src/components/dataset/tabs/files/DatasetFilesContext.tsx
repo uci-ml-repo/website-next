@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 
 import type { Entry } from "@/server/service/file/find";
 
-interface FileContextProps {
+interface DatasetFilesContextProps {
   fileHistory: Entry[];
   fileForwardHistory: Entry[];
   rootPath: string;
@@ -15,7 +15,7 @@ interface FileContextProps {
   forward: () => void;
 }
 
-const FileContext = createContext<FileContextProps>({
+const DatasetFilesContext = createContext<DatasetFilesContextProps>({
   fileHistory: [],
   fileForwardHistory: [],
   rootPath: "",
@@ -28,7 +28,7 @@ const FileContext = createContext<FileContextProps>({
   forward: () => {},
 });
 
-export function FileProvider({
+export function DatasetFilesProvider({
   children,
   rootEntry,
 }: {
@@ -69,7 +69,7 @@ export function FileProvider({
   };
 
   return (
-    <FileContext.Provider
+    <DatasetFilesContext.Provider
       value={{
         fileHistory,
         fileForwardHistory,
@@ -81,12 +81,12 @@ export function FileProvider({
       }}
     >
       {children}
-    </FileContext.Provider>
+    </DatasetFilesContext.Provider>
   );
 }
 
-export function useFileContext() {
-  const context = useContext(FileContext);
+export function useDatasetFiles() {
+  const context = useContext(DatasetFilesContext);
   if (!context) {
     throw new Error("useFileContext must be used within a FileProvider");
   }

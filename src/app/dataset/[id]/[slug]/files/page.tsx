@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ZipFileUploadForm } from "@/components/dataset/forms/upload/ZipFileUploadForm";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
 import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/DatasetFilesBrowse";
-import { FileProvider } from "@/components/dataset/tabs/files/FilesContext";
+import { DatasetFilesProvider } from "@/components/dataset/tabs/files/DatasetFilesContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
@@ -54,13 +54,13 @@ export default async function Page({
   }
 
   return (
-    <FileProvider
+    <DatasetFilesProvider
       rootEntry={{
         path: DATASET_FILES_UNZIPPED_PATH(dataset),
         type: "directory",
       }}
     >
       <DatasetFilesBrowse dataset={dataset} />
-    </FileProvider>
+    </DatasetFilesProvider>
   );
 }

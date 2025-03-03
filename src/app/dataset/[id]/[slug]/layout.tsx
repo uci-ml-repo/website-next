@@ -2,7 +2,7 @@ import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
 import { cache } from "react";
 
 import { auth } from "@/auth";
-import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkedContext";
+import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
