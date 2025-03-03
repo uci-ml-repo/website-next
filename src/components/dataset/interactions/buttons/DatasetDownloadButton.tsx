@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize, cn } from "@/lib/utils";
@@ -56,7 +57,11 @@ export function DatasetDownloadButton({
   }
 
   if (filesStatus === "processing") {
-    return <div>X</div>;
+    return (
+      <Button disabled variant="gold" size="lg" className="lift w-full">
+        <Spinner /> Processing Files
+      </Button>
+    );
   }
 
   return (

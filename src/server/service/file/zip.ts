@@ -24,15 +24,21 @@ export class FileZipService {
 
     const zipStats = await service.file.read.zipStats({ absolutePath });
 
-    await db
+    const [datasetToUnzip] = await db
       .update(dataset)
-      .set({ unzipped: false })
-      .where(eq(dataset.id, datasetId));
+      .set({
+        unzipped: false,
+        size: zipStats.size,
+        fileCount: zipStats.fileCount,
+      })
+      .where(eq(dataset.id, datasetId))
+      .returning();
 
-    if (!zipStats?.uncompressedSize || zipStats.uncompressedSize > limitSize) {
+    if (zipStats.uncompressedSize > limitSize) {
       return {
         success: false,
         message: `Exceeded limit of ${limitSize} bytes`,
+        dataset: datasetToUnzip,
       };
     }
 
@@ -125,9 +131,16 @@ export class FileZipService {
       // Clean up unzipped files
       await fs.remove(unzipPath);
 
+      const [unzippedDataset] = await db
+        .update(dataset)
+        .set({ unzipped: false })
+        .where(eq(dataset.id, datasetId))
+        .returning();
+
       return {
         success: false,
         message: (error as Error).message,
+        dataset: unzippedDataset,
       };
     }
 

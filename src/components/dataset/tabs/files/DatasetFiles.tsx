@@ -6,7 +6,7 @@ import { ZipFileUploadProcessing } from "@/components/dataset/forms/upload/ZipFi
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
 import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/DatasetFilesBrowse";
 import { DatasetFilesProvider } from "@/components/dataset/tabs/files/DatasetFilesContext";
-import { Card, CardContent } from "@/components/ui/card";
+import { AlternativeCard } from "@/components/ui/card";
 import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 
@@ -19,19 +19,13 @@ export function DatasetFiles({ dataset }: { dataset: DatasetResponse }) {
 
   if (filesStatus === "not-unzipped") {
     return (
-      <Card className="w-full">
-        <CardContent className="flex h-32 items-center justify-center bg-muted">
-          <div className="space-y-3 text-center">
-            <div className="text-muted-foreground">
-              <div>
-                Files not available for browsing. Download the dataset to view
-                files locally.
-              </div>
-            </div>
-            <DatasetDownloadButton dataset={dataset} className="w-fit" />
-          </div>
-        </CardContent>
-      </Card>
+      <AlternativeCard>
+        <div className="text-pretty text-center text-muted-foreground">
+          Files not available for browsing. This may be because the dataset is
+          too large. Download the dataset to view files locally.
+        </div>
+        <DatasetDownloadButton dataset={dataset} className="w-fit" />
+      </AlternativeCard>
     );
   }
 

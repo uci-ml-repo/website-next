@@ -59,7 +59,7 @@ export function DatasetFilesStatusProvider({
     {
       refetchInterval: (data) => {
         if (!data || filesStatus === "processing") {
-          return 5000;
+          return 10_000; // 10 seconds
         }
         return false;
       },

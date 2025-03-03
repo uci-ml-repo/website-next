@@ -33,16 +33,15 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     defaultValues: { zipFile: undefined },
   });
 
-  const zipStatsMutation = trpc.dataset.update.zipStats.useMutation();
   const unzipMutation = trpc.file.zip.unzip.useMutation({
     onSuccess: (response) => {
       if (response.success) {
         setFilesStatus("unzipped");
-        setFileCount(response.dataset?.fileCount ?? null);
-        setSize(response.dataset?.size ?? null);
       } else {
         setFilesStatus("not-unzipped");
       }
+      setFileCount(response.dataset.fileCount);
+      setSize(response.dataset.size);
     },
   });
 
@@ -73,8 +72,6 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
     }
 
     setFilesStatus("processing");
-
-    zipStatsMutation.mutate({ datasetId: dataset.id });
 
     unzipMutation.mutate({
       path: DATASET_FILES_ZIP_PATH(dataset),
