@@ -4,7 +4,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { BookmarkIcon } from "lucide-react";
 
 import { SignInRequired } from "@/components/auth/SignInRequired";
-import { useBookmark } from "@/components/dataset/interactions/bookmark/DatasetBookmarkedContext";
+import { useBookmark } from "@/components/dataset/context/DatasetBookmarkedContext";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";

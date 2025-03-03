@@ -39,7 +39,7 @@ export default async function Page({
       <CardContent className="flex h-32 items-center justify-center bg-muted">
         <div className="space-y-3 text-center">
           <div className="text-muted-foreground">
-            There are no discussions yet
+            There are no discussions yet. Be the first to discuss this dataset!
           </div>
           <DiscussionCreateButton dataset={dataset} />
         </div>

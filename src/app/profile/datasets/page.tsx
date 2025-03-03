@@ -5,7 +5,7 @@ import { unauthorized } from "next/navigation";
 import { auth } from "@/auth";
 import { ProfileDatasetsSearch } from "@/components/profile/datasets/ProfileDatasetsSearch";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { AlternativeCard } from "@/components/ui/card";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
 import { CONTRIBUTE_ROUTE } from "@/lib/routes";
@@ -28,19 +28,17 @@ export default async function Page() {
     return (
       <div className="space-y-4">
         <TabHeader icon={DatabaseIcon} title="Your Datasets" />
-        <Card className="w-full bg-muted">
-          <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
-            <div className="text-muted-foreground">
-              You currently have no datasets.
-            </div>
-            <Button variant="gold" className="lift" asChild>
-              <Link href={CONTRIBUTE_ROUTE} className="flex items-center">
-                <PlusIcon />
-                <span>Contribute a dataset</span>
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <AlternativeCard>
+          <div className="text-muted-foreground">
+            You currently have no datasets.
+          </div>
+          <Button variant="gold" className="lift" asChild>
+            <Link href={CONTRIBUTE_ROUTE} className="flex items-center">
+              <PlusIcon />
+              <span>Contribute a dataset</span>
+            </Link>
+          </Button>
+        </AlternativeCard>
       </div>
     );
   }

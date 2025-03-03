@@ -82,7 +82,24 @@ const CardFooter = React.forwardRef<
 ));
 CardFooter.displayName = "CardFooter";
 
+interface AlternativeCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+const AlternativeCard = ({
+  children,
+  className,
+  ...props
+}: AlternativeCardProps) => (
+  <Card className={cn("w-full bg-muted", className)} {...props}>
+    <CardContent className="flex h-28 flex-col items-center justify-center space-y-2">
+      {children}
+    </CardContent>
+  </Card>
+);
+
 export {
+  AlternativeCard,
   Card,
   CardContent,
   CardDescription,

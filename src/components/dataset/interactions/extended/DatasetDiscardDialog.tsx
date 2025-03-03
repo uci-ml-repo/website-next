@@ -65,8 +65,8 @@ export function DatasetDiscardDialog({
           </ul>
         </DialogHeader>
 
-        <div className="space-y-4 text-muted-foreground">
-          <div>
+        <div className="space-y-4">
+          <div className="text-muted-foreground">
             For dataset related questions{" "}
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
@@ -74,7 +74,7 @@ export function DatasetDiscardDialog({
             .
           </div>
           <div className="select-none space-y-1">
-            <div>
+            <div className="text-muted-foreground">
               To confirm, type <span className="font-bold">delete me</span>{" "}
               below.
             </div>

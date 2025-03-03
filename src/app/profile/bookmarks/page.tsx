@@ -14,7 +14,7 @@ import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useInfinitePagination } from "@/components/hooks/use-infinite-pagination";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { AlternativeCard } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
 import { TabHeader } from "@/components/ui/tab-header";
@@ -52,18 +52,17 @@ export default function Page() {
         className="[&>svg]:fill-uci-gold"
       />
       {!isLoading && !(data && data.pages[0].bookmarks.length > 0) ? (
-        <Card className="w-full bg-muted">
-          <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
-            <div className="text-muted-foreground">
-              Visit a dataset and click the bookmark button (
-              <BookmarkIcon className="mb-0.5 inline size-5" />) to save it
-              here.
-            </div>
-            <Link href={DATASETS_ROUTE} className="underline">
-              Find datasets to bookmark
+        <AlternativeCard>
+          <div className="text-muted-foreground">
+            Visit a dataset and click the bookmark button (
+            <BookmarkIcon className="mb-0.5 inline size-5" />) to save it here.
+          </div>
+          <Button variant="gold" className="lift" asChild>
+            <Link href={DATASETS_ROUTE}>
+              <SearchIcon /> Find datasets to bookmark
             </Link>
-          </CardContent>
-        </Card>
+          </Button>
+        </AlternativeCard>
       ) : (
         <>
           {data && data.pages[0].bookmarks.length > 0 && (

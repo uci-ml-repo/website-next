@@ -16,7 +16,7 @@ export function DatasetCheckboxFilterItem<T extends string>({
   value,
   checked,
   ariaLabel,
-  formatText,
+  formatText = true,
 }: DatasetFilterCheckboxItemProps<T>) {
   const text = formatText ? formatEnum(value) : value;
   return (

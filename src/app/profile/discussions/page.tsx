@@ -1,11 +1,12 @@
-import { MessageSquareTextIcon } from "lucide-react";
+import { MessageSquareTextIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { unauthorized } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
 import { Discussions } from "@/components/discussion/Discussions";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { AlternativeCard } from "@/components/ui/card";
 import { TabHeader } from "@/components/ui/tab-header";
 import { DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
@@ -32,16 +33,16 @@ export default async function Page() {
         {hasDiscussions ? (
           <Discussions userId={session.user.id} />
         ) : (
-          <Card className="w-full bg-muted">
-            <CardContent className="flex h-28 flex-col items-center justify-center space-y-1">
-              <div className="text-muted-foreground">
-                You have not created any discussions yet
-              </div>
-              <Link href={DATASETS_ROUTE} className="underline">
-                Find datasets to discuss
+          <AlternativeCard>
+            <div className="text-muted-foreground">
+              You have not created any discussions yet.
+            </div>
+            <Button variant="gold" asChild className="lift">
+              <Link href={DATASETS_ROUTE}>
+                <SearchIcon /> Find datasets to discuss
               </Link>
-            </CardContent>
-          </Card>
+            </Button>
+          </AlternativeCard>
         )}
       </div>
     </div>

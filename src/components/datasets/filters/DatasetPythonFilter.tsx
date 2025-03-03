@@ -24,6 +24,7 @@ export function DatasetPythonFilter({
       <DatasetCheckboxFilterItem
         toggle={(checked) => setFilters({ python: checked, cursor: undefined })}
         value="Available for Python import"
+        formatText={false}
         checked={!!filters.python}
       />
     </DatasetFilterItem>
