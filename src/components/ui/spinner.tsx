@@ -7,7 +7,7 @@ interface SpinnerProps extends React.SVGProps<SVGSVGElement> {}
 export function Spinner({ className, ...props }: SpinnerProps) {
   return (
     <LoaderCircleIcon
-      className={cn("size-6 animate-spin", className)}
+      className={cn("size-6 shrink-0 animate-spin", className)}
       {...props}
     />
   );

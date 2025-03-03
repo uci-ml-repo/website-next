@@ -88,7 +88,7 @@ export function DatasetExtendedOptions({
       <DatasetReportDialog
         dataset={dataset}
         open={reportDialogOpen}
-        setOpen={setDeleteDialogOpen}
+        setOpen={setReportDialogOpen}
       />
       <DatasetDiscardDialog
         dataset={dataset}

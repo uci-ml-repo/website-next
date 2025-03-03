@@ -147,6 +147,7 @@ export const dataset = pgTable(
         (
           ${t.fileCount} IS NULL
           AND ${t.size} IS NULL
+          AND ${t.unzipped} IS NULL
         )
         OR (
           ${t.fileCount} IS NOT NULL

@@ -38,7 +38,7 @@ export default async function Page({
   if (dataset.unzipped === false) {
     return (
       <Card className="w-full">
-        <CardContent className="flex h-[130px] items-center justify-center bg-muted">
+        <CardContent className="flex h-32 items-center justify-center bg-muted">
           <div className="space-y-3 text-center">
             <div className="text-muted-foreground">
               <div>

@@ -156,6 +156,7 @@ CREATE TABLE "dataset" (
     (
       "dataset"."file_count" IS NULL
       AND "dataset"."size" IS NULL
+      AND "dataset"."unzipped" IS NULL
     )
     OR (
       "dataset"."file_count" IS NOT NULL
