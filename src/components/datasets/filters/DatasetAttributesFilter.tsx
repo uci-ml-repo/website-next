@@ -17,7 +17,7 @@ export function DatasetAttributesFilter(props: DatasetFilterProps) {
       filterValues={filters.attributes}
       useData={(selectedValues) =>
         trpc.variable.find.remainingFilters.useQuery(
-          { attributeFilters: selectedValues },
+          { attributeFilters: selectedValues, query: filters },
           {
             trpc: {
               context: {

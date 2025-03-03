@@ -2,15 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import { DatasetStatusBadge } from "@/components/dataset/DatasetStatusBadge";
 import type { DatasetPreviewSelect } from "@/db/lib/types";
 import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export function DatasetMiniRow({
   dataset,
+  showStatus,
   className,
 }: {
   dataset: DatasetPreviewSelect;
+  showStatus?: boolean;
   className?: string;
 }) {
   return (
@@ -30,8 +33,11 @@ export function DatasetMiniRow({
           "size-7 shrink-0 rounded-md object-cover dark:brightness-90",
         )}
       />
-      <div className="truncate text-base font-bold group-hover:underline">
-        {dataset.title}
+      <div className="flex min-w-0 items-center justify-between space-x-2">
+        <div className="truncate text-base font-bold group-hover:underline">
+          {dataset.title}
+        </div>
+        {showStatus && <DatasetStatusBadge status={dataset.status} />}
       </div>
     </Link>
   );

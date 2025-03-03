@@ -43,6 +43,7 @@ export async function ProfileDatasetsOverview() {
                 key={dataset.id}
                 dataset={dataset}
                 className="lift"
+                showStatus
               />
             ))}
           </div>
