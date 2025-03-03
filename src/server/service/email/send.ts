@@ -28,7 +28,10 @@ export class EmailSendService extends EmailService {
     name: string;
     token: string;
   }) {
-    const { html, text } = await this.template.resetPassword({ name, token });
+    const { html, text } = await this.template.resetPassword({
+      name,
+      token,
+    });
 
     await this.sendEmail({
       from: process.env.GOOGLE_EMAIL,

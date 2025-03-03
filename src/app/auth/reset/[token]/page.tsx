@@ -15,8 +15,10 @@ export default async function Page({
 }) {
   const { token } = await params;
 
+  const parsedToken = decodeURIComponent(token);
+
   const existingToken = await caller.user.credentials.getResetPasswordToken({
-    token,
+    token: parsedToken,
   });
 
   if (!existingToken.success) {
@@ -33,7 +35,7 @@ export default async function Page({
 
   return (
     <Main>
-      <ResetPassword token={token} />
+      <ResetPassword token={parsedToken} />
     </Main>
   );
 }

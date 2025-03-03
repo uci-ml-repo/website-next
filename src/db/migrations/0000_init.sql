@@ -305,7 +305,8 @@ CREATE TABLE "paper" (
 
 --> statement-breakpoint
 CREATE TABLE "password_reset_token" (
-  "token" TEXT PRIMARY KEY NOT NULL,
+  "id" serial PRIMARY KEY NOT NULL,
+  "token" TEXT NOT NULL,
   "user_id" uuid NOT NULL,
   "expires" TIMESTAMP NOT NULL
 );

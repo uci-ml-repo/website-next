@@ -913,22 +913,6 @@ CREATE TABLE account (
   session_state TEXT
 );
 
-CREATE TABLE "email_verification_token" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
-  "user_id" uuid NOT NULL,
-  "token" TEXT NOT NULL,
-  "expires" TIMESTAMP NOT NULL
-);
-
-ALTER TABLE "email_verification_token"
-ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
-
-CREATE TABLE password_reset_token (
-  token TEXT NOT NULL PRIMARY KEY,
-  user_id uuid NOT NULL CONSTRAINT password_reset_token_user_id_user_id_fk REFERENCES "user",
-  expires TIMESTAMP NOT NULL
-);
-
 -------------------------------------------------------------------------------
 -- Remaining constraints
 -------------------------------------------------------------------------------

@@ -1,12 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
 import { Banner } from "@/components/icons";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: "Email is required" }),
@@ -15,12 +17,18 @@ const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 export function ForgotPassword() {
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
     },
   });
+
+  const resetPasswordMutation =
+    trpc.user.credentials.sendResetPasswordEmail.useMutation();
+
   return (
     <>
       {/* Mobile View */}
@@ -31,7 +39,12 @@ export function ForgotPassword() {
             If the email you enter matches an account, we'll send a reset link
             to:
           </div>
-          <ForgotPasswordForm form={form} />
+          <ForgotPasswordForm
+            form={form}
+            resetPasswordMutation={resetPasswordMutation}
+            submittedEmail={submittedEmail}
+            setSubmittedEmail={setSubmittedEmail}
+          />
         </div>
       </div>
 
@@ -48,7 +61,12 @@ export function ForgotPassword() {
               to:
             </div>
           </div>
-          <ForgotPasswordForm form={form} />
+          <ForgotPasswordForm
+            form={form}
+            resetPasswordMutation={resetPasswordMutation}
+            submittedEmail={submittedEmail}
+            setSubmittedEmail={setSubmittedEmail}
+          />
         </CardContent>
       </Card>
     </>

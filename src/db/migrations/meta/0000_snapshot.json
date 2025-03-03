@@ -1,5 +1,5 @@
 {
-  "id": "778f5c29-17fd-48be-892e-613abc190448",
+  "id": "3139f533-76d0-4633-a9fd-d9a51da283e0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -407,7 +407,7 @@
         },
         "files_exist_parity": {
           "name": "files_exist_parity",
-          "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
+          "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n          AND \"dataset\".\"unzipped\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
         }
       },
       "isRLSEnabled": false
@@ -1498,10 +1498,16 @@
       "name": "password_reset_token",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
         "token": {
           "name": "token",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "user_id": {

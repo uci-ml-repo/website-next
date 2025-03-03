@@ -683,7 +683,8 @@ export const emailVerificationTokenRelations = relations(
 );
 
 export const passwordResetToken = pgTable("password_reset_token", {
-  token: text("token").notNull().primaryKey(),
+  id: serial("id").primaryKey(),
+  token: text("token").notNull(),
   userId: uuid("user_id")
     .references(() => user.id, { onDelete: "cascade" })
     .notNull(),

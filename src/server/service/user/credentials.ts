@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { emailVerificationToken, passwordResetToken, user } from "@/db/schema";
+import { logger } from "@/lib/logger";
 import { formatEnum, generateToken } from "@/lib/utils";
 import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
@@ -28,16 +29,23 @@ export class UserCredentialsService {
     } else {
       const token = generateToken();
 
+      const hashedToken = await bcryptjs.hash(token, 10);
+
       const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-      await db.insert(passwordResetToken).values({
-        userId: user.id,
-        token,
-        expires,
-      });
+      const [createdToken] = await db
+        .insert(passwordResetToken)
+        .values({
+          userId: user.id,
+          token: hashedToken,
+          expires,
+        })
+        .returning();
+
+      const tokenString = `${createdToken.id}:${token}`;
 
       await service.email.sendResetPasswordEmail({
-        token,
+        token: tokenString,
         email: user.email,
         name: user.name,
       });
@@ -115,30 +123,46 @@ export class UserCredentialsService {
     return { success: true, verificationToken: emailVerificationToken };
   }
 
-  async getResetPasswordToken(token: string) {
-    const passwordResetToken = await db.query.passwordResetToken.findFirst({
-      where: (passwordResetToken, { eq }) =>
-        eq(passwordResetToken.token, token),
-      with: {
-        user: true,
-      },
-    });
+  async getResetPasswordToken(tokenString: string) {
+    const id = tokenString.split(":")[0];
+    const token = tokenString.split(":")[1];
 
-    if (!passwordResetToken) {
+    logger.info(id);
+    logger.info(token);
+
+    if (!id || !token || !Number(id)) {
       return {
         success: false,
         message: "Invalid reset token",
       };
     }
 
-    if (passwordResetToken.expires < new Date()) {
+    const existingPasswordResetToken =
+      await db.query.passwordResetToken.findFirst({
+        where: eq(passwordResetToken.id, Number(id)),
+        with: {
+          user: true,
+        },
+      });
+
+    if (
+      !existingPasswordResetToken ||
+      !bcryptjs.compareSync(token, existingPasswordResetToken.token)
+    ) {
+      return {
+        success: false,
+        message: "Invalid reset token",
+      };
+    }
+
+    if (existingPasswordResetToken.expires < new Date()) {
       return {
         success: false,
         message: "Reset token expired",
       };
     }
 
-    return { success: true, resetToken: passwordResetToken };
+    return { success: true, resetToken: existingPasswordResetToken };
   }
 
   async resetPassword({

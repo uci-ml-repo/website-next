@@ -2,7 +2,6 @@
 
 import { ArrowLeftIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import type { useForm } from "react-hook-form";
 
 import type { FormSchema } from "@/components/auth/ForgotPassword";
@@ -19,18 +18,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
-import { trpc } from "@/server/trpc/query/client";
+import type { trpc } from "@/server/trpc/query/client";
 
 export function ForgotPasswordForm({
   form,
+  resetPasswordMutation,
+  submittedEmail,
+  setSubmittedEmail,
 }: {
   form: ReturnType<typeof useForm<FormSchema>>;
+  resetPasswordMutation: ReturnType<
+    typeof trpc.user.credentials.sendResetPasswordEmail.useMutation
+  >;
+  submittedEmail: string | null;
+  setSubmittedEmail: (email: string) => void;
 }) {
-  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
-
-  const resetPasswordMutation =
-    trpc.user.credentials.sendResetPasswordEmail.useMutation();
-
   function onSubmit(values: FormSchema) {
     resetPasswordMutation.mutate({
       email: values.email,
@@ -40,45 +42,6 @@ export function ForgotPasswordForm({
   }
 
   const inputEmail = form.watch("email");
-
-  const BackButton = () => {
-    return (
-      <Button className="px-3" variant="ghost" type="button" size="lg" asChild>
-        <Link href={SIGN_IN_ROUTE}>
-          <ArrowLeftIcon /> Back
-        </Link>
-      </Button>
-    );
-  };
-
-  const SubmitButton = () => {
-    return (
-      (!resetPasswordMutation.isSuccess || submittedEmail !== inputEmail) && (
-        <Button
-          variant="blue"
-          type="submit"
-          size="lg"
-          disabled={resetPasswordMutation.isPending}
-        >
-          {resetPasswordMutation.isPending ? <Spinner /> : <MailIcon />}Next
-        </Button>
-      )
-    );
-  };
-
-  const SubmitSuccessful = () => {
-    return (
-      resetPasswordMutation.isSuccess &&
-      submittedEmail === inputEmail && (
-        <Alert variant="positive" className="flex items-center justify-between">
-          <div>Email sent</div>
-          <button type="submit" className="text-link">
-            Resend
-          </button>
-        </Alert>
-      )
-    );
-  };
 
   return (
     <Form {...form}>
@@ -96,10 +59,40 @@ export function ForgotPasswordForm({
             </FormItem>
           )}
         />
-        <SubmitSuccessful />
+        {resetPasswordMutation.isSuccess && submittedEmail === inputEmail && (
+          <Alert
+            variant="positive"
+            className="flex items-center justify-between"
+          >
+            <div>Password reset email sent</div>
+            <button type="submit" className="text-link">
+              Resend
+            </button>
+          </Alert>
+        )}
         <div className="flex items-center justify-between space-x-2">
-          <BackButton />
-          <SubmitButton />
+          <Button
+            className="px-3"
+            variant="ghost"
+            type="button"
+            size="lg"
+            asChild
+          >
+            <Link href={SIGN_IN_ROUTE}>
+              <ArrowLeftIcon /> Back
+            </Link>
+          </Button>
+          {(!resetPasswordMutation.isSuccess ||
+            submittedEmail !== inputEmail) && (
+            <Button
+              variant="blue"
+              type="submit"
+              size="lg"
+              disabled={resetPasswordMutation.isPending}
+            >
+              {resetPasswordMutation.isPending ? <Spinner /> : <MailIcon />}Next
+            </Button>
+          )}
         </div>
       </form>
     </Form>
