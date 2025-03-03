@@ -63,7 +63,7 @@ export function Footer() {
         },
         {
           name: "Feature Request / Bug Report",
-          href: "#", // TODO
+          href: "https://github.com/uci-ml-repo/ucimlrepo-feedback/issues",
         },
       ],
     },

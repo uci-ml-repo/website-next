@@ -9,7 +9,15 @@ import { DATASET_FILES_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 
 export class DatasetCreateService {
-  async draft({ title, userId }: { title: string; userId: string }) {
+  async draft({
+    title,
+    externalLink,
+    userId,
+  }: {
+    title: string;
+    externalLink?: string;
+    userId: string;
+  }) {
     const baseSlug = slugify(title, { replacement: "+", lower: true });
 
     const existingSlugs = await db
@@ -35,7 +43,7 @@ export class DatasetCreateService {
 
       const [createdDataset] = await tx
         .insert(dataset)
-        .values({ title, userId, slug })
+        .values({ title, externalLink, userId, slug })
         .returning();
 
       const directoryPath = path.join(

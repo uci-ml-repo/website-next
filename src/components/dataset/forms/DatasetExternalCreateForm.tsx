@@ -7,6 +7,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { formSchema } from "@/components/dataset/forms/DatasetDonationCreateForm";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,24 +23,23 @@ import { Spinner } from "@/components/ui/spinner";
 import { DATASET_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-const formSchema = z.object({
-  title: z
-    .string({ message: "Title is required" })
-    .min(3, { message: "Title must be at least 3 characters" })
-    .max(100, { message: "Title must be less than 100 characters" })
-    .refine((value) => (value.match(/[a-zA-Z0-9]/g) || []).length >= 3, {
-      message: "Title must contain at least 3 alphanumeric characters",
+const externalFormSchema = formSchema.extend({
+  externalLink: z
+    .string({ message: "External URL is required" })
+    .url({ message: "External URL must be a valid URL" })
+    .refine((value) => value.startsWith("https://"), {
+      message: "External URL must start with https://",
     }),
 });
 
-export type FormData = z.infer<typeof formSchema>;
+export type FormData = z.infer<typeof externalFormSchema>;
 
-export function DatasetCreateForm() {
+export function DatasetExternalCreateForm() {
   const router = useRouter();
 
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { title: "" },
+    resolver: zodResolver(externalFormSchema),
+    defaultValues: { title: "", externalLink: "" },
   });
 
   const datasetCreateMutation = trpc.dataset.create.draft.useMutation({
@@ -60,9 +60,7 @@ export function DatasetCreateForm() {
   });
 
   async function onSubmit(values: FormData) {
-    await datasetCreateMutation.mutateAsync({
-      title: values.title,
-    });
+    await datasetCreateMutation.mutateAsync(values);
   }
 
   const pending =
@@ -77,6 +75,19 @@ export function DatasetCreateForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-lg">Dataset Title</FormLabel>
+              <FormControl>
+                <Input className="font-bold" {...field} disabled={pending} />
+              </FormControl>
+              <FormMessage className="text-sm" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="externalLink"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-lg">External URL</FormLabel>
               <FormControl>
                 <Input className="font-bold" {...field} disabled={pending} />
               </FormControl>

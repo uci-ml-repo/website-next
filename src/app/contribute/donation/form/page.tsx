@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { DatasetCreateForm } from "@/components/dataset/forms/DatasetCreateForm";
+import { DatasetDonationCreateForm } from "@/components/dataset/forms/DatasetDonationCreateForm";
 import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
 export default async function Page() {
@@ -21,7 +21,7 @@ export default async function Page() {
           have the opportunity to upload files, add details, and submit your
           dataset for review in the next steps.
         </div>
-        <DatasetCreateForm />
+        <DatasetDonationCreateForm />
       </div>
       <div className="text-sm text-muted-foreground">
         <div>

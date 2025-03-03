@@ -17,7 +17,7 @@ export function DatasetMetadataCollapsible({
 }) {
   return (
     <Collapsible open={isOpen} onOpenChange={onOpenChange}>
-      <CollapsibleTrigger asChild>
+      <CollapsibleTrigger className="w-full">
         <div className="group flex cursor-pointer items-center justify-between space-x-6 px-2 py-6">
           <div className="text-xl font-semibold">{title}</div>
           <div

@@ -1,5 +1,4 @@
 import { PlusIcon } from "lucide-react";
-import type { Metadata } from "next";
 
 import { auth, signIn } from "@/auth";
 import { VerificationRequired } from "@/components/auth/VerificationRequired";
@@ -10,8 +9,6 @@ import {
 } from "@/lib/routes";
 
 import Policy from "./policy.mdx";
-
-export const metadata: Metadata = { title: "Contribute" };
 
 export default async function Page() {
   const session = await auth();
