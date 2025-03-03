@@ -3,6 +3,7 @@ import { cache } from "react";
 
 import { auth } from "@/auth";
 import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
+import { DatasetFilesStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
@@ -85,25 +86,27 @@ export default async function Layout({
 
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
-      <Main className="space-y-6">
-        <div className="backdrop-gradient-blur space-y-6">
-          <DatasetTitleGroup dataset={dataset} />
+      <DatasetFilesStatusProvider dataset={dataset}>
+        <Main className="space-y-6">
+          <div className="backdrop-gradient-blur space-y-6">
+            <DatasetTitleGroup dataset={dataset} />
 
-          <Card className="rounded-full md:hidden">
-            <DatasetInteractions
+            <Card className="rounded-full md:hidden">
+              <DatasetInteractions
+                dataset={dataset}
+                className="w-full justify-around"
+              />
+            </Card>
+
+            <DatasetTabs
               dataset={dataset}
-              className="w-full justify-around"
+              initialDiscussionCount={discussionCount}
             />
-          </Card>
+          </div>
 
-          <DatasetTabs
-            dataset={dataset}
-            initialDiscussionCount={discussionCount}
-          />
-        </div>
-
-        {children}
-      </Main>
+          {children}
+        </Main>
+      </DatasetFilesStatusProvider>
     </DatasetBookmarkProvider>
   );
 }

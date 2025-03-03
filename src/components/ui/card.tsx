@@ -92,7 +92,7 @@ const AlternativeCard = ({
   ...props
 }: AlternativeCardProps) => (
   <Card className={cn("w-full bg-muted", className)} {...props}>
-    <CardContent className="flex h-28 flex-col items-center justify-center space-y-2">
+    <CardContent className="flex min-h-32 flex-col items-center justify-center space-y-2 px-4">
       {children}
     </CardContent>
   </Card>

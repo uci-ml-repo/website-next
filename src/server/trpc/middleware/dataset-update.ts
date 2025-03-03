@@ -42,9 +42,7 @@ export const datasetUpdateProcedure = t.procedure
       },
     });
 
-    if (privileged) {
-      await service.dataset.view.refresh(input.datasetId);
-    }
+    await service.dataset.update.refreshView(input.datasetId);
 
     return response;
   });

@@ -4,6 +4,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { DownloadIcon, ExternalLinkIcon, UploadIcon } from "lucide-react";
 import Link from "next/link";
 
+import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ROUTE } from "@/lib/routes";
@@ -19,6 +20,8 @@ export function DatasetDownloadButton({
   className,
   ...props
 }: DatasetDownloadButtonProps) {
+  const { filesStatus, size } = useDatasetFilesStatus();
+
   if (dataset.externalLink) {
     return (
       <Button
@@ -42,7 +45,7 @@ export function DatasetDownloadButton({
     );
   }
 
-  if (dataset.fileCount === null) {
+  if (filesStatus === "awaiting-upload") {
     return (
       <Button asChild variant="gold" size="lg" className="lift w-full">
         <Link href={DATASET_FILES_ROUTE(dataset)}>
@@ -50,6 +53,10 @@ export function DatasetDownloadButton({
         </Link>
       </Button>
     );
+  }
+
+  if (filesStatus === "processing") {
+    return <div>X</div>;
   }
 
   return (
@@ -70,10 +77,8 @@ export function DatasetDownloadButton({
         <DownloadIcon />
         <div>
           <span>Download</span>
-          {dataset && dataset.size && (
-            <span className="ml-1 text-sm">
-              ({abbreviateFileSize(dataset.size)})
-            </span>
+          {size && (
+            <span className="ml-1 text-sm">({abbreviateFileSize(size)})</span>
           )}
         </div>
       </a>

@@ -50,7 +50,7 @@ export class DatasetCreateService {
       return createdDataset;
     });
 
-    await service.dataset.view.refresh(createdDataset.id);
+    await service.dataset.update.refreshView(createdDataset.id);
 
     return createdDataset;
   }

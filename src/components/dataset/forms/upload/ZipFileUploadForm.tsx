@@ -8,8 +8,8 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { ZipFileUploadFormItem } from "@/components/dataset/forms/upload/ZipFileUploadFormItem";
-import { ZipFileUploadProcessing } from "@/components/dataset/forms/upload/ZipFileUploadProcessing";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -22,14 +22,9 @@ export const formSchema = z.object({
   zipFile: z.instanceof(File, { message: "A zip file is required" }),
 });
 
-export function ZipFileUploadForm({
-  dataset,
-  processing,
-}: {
-  dataset: DatasetResponse;
-  processing: boolean;
-}) {
-  const [isProcessing, setIsProcessing] = useState<boolean>(processing);
+export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
+  const { setFilesStatus, setFileCount, setSize } = useDatasetFilesStatus();
+
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
   const controllerRef = useRef<AbortController | null>(null);
 
@@ -39,7 +34,17 @@ export function ZipFileUploadForm({
   });
 
   const zipStatsMutation = trpc.dataset.update.zipStats.useMutation();
-  const unzipMutation = trpc.file.zip.unzip.useMutation();
+  const unzipMutation = trpc.file.zip.unzip.useMutation({
+    onSuccess: (response) => {
+      if (response.success) {
+        setFilesStatus("unzipped");
+        setFileCount(response.dataset?.fileCount ?? null);
+        setSize(response.dataset?.size ?? null);
+      } else {
+        setFilesStatus("not-unzipped");
+      }
+    },
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.zipFile) return;
@@ -67,7 +72,7 @@ export function ZipFileUploadForm({
       return;
     }
 
-    setIsProcessing(true);
+    setFilesStatus("processing");
 
     zipStatsMutation.mutate({ datasetId: dataset.id });
 
@@ -86,10 +91,6 @@ export function ZipFileUploadForm({
 
   const pending =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful;
-
-  if (isProcessing) {
-    return <ZipFileUploadProcessing />;
-  }
 
   return (
     <Form {...form}>

@@ -5,7 +5,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DatasetFilesStatusContextProps {}
+interface DatasetFilesStatusContextProps {
+  filesStatus: DatasetFilesStatus;
+  setFilesStatus: (status: DatasetFilesStatus) => void;
+  size: number | null;
+  setSize: (size: number | null) => void;
+  fileCount: number | null;
+  setFileCount: (count: number | null) => void;
+}
 
 const DatasetFilesStatusContext = createContext<
   DatasetFilesStatusContextProps | undefined
@@ -19,6 +26,10 @@ export type DatasetFilesStatus =
   | "not-unzipped";
 
 function datasetToStatus(dataset: DatasetResponse): DatasetFilesStatus {
+  if (dataset.externalLink) {
+    return "external";
+  }
+
   if (dataset.fileCount === null) {
     return "awaiting-upload";
   }
@@ -37,15 +48,17 @@ export function DatasetFilesStatusProvider({
   children: React.ReactNode;
   dataset: DatasetResponse;
 }) {
-  const [status, setStatus] = useState<DatasetFilesStatus>(
+  const [filesStatus, setFilesStatus] = useState<DatasetFilesStatus>(
     datasetToStatus(dataset),
   );
+  const [size, setSize] = useState(dataset.size);
+  const [fileCount, setFileCount] = useState(dataset.fileCount);
 
   const { data: datasetPoll } = trpc.dataset.find.byId.useQuery(
     { datasetId: dataset.id },
     {
       refetchInterval: (data) => {
-        if (!data || status === "processing") {
+        if (!data || filesStatus === "processing") {
           return 5000;
         }
         return false;
@@ -55,12 +68,21 @@ export function DatasetFilesStatusProvider({
 
   useEffect(() => {
     if (datasetPoll) {
-      setStatus(datasetToStatus(datasetPoll));
+      setFilesStatus(datasetToStatus(datasetPoll));
     }
   }, [datasetPoll]);
 
   return (
-    <DatasetFilesStatusContext.Provider value={{ status, setStatus }}>
+    <DatasetFilesStatusContext.Provider
+      value={{
+        filesStatus,
+        setFilesStatus,
+        size,
+        fileCount,
+        setSize,
+        setFileCount,
+      }}
+    >
       {children}
     </DatasetFilesStatusContext.Provider>
   );

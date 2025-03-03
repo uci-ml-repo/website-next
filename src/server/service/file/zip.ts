@@ -131,14 +131,16 @@ export class FileZipService {
       };
     }
 
-    await db
+    const [unzippedDataset] = await db
       .update(dataset)
       .set({ unzipped: true })
-      .where(eq(dataset.id, datasetId));
+      .where(eq(dataset.id, datasetId))
+      .returning();
 
     return {
       success: true,
       message: unzipPath,
+      dataset: unzippedDataset,
     };
   }
 }

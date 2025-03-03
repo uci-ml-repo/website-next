@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import path from "path";
 
 import { db } from "@/db";
@@ -19,12 +19,21 @@ export class DatasetUpdateService {
       ),
     });
 
-    return db
+    await db
       .update(dataset)
       .set({
         fileCount: zipStats.fileCount,
         size: zipStats.size,
       })
       .where(eq(dataset.id, input.id));
+
+    return zipStats;
+  }
+
+  async refreshView(id?: number) {
+    await db.execute(sql`
+      SELECT
+        refresh_dataset_view (${id})
+    `);
   }
 }
