@@ -60,16 +60,19 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = "AlertDescription";
 
-const AlertIrreversible = () => (
+const AlertWarning = ({ text }: { text: string }) => (
   <Alert variant="destructive">
     <div className="flex items-center space-x-2">
       <AlertCircleIcon className="size-5" />
       <div>
-        <span className="font-bold">Warning:</span> this action cannot be
-        undone.
+        <span className="font-bold">Warning:</span> {text}
       </div>
     </div>
   </Alert>
 );
 
-export { Alert, AlertDescription, AlertIrreversible, AlertTitle };
+const AlertIrreversible = () => (
+  <AlertWarning text="this action cannot be undone." />
+);
+
+export { Alert, AlertDescription, AlertIrreversible, AlertTitle, AlertWarning };

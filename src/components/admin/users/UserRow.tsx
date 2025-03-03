@@ -1,6 +1,9 @@
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
+import { toast } from "@/components/hooks/use-toast";
+import { AlertWarning } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -55,6 +58,8 @@ export function UserRow({ user }: { user: UserSelect }) {
 }
 
 function UserRoleSelect({ user }: { user: UserSelect }) {
+  const { data: session } = useSession();
+
   const [roleSelect, setRoleSelect] = useState<Enums.UserRole>(user.role);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [changeToRole, setChangeToRole] = useState<Enums.UserRole>(roleSelect);
@@ -64,6 +69,17 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
       user.role = changeToRole;
       setRoleSelect(changeToRole);
       setDialogOpen(false);
+
+      if (user.email === session?.user.email) {
+        signOut();
+      }
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error changing role",
+        description: error.message,
+      });
     },
   });
 
@@ -116,6 +132,9 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
             <div>
               User: <span className="font-semibold">{user.email}</span>
             </div>
+            {user.email === session?.user.email && (
+              <AlertWarning text="You are changing your own role. You will be signed out." />
+            )}
             <hr />
             <div className="flex items-center justify-around">
               <div
