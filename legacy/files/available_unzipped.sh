@@ -23,4 +23,4 @@ while IFS='|' read -r dataset_id dataset_slug; do
   fi
 done <<< "$DATASETS"
 
-psql "$DATABASE_URL" -c "UPDATE dataset AS d SET unzipped = v.unzipped FROM (VALUES $UPDATE_VALUES) AS v(id, unzipped) WHERE d.id = v.id;"
+psql "$DATABASE_URL" -c "UPDATE dataset AS d SET unzipped = v.unzipped FROM (VALUES $UPDATE_VALUES) AS v(id, unzipped) WHERE d.id = v.id AND d.file_count IS NOT NULL AND size IS NOT NULL;"
