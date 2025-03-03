@@ -35,7 +35,7 @@ export function DatasetCardCarousel({
   endCard,
   datasets,
 }: DatasetGroupProps) {
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [api, setApi] = useState<CarouselApi>();
 
   const cardBreakpoints = cn(
     "basis-full @md:basis-1/2 @2xl:basis-1/3 @5xl:basis-1/4 @[1500px]:basis-1/5",
@@ -60,10 +60,10 @@ export function DatasetCardCarousel({
             align: "start",
             skipSnaps: true,
             duration: 20,
-            inViewThreshold: 0.5,
+            inViewThreshold: 0.45,
           }}
-          setApi={setCarouselApi}
           className="@container"
+          setApi={setApi}
         >
           <CarouselContent gutter>
             {datasets.map((dataset) => (
@@ -91,7 +91,7 @@ export function DatasetCardCarousel({
               </CarouselItem>
             )}
           </CarouselContent>
-          <CarouselScrollDots api={carouselApi} />
+          <CarouselScrollDots api={api} />
           <CarouselPrevious className="max-md:hidden" />
           <CarouselNext className="max-md:hidden" />
         </Carousel>

@@ -271,60 +271,31 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-4 w-4" />
+      <ArrowRight className="size-4" />
       <span className="sr-only">Next slide</span>
     </Button>
   );
 });
 CarouselNext.displayName = "CarouselNext";
-
 const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
-  const [slidesInView, setSlidesInView] = useState<number[]>([]);
   const [slideNodes, setSlideNodes] = useState<HTMLElement[]>([]);
-  const [minSlide, setMinSlide] = useState(0);
-  const [maxSlide, setMaxSlide] = useState(0);
+  const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
-  useEffect(() => {
-    if (!api || slideNodes.length < 1) return;
-
-    setMinSlide(slidesInView[0]);
-    setMaxSlide(slidesInView[slidesInView.length - 1]);
-  }, [api, slideNodes.length, slidesInView]);
-
-  useEffect(() => {
-    if (!api) return;
-
-    const handleWindowResize = () => {
-      setSlidesInView(api.slidesInView());
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, [api]);
+  const minSlide = slidesInView[0];
+  const maxSlide = slidesInView[slidesInView.length - 1];
 
   useEffect(() => {
     if (!api) return;
 
     setSlideNodes(api.slideNodes());
-
-    api.on("init", () => {
-      setSlideNodes(api.slideNodes());
-    });
-  }, [api]);
-
-  useEffect(() => {
-    if (!api) return;
-
     setSlidesInView(api.slidesInView());
 
     api.on("init", () => {
+      setSlideNodes(api.slideNodes());
       setSlidesInView(api.slidesInView());
     });
 
-    api.on("scroll", () => {
+    api.on("slidesInView", () => {
       setSlidesInView(api.slidesInView());
     });
   }, [api]);
@@ -332,33 +303,38 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
   const SHOW_NODES_SIDES = 3;
 
   return (
-    <div className="flex h-6 items-center justify-center space-x-1 pt-4">
-      {slideNodes.map(
-        (_, index) =>
-          index >= minSlide - SHOW_NODES_SIDES &&
-          index <= maxSlide + SHOW_NODES_SIDES && (
-            <div
-              key={index}
-              onClick={() => api && api.scrollTo(index)}
-              className={cn(
-                "cursor-pointer rounded-full transition-all",
-                index >= minSlide && index <= maxSlide
-                  ? "h-2 w-4 bg-secondary-foreground/50"
-                  : "size-2 bg-secondary-foreground/20",
-                {
-                  "bg-secondary-foreground/15":
-                    index === minSlide - SHOW_NODES_SIDES + 1 ||
-                    index === maxSlide + SHOW_NODES_SIDES - 1,
-                },
-                {
-                  "size-1.5 bg-secondary-foreground/10":
-                    index === minSlide - SHOW_NODES_SIDES ||
-                    index === maxSlide + SHOW_NODES_SIDES,
-                },
-              )}
-            />
-          ),
-      )}
+    <div className="flex h-6 items-center justify-center space-x-1">
+      {/*{JSON.stringify(slidesInView)}*/}
+      {slideNodes.map((_, index) => {
+        if (
+          index < minSlide - SHOW_NODES_SIDES ||
+          index > maxSlide + SHOW_NODES_SIDES
+        ) {
+          return null;
+        }
+
+        let state = "inactive";
+        if (index >= minSlide && index <= maxSlide) {
+          state = "active";
+        } else if (
+          index === minSlide - SHOW_NODES_SIDES ||
+          index === maxSlide + SHOW_NODES_SIDES
+        ) {
+          state = "edge";
+        }
+
+        return (
+          <div
+            key={index}
+            data-state={state}
+            className={cn(
+              "rounded-full transition-all",
+              "data-[state=active]:h-2 data-[state=edge]:h-1.5 data-[state=inactive]:h-2 data-[state=active]:w-4 data-[state=edge]:w-1.5 data-[state=inactive]:w-2",
+              "data-[state=active]:bg-secondary-foreground/50 data-[state=edge]:bg-secondary-foreground/10 data-[state=inactive]:bg-secondary-foreground/20",
+            )}
+          />
+        );
+      })}
     </div>
   );
 };

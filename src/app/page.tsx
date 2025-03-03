@@ -12,7 +12,6 @@ import { DatasetCardCarousel } from "@/components/dataset/preview/DatasetCardCar
 import { DatasetPreviewSearch } from "@/components/datasets/DatasetPreviewSearch";
 import { Banner } from "@/components/icons";
 import { Main } from "@/components/layout/Main";
-import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { CONTRIBUTE_ROUTE, DATASETS_QUERY, DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
@@ -41,18 +40,27 @@ export default async function Page() {
           </p>
         </div>
         <div className="flex flex-wrap gap-4">
-          <NavButton
-            label="Explore All Datasets"
+          <Button
             variant="blue"
-            icon={<ListIcon />}
-            href={DATASETS_ROUTE}
-          />
-          <NavButton
-            label="Contribute Dataset"
+            size="lg"
+            className="lift w-full sm:w-fit"
+            asChild
+          >
+            <Link href={DATASETS_ROUTE}>
+              <ListIcon /> Explore All Datasets
+            </Link>
+          </Button>
+          <Button
             variant="secondary"
-            icon={<PlusIcon />}
-            href={CONTRIBUTE_ROUTE}
-          />
+            size="lg"
+            className="lift w-full sm:w-fit"
+            asChild
+          >
+            <Link href={CONTRIBUTE_ROUTE}>
+              <PlusIcon />
+              Contribute Dataset
+            </Link>
+          </Button>
         </div>
         <DatasetPreviewSearch />
       </div>
@@ -86,31 +94,5 @@ export default async function Page() {
         </div>
       </div>
     </Main>
-  );
-}
-
-function NavButton({
-  label,
-  variant,
-  icon,
-  href,
-}: {
-  label: string;
-  variant: ButtonProps["variant"];
-  icon: React.ReactNode;
-  href: string;
-}) {
-  return (
-    <Button
-      variant={variant}
-      size="lg"
-      className="lift w-full sm:w-fit"
-      asChild
-    >
-      <Link href={href}>
-        {icon}
-        {label}
-      </Link>
-    </Button>
   );
 }
