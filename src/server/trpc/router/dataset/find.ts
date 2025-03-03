@@ -24,19 +24,17 @@ export const datasetFindRouter = router({
     .query(({ input }) => service.dataset.find.countByQuery(input)),
 
   privilegedCountByQuery: protectedProcedure
-    .meta({
-      requireRoles: [
-        MiddlewareRoles.ADMIN,
-        MiddlewareRoles.CURATOR,
-        MiddlewareRoles.LIBRARIAN,
-        MiddlewareRoles.IS_USER_ID,
-      ],
-    })
+    .meta([
+      MiddlewareRoles.ADMIN,
+      MiddlewareRoles.CURATOR,
+      MiddlewareRoles.LIBRARIAN,
+      MiddlewareRoles.IS_USER_ID,
+    ])
     .input(privilegedDatasetQuery)
     .query(({ input }) => service.dataset.find.countByQuery(input)),
 
   privilegedByQuery: protectedProcedure
-    .meta({ requireRoles: [MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID] })
+    .meta([MiddlewareRoles.ADMIN, MiddlewareRoles.IS_USER_ID])
     .input(privilegedDatasetQuery)
     .query(({ input }) => service.dataset.find.byQuery(input)),
 });

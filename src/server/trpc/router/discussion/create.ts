@@ -5,7 +5,7 @@ import { protectedProcedure, router } from "@/server/trpc";
 
 export const discussionCreateRouter = router({
   fromData: protectedProcedure
-    .meta({ requireRoles: ["VERIFIED"] })
+    .meta(["VERIFIED"])
     .input(
       z.object({
         datasetId: z.number(),

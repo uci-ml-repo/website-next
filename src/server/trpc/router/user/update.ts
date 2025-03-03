@@ -8,7 +8,7 @@ import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 export const userUpdateRouter = router({
   role: protectedProcedure
-    .meta({ requireRoles: [MiddlewareRoles.ADMIN] })
+    .meta([MiddlewareRoles.ADMIN])
     .input(
       z.object({
         userId: z.string().uuid(),

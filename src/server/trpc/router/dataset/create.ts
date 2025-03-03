@@ -6,7 +6,7 @@ import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 export const datasetCreateRouter = router({
   draft: protectedProcedure
-    .meta({ requireRoles: [MiddlewareRoles.VERIFIED] })
+    .meta([MiddlewareRoles.VERIFIED])
     .input(z.object({ title: z.string() }))
     .mutation(({ input, ctx }) =>
       service.dataset.create.draft({ ...input, userId: ctx.user.id }),

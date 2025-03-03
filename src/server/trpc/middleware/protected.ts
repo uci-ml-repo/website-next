@@ -9,7 +9,7 @@ import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
 const t = initTRPC
   .context<typeof createContext>()
-  .meta<{ requireRoles?: MiddlewareRole[] }>() // TODO: switch to just MiddlewareRole[]
+  .meta<MiddlewareRole[]>()
   .create({ transformer });
 
 export const protectedProcedure = t.procedure
@@ -27,7 +27,7 @@ export const protectedProcedure = t.procedure
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
 
-    if (!meta?.requireRoles) {
+    if (!meta?.length) {
       return next({
         ctx: {
           user: ctx.session.user,
@@ -35,7 +35,7 @@ export const protectedProcedure = t.procedure
       });
     }
 
-    const requireRoles = new Set<MiddlewareRole>(meta.requireRoles);
+    const requireRoles = new Set<MiddlewareRole>(meta);
     const userRoles = new Set<MiddlewareRole>([ctx.session.user.role]);
 
     if (requireRoles.has(MiddlewareRoles.VERIFIED)) {
