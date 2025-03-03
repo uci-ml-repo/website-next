@@ -78,7 +78,7 @@ export function DatasetReportDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
