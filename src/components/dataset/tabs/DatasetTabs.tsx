@@ -45,8 +45,8 @@ export function DatasetTabs({
       routerStore={basePath}
       routerSegment={3}
     >
-      <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
-        <LinearTabsList className="space-x-8">
+      <div className="flex items-center justify-between space-x-6 overflow-x-auto">
+        <LinearTabsList>
           <LinearTabsTrigger value="about" link={path.join(basePath, "about")}>
             About
           </LinearTabsTrigger>

@@ -73,7 +73,7 @@ export function LinearTabs({
 }
 
 const linearTabsListVariants = cva(
-  "relative inline-flex h-fit w-fit items-center justify-start py-1 text-muted-foreground",
+  "relative inline-flex h-fit w-fit items-center justify-start space-x-8 overflow-x-auto py-1 text-muted-foreground",
   {
     variants: {
       variant: {
@@ -96,6 +96,9 @@ export const LinearTabsList = React.forwardRef<
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const activeValue = useTabsValue();
 
+  const [showLeftGradient, setShowLeftGradient] = React.useState(false);
+  const [showRightGradient, setShowRightGradient] = React.useState(false);
+
   const [indicatorStyle, setIndicatorStyle] = React.useState({
     x: 0,
     width: 0,
@@ -104,7 +107,7 @@ export const LinearTabsList = React.forwardRef<
   React.useEffect(() => {
     if (!containerRef.current) return;
 
-    const updateIndicator = () => {
+    const update = () => {
       if (!containerRef.current) return;
 
       const activeTrigger = containerRef.current.querySelector(
@@ -118,55 +121,77 @@ export const LinearTabsList = React.forwardRef<
       } else {
         setIndicatorStyle({ x: 0, width: 0 });
       }
+
+      const { scrollWidth, clientWidth, scrollLeft } = containerRef.current;
+      setShowLeftGradient(scrollLeft > 0);
+      setShowRightGradient(scrollWidth > clientWidth + scrollLeft);
+
+      // console.log(Date.now());
+      // console.log("clientWidth", clientWidth);
+      // console.log("scrollWidth", scrollWidth);
+      // console.log("scrollLeft", scrollLeft);
+      // console.log("showLeftGradient", showLeftGradient);
+      // console.log("showRightGradient", showRightGradient);
     };
 
-    updateIndicator();
+    update();
 
     const observer = new ResizeObserver(() => {
-      updateIndicator();
+      update();
     });
     observer.observe(containerRef.current);
 
-    window.addEventListener("resize", updateIndicator);
+    window.addEventListener("resize", update);
+    containerRef.current.addEventListener("scroll", update);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", updateIndicator);
+      window.removeEventListener("resize", update);
     };
   }, [activeValue]);
 
   return (
-    <TabsPrimitive.List
-      ref={(node) => {
-        containerRef.current = node;
-        if (typeof forwardedRef === "function") {
-          forwardedRef(node as null);
-        } else if (forwardedRef) {
-          (
-            forwardedRef as React.MutableRefObject<HTMLDivElement | null>
-          ).current = node;
-        }
-      }}
-      className={cn(linearTabsListVariants({ variant }), className)}
-      {...props}
-    >
-      {React.Children.map(
-        children as TriggerElement[],
-        (child: TriggerElement) => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
-              "data-value": child.props.value,
-            });
-          }
-          return child;
-        },
+    <div className="relative overflow-hidden">
+      <div className="relative overflow-x-auto" ref={containerRef}>
+        <TabsPrimitive.List
+          ref={(node) => {
+            if (typeof forwardedRef === "function") {
+              forwardedRef(node as null);
+            } else if (forwardedRef) {
+              (
+                forwardedRef as React.MutableRefObject<HTMLDivElement | null>
+              ).current = node;
+            }
+          }}
+          className={cn(linearTabsListVariants({ variant }), className)}
+          {...props}
+        >
+          {React.Children.map(
+            children as TriggerElement[],
+            (child: TriggerElement) => {
+              if (React.isValidElement(child)) {
+                return React.cloneElement(child, {
+                  "data-value": child.props.value,
+                });
+              }
+              return child;
+            },
+          )}
+
+          <motion.span
+            animate={indicatorStyle}
+            transition={{ ease: "easeOut", duration: 0.175 }}
+            className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
+          />
+        </TabsPrimitive.List>
+      </div>
+      {showLeftGradient && (
+        <div className="absolute bottom-0 left-0 top-0 z-10 !ml-0 w-4 bg-gradient-to-r from-background" />
       )}
-      <motion.span
-        animate={indicatorStyle}
-        transition={{ ease: "easeOut", duration: 0.175 }}
-        className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
-      />
-    </TabsPrimitive.List>
+      {showRightGradient && (
+        <div className="absolute bottom-0 right-0 top-0 z-10 !ml-0 w-4 bg-gradient-to-l from-background" />
+      )}
+    </div>
   );
 });
 LinearTabsList.displayName = "LinearTabsList";

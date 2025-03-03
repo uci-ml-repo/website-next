@@ -7,7 +7,7 @@ import { CONTACT_ROUTE } from "@/lib/routes";
 export function ZipFileUploadProcessing() {
   return (
     <div className="space-y-2">
-      <Card className="w-full">
+      <Card className="w-full overflow-hidden">
         <CardContent className="flex h-32 flex-col items-center justify-center bg-muted text-muted-foreground">
           <div className="flex items-center space-x-2">
             <Spinner />

@@ -30,7 +30,7 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
       routerSegment={3}
     >
       <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
-        <LinearTabsList className="space-x-8">
+        <LinearTabsList>
           <LinearTabsTrigger
             value="overview"
             link={path.join(ADMIN_ROUTE, "overview")}

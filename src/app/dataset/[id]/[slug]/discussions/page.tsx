@@ -35,7 +35,7 @@ export default async function Page({
   return hasDiscussions ? (
     <Discussions datasetId={dataset.id} allowCreate />
   ) : (
-    <Card className="w-full">
+    <Card className="w-full overflow-hidden">
       <CardContent className="flex h-32 items-center justify-center bg-muted">
         <div className="space-y-3 text-center">
           <div className="text-muted-foreground">

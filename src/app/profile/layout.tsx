@@ -50,7 +50,7 @@ export default async function Layout({
         routerStore={PROFILE_ROUTE}
         routerSegment={1}
       >
-        <LinearTabsList className="space-x-10 overflow-x-auto">
+        <LinearTabsList>
           <LinearTabsTrigger
             value="overview"
             link={path.join(PROFILE_ROUTE, "overview")}

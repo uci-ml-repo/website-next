@@ -8,6 +8,7 @@ interface DatasetFilterCheckboxItemProps<T extends string> {
   value: T;
   checked: boolean;
   ariaLabel?: string;
+  formatText?: boolean;
 }
 
 export function DatasetCheckboxFilterItem<T extends string>({
@@ -15,16 +16,18 @@ export function DatasetCheckboxFilterItem<T extends string>({
   value,
   checked,
   ariaLabel,
+  formatText,
 }: DatasetFilterCheckboxItemProps<T>) {
+  const text = formatText ? formatEnum(value) : value;
   return (
     <div
       className="flex w-full cursor-pointer items-center justify-between space-x-1 py-1"
       onClick={() => toggle(!checked, value)}
     >
-      <div>{formatEnum(value)}</div>
+      <div>{text}</div>
       <Checkbox
         checked={checked}
-        aria-label={ariaLabel ?? "Filter by " + formatEnum(value)}
+        aria-label={ariaLabel ?? "Filter by " + text}
       />
     </div>
   );
