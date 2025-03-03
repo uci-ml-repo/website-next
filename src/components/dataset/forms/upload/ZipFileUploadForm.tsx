@@ -38,10 +38,6 @@ export function ZipFileUploadForm({
     defaultValues: { zipFile: undefined },
   });
 
-  if (isProcessing) {
-    return <ZipFileUploadProcessing />;
-  }
-
   const zipStatsMutation = trpc.dataset.update.zipStats.useMutation();
   const unzipMutation = trpc.file.zip.unzip.useMutation();
 
@@ -90,6 +86,10 @@ export function ZipFileUploadForm({
 
   const pending =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+
+  if (isProcessing) {
+    return <ZipFileUploadProcessing />;
+  }
 
   return (
     <Form {...form}>

@@ -4,11 +4,11 @@ import { z } from "zod";
 import { DATASET_FILES_ZIP_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 import { fileAccessProcedure, router } from "@/server/trpc";
-import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset-access";
+import { datasetUpdateProcedure } from "@/server/trpc/middleware/dataset-update";
 
 export const fileZipRouter = router({
   unzip: fileAccessProcedure
-    .unstable_concat(datasetAccessProcedure)
+    .unstable_concat(datasetUpdateProcedure)
     .input(z.object({ path: z.string(), datasetId: z.number() }))
     .mutation(async ({ input, ctx }) => {
       const existingDataset = await service.dataset.find.byId(input.datasetId);

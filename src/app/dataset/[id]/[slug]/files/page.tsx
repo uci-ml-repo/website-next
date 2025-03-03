@@ -30,7 +30,7 @@ export default async function Page({
     return (
       <ZipFileUploadForm
         dataset={dataset}
-        processing={dataset.unzipped === null}
+        processing={dataset.unzipped === null && dataset.fileCount !== null}
       />
     );
   }

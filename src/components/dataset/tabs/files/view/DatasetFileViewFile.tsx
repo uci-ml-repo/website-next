@@ -38,6 +38,7 @@ export function DatasetFileViewFile({ fileEntry }: { fileEntry: Entry }) {
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
+      containerRef.current.scrollLeft = 0;
     }
   }, [fileEntry]);
 
