@@ -124,7 +124,7 @@ export function SmartPagination({
                   <PaginationLink
                     onClick={() => handlePageChange(item)}
                     isActive={item === currentPage}
-                    className={cn({ "text-xs": totalCount >= 100 })}
+                    className={cn({ "text-xs": totalPages >= 100 })}
                   >
                     {item}
                   </PaginationLink>
