@@ -83,7 +83,7 @@ export default function Page() {
             <>
               {inputValue && (
                 <div className="text-lg text-muted-foreground">
-                  Found {bookmarks.length}
+                  Found {bookmarks.length.toLocaleString()}
                   {hasNextPage && "+"}{" "}
                   {bookmarks.length === 1
                     ? "bookmarked dataset"

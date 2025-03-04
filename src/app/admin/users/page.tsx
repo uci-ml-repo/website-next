@@ -86,7 +86,8 @@ export default function Page() {
           <div className="w-full space-y-2">
             {data.users && (
               <div className="text-lg text-muted-foreground">
-                Found {data.count} {data.count === 1 ? "user" : "users"}{" "}
+                Found {data.count.toLocaleString()}{" "}
+                {data.count === 1 ? "user" : "users"}{" "}
                 {searchValue && `for '${searchValue}'`}
                 {roleFilter &&
                   roleFilter !== "all" &&

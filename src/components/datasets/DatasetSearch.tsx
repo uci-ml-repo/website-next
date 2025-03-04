@@ -126,7 +126,11 @@ export function DatasetSearch() {
             <div>
               <div className="flex items-center text-lg text-muted-foreground">
                 Found{" "}
-                {isFetching ? <Spinner className="mx-1 size-5" /> : data.count}{" "}
+                {isFetching ? (
+                  <Spinner className="mx-1 size-5" />
+                ) : (
+                  data.count.toLocaleString()
+                )}{" "}
                 {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
                 {filters.search && !isLoading ? `for '${filters.search}'` : ""}{" "}
                 {filterCount

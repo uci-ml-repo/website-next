@@ -53,7 +53,7 @@ export function Discussions({
       },
     );
 
-  const discussionsCount = data?.pages[0].count;
+  const discussionsCount = data?.pages[0] ? data?.pages[0].count : 0;
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
 
@@ -105,7 +105,7 @@ export function Discussions({
         <div className="w-full">
           {searchValue && data && (
             <div className="text-lg text-muted-foreground">
-              Found {discussionsCount}{" "}
+              Found {discussionsCount.toLocaleString()}{" "}
               {discussionsCount === 1 ? "discussion" : "discussions"} for '
               {searchValue}'
             </div>
