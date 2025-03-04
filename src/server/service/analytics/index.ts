@@ -153,3 +153,5 @@ export class GoogleAnalyticsService {
     return views;
   }
 }
+
+export const analytics = new GoogleAnalyticsService();
