@@ -78,7 +78,15 @@ export function DatasetDonationCreateForm() {
               <FormControl>
                 <Input className="font-bold" {...field} disabled={pending} />
               </FormControl>
-              <FormMessage className="text-sm" />
+              <div className="flex justify-between">
+                <div>
+                  <FormMessage className="text-sm" />
+                </div>
+
+                <div className="text-sm text-muted-foreground">
+                  {field.value.length}/100
+                </div>
+              </div>{" "}
             </FormItem>
           )}
         />
