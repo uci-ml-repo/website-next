@@ -60,7 +60,7 @@ export function DatasetDeleteDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline-destructive">
+        <Button variant="outline-destructive" size="lg">
           <Trash2Icon />
           <span>Delete Dataset</span>
         </Button>

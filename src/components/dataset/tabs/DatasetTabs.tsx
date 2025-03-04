@@ -77,6 +77,7 @@ export function DatasetTabs({
             <LinearTabsTrigger
               value="settings"
               link={path.join(basePath, "settings")}
+              aria-label="Dataset Settings"
             >
               <SettingsIcon />
             </LinearTabsTrigger>
