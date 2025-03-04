@@ -8,7 +8,6 @@ import path from "path";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
-import { PRIVILEGED_ROLES } from "@/lib/roles";
 import { toStringArray } from "@/lib/utils";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
@@ -43,7 +42,7 @@ export async function GET(
         if (!req.auth) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-        if (!PRIVILEGED_ROLES.has(req.auth.user.role)) {
+        if (!isPriviliged(req.auth.user.role)) {
           return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
       }

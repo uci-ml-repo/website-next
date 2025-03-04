@@ -1,5 +1,9 @@
+"use client";
+
+import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { Session } from "next-auth";
 import { useState } from "react";
 
 import { toast } from "@/components/hooks/use-toast";
@@ -12,21 +16,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { CONTACT_ROUTE, PROFILE_DATASETS_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
+import { isSuperPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetDiscardDialog({
+export function DatasetDeleteDialog({
   dataset,
-  open,
-  setOpen,
+  session,
 }: {
   dataset: DatasetResponse;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  session: Session;
 }) {
   const router = useRouter();
   const [confirmInput, setConfirmInput] = useState<string>("");
@@ -54,25 +58,33 @@ export function DatasetDiscardDialog({
   const confirmed = confirmInput.trim() === "delete me";
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline-destructive">
+          <Trash2Icon />
+          <span>Delete Dataset</span>
+        </Button>
+      </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Discard {dataset.title}?</DialogTitle>
+        <DialogTitle>Delete {dataset.title}?</DialogTitle>
         <DialogHeader className="space-y-4">
           <AlertIrreversible />
           <ul className="list-inside list-disc">
-            <li>All associated files will be removed</li>
+            <li>All associated files will be deleted</li>
             <li>Associated metadata will be deleted</li>
           </ul>
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="text-muted-foreground">
-            For dataset related questions{" "}
-            <Link href={CONTACT_ROUTE} className="underline">
-              contact us
-            </Link>
-            .
-          </div>
+          {!isSuperPriviliged(session.user.role) && (
+            <div className="text-muted-foreground">
+              For dataset related questions{" "}
+              <Link href={CONTACT_ROUTE} className="underline">
+                contact us
+              </Link>
+              .
+            </div>
+          )}
           <div className="select-none space-y-1">
             <div className="text-muted-foreground">
               To confirm, type <span className="font-bold">delete me</span>{" "}

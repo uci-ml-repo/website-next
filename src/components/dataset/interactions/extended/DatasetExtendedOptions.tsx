@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  EllipsisVerticalIcon,
-  FlagIcon,
-  Link2Icon,
-  Trash2Icon,
-} from "lucide-react";
+import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import path from "path";
 import { useState } from "react";
 
-import { DatasetDiscardDialog } from "@/components/dataset/interactions/extended/DatasetDiscardDialog";
 import { DatasetReportDialog } from "@/components/dataset/interactions/extended/DatasetReportDialog";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -20,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 
@@ -32,7 +25,6 @@ export function DatasetExtendedOptions({
   const { data: session } = useSession();
 
   const [reportDialogOpen, setReportDialogOpen] = useState<boolean>(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
   async function copyLink() {
     if (typeof navigator.clipboard === "undefined") return;
@@ -65,15 +57,7 @@ export function DatasetExtendedOptions({
               <span>Copy Link</span>
             </DropdownMenuItem>
           )}
-          {dataset.status === Enums.ApprovalStatus.DRAFT && (
-            <DropdownMenuItem
-              destructive
-              onClick={() => setDeleteDialogOpen(true)}
-            >
-              <Trash2Icon />
-              <span>Discard Draft</span>
-            </DropdownMenuItem>
-          )}
+
           {(!session || session.user.id !== dataset.userId) && (
             <DropdownMenuItem
               destructive
@@ -89,11 +73,6 @@ export function DatasetExtendedOptions({
         dataset={dataset}
         open={reportDialogOpen}
         setOpen={setReportDialogOpen}
-      />
-      <DatasetDiscardDialog
-        dataset={dataset}
-        open={deleteDialogOpen}
-        setOpen={setDeleteDialogOpen}
       />
     </>
   );

@@ -18,13 +18,13 @@ export default function Page() {
       <Policy />
 
       <div className="space-y-4">
-        <button
-          className="flex items-center space-x-2 text-lg text-muted-foreground"
+        <div
+          className="flex w-fit cursor-pointer items-center space-x-2 text-lg text-muted-foreground"
           onClick={() => setChecked((prevState) => !prevState)}
         >
-          <Checkbox checked={checked} tabIndex={-1} />
+          <Checkbox checked={checked} />
           <span>I agree to the linking policy.</span>
-        </button>
+        </div>
         <VerificationRequired
           signInBody="Sign in to link external datasets"
           signInTitle="To beigin the dataset linking process, plase sign in."

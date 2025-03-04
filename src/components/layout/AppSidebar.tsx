@@ -126,20 +126,6 @@ export function AppSidebar({ session }: { session: Session | null }) {
             aria-hidden={true}
           />
 
-          {isPriviliged(session?.user.role) && (
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                activePath={ADMIN_ROUTE}
-                className="!text-destructive-muted"
-                asChild
-              >
-                <Link href={ADMIN_ROUTE}>
-                  <LayoutDashboardIcon />
-                  <span>Admin</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )}
           {session?.user ? (
             <SidebarMenuItem>
               <SidebarMenuButton activePath={PROFILE_ROUTE} asChild>
@@ -160,6 +146,21 @@ export function AppSidebar({ session }: { session: Session | null }) {
                 <Link href={SIGN_IN_ROUTE}>
                   <LogInIcon />
                   <span>Sign In</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
+
+          {isPriviliged(session?.user.role) && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                activePath={ADMIN_ROUTE}
+                className="!text-destructive-muted"
+                asChild
+              >
+                <Link href={ADMIN_ROUTE}>
+                  <LayoutDashboardIcon />
+                  <span>Admin</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
