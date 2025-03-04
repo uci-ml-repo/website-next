@@ -88,7 +88,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             width={350}
             height={100}
             priority
-            className="h-[95px] w-full rounded-t-2xl object-cover object-center dark:brightness-90"
+            className="h-24 w-full rounded-t-2xl object-cover object-center dark:brightness-90"
           />
         </CardHeader>
         <CardContent className="flex flex-1 flex-col space-y-2">

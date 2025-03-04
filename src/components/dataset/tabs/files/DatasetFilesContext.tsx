@@ -15,18 +15,9 @@ interface DatasetFilesContextProps {
   forward: () => void;
 }
 
-const DatasetFilesContext = createContext<DatasetFilesContextProps>({
-  fileHistory: [],
-  fileForwardHistory: [],
-  rootPath: "",
-  currentEntry: {
-    path: "",
-    type: "directory",
-  },
-  setCurrentEntry: () => {},
-  back: () => {},
-  forward: () => {},
-});
+const DatasetFilesContext = createContext<DatasetFilesContextProps | undefined>(
+  undefined,
+);
 
 export function DatasetFilesProvider({
   children,
