@@ -9,15 +9,7 @@ import { DATASET_FILES_PATH } from "@/lib/routes";
 import { service } from "@/server/service";
 
 export class DatasetCreateService {
-  async draft({
-    title,
-    externalLink,
-    userId,
-  }: {
-    title: string;
-    externalLink?: string;
-    userId: string;
-  }) {
+  async getSlug(title: string) {
     const baseSlug = slugify(title, { replacement: "+", lower: true });
 
     const existingSlugs = await db
@@ -36,10 +28,24 @@ export class DatasetCreateService {
 
     const slug = modifier === -1 ? baseSlug : `${baseSlug}-${modifier + 1}`;
 
+    return slug;
+  }
+
+  async draft({
+    title,
+    externalLink,
+    userId,
+  }: {
+    title: string;
+    externalLink?: string;
+    userId: string;
+  }) {
     const createdDataset = await db.transaction(async (tx) => {
       if (!process.env.STATIC_FILES_DIRECTORY) {
         throw new Error("Storage path is not defined");
       }
+
+      const slug = await this.getSlug(title);
 
       const [createdDataset] = await tx
         .insert(dataset)

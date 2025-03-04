@@ -8,6 +8,11 @@ import { useDatasetBookmark } from "@/components/dataset/context/DatasetBookmark
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -27,7 +32,7 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
     },
     onSuccess: async () => {
       setIsBookmarked(true);
-      util.bookmark.find.byUserQuery.invalidate();
+      await util.bookmark.find.byUserQuery.invalidate();
       toast({
         title: "Bookmark added",
         description: "View bookmarked datasets from your profile",
@@ -81,25 +86,32 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
           <Spinner className="!size-5 opacity-70" />
         </Button>
       ) : (
-        <SignInRequired
-          title="Sign in to bookmark datasets"
-          body="To bookmark datasets and access other features, please sign in."
-          authedAction={handleBookmark}
-        >
-          <Button
-            size="icon"
-            variant="ghost"
-            aria-label={isBookmarked ? "Remove bookmark" : "Bookmark dataset"}
+        <Tooltip>
+          <SignInRequired
+            title="Sign in to bookmark datasets"
+            body="To bookmark datasets and access other features, please sign in."
+            authedAction={handleBookmark}
           >
-            <BookmarkIcon
-              className={cn(
-                "!size-5 cursor-pointer",
-                isBookmarked ? "fill-uci-gold" : "",
-              )}
-              aria-hidden={true}
-            />
-          </Button>
-        </SignInRequired>
+            <TooltipTrigger asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                aria-label={
+                  isBookmarked ? "Remove bookmark" : "Bookmark dataset"
+                }
+              >
+                <BookmarkIcon
+                  className={cn(
+                    "!size-5 cursor-pointer",
+                    isBookmarked ? "fill-uci-gold" : "",
+                  )}
+                  aria-hidden={true}
+                />
+              </Button>
+            </TooltipTrigger>
+          </SignInRequired>
+          <TooltipContent side="bottom">Bookmark</TooltipContent>
+        </Tooltip>
       )}
     </>
   );

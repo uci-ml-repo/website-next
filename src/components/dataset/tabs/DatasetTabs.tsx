@@ -84,7 +84,7 @@ export function DatasetTabs({
           )}
         </LinearTabsList>
 
-        <DatasetInteractions dataset={dataset} className="max-md:hidden" />
+        <DatasetInteractions dataset={dataset} className="max-lg:hidden" />
       </div>
 
       <TabsListBorder />

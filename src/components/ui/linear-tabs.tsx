@@ -73,7 +73,7 @@ export function LinearTabs({
 }
 
 const linearTabsListVariants = cva(
-  "relative inline-flex h-fit w-fit items-center justify-start space-x-8 overflow-x-auto py-1 text-muted-foreground",
+  "relative inline-flex h-fit w-fit items-center justify-start space-x-8 overflow-x-hidden py-1 text-muted-foreground",
   {
     variants: {
       variant: {
@@ -125,13 +125,6 @@ export const LinearTabsList = React.forwardRef<
       const { scrollWidth, clientWidth, scrollLeft } = containerRef.current;
       setShowLeftGradient(scrollLeft > 0);
       setShowRightGradient(scrollWidth > clientWidth + scrollLeft);
-
-      // console.log(Date.now());
-      // console.log("clientWidth", clientWidth);
-      // console.log("scrollWidth", scrollWidth);
-      // console.log("scrollLeft", scrollLeft);
-      // console.log("showLeftGradient", showLeftGradient);
-      // console.log("showRightGradient", showRightGradient);
     };
 
     update();
