@@ -13,12 +13,13 @@ export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
       <SideDatum title="Keywords" className="flex flex-wrap gap-1">
         {dataset.keywords.length > 0 &&
           dataset.keywords.map((keyword) => (
-            <Link
-              key={keyword}
-              href={DATASETS_QUERY({ keywords: [keyword] })}
-              className="text-uci-blue hover:underline"
-            >
-              <Badge variant="blue">{keyword}</Badge>
+            <Link key={keyword} href={DATASETS_QUERY({ keywords: [keyword] })}>
+              <Badge
+                variant="blue"
+                className="lift text-uci-blue hover:underline"
+              >
+                {keyword}
+              </Badge>
             </Link>
           ))}
       </SideDatum>

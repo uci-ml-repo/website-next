@@ -1,9 +1,11 @@
 "use client";
 
+import { SettingsIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import path from "path";
 import React from "react";
 
+import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import {
   LinearTabs,
@@ -24,6 +26,8 @@ export function DatasetTabs({
   dataset,
   initialDiscussionCount,
 }: DatasetTabsProps) {
+  const { editable } = useDatasetEdits();
+
   const basePath = DATASET_ROUTE(dataset);
 
   const pathname = usePathname();
@@ -68,6 +72,15 @@ export function DatasetTabs({
           >
             Discussions
           </LinearTabsTrigger>
+
+          {editable && (
+            <LinearTabsTrigger
+              value="settings"
+              link={path.join(basePath, "settings")}
+            >
+              <SettingsIcon />
+            </LinearTabsTrigger>
+          )}
         </LinearTabsList>
 
         <DatasetInteractions dataset={dataset} className="max-md:hidden" />
