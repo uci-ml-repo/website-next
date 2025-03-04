@@ -18,20 +18,20 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-const perPageOptions = [10, 25, 50, 100];
-
 export function SmartPagination({
   totalCount,
   limit,
   offset,
   onPageChange,
   onLimitChange,
+  perPageOptions = [10, 25, 50, 100],
 }: {
   totalCount: number;
   limit: number;
   offset: number;
   onPageChange: (offset: number) => void;
   onLimitChange: (newLimit: number) => void;
+  perPageOptions?: number[];
 }) {
   const totalPages = Math.ceil(totalCount / limit) || 1;
   const currentPage = Math.floor(offset / limit) + 1;
@@ -72,33 +72,37 @@ export function SmartPagination({
 
   return (
     <Pagination className="flex justify-between gap-x-2 gap-y-4 max-md:flex-col-reverse">
-      <div className="flex items-center space-x-2">
-        <div className="text-nowrap text-sm text-muted-foreground">
-          Results per page
-        </div>
+      {totalCount > Math.min(...perPageOptions) ? (
+        <div className="flex items-center space-x-2">
+          <div className="text-nowrap text-sm text-muted-foreground">
+            Results per page
+          </div>
 
-        <Select
-          value={limit.toString()}
-          onValueChange={(value) => {
-            onLimitChange(Number(value));
-          }}
-        >
-          <SelectTrigger size="sm" className="w-fit">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {perPageOptions.map((option) => (
-              <SelectItem
-                key={option}
-                className="cursor-pointer"
-                value={option.toString()}
-              >
-                {option}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+          <Select
+            value={limit.toString()}
+            onValueChange={(value) => {
+              onLimitChange(Number(value));
+            }}
+          >
+            <SelectTrigger size="sm" className="w-fit">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {perPageOptions.map((option) => (
+                <SelectItem
+                  key={option}
+                  className="cursor-pointer"
+                  value={option.toString()}
+                >
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      ) : (
+        <div />
+      )}
 
       <div className="flex items-center gap-2 max-md:flex-col-reverse">
         <div className="mr-2 text-nowrap text-sm text-muted-foreground">
