@@ -83,54 +83,65 @@ export class UserCredentialsService {
 
     const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-    await db.insert(emailVerificationToken).values({
-      userId,
-      token,
-      expires,
-    });
+    const [createdVerificationToken] = await db
+      .insert(emailVerificationToken)
+      .values({
+        userId,
+        token,
+        expires,
+      })
+      .returning();
+
+    const tokenString = `${createdVerificationToken.id}:${token}`;
 
     await service.email.sendVerificationEmail({
-      token,
+      token: tokenString,
       email,
       name,
     });
   }
 
-  async getEmailVerificationToken(token: string) {
-    const emailVerificationToken =
-      await db.query.emailVerificationToken.findFirst({
-        where: (emailVerificationToken, { eq }) =>
-          eq(emailVerificationToken.token, token),
-        with: {
-          user: true,
-        },
-      });
+  async getEmailVerificationToken(tokenString: string) {
+    const id = tokenString.split(":")[0];
+    const token = tokenString.split(":")[1];
 
-    if (!emailVerificationToken) {
+    if (!id || !token) {
       return {
         success: false,
         message: "Invalid verification token",
       };
     }
 
-    if (emailVerificationToken.expires < new Date()) {
+    const existingVerificationToken =
+      await db.query.emailVerificationToken.findFirst({
+        where: eq(emailVerificationToken.id, id),
+        with: {
+          user: true,
+        },
+      });
+
+    if (!existingVerificationToken) {
+      return {
+        success: false,
+        message: "Invalid verification token",
+      };
+    }
+
+    if (existingVerificationToken.expires < new Date()) {
       return {
         success: false,
         message: "Verification token expired",
       };
     }
 
-    return { success: true, verificationToken: emailVerificationToken };
+    return { success: true, verificationToken: existingVerificationToken };
   }
 
   async getResetPasswordToken(tokenString: string) {
     const id = tokenString.split(":")[0];
     const token = tokenString.split(":")[1];
 
-    logger.info(id);
-    logger.info(token);
-
-    if (!id || !token || !Number(id)) {
+    if (!id || !token) {
       return {
         success: false,
         message: "Invalid reset token",
@@ -139,7 +150,7 @@ export class UserCredentialsService {
 
     const existingPasswordResetToken =
       await db.query.passwordResetToken.findFirst({
-        where: eq(passwordResetToken.id, Number(id)),
+        where: eq(passwordResetToken.id, id),
         with: {
           user: true,
         },
@@ -209,8 +220,12 @@ export class UserCredentialsService {
   }
 
   async verifyEmail({ token }: { token: string }) {
+    logger.error(token);
+
     const { success, message, verificationToken } =
       await this.getEmailVerificationToken(token);
+
+    logger.info("verificationToken", verificationToken);
 
     if (!success || !verificationToken) {
       throw new ServiceError({

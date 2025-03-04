@@ -20,9 +20,11 @@ export default async function Page({
 }) {
   const { token } = await params;
 
+  const parsedToken = decodeURIComponent(token);
+
   const existingToken = await caller.user.credentials.getEmailVerificationToken(
     {
-      token,
+      token: parsedToken,
     },
   );
 
@@ -43,7 +45,7 @@ export default async function Page({
 
   let user;
   try {
-    user = await caller.user.credentials.verifyEmail({ token });
+    user = await caller.user.credentials.verifyEmail({ token: parsedToken });
   } catch (error) {
     return (
       <ErrorGraphic header={(error as Error).message}>

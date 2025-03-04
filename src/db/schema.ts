@@ -1,4 +1,5 @@
 import type { AdapterAccountType } from "@auth/core/adapters";
+import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
   bigint,
@@ -664,7 +665,9 @@ export const sessionRelations = relations(session, ({ one }) => ({
 }));
 
 export const emailVerificationToken = pgTable("email_verification_token", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
   userId: uuid("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
@@ -683,7 +686,9 @@ export const emailVerificationTokenRelations = relations(
 );
 
 export const passwordResetToken = pgTable("password_reset_token", {
-  id: serial("id").primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
   token: text("token").notNull(),
   userId: uuid("user_id")
     .references(() => user.id, { onDelete: "cascade" })

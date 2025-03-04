@@ -277,7 +277,7 @@ CREATE TABLE "discussion_upvote" (
 
 --> statement-breakpoint
 CREATE TABLE "email_verification_token" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid () NOT NULL,
+  "id" TEXT PRIMARY KEY NOT NULL,
   "user_id" uuid NOT NULL,
   "token" TEXT NOT NULL,
   "expires" TIMESTAMP NOT NULL
@@ -305,7 +305,7 @@ CREATE TABLE "paper" (
 
 --> statement-breakpoint
 CREATE TABLE "password_reset_token" (
-  "id" serial PRIMARY KEY NOT NULL,
+  "id" TEXT PRIMARY KEY NOT NULL,
   "token" TEXT NOT NULL,
   "user_id" uuid NOT NULL,
   "expires" TIMESTAMP NOT NULL
