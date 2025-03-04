@@ -254,7 +254,6 @@ CREATE TABLE "dataset" (
   "id" serial PRIMARY KEY NOT NULL,
   "title" TEXT NOT NULL,
   "year_created" INTEGER,
-  "subtitle" TEXT,
   "doi" TEXT,
   "description" TEXT,
   "subject_area" "dataset_subject_area",

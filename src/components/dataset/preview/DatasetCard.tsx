@@ -100,7 +100,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             </CardTitle>
             <CardDescription>
               <p className="line-clamp-2 text-sm">
-                {dataset.subtitle ?? dataset.description}
+                {dataset.description?.slice(0, 200)}
               </p>
             </CardDescription>
           </div>

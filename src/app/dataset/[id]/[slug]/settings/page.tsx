@@ -2,6 +2,7 @@ import { forbidden, unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
 import { DatasetSettingsDelete } from "@/components/dataset/tabs/settings/DatasetSettingsDelete";
+import { DatasetSettingsTitle } from "@/components/dataset/tabs/settings/DatasetSettingsTitle";
 import { TabHeader } from "@/components/ui/tab-header";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
@@ -36,6 +37,7 @@ export default async function Page({
         </div>
       </div>
       <div className="space-y-6">
+        <DatasetSettingsTitle dataset={dataset} />
         <hr />
         <DatasetSettingsDelete dataset={dataset} session={session} />
       </div>

@@ -24,7 +24,6 @@ export const datasetIdentificationSelect = {
 export const datasetPreviewSelect = {
   ...datasetIdentificationSelect,
   yearCreated: datasetView.yearCreated,
-  subtitle: datasetView.subtitle,
   description: datasetView.description,
   doi: datasetView.doi,
   subjectArea: datasetView.subjectArea,

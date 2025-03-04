@@ -73,7 +73,7 @@ export function DatasetRow({
             </div>
           </div>
           <div className="truncate text-sm text-muted-foreground">
-            {dataset.subtitle ?? dataset.description}
+            {dataset.description?.slice(0, 200)}
           </div>
         </div>
         {datasetStats.some((stat) => !!stat.text) && (

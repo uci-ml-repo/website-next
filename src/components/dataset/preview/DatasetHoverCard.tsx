@@ -99,7 +99,7 @@ export function DatasetHoverCard({
           </CardTitle>
           <CardDescription>
             <p className="line-clamp-4 text-base">
-              {dataset.subtitle ?? dataset.description}
+              {dataset.description?.slice(0, 1000)}
             </p>
           </CardDescription>
         </div>
