@@ -1,17 +1,9 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { DatasetExternalCreateForm } from "@/components/dataset/forms/DatasetExternalCreateForm";
-import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
+import { CONTACT_ROUTE, CONTRIBUTE_EXTERNAL_ROUTE } from "@/lib/routes";
 
-export default async function Page() {
-  const session = await auth();
-
-  if (!session?.user.emailVerified) {
-    return redirect(CONTRIBUTE_DONATION_ROUTE);
-  }
-
+export default function Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-6">
@@ -27,9 +19,9 @@ export default async function Page() {
       </div>
       <div className="text-sm text-muted-foreground">
         <div>
-          By submitting a dataset, you agree to our{" "}
-          <Link href={CONTRIBUTE_DONATION_ROUTE} className="underline">
-            donation policy
+          By linking an external dataset, you agree to our{" "}
+          <Link href={CONTRIBUTE_EXTERNAL_ROUTE} className="underline">
+            linking policy
           </Link>
           . Having issues?{" "}
           <Link href={CONTACT_ROUTE} className="underline">

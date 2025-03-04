@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PROFILE_SETTINGS_ROUTE } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
 interface EmailVerificationRequiredProps {
   signInTitle: string;
@@ -38,6 +39,7 @@ export function VerificationRequired({
   verifiedRedirect,
 }: EmailVerificationRequiredProps) {
   const { data: session } = useSession();
+
   const [verifyDialogOpen, setVerifyDialogOpen] = useState<boolean>(false);
   const [signInDialogOpen, setSignInDialogOpen] = useState<boolean>(false);
 
@@ -66,7 +68,13 @@ export function VerificationRequired({
         </div>
       ) : verifiedRedirect ? (
         <div>
-          <Link href={verifiedRedirect} onClick={onClick} tabIndex={-1}>
+          <Link
+            href={verifiedRedirect}
+            onClick={onClick}
+            tabIndex={-1}
+            aria-disabled={disabled}
+            className={cn({ "cursor-default": disabled })}
+          >
             {children}
           </Link>
         </div>

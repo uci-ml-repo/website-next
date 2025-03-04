@@ -1,17 +1,9 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { DatasetDonationCreateForm } from "@/components/dataset/forms/DatasetDonationCreateForm";
 import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
-export default async function Page() {
-  const session = await auth();
-
-  if (!session?.user.emailVerified) {
-    return redirect(CONTRIBUTE_DONATION_ROUTE);
-  }
-
+export default function Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-6">
