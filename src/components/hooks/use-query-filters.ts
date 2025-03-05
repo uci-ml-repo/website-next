@@ -1,13 +1,12 @@
 "use client";
 
 import debounce from "lodash/debounce";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { buildQueryFilters, jsonOrString } from "@/lib/utils";
 
 export function useQueryFilters<T extends Record<string, unknown>>() {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -43,10 +42,10 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
       const params = buildQueryFilters(mergedFilters);
       const url = `${pathname}?${params.toString()}`;
 
-      router.push(url, { scroll: false });
+      window.history.replaceState(null, "", url);
       setFilterCount(Array.from(params.entries()).length);
     },
-    [pathname, router],
+    [pathname],
   );
 
   const debouncedSetFilters = useMemo(
