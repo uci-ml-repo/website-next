@@ -1,13 +1,17 @@
 "use client";
 
 import type { Session } from "next-auth";
-import { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
+import type { DatasetSelect } from "@/db/lib/types";
 import type { DatasetResponse } from "@/lib/types";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 interface DatasetEditsContextProps {
   editable: boolean;
+  editing: boolean;
+  setEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  dataset: DatasetSelect;
 }
 
 const DatasetEditsContext = createContext<DatasetEditsContextProps | undefined>(
@@ -26,8 +30,12 @@ export function DatasetEditsProvider({
   const editable =
     !!user && (isPriviliged(user.role) || dataset.userId === user.id);
 
+  const [editing, setEditing] = useState<boolean>(false);
+
   return (
-    <DatasetEditsContext.Provider value={{ editable }}>
+    <DatasetEditsContext.Provider
+      value={{ editable, editing, setEditing, dataset }}
+    >
       {children}
     </DatasetEditsContext.Provider>
   );

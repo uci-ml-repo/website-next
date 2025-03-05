@@ -30,11 +30,9 @@ export default async function Page({
 
   return (
     <div className="space-y-8">
-      <div className="flex items-end space-x-2">
+      <div className="flex items-center space-x-2">
         <TabHeader title="Dataset Settings" />
-        <div className="mb-1 text-sm text-muted-foreground">
-          (Only visible to you)
-        </div>
+        <div className="text-muted-foreground">(Only visible to you)</div>
       </div>
       <div className="space-y-6">
         <DatasetSettingsTitle dataset={dataset} />

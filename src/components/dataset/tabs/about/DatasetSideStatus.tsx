@@ -20,12 +20,13 @@ export function DatasetSideStatus({
       value: Enums.ApprovalStatus.DRAFT,
       label: "Draft",
       tooltip:
-        "This dataset is a draft. You can freely edit it before submitting for approval.",
+        "This dataset is a draft. You can freely edit it before submitting it for approval.",
     },
     {
       value: Enums.ApprovalStatus.PENDING,
       label: "Pending",
-      tooltip: "This dataset is pending approval. We will review it soon.",
+      tooltip:
+        "This dataset is pending approval. We are in the process of reviewing it.",
     },
     {
       value: Enums.ApprovalStatus.APPROVED,

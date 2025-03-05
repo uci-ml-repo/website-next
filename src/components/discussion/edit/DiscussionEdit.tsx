@@ -12,7 +12,12 @@ import { DiscussionDeleteDialog } from "@/components/discussion/view/extended/Di
 import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -152,14 +157,11 @@ export function DiscussionEdit({
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard edits?</DialogTitle>
-          <p>You have an edit in progress, discard it?</p>
+          <p>You have an edit in progress, discard it without saving?</p>
           <div className="flex justify-between">
-            <Button
-              variant="secondary"
-              onClick={() => setCancelDialogOpen(false)}
-            >
-              Cancel
-            </Button>
+            <DialogClose>
+              <Button variant="secondary">Cancel</Button>
+            </DialogClose>
             <Button
               variant="destructive"
               onClick={() => redirect(redirectRoute)}

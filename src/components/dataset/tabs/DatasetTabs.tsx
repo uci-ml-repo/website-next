@@ -96,7 +96,6 @@ export function DatasetTabs({
 
         <DatasetInteractions dataset={dataset} className="max-2lg:hidden" />
       </div>
-
       <TabsListBorder />
     </LinearTabs>
   );

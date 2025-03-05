@@ -105,6 +105,7 @@ const config = {
         },
         positive: {
           DEFAULT: "hsl(var(--positive))",
+          foreground: "hsl(var(--positive-foreground))",
         },
         border: "hsl(var(--border))",
         input: {

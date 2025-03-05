@@ -11,6 +11,7 @@ import {
   orderByOptions,
 } from "@/components/datasets/DatasetSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
+import { usePrevious } from "@/components/hooks/use-previous";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -81,6 +82,14 @@ export function DatasetSearch() {
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
 
+  const prevLimit = usePrevious(filters.limit);
+  const prevCursor = usePrevious(filters.cursor);
+
+  const isFiltering =
+    isFetching &&
+    (prevLimit === undefined || prevLimit === filters.limit) &&
+    (prevCursor === undefined || prevCursor === filters.cursor);
+
   return (
     <div className="flex flex-1 flex-col p-1">
       <h1 className="text-2xl font-bold max-lg:pb-2">Browse datasets</h1>
@@ -126,7 +135,7 @@ export function DatasetSearch() {
             <div>
               <div className="flex items-center text-lg text-muted-foreground">
                 Found{" "}
-                {isFetching ? (
+                {isFiltering ? (
                   <Spinner className="mx-1 size-5" />
                 ) : (
                   data.count.toLocaleString()

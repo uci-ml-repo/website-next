@@ -1,5 +1,5 @@
 import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
-import { cache } from "react";
+import React, { cache } from "react";
 
 import { auth } from "@/auth";
 import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
@@ -7,6 +7,7 @@ import { DatasetEditsProvider } from "@/components/dataset/context/DatasetEditsC
 import { DatasetFilesStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
+import { DatasetEditingCard } from "@/components/dataset/tabs/DatasetEditingCard";
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
@@ -17,7 +18,7 @@ import { caller } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
   try {
-    if (!Number(id)) {
+    if (!id) {
       return null;
     }
 
@@ -92,7 +93,7 @@ export default async function Layout({
           <Main className="space-y-6">
             <div className="backdrop-gradient-blur space-y-6">
               <div className="space-y-2">
-                <DatasetTitleGroup dataset={dataset} />
+                <DatasetTitleGroup />
 
                 <Card className="rounded-full 2lg:hidden">
                   <DatasetInteractions
@@ -106,6 +107,8 @@ export default async function Layout({
                 dataset={dataset}
                 initialDiscussionCount={discussionCount}
               />
+
+              <DatasetEditingCard />
             </div>
 
             {children}

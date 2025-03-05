@@ -1,22 +1,32 @@
 "use client";
 
+import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 
+import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
 import { DatasetCitationButton } from "@/components/dataset/interactions/buttons/DatasetCitationButton";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
+import { DatasetEditButton } from "@/components/dataset/interactions/buttons/DatasetEditButton";
 import { DatasetPythonImportButton } from "@/components/dataset/interactions/buttons/DatasetPythonImportButton";
+import { Button } from "@/components/ui/button";
 import { DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function DatasetTitleGroup({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetTitleGroup() {
+  const { editable, dataset, editing } = useDatasetEdits();
+
   const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
 
   return (
     <div className="flex items-center justify-between">
       <div className="w-full min-w-0 space-y-6">
-        <h1 className="truncate text-pretty text-3xl font-bold text-foreground">
-          {dataset.title}
+        <h1 className="flex items-center space-x-1 truncate text-pretty text-3xl font-bold text-foreground">
+          <span>{dataset.title}</span>
+          {editing && (
+            <Button variant="ghost" size="icon">
+              <PencilIcon />
+            </Button>
+          )}
         </h1>
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton dataset={dataset} />
@@ -26,6 +36,8 @@ export function DatasetTitleGroup({ dataset }: { dataset: DatasetResponse }) {
           )}
 
           <DatasetCitationButton dataset={dataset} />
+
+          {editable && <DatasetEditButton />}
         </div>
       </div>
       {dataset.hasGraphics && (
