@@ -159,7 +159,7 @@ export function DiscussionEdit({
           <DialogTitle>Discard edits?</DialogTitle>
           <p>You have an edit in progress, discard it without saving?</p>
           <div className="flex justify-between">
-            <DialogClose>
+            <DialogClose asChild>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
             <Button

@@ -45,7 +45,7 @@ export function DatasetEditingCard() {
               You have dataset edits in progress, discard them without saving?
             </p>
             <div className="flex justify-between">
-              <DialogClose>
+              <DialogClose asChild>
                 <Button variant="secondary">Cancel</Button>
               </DialogClose>
               <Button
