@@ -1,6 +1,12 @@
 "use client";
 
-import { EllipsisVerticalIcon, FlagIcon, Link2Icon } from "lucide-react";
+import {
+  CogIcon,
+  EllipsisVerticalIcon,
+  FlagIcon,
+  Link2Icon,
+} from "lucide-react";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import path from "path";
 import { useState } from "react";
@@ -14,8 +20,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DATASET_ROUTE } from "@/lib/routes";
+import { DATASET_ROUTE, DATASET_SETTINGS_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
+import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export function DatasetExtendedOptions({
   dataset,
@@ -67,6 +74,17 @@ export function DatasetExtendedOptions({
               <span>Report Issue</span>
             </DropdownMenuItem>
           )}
+
+          {session &&
+            (isPriviliged(session.user.role) ||
+              session.user.id === dataset.userId) && (
+              <Link href={DATASET_SETTINGS_ROUTE(dataset)}>
+                <DropdownMenuItem>
+                  <CogIcon />
+                  <span>Dataset Settings</span>
+                </DropdownMenuItem>
+              </Link>
+            )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DatasetReportDialog

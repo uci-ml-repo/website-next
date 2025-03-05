@@ -46,6 +46,11 @@ export default function Page() {
     cursor,
   });
 
+  function _clear() {
+    clear();
+    setStatus("all");
+  }
+
   return (
     <div className="max-w-full space-y-4">
       <SimpleSearch
@@ -68,7 +73,7 @@ export default function Page() {
       ) : data && data.datasets.length === 0 ? (
         <div className="flex h-20 flex-col items-center justify-center space-y-2">
           <div className="text-muted-foreground">No datasets found</div>
-          <Button variant="secondary" onClick={clear}>
+          <Button variant="secondary" onClick={_clear}>
             Clear search <Undo2Icon />
           </Button>
         </div>

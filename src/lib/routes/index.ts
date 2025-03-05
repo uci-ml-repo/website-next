@@ -7,6 +7,7 @@ export const RESET_PASSWORD_ROUTE = "/auth/reset";
 export const VERIFY_EMAIL_ROUTE = "/auth/verify";
 export const ADMIN_ROUTE = "/admin";
 export const ADMIN_USERS_ROUTE = "/admin/users";
+export const ADMIN_DATASETS_ROUTE = "/admin/datasets";
 export const ABOUT_ROUTE = "/about";
 export const CONTACT_ROUTE = "/contact";
 export const PRIVACY_POLICY_ROUTE = "/privacy";
