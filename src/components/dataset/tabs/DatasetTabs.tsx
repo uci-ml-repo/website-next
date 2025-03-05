@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import path from "path";
 import React from "react";
 
-import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import {
   LinearTabs,
@@ -26,7 +26,7 @@ export function DatasetTabs({
   dataset,
   initialDiscussionCount,
 }: DatasetTabsProps) {
-  const { editable } = useDatasetEdits();
+  const { editable } = useDataset();
 
   const basePath = DATASET_ROUTE(dataset);
 

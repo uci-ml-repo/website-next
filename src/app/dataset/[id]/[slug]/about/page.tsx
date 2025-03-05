@@ -1,6 +1,6 @@
 "use client";
 
-import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetAbout } from "@/components/dataset/tabs/about/DatasetAbout";
 import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
 import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
@@ -9,7 +9,7 @@ import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariabl
 import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
 
 export default function Page() {
-  const { dataset, editable } = useDatasetEdits();
+  const { dataset, editable } = useDataset();
 
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">

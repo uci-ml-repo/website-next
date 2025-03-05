@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { DatasetCitationButton } from "@/components/dataset/interactions/buttons/DatasetCitationButton";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
@@ -12,7 +12,7 @@ import { DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export function DatasetTitleGroup() {
-  const { editable, dataset, editing } = useDatasetEdits();
+  const { editable, dataset, editing } = useDataset();
 
   const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
 

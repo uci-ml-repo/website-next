@@ -7,18 +7,18 @@ import type { DatasetSelect } from "@/db/lib/types";
 import type { DatasetResponse } from "@/lib/types";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-interface DatasetEditsContextProps {
+interface DatasetContextProps {
   editable: boolean;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   dataset: DatasetSelect;
 }
 
-const DatasetEditsContext = createContext<DatasetEditsContextProps | undefined>(
+const DatasetContext = createContext<DatasetContextProps | undefined>(
   undefined,
 );
 
-export function DatasetEditsProvider({
+export function DatasetProvider({
   user,
   dataset,
   children,
@@ -33,16 +33,14 @@ export function DatasetEditsProvider({
   const [editing, setEditing] = useState<boolean>(false);
 
   return (
-    <DatasetEditsContext.Provider
-      value={{ editable, editing, setEditing, dataset }}
-    >
+    <DatasetContext.Provider value={{ editable, editing, setEditing, dataset }}>
       {children}
-    </DatasetEditsContext.Provider>
+    </DatasetContext.Provider>
   );
 }
 
-export function useDatasetEdits() {
-  const context = useContext(DatasetEditsContext);
+export function useDataset() {
+  const context = useContext(DatasetContext);
   if (!context) {
     throw new Error(
       "useDatasetEdits must be used within a DatasetEditsProvider",

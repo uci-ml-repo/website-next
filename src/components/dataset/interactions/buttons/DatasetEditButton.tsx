@@ -2,11 +2,11 @@
 
 import { PencilIcon } from "lucide-react";
 
-import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Button } from "@/components/ui/button";
 
 export function DatasetEditButton() {
-  const { editing, setEditing } = useDatasetEdits();
+  const { editing, setEditing } = useDataset();
 
   return (
     !editing && (

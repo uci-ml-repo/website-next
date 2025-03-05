@@ -3,7 +3,7 @@ import React, { cache } from "react";
 
 import { auth } from "@/auth";
 import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
-import { DatasetEditsProvider } from "@/components/dataset/context/DatasetEditsContext";
+import { DatasetProvider } from "@/components/dataset/context/DatasetContext";
 import { DatasetFilesStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetEditingCard } from "@/components/dataset/edit/DatasetEditingCard";
@@ -89,7 +89,7 @@ export default async function Layout({
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
       <DatasetFilesStatusProvider dataset={dataset}>
-        <DatasetEditsProvider user={session?.user} dataset={dataset}>
+        <DatasetProvider user={session?.user} dataset={dataset}>
           <Main className="space-y-6">
             <div className="backdrop-gradient-blur space-y-6">
               <div className="space-y-2">
@@ -113,7 +113,7 @@ export default async function Layout({
 
             {children}
           </Main>
-        </DatasetEditsProvider>
+        </DatasetProvider>
       </DatasetFilesStatusProvider>
     </DatasetBookmarkProvider>
   );

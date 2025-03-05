@@ -1,6 +1,5 @@
 import type { AxiosProgressEvent } from "axios";
 import { FolderArchiveIcon, UploadIcon, XIcon } from "lucide-react";
-import Link from "next/link";
 import { useCallback } from "react";
 import { type FileRejection, useDropzone } from "react-dropzone";
 import type { UseFormReturn } from "react-hook-form";
@@ -20,7 +19,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CONTACT_ROUTE } from "@/lib/routes";
 import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
 
 import type { formSchema } from "./ZipFileUploadForm";
@@ -80,23 +78,6 @@ export function ZipFileUploadFormItem({
       name="zipFile"
       render={() => (
         <FormItem>
-          <FormLabel className="text-2xl font-bold">
-            Upload Dataset Files
-          </FormLabel>
-          <div className="pb-2 text-muted-foreground">
-            <div>
-              Upload a single zip file containing the entire contents of your
-              dataset, including any additional files and documentation.
-            </div>
-            <div>
-              Note: the maximum upload size is 512MB. If your dataset is larger
-              than this, please{" "}
-              <Link href={CONTACT_ROUTE} className="underline">
-                contact us
-              </Link>
-              .
-            </div>
-          </div>
           <FormControl>
             <div
               {...getRootProps()}
@@ -181,9 +162,9 @@ export function ZipFileUploadFormItem({
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <div className="text-pretty text-lg font-bold">
+                  <FormLabel className="text-pretty text-lg font-bold">
                     Drag & drop a file to upload (.zip)
-                  </div>
+                  </FormLabel>
                   <div className="text-muted-foreground">or</div>
                   <Button variant="outline" tabIndex={-1} type="button">
                     Browse files

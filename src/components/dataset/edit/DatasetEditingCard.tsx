@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 
 export function DatasetEditingCard() {
-  const { editing, setEditing } = useDatasetEdits();
+  const { editing, setEditing } = useDataset();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
