@@ -63,6 +63,9 @@ CREATE TYPE "public"."discussion_report_reason" AS ENUM(
 );
 
 --> statement-breakpoint
+CREATE TYPE "public"."edit_status" AS ENUM('pending', 'approved', 'rejected');
+
+--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('admin', 'librarian', 'curator', 'basic');
 
 --> statement-breakpoint
@@ -274,6 +277,29 @@ CREATE TABLE "discussion_upvote" (
 );
 
 --> statement-breakpoint
+CREATE TABLE "edit" (
+  "dataset_id" INTEGER NOT NULL,
+  "version" INTEGER NOT NULL,
+  "new_data" JSONB NOT NULL,
+  "reviewed_at" TIMESTAMP,
+  "reviewed_by" uuid,
+  "status" "edit_status" DEFAULT 'pending' NOT NULL,
+  CONSTRAINT "edit_dataset_id_version_pk" PRIMARY KEY ("dataset_id", "version"),
+  CONSTRAINT "reviewed_check" CHECK (
+    (
+      "edit"."reviewed_at" IS NULL
+      AND "edit"."reviewed_by" IS NULL
+      AND "edit"."status" = 'pending'
+    )
+    OR (
+      "edit"."reviewed_at" IS NOT NULL
+      AND "edit"."reviewed_by" IS NOT NULL
+      AND "edit"."status" != 'pending'
+    )
+  )
+);
+
+--> statement-breakpoint
 CREATE TABLE "email_verification_token" (
   "id" TEXT PRIMARY KEY NOT NULL,
   "user_id" uuid NOT NULL,
@@ -429,6 +455,14 @@ ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") RE
 --> statement-breakpoint
 ALTER TABLE "discussion_upvote"
 ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "edit"
+ADD CONSTRAINT "edit_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "edit"
+ADD CONSTRAINT "edit_reviewed_by_user_id_fk" FOREIGN KEY ("reviewed_by") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
 
 --> statement-breakpoint
 ALTER TABLE "email_verification_token"

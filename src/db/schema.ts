@@ -312,7 +312,6 @@ export const variable = pgTable("variable", {
   missingValues: boolean("missing_values").notNull(),
   description: text("description"),
   units: text("units"),
-
   datasetId: integer("dataset_id")
     .notNull()
     .references(() => dataset.id, { onDelete: "cascade" }),
@@ -334,7 +333,6 @@ export const keyword = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     status: approvalStatus("status").notNull(),
     name: text("name").notNull(),
-
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [
@@ -385,9 +383,7 @@ export const paper = pgTable("paper", {
   venue: text("venue").notNull(),
   year: integer("year").notNull(),
   citationCount: integer("citation_count"),
-
   url: text("url").notNull(),
-
   datasetId: integer("dataset_id")
     .notNull()
     .references(() => dataset.id, { onDelete: "cascade" }),
@@ -413,7 +409,6 @@ export const bookmark = pgTable(
     datasetId: integer("dataset_id")
       .notNull()
       .references(() => dataset.id, { onDelete: "cascade" }),
-
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [unique().on(t.userId, t.datasetId)],
@@ -439,16 +434,13 @@ export const discussion = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     title: text("title").notNull(),
     content: text("content").notNull(),
-
     userId: uuid("user_id")
       .notNull()
       .references(() => user.id),
     datasetId: integer("dataset_id")
       .notNull()
       .references(() => dataset.id, { onDelete: "cascade" }),
-
     upvoteCount: integer("upvote_count").default(0).notNull(),
-
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }),
   },
@@ -476,16 +468,13 @@ export const discussionRelations = relations(discussion, ({ one, many }) => ({
 export const discussionComment = pgTable("discussion_comment", {
   id: uuid("id").primaryKey().defaultRandom(),
   content: text("content").notNull(),
-
   userId: uuid("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   discussionId: uuid("discussion_id")
     .notNull()
     .references(() => discussion.id, { onDelete: "cascade" }),
-
   upvoteCount: integer("upvote_count").default(0).notNull(),
-
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }),
 });
@@ -624,7 +613,6 @@ export const user = pgTable(
     password: text("password"),
     image: text("image"),
     role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
-
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [

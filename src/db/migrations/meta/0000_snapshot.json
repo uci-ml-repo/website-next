@@ -1,5 +1,5 @@
 {
-  "id": "7ef45ecc-681d-4d09-90a8-92b91046af03",
+  "id": "b38b365b-92b4-4354-9b02-f49a8a456c18",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -236,12 +236,6 @@
         "year_created": {
           "name": "year_created",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "subtitle": {
-          "name": "subtitle",
-          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -551,12 +545,6 @@
         "year_created": {
           "name": "year_created",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "subtitle": {
-          "name": "subtitle",
-          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -1288,6 +1276,86 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.edit": {
+      "name": "edit",
+      "schema": "",
+      "columns": {
+        "dataset_id": {
+          "name": "dataset_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "new_data": {
+          "name": "new_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reviewed_at": {
+          "name": "reviewed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reviewed_by": {
+          "name": "reviewed_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "edit_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "edit_dataset_id_dataset_id_fk": {
+          "name": "edit_dataset_id_dataset_id_fk",
+          "tableFrom": "edit",
+          "tableTo": "dataset",
+          "columnsFrom": ["dataset_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "edit_reviewed_by_user_id_fk": {
+          "name": "edit_reviewed_by_user_id_fk",
+          "tableFrom": "edit",
+          "tableTo": "user",
+          "columnsFrom": ["reviewed_by"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "edit_dataset_id_version_pk": {
+          "name": "edit_dataset_id_version_pk",
+          "columns": ["dataset_id", "version"]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "reviewed_check": {
+          "name": "reviewed_check",
+          "value": "\n        (\n          \"edit\".\"reviewed_at\" IS NULL\n          AND \"edit\".\"reviewed_by\" IS NULL\n          AND \"edit\".\"status\" = 'pending'\n        )\n        OR (\n          \"edit\".\"reviewed_at\" IS NOT NULL\n          AND \"edit\".\"reviewed_by\" IS NOT NULL\n          AND \"edit\".\"status\" != 'pending'\n        )\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
     "public.email_verification_token": {
       "name": "email_verification_token",
       "schema": "",
@@ -1849,6 +1917,11 @@
       "name": "discussion_report_reason",
       "schema": "public",
       "values": ["spam", "unprofessional", "inappropriate", "other"]
+    },
+    "public.edit_status": {
+      "name": "edit_status",
+      "schema": "public",
+      "values": ["pending", "approved", "rejected"]
     },
     "public.user_role": {
       "name": "user_role",
