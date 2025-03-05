@@ -48,7 +48,16 @@ export default function Page() {
   if (editing && editingFiles) {
     return (
       <div className="space-y-4">
-        <div className="text-2xl font-bold">Replace Dataset Files</div>
+        <div className="flex items-center justify-between">
+          <div className="text-2xl font-bold">Replace Dataset Files</div>
+          <Button
+            variant="secondary"
+            className="lift"
+            onClick={() => setEditingFiles(false)}
+          >
+            Cancel
+          </Button>
+        </div>
 
         <div className="pb-2 text-muted-foreground">
           <div>
