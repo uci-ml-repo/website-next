@@ -1,3 +1,4 @@
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Expandable } from "@/components/ui/expandable";
 import {
   Table,
@@ -7,10 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function DatasetVariables({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetVariables() {
+  const { dataset } = useDataset();
+
   return (
     <div>
       <h2 className="text-2xl font-bold">Variables</h2>

@@ -71,7 +71,7 @@ export function DatasetCardCarousel({
                 <DatasetCard
                   dataset={dataset}
                   className="select-none"
-                  priortiy={index < 5}
+                  priority={index < 5}
                 />
               </CarouselItem>
             ))}
@@ -95,10 +95,10 @@ export function DatasetCardCarousel({
               </CarouselItem>
             )}
           </CarouselContent>
-          <CarouselScrollDots api={api} />
           <CarouselPrevious className="max-md:hidden" />
           <CarouselNext className="max-md:hidden" />
         </Carousel>
+        <CarouselScrollDots api={api} />
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { isEqual } from "lodash";
 import { SearchIcon, Undo2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -12,7 +11,6 @@ import {
   orderByOptions,
 } from "@/components/datasets/DatasetSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
-import { usePrevious } from "@/components/hooks/use-previous";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -83,15 +81,17 @@ export function DatasetSearch() {
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
 
-  const prevOrder = usePrevious(filters.order);
-  const prevLimit = usePrevious(filters.limit);
-  const prevCursor = usePrevious(filters.cursor);
+  // const prevOrder = usePrevious(filters.order);
+  // const prevLimit = usePrevious(filters.limit);
+  // const prevCursor = usePrevious(filters.cursor);
 
-  const isFiltering =
-    isFetching &&
-    (prevOrder === undefined || isEqual(prevOrder, filters.order)) &&
-    (prevLimit === undefined || prevLimit === filters.limit) &&
-    (prevCursor === undefined || prevCursor === filters.cursor);
+  // const isFiltering =
+  //   isFetching &&
+  //   (prevOrder === undefined || isEqual(prevOrder, filters.order)) &&
+  //   (prevLimit === undefined || prevLimit === filters.limit) &&
+  //   (prevCursor === undefined || prevCursor === filters.cursor);
+
+  const isFiltering = isFetching;
 
   return (
     <div className="flex flex-1 flex-col p-1">

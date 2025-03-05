@@ -2,11 +2,13 @@ import { UserIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Badge } from "@/components/ui/badge";
 import { DATASETS_QUERY } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 
-export function DatasetSideData({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetSideData() {
+  const { dataset } = useDataset();
+
   return (
     <div className="space-y-6">
       {/* Keywords */}

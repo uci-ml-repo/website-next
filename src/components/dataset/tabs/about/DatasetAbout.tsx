@@ -1,8 +1,12 @@
+"use client";
+
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { Expandable } from "@/components/ui/expandable";
-import type { DatasetResponse } from "@/lib/types";
 
-export function DatasetAbout({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetAbout() {
+  const { dataset } = useDataset();
+
   return (
     <div>
       <div className="flex items-center space-x-1">

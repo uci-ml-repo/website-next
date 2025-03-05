@@ -7,14 +7,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
 import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
 import { DatasetMetadataDonor } from "@/components/dataset/tabs/about/metadata/DatasetMetadataDonor";
 import { DatasetMetadataIntroductoryPaper } from "@/components/dataset/tabs/about/metadata/DatasetMetadataIntroductoryPaper";
 import { Button } from "@/components/ui/button";
-import type { DatasetResponse } from "@/lib/types";
 
-export function DatasetMetadata({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetMetadata() {
+  const { dataset } = useDataset();
+
   const datasetMetadataContent: { title: string; children: React.ReactNode }[] =
     [
       {
