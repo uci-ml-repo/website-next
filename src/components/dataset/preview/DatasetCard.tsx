@@ -36,6 +36,7 @@ interface DatasetCardProps {
   dataset: DatasetPreviewResponse;
   ref?: React.Ref<HTMLDivElement>;
   className?: string;
+  priortiy?: boolean;
 }
 
 type DatasetStat = {
@@ -44,7 +45,12 @@ type DatasetStat = {
   tooltip?: string;
 };
 
-export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
+export function DatasetCard({
+  dataset,
+  ref,
+  className,
+  priortiy,
+}: DatasetCardProps) {
   const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
 
@@ -87,7 +93,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             alt={`${dataset.title} thumbnail`}
             width={350}
             height={100}
-            priority
+            priority={priortiy}
             className="h-24 w-full rounded-t-2xl object-cover object-center dark:brightness-90"
           />
         </CardHeader>
