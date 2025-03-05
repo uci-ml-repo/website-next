@@ -33,7 +33,7 @@ export function DatasetMiniRow({
           "size-7 shrink-0 rounded-md object-cover dark:brightness-90",
         )}
       />
-      <div className="flex min-w-0 items-center justify-between space-x-2">
+      <div className="flex w-full min-w-0 items-center justify-between space-x-2">
         <div className="truncate text-base font-bold group-hover:underline">
           {dataset.title}
         </div>
