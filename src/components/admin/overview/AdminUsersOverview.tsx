@@ -32,7 +32,7 @@ export async function AdminUsersOverview() {
             <TrendingUpIcon className="size-5" />
             <span>{newWeeklyUsersCount.toLocaleString()}</span>
           </div>
-          <div className="text-muted-foreground">New weekly users</div>
+          <div className="text-muted-foreground">Weekly new users</div>
         </div>
       </div>
       <OverviewCardViewMore
