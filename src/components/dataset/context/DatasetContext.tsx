@@ -15,12 +15,16 @@ interface DatasetContextProps {
   setEditingFiles: React.Dispatch<React.SetStateAction<boolean>>;
   edited: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  editingSection: EditSection | null;
+  setEditingSection: React.Dispatch<React.SetStateAction<EditSection | null>>;
   dataset: DatasetSelect;
 }
 
 const DatasetContext = createContext<DatasetContextProps | undefined>(
   undefined,
 );
+
+export type EditSection = "title" | "description" | "keywords";
 
 export function DatasetProvider({
   user,
@@ -36,6 +40,9 @@ export function DatasetProvider({
 
   const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
   const [editingFiles, setEditingFiles] = useState<boolean>(false);
+  const [editingSection, setEditingSection] = useState<EditSection | null>(
+    null,
+  );
   const [edited, _setEdited] = useState<boolean>(false);
 
   return (
@@ -48,6 +55,8 @@ export function DatasetProvider({
         edited,
         editingFiles,
         setEditingFiles,
+        editingSection,
+        setEditingSection,
       }}
     >
       {children}

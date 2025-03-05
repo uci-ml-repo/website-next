@@ -27,7 +27,7 @@ export function DatasetEditingCard() {
     editing &&
     !isDraftOrPending(dataset) && (
       <>
-        <Card className="w-full bg-uci-gold text-uci-gold-foreground">
+        <Card className="w-full bg-uci-gold text-uci-gold-foreground animate-in fade-in-0">
           <CardContent className="flex items-center justify-between gap-y-2 px-4 py-2 max-md:flex-col">
             <div className="flex items-center space-x-2">
               <span className="text-pretty text-center text-lg font-bold">
