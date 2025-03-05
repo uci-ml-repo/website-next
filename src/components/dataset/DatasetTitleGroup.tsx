@@ -19,10 +19,12 @@ export function DatasetTitleGroup() {
   return (
     <div className="flex items-center justify-between">
       <div className="w-full min-w-0 space-y-6">
-        <h1 className="flex items-center space-x-1 truncate text-pretty text-3xl font-bold text-foreground">
-          <span>{dataset.title}</span>
+        <div className="flex items-center space-x-1">
+          <h1 className="truncate text-pretty text-3xl font-bold text-foreground">
+            {dataset.title}
+          </h1>
           {editing && <DatasetEditFieldButton />}
-        </h1>
+        </div>
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton dataset={dataset} />
 

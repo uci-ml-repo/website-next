@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { DATASET_ROUTE } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 const externalFormSchema = formSchema.extend({
@@ -83,7 +84,11 @@ export function DatasetExternalCreateForm() {
                   <FormMessage className="text-sm" />
                 </div>
 
-                <div className="text-sm text-muted-foreground">
+                <div
+                  className={cn("text-xs text-muted-foreground", {
+                    "text-destructive": field.value.length > 100,
+                  })}
+                >
                   {field.value.length}/100
                 </div>
               </div>
