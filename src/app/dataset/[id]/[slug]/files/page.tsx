@@ -1,5 +1,6 @@
 "use client";
 
+import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
@@ -9,11 +10,14 @@ import { ZipFileUploadProcessing } from "@/components/dataset/forms/upload/ZipFi
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
 import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/DatasetFilesBrowse";
 import { DatasetFilesProvider } from "@/components/dataset/tabs/files/DatasetFilesContext";
+import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
+import { TabHeader } from "@/components/ui/tab-header";
 import { CONTACT_ROUTE, DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
+import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export default function Page() {
-  const { editing, dataset } = useDataset();
+  const { editing, dataset, editingFiles, setEditingFiles } = useDataset();
   const { filesStatus } = useDatasetFilesStatus();
 
   if (filesStatus === "awaiting-upload") {
@@ -36,12 +40,12 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm dataset={dataset} initialUpload={true} />
+        <ZipFileUploadForm dataset={dataset} />
       </div>
     );
   }
 
-  if (editing) {
+  if (editing && editingFiles) {
     return (
       <div>
         <div className="text-2xl font-bold">Replace Dataset Files</div>
@@ -66,7 +70,10 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm dataset={dataset} />
+        <ZipFileUploadForm
+          dataset={dataset}
+          requireApproval={!isDraftOrPending(dataset)}
+        />
       </div>
     );
   }
@@ -85,14 +92,28 @@ export default function Page() {
 
   if (filesStatus === "unzipped") {
     return (
-      <DatasetFilesProvider
-        rootEntry={{
-          path: DATASET_FILES_UNZIPPED_PATH(dataset),
-          type: "directory",
-        }}
-      >
-        <DatasetFilesBrowse dataset={dataset} />
-      </DatasetFilesProvider>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <TabHeader title="Dataset Files" />
+          {editing && (
+            <Button
+              variant="secondary"
+              className="lift"
+              onClick={() => setEditingFiles(true)}
+            >
+              <PencilIcon /> Replace Files
+            </Button>
+          )}
+        </div>
+        <DatasetFilesProvider
+          rootEntry={{
+            path: DATASET_FILES_UNZIPPED_PATH(dataset),
+            type: "directory",
+          }}
+        >
+          <DatasetFilesBrowse dataset={dataset} />
+        </DatasetFilesProvider>
+      </div>
     );
   }
 

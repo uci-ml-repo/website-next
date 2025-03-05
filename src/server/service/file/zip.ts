@@ -11,11 +11,13 @@ export class FileZipService {
   async unzip({
     absolutePath,
     datasetId,
+    overwrite,
     unzipPath = absolutePath.replace(/\.zip$/, ""),
     limitSize = 5 * 1024 * 1024 * 1024, // 5 GB
   }: {
     absolutePath: string;
     datasetId: number;
+    overwrite?: boolean;
     unzipPath?: string;
     limitSize?: number;
   }) {
@@ -43,6 +45,10 @@ export class FileZipService {
     }
 
     try {
+      if (overwrite) {
+        await fs.remove(unzipPath);
+      }
+
       await fs.ensureDir(unzipPath);
 
       await new Promise<void>((resolve, reject) => {

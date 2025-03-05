@@ -11,6 +11,8 @@ import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 interface DatasetContextProps {
   editable: boolean;
   editing: boolean;
+  editingFiles: boolean;
+  setEditingFiles: React.Dispatch<React.SetStateAction<boolean>>;
   edited: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   dataset: DatasetSelect;
@@ -33,11 +35,20 @@ export function DatasetProvider({
     !!user && (isPriviliged(user.role) || dataset.userId === user.id);
 
   const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
+  const [editingFiles, setEditingFiles] = useState<boolean>(false);
   const [edited, _setEdited] = useState<boolean>(false);
 
   return (
     <DatasetContext.Provider
-      value={{ editable, editing, setEditing, dataset, edited }}
+      value={{
+        editable,
+        editing,
+        setEditing,
+        dataset,
+        edited,
+        editingFiles,
+        setEditingFiles,
+      }}
     >
       {children}
     </DatasetContext.Provider>

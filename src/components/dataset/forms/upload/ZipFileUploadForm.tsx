@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { ZipFileUploadFormItem } from "@/components/dataset/forms/upload/ZipFileUploadFormItem";
 import { toast } from "@/components/hooks/use-toast";
@@ -15,9 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import {
+  DATASET_API_ZIP_PENDING_ROUTE,
   DATASET_API_ZIP_ROUTE,
   DATASET_FILES_ZIP_PATH,
-  DATASET_FILES_ZIP_PENDING_PATH,
 } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
@@ -28,11 +29,12 @@ export const formSchema = z.object({
 
 export function ZipFileUploadForm({
   dataset,
-  initialUpload,
+  requireApproval,
 }: {
   dataset: DatasetResponse;
-  initialUpload?: boolean;
+  requireApproval?: boolean;
 }) {
+  const { setEditingFiles } = useDataset();
   const { setFilesStatus, setFileCount, setSize } = useDatasetFilesStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
@@ -52,6 +54,7 @@ export function ZipFileUploadForm({
       }
       setFileCount(response.dataset.fileCount);
       setSize(response.dataset.size);
+      setEditingFiles(false);
     },
   });
 
@@ -62,9 +65,9 @@ export function ZipFileUploadForm({
 
     try {
       await axios.putForm(
-        initialUpload
-          ? DATASET_API_ZIP_ROUTE(dataset)
-          : DATASET_FILES_ZIP_PENDING_PATH(dataset),
+        requireApproval
+          ? DATASET_API_ZIP_PENDING_ROUTE(dataset)
+          : DATASET_API_ZIP_ROUTE(dataset),
         { file: values.zipFile },
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -83,12 +86,15 @@ export function ZipFileUploadForm({
       return;
     }
 
-    setFilesStatus("processing");
+    if (!requireApproval) {
+      setFilesStatus("processing");
 
-    unzipMutation.mutate({
-      path: DATASET_FILES_ZIP_PATH(dataset),
-      datasetId: dataset.id,
-    });
+      unzipMutation.mutate({
+        path: DATASET_FILES_ZIP_PATH(dataset),
+        datasetId: dataset.id,
+        overwrite: true,
+      });
+    }
   }
 
   function cancelUpload() {

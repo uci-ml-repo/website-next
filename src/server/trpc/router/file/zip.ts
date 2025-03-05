@@ -6,11 +6,18 @@ import { datasetFilesUpdateProcedure } from "@/server/trpc/middleware/dataset-fi
 
 export const fileZipRouter = router({
   unzip: datasetFilesUpdateProcedure
-    .input(z.object({ path: z.string(), datasetId: z.number() }))
+    .input(
+      z.object({
+        path: z.string(),
+        datasetId: z.number(),
+        overwrite: z.boolean().optional(),
+      }),
+    )
     .mutation(({ input, ctx }) =>
       service.file.zip.unzip({
         absolutePath: ctx.absolutePath,
         datasetId: input.datasetId,
+        overwrite: input.overwrite,
       }),
     ),
 });

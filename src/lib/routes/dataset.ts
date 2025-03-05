@@ -237,3 +237,21 @@ export function DATASET_API_ZIP_ROUTE({
 }) {
   return path.join(DATASET_API_FILES_ROUTE({ id, status }), `${slug}.zip`);
 }
+
+/**
+ * @example "/api/static/public/53/iris.pending.zip"
+ */
+export function DATASET_API_ZIP_PENDING_ROUTE({
+  id,
+  slug,
+  status,
+}: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return path.join(
+    DATASET_API_FILES_ROUTE({ id, status }),
+    `${slug}.pending.zip`,
+  );
+}
