@@ -5,6 +5,7 @@ import "highlight.js/styles/github-dark.min.css";
 import { BookMarkedIcon, InfoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Copy } from "@/components/ui/copy";
@@ -25,14 +26,11 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
-import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DatasetCitationButtonProps {
-  dataset: DatasetResponse;
-}
+export function DatasetCitationButton() {
+  const { dataset } = useDataset();
 
-export function DatasetCitationButton({ dataset }: DatasetCitationButtonProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [citationOption, setCitationOption] = useState<string>("apa");
   const [citationText, setCitationText] = useState<string>("");

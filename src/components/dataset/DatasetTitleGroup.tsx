@@ -26,13 +26,11 @@ export function DatasetTitleGroup() {
           {editing && <DatasetEditFieldButton />}
         </div>
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
-          <DatasetDownloadButton dataset={dataset} />
+          <DatasetDownloadButton />
 
-          {dataset.isAvailablePython && (
-            <DatasetPythonImportButton dataset={dataset} />
-          )}
+          {dataset.isAvailablePython && <DatasetPythonImportButton />}
 
-          <DatasetCitationButton dataset={dataset} />
+          <DatasetCitationButton />
 
           {editable && <DatasetEditButton />}
         </div>

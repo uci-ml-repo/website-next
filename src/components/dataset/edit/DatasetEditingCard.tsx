@@ -11,14 +11,16 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export function DatasetEditingCard() {
-  const { editing, setEditing } = useDataset();
+  const { editing, setEditing, edited, dataset } = useDataset();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
   return (
-    editing && (
+    editing &&
+    !isDraftOrPending(dataset) && (
       <>
         <Card className="w-full bg-uci-gold text-uci-gold-foreground">
           <CardContent className="flex items-center justify-between px-4 py-2 max-md:flex-col">
@@ -30,7 +32,13 @@ export function DatasetEditingCard() {
                 variant="secondary"
                 size="default"
                 className="lift"
-                onClick={() => setCancelDialogOpen(true)}
+                onClick={() => {
+                  if (edited) {
+                    setCancelDialogOpen(true);
+                  } else {
+                    setEditing(false);
+                  }
+                }}
               >
                 Cancel
               </Button>

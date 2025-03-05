@@ -17,7 +17,10 @@ import { PROFILE_ROUTE } from "@/lib/routes";
 import { enumToArray } from "@/lib/utils";
 import { caller } from "@/server/trpc/query/server";
 
-export const metadata: Metadata = { title: "Profile" };
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "View and edit your profile and work.",
+};
 
 export default async function Layout({
   children,

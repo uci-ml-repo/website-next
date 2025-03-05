@@ -14,7 +14,11 @@ import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
-import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ZIP_PATH } from "@/lib/routes";
+import {
+  DATASET_API_ZIP_ROUTE,
+  DATASET_FILES_ZIP_PATH,
+  DATASET_FILES_ZIP_PENDING_PATH,
+} from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -22,7 +26,13 @@ export const formSchema = z.object({
   zipFile: z.instanceof(File, { message: "A zip file is required" }),
 });
 
-export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
+export function ZipFileUploadForm({
+  dataset,
+  initialUpload,
+}: {
+  dataset: DatasetResponse;
+  initialUpload?: boolean;
+}) {
   const { setFilesStatus, setFileCount, setSize } = useDatasetFilesStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
@@ -52,7 +62,9 @@ export function ZipFileUploadForm({ dataset }: { dataset: DatasetResponse }) {
 
     try {
       await axios.putForm(
-        DATASET_API_ZIP_ROUTE(dataset),
+        initialUpload
+          ? DATASET_API_ZIP_ROUTE(dataset)
+          : DATASET_FILES_ZIP_PENDING_PATH(dataset),
         { file: values.zipFile },
         {
           headers: { "Content-Type": "multipart/form-data" },

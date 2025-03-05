@@ -4,7 +4,11 @@ import { DatasetFiltersDesktop } from "@/components/datasets/DatasetFiltersDeskt
 import { DatasetSearch } from "@/components/datasets/DatasetSearch";
 import { Main } from "@/components/layout/Main";
 
-export const metadata: Metadata = { title: "Datasets" };
+export const metadata: Metadata = {
+  title: "Datasets",
+  description:
+    "Browse hundreds of datasets from the UCI Machine Learning Repository.",
+};
 
 export default function Page() {
   return (

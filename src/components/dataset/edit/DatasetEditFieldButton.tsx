@@ -9,7 +9,7 @@ export function DatasetEditFieldButton() {
   const { editing } = useDataset();
   return (
     editing && (
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" className="shrink-0">
         <PencilIcon />
       </Button>
     )

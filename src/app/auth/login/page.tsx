@@ -6,7 +6,10 @@ import { LoginRegister } from "@/components/auth/LoginRegister";
 import { Main } from "@/components/layout/Main";
 import { HOME_ROUTE } from "@/lib/routes";
 
-export const metadata: Metadata = { title: "Login" };
+export const metadata: Metadata = {
+  title: "Login or Register",
+  description: "Login or Resister a UCI Machine Learning Repository account.",
+};
 
 export default async function Page() {
   const session = await auth();

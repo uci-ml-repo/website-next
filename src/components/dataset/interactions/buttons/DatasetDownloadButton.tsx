@@ -4,23 +4,21 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { DownloadIcon, ExternalLinkIcon, UploadIcon } from "lucide-react";
 import Link from "next/link";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize, cn } from "@/lib/utils";
 
-interface DatasetDownloadButtonProps extends ButtonProps {
-  dataset: DatasetResponse;
-}
+interface DatasetDownloadButtonProps extends ButtonProps {}
 
 export function DatasetDownloadButton({
-  dataset,
   className,
   ...props
 }: DatasetDownloadButtonProps) {
+  const { dataset } = useDataset();
   const { filesStatus, size } = useDatasetFilesStatus();
 
   if (dataset.externalLink) {

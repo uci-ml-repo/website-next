@@ -15,7 +15,7 @@ export const fileReadRouter = router({
     .query(({ ctx, input }) =>
       service.file.read.readFile({
         ...input,
-        absolutePath: ctx.realPath,
+        absolutePath: ctx.absolutePath,
       }),
     ),
 
@@ -23,7 +23,7 @@ export const fileReadRouter = router({
     .input(z.object({ path: z.string() }))
     .query(({ ctx }) =>
       service.file.read.stats({
-        absolutePath: ctx.realPath,
+        absolutePath: ctx.absolutePath,
       }),
     ),
 
@@ -31,7 +31,7 @@ export const fileReadRouter = router({
     .input(z.object({ path: z.string() }))
     .query(({ ctx }) =>
       service.file.read.zipStats({
-        absolutePath: ctx.realPath,
+        absolutePath: ctx.absolutePath,
       }),
     ),
 
@@ -39,7 +39,7 @@ export const fileReadRouter = router({
     .input(z.object({ path: z.string() }))
     .query(({ ctx }) =>
       service.file.read.checksum({
-        absolutePath: ctx.realPath,
+        absolutePath: ctx.absolutePath,
       }),
     ),
 });

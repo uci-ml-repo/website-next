@@ -51,7 +51,7 @@ export const fileAccessProcedure = t.procedure
 
     return next({
       ctx: {
-        realPath: realAccessPath,
+        absolutePath: realAccessPath,
       },
     });
   });

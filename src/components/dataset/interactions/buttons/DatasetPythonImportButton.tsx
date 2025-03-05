@@ -1,13 +1,12 @@
 "use client";
 
-import hljs from "highlight.js";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { PythonIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Copy } from "@/components/ui/copy";
+import { CodeBlock } from "@/components/ui/code-block";
 import {
   Dialog,
   DialogContent,
@@ -16,11 +15,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { DatasetResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
-interface DatasetPythonImportButtonProps {
-  dataset: DatasetResponse;
-}
+const pipInstallCommand = `pip install ucimlrepo`;
 
 function getPythonSnippet({ id, slug }: DatasetResponse) {
   let variableName = slug.replace(/[^a-zA-Z0-9]/g, "_");
@@ -41,25 +37,8 @@ print(${variableName}.metadata)
 print(${variableName}.variables) `;
 }
 
-const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
-  useEffect(() => {
-    hljs.highlightAll();
-  }, []);
-
-  return (
-    <div className={cn("dark relative overflow-hidden rounded-lg")}>
-      <pre>
-        <code className={cn("pr-12 text-sm", language)}>{code}</code>
-      </pre>
-      <Copy text={code} />
-    </div>
-  );
-};
-
-export function DatasetPythonImportButton({
-  dataset,
-}: DatasetPythonImportButtonProps) {
-  const pipInstallCommand = `pip install ucimlrepo`;
+export function DatasetPythonImportButton() {
+  const { dataset } = useDataset();
 
   const pythonCode = getPythonSnippet(dataset);
 

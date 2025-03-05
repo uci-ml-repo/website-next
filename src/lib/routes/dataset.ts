@@ -174,6 +174,21 @@ export function DATASET_FILES_UNZIPPED_PATH({
 }
 
 /**
+ * @example "/public/53/iris.pending"
+ */
+export function DATASET_FILES_UNZIPPED_PENDING_PATH({
+  id,
+  slug,
+  status,
+}: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return DATASET_FILES_UNZIPPED_PATH({ id, slug, status }) + ".new";
+}
+
+/**
  * @example "/public/53/iris.zip"
  */
 export function DATASET_FILES_ZIP_PATH(input: {
@@ -182,6 +197,17 @@ export function DATASET_FILES_ZIP_PATH(input: {
   status: string;
 }) {
   return DATASET_FILES_UNZIPPED_PATH(input) + ".zip";
+}
+
+/**
+ * @example "/public/53/iris.pending.zip"
+ */
+export function DATASET_FILES_ZIP_PENDING_PATH(input: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return DATASET_FILES_UNZIPPED_PATH(input) + ".pending.zip";
 }
 
 /**

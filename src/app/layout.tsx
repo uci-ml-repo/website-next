@@ -31,7 +31,8 @@ export const metadata: Metadata = {
     template: "%s - UCI Machine Learning Repository",
     default: "UCI Machine Learning Repository",
   },
-  description: "UCI Repository for Machine Learning Datasets",
+  description:
+    "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
   metadataBase: new URL(process.env.ORIGIN),
   openGraph: {
     images: [
@@ -80,8 +81,7 @@ export default async function Layout({
                 <AppSidebar session={session} />
                 <div
                   className={cn(
-                    "flex min-h-[100svh] w-full flex-col",
-                    "max-md:!pl-0",
+                    "flex min-h-[100svh] w-full flex-col max-md:!pl-0",
                     "peer-data-[state=collapsed]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:pl-[--sidebar-width-collapsed]",
                     "peer-data-[state=expanded]:xl:pl-[--sidebar-width]",

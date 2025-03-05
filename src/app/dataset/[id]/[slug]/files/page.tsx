@@ -16,10 +16,35 @@ export default function Page() {
   const { editing, dataset } = useDataset();
   const { filesStatus } = useDatasetFilesStatus();
 
+  if (filesStatus === "awaiting-upload") {
+    return (
+      <div>
+        <div className="text-2xl font-bold">Upload Dataset Files</div>
+
+        <div className="pb-2 text-muted-foreground">
+          <div>
+            Upload a single zip file containing the entire contents of your
+            dataset, including any additional files and documentation.
+          </div>
+          <div>
+            Note: the maximum upload size is 1GB. If your dataset is larger than
+            this, please{" "}
+            <Link href={CONTACT_ROUTE} className="underline">
+              contact us
+            </Link>
+            .
+          </div>
+        </div>
+
+        <ZipFileUploadForm dataset={dataset} initialUpload={true} />
+      </div>
+    );
+  }
+
   if (editing) {
     return (
       <div>
-        <div className="text-2xl font-bold">Edit Dataset Files</div>
+        <div className="text-2xl font-bold">Replace Dataset Files</div>
 
         <div className="pb-2 text-muted-foreground">
           <div>
@@ -46,31 +71,6 @@ export default function Page() {
     );
   }
 
-  if (filesStatus === "awaiting-upload") {
-    return (
-      <div>
-        <div className="text-2xl font-bold">Upload Dataset Files</div>
-
-        <div className="pb-2 text-muted-foreground">
-          <div>
-            Upload a single zip file containing the entire contents of your
-            dataset, including any additional files and documentation.
-          </div>
-          <div>
-            Note: the maximum upload size is 1GB. If your dataset is larger than
-            this, please{" "}
-            <Link href={CONTACT_ROUTE} className="underline">
-              contact us
-            </Link>
-            .
-          </div>
-        </div>
-
-        <ZipFileUploadForm dataset={dataset} />
-      </div>
-    );
-  }
-
   if (filesStatus === "not-unzipped") {
     return (
       <AlternativeCard>
@@ -78,7 +78,7 @@ export default function Page() {
           Files not available for browsing. This may be because the dataset is
           too large. Download the dataset to view files locally.
         </div>
-        <DatasetDownloadButton dataset={dataset} className="w-fit" />
+        <DatasetDownloadButton className="w-fit" />
       </AlternativeCard>
     );
   }
