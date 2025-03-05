@@ -35,6 +35,7 @@ export const datasetQuery = z.object({
 export const privilegedDatasetQuery = datasetQuery.extend({
   status: z.enum(enumToArray(Enums.ApprovalStatus)).array().optional(),
   userId: z.string().uuid().optional(),
+  pendingFirst: z.boolean().optional(),
 });
 
 export const datasetSearchQuery = datasetQuery.required({ search: true });

@@ -222,11 +222,24 @@ export class DatasetFindService {
   }
 
   private async byRawQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
-    const orderBy = query.order
-      ? Object.entries(query.order).map(([field, sort]) =>
-          sortFunction(sort)(datasetView[field as keyof typeof query.order]),
-        )
-      : [desc(datasetView.viewCount)];
+    const orderBy = [];
+
+    if ("pendingFirst" in query && query.pendingFirst) {
+      orderBy.push(sql`
+        CASE
+          WHEN ${datasetView.status} = ${Enums.ApprovalStatus.PENDING} THEN 0
+          ELSE 1
+        END
+      `);
+    }
+
+    orderBy.push(
+      ...(query.order
+        ? Object.entries(query.order).map(([field, sort]) =>
+            sortFunction(sort)(datasetView[field as keyof typeof query.order]),
+          )
+        : [desc(datasetView.viewCount)]),
+    );
 
     return db
       .select(datasetPreviewSelect)

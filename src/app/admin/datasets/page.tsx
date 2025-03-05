@@ -12,6 +12,7 @@ import ApprovalStatus = Enums.ApprovalStatus;
 import { useSimpleSearch } from "@/components/hooks/use-simple-search";
 import type { Option } from "@/components/search/SimpleSearch";
 import { SimpleSearch } from "@/components/search/SimpleSearch";
+import { enumToArray } from "@/lib/utils";
 
 export default function Page() {
   const {
@@ -27,7 +28,7 @@ export default function Page() {
     handleSearchChange,
     clear,
   } = useSimpleSearch<ApprovalStatus>({
-    defaultFilter: ApprovalStatus.PENDING,
+    defaultFilter: "all",
     defaultLimit: 10,
   });
 
@@ -41,15 +42,11 @@ export default function Page() {
 
   const { data, isLoading } = trpc.dataset.find.privilegedByQuery.useQuery({
     search: searchValue,
-    status: status !== "all" ? [status] : undefined,
+    status: status !== "all" ? [status] : enumToArray(Enums.ApprovalStatus),
+    pendingFirst: true,
     limit,
     cursor,
   });
-
-  function _clear() {
-    clear();
-    setStatus("all");
-  }
 
   return (
     <div className="max-w-full space-y-4">
@@ -73,7 +70,7 @@ export default function Page() {
       ) : data && data.datasets.length === 0 ? (
         <div className="flex h-20 flex-col items-center justify-center space-y-2">
           <div className="text-muted-foreground">No datasets found</div>
-          <Button variant="secondary" onClick={_clear}>
+          <Button variant="secondary" onClick={clear}>
             Clear search <Undo2Icon />
           </Button>
         </div>
