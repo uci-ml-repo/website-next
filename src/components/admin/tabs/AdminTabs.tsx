@@ -11,21 +11,49 @@ import {
 } from "@/components/ui/linear-tabs";
 import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";
+import type { ReportCountResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export function AdminTabs({ role }: { role: Enums.UserRole }) {
+export function AdminTabs({
+  role,
+  initialDatasetCount,
+  initialEditCount,
+  initialReportCount,
+}: {
+  role: Enums.UserRole;
+  initialDatasetCount: number;
+  initialEditCount: number;
+  initialReportCount: ReportCountResponse;
+}) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[1] || "overview";
 
   const { data: datasetCount } =
-    trpc.dataset.find.privilegedCountByQuery.useQuery({
-      status: [Enums.ApprovalStatus.PENDING],
-    });
+    trpc.dataset.find.privilegedCountByQuery.useQuery(
+      {
+        status: [Enums.ApprovalStatus.PENDING],
+      },
+      {
+        initialData: initialDatasetCount,
+      },
+    );
 
-  const { data: editCount } = trpc.edit.find.countByQuery.useQuery({
-    status: [Enums.EditStatus.PENDING],
-  });
+  const { data: editCount } = trpc.edit.find.countByQuery.useQuery(
+    {
+      status: [Enums.EditStatus.PENDING],
+    },
+    {
+      initialData: initialEditCount,
+    },
+  );
+
+  const { data: reportCount } = trpc.report.find.countAll.useQuery(
+    {},
+    {
+      initialData: initialReportCount,
+    },
+  );
 
   return (
     <LinearTabs
@@ -62,7 +90,8 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
 
           <LinearTabsTrigger
             value="reports"
-            badgeValue={0}
+            badgeValue={reportCount.totalCount}
+            badgeVariant={reportCount.totalCount ? "gold-strong" : undefined}
             link={path.join(ADMIN_ROUTE, "reports")}
           >
             Reports

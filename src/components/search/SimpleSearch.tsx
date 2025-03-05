@@ -48,7 +48,7 @@ export function SimpleSearch({
           onChange={handleSearchChange}
         />
       </div>
-      <div className="flex items-center justify-end space-x-4 max-sm:w-full">
+      <div className="flex items-center justify-end space-x-2 max-sm:w-full">
         <div className="text-nowrap text-sm text-muted-foreground max-xxs:hidden">
           {filterLabel}
         </div>

@@ -47,7 +47,7 @@ export function DiscussionCommentReportDialog({
   const session = useSession();
 
   const createReportMutation =
-    trpc.discussion.comment.report.create.useMutation();
+    trpc.report.discussionComment.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

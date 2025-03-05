@@ -53,7 +53,7 @@ export default function Page() {
         setSearchValue={setInputValue}
         handleSearchChange={handleSearchChange}
         searchPlaceholder="Search datasets"
-        filterLabel="Filter Status:"
+        filterLabel="Status:"
         filterValue={status || "all"}
         onFilterChange={(value) => {
           setStatus(value as ApprovalStatus | "all");

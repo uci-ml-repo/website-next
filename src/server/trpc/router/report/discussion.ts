@@ -5,17 +5,17 @@ import { enumToArray } from "@/lib/utils";
 import { service } from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 
-export const datasetReportRouter = router({
+export const reportDiscussionRouter = router({
   create: procedure
     .input(
       z.object({
-        datasetId: z.number(),
-        reason: z.enum(enumToArray(Enums.DatasetReportReason)),
-        details: z.string(),
+        discussionId: z.string(),
+        reason: z.enum(enumToArray(Enums.DiscussionReportReason)),
+        details: z.string().optional(),
         userId: z.string().optional(),
       }),
     )
-    .mutation(({ input }) => service.report.dataset.create(input)),
+    .mutation(({ input }) => service.report.discussion.create(input)),
 
   resolve: procedure
     .input(
@@ -23,5 +23,5 @@ export const datasetReportRouter = router({
         reportId: z.string(),
       }),
     )
-    .mutation(({ input }) => service.report.dataset.resolve(input)),
+    .mutation(({ input }) => service.report.discussion.resolve(input)),
 });

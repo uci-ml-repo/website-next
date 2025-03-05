@@ -10,10 +10,6 @@ export type DatasetPreviewResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byQuery"]["datasets"][number]
 >;
 
-export type DatasetQueryResponse = NonNullable<
-  RouterOutput["dataset"]["find"]["byQuery"]
->;
-
 export type AcceptedDatasetResponse = RequireNonNullable<
   DatasetResponse,
   AcceptedDatasetRequiredFields
@@ -25,4 +21,8 @@ export type DiscussionResponse = NonNullable<
 
 export type DiscussionCommentResponse = NonNullable<
   RouterOutput["discussion"]["comment"]["find"]["byId"]
+>;
+
+export type ReportCountResponse = NonNullable<
+  RouterOutput["report"]["find"]["countAll"]
 >;
