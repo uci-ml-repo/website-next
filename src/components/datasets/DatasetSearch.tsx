@@ -149,6 +149,9 @@ export function DatasetSearch() {
                       filterCount === 1 ? "filter" : "filters"
                     }`
                   : ""}
+                {!isFiltering && isFetching && (
+                  <Spinner className="mx-1 size-5" />
+                )}
               </div>
               <div>
                 {data.datasets.map((dataset) => (
