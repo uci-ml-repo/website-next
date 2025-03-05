@@ -98,7 +98,7 @@ export const dataset = pgTable(
       .default(Enums.ApprovalStatus.DRAFT)
       .notNull(),
     viewCount: integer("view_count").default(0).notNull(),
-    downloadCount: integer("download_count").default(0).notNull(),
+    downloadCount: integer("download_count"),
     dataTypes: datasetDataType("data_types").array(),
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),
@@ -112,6 +112,20 @@ export const dataset = pgTable(
     unzipped: boolean("unzipped"),
   },
   (t) => [
+    check(
+      "external_check",
+      sql`
+        (
+          ${t.externalLink} IS NULL
+          AND ${t.downloadCount} IS NOT NULL
+        )
+        OR (
+          ${t.externalLink} IS NOT NULL
+          AND ${t.externalLink} ~* '^https?://'
+          AND ${t.downloadCount} IS NULL
+        )
+      `,
+    ),
     check(
       "accepted_check",
       sql`
@@ -137,7 +151,6 @@ export const dataset = pgTable(
           )
           OR (
             ${t.externalLink} IS NOT NULL
-            AND ${t.externalLink} ~ * '^https?://'
             AND ${t.size} IS NULL
             AND ${t.fileCount} IS NULL
           )
@@ -180,7 +193,7 @@ export const datasetView = pgTable(
     slug: text("slug").notNull(),
     status: approvalStatus("status").notNull(),
     viewCount: integer("view_count").notNull(),
-    downloadCount: integer("download_count").notNull(),
+    downloadCount: integer("download_count"),
     dataTypes: datasetDataType("data_types").array(),
     tasks: datasetTask("tasks").array(),
     featureTypes: datasetFeatureType("feature_types").array(),

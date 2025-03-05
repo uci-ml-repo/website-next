@@ -49,7 +49,13 @@ export class DatasetCreateService {
 
       const [createdDataset] = await tx
         .insert(dataset)
-        .values({ title, externalLink, userId, slug })
+        .values({
+          title,
+          externalLink,
+          userId,
+          slug,
+          downloadCount: externalLink ? null : 0,
+        })
         .returning();
 
       const directoryPath = path.join(

@@ -21,36 +21,36 @@ export function DatasetInteractions({
   className,
   ...props
 }: DatasetActivityProps) {
-  const activity = [
-    {
-      icon: EyeIcon,
-      value: abbreviateDecimal(dataset.viewCount),
-      tooltip: `${dataset.viewCount.toLocaleString("en")} Views`,
-    },
-    {
-      icon: DownloadIcon,
-      value: abbreviateDecimal(dataset.downloadCount),
-      tooltip: `${dataset.downloadCount.toLocaleString("en")} Downloads`,
-    },
-  ];
-
   return (
     <div
       className={cn("flex items-center space-x-4 p-0.5", className)}
       {...props}
     >
       <TooltipProvider delayDuration={200}>
-        {activity.map((activityItem) => (
-          <Tooltip key={activityItem.tooltip}>
+        <Tooltip>
+          <TooltipTrigger className="flex items-center space-x-1">
+            <EyeIcon className="size-4 lg:size-5" />
+            <span className="text-sm">
+              {abbreviateDecimal(dataset.viewCount)}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            {dataset.viewCount.toLocaleString()} Views
+          </TooltipContent>
+        </Tooltip>
+        {dataset.downloadCount !== null && (
+          <Tooltip>
             <TooltipTrigger className="flex items-center space-x-1">
-              <activityItem.icon className="size-4 lg:size-5" />
-              <span className="text-sm">{activityItem.value}</span>
+              <DownloadIcon className="size-4 lg:size-5" />
+              <span className="text-sm">
+                {abbreviateDecimal(dataset.downloadCount)}
+              </span>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {activityItem.tooltip}
+              {dataset.downloadCount.toLocaleString()} Downloads
             </TooltipContent>
           </Tooltip>
-        ))}
+        )}
         <DatasetBookmarkButton dataset={dataset} />
       </TooltipProvider>
       <DatasetExtendedOptions dataset={dataset} />

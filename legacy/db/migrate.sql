@@ -250,6 +250,7 @@ DO $$
   END
 $$;
 
+--> statement-breakpoint
 CREATE TABLE "dataset" (
   "id" serial PRIMARY KEY NOT NULL,
   "title" TEXT NOT NULL,
@@ -265,16 +266,27 @@ CREATE TABLE "dataset" (
   "slug" TEXT NOT NULL,
   "status" "approval_status" DEFAULT 'draft' NOT NULL,
   "view_count" INTEGER DEFAULT 0 NOT NULL,
-  "download_count" INTEGER DEFAULT 0 NOT NULL,
+  "download_count" INTEGER,
   "data_types" "dataset_characteristic" [],
   "tasks" "dataset_task" [],
   "feature_types" "dataset_feature_type" [],
   "size" BIGINT,
   "file_count" INTEGER,
-  "user_id" uuid NOT NULL,
+  "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "unzipped" BOOLEAN,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
+  CONSTRAINT "external_check" CHECK (
+    (
+      "dataset"."external_link" IS NULL
+      AND "dataset"."download_count" IS NOT NULL
+    )
+    OR (
+      "dataset"."external_link" IS NOT NULL
+      AND "dataset"."external_link" ~* '^https?://'
+      AND "dataset"."download_count" IS NULL
+    )
+  ),
   CONSTRAINT "accepted_check" CHECK (
     "dataset"."status" = 'draft'
     OR (
@@ -295,7 +307,6 @@ CREATE TABLE "dataset" (
       )
       OR (
         "dataset"."external_link" IS NOT NULL
-        AND "dataset"."external_link" ~* '^https?://'
         AND "dataset"."size" IS NULL
         AND "dataset"."file_count" IS NULL
       )
@@ -502,7 +513,7 @@ VALUES
     rec.has_graphics,
     rec.is_available_python,
     rec.view_count,
-    rec.download_count,
+    CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.download_count END,
     rec.slug,
     rec.user_id,
     rec.data_types,

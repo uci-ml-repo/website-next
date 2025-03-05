@@ -1,5 +1,5 @@
 {
-  "id": "f77952e9-132e-4188-88ac-59703df98bb5",
+  "id": "c98f3ef5-4140-4fcc-b638-8a8b0bc22031",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -315,8 +315,7 @@
           "name": "download_count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": 0
+          "notNull": false
         },
         "data_types": {
           "name": "data_types",
@@ -391,13 +390,17 @@
       },
       "policies": {},
       "checkConstraints": {
+        "external_check": {
+          "name": "external_check",
+          "value": "\n        (\n          \"dataset\".\"external_link\" IS NULL\n          AND \"dataset\".\"download_count\" IS NOT NULL\n        )\n        OR (\n          \"dataset\".\"external_link\" IS NOT NULL\n          AND \"dataset\".\"external_link\" ~* '^https?://'\n          AND \"dataset\".\"download_count\" IS NULL\n        )\n      "
+        },
         "accepted_check": {
           "name": "accepted_check",
           "value": "\n        \"dataset\".\"status\" = 'draft'\n        OR (\n          \"dataset\".\"year_created\" IS NOT NULL\n          AND \"dataset\".\"doi\" IS NOT NULL\n          AND \"dataset\".\"instance_count\" IS NOT NULL\n          AND \"dataset\".\"description\" IS NOT NULL\n          AND \"dataset\".\"subject_area\" IS NOT NULL\n        )\n      "
         },
         "files_check": {
           "name": "files_check",
-          "value": "\n        \"dataset\".\"status\" = 'draft'\n        OR (\n          (\n            \"dataset\".\"external_link\" IS NULL\n            AND \"dataset\".\"size\" IS NOT NULL\n            AND \"dataset\".\"file_count\" IS NOT NULL\n          )\n          OR (\n            \"dataset\".\"external_link\" IS NOT NULL\n            AND \"dataset\".\"external_link\" ~ * '^https?://'\n            AND \"dataset\".\"size\" IS NULL\n            AND \"dataset\".\"file_count\" IS NULL\n          )\n        )\n      "
+          "value": "\n        \"dataset\".\"status\" = 'draft'\n        OR (\n          (\n            \"dataset\".\"external_link\" IS NULL\n            AND \"dataset\".\"size\" IS NOT NULL\n            AND \"dataset\".\"file_count\" IS NOT NULL\n          )\n          OR (\n            \"dataset\".\"external_link\" IS NOT NULL\n            AND \"dataset\".\"size\" IS NULL\n            AND \"dataset\".\"file_count\" IS NULL\n          )\n        )\n      "
         },
         "files_exist_parity": {
           "name": "files_exist_parity",

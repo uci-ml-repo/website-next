@@ -135,10 +135,12 @@ export function DatasetHoverCard({
             <EyeIcon />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
-          <div className="hidden items-center space-x-1 @2xs:flex">
-            <DownloadIcon />
-            <div>{abbreviateDecimal(dataset.downloadCount)}</div>
-          </div>
+          {dataset.downloadCount && (
+            <div className="hidden items-center space-x-1 @2xs:flex">
+              <DownloadIcon />
+              <div>{abbreviateDecimal(dataset.downloadCount)}</div>
+            </div>
+          )}
         </div>
         {dataset.externalLink ? (
           <Badge variant="secondary">External</Badge>
