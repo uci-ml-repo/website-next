@@ -524,6 +524,9 @@ CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
 CREATE INDEX "user_role_index" ON "user" USING btree ("role");
 
 --> statement-breakpoint
+CREATE INDEX "user_created_at_index" ON "user" USING btree ("created_at");
+
+--> statement-breakpoint
 CREATE INDEX "user_email_trgm_search_index" ON "user" USING gin ("email" gin_trgm_ops);
 
 --> statement-breakpoint

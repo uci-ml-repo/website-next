@@ -1,5 +1,5 @@
 {
-  "id": "b38b365b-92b4-4354-9b02-f49a8a456c18",
+  "id": "f77952e9-132e-4188-88ac-59703df98bb5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1719,6 +1719,21 @@
           "columns": [
             {
               "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_created_at_index": {
+          "name": "user_created_at_index",
+          "columns": [
+            {
+              "expression": "created_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
