@@ -46,6 +46,7 @@ const config = {
       screens: {
         xxs: "340px",
         xs: "480px",
+        "2lg": "1120px",
       },
       width: {
         "screen-lg": "1024px",

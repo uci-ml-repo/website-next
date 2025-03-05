@@ -96,6 +96,19 @@ export function DATASET_DISCUSSION_EDIT_ROUTE({
 }
 
 /**
+ * @example "/dataset/53/iris/settings"
+ */
+export function DATASET_SETTINGS_ROUTE({
+  id,
+  slug,
+}: {
+  id: number;
+  slug: string;
+}) {
+  return path.join(DATASET_ROUTE({ id, slug }), "settings");
+}
+
+/**
  * @example "/api/static/public/53"
  */
 export function DATASET_API_FILES_ROUTE({

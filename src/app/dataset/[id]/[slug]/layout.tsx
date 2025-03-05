@@ -91,10 +91,10 @@ export default async function Layout({
         <DatasetEditsProvider user={session?.user} dataset={dataset}>
           <Main className="space-y-6">
             <div className="backdrop-gradient-blur space-y-6">
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <DatasetTitleGroup dataset={dataset} />
 
-                <Card className="rounded-full lg:hidden">
+                <Card className="rounded-full 2lg:hidden">
                   <DatasetInteractions
                     dataset={dataset}
                     className="w-full justify-around"

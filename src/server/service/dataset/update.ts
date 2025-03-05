@@ -80,10 +80,13 @@ export class DatasetUpdateService {
       }
     }
 
-    await db
+    const [updatedDataset] = await db
       .update(dataset)
       .set({ title, slug: newSlug })
-      .where(eq(dataset.id, datasetId));
+      .where(eq(dataset.id, datasetId))
+      .returning();
+
+    return updatedDataset;
   }
 
   async refreshView(id?: number) {

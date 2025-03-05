@@ -31,12 +31,12 @@ export function DatasetTitleGroup({ dataset }: { dataset: DatasetResponse }) {
       {dataset.hasGraphics && (
         <Image
           src={thumbnail}
-          width={300}
-          height={120}
+          width={275}
+          height={100}
           alt="thumbnail"
           className={cn(
-            "ml-10 h-[120px] w-[275px] min-w-64 shrink-0",
-            "rounded-2xl border-2 object-cover object-center dark:brightness-90 max-lg:hidden",
+            "ml-10 h-[100px] w-[275px] min-w-64 shrink-0",
+            "rounded-2xl border-2 object-cover object-center dark:brightness-90 max-2lg:hidden",
           )}
           priority
         />

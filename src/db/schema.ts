@@ -21,6 +21,7 @@ import {
 import { Enums } from "@/db/lib/enums";
 import type {
   AuthorSelect,
+  DatasetSelect,
   PaperSelect,
   UserSelect,
   VariableSelect,
@@ -221,6 +222,18 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
   introductoryPaper: one(paper),
 }));
 
+export const edit = pgTable(
+  "edit",
+  {
+    datasetId: integer("dataset_id").references(() => dataset.id, {
+      onDelete: "cascade",
+    }),
+    version: integer("version"),
+    newData: jsonb("new_data").$type<DatasetSelect>(),
+  },
+  (t) => [primaryKey({ columns: [t.datasetId, t.version] })],
+);
+
 export const datasetReport = pgTable("dataset_report", {
   id: uuid("id").primaryKey().defaultRandom(),
   datasetId: integer("dataset_id")
@@ -349,7 +362,6 @@ export const paper = pgTable("paper", {
   year: integer("year").notNull(),
   citationCount: integer("citation_count"),
 
-  // semanticScholarId: integer("semantic_scholar_id").notNull(),
   url: text("url").notNull(),
 
   datasetId: integer("dataset_id")

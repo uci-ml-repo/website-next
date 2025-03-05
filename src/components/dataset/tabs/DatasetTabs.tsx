@@ -75,6 +75,16 @@ export function DatasetTabs({
 
           {editable && (
             <LinearTabsTrigger
+              value="changelog"
+              link={path.join(basePath, "changelog")}
+              badgeValue={null}
+            >
+              Changelog
+            </LinearTabsTrigger>
+          )}
+
+          {editable && (
+            <LinearTabsTrigger
               value="settings"
               link={path.join(basePath, "settings")}
               aria-label="Dataset Settings"
@@ -84,7 +94,7 @@ export function DatasetTabs({
           )}
         </LinearTabsList>
 
-        <DatasetInteractions dataset={dataset} className="max-lg:hidden" />
+        <DatasetInteractions dataset={dataset} className="max-2lg:hidden" />
       </div>
 
       <TabsListBorder />
