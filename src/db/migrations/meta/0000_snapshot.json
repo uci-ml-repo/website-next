@@ -1,5 +1,5 @@
 {
-  "id": "c98f3ef5-4140-4fcc-b638-8a8b0bc22031",
+  "id": "2d5c568e-7a0d-4466-8a96-b9ffe9dc2423",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -623,7 +623,7 @@
           "name": "download_count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "data_types": {
           "name": "data_types",
@@ -1301,6 +1301,19 @@
           "primaryKey": false,
           "notNull": true
         },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "submitted_by": {
+          "name": "submitted_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "reviewed_at": {
           "name": "reviewed_at",
           "type": "timestamp",
@@ -1333,13 +1346,22 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "edit_submitted_by_user_id_fk": {
+          "name": "edit_submitted_by_user_id_fk",
+          "tableFrom": "edit",
+          "tableTo": "user",
+          "columnsFrom": ["submitted_by"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "edit_reviewed_by_user_id_fk": {
           "name": "edit_reviewed_by_user_id_fk",
           "tableFrom": "edit",
           "tableTo": "user",
           "columnsFrom": ["reviewed_by"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },

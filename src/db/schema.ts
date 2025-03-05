@@ -247,8 +247,17 @@ export const edit = pgTable(
       .notNull(),
     version: integer("version").notNull(),
     newData: jsonb("new_data").$type<DatasetSelect>().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    submittedBy: uuid("submitted_by").references(() => user.id, {
+      onDelete: "set null",
+    }),
     reviewedAt: timestamp("reviewed_at", { mode: "date" }),
-    reviewedBy: uuid("reviewed_by").references(() => user.id),
+    reviewedBy: uuid("reviewed_by").references(() => user.id, {
+      onDelete: "set null",
+    }),
     status: editStatus("status").default(Enums.EditStatus.PENDING).notNull(),
   },
   (t) => [
@@ -270,6 +279,17 @@ export const edit = pgTable(
     ),
   ],
 );
+
+export const editRelations = relations(edit, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [edit.datasetId],
+    references: [dataset.id],
+  }),
+  reviewer: one(user, {
+    fields: [edit.reviewedBy],
+    references: [user.id],
+  }),
+}));
 
 export const datasetReport = pgTable("dataset_report", {
   id: uuid("id").primaryKey().defaultRandom(),

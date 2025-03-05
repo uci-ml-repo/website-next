@@ -291,6 +291,8 @@ CREATE TABLE "edit" (
   "dataset_id" INTEGER NOT NULL,
   "version" INTEGER NOT NULL,
   "new_data" JSONB NOT NULL,
+  "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
+  "submitted_by" uuid,
   "reviewed_at" TIMESTAMP,
   "reviewed_by" uuid,
   "status" "edit_status" DEFAULT 'pending' NOT NULL,
@@ -472,7 +474,11 @@ ADD CONSTRAINT "edit_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERE
 
 --> statement-breakpoint
 ALTER TABLE "edit"
-ADD CONSTRAINT "edit_reviewed_by_user_id_fk" FOREIGN KEY ("reviewed_by") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "edit_submitted_by_user_id_fk" FOREIGN KEY ("submitted_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+
+--> statement-breakpoint
+ALTER TABLE "edit"
+ADD CONSTRAINT "edit_reviewed_by_user_id_fk" FOREIGN KEY ("reviewed_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
 
 --> statement-breakpoint
 ALTER TABLE "email_verification_token"

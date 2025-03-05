@@ -38,12 +38,13 @@ export function DatasetEditingCard() {
                   <CircleHelpIcon className="size-5 cursor-pointer" />
                 </HoverCardTrigger>
                 <HoverCardContent className="space-y-2">
+                  <p className="font-bold">Edits require approval</p>
                   <p>
                     Edits made on this dataset must be approved before becoming
                     public.
                   </p>
                   <p>
-                    You can review your pending changes in the{" "}
+                    You can review your pending edits in the{" "}
                     <Link
                       href={DATASET_CHANGELOG_ROUTE(dataset)}
                       className="underline"
