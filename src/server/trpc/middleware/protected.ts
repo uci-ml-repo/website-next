@@ -14,13 +14,15 @@ const t = initTRPC
 
 export const protectedProcedure = t.procedure
   .input(
-    z.object({
-      datasetId: z.number().optional(),
-      draftDatasetId: z.string().optional(),
-      discussionId: z.string().optional(),
-      commentId: z.string().optional(),
-      userId: z.string().optional(),
-    }),
+    z
+      .object({
+        datasetId: z.number().optional(),
+        draftDatasetId: z.string().optional(),
+        discussionId: z.string().optional(),
+        commentId: z.string().optional(),
+        userId: z.string().optional(),
+      })
+      .optional(),
   )
   .use(async ({ ctx, meta, input, next }) => {
     if (!ctx.session?.user) {
@@ -47,13 +49,13 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.IS_USER_ID)) {
-      if (ctx.session.user.id === input.userId) {
+      if (ctx.session.user.id === input?.userId) {
         userRoles.add(MiddlewareRoles.IS_USER_ID);
       }
     }
 
     if (requireRoles.has(MiddlewareRoles.DATASET_OWNER)) {
-      if (!input.datasetId) {
+      if (!input?.datasetId) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
 
@@ -66,7 +68,7 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.DISCUSSION_AUTHOR)) {
-      if (!input.discussionId) {
+      if (!input?.discussionId) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
 
@@ -79,7 +81,7 @@ export const protectedProcedure = t.procedure
     }
 
     if (requireRoles.has(MiddlewareRoles.COMMENT_AUTHOR)) {
-      if (!input.commentId) {
+      if (!input?.commentId) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
 

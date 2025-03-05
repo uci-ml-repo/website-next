@@ -14,25 +14,37 @@ export async function AdminDatasetsOverview() {
     status: [Enums.ApprovalStatus.PENDING],
   });
 
+  const datasetsCount = datasetsQuery.count;
+
   return (
     <OverviewCard
-      title="Users"
+      title="Datasets"
       icon={<DatabaseIcon className="size-5" />}
       href={ADMIN_DATASETS_ROUTE}
     >
-      <div>
-        {datasetsQuery.datasets.map((dataset) => (
-          <DatasetMiniRow
-            key={dataset.id}
-            dataset={dataset}
-            className="lift"
-            showStatus
-          />
-        ))}
-      </div>
+      {datasetsCount > 0 ? (
+        <div>
+          {datasetsQuery.datasets.map((dataset) => (
+            <DatasetMiniRow
+              key={dataset.id}
+              dataset={dataset}
+              className="lift"
+              showStatus
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          <div className="text-muted-foreground">No pending datasets</div>
+        </div>
+      )}
       <OverviewCardViewMore
         href={ADMIN_DATASETS_ROUTE}
-        text={`View ${datasetsQuery.count.toLocaleString()} pending datasets`}
+        text={
+          datasetsCount > 0
+            ? `View ${datasetsCount.toLocaleString()} pending datasets`
+            : "View all datasets"
+        }
       />
     </OverviewCard>
   );
