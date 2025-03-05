@@ -23,6 +23,10 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
       status: [Enums.ApprovalStatus.PENDING],
     });
 
+  const { data: editCount } = trpc.edit.find.countByQuery.useQuery({
+    status: [Enums.EditStatus.PENDING],
+  });
+
   return (
     <LinearTabs
       defaultValue={activeTab}
@@ -49,7 +53,8 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
 
           <LinearTabsTrigger
             value="edits"
-            badgeValue={0}
+            badgeValue={editCount}
+            badgeVariant={editCount ? "gold-strong" : undefined}
             link={path.join(ADMIN_ROUTE, "edits")}
           >
             Edits

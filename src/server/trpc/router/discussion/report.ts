@@ -15,7 +15,7 @@ export const discussionReportRouter = router({
         userId: z.string().optional(),
       }),
     )
-    .mutation(({ input }) => service.discussion.report.create(input)),
+    .mutation(({ input }) => service.report.discussion.create(input)),
 
   resolve: procedure
     .input(
@@ -23,5 +23,5 @@ export const discussionReportRouter = router({
         reportId: z.string(),
       }),
     )
-    .mutation(({ input }) => service.discussion.report.resolve(input)),
+    .mutation(({ input }) => service.report.discussion.resolve(input)),
 });

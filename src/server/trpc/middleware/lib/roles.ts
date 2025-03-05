@@ -16,16 +16,16 @@ export const MiddlewareRoles = {
 export type MiddlewareRole =
   (typeof MiddlewareRoles)[keyof typeof MiddlewareRoles];
 
-const PRIVILEGED_ROLES: Set<Enums.UserRole> = new Set([
+export const PRIVILEGED_ROLES: Enums.UserRole[] = [
   Enums.UserRole.ADMIN,
   Enums.UserRole.LIBRARIAN,
   Enums.UserRole.CURATOR,
-]);
+];
 
-const SUPER_PRIVILEGED_ROLES: Set<Enums.UserRole> = new Set([
+export const SUPER_PRIVILEGED_ROLES: Enums.UserRole[] = [
   Enums.UserRole.ADMIN,
   Enums.UserRole.LIBRARIAN,
-]);
+];
 
 /**
  * Returns true if the user has a privileged role.
@@ -37,7 +37,7 @@ export function isPriviliged(role?: UserRole) {
     return false;
   }
 
-  return PRIVILEGED_ROLES.has(role);
+  return PRIVILEGED_ROLES.includes(role);
 }
 
 /**
@@ -50,7 +50,7 @@ export function isSuperPriviliged(role?: UserRole) {
     return false;
   }
 
-  return SUPER_PRIVILEGED_ROLES.has(role);
+  return SUPER_PRIVILEGED_ROLES.includes(role);
 }
 
 /**

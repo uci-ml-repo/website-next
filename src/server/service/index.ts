@@ -6,9 +6,10 @@ import { EditService } from "@/server/service/edit";
 import { EmailSendService } from "@/server/service/email/send";
 import { FileService } from "@/server/service/file";
 import { KeywordService } from "@/server/service/keyword";
+import { ReportService } from "@/server/service/report";
 import { UserService } from "@/server/service/user";
 
-class RepositoryService {
+class Service {
   constructor(
     readonly attribute = new AttributeService(),
     readonly bookmark = new BookmarkService(),
@@ -18,8 +19,9 @@ class RepositoryService {
     readonly email = new EmailSendService(),
     readonly file = new FileService(),
     readonly keyword = new KeywordService(),
+    readonly report = new ReportService(),
     readonly user = new UserService(),
   ) {}
 }
 
-export const service = new RepositoryService();
+export const service = new Service();

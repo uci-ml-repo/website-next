@@ -15,7 +15,7 @@ export const discussionCommentReportRouter = router({
         userId: z.string().optional(),
       }),
     )
-    .mutation(({ input }) => service.discussion.comment.report.create(input)),
+    .mutation(({ input }) => service.report.discussionComment.create(input)),
 
   resolve: procedure
     .input(
@@ -24,6 +24,6 @@ export const discussionCommentReportRouter = router({
       }),
     )
     .mutation(async ({ input }) =>
-      service.discussion.comment.report.resolve(input),
+      service.report.discussionComment.resolve(input),
     ),
 });

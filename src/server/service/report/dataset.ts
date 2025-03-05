@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { datasetReport } from "@/db/schema";
 
-export class DatasetReportService {
+export class ReportDatasetService {
   async create({
     datasetId,
     reason,

@@ -15,7 +15,7 @@ export const datasetReportRouter = router({
         userId: z.string().optional(),
       }),
     )
-    .mutation(({ input }) => service.dataset.report.create(input)),
+    .mutation(({ input }) => service.report.dataset.create(input)),
 
   resolve: procedure
     .input(
@@ -23,5 +23,5 @@ export const datasetReportRouter = router({
         reportId: z.string(),
       }),
     )
-    .mutation(({ input }) => service.dataset.report.resolve(input)),
+    .mutation(({ input }) => service.report.dataset.resolve(input)),
 });

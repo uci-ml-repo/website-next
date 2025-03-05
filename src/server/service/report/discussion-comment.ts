@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 import { discussionCommentReport } from "@/db/schema";
 
-export class DiscussionCommentReportService {
+export class ReportDiscussionCommentService {
   async create({
     discussionCommentId,
     reason,
