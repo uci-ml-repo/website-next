@@ -82,11 +82,13 @@ export function DatasetSearch() {
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
 
+  const prevOrder = usePrevious(filters.order);
   const prevLimit = usePrevious(filters.limit);
   const prevCursor = usePrevious(filters.cursor);
 
   const isFiltering =
     isFetching &&
+    (prevOrder === undefined || prevOrder === filters.order) &&
     (prevLimit === undefined || prevLimit === filters.limit) &&
     (prevCursor === undefined || prevCursor === filters.cursor);
 

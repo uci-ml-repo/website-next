@@ -42,9 +42,9 @@ export function DatasetInteractions({
       <TooltipProvider delayDuration={200}>
         {activity.map((activityItem) => (
           <Tooltip key={activityItem.tooltip}>
-            <TooltipTrigger className="flex items-center space-x-1 text-sm">
+            <TooltipTrigger className="flex items-center space-x-1">
               <activityItem.icon className="size-4 lg:size-5" />
-              <span>{activityItem.value}</span>
+              <span className="text-sm">{activityItem.value}</span>
             </TooltipTrigger>
             <TooltipContent side="bottom">
               {activityItem.tooltip}

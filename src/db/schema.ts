@@ -39,6 +39,8 @@ export const approvalStatus = pgEnum(
   enumToArray(Enums.ApprovalStatus),
 );
 
+export const editStatus = pgEnum("edit_status", enumToArray(Enums.EditStatus));
+
 export const datasetSubjectArea = pgEnum(
   "dataset_subject_area",
   enumToArray(Enums.DatasetSubjectArea),
@@ -225,13 +227,35 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
 export const edit = pgTable(
   "edit",
   {
-    datasetId: integer("dataset_id").references(() => dataset.id, {
-      onDelete: "cascade",
-    }),
-    version: integer("version"),
-    newData: jsonb("new_data").$type<DatasetSelect>(),
+    datasetId: integer("dataset_id")
+      .references(() => dataset.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    version: integer("version").notNull(),
+    newData: jsonb("new_data").$type<DatasetSelect>().notNull(),
+    reviewedAt: timestamp("reviewed_at", { mode: "date" }),
+    reviewedBy: uuid("reviewed_by").references(() => user.id),
+    status: editStatus("status").default(Enums.EditStatus.PENDING).notNull(),
   },
-  (t) => [primaryKey({ columns: [t.datasetId, t.version] })],
+  (t) => [
+    primaryKey({ columns: [t.datasetId, t.version] }),
+    check(
+      "reviewed_check",
+      sql`
+        (
+          ${t.reviewedAt} IS NULL
+          AND ${t.reviewedBy} IS NULL
+          AND ${t.status} = 'pending'
+        )
+        OR (
+          ${t.reviewedAt} IS NOT NULL
+          AND ${t.reviewedBy} IS NOT NULL
+          AND ${t.status} != 'pending'
+        )
+      `,
+    ),
+  ],
 );
 
 export const datasetReport = pgTable("dataset_report", {

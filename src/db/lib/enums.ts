@@ -13,6 +13,12 @@ export namespace Enums {
     REJECTED = "rejected",
   }
 
+  export enum EditStatus {
+    PENDING = "pending",
+    APPROVED = "approved",
+    REJECTED = "rejected",
+  }
+
   export enum DatasetSubjectArea {
     BIOLOGY = "biology",
     BUSINESS = "business",
