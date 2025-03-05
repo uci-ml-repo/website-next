@@ -19,7 +19,7 @@ export function DatasetEditPendingActions() {
   const [api, setApi] = useState<CarouselApi>();
 
   return (
-    <div className="space-y-2">
+    <div>
       <Carousel
         opts={{
           align: "start",
@@ -37,18 +37,20 @@ export function DatasetEditPendingActions() {
             <CarouselNext staticPositioning />
           </div>
         </div>
-        <CarouselContent gutter>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem
-              key={index}
-              className="basis-full @xs:basis-1/2 @2xl:basis-1/3 @3xl:basis-1/4"
-            >
-              <DatasetEditPendingActionCard />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
+        <div>
+          <CarouselContent gutter>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <CarouselItem
+                key={index}
+                className="basis-full @xs:basis-1/2 @2xl:basis-1/3 @3xl:basis-1/4"
+              >
+                <DatasetEditPendingActionCard />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselScrollDots api={api} />
+        </div>
       </Carousel>
-      <CarouselScrollDots api={api} />
     </div>
   );
 }
