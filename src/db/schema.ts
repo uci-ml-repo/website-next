@@ -617,6 +617,7 @@ export const user = pgTable(
   },
   (t) => [
     index("user_role_index").on(t.role),
+    index("user_created_at_index").on(t.createdAt),
     index("user_email_trgm_search_index").using(
       "gin",
       sql`${t.email} gin_trgm_ops`,

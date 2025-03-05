@@ -32,7 +32,7 @@ export async function ProfileDiscussionsOverview() {
       icon={<MessageSquareTextIcon className="size-5" />}
       href={PROFILE_DISCUSSIONS_ROUTE}
     >
-      {discussionsQuery.discussions.length > 0 ? (
+      {discussionsCount > 0 ? (
         <>
           <div>
             {discussionsQuery.discussions.map((discussion) => (
@@ -48,7 +48,7 @@ export async function ProfileDiscussionsOverview() {
             href={PROFILE_DISCUSSIONS_ROUTE}
             text={
               discussionsCount > 3
-                ? `View all ${discussionsQuery.discussions.length} discussions`
+                ? `View all ${discussionsCount.toLocaleString()} discussions`
                 : "View all discussions"
             }
           />

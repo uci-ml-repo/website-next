@@ -38,7 +38,7 @@ export async function ProfileBookmarksOverview() {
             href={PROFILE_BOOKMARKS_ROUTE}
             text={
               bookmarkCount > 3
-                ? `View all ${bookmarkCount} bookmarks`
+                ? `View all ${bookmarkCount.toLocaleString()} bookmarks`
                 : "View all bookmarks"
             }
           />

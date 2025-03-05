@@ -6,6 +6,7 @@ import { enumToArray } from "@/lib/utils";
 export const userQuery = z.object({
   search: z.string().optional(),
   role: z.enum(enumToArray(Enums.UserRole)).optional(),
+  createdAfter: z.date().optional(),
   cursor: z.number().int().min(0).optional(),
   limit: z.number().int().min(0).optional(),
 });

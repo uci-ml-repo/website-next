@@ -2,7 +2,7 @@
 
 import { Undo2Icon } from "lucide-react";
 
-import { UserRow } from "@/components/admin/users/UserRow";
+import { UserRow } from "@/components/admin/tabs/users/UserRow";
 import { useSimpleSearch } from "@/components/hooks/use-simple-search";
 import type { Option } from "@/components/search/SimpleSearch";
 import { SimpleSearch } from "@/components/search/SimpleSearch";

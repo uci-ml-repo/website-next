@@ -1,4 +1,4 @@
-import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, count, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { userColumns, userSelect } from "@/db/lib/types";
@@ -47,6 +47,10 @@ function buildQuery(query: UserQuery) {
 
   if (query.role) {
     conditions.push(eq(user.role, query.role));
+  }
+
+  if (query.createdAfter) {
+    conditions.push(gt(user.createdAt, query.createdAfter));
   }
 
   return and(...conditions);

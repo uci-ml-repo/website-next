@@ -52,7 +52,7 @@ export async function ProfileDatasetsOverview() {
             href={PROFILE_DATASETS_ROUTE}
             text={
               datasetCount > 3
-                ? `View all ${datasetCount} datasets`
+                ? `View all ${datasetCount.toLocaleString()} datasets`
                 : "View all datasets"
             }
           />
