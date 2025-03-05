@@ -32,8 +32,8 @@ export default function Page() {
             dataset, including any additional files and documentation.
           </div>
           <div>
-            Note: the maximum upload size is 512MB. If your dataset is larger
-            than this, please{" "}
+            Note: the maximum upload size is 1GB. If your dataset is larger than
+            this, please{" "}
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
             </Link>
@@ -57,8 +57,8 @@ export default function Page() {
             dataset, including any additional files and documentation.
           </div>
           <div>
-            Note: the maximum upload size is 512MB. If your dataset is larger
-            than this, please{" "}
+            Note: the maximum upload size is 1GB. If your dataset is larger than
+            this, please{" "}
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
             </Link>

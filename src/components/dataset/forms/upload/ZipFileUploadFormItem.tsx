@@ -69,7 +69,7 @@ export function ZipFileUploadFormItem({
     multiple: false,
     accept: { "application/zip": [".zip"] },
     maxFiles: 1,
-    maxSize: 1024 * 1024 * 1024,
+    maxSize: 1024 * 1024 * 1024, // 1GB
   });
   const zipFile = form.watch("zipFile");
   return (
