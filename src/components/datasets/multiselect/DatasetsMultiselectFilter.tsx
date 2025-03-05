@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import { AlertCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -39,7 +40,7 @@ export function DatasetMultiSelectFilter({
   );
 
   useEffect(() => {
-    if (JSON.stringify(filterValues ?? []) !== JSON.stringify(selectedValues)) {
+    if (!isEqual(filterValues ?? [], selectedValues)) {
       setFilters({
         [filterKey]: selectedValues.length ? selectedValues : undefined,
         cursor: 0,

@@ -6,8 +6,8 @@ import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBoo
 import { DatasetEditsProvider } from "@/components/dataset/context/DatasetEditsContext";
 import { DatasetFilesStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
+import { DatasetEditingCard } from "@/components/dataset/edit/DatasetEditingCard";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
-import { DatasetEditingCard } from "@/components/dataset/tabs/DatasetEditingCard";
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";

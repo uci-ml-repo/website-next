@@ -1,14 +1,13 @@
 "use client";
 
-import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 
 import { useDatasetEdits } from "@/components/dataset/context/DatasetEditsContext";
+import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { DatasetCitationButton } from "@/components/dataset/interactions/buttons/DatasetCitationButton";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
 import { DatasetEditButton } from "@/components/dataset/interactions/buttons/DatasetEditButton";
 import { DatasetPythonImportButton } from "@/components/dataset/interactions/buttons/DatasetPythonImportButton";
-import { Button } from "@/components/ui/button";
 import { DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -22,11 +21,7 @@ export function DatasetTitleGroup() {
       <div className="w-full min-w-0 space-y-6">
         <h1 className="flex items-center space-x-1 truncate text-pretty text-3xl font-bold text-foreground">
           <span>{dataset.title}</span>
-          {editing && (
-            <Button variant="ghost" size="icon">
-              <PencilIcon />
-            </Button>
-          )}
+          {editing && <DatasetEditFieldButton />}
         </h1>
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton dataset={dataset} />

@@ -1,5 +1,6 @@
 "use client";
 
+import { isEqual } from "lodash";
 import { SearchIcon, Undo2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -88,7 +89,7 @@ export function DatasetSearch() {
 
   const isFiltering =
     isFetching &&
-    (prevOrder === undefined || prevOrder === filters.order) &&
+    (prevOrder === undefined || isEqual(prevOrder, filters.order)) &&
     (prevLimit === undefined || prevLimit === filters.limit) &&
     (prevCursor === undefined || prevCursor === filters.cursor);
 
