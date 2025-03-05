@@ -22,7 +22,7 @@ export default function Page() {
 
   if (filesStatus === "awaiting-upload") {
     return (
-      <div>
+      <div className="space-y-4">
         <div className="text-2xl font-bold">Upload Dataset Files</div>
 
         <div className="pb-2 text-muted-foreground">
@@ -47,7 +47,7 @@ export default function Page() {
 
   if (editing && editingFiles) {
     return (
-      <div>
+      <div className="space-y-4">
         <div className="text-2xl font-bold">Replace Dataset Files</div>
 
         <div className="pb-2 text-muted-foreground">
@@ -80,13 +80,27 @@ export default function Page() {
 
   if (filesStatus === "not-unzipped") {
     return (
-      <AlternativeCard>
-        <div className="text-pretty text-center text-muted-foreground">
-          Files not available for browsing. This may be because the dataset is
-          too large. Download the dataset to view files locally.
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <TabHeader title="Dataset Files" />
+          {editing && (
+            <Button
+              variant="secondary"
+              className="lift"
+              onClick={() => setEditingFiles(true)}
+            >
+              <PencilIcon /> Replace Files
+            </Button>
+          )}
         </div>
-        <DatasetDownloadButton className="w-fit" />
-      </AlternativeCard>
+        <AlternativeCard>
+          <div className="text-pretty text-center text-muted-foreground">
+            Files not available for browsing. This may be because the dataset is
+            too large. Download the dataset to view files locally.
+          </div>
+          <DatasetDownloadButton className="w-fit" />
+        </AlternativeCard>
+      </div>
     );
   }
 

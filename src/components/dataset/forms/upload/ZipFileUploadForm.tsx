@@ -118,7 +118,7 @@ export function ZipFileUploadForm({
         />
         <Button
           type="submit"
-          className="w-full"
+          className="lift w-full"
           variant="gold"
           disabled={pending}
         >
