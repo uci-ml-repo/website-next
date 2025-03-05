@@ -20,6 +20,8 @@ const badgeVariants = cva(
         positive: "border-positive bg-positive/5 text-positive shadow",
         blue: "border-uci-blue bg-uci-blue/5 text-uci-blue shadow",
         gold: "border-uci-gold bg-uci-gold/5 text-uci-gold shadow brightness-[.8]",
+        "gold-strong":
+          "border-uci-gold bg-uci-gold text-uci-gold-foreground shadow",
         outline: "text-foreground",
       },
       size: {

@@ -41,6 +41,7 @@ export function AdminTabs({ role }: { role: Enums.UserRole }) {
           <LinearTabsTrigger
             value="datasets"
             badgeValue={datasetCount ?? null}
+            badgeVariant={datasetCount ? "gold-strong" : undefined}
             link={path.join(ADMIN_ROUTE, "datasets")}
           >
             Datasets
