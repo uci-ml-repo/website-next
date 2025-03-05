@@ -14,7 +14,7 @@ export function DatasetFiltersClear() {
         variant="secondary"
         size="xs"
         className={cn(
-          "animate-in fade-in-0",
+          "animate-in fade-in-0 slide-in-from-right",
           "hover:bg-destructive hover:text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground",
         )}
         onClick={() => clearFilters({ except: ["order"] })}

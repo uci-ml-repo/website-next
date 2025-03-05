@@ -82,7 +82,7 @@ export function Multiselect({
               )}
             >
               <span className="truncate">{value}</span>
-              <XIcon className="size-3 text-muted-foreground group-hover:text-destructive group-focus:text-destructive" />
+              <XIcon className="size-3 stroke-[3] text-muted-foreground group-hover:text-destructive group-focus:text-destructive" />
             </Badge>
           </motion.button>
         ))}

@@ -1,5 +1,8 @@
 "use client";
 
+import { HoverCardTrigger } from "@radix-ui/react-hover-card";
+import { CircleHelpIcon } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
@@ -11,6 +14,8 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { HoverCard, HoverCardContent } from "@/components/ui/hover-card";
+import { DATASET_CHANGELOG_ROUTE } from "@/lib/routes";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export function DatasetEditingCard() {
@@ -23,11 +28,34 @@ export function DatasetEditingCard() {
     !isDraftOrPending(dataset) && (
       <>
         <Card className="w-full bg-uci-gold text-uci-gold-foreground">
-          <CardContent className="flex items-center justify-between px-4 py-2 max-md:flex-col">
-            <div className="text-pretty text-center text-lg font-bold">
-              You are editing this dataset
+          <CardContent className="flex items-center justify-between gap-y-2 px-4 py-2 max-md:flex-col">
+            <div className="flex items-center space-x-2">
+              <span className="text-pretty text-center text-lg font-bold">
+                You are editing this dataset
+              </span>
+              <HoverCard openDelay={200} closeDelay={200}>
+                <HoverCardTrigger>
+                  <CircleHelpIcon className="size-5 cursor-pointer" />
+                </HoverCardTrigger>
+                <HoverCardContent className="space-y-2">
+                  <p>
+                    Edits made on this dataset must be approved before becoming
+                    public.
+                  </p>
+                  <p>
+                    You can review your pending changes in the{" "}
+                    <Link
+                      href={DATASET_CHANGELOG_ROUTE(dataset)}
+                      className="underline"
+                    >
+                      changelog
+                    </Link>
+                    .
+                  </p>
+                </HoverCardContent>
+              </HoverCard>
             </div>
-            <div className="space-x-2">
+            <div className="flex gap-2 max-xs:w-full max-xs:flex-col">
               <Button
                 variant="secondary"
                 size="default"
@@ -43,7 +71,7 @@ export function DatasetEditingCard() {
                 Cancel
               </Button>
               <Button variant="default" size="default" className="lift">
-                Save
+                Submit for review
               </Button>
             </div>
           </CardContent>
