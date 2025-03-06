@@ -19,6 +19,7 @@ import {
   DATASET_API_ZIP_PENDING_ROUTE,
   DATASET_API_ZIP_ROUTE,
   DATASET_FILES_ZIP_PATH,
+  DATASET_FILES_ZIP_PENDING_PATH,
 } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -87,15 +88,15 @@ export function ZipFileUploadForm({
       return;
     }
 
-    if (!requireApproval) {
-      setFilesStatus("processing");
+    setFilesStatus("processing");
 
-      unzipMutation.mutate({
-        path: DATASET_FILES_ZIP_PATH(dataset),
-        datasetId: dataset.id,
-        overwrite: true,
-      });
-    }
+    unzipMutation.mutate({
+      path: requireApproval
+        ? DATASET_FILES_ZIP_PENDING_PATH(dataset)
+        : DATASET_FILES_ZIP_PATH(dataset),
+      datasetId: dataset.id,
+      overwrite: true,
+    });
   }
 
   function cancelUpload() {

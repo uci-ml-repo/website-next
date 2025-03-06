@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
+import { cn } from "@/lib/utils";
 import type { Entry } from "@/server/service/file/find";
 
 export function DatasetFileTreeFile({
@@ -23,7 +24,7 @@ export function DatasetFileTreeFile({
   return (
     <DatasetFileTreeButton
       onClick={() => setCurrentEntry(file)}
-      className={currentEntry.path === file.path ? "bg-accent/50" : ""}
+      className={cn({ "bg-accent": currentEntry.path === file.path })}
     >
       <div className="ic flex space-x-2">
         {icon}

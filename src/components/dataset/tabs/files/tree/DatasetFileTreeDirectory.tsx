@@ -6,6 +6,7 @@ import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
 import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
 import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
 import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -36,7 +37,7 @@ export function DatasetFileTreeDirectory({ directory }: { directory: Entry }) {
       <DatasetFileTreeButton
         chevron
         chevronDown={isExpanded}
-        className={currentEntry.path === directory.path ? "bg-accent/50" : ""}
+        className={cn({ "bg-accent": currentEntry.path === directory.path })}
         onClick={() => {
           setCurrentEntry(directory);
           setIsExpanded((prev) => !prev);
