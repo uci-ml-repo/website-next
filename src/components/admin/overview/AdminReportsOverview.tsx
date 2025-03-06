@@ -4,7 +4,7 @@ import {
   OverviewCard,
   OverviewCardViewMore,
 } from "@/components/ui/overview-card";
-import { ADMIN_EDITS_ROUTE } from "@/lib/routes";
+import { ADMIN_REPORTS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
 export async function AdminReportsOverview() {
@@ -15,7 +15,7 @@ export async function AdminReportsOverview() {
     <OverviewCard
       title="Reports"
       icon={<FlagIcon className="size-5" />}
-      href={ADMIN_EDITS_ROUTE}
+      href={ADMIN_REPORTS_ROUTE}
     >
       {totalCount > 0 ? (
         <div>X</div>
@@ -25,7 +25,7 @@ export async function AdminReportsOverview() {
         </div>
       )}
       <OverviewCardViewMore
-        href={ADMIN_EDITS_ROUTE}
+        href={ADMIN_REPORTS_ROUTE}
         text={
           totalCount > 0
             ? `View ${totalCount.toLocaleString()} reports`

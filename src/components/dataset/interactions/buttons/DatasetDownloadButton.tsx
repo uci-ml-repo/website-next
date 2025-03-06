@@ -9,13 +9,20 @@ import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFiles
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { DATASET_API_ZIP_ROUTE, DATASET_FILES_ROUTE } from "@/lib/routes";
+import {
+  DATASET_API_ZIP_PENDING_ROUTE,
+  DATASET_API_ZIP_ROUTE,
+  DATASET_FILES_ROUTE,
+} from "@/lib/routes";
 import { abbreviateFileSize, cn } from "@/lib/utils";
 
-interface DatasetDownloadButtonProps extends ButtonProps {}
+interface DatasetDownloadButtonProps extends ButtonProps {
+  downloadPending?: boolean;
+}
 
 export function DatasetDownloadButton({
   className,
+  downloadPending,
   ...props
 }: DatasetDownloadButtonProps) {
   const { dataset } = useDataset();
@@ -76,7 +83,14 @@ export function DatasetDownloadButton({
       }
       {...props}
     >
-      <a href={DATASET_API_ZIP_ROUTE(dataset)} download>
+      <a
+        href={
+          downloadPending
+            ? DATASET_API_ZIP_ROUTE(dataset)
+            : DATASET_API_ZIP_PENDING_ROUTE(dataset)
+        }
+        download
+      >
         <DownloadIcon />
         <div>
           <span>Download</span>

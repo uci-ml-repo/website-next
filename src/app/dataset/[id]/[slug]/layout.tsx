@@ -92,7 +92,7 @@ export default async function Layout({
         <DatasetProvider user={session?.user} dataset={dataset}>
           <Main className="space-y-6">
             <div className="backdrop-gradient-blur space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <DatasetTitleGroup />
 
                 <Card className="rounded-full 2lg:hidden">
