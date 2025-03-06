@@ -32,6 +32,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
       const currentParams = new URLSearchParams(window.location.search);
+
       const currentFilters: Partial<T> = {};
       for (const [key, value] of currentParams.entries()) {
         currentFilters[key as keyof T] = jsonOrString(value) as T[keyof T];
@@ -40,10 +41,12 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
       const mergedFilters = { ...currentFilters, ...newFilters };
 
       const params = buildQueryFilters(mergedFilters);
-      const url = `${pathname}?${params.toString()}`;
+      const paramsCount = Array.from(params.entries()).length;
 
+      const url = `${pathname}${paramsCount > 0 ? "?" : ""}${params.toString()}`;
       window.history.replaceState(null, "", url);
-      setFilterCount(Array.from(params.entries()).length);
+
+      setFilterCount(paramsCount);
     },
     [pathname],
   );

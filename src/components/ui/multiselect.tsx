@@ -26,6 +26,7 @@ export function Multiselect({
   height = 240,
   overscanCount = 5,
   isLoading,
+  emptyMessage,
 }: {
   placeholder?: string;
   values: string[] | Map<string, string | number>;
@@ -35,6 +36,7 @@ export function Multiselect({
   height?: number;
   overscanCount?: number;
   isLoading?: boolean;
+  emptyMessage?: string;
 }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
@@ -123,7 +125,7 @@ export function Multiselect({
             ) : (
               <CommandList>
                 <CommandEmpty className="px-4 py-2 text-sm text-muted-foreground">
-                  No results found
+                  {emptyMessage ?? "No results found"}
                 </CommandEmpty>
                 {!!matches.length && (
                   <List

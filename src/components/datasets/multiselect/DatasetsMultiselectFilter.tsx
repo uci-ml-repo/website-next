@@ -1,6 +1,8 @@
+"use client";
+
 import { isEqual } from "lodash";
 import { AlertCircleIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
 import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
@@ -9,7 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Multiselect } from "@/components/ui/multiselect";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-interface GenericFilterProps extends DatasetFilterProps {
+interface DatasetMultiSelectFilterProps extends DatasetFilterProps {
   label: string;
   tooltipContent: string;
   placeholder: string;
@@ -20,6 +22,7 @@ interface GenericFilterProps extends DatasetFilterProps {
     isLoading: boolean;
     isError: boolean;
   };
+  emptyMessage?: string;
 }
 
 export function DatasetMultiSelectFilter({
@@ -32,14 +35,21 @@ export function DatasetMultiSelectFilter({
   tooltipOpen,
   dropdownOpen,
   onDropdownOpenChange,
-}: GenericFilterProps) {
+  emptyMessage,
+}: DatasetMultiSelectFilterProps) {
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
+  const initialized = useRef<boolean>(false);
 
   const [selectedValues, setSelectedValues] = useState<string[]>(
     (filters[filterKey] as string[]) ?? [],
   );
 
   useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      return;
+    }
+
     if (!isEqual(filterValues ?? [], selectedValues)) {
       setFilters({
         [filterKey]: selectedValues.length ? selectedValues : undefined,
@@ -85,6 +95,7 @@ export function DatasetMultiSelectFilter({
           setSelectedValues={setSelectedValues}
           values={data ?? []}
           isLoading={isLoading}
+          emptyMessage={emptyMessage}
         />
       )}
     </DatasetFilterItem>

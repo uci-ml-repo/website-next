@@ -2,7 +2,7 @@
 
 import { isEqual } from "lodash";
 import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
@@ -63,21 +63,18 @@ export function DatasetSearch() {
     }
   }, [searchValue, autoOrder, localOrder]);
 
-  const mounted = useRef(false);
-
   useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-      return;
-    }
-
     const order =
       localOrder === "relevance"
         ? undefined
         : { [localOrder]: orderByOptions[localOrder].sort };
 
-    setFilters({ search: searchValue, order: order, cursor: 0 });
-  }, [searchValue, setFilters, localOrder]);
+    setFilters({
+      search: searchValue,
+      order: localOrder !== "viewCount" ? order : undefined,
+      cursor: 0,
+    });
+  }, [filters.order?.viewCount, localOrder, searchValue, setFilters]);
 
   const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
     filters,

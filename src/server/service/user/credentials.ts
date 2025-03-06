@@ -3,7 +3,6 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { emailVerificationToken, passwordResetToken, user } from "@/db/schema";
-import { logger } from "@/lib/logger";
 import { formatEnum, generateToken } from "@/lib/utils";
 import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
@@ -220,12 +219,8 @@ export class UserCredentialsService {
   }
 
   async verifyEmail({ token }: { token: string }) {
-    logger.error(token);
-
     const { success, message, verificationToken } =
       await this.getEmailVerificationToken(token);
-
-    logger.info("verificationToken", verificationToken);
 
     if (!success || !verificationToken) {
       throw new ServiceError({

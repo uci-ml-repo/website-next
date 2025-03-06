@@ -14,6 +14,7 @@ export function DatasetAttributesFilter(props: DatasetFilterProps) {
       tooltipContent="The attributes (column variables) of the dataset"
       placeholder="Search attributes"
       filterKey="attributes"
+      emptyMessage="No attribute filters found. Try broadening your search."
       filterValues={filters.attributes}
       useData={(selectedValues) =>
         trpc.variable.find.remainingFilters.useQuery(
