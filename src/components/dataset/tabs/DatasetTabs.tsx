@@ -49,7 +49,7 @@ export function DatasetTabs({
     {
       datasetId: dataset.id,
     },
-    { placeholderData: initialEditCount },
+    { placeholderData: initialEditCount, enabled: editable },
   );
 
   return (
