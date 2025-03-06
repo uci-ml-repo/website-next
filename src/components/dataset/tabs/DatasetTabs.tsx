@@ -20,11 +20,13 @@ import { trpc } from "@/server/trpc/query/client";
 interface DatasetTabsProps {
   dataset: DatasetResponse;
   initialDiscussionCount: number;
+  initialEditCount: number;
 }
 
 export function DatasetTabs({
   dataset,
   initialDiscussionCount,
+  initialEditCount,
 }: DatasetTabsProps) {
   const { editable } = useDataset();
 
@@ -41,6 +43,13 @@ export function DatasetTabs({
     {
       placeholderData: initialDiscussionCount,
     },
+  );
+
+  const { data: editCount } = trpc.edit.find.countByQuery.useQuery(
+    {
+      datasetId: dataset.id,
+    },
+    { placeholderData: initialEditCount },
   );
 
   return (
@@ -77,7 +86,7 @@ export function DatasetTabs({
             <LinearTabsTrigger
               value="changelog"
               link={path.join(basePath, "changelog")}
-              badgeValue={null}
+              badgeValue={editCount}
             >
               Changelog
             </LinearTabsTrigger>

@@ -20,7 +20,22 @@ function buildQuery(query: EditQuery) {
 
 export class EditFindService {
   async byQuery(query: EditQuery) {
-    return db.select().from(edit).where(buildQuery(query));
+    const edits = db
+      .select()
+      .from(edit)
+      .where(buildQuery(query))
+      .offset(query.offset ?? 0)
+      .limit(query.limit ?? 10);
+
+    const [countQuery] = await db
+      .select({ count: count() })
+      .from(edit)
+      .where(buildQuery(query));
+
+    return {
+      edits,
+      count: countQuery.count,
+    };
   }
 
   async countByQuery(query: EditQuery) {

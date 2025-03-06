@@ -86,6 +86,15 @@ export default async function Layout({
     datasetId: dataset.id,
   });
 
+  let editCount;
+  try {
+    editCount = await caller.edit.find.countByQuery({
+      datasetId: dataset.id,
+    });
+  } catch {
+    editCount = 0;
+  }
+
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
       <DatasetFilesStatusProvider dataset={dataset}>
@@ -106,6 +115,7 @@ export default async function Layout({
               <DatasetTabs
                 dataset={dataset}
                 initialDiscussionCount={discussionCount}
+                initialEditCount={editCount}
               />
 
               <DatasetEditingCard />
