@@ -40,7 +40,7 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm dataset={dataset} />
+        <ZipFileUploadForm />
       </div>
     );
   }
@@ -79,10 +79,7 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm
-          dataset={dataset}
-          requireApproval={!isDraftOrPending(dataset)}
-        />
+        <ZipFileUploadForm requireApproval={!isDraftOrPending(dataset)} />
       </div>
     );
   }

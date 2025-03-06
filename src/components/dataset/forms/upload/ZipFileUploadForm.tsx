@@ -20,7 +20,6 @@ import {
   DATASET_API_ZIP_ROUTE,
   DATASET_FILES_ZIP_PATH,
 } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 export const formSchema = z.object({
@@ -28,13 +27,11 @@ export const formSchema = z.object({
 });
 
 export function ZipFileUploadForm({
-  dataset,
   requireApproval,
 }: {
-  dataset: DatasetResponse;
   requireApproval?: boolean;
 }) {
-  const { setEditingFiles } = useDataset();
+  const { setEditingFiles, dataset } = useDataset();
   const { setFilesStatus, setFileCount, setSize } = useDatasetFilesStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
@@ -45,10 +42,14 @@ export function ZipFileUploadForm({
     defaultValues: { zipFile: undefined },
   });
 
+  const utils = trpc.useUtils();
+
   const unzipMutation = trpc.file.zip.unzip.useMutation({
     onSuccess: (response) => {
       if (response.success) {
         setFilesStatus("unzipped");
+        utils.file.find.list.invalidate();
+        dataset.fileCount = response.dataset.fileCount;
       } else {
         setFilesStatus("not-unzipped");
       }
