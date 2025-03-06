@@ -20,12 +20,12 @@ export const PRIVILEGED_ROLES: Enums.UserRole[] = [
   Enums.UserRole.ADMIN,
   Enums.UserRole.LIBRARIAN,
   Enums.UserRole.CURATOR,
-];
+] as const;
 
 export const SUPER_PRIVILEGED_ROLES: Enums.UserRole[] = [
   Enums.UserRole.ADMIN,
   Enums.UserRole.LIBRARIAN,
-];
+] as const;
 
 /**
  * Returns true if the user has a privileged role.
@@ -33,11 +33,7 @@ export const SUPER_PRIVILEGED_ROLES: Enums.UserRole[] = [
  * @param role the user role to check
  */
 export function isPriviliged(role?: UserRole) {
-  if (!role) {
-    return false;
-  }
-
-  return PRIVILEGED_ROLES.includes(role);
+  return role && PRIVILEGED_ROLES.includes(role);
 }
 
 /**
@@ -46,11 +42,7 @@ export function isPriviliged(role?: UserRole) {
  * @param role the user role to check
  */
 export function isSuperPriviliged(role?: UserRole) {
-  if (!role) {
-    return false;
-  }
-
-  return SUPER_PRIVILEGED_ROLES.includes(role);
+  return role && SUPER_PRIVILEGED_ROLES.includes(role);
 }
 
 /**
