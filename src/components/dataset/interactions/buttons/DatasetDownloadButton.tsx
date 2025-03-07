@@ -16,17 +16,14 @@ import {
 } from "@/lib/routes";
 import { abbreviateFileSize, cn } from "@/lib/utils";
 
-interface DatasetDownloadButtonProps extends ButtonProps {
-  downloadPending?: boolean;
-}
+interface DatasetDownloadButtonProps extends ButtonProps {}
 
 export function DatasetDownloadButton({
   className,
-  downloadPending,
   ...props
 }: DatasetDownloadButtonProps) {
   const { dataset, editing } = useDataset();
-  const { fileStatus } = useDatasetFileStatus();
+  const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
   if (dataset.externalLink) {
     return (
@@ -85,9 +82,9 @@ export function DatasetDownloadButton({
     >
       <a
         href={
-          downloadPending
-            ? DATASET_API_ZIP_ROUTE(dataset)
-            : DATASET_API_ZIP_PENDING_ROUTE(dataset)
+          editing && pendingFileStatus !== "awaiting-upload"
+            ? DATASET_API_ZIP_PENDING_ROUTE(dataset)
+            : DATASET_API_ZIP_ROUTE(dataset)
         }
         download
       >

@@ -10,7 +10,12 @@ export function DatasetEditButton() {
 
   return (
     !editing && (
-      <Button size="lg" variant="secondary" onClick={() => setEditing(true)}>
+      <Button
+        size="lg"
+        variant="secondary"
+        className="lift"
+        onClick={() => setEditing(true)}
+      >
         <PencilIcon /> Edit
       </Button>
     )
