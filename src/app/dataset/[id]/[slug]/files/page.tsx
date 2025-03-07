@@ -115,7 +115,13 @@ export default function Page() {
             pendingFileStatus === "awaiting-upload" ? (
               <div className="flex flex-wrap gap-2">
                 {viewPendingFiles && (
-                  <Button variant="gold">View current files</Button>
+                  <Button
+                    variant="gold"
+                    className="lift"
+                    onClick={() => setViewPendingFiles(false)}
+                  >
+                    View current files
+                  </Button>
                 )}
                 <Button
                   variant="secondary"

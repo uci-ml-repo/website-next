@@ -39,9 +39,8 @@ export function Copy({ text }: CopyProps) {
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-1.5 top-1.5 text-primary"
+            className="absolute right-1.5 top-1.5 rounded-md text-primary"
             onClick={copy}
-            pill={false}
             aria-label="Copy text"
           >
             {copied ? <CheckIcon className="text-positive" /> : <CopyIcon />}

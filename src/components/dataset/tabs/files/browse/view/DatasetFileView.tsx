@@ -19,6 +19,8 @@ export function DatasetFileView() {
 
   const { dataset } = useDataset();
 
+  console.log(currentEntry);
+
   const directoryQuery = trpc.file.find.list.useQuery(
     {
       path: currentEntry.path,

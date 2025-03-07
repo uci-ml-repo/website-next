@@ -14,10 +14,9 @@ export function DatasetFileViewDownloadButton({ path }: { path: string }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            pill={false}
             variant="outline"
             size="icon"
-            className="size-8 shrink-0"
+            className="size-8 shrink-0 rounded-md"
             asChild
           >
             <a href={path} download>

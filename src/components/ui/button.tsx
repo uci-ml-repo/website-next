@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   cn(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium",
     "ring-offset-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   ),
   {
@@ -38,9 +38,6 @@ const buttonVariants = cva(
         "icon-lg": "size-10 [&_svg]:size-5",
         "icon-sm": "size-5 [&_svg]:size-3.5 [&_svg]:stroke-[3]",
       },
-      pill: {
-        true: "rounded-full",
-      },
     },
     defaultVariants: {
       variant: "default",
@@ -56,14 +53,11 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant, size, pill = true, asChild = false, ...props },
-    ref,
-  ) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, pill, className }))}
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />

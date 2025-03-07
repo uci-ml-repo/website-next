@@ -104,7 +104,7 @@ export function DiscussionCreateForm({
                     <Input
                       {...field}
                       pill={false}
-                      className="bg-background px-4 font-bold"
+                      className="rounded-md bg-background px-4 font-bold"
                       variantSize="xl"
                       disabled={isSubmitting || isSubmitSuccessful}
                     />
