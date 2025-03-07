@@ -59,7 +59,7 @@ export function DiscussionCommentEdit({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     editMutation.mutate({
-      id: discussionComment.id,
+      commentId: discussionComment.id,
       ...values,
     });
   }

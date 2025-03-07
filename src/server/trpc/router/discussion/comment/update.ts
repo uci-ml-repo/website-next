@@ -7,6 +7,6 @@ import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 export const discussionCommentUpdateRouter = router({
   byId: protectedProcedure
     .meta([MiddlewareRoles.COMMENT_AUTHOR])
-    .input(z.object({ id: z.string(), content: z.string() }))
+    .input(z.object({ commentId: z.string(), content: z.string() }))
     .mutation(({ input }) => service.discussion.comment.update.byId(input)),
 });
