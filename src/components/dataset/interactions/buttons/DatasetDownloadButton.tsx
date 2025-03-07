@@ -26,7 +26,7 @@ export function DatasetDownloadButton({
   ...props
 }: DatasetDownloadButtonProps) {
   const { dataset, editing } = useDataset();
-  const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
+  const { fileStatus } = useDatasetFileStatus();
 
   if (dataset.externalLink) {
     return (

@@ -14,11 +14,9 @@ import {
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
 import { DATASET_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DatasetTabsProps {
-  dataset: DatasetResponse;
   initialDiscussionCount: number;
   initialEditCount: number;
 }
