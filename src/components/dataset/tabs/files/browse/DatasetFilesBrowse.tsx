@@ -54,7 +54,7 @@ export function DatasetFilesBrowse() {
         </div>
       </div>
       <Split
-        className="h-[75dvh]"
+        className="h-[75dvh] max-h-[1000px]"
         gutterSize={12}
         sizes={splitSizes}
         setSizes={setSplitSizes}

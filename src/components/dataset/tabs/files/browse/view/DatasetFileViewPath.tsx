@@ -24,50 +24,52 @@ export function DatasetFileViewPath() {
   const pathParts = relativePath ? relativePath.split("/") : [];
 
   return (
-    <div className="ml-1 flex items-center space-x-1 overflow-hidden text-lg">
-      {pathParts.map((part, index) => {
-        const cumulativePath = path.join(
-          basePath,
-          ...pathParts.slice(0, index + 1),
-        );
+    <div className="min-w-0 flex-1 @container">
+      <div className="ml-1 hidden items-center space-x-1 overflow-hidden text-lg @3xs:flex max-md:overflow-x-auto">
+        {pathParts.map((part, index) => {
+          const cumulativePath = path.join(
+            basePath,
+            ...pathParts.slice(0, index + 1),
+          );
 
-        const isLast = index === pathParts.length - 1;
+          const isLast = index === pathParts.length - 1;
 
-        return (
-          <React.Fragment key={index}>
-            {index === 0 && (
-              <button
-                className="text-link"
-                onClick={() => {
-                  setCurrentEntry({
-                    path: basePath,
-                    type: "directory",
-                  });
-                }}
-              >
-                <HouseIcon className="size-4 shrink-0" />
-              </button>
-            )}
-            <span className="flex-shrink-0">/</span>
-            {isLast ? (
-              <span className="truncate max-md:text-sm">{part}</span>
-            ) : (
-              <button
-                className="text-link hover:underline"
-                onClick={() => {
-                  setCurrentEntry({
-                    path: cumulativePath,
-                    type: "directory",
-                  });
-                }}
-              >
-                {part}
-              </button>
-            )}
-          </React.Fragment>
-        );
-      })}
-      {pathParts.length === 0 && <HouseIcon className="size-4 shrink-0" />}
+          return (
+            <React.Fragment key={index}>
+              {index === 0 && (
+                <button
+                  className="text-link"
+                  onClick={() => {
+                    setCurrentEntry({
+                      path: basePath,
+                      type: "directory",
+                    });
+                  }}
+                >
+                  <HouseIcon className="size-4 shrink-0" />
+                </button>
+              )}
+              <span className="flex-shrink-0">/</span>
+              {isLast ? (
+                <span className="md:truncate">{part}</span>
+              ) : (
+                <button
+                  className="text-link hover:underline"
+                  onClick={() => {
+                    setCurrentEntry({
+                      path: cumulativePath,
+                      type: "directory",
+                    });
+                  }}
+                >
+                  {part}
+                </button>
+              )}
+            </React.Fragment>
+          );
+        })}
+        {pathParts.length === 0 && <HouseIcon className="size-4 shrink-0" />}
+      </div>
     </div>
   );
 }

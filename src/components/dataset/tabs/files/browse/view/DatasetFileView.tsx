@@ -58,9 +58,9 @@ export function DatasetFileView() {
               <ChevronRightIcon className="size-6" />
             </Button>
           </div>
-          <div className="min-w-0 flex-1">
-            <DatasetFileViewPath />
-          </div>
+
+          <DatasetFileViewPath />
+
           <div className="whitespace-nowrap text-sm text-muted-foreground">
             {currentEntry.type === "directory" ? (
               directoryQuery.data ? (
