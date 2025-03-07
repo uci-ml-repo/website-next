@@ -14,11 +14,23 @@ import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
-import { CONTACT_ROUTE, DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
+import {
+  CONTACT_ROUTE,
+  DATASET_FILES_UNZIPPED_PATH,
+  DATASET_FILES_UNZIPPED_PENDING_PATH,
+} from "@/lib/routes";
 
 export default function Page() {
-  const { editing, dataset, editingFiles, setEditingFiles } = useDataset();
-  const { fileStatus } = useDatasetFileStatus();
+  const {
+    editing,
+    dataset,
+    editingFiles,
+    setEditingFiles,
+    viewPendingFiles,
+    setViewPendingFiles,
+  } = useDataset();
+
+  const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
   if (fileStatus === "awaiting-upload") {
     return (
@@ -86,55 +98,70 @@ export default function Page() {
     );
   }
 
-  if (fileStatus === "not-unzipped") {
+  if (
+    (!viewPendingFiles &&
+      (fileStatus === "unzipped" || fileStatus === "not-unzipped")) ||
+    (viewPendingFiles &&
+      (pendingFileStatus === "unzipped" ||
+        pendingFileStatus === "not-unzipped"))
+  ) {
     return (
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <TabHeader title="Dataset Files" />
-          {editing && (
-            <Button
-              variant="secondary"
-              className="lift"
-              onClick={() => setEditingFiles(true)}
-            >
-              <PencilIcon /> Replace Files
-            </Button>
-          )}
+          {editing &&
+            (dataset.status === Enums.ApprovalStatus.DRAFT ||
+            viewPendingFiles ||
+            pendingFileStatus === "awaiting-upload" ? (
+              <div className="flex flex-wrap gap-2">
+                {viewPendingFiles && (
+                  <Button variant="gold">View current files</Button>
+                )}
+                <Button
+                  variant="secondary"
+                  className="lift"
+                  onClick={() => setEditingFiles(true)}
+                >
+                  <PencilIcon /> Replace Files
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="gold"
+                className="lift"
+                onClick={() => setViewPendingFiles(true)}
+              >
+                View pending files
+              </Button>
+            ))}
         </div>
-        <AlternativeCard>
-          <div className="text-pretty text-center text-muted-foreground">
-            Files not available for browsing. This may be because the dataset is
-            too large. Download the dataset to view files locally.
-          </div>
-          <DatasetDownloadButton className="w-fit" />
-        </AlternativeCard>
-      </div>
-    );
-  }
-
-  if (fileStatus === "unzipped") {
-    return (
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <TabHeader title="Dataset Files" />
-          {editing && (
-            <Button
-              variant="secondary"
-              className="lift"
-              onClick={() => setEditingFiles(true)}
-            >
-              <PencilIcon /> Replace Files
-            </Button>
-          )}
-        </div>
-        <DatasetFilesProvider
-          rootEntry={{
-            path: DATASET_FILES_UNZIPPED_PATH(dataset),
-            type: "directory",
-          }}
-        >
-          <DatasetFilesBrowse dataset={dataset} />
-        </DatasetFilesProvider>
+        {!viewPendingFiles && fileStatus === "unzipped" ? (
+          <DatasetFilesProvider
+            rootEntry={{
+              path: DATASET_FILES_UNZIPPED_PATH(dataset),
+              type: "directory",
+            }}
+          >
+            <DatasetFilesBrowse />
+          </DatasetFilesProvider>
+        ) : viewPendingFiles && pendingFileStatus === "unzipped" ? (
+          <DatasetFilesProvider
+            rootEntry={{
+              path: DATASET_FILES_UNZIPPED_PENDING_PATH(dataset),
+              type: "directory",
+            }}
+          >
+            <DatasetFilesBrowse />
+          </DatasetFilesProvider>
+        ) : (
+          <AlternativeCard>
+            <div className="text-pretty text-center text-muted-foreground">
+              Files not available for browsing. This may be because the dataset
+              is too large. Download the dataset to view files locally.
+            </div>
+            <DatasetDownloadButton className="w-fit" />
+          </AlternativeCard>
+        )}
       </div>
     );
   }

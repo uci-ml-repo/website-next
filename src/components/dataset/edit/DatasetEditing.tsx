@@ -22,7 +22,8 @@ import { isDraftOrPending } from "@/lib/utils/dataset";
 export function DatasetEditing() {
   const { editing, setEditing, dataset, initialDataset } = useDataset();
 
-  const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
+  const [cancelDialogOpen, setFinishEditingDialogOpen] =
+    useState<boolean>(false);
 
   return (
     editing &&
@@ -64,21 +65,21 @@ export function DatasetEditing() {
                 className="lift"
                 onClick={() => {
                   if (!isEqual(dataset, initialDataset)) {
-                    setCancelDialogOpen(true);
+                    setFinishEditingDialogOpen(true);
                   } else {
                     setEditing(false);
                   }
                 }}
               >
-                Cancel
-              </Button>
-              <Button variant="default" size="default" className="lift">
-                Submit for review
+                Finished editing
               </Button>
             </div>
           </CardContent>
         </Card>
-        <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+        <Dialog
+          open={cancelDialogOpen}
+          onOpenChange={setFinishEditingDialogOpen}
+        >
           <DialogContent aria-describedby={undefined}>
             <DialogTitle>Discard edits?</DialogTitle>
             <p>
@@ -92,7 +93,7 @@ export function DatasetEditing() {
                 variant="destructive"
                 onClick={() => {
                   setEditing(false);
-                  setCancelDialogOpen(false);
+                  setFinishEditingDialogOpen(false);
                 }}
               >
                 Discard

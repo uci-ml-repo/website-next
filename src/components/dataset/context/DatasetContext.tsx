@@ -1,7 +1,7 @@
 "use client";
 
 import type { Session } from "next-auth";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import type { DatasetResponse } from "@/lib/types";
 import { isDraftOrPending } from "@/lib/utils/dataset";
@@ -13,6 +13,8 @@ interface DatasetContextProps {
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   editingFiles: boolean;
   setEditingFiles: React.Dispatch<React.SetStateAction<boolean>>;
+  viewPendingFiles: boolean;
+  setViewPendingFiles: React.Dispatch<React.SetStateAction<boolean>>;
   dataset: DatasetResponse;
   setDataset: React.Dispatch<React.SetStateAction<DatasetResponse>>;
   initialDataset: DatasetResponse;
@@ -34,6 +36,13 @@ export function DatasetProvider({
   const [dataset, setDataset] = useState<DatasetResponse>(initialDataset);
   const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
   const [editingFiles, setEditingFiles] = useState<boolean>(false);
+  const [viewPendingFiles, setViewPendingFiles] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!editing) {
+      setViewPendingFiles(false);
+    }
+  }, [editing, setViewPendingFiles]);
 
   const editable =
     !!user && (isPriviliged(user.role) || dataset.userId === user.id);
@@ -46,6 +55,8 @@ export function DatasetProvider({
         setEditing,
         editingFiles,
         setEditingFiles,
+        viewPendingFiles,
+        setViewPendingFiles,
         dataset,
         setDataset,
         initialDataset,

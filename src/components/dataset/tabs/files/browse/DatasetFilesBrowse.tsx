@@ -8,9 +8,8 @@ import { DatasetFileTree } from "@/components/dataset/tabs/files/browse/tree/Dat
 import { DatasetFileView } from "@/components/dataset/tabs/files/browse/view/DatasetFileView";
 import { useIsMobile } from "@/components/hooks/use-mobile";
 import { Split } from "@/components/ui/split";
-import type { DatasetResponse } from "@/lib/types";
 
-export function DatasetFilesBrowse({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetFilesBrowse() {
   const [splitSizes, setSplitSizes] = useState<[number, number]>([20, 80]);
 
   const { currentEntry } = useDatasetFiles();
@@ -33,22 +32,26 @@ export function DatasetFilesBrowse({ dataset }: { dataset: DatasetResponse }) {
   return (
     <div className="flex h-full flex-col space-y-2">
       <div className="flex justify-between md:hidden">
-        <button
-          onClick={() => setSplitSizes([100, 0])}
-          className="flex disabled:invisible"
-          disabled={splitSizes[1] < 50}
-        >
-          <ChevronLeftIcon />
-          <span>Browse</span>
-        </button>
-        <button
-          onClick={() => setSplitSizes([0, 100])}
-          disabled={splitSizes[0] < 50}
-          className="flex disabled:invisible"
-        >
-          <span>View File</span>
-          <ChevronRightIcon />
-        </button>
+        <div>
+          <button
+            onClick={() => setSplitSizes([100, 0])}
+            className="flex disabled:hidden"
+            disabled={splitSizes[1] < 50}
+          >
+            <ChevronLeftIcon />
+            <span>Browse</span>
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => setSplitSizes([0, 100])}
+            disabled={splitSizes[0] < 50}
+            className="flex disabled:hidden"
+          >
+            <span>View File</span>
+            <ChevronRightIcon />
+          </button>
+        </div>
       </div>
       <Split
         className="h-[75dvh]"
@@ -57,10 +60,10 @@ export function DatasetFilesBrowse({ dataset }: { dataset: DatasetResponse }) {
         setSizes={setSplitSizes}
       >
         <div className="flex h-full flex-col overflow-hidden rounded-l-xl border-2 border-r-0">
-          <DatasetFileTree dataset={dataset} />
+          <DatasetFileTree />
         </div>
         <div className="flex h-full flex-col overflow-hidden rounded-r-xl border-2 border-l-0">
-          <DatasetFileView dataset={dataset} />
+          <DatasetFileView />
         </div>
       </Split>
     </div>

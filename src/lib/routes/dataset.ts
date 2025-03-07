@@ -167,7 +167,7 @@ export function DATASET_FILES_UNZIPPED_PENDING_PATH(dataset: {
   slug: string;
   status: string;
 }) {
-  return DATASET_FILES_UNZIPPED_PATH(dataset) + ".new";
+  return DATASET_FILES_UNZIPPED_PATH(dataset) + ".pending";
 }
 
 /**

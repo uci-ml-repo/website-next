@@ -3,6 +3,7 @@
 import { CircleXIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetFileTreeDirectory } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeDirectory";
 import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeFile";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
@@ -10,22 +11,30 @@ import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
-import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
+import {
+  DATASET_FILES_UNZIPPED_PATH,
+  DATASET_FILES_UNZIPPED_PENDING_PATH,
+} from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFileTree({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetFileTree() {
   const { inputValue, setInputValue, searchValue, handleChange, clearSearch } =
     useDebouncedSearch();
 
+  const { dataset, viewPendingFiles } = useDataset();
+
   const rootDirectoryQuery = trpc.file.find.list.useQuery({
-    path: DATASET_FILES_UNZIPPED_PATH(dataset),
+    path: viewPendingFiles
+      ? DATASET_FILES_UNZIPPED_PENDING_PATH(dataset)
+      : DATASET_FILES_UNZIPPED_PATH(dataset),
   });
 
   const searchQuery = trpc.file.find.search.useQuery(
     {
-      path: DATASET_FILES_UNZIPPED_PATH(dataset),
+      path: viewPendingFiles
+        ? DATASET_FILES_UNZIPPED_PENDING_PATH(dataset)
+        : DATASET_FILES_UNZIPPED_PATH(dataset),
       search: searchValue,
     },
     {

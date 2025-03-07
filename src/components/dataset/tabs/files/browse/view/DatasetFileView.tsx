@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
 import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDirectory";
 import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDownloadButton";
@@ -9,13 +10,14 @@ import { DatasetFileViewPath } from "@/components/dataset/tabs/files/browse/view
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFileView({ dataset }: { dataset: DatasetResponse }) {
+export function DatasetFileView() {
   const { currentEntry, fileHistory, back, fileForwardHistory, forward } =
     useDatasetFiles();
+
+  const { dataset } = useDataset();
 
   const directoryQuery = trpc.file.find.list.useQuery(
     {
@@ -37,6 +39,7 @@ export function DatasetFileView({ dataset }: { dataset: DatasetResponse }) {
 
   return (
     <>
+      <div>{currentEntry.path}</div>
       <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
         <div className="flex w-full items-center space-x-2 truncate">
           <div className="flex flex-shrink-0">

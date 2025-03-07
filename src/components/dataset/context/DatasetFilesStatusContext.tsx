@@ -44,7 +44,7 @@ export function DatasetFileStatusProvider({
             fileStatus === "unzipping" ||
             pendingFileStatus === "unzipping"
           ) {
-            return 5_000; // 5 seconds
+            return 1_000; // 5 seconds
           }
           return false;
         },
