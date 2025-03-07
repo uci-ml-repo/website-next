@@ -116,7 +116,10 @@ export function DatasetCard({
                 (stat, i) =>
                   stat.text && (
                     <Tooltip key={i} delayDuration={200}>
-                      <TooltipTrigger className="flex items-center space-x-2 [&_svg]:size-4">
+                      <TooltipTrigger
+                        className="flex items-center space-x-2 [&_svg]:size-4"
+                        tabIndex={-1}
+                      >
                         {stat.icon}
                         <span className="truncate text-sm">{stat.text}</span>
                       </TooltipTrigger>

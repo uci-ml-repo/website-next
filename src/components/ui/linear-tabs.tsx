@@ -232,7 +232,6 @@ export const LinearTabsTrigger = React.forwardRef<
             )}
             tabIndex={0}
             onFocus={(e) => e.preventDefault()}
-            prefetch={false}
           >
             {badgeValue !== undefined ? (
               <div className="flex items-center space-x-2">

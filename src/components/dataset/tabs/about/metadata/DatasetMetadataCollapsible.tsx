@@ -22,7 +22,7 @@ export function DatasetMetadataCollapsible({
   return (
     <Collapsible open={isOpen} onOpenChange={onOpenChange}>
       <CollapsibleTrigger className="w-full" asChild tabIndex={0}>
-        <div className="group flex cursor-pointer items-center justify-between space-x-6 px-2 py-6">
+        <button className="group flex cursor-pointer items-center justify-between space-x-6 px-2 py-6">
           <div className="text-xl font-semibold">{title}</div>
           <div
             className={cn(
@@ -32,7 +32,7 @@ export function DatasetMetadataCollapsible({
           >
             <ChevronDownIcon />
           </div>
-        </div>
+        </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
         <motion.div

@@ -63,7 +63,7 @@ export function DatasetEditingCard() {
                 size="default"
                 className="lift"
                 onClick={() => {
-                  if (isEqual(dataset, initialDataset)) {
+                  if (!isEqual(dataset, initialDataset)) {
                     setCancelDialogOpen(true);
                   } else {
                     setEditing(false);
