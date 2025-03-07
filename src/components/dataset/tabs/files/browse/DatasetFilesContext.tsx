@@ -1,13 +1,18 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
+import {
+  DATASET_FILES_UNZIPPED_PATH,
+  DATASET_FILES_UNZIPPED_PENDING_PATH,
+} from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 
 interface DatasetFilesContextProps {
-  fileHistory: Entry[];
-  fileForwardHistory: Entry[];
+  entryHistory: Entry[];
+  entryForwardHistory: Entry[];
   rootPath: string;
   currentEntry: Entry;
   setCurrentEntry: (value: Entry) => void;
@@ -19,54 +24,60 @@ const DatasetFilesContext = createContext<DatasetFilesContextProps | undefined>(
   undefined,
 );
 
-export function DatasetFilesProvider({
-  children,
-  rootEntry,
-}: {
-  children: ReactNode;
-  rootEntry: Entry;
-}) {
-  const [currentFile, setCurrentFileState] = useState<Entry>(rootEntry);
+export function DatasetFilesProvider({ children }: { children: ReactNode }) {
+  const { dataset, viewPendingFiles } = useDataset();
 
-  const [fileHistory, setFileHistory] = useState<Entry[]>([]);
-  const [fileForwardHistory, setFileForwardHistory] = useState<Entry[]>([]);
+  const rootPath = viewPendingFiles
+    ? DATASET_FILES_UNZIPPED_PENDING_PATH(dataset)
+    : DATASET_FILES_UNZIPPED_PATH(dataset);
 
-  const setCurrentFile = (newDirectory: Entry) => {
-    setFileHistory((prevHistory) => [...prevHistory, currentFile]);
-    setCurrentFileState(newDirectory);
-    setFileForwardHistory([]);
+  const [currentEntry, setCurrentEntryState] = useState<Entry>({
+    path: rootPath,
+    type: "directory",
+  });
+
+  useEffect(() => {
+    setCurrentEntryState({
+      path: rootPath,
+      type: "directory",
+    });
+  }, [rootPath]);
+
+  const [entryHistory, setFileHistory] = useState<Entry[]>([]);
+  const [entryForwardHistory, setEntryForwardHistory] = useState<Entry[]>([]);
+
+  const setCurrentEntry = (newDirectory: Entry) => {
+    setFileHistory((prevHistory) => [...prevHistory, currentEntry]);
+    setCurrentEntryState(newDirectory);
+    setEntryForwardHistory([]);
   };
 
   const back = () => {
-    if (fileHistory.length === 0) {
-      return;
+    if (entryHistory.length > 0) {
+      const previousDirectory = entryHistory[entryHistory.length - 1];
+      setFileHistory((prevHistory) => prevHistory.slice(0, -1));
+      setEntryForwardHistory((prevForward) => [...prevForward, currentEntry]);
+      setCurrentEntryState(previousDirectory);
     }
-
-    const previousDirectory = fileHistory[fileHistory.length - 1];
-    setFileHistory((prevHistory) => prevHistory.slice(0, -1));
-    setFileForwardHistory((prevForward) => [...prevForward, currentFile]);
-    setCurrentFileState(previousDirectory);
   };
 
   const forward = () => {
-    if (fileForwardHistory.length === 0) {
-      return;
+    if (entryForwardHistory.length > 0) {
+      const nextDirectory = entryForwardHistory[entryForwardHistory.length - 1];
+      setEntryForwardHistory((prevForward) => prevForward.slice(0, -1));
+      setFileHistory((prevHistory) => [...prevHistory, currentEntry]);
+      setCurrentEntryState(nextDirectory);
     }
-
-    const nextDirectory = fileForwardHistory[fileForwardHistory.length - 1];
-    setFileForwardHistory((prevForward) => prevForward.slice(0, -1));
-    setFileHistory((prevHistory) => [...prevHistory, currentFile]);
-    setCurrentFileState(nextDirectory);
   };
 
   return (
     <DatasetFilesContext.Provider
       value={{
-        fileHistory,
-        fileForwardHistory,
-        rootPath: rootEntry.path,
-        currentEntry: currentFile,
-        setCurrentEntry: setCurrentFile,
+        entryHistory,
+        entryForwardHistory,
+        rootPath,
+        currentEntry,
+        setCurrentEntry,
         back,
         forward,
       }}

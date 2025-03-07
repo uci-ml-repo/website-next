@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, RotateCcwIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
@@ -10,15 +10,13 @@ import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/browse/Datas
 import { DatasetFilesProvider } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
 import { ZipFileUploadForm } from "@/components/dataset/tabs/files/upload/ZipFileUploadForm";
 import { ZipFileUploadProcessing } from "@/components/dataset/tabs/files/upload/ZipFileUploadProcessing";
+import { AlertError } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
-import {
-  CONTACT_ROUTE,
-  DATASET_FILES_UNZIPPED_PATH,
-  DATASET_FILES_UNZIPPED_PENDING_PATH,
-} from "@/lib/routes";
+import { CONTACT_ROUTE } from "@/lib/routes";
 
 export default function Page() {
   const {
@@ -108,7 +106,10 @@ export default function Page() {
     return (
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <TabHeader title="Dataset Files" />
+          <div className="flex items-center space-x-2">
+            <TabHeader title="Dataset Files" />
+            {viewPendingFiles && <Badge variant="gold-strong">PENDING</Badge>}
+          </div>
           {editing &&
             (dataset.status === Enums.ApprovalStatus.DRAFT ||
             viewPendingFiles ||
@@ -120,7 +121,7 @@ export default function Page() {
                     className="lift"
                     onClick={() => setViewPendingFiles(false)}
                   >
-                    View current files
+                    <RotateCcwIcon /> View current files
                   </Button>
                 )}
                 <Button
@@ -141,22 +142,9 @@ export default function Page() {
               </Button>
             ))}
         </div>
-        {!viewPendingFiles && fileStatus === "unzipped" ? (
-          <DatasetFilesProvider
-            rootEntry={{
-              path: DATASET_FILES_UNZIPPED_PATH(dataset),
-              type: "directory",
-            }}
-          >
-            <DatasetFilesBrowse />
-          </DatasetFilesProvider>
-        ) : viewPendingFiles && pendingFileStatus === "unzipped" ? (
-          <DatasetFilesProvider
-            rootEntry={{
-              path: DATASET_FILES_UNZIPPED_PENDING_PATH(dataset),
-              type: "directory",
-            }}
-          >
+        {(!viewPendingFiles && fileStatus === "unzipped") ||
+        (viewPendingFiles && pendingFileStatus === "unzipped") ? (
+          <DatasetFilesProvider>
             <DatasetFilesBrowse />
           </DatasetFilesProvider>
         ) : (
@@ -172,6 +160,9 @@ export default function Page() {
     );
   }
 
-  // filesStatus === "processing"
-  return <ZipFileUploadProcessing />;
+  if (fileStatus === "unzipping" || pendingFileStatus === "unzipping") {
+    return <ZipFileUploadProcessing />;
+  }
+
+  return <AlertError text="failed to read dataset files" />;
 }

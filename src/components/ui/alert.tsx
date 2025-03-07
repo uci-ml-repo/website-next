@@ -71,8 +71,28 @@ const AlertWarning = ({ text }: { text: string }) => (
   </Alert>
 );
 
+const AlertError = ({ text }: { text: string }) => {
+  return (
+    <Alert variant="destructive">
+      <div className="flex items-center space-x-2">
+        <AlertCircleIcon className="size-5" />
+        <div>
+          <span className="font-bold">Error:</span> {text}
+        </div>
+      </div>
+    </Alert>
+  );
+};
+
 const AlertIrreversible = () => (
   <AlertWarning text="this action cannot be undone." />
 );
 
-export { Alert, AlertDescription, AlertIrreversible, AlertTitle, AlertWarning };
+export {
+  Alert,
+  AlertDescription,
+  AlertError,
+  AlertIrreversible,
+  AlertTitle,
+  AlertWarning,
+};

@@ -2,21 +2,20 @@ import { HouseIcon } from "lucide-react";
 import path from "path";
 import React from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
-import { DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import {
+  DATASET_FILES_UNZIPPED_PATH,
+  DATASET_FILES_UNZIPPED_PENDING_PATH,
+} from "@/lib/routes";
 
-export function DatasetFileViewPath({
-  dataset,
-  className,
-}: {
-  dataset: DatasetResponse;
-  className?: string;
-}) {
+export function DatasetFileViewPath() {
+  const { dataset, viewPendingFiles } = useDataset();
   const { currentEntry, setCurrentEntry } = useDatasetFiles();
 
-  const basePath = DATASET_FILES_UNZIPPED_PATH(dataset);
+  const basePath = viewPendingFiles
+    ? DATASET_FILES_UNZIPPED_PENDING_PATH(dataset)
+    : DATASET_FILES_UNZIPPED_PATH(dataset);
 
   const relativePath = currentEntry.path.startsWith(basePath)
     ? currentEntry.path.slice(basePath.length + 1)
@@ -25,12 +24,7 @@ export function DatasetFileViewPath({
   const pathParts = relativePath ? relativePath.split("/") : [];
 
   return (
-    <div
-      className={cn(
-        "ml-1 flex items-center space-x-1 overflow-hidden text-lg",
-        className,
-      )}
-    >
+    <div className="ml-1 flex items-center space-x-1 overflow-hidden text-lg">
       {pathParts.map((part, index) => {
         const cumulativePath = path.join(
           basePath,

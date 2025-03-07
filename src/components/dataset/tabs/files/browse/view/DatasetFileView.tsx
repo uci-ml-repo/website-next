@@ -1,7 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
-import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
 import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDirectory";
 import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDownloadButton";
@@ -14,12 +13,8 @@ import { abbreviateFileSize } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetFileView() {
-  const { currentEntry, fileHistory, back, fileForwardHistory, forward } =
+  const { currentEntry, entryHistory, back, entryForwardHistory, forward } =
     useDatasetFiles();
-
-  const { dataset } = useDataset();
-
-  console.log(currentEntry);
 
   const directoryQuery = trpc.file.find.list.useQuery(
     {
@@ -41,14 +36,13 @@ export function DatasetFileView() {
 
   return (
     <>
-      <div>{currentEntry.path}</div>
       <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
         <div className="flex w-full items-center space-x-2 truncate">
           <div className="flex flex-shrink-0">
             <Button
               variant="ghost"
               size="icon"
-              disabled={fileHistory.length === 0}
+              disabled={entryHistory.length === 0}
               onClick={back}
               aria-label="Back"
             >
@@ -57,7 +51,7 @@ export function DatasetFileView() {
             <Button
               variant="ghost"
               size="icon"
-              disabled={fileForwardHistory.length === 0}
+              disabled={entryForwardHistory.length === 0}
               onClick={forward}
               aria-label="Forward"
             >
@@ -65,7 +59,7 @@ export function DatasetFileView() {
             </Button>
           </div>
           <div className="min-w-0 flex-1">
-            <DatasetFileViewPath dataset={dataset} />
+            <DatasetFileViewPath />
           </div>
           <div className="whitespace-nowrap text-sm text-muted-foreground">
             {currentEntry.type === "directory" ? (
@@ -93,15 +87,13 @@ export function DatasetFileView() {
           />
         )}
       </div>
-      <>
-        {currentEntry.type === "directory" ? (
-          <DatasetFileViewDirectory directoryEntry={currentEntry} />
-        ) : currentEntry.type === "file" ? (
-          <DatasetFileViewFile fileEntry={currentEntry} />
-        ) : (
-          <div>Unknown file type</div>
-        )}
-      </>
+      {currentEntry.type === "directory" ? (
+        <DatasetFileViewDirectory directoryEntry={currentEntry} />
+      ) : currentEntry.type === "file" ? (
+        <DatasetFileViewFile fileEntry={currentEntry} />
+      ) : (
+        <div>Unknown file type</div>
+      )}
     </>
   );
 }

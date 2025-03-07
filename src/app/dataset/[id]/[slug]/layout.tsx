@@ -106,7 +106,7 @@ export default async function Layout({
           initialStatus={datasetFileStatuses.status}
           initialPendingStatus={datasetFileStatuses.pendingStatus}
         >
-          <Main className="space-y-6">
+          <Main>
             <div className="backdrop-gradient-blur space-y-6">
               <div className="space-y-4">
                 <DatasetTitleGroup />
@@ -125,9 +125,9 @@ export default async function Layout({
               />
 
               <DatasetEditing />
-            </div>
 
-            {children}
+              {children}
+            </div>
           </Main>
         </DatasetFileStatusProvider>
       </DatasetProvider>

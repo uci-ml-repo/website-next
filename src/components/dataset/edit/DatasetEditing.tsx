@@ -71,7 +71,7 @@ export function DatasetEditing() {
                   }
                 }}
               >
-                Finished editing
+                Finish editing
               </Button>
             </div>
           </CardContent>

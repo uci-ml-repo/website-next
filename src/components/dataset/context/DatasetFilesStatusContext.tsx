@@ -34,7 +34,7 @@ export function DatasetFileStatusProvider({
   const [pendingFileStatus, setPendingFileStatus] =
     useState<DatasetFileStatus>(initialPendingStatus);
 
-  const { data: datasetFileStatusPoll } =
+  const { data: datasetFileStatusPoll, isFetching } =
     trpc.dataset.file.zipStatuses.useQuery(
       { datasetId: dataset.id },
       {
@@ -44,7 +44,7 @@ export function DatasetFileStatusProvider({
             fileStatus === "unzipping" ||
             pendingFileStatus === "unzipping"
           ) {
-            return 1_000; // 5 seconds
+            return 5_000; // 5 seconds
           }
           return false;
         },
@@ -56,7 +56,7 @@ export function DatasetFileStatusProvider({
       setFileStatus(datasetFileStatusPoll.status);
       setPendingFileStatus(datasetFileStatusPoll.pendingStatus);
     }
-  }, [datasetFileStatusPoll]);
+  }, [datasetFileStatusPoll, isFetching]);
 
   return (
     <DatasetFileStatusContext.Provider
