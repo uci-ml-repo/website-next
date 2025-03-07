@@ -4,7 +4,7 @@ import React, { cache } from "react";
 import { auth } from "@/auth";
 import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
 import { DatasetProvider } from "@/components/dataset/context/DatasetContext";
-import { DatasetFilesStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
+import { DatasetFileStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
 import { DatasetEditingCard } from "@/components/dataset/edit/DatasetEditingCard";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
@@ -13,6 +13,7 @@ import { Main } from "@/components/layout/Main";
 import { Card } from "@/components/ui/card";
 import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE } from "@/lib/routes";
+import { service } from "@/server/service";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
@@ -95,10 +96,16 @@ export default async function Layout({
     editCount = 0;
   }
 
+  const datasetFileStatuses = await service.dataset.file.zipStatuses(dataset);
+
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
-      <DatasetFilesStatusProvider dataset={dataset}>
-        <DatasetProvider user={session?.user} dataset={dataset}>
+      <DatasetProvider user={session?.user} initialDataset={dataset}>
+        <DatasetFileStatusProvider
+          dataset={dataset}
+          initialStatus={datasetFileStatuses.status}
+          initialPendingStatus={datasetFileStatuses.pendingStatus}
+        >
           <Main className="space-y-6">
             <div className="backdrop-gradient-blur space-y-6">
               <div className="space-y-4">
@@ -123,8 +130,8 @@ export default async function Layout({
 
             {children}
           </Main>
-        </DatasetProvider>
-      </DatasetFilesStatusProvider>
+        </DatasetFileStatusProvider>
+      </DatasetProvider>
     </DatasetBookmarkProvider>
   );
 }

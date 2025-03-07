@@ -1,6 +1,7 @@
 "use client";
 
 import { HoverCardTrigger } from "@radix-ui/react-hover-card";
+import { isEqual } from "lodash";
 import { CircleHelpIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -19,7 +20,7 @@ import { DATASET_CHANGELOG_ROUTE } from "@/lib/routes";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export function DatasetEditingCard() {
-  const { editing, setEditing, edited, dataset } = useDataset();
+  const { editing, setEditing, dataset, initialDataset } = useDataset();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -62,7 +63,7 @@ export function DatasetEditingCard() {
                 size="default"
                 className="lift"
                 onClick={() => {
-                  if (edited) {
+                  if (isEqual(dataset, initialDataset)) {
                     setCancelDialogOpen(true);
                   } else {
                     setEditing(false);

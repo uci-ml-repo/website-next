@@ -3,93 +3,77 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import type { DatasetResponse } from "@/lib/types";
+import type { DatasetFileStatus } from "@/server/service/dataset/file";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DatasetFilesStatusContextProps {
-  filesStatus: DatasetFilesStatus;
-  setFilesStatus: (status: DatasetFilesStatus) => void;
-  size: number | null;
-  setSize: (size: number | null) => void;
-  fileCount: number | null;
-  setFileCount: (count: number | null) => void;
+interface DatasetFileStatusContextProps {
+  fileStatus: DatasetFileStatus;
+  setFileStatus: (status: DatasetFileStatus) => void;
+  pendingFileStatus: DatasetFileStatus;
+  setPendingFileStatus: (status: DatasetFileStatus) => void;
 }
 
-const DatasetFilesStatusContext = createContext<
-  DatasetFilesStatusContextProps | undefined
+const DatasetFileStatusContext = createContext<
+  DatasetFileStatusContextProps | undefined
 >(undefined);
 
-export type DatasetFilesStatus =
-  | "external"
-  | "awaiting-upload"
-  | "processing"
-  | "unzipped"
-  | "not-unzipped";
-
-function datasetToStatus(dataset: DatasetResponse): DatasetFilesStatus {
-  if (dataset.externalLink) {
-    return "external";
-  }
-
-  if (dataset.fileCount === null) {
-    return "awaiting-upload";
-  }
-
-  if (dataset.unzipped === null) {
-    return "processing";
-  }
-
-  return dataset.unzipped ? "unzipped" : "not-unzipped";
-}
-
-export function DatasetFilesStatusProvider({
+export function DatasetFileStatusProvider({
   children,
   dataset,
+  initialStatus,
+  initialPendingStatus,
 }: {
   children: React.ReactNode;
   dataset: DatasetResponse;
+  initialStatus: DatasetFileStatus;
+  initialPendingStatus: DatasetFileStatus;
 }) {
-  const [filesStatus, setFilesStatus] = useState<DatasetFilesStatus>(
-    datasetToStatus(dataset),
-  );
-  const [size, setSize] = useState(dataset.size);
-  const [fileCount, setFileCount] = useState(dataset.fileCount);
+  const [fileStatus, setFileStatus] =
+    useState<DatasetFileStatus>(initialStatus);
 
-  const { data: datasetPoll } = trpc.dataset.find.byId.useQuery(
-    { datasetId: dataset.id },
-    {
-      refetchInterval: (data) => {
-        if (!data || filesStatus === "processing") {
-          return 5_000; // 5 seconds
-        }
-        return false;
+  const [pendingFileStatus, setPendingFileStatus] =
+    useState<DatasetFileStatus>(initialPendingStatus);
+
+  const { data: datasetFileStatusPoll } =
+    trpc.dataset.file.zipStatuses.useQuery(
+      { datasetId: dataset.id },
+      {
+        refetchInterval: (data) => {
+          if (
+            !data ||
+            fileStatus === "unzipping" ||
+            pendingFileStatus === "unzipping"
+          ) {
+            return 5_000; // 5 seconds
+          }
+          return false;
+        },
       },
-    },
-  );
+    );
 
   useEffect(() => {
-    if (datasetPoll) {
-      setFilesStatus(datasetToStatus(datasetPoll));
+    if (datasetFileStatusPoll) {
+      setFileStatus(datasetFileStatusPoll.status);
+      setPendingFileStatus(datasetFileStatusPoll.pendingStatus);
     }
-  }, [datasetPoll]);
+  }, [datasetFileStatusPoll]);
 
   return (
-    <DatasetFilesStatusContext.Provider
+    <DatasetFileStatusContext.Provider
       value={{
-        filesStatus,
-        setFilesStatus,
-        size,
-        fileCount,
-        setSize,
-        setFileCount,
+        fileStatus,
+        setFileStatus,
+        pendingFileStatus,
+        setPendingFileStatus,
       }}
     >
       {children}
-    </DatasetFilesStatusContext.Provider>
+    </DatasetFileStatusContext.Provider>
   );
 }
 
-export function useDatasetFilesStatus() {
-  const context = useContext(DatasetFilesStatusContext);
+export function useDatasetFileStatus() {
+  const context = useContext(DatasetFileStatusContext);
   if (!context) {
     throw new Error(
       "useDatasetFilesStatus must be used within a DatasetFilesStatusProvider",

@@ -1,6 +1,5 @@
 import { eq, sql } from "drizzle-orm";
 import fs from "fs-extra";
-import path from "path";
 
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
@@ -8,19 +7,13 @@ import {
   DATASET_FILES_UNZIPPED_PATH,
   DATASET_FILES_ZIP_PATH,
 } from "@/lib/routes";
+import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
 
 export class DatasetUpdateService {
   async zipStats(input: { id: number; slug: string; status: string }) {
-    if (!process.env.STATIC_FILES_DIRECTORY) {
-      throw new Error("STATIC_FILES_DIRECTORY is not set");
-    }
-
     const zipStats = await service.file.read.zipStats({
-      absolutePath: path.join(
-        process.env.STATIC_FILES_DIRECTORY,
-        DATASET_FILES_ZIP_PATH(input),
-      ),
+      absolutePath: absoluteStaticPath(DATASET_FILES_ZIP_PATH(input)),
     });
 
     await db
@@ -43,21 +36,15 @@ export class DatasetUpdateService {
     title: string;
     isExternal: boolean;
   }) {
-    if (!process.env.STATIC_FILES_DIRECTORY) {
-      throw new Error("STATIC_FILES_DIRECTORY is not defined");
-    }
-
     const existingDataset = await service.dataset.find.byId(datasetId);
     const newSlug = await service.dataset.create.getSlug(title);
 
     if (!isExternal) {
-      const oldZipPath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
+      const oldZipPath = absoluteStaticPath(
         DATASET_FILES_ZIP_PATH(existingDataset),
       );
 
-      const newZipPath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
+      const newZipPath = absoluteStaticPath(
         DATASET_FILES_ZIP_PATH({ ...existingDataset, slug: newSlug }),
       );
 
@@ -65,13 +52,11 @@ export class DatasetUpdateService {
         fs.moveSync(oldZipPath, newZipPath, { overwrite: true });
       }
 
-      const oldUnzippedPath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
+      const oldUnzippedPath = absoluteStaticPath(
         DATASET_FILES_UNZIPPED_PATH(existingDataset),
       );
 
-      const newUnzippedPath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
+      const newUnzippedPath = absoluteStaticPath(
         DATASET_FILES_UNZIPPED_PATH({ ...existingDataset, slug: newSlug }),
       );
 

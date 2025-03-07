@@ -2,10 +2,10 @@ import * as process from "node:process";
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import fs from "fs-extra";
-import path from "path";
 import transformer from "superjson";
 import { z } from "zod";
 
+import { absoluteStaticPath } from "@/lib/utils/file";
 import type { createContext } from "@/server/trpc/context";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
@@ -24,9 +24,7 @@ export const fileAccessProcedure = t.procedure
 
     let realAccessPath: string;
     try {
-      realAccessPath = fs.realpathSync(
-        path.join(process.env.STATIC_FILES_DIRECTORY, input.path),
-      );
+      realAccessPath = fs.realpathSync(absoluteStaticPath(input.path));
     } catch {
       throw new TRPCError({ code: "NOT_FOUND", message: input.path });
     }

@@ -5,7 +5,7 @@ import { DownloadIcon, ExternalLinkIcon, UploadIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
+import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -25,8 +25,8 @@ export function DatasetDownloadButton({
   downloadPending,
   ...props
 }: DatasetDownloadButtonProps) {
-  const { dataset } = useDataset();
-  const { filesStatus, size } = useDatasetFilesStatus();
+  const { dataset, editing } = useDataset();
+  const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
   if (dataset.externalLink) {
     return (
@@ -51,7 +51,10 @@ export function DatasetDownloadButton({
     );
   }
 
-  if (filesStatus === "awaiting-upload") {
+  if (
+    (!editing && fileStatus === "awaiting-upload") ||
+    (editing && pendingFileStatus === "awaiting-upload")
+  ) {
     return (
       <Button asChild variant="gold" size="lg" className="lift w-full">
         <Link href={DATASET_FILES_ROUTE(dataset)}>
@@ -61,7 +64,7 @@ export function DatasetDownloadButton({
     );
   }
 
-  if (filesStatus === "processing") {
+  if (fileStatus === "unzipping") {
     return (
       <Button disabled variant="gold" size="lg" className="lift w-full">
         <Spinner /> Processing Files
@@ -94,8 +97,10 @@ export function DatasetDownloadButton({
         <DownloadIcon />
         <div>
           <span>Download</span>
-          {size && (
-            <span className="ml-1 text-sm">({abbreviateFileSize(size)})</span>
+          {dataset.size && (
+            <span className="ml-1 text-sm">
+              ({abbreviateFileSize(dataset.size)})
+            </span>
           )}
         </div>
       </a>

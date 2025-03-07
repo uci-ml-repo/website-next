@@ -6,14 +6,14 @@ import type { UserRole } from "@/db/lib/enums";
 
 export function ProfileHeader({ session }: { session: Session }) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-between space-x-2">
+      <div className="flex min-w-0 items-center space-x-4">
         <ProfileAvatar
           src={session.user.image}
           className="size-16 sm:size-20"
         />
-        <div>
-          <h1 className="text-xl font-semibold sm:text-3xl">
+        <div className="min-w-0">
+          <h1 className="truncate text-xl font-semibold sm:text-3xl">
             {session.user.name}
           </h1>
           <div className="text-base text-muted-foreground sm:text-xl">

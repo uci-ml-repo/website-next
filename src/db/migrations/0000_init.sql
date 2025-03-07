@@ -126,7 +126,6 @@ CREATE TABLE "dataset" (
   "file_count" INTEGER,
   "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "unzipped" BOOLEAN,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "external_check" CHECK (
     (
@@ -168,7 +167,6 @@ CREATE TABLE "dataset" (
     (
       "dataset"."file_count" IS NULL
       AND "dataset"."size" IS NULL
-      AND "dataset"."unzipped" IS NULL
     )
     OR (
       "dataset"."file_count" IS NOT NULL
@@ -223,8 +221,7 @@ CREATE TABLE "dataset_view" (
   "variables" JSONB[] NOT NULL,
   "variable_names" TEXT[] NOT NULL,
   "user" JSONB NOT NULL,
-  "introductory_paper" JSONB,
-  "unzipped" BOOLEAN
+  "introductory_paper" JSONB
 );
 
 --> statement-breakpoint
@@ -576,7 +573,6 @@ WITH
       "d"."file_count",
       "d"."user_id",
       "d"."donated_at",
-      "d"."unzipped",
       COALESCE(
         (
           SELECT
@@ -730,7 +726,6 @@ INSERT INTO
     "file_count",
     "user_id",
     "donated_at",
-    "unzipped",
     "keywords",
     "authors",
     "variables",
@@ -761,7 +756,6 @@ SELECT
   "file_count",
   "user_id",
   "donated_at",
-  "unzipped",
   "keywords",
   "authors",
   "variables",
@@ -794,7 +788,6 @@ SET
     "file_count",
     "user_id",
     "donated_at",
-    "unzipped",
     "keywords",
     "authors",
     "variables",
@@ -823,7 +816,6 @@ SET
     EXCLUDED."file_count",
     EXCLUDED."user_id",
     EXCLUDED."donated_at",
-    EXCLUDED."unzipped",
     EXCLUDED."keywords",
     EXCLUDED."authors",
     EXCLUDED."variables",

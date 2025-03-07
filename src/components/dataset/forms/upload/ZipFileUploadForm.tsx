@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
+import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { ZipFileUploadFormItem } from "@/components/dataset/forms/upload/ZipFileUploadFormItem";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -32,8 +32,8 @@ export function ZipFileUploadForm({
 }: {
   requireApproval?: boolean;
 }) {
-  const { setEditingFiles, dataset } = useDataset();
-  const { setFilesStatus, setFileCount, setSize } = useDatasetFilesStatus();
+  const { setEditingFiles, dataset, setDataset } = useDataset();
+  const { setFileStatus } = useDatasetFileStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
   const controllerRef = useRef<AbortController | null>(null);
@@ -48,14 +48,16 @@ export function ZipFileUploadForm({
   const unzipMutation = trpc.file.zip.unzip.useMutation({
     onSuccess: (response) => {
       if (response.success) {
-        setFilesStatus("unzipped");
+        setFileStatus("unzipped");
         utils.file.find.list.invalidate();
-        dataset.fileCount = response.dataset.fileCount;
       } else {
-        setFilesStatus("not-unzipped");
+        setFileStatus("not-unzipped");
       }
-      setFileCount(response.dataset.fileCount);
-      setSize(response.dataset.size);
+      setDataset({
+        ...dataset,
+        size: response.dataset.size,
+        fileCount: response.dataset.fileCount,
+      });
       setEditingFiles(false);
     },
   });
@@ -88,7 +90,7 @@ export function ZipFileUploadForm({
       return;
     }
 
-    setFilesStatus("processing");
+    setFileStatus("unzipping");
 
     unzipMutation.mutate({
       path: requireApproval

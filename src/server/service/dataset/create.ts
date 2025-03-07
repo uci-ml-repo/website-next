@@ -1,11 +1,11 @@
 import { desc, ilike } from "drizzle-orm";
 import fs from "fs-extra";
-import path from "path";
 import slugify from "slugify";
 
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
 import { DATASET_FILES_PATH } from "@/lib/routes";
+import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
 
 export class DatasetCreateService {
@@ -58,8 +58,7 @@ export class DatasetCreateService {
         })
         .returning();
 
-      const directoryPath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
+      const directoryPath = absoluteStaticPath(
         DATASET_FILES_PATH(createdDataset),
       );
 

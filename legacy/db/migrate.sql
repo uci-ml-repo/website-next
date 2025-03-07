@@ -274,7 +274,6 @@ CREATE TABLE "dataset" (
   "file_count" INTEGER,
   "user_id" uuid DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  "unzipped" BOOLEAN,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "external_check" CHECK (
     (
@@ -316,7 +315,6 @@ CREATE TABLE "dataset" (
     (
       "dataset"."file_count" IS NULL
       AND "dataset"."size" IS NULL
-      AND "dataset"."unzipped" IS NULL
     )
     OR (
       "dataset"."file_count" IS NOT NULL

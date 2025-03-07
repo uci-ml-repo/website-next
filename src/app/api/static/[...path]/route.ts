@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
 import { toStringArray } from "@/lib/utils";
+import { absoluteStaticPath } from "@/lib/utils/file";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export async function GET(
@@ -29,10 +30,7 @@ export async function GET(
       }
 
       const relativePath = toStringArray((await params).path);
-      const filePath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
-        ...relativePath,
-      );
+      const filePath = absoluteStaticPath(relativePath);
 
       if (!(await fs.pathExists(filePath))) {
         return NextResponse.json({ error: "File not found" }, { status: 404 });
@@ -89,10 +87,7 @@ export async function PUT(
       }
 
       const relativePath = toStringArray((await params).path);
-      const filePath = path.join(
-        process.env.STATIC_FILES_DIRECTORY,
-        ...relativePath,
-      );
+      const filePath = absoluteStaticPath(relativePath);
       const directoryPath = path.dirname(filePath);
 
       if (!(await fs.pathExists(directoryPath))) {

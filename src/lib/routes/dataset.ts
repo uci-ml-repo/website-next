@@ -26,27 +26,18 @@ export function DATASET_ROUTE({ id, slug }: { id: number; slug: string }) {
 /**
  * @example "/dataset/53/iris/files"
  */
-export function DATASET_FILES_ROUTE({
-  id,
-  slug,
-}: {
-  id: number;
-  slug: string;
-}) {
-  return path.join(DATASET_ROUTE({ id, slug }), "files");
+export function DATASET_FILES_ROUTE(dataset: { id: number; slug: string }) {
+  return path.join(DATASET_ROUTE(dataset), "files");
 }
 
 /**
  * @example "/dataset/53/iris/discussions"
  */
-export function DATASET_DISCUSSIONS_ROUTE({
-  id,
-  slug,
-}: {
+export function DATASET_DISCUSSIONS_ROUTE(dataset: {
   id: number;
   slug: string;
 }) {
-  return path.join(DATASET_ROUTE({ id, slug }), "discussions");
+  return path.join(DATASET_ROUTE(dataset), "discussions");
 }
 
 /**
@@ -67,14 +58,11 @@ export function DATASET_DISCUSSION_ROUTE({
 /**
  * @example "/dataset/53/iris/discussions/create"
  */
-export function DATASET_DISCUSSION_CREATE_ROUTE({
-  id,
-  slug,
-}: {
+export function DATASET_DISCUSSION_CREATE_ROUTE(dataset: {
   id: number;
   slug: string;
 }) {
-  return path.join(DATASET_DISCUSSIONS_ROUTE({ id, slug }), "create");
+  return path.join(DATASET_DISCUSSIONS_ROUTE(dataset), "create");
 }
 
 /**
@@ -98,40 +86,25 @@ export function DATASET_DISCUSSION_EDIT_ROUTE({
 /**
  * @example "/dataset/53/iris/changelog"
  */
-export function DATASET_CHANGELOG_ROUTE({
-  id,
-  slug,
-}: {
-  id: number;
-  slug: string;
-}) {
-  return path.join(DATASET_ROUTE({ id, slug }), "changelog");
+export function DATASET_CHANGELOG_ROUTE(dataset: { id: number; slug: string }) {
+  return path.join(DATASET_ROUTE(dataset), "changelog");
 }
 
 /**
  * @example "/dataset/53/iris/settings"
  */
-export function DATASET_SETTINGS_ROUTE({
-  id,
-  slug,
-}: {
-  id: number;
-  slug: string;
-}) {
-  return path.join(DATASET_ROUTE({ id, slug }), "settings");
+export function DATASET_SETTINGS_ROUTE(dataset: { id: number; slug: string }) {
+  return path.join(DATASET_ROUTE(dataset), "settings");
 }
 
 /**
  * @example "/api/static/public/53"
  */
-export function DATASET_API_FILES_ROUTE({
-  id,
-  status,
-}: {
+export function DATASET_API_FILES_ROUTE(dataset: {
   id: number;
   status: string;
 }) {
-  return path.join(STATIC_FILES_ROUTE, DATASET_FILES_PATH({ id, status }));
+  return path.join(STATIC_FILES_ROUTE, DATASET_FILES_PATH(dataset));
 }
 
 /**
@@ -189,51 +162,66 @@ export function DATASET_FILES_UNZIPPED_PATH({
 /**
  * @example "/public/53/iris.pending"
  */
-export function DATASET_FILES_UNZIPPED_PENDING_PATH({
-  id,
-  slug,
-  status,
-}: {
+export function DATASET_FILES_UNZIPPED_PENDING_PATH(dataset: {
   id: number;
   slug: string;
   status: string;
 }) {
-  return DATASET_FILES_UNZIPPED_PATH({ id, slug, status }) + ".new";
+  return DATASET_FILES_UNZIPPED_PATH(dataset) + ".new";
 }
 
 /**
  * @example "/public/53/iris.zip"
  */
-export function DATASET_FILES_ZIP_PATH(input: {
+export function DATASET_FILES_ZIP_PATH(dataset: {
   id: number;
   slug: string;
   status: string;
 }) {
-  return DATASET_FILES_UNZIPPED_PATH(input) + ".zip";
+  return DATASET_FILES_UNZIPPED_PATH(dataset) + ".zip";
+}
+
+/**
+ * @example "/public/53/iris.zip.lock"
+ */
+export function DATASET_FILES_ZIP_LOCK_PATH(dataset: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return DATASET_FILES_ZIP_PATH(dataset) + ".lock";
 }
 
 /**
  * @example "/public/53/iris.pending.zip"
  */
-export function DATASET_FILES_ZIP_PENDING_PATH(input: {
+export function DATASET_FILES_ZIP_PENDING_PATH(dataset: {
   id: number;
   slug: string;
   status: string;
 }) {
-  return DATASET_FILES_UNZIPPED_PATH(input) + ".pending.zip";
+  return DATASET_FILES_UNZIPPED_PATH(dataset) + ".pending.zip";
+}
+
+/**
+ * @example "/public/53/iris.pending.zip.lock"
+ */
+export function DATASET_FILES_ZIP_PENDING_LOCK_PATH(dataset: {
+  id: number;
+  slug: string;
+  status: string;
+}) {
+  return DATASET_FILES_ZIP_PENDING_PATH(dataset) + ".lock";
 }
 
 /**
  * @example "/api/static/public/53/data.csv"
  */
-export function DATASET_API_PYTHON_DATA_ROUTE({
-  id,
-  status,
-}: {
+export function DATASET_API_PYTHON_DATA_ROUTE(dataset: {
   id: number;
   status: string;
 }) {
-  return path.join(DATASET_API_FILES_ROUTE({ id, status }), "data.csv");
+  return path.join(DATASET_API_FILES_ROUTE(dataset), "data.csv");
 }
 
 /**

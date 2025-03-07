@@ -4,7 +4,7 @@ import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { useDatasetFilesStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
+import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { ZipFileUploadForm } from "@/components/dataset/forms/upload/ZipFileUploadForm";
 import { ZipFileUploadProcessing } from "@/components/dataset/forms/upload/ZipFileUploadProcessing";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
@@ -18,9 +18,9 @@ import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export default function Page() {
   const { editing, dataset, editingFiles, setEditingFiles } = useDataset();
-  const { filesStatus } = useDatasetFilesStatus();
+  const { fileStatus } = useDatasetFileStatus();
 
-  if (filesStatus === "awaiting-upload") {
+  if (fileStatus === "awaiting-upload") {
     return (
       <div className="space-y-4">
         <div className="text-2xl font-bold">Upload Dataset Files</div>
@@ -84,7 +84,7 @@ export default function Page() {
     );
   }
 
-  if (filesStatus === "not-unzipped") {
+  if (fileStatus === "not-unzipped") {
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
@@ -110,7 +110,7 @@ export default function Page() {
     );
   }
 
-  if (filesStatus === "unzipped") {
+  if (fileStatus === "unzipped") {
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">

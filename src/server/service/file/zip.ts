@@ -29,7 +29,6 @@ export class FileZipService {
     const [datasetToUnzip] = await db
       .update(dataset)
       .set({
-        unzipped: false,
         size: zipStats.size,
         fileCount: zipStats.fileCount,
       })
@@ -137,29 +136,17 @@ export class FileZipService {
       // Clean up unzipped files
       await fs.remove(unzipPath);
 
-      const [unzippedDataset] = await db
-        .update(dataset)
-        .set({ unzipped: false })
-        .where(eq(dataset.id, datasetId))
-        .returning();
-
       return {
         success: false,
         message: (error as Error).message,
-        dataset: unzippedDataset,
+        dataset: datasetToUnzip,
       };
     }
-
-    const [unzippedDataset] = await db
-      .update(dataset)
-      .set({ unzipped: true })
-      .where(eq(dataset.id, datasetId))
-      .returning();
 
     return {
       success: true,
       message: unzipPath,
-      dataset: unzippedDataset,
+      dataset: datasetToUnzip,
     };
   }
 }
