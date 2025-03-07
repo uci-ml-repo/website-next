@@ -35,8 +35,8 @@ export function DatasetFileView() {
   );
 
   return (
-    <>
-      <div className="sticky top-0 flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
+    <div className="sticky top-0">
+      <div className="flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
         <div className="flex w-full items-center space-x-2 truncate">
           <div className="flex flex-shrink-0">
             <Button
@@ -94,6 +94,6 @@ export function DatasetFileView() {
       ) : (
         <div>Unknown file type</div>
       )}
-    </>
+    </div>
   );
 }

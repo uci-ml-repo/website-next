@@ -35,9 +35,7 @@ export function DatasetCitationButton() {
   const [citationOption, setCitationOption] = useState<string>("apa");
   const [citationText, setCitationText] = useState<string>("");
 
-  const { data: citations } = trpc.dataset.cite.byId.useQuery(dataset.id, {
-    enabled: dialogOpen,
-  });
+  const { data: citations } = trpc.dataset.cite.byId.useQuery(dataset.id);
 
   type CitationOption = keyof NonNullable<typeof citations>;
 
