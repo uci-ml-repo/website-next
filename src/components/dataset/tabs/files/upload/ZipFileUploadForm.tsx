@@ -10,7 +10,7 @@ import { z } from "zod";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
-import { ZipFileUploadFormItem } from "@/components/dataset/forms/upload/ZipFileUploadFormItem";
+import { ZipFileUploadFormItem } from "@/components/dataset/tabs/files/upload/ZipFileUploadFormItem";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -33,7 +33,7 @@ export function ZipFileUploadForm({
   requireApproval?: boolean;
 }) {
   const { setEditingFiles, dataset, setDataset } = useDataset();
-  const { setFileStatus } = useDatasetFileStatus();
+  const { setFileStatus, setPendingFileStatus } = useDatasetFileStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
   const controllerRef = useRef<AbortController | null>(null);
@@ -49,7 +49,7 @@ export function ZipFileUploadForm({
     onSuccess: (response) => {
       if (response.success) {
         setFileStatus("unzipped");
-        utils.file.find.list.invalidate();
+        utils.file.find.list.invalidate().then();
       } else {
         setFileStatus("not-unzipped");
       }
@@ -90,7 +90,11 @@ export function ZipFileUploadForm({
       return;
     }
 
-    setFileStatus("unzipping");
+    if (requireApproval) {
+      setPendingFileStatus("unzipping");
+    } else {
+      setFileStatus("unzipping");
+    }
 
     unzipMutation.mutate({
       path: requireApproval
@@ -98,6 +102,7 @@ export function ZipFileUploadForm({
         : DATASET_FILES_ZIP_PATH(dataset),
       datasetId: dataset.id,
       overwrite: true,
+      updateZipStats: !requireApproval,
     });
   }
 

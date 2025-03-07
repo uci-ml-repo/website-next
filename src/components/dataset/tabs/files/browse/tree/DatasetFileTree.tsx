@@ -3,8 +3,8 @@
 import { CircleXIcon, SearchIcon } from "lucide-react";
 import * as React from "react";
 
-import { DatasetFileTreeDirectory } from "@/components/dataset/tabs/files/tree/DatasetFileTreeDirectory";
-import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
+import { DatasetFileTreeDirectory } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeDirectory";
+import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeFile";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";

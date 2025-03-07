@@ -7,7 +7,12 @@ import path from "path";
 
 import { auth } from "@/auth";
 import { db } from "@/db";
+import { Enums } from "@/db/lib/enums";
 import { dataset } from "@/db/schema";
+import {
+  DATASET_FILES_ZIP_PATH,
+  DATASET_FILES_ZIP_PENDING_PATH,
+} from "@/lib/routes";
 import { toStringArray } from "@/lib/utils";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
@@ -86,7 +91,7 @@ export async function PUT(
         return NextResponse.json({ error: "Bad request" }, { status: 400 });
       }
 
-      const relativePath = toStringArray((await params).path);
+      const relativePath = "/" + toStringArray((await params).path).join("/");
       const filePath = absoluteStaticPath(relativePath);
       const directoryPath = path.dirname(filePath);
 
@@ -111,22 +116,41 @@ export async function PUT(
       if (!isDatasetPath || isNaN(datasetId)) {
         return NextResponse.json(
           {
-            error: "Invalid dataset upload path",
+            error: "Invalid upload path for dataset",
           },
           { status: 400 },
         );
       }
 
-      const uploadToDataset = await db
-        .select({ userId: dataset.userId })
+      const [uploadToDataset] = await db
+        .select()
         .from(dataset)
-        .where(eq(dataset.id, datasetId))
-        .then((datasets) => datasets[0]);
+        .where(eq(dataset.id, datasetId));
 
       if (!uploadToDataset) {
         return NextResponse.json(
           { error: "Dataset not found" },
           { status: 404 },
+        );
+      }
+
+      if (
+        relativePath !== DATASET_FILES_ZIP_PENDING_PATH(uploadToDataset) &&
+        relativePath !== DATASET_FILES_ZIP_PATH(uploadToDataset)
+      ) {
+        return NextResponse.json(
+          { error: "Invalid upload path for dataset" },
+          { status: 400 },
+        );
+      }
+
+      if (
+        relativePath === DATASET_FILES_ZIP_PATH(uploadToDataset) &&
+        uploadToDataset.status !== Enums.ApprovalStatus.DRAFT
+      ) {
+        return NextResponse.json(
+          { error: "Invalid upload path for non-draft dataset" },
+          { status: 403 },
         );
       }
 

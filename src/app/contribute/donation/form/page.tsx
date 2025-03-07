@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DatasetDonationCreateForm } from "@/components/dataset/forms/DatasetDonationCreateForm";
+import { DatasetDonationCreateForm } from "@/components/dataset/create/DatasetDonationCreateForm";
 import { CONTACT_ROUTE, CONTRIBUTE_DONATION_ROUTE } from "@/lib/routes";
 
 export default function Page() {

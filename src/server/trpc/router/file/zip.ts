@@ -11,13 +11,13 @@ export const fileZipRouter = router({
         path: z.string(),
         datasetId: z.number(),
         overwrite: z.boolean().optional(),
+        updateZipStats: z.boolean().optional(),
       }),
     )
     .mutation(({ input, ctx }) =>
       service.file.zip.unzip({
         absolutePath: ctx.absolutePath,
-        datasetId: input.datasetId,
-        overwrite: input.overwrite,
+        ...input,
       }),
     ),
 });

@@ -1,11 +1,11 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
-import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/view/DatasetFileViewDirectory";
-import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/view/DatasetFileViewDownloadButton";
-import { DatasetFileViewFile } from "@/components/dataset/tabs/files/view/DatasetFileViewFile";
-import { DatasetFileViewPath } from "@/components/dataset/tabs/files/view/DatasetFileViewPath";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDirectory";
+import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDownloadButton";
+import { DatasetFileViewFile } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFile";
+import { DatasetFileViewPath } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewPath";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";

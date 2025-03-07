@@ -7,13 +7,13 @@ import {
   pdfExtensions,
   tabularToDelimiter,
   videoExtensions,
-} from "@/components/dataset/tabs/files/lib/extensions";
-import { DatasetFileViewFileAudio } from "@/components/dataset/tabs/files/view/DatasetFileViewFileAudio";
-import { DatasetFileViewFileImage } from "@/components/dataset/tabs/files/view/DatasetFileViewFileImage";
-import { FilesViewFilePDF } from "@/components/dataset/tabs/files/view/DatasetFileViewFilePDF";
-import { DatasetFileViewFileTabular } from "@/components/dataset/tabs/files/view/DatasetFileViewFileTabular";
-import { DatasetFileViewFileText } from "@/components/dataset/tabs/files/view/DatasetFileViewFileText";
-import { DatasetFileViewFileVideo } from "@/components/dataset/tabs/files/view/DatasetFileViewFileVideo";
+} from "@/components/dataset/tabs/files/browse/lib/extensions";
+import { DatasetFileViewFileAudio } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFileAudio";
+import { DatasetFileViewFileImage } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFileImage";
+import { FilesViewFilePDF } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFilePDF";
+import { DatasetFileViewFileTabular } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFileTabular";
+import { DatasetFileViewFileText } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFileText";
+import { DatasetFileViewFileVideo } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFileVideo";
 import { Alert } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";

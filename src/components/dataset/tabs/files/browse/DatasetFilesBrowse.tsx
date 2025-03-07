@@ -3,9 +3,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
-import { DatasetFileTree } from "@/components/dataset/tabs/files/tree/DatasetFileTree";
-import { DatasetFileView } from "@/components/dataset/tabs/files/view/DatasetFileView";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { DatasetFileTree } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTree";
+import { DatasetFileView } from "@/components/dataset/tabs/files/browse/view/DatasetFileView";
 import { useIsMobile } from "@/components/hooks/use-mobile";
 import { Split } from "@/components/ui/split";
 import type { DatasetResponse } from "@/lib/types";

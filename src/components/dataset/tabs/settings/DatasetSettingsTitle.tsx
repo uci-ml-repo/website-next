@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import type { FormData } from "@/components/dataset/forms/DatasetDonationCreateForm";
-import { formSchema } from "@/components/dataset/forms/DatasetDonationCreateForm";
+import type { FormData } from "@/components/dataset/create/DatasetDonationCreateForm";
+import { formSchema } from "@/components/dataset/create/DatasetDonationCreateForm";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {

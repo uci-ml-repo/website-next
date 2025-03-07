@@ -12,12 +12,14 @@ export class FileZipService {
     absolutePath,
     datasetId,
     overwrite,
+    updateZipStats,
     unzipPath = absolutePath.replace(/\.zip$/, ""),
     limitSize = 5 * 1024 * 1024 * 1024, // 5 GB
   }: {
     absolutePath: string;
     datasetId: number;
     overwrite?: boolean;
+    updateZipStats?: boolean;
     unzipPath?: string;
     limitSize?: number;
   }) {
@@ -26,14 +28,16 @@ export class FileZipService {
 
     const zipStats = await service.file.read.zipStats({ absolutePath });
 
-    const [datasetToUnzip] = await db
-      .update(dataset)
-      .set({
-        size: zipStats.size,
-        fileCount: zipStats.fileCount,
-      })
-      .where(eq(dataset.id, datasetId))
-      .returning();
+    const [datasetToUnzip] = updateZipStats
+      ? await db
+          .update(dataset)
+          .set({
+            size: zipStats.size,
+            fileCount: zipStats.fileCount,
+          })
+          .where(eq(dataset.id, datasetId))
+          .returning()
+      : await db.select().from(dataset).where(eq(dataset.id, datasetId));
 
     if (zipStats.uncompressedSize > limitSize) {
       return {

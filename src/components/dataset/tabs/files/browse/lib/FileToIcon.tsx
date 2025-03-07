@@ -16,7 +16,7 @@ import {
   audioExtensions,
   imageExtensions,
   videoExtensions,
-} from "@/components/dataset/tabs/files/lib/extensions";
+} from "@/components/dataset/tabs/files/browse/lib/extensions";
 import { STATIC_FILES_ROUTE } from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 

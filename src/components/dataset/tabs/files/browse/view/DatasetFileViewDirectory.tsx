@@ -1,8 +1,8 @@
 import { AlertCircleIcon } from "lucide-react";
 import path from "path";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
-import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { fileToIcon } from "@/components/dataset/tabs/files/browse/lib/FileToIcon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import type { Entry } from "@/server/service/file/find";

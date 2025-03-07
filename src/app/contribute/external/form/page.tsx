@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DatasetExternalCreateForm } from "@/components/dataset/forms/DatasetExternalCreateForm";
+import { DatasetExternalCreateForm } from "@/components/dataset/create/DatasetExternalCreateForm";
 import { CONTACT_ROUTE, CONTRIBUTE_EXTERNAL_ROUTE } from "@/lib/routes";
 
 export default function Page() {

@@ -5,16 +5,16 @@ import Link from "next/link";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
-import { ZipFileUploadForm } from "@/components/dataset/forms/upload/ZipFileUploadForm";
-import { ZipFileUploadProcessing } from "@/components/dataset/forms/upload/ZipFileUploadProcessing";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
-import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/DatasetFilesBrowse";
-import { DatasetFilesProvider } from "@/components/dataset/tabs/files/DatasetFilesContext";
+import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/browse/DatasetFilesBrowse";
+import { DatasetFilesProvider } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { ZipFileUploadForm } from "@/components/dataset/tabs/files/upload/ZipFileUploadForm";
+import { ZipFileUploadProcessing } from "@/components/dataset/tabs/files/upload/ZipFileUploadProcessing";
 import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
 import { TabHeader } from "@/components/ui/tab-header";
+import { Enums } from "@/db/lib/enums";
 import { CONTACT_ROUTE, DATASET_FILES_UNZIPPED_PATH } from "@/lib/routes";
-import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export default function Page() {
   const { editing, dataset, editingFiles, setEditingFiles } = useDataset();
@@ -79,7 +79,9 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm requireApproval={!isDraftOrPending(dataset)} />
+        <ZipFileUploadForm
+          requireApproval={dataset.status !== Enums.ApprovalStatus.DRAFT}
+        />
       </div>
     );
   }

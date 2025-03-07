@@ -1,10 +1,10 @@
 import path from "path";
 import { useEffect, useMemo, useState } from "react";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/DatasetFilesContext";
-import { fileToIcon } from "@/components/dataset/tabs/files/lib/FileToIcon";
-import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/tree/DatasetFileTreeButton";
-import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/tree/DatasetFileTreeFile";
+import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { fileToIcon } from "@/components/dataset/tabs/files/browse/lib/FileToIcon";
+import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeButton";
+import { DatasetFileTreeFile } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeFile";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import type { Entry } from "@/server/service/file/find";
