@@ -51,10 +51,7 @@ export function DatasetDownloadButton({
     );
   }
 
-  if (
-    (!editing && fileStatus === "awaiting-upload") ||
-    (editing && pendingFileStatus === "awaiting-upload")
-  ) {
+  if (editing && fileStatus === "awaiting-upload") {
     return (
       <Button asChild variant="gold" size="lg" className="lift w-full">
         <Link href={DATASET_FILES_ROUTE(dataset)}>

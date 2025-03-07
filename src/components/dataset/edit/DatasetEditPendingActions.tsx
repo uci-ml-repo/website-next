@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { DatasetEditPendingActionCard } from "@/components/dataset/edit/DatasetEditPendingActionCard";
+import { Card } from "@/components/ui/card";
 import {
   Carousel,
   type CarouselApi,
@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
   CarouselScrollDots,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 export function DatasetEditPendingActions() {
   // const { dataset } = useDataset();
@@ -44,7 +45,7 @@ export function DatasetEditPendingActions() {
                 key={index}
                 className="basis-full @xs:basis-1/2 @2xl:basis-1/3 @3xl:basis-1/4"
               >
-                <DatasetEditPendingActionCard />
+                <Card className={cn("lift h-28")}>X</Card>
               </CarouselItem>
             ))}
           </CarouselContent>

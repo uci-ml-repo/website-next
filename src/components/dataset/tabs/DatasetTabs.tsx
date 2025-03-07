@@ -24,11 +24,10 @@ interface DatasetTabsProps {
 }
 
 export function DatasetTabs({
-  dataset,
   initialDiscussionCount,
   initialEditCount,
 }: DatasetTabsProps) {
-  const { editable } = useDataset();
+  const { editable, dataset } = useDataset();
 
   const basePath = DATASET_ROUTE(dataset);
 

@@ -6,7 +6,7 @@ import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBoo
 import { DatasetProvider } from "@/components/dataset/context/DatasetContext";
 import { DatasetFileStatusProvider } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetTitleGroup } from "@/components/dataset/DatasetTitleGroup";
-import { DatasetEditingCard } from "@/components/dataset/edit/DatasetEditingCard";
+import { DatasetEditing } from "@/components/dataset/edit/DatasetEditing";
 import { DatasetInteractions } from "@/components/dataset/interactions/DatasetInteractions";
 import { DatasetTabs } from "@/components/dataset/tabs/DatasetTabs";
 import { Main } from "@/components/layout/Main";
@@ -120,12 +120,11 @@ export default async function Layout({
               </div>
 
               <DatasetTabs
-                dataset={dataset}
                 initialDiscussionCount={discussionCount}
                 initialEditCount={editCount}
               />
 
-              <DatasetEditingCard />
+              <DatasetEditing />
             </div>
 
             {children}

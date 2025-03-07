@@ -22,4 +22,4 @@ Includecmd: no
 
 %startscript
     cd /website
-    pm2-runtime start ecosystem.config.cjs
+    pnpm server

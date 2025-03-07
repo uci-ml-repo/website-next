@@ -19,7 +19,7 @@ import { HoverCard, HoverCardContent } from "@/components/ui/hover-card";
 import { DATASET_CHANGELOG_ROUTE } from "@/lib/routes";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 
-export function DatasetEditingCard() {
+export function DatasetEditing() {
   const { editing, setEditing, dataset, initialDataset } = useDataset();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
