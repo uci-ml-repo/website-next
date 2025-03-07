@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
-      <div className="w-full space-y-10">
+      <div className="w-full space-y-12">
         {isDraftOrPending(dataset) && <DatasetEditPendingActions />}
         <DatasetAbout />
         <DatasetQuickStats />

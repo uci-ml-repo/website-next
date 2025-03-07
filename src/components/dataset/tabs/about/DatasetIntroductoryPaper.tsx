@@ -9,7 +9,7 @@ export function DatasetIntroductoryPaper() {
   const paper = dataset.introductoryPaper;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       <h2 className="text-2xl font-bold">Introductory Paper</h2>{" "}
       {paper ? (
         <div>

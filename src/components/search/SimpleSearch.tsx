@@ -49,7 +49,7 @@ export function SimpleSearch({
         />
       </div>
       <div className="flex items-center justify-end space-x-2 max-sm:w-full">
-        <div className="text-nowrap text-sm text-muted-foreground max-xxs:hidden">
+        <div className="text-nowrap text-sm text-muted-foreground max-2xs:hidden">
           {filterLabel}
         </div>
         <Select

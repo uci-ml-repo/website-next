@@ -44,7 +44,7 @@ const config = {
         sidebar: "0px 0px 16px 8px rgba(0, 0, 0, 0.1) !important",
       },
       screens: {
-        xxs: "340px",
+        "2xs": "340px",
         xs: "480px",
         "2lg": "1120px",
       },

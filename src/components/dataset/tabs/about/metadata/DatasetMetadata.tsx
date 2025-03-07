@@ -52,7 +52,7 @@ export function DatasetMetadata() {
             setOpenStates([...openStates].fill(!isAnyOpen));
           }}
           variant="ghost"
-          className="max-xxs:hidden"
+          className="max-2xs:hidden"
         >
           {isAnyOpen ? (
             <>

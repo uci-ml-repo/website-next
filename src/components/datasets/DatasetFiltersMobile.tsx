@@ -37,7 +37,7 @@ export function DatasetFiltersMobile() {
       <SheetTrigger asChild>
         <Button variant="blue" className="lg:hidden" size="lg">
           <FilterIcon />
-          <span className="max-xxs:hidden">Filters</span>
+          <span className="max-2xs:hidden">Filters</span>
         </Button>
       </SheetTrigger>
 
