@@ -73,7 +73,7 @@ export function LinearTabs({
 }
 
 const linearTabsListVariants = cva(
-  "relative inline-flex h-fit w-fit items-center justify-start space-x-6 overflow-x-hidden py-1 text-muted-foreground",
+  "relative inline-flex h-fit w-fit items-center justify-start space-x-5 overflow-x-hidden text-muted-foreground",
   {
     variants: {
       variant: {
@@ -226,8 +226,8 @@ export const LinearTabsTrigger = React.forwardRef<
             href={link}
             className={cn(
               "data-[state=active]:text-foreground",
-              "inline-flex items-center whitespace-nowrap p-1 text-xl font-medium ring-offset-background",
-              "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              "inline-flex items-center whitespace-nowrap px-1 py-2 text-xl font-medium",
+              "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               className,
             )}
             tabIndex={0}
@@ -251,7 +251,7 @@ export const LinearTabsTrigger = React.forwardRef<
         ref={ref}
         {...triggerProps}
         className={cn(
-          "inline-flex items-center whitespace-nowrap px-2 py-2 text-xl font-medium ring-offset-background",
+          "inline-flex items-center whitespace-nowrap p-2 text-xl font-medium ring-offset-background",
           "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "data-[state=active]:text-foreground",
           className,

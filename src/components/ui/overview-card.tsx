@@ -23,11 +23,16 @@ export function OverviewCard({
     <Card
       className={cn(
         "flex flex-col overflow-hidden",
-        "lift-transition will-change-transform has-[.parent-lift:hover]:scale-[1.01] has-[.parent-lift:hover]:shadow-md",
+        "lift-transition will-change-transform",
+        "has-[.parent-lift:hover]:scale-[1.01] has-[.parent-lift:hover]:shadow-md",
+        "ring-ring has-[.parent-lift:focus]:scale-[1.01] has-[.parent-lift:focus]:shadow-md has-[.parent-lift:focus-visible]:ring-2",
       )}
     >
-      <Link href={href}>
-        <CardTitle className="parent-lift group flex items-center justify-between p-3 hover:bg-accent">
+      <Link
+        href={href}
+        className="parent-lift group hover:bg-accent focus:bg-accent focus:outline-none"
+      >
+        <CardTitle className="flex items-center justify-between p-3">
           <div className="flex items-center space-x-2">
             {icon}
             <span className="group-hover:underline">{title}</span>

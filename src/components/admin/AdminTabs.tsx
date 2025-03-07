@@ -61,7 +61,7 @@ export function AdminTabs({
       routerStore={ADMIN_ROUTE}
       routerSegment={3}
     >
-      <div className="flex items-center justify-between space-x-6 overflow-x-auto px-1">
+      <div className="flex items-center justify-between space-x-6 overflow-x-auto">
         <LinearTabsList>
           <LinearTabsTrigger
             value="overview"

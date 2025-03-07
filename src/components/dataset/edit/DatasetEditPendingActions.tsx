@@ -3,17 +3,15 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Card } from "@/components/ui/card";
+import { DatasetEditPendingActionItems } from "@/components/dataset/edit/DatasetEditPendingActionItems";
 import {
   Carousel,
   type CarouselApi,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
   CarouselScrollDots,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 
 export function DatasetEditPendingActions() {
   // const { dataset } = useDataset();
@@ -40,14 +38,7 @@ export function DatasetEditPendingActions() {
         </div>
         <div>
           <CarouselContent gutter>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem
-                key={index}
-                className="basis-full @xs:basis-1/2 @2xl:basis-1/3 @3xl:basis-1/4"
-              >
-                <Card className={cn("lift h-28")}>X</Card>
-              </CarouselItem>
-            ))}
+            <DatasetEditPendingActionItems />
           </CarouselContent>
           <CarouselScrollDots api={api} />
         </div>

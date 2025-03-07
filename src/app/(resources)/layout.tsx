@@ -15,7 +15,7 @@ export default function Layout({
 }>) {
   return (
     <Main className="space-y-12">
-      <div>{children}</div>
+      <div className="backdrop-gradient-blur">{children}</div>
       <div className="space-y-8">
         <hr />
         <Button
