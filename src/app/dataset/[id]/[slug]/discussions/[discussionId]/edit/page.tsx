@@ -1,7 +1,7 @@
 import { forbidden, notFound, unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import { DiscussionEdit } from "@/components/discussion/edit/DiscussionEdit";
+import { DiscussionEditForm } from "@/components/discussion/edit/DiscussionEditForm";
 import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
@@ -26,5 +26,5 @@ export default async function Page({
     return forbidden();
   }
 
-  return <DiscussionEdit discussion={discussion} />;
+  return <DiscussionEditForm discussion={discussion} />;
 }

@@ -23,7 +23,7 @@ export function DiscussionDeleteDialog({
 
   const removeMutation = trpc.discussion.remove.byId.useMutation({
     onSuccess: async () => {
-      await utils.discussion.find.byQuery.invalidate({
+      await utils.discussion.find.countByQuery.invalidate({
         datasetId: discussion.datasetId,
       });
     },

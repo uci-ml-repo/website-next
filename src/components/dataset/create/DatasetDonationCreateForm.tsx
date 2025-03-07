@@ -26,7 +26,6 @@ import { trpc } from "@/server/trpc/query/client";
 export const formSchema = z.object({
   title: z
     .string({ message: "Title is required" })
-    .min(3, { message: "Title must be at least 3 characters" })
     .max(100, { message: "Title must be less than 100 characters" })
     .refine((value) => (value.match(/[a-zA-Z0-9]/g) || []).length >= 3, {
       message: "Title must contain at least 3 alphanumeric characters",

@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { MDXEditorMethods } from "@mdxeditor/editor";
 import { SendHorizontalIcon } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,10 +34,12 @@ interface DiscussionCreateFormProps {
 
 export const formSchema = z.object({
   title: z
-    .string()
-    .min(5, { message: "Title must be at least 5 characters" })
-    .max(150, { message: "Title must be less than 150 characters" }),
-  content: z.string().min(1, { message: "Content is required" }),
+    .string({ message: "Title is required" })
+    .max(150, { message: "Title must be less than 150 characters" })
+    .refine((value) => (value.match(/[a-zA-Z0-9]/g) || []).length >= 5, {
+      message: "Title must contain at least 5 alphanumeric characters",
+    }),
+  content: z.string().optional(),
 });
 
 export function DiscussionCreateForm({
@@ -46,11 +49,12 @@ export function DiscussionCreateForm({
   const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
+  const ref = useRef<MDXEditorMethods>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      content: "",
     },
   });
 
@@ -80,9 +84,19 @@ export function DiscussionCreateForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const markdown = ref.current?.getMarkdown();
+
+    if (!markdown || !markdown.trim()) {
+      form.setError("content", {
+        message: "Content is required",
+      });
+      return;
+    }
+
     await createMutation.mutateAsync({
       datasetId,
-      ...values,
+      title: values.title,
+      content: markdown,
     });
   }
 
@@ -117,13 +131,11 @@ export function DiscussionCreateForm({
           <FormField
             control={form.control}
             name="content"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormControl>
                   <MDXEditor
-                    {...field}
-                    markdown={field.value}
-                    autoFocus
+                    ref={ref}
                     disabled={isSubmitting || isSubmitSuccessful}
                   />
                 </FormControl>

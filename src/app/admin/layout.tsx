@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { forbidden } from "next/navigation";
 
 import { auth, signIn } from "@/auth";
-import { AdminTabs } from "@/components/admin/tabs/AdminTabs";
+import { AdminTabs } from "@/components/admin/AdminTabs";
 import { Main } from "@/components/layout/Main";
 import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE } from "@/lib/routes";

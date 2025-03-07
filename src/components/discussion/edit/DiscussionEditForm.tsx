@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { MDXEditorMethods } from "@mdxeditor/editor";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
@@ -31,7 +32,7 @@ import { DATASET_DISCUSSION_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DiscussionEdit({
+export function DiscussionEditForm({
   discussion,
 }: {
   discussion: DiscussionResponse;
@@ -41,11 +42,12 @@ export function DiscussionEdit({
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
+  const ref = useRef<MDXEditorMethods>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: discussion.title,
-      content: discussion.content,
     },
   });
 
@@ -71,9 +73,19 @@ export function DiscussionEdit({
   const { isDirty, isSubmitting, isSubmitSuccessful } = form.formState;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const markdown = ref.current?.getMarkdown();
+
+    if (!markdown || !markdown.trim()) {
+      form.setError("content", {
+        message: "Content is required",
+      });
+      return;
+    }
+
     editMutation.mutate({
       id: discussion.id,
-      ...values,
+      title: values.title,
+      content: markdown,
     });
   }
 
@@ -118,13 +130,12 @@ export function DiscussionEdit({
           <FormField
             control={form.control}
             name="content"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormControl>
                   <MDXEditor
-                    {...field}
-                    markdown={field.value}
-                    autoFocus
+                    ref={ref}
+                    markdown={discussion.content}
                     disabled={isSubmitting || isSubmitSuccessful}
                   />
                 </FormControl>
