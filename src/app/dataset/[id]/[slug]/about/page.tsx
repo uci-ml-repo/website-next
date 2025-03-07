@@ -3,6 +3,7 @@
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditPendingActions } from "@/components/dataset/edit/DatasetEditPendingActions";
 import { DatasetAbout } from "@/components/dataset/tabs/about/DatasetAbout";
+import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/DatasetIntroductoryPaper";
 import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
 import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
 import { DatasetSideStatus } from "@/components/dataset/tabs/about/DatasetSideStatus";
@@ -20,6 +21,7 @@ export default function Page() {
         <DatasetAbout />
         <DatasetQuickStats />
         <DatasetVariables />
+        <DatasetIntroductoryPaper />
         <DatasetMetadata />
       </div>
 

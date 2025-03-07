@@ -11,7 +11,6 @@ import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
 import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
 import { DatasetMetadataDonor } from "@/components/dataset/tabs/about/metadata/DatasetMetadataDonor";
-import { DatasetMetadataIntroductoryPaper } from "@/components/dataset/tabs/about/metadata/DatasetMetadataIntroductoryPaper";
 import { Button } from "@/components/ui/button";
 
 export function DatasetMetadata() {
@@ -19,12 +18,6 @@ export function DatasetMetadata() {
 
   const datasetMetadataContent: { title: string; children: React.ReactNode }[] =
     [
-      {
-        title: "Introductory Paper",
-        children: (
-          <DatasetMetadataIntroductoryPaper paper={dataset.introductoryPaper} />
-        ),
-      },
       {
         title: "Authors",
         children: <DatasetMetadataAuthors authors={dataset.authors} />,
