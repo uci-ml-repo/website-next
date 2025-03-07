@@ -10,7 +10,7 @@ const compat = new FlatCompat({
 });
 
 const config = [
-  ...compat.extends("next", "prettier"),
+  ...compat.extends("next"),
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
