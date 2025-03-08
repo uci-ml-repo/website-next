@@ -2,7 +2,7 @@
 
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
@@ -16,16 +16,16 @@ import {
 import { CONTACT_ROUTE } from "@/lib/routes";
 
 export function DatasetSettingsTitle() {
-  const { dataset, editing, setEditing } = useDataset();
+  const { dataset, editing, setEditing, editingFields, startEditingField } =
+    useDataset();
   const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
-  const [editingTitle, setEditingTitle] = useState<boolean>(false);
 
   return (
     <div className="space-y-1">
       <h3 className="text-xl font-bold">Dataset Title</h3>
 
-      {editingTitle ? (
-        <DatasetSettingsTitleForm setEditingTitle={setEditingTitle} />
+      {editingFields.includes("title") ? (
+        <DatasetSettingsTitleForm />
       ) : (
         <div className="flex items-center space-x-2">
           <div className="text-lg">{dataset.title}</div>
@@ -36,7 +36,7 @@ export function DatasetSettingsTitle() {
                 if (!editing) {
                   setEditing(true);
                 }
-                setEditingTitle(true);
+                startEditingField("title");
               }}
             />
           ) : (

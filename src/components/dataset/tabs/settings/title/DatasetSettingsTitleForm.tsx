@@ -21,14 +21,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { DATASET_SETTINGS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-interface DatasetSettingsTitleFormProps {
-  setEditingTitle: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export function DatasetSettingsTitleForm({
-  setEditingTitle,
-}: DatasetSettingsTitleFormProps) {
-  const { dataset, setDataset } = useDataset();
+export function DatasetSettingsTitleForm() {
+  const { dataset, setDataset, stopEditingField } = useDataset();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -39,7 +33,7 @@ export function DatasetSettingsTitleForm({
     onSuccess: (newDataset) => {
       window.history.replaceState(null, "", DATASET_SETTINGS_ROUTE(newDataset));
       setDataset({ ...dataset, title: newDataset.title });
-      setEditingTitle(false);
+      stopEditingField("title");
     },
 
     onError: (error) =>
@@ -95,7 +89,7 @@ export function DatasetSettingsTitleForm({
                   size="lg"
                   className="lift"
                   disabled={pending}
-                  onClick={() => setEditingTitle(false)}
+                  onClick={() => stopEditingField("title")}
                 >
                   Cancel
                 </Button>
