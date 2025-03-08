@@ -1,7 +1,7 @@
 "use client";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { DatasetEditPendingActions } from "@/components/dataset/edit/DatasetEditPendingActions";
+import { DatasetEditPendingActions } from "@/components/dataset/edit/actions/DatasetEditPendingActions";
 import { DatasetAbout } from "@/components/dataset/tabs/about/DatasetAbout";
 import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/DatasetIntroductoryPaper";
 import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
