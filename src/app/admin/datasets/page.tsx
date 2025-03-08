@@ -9,6 +9,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
 import { trpc } from "@/server/trpc/query/client";
 import ApprovalStatus = Enums.ApprovalStatus;
+import React from "react";
+
 import { useSimpleSearch } from "@/components/hooks/use-simple-search";
 import type { Option } from "@/components/search/SimpleSearch";
 import { SimpleSearch } from "@/components/search/SimpleSearch";
@@ -79,7 +81,10 @@ export default function Page() {
           <div className="space-y-2">
             <div>
               {data.datasets.map((dataset) => (
-                <DatasetRow key={dataset.id} dataset={dataset} displayStatus />
+                <React.Fragment key={dataset.id}>
+                  <DatasetRow dataset={dataset} displayStatus />
+                  <hr />
+                </React.Fragment>
               ))}
             </div>
             {data.count && (

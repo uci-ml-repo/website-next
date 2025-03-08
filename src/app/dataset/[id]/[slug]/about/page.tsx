@@ -9,7 +9,7 @@ import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData
 import { DatasetSideStatus } from "@/components/dataset/tabs/about/DatasetSideStatus";
 import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariables";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
-import { isDraftOrPending } from "@/lib/utils/dataset";
+import { Enums } from "@/db/lib/enums";
 
 export default function Page() {
   const { dataset, editable } = useDataset();
@@ -17,7 +17,9 @@ export default function Page() {
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
       <div className="w-full space-y-12">
-        {isDraftOrPending(dataset) && <DatasetEditPendingActions />}
+        {dataset.status === Enums.ApprovalStatus.DRAFT && (
+          <DatasetEditPendingActions />
+        )}
         <DatasetAbout />
         <DatasetQuickStats />
         <DatasetVariables />

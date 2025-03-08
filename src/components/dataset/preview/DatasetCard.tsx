@@ -82,8 +82,11 @@ export function DatasetCard({
   ];
 
   return (
-    <Card className={cn("group flex h-[355px] flex-col", className)} ref={ref}>
-      <Link href={href} className="lift-lg flex flex-1 flex-col rounded-2xl">
+    <Link href={href} className="lift-lg flex flex-1 flex-col rounded-2xl">
+      <Card
+        className={cn("group flex h-[355px] flex-col", className)}
+        ref={ref}
+      >
         <CardHeader className="p-0">
           <Image
             src={thumbnail}
@@ -156,7 +159,7 @@ export function DatasetCard({
             </>
           )}
         </CardFooter>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   );
 }

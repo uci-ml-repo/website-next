@@ -19,6 +19,8 @@ const badgeVariants = cva(
           "border-destructive-muted bg-destructive-muted/5 text-destructive-muted shadow",
         positive: "border-positive bg-positive/5 text-positive shadow",
         blue: "border-uci-blue bg-uci-blue/5 text-uci-blue shadow",
+        "blue-strong":
+          "border-uci-blue bg-uci-blue text-uci-blue-foreground shadow",
         gold: "border-uci-gold bg-uci-gold/5 text-uci-gold shadow brightness-[.8]",
         "gold-strong":
           "border-uci-gold bg-uci-gold text-uci-gold-foreground shadow",
