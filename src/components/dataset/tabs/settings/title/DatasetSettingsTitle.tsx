@@ -20,6 +20,7 @@ export function DatasetSettingsTitle() {
         <div className="flex items-center space-x-1">
           <div className="text-lg">{dataset.title}</div>
           <DatasetEditFieldButton
+            alwaysVisible
             onClick={() => {
               if (!editing) {
                 setEditing(true);

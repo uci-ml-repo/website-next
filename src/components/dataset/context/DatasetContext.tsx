@@ -7,12 +7,15 @@ import type { DatasetResponse } from "@/lib/types";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
+type DatasetField = "files" | "title" | "description";
+
 interface DatasetContextProps {
   editable: boolean;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  editingFiles: boolean;
-  setEditingFiles: React.Dispatch<React.SetStateAction<boolean>>;
+  editingFields: DatasetField[];
+  startEditingField: (field: DatasetField) => void;
+  stopEditingField: (field: DatasetField) => void;
   viewPendingFiles: boolean;
   setViewPendingFiles: React.Dispatch<React.SetStateAction<boolean>>;
   dataset: DatasetResponse;
@@ -35,12 +38,21 @@ export function DatasetProvider({
 }) {
   const [dataset, setDataset] = useState<DatasetResponse>(initialDataset);
   const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
-  const [editingFiles, setEditingFiles] = useState<boolean>(false);
+  const [editingFields, setEditingFields] = useState<DatasetField[]>([]);
   const [viewPendingFiles, setViewPendingFiles] = useState<boolean>(false);
+
+  function startEditingField(field: DatasetField) {
+    setEditingFields((prev) => [...prev, field]);
+  }
+
+  function stopEditingField(field: DatasetField) {
+    setEditingFields((prev) => prev.filter((f) => f !== field));
+  }
 
   useEffect(() => {
     if (!editing) {
       setViewPendingFiles(false);
+      setEditingFields([]);
     }
   }, [editing, setViewPendingFiles]);
 
@@ -53,8 +65,9 @@ export function DatasetProvider({
         editable,
         editing,
         setEditing,
-        editingFiles,
-        setEditingFiles,
+        editingFields,
+        startEditingField,
+        stopEditingField,
         viewPendingFiles,
         setViewPendingFiles,
         dataset,

@@ -22,8 +22,9 @@ export default function Page() {
   const {
     editing,
     dataset,
-    editingFiles,
-    setEditingFiles,
+    editingFields,
+    stopEditingField,
+    startEditingField,
     viewPendingFiles,
     setViewPendingFiles,
   } = useDataset();
@@ -55,7 +56,7 @@ export default function Page() {
     );
   }
 
-  if (editing && editingFiles) {
+  if (editing && editingFields.includes("files")) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -63,7 +64,7 @@ export default function Page() {
           <Button
             variant="secondary"
             className="lift"
-            onClick={() => setEditingFiles(false)}
+            onClick={() => stopEditingField("files")}
           >
             Cancel
           </Button>
@@ -127,7 +128,7 @@ export default function Page() {
                 <Button
                   variant="secondary"
                   className="lift"
-                  onClick={() => setEditingFiles(true)}
+                  onClick={() => startEditingField("files")}
                 >
                   <PencilIcon /> Replace Files
                 </Button>
