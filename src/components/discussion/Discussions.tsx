@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDownIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import { DiscussionCreateButton } from "@/components/discussion/create/DiscussionCreateButton";
@@ -10,18 +11,22 @@ import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useInfinitePagination } from "@/components/hooks/use-infinite-pagination";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Button } from "@/components/ui/button";
+import { AlternativeCard } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
+import { DATASETS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export function Discussions({
   datasetId,
   userId,
   allowCreate,
+  initialHasDiscussions,
 }: {
   datasetId?: number;
   userId?: string;
   allowCreate?: boolean;
+  initialHasDiscussions?: boolean;
 }) {
   const [orderBy, setOrderBy] = useState("top");
 
@@ -55,6 +60,11 @@ export function Discussions({
 
   const discussionsCount = data?.pages[0] ? data?.pages[0].count : 0;
 
+  const hasDiscussions =
+    discussionsCount === undefined
+      ? initialHasDiscussions
+      : discussionsCount > 0;
+
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
 
   const { triggerFetchNextPage } = useInfinitePagination({
@@ -63,7 +73,7 @@ export function Discussions({
     isFetchingNextPage,
   });
 
-  return (
+  return hasDiscussions ? (
     <div className="space-y-4">
       <div className="flex flex-col items-center gap-4 md:flex-row">
         <div className="w-full">
@@ -85,7 +95,7 @@ export function Discussions({
             className="flex justify-end"
           />
           {allowCreate && discussions.length && (
-            <DiscussionCreateButton tooltip dataset={discussions[0].dataset} />
+            <DiscussionCreateButton tooltip />
           )}
         </div>
       </div>
@@ -137,5 +147,25 @@ export function Discussions({
         {discussions.length > 10 && <BackToTop />}
       </div>
     </div>
+  ) : userId ? (
+    <AlternativeCard>
+      <div className="text-muted-foreground">
+        You have not created any discussions yet.
+      </div>
+      <Button variant="gold" asChild className="lift">
+        <Link href={DATASETS_ROUTE}>
+          <SearchIcon /> Find datasets to discuss
+        </Link>
+      </Button>
+    </AlternativeCard>
+  ) : (
+    <AlternativeCard>
+      <div className="space-y-3 text-center">
+        <div className="text-muted-foreground">
+          There are no discussions yet. Be the first to discuss this dataset!
+        </div>
+        <DiscussionCreateButton />
+      </div>
+    </AlternativeCard>
   );
 }

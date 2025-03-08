@@ -35,57 +35,59 @@ export function DatasetFileView() {
   );
 
   return (
-    <div className="sticky top-0">
-      <div className="flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
-        <div className="flex w-full items-center space-x-2 truncate">
-          <div className="flex flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={entryHistory.length === 0}
-              onClick={back}
-              aria-label="Back"
-            >
-              <ChevronLeftIcon className="size-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={entryForwardHistory.length === 0}
-              onClick={forward}
-              aria-label="Forward"
-            >
-              <ChevronRightIcon className="size-6" />
-            </Button>
+    <>
+      <div className="sticky top-0">
+        <div className="flex h-12 items-center justify-between space-x-2 border-b-2 bg-muted p-1 pr-2">
+          <div className="flex w-full items-center space-x-2 truncate">
+            <div className="flex flex-shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={entryHistory.length === 0}
+                onClick={back}
+                aria-label="Back"
+              >
+                <ChevronLeftIcon className="size-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={entryForwardHistory.length === 0}
+                onClick={forward}
+                aria-label="Forward"
+              >
+                <ChevronRightIcon className="size-6" />
+              </Button>
+            </div>
+
+            <DatasetFileViewPath />
+
+            <div className="whitespace-nowrap text-sm text-muted-foreground">
+              {currentEntry.type === "directory" ? (
+                directoryQuery.data ? (
+                  <span className="mr-1">
+                    ({directoryQuery.data?.length} items)
+                  </span>
+                ) : (
+                  <Spinner className="size-4" />
+                )
+              ) : (
+                currentEntry.type === "file" &&
+                (fileStatsQuery.data ? (
+                  <>({abbreviateFileSize(fileStatsQuery.data?.size)})</>
+                ) : (
+                  <Spinner className="size-4" />
+                ))
+              )}
+            </div>
           </div>
 
-          <DatasetFileViewPath />
-
-          <div className="whitespace-nowrap text-sm text-muted-foreground">
-            {currentEntry.type === "directory" ? (
-              directoryQuery.data ? (
-                <span className="mr-1">
-                  ({directoryQuery.data?.length} items)
-                </span>
-              ) : (
-                <Spinner className="size-4" />
-              )
-            ) : (
-              currentEntry.type === "file" &&
-              (fileStatsQuery.data ? (
-                <>({abbreviateFileSize(fileStatsQuery.data?.size)})</>
-              ) : (
-                <Spinner className="size-4" />
-              ))
-            )}
-          </div>
+          {currentEntry.type === "file" && (
+            <DatasetFileViewDownloadButton
+              path={path.join(STATIC_FILES_ROUTE, currentEntry.path)}
+            />
+          )}
         </div>
-
-        {currentEntry.type === "file" && (
-          <DatasetFileViewDownloadButton
-            path={path.join(STATIC_FILES_ROUTE, currentEntry.path)}
-          />
-        )}
       </div>
       {currentEntry.type === "directory" ? (
         <DatasetFileViewDirectory directoryEntry={currentEntry} />
@@ -94,6 +96,6 @@ export function DatasetFileView() {
       ) : (
         <div>Unknown file type</div>
       )}
-    </div>
+    </>
   );
 }

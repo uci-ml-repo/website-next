@@ -1,17 +1,18 @@
 "use client";
 
+import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetCitationButton } from "@/components/dataset/interactions/buttons/DatasetCitationButton";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
-import { DatasetEditButton } from "@/components/dataset/interactions/buttons/DatasetEditButton";
 import { DatasetPythonImportButton } from "@/components/dataset/interactions/buttons/DatasetPythonImportButton";
+import { Button } from "@/components/ui/button";
 import { DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export function DatasetTitleGroup() {
-  const { editable, dataset } = useDataset();
+  const { editable, dataset, editing, setEditing } = useDataset();
 
   const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
 
@@ -28,7 +29,16 @@ export function DatasetTitleGroup() {
 
           <DatasetCitationButton />
 
-          {editable && <DatasetEditButton />}
+          {editable && !editing && (
+            <Button
+              size="lg"
+              variant="secondary"
+              className="lift"
+              onClick={() => setEditing(true)}
+            >
+              <PencilIcon /> Edit
+            </Button>
+          )}
         </div>
       </div>
       {dataset.hasGraphics && (

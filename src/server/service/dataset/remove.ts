@@ -22,6 +22,10 @@ export class DatasetRemoveService {
 
     fs.removeSync(absoluteStaticPath(DATASET_FILES_PATH(existingDataset)));
 
-    return db.delete(dataset).where(eq(dataset.id, datasetId)).returning();
+    return db
+      .delete(dataset)
+      .where(eq(dataset.id, datasetId))
+      .returning()
+      .then((res) => res[0]);
   }
 }

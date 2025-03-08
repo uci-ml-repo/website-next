@@ -82,7 +82,10 @@ export function DatasetCitationButton() {
             <Alert variant="blue">
               <div className="flex items-center space-x-1">
                 <InfoIcon className="size-5" />
-                <span>To populate citation data, add dataset metadata.</span>
+                <span>
+                  To populate citation data, add dataset author and year created
+                  metadata.
+                </span>
               </div>
             </Alert>
           )}

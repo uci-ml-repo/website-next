@@ -1,8 +1,9 @@
 import { forbidden, unauthorized } from "next/navigation";
 
 import { auth } from "@/auth";
-import { DatasetSettingsDelete } from "@/components/dataset/tabs/settings/DatasetSettingsDelete";
-import { DatasetSettingsTitle } from "@/components/dataset/tabs/settings/DatasetSettingsTitle";
+import { DatasetSettingsDelete } from "@/components/dataset/tabs/settings/delete/DatasetSettingsDelete";
+import { DatasetSettingsGraphics } from "@/components/dataset/tabs/settings/graphics/DatasetSettingsGraphics";
+import { DatasetSettingsTitle } from "@/components/dataset/tabs/settings/title/DatasetSettingsTitle";
 import { TabHeader } from "@/components/ui/tab-header";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
@@ -35,7 +36,9 @@ export default async function Page({
         <div className="text-muted-foreground">(Only visible to you)</div>
       </div>
       <div className="space-y-6">
-        <DatasetSettingsTitle dataset={dataset} />
+        <DatasetSettingsTitle />
+        <hr />
+        <DatasetSettingsGraphics />
         <hr />
         <DatasetSettingsDelete dataset={dataset} session={session} />
       </div>

@@ -1,13 +1,14 @@
 "use client";
 
 import { ArrowRightIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import * as React from "react";
 import { useState } from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
-import { actionItems } from "@/components/dataset/edit/actions/dataset-edit-pending-action-items";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
   Carousel,
@@ -19,7 +20,82 @@ import {
   CarouselScrollDots,
 } from "@/components/ui/carousel";
 import { datasetPreApprovalSelect } from "@/db/lib/types";
+import { DATASET_FILES_ROUTE } from "@/lib/routes";
+import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+type ActionPriority = "required" | "recommended" | null;
+
+type ActionItem = {
+  title: string;
+  description: string;
+  priority: ActionPriority;
+  onClick?: () => void;
+  children?: React.ReactNode;
+  disabled?: boolean;
+};
+
+function actionItems({
+  dataset,
+  hasFiles,
+  canSubmit,
+}: {
+  dataset: DatasetResponse;
+  hasFiles: boolean;
+  canSubmit: boolean;
+}) {
+  const actions: ActionItem[] = [];
+
+  if (!dataset.externalLink && !hasFiles) {
+    actions.push({
+      title: "Upload Files",
+      description: "Upload dataset files to share with the community.",
+      priority: "required",
+      onClick: () => redirect(DATASET_FILES_ROUTE(dataset)),
+    });
+  }
+
+  if (!dataset.introductoryPaper) {
+    actions.push({
+      title: "Add an introductory paper",
+      description: "Datasets must me published in a peer-reviewed venue.",
+      priority: "required",
+    });
+  }
+
+  if (!dataset.description) {
+    actions.push({
+      title: "Add description",
+      description:
+        "Add details about your dataset to help others understand its contents.",
+      priority: "required",
+    });
+  }
+
+  if (!dataset.hasGraphics) {
+    actions.push({
+      title: "Upload thumbnail",
+      description: "Upload a thumbnail image to represent your dataset.",
+      priority: "recommended",
+    });
+  }
+
+  actions.push({
+    title: "Submit for review",
+    description: "Submit your dataset for review.",
+    priority: null,
+    children: (
+      <div className="flex h-full items-center justify-between">
+        <Button disabled={!canSubmit} className="mx-auto" variant="positive">
+          Submit
+        </Button>
+      </div>
+    ),
+    disabled: !canSubmit,
+  });
+
+  return actions;
+}
 
 export function DatasetEditPendingActions() {
   const [api, setApi] = useState<CarouselApi>();
@@ -68,7 +144,7 @@ export function DatasetEditPendingActions() {
             ) => (
               <CarouselItem
                 key={index}
-                className="flex basis-full @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
+                className="flex basis-full select-none @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
               >
                 <Card
                   className={cn(
@@ -91,19 +167,15 @@ export function DatasetEditPendingActions() {
                     <div className="flex h-full flex-col space-y-0.5">
                       <div className="flex items-center justify-between">
                         <div className="font-bold">{title}</div>
-                        <ArrowRightIcon className="size-5" />
+                        {!disabled && <ArrowRightIcon className="size-5" />}
                       </div>
                       <CardDescription>{description}</CardDescription>
                       {children}
                     </div>
                     {priority && (
                       <div className="flex justify-end">
-                        {priority === "required" ? (
+                        {priority === "required" && (
                           <Badge variant="gold-strong">REQUIRED</Badge>
-                        ) : (
-                          priority === "recommended" && (
-                            <Badge variant="blue">RECOMMENDED</Badge>
-                          )
                         )}
                       </div>
                     )}

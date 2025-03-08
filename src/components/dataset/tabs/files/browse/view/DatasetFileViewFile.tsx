@@ -88,11 +88,7 @@ export function DatasetFileViewFile({ fileEntry }: { fileEntry: Entry }) {
   ) : pdfExtensions.includes(extension) ? (
     <FilesViewFilePDF source={contentPath} />
   ) : (
-    <div
-      ref={containerRef}
-      onScroll={handleScroll}
-      className="h-full overflow-auto"
-    >
+    <div ref={containerRef} onScroll={handleScroll} className="overflow-auto">
       {Object.keys(tabularToDelimiter).includes(extension) ? (
         <DatasetFileViewFileTabular
           lines={lines}

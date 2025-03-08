@@ -3,6 +3,7 @@
 import { PlusIcon } from "lucide-react";
 
 import { VerificationRequired } from "@/components/auth/VerificationRequired";
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,22 +12,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { DatasetIdentificationSelect } from "@/db/lib/types";
 import { DATASET_DISCUSSION_CREATE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 interface DiscussionCreateButtonProps extends ButtonProps {
   className?: string;
   tooltip?: boolean;
-  dataset: DatasetIdentificationSelect;
 }
 
 export function DiscussionCreateButton({
   className,
   tooltip,
-  dataset,
   ...props
 }: DiscussionCreateButtonProps) {
+  const { dataset } = useDataset();
+
   const CreateButton = () => (
     <Button
       variant="gold"

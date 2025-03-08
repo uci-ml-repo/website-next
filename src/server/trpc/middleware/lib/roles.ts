@@ -3,6 +3,7 @@ import type { Session } from "next-auth";
 import type { UserRole } from "@/db/lib/enums";
 import { Enums } from "@/db/lib/enums";
 import type { DatasetResponse } from "@/lib/types";
+import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export const MiddlewareRoles = {
   DATASET_OWNER: "DATASET_OWNER",
@@ -60,9 +61,8 @@ export function canDeleteDataset({
 }) {
   const isDatasetOwner = user.id === dataset.userId;
 
-  const isDraftOrPending =
-    dataset.status === Enums.ApprovalStatus.DRAFT ||
-    dataset.status === Enums.ApprovalStatus.PENDING;
-
-  return isSuperPriviliged(user.role) || (isDatasetOwner && isDraftOrPending);
+  return (
+    isSuperPriviliged(user.role) ||
+    (isDatasetOwner && isDraftOrPending(dataset))
+  );
 }

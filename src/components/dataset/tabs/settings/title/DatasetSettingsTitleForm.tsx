@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import type { FormData } from "@/components/dataset/create/DatasetDonationCreateForm";
 import { formSchema } from "@/components/dataset/create/DatasetDonationCreateForm";
 import { toast } from "@/components/hooks/use-toast";
@@ -13,29 +14,32 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { DATASET_SETTINGS_ROUTE } from "@/lib/routes";
-import type { DatasetResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetSettingsTitle({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+interface DatasetSettingsTitleFormProps {
+  setEditingTitle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function DatasetSettingsTitleForm({
+  setEditingTitle,
+}: DatasetSettingsTitleFormProps) {
+  const { dataset, setDataset } = useDataset();
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: dataset.title },
   });
 
   const datasetTitleMutation = trpc.dataset.update.title.useMutation({
-    onSuccess: (dataset) => {
-      window.history.replaceState(null, "", DATASET_SETTINGS_ROUTE(dataset));
-      form.reset();
+    onSuccess: (newDataset) => {
+      window.history.replaceState(null, "", DATASET_SETTINGS_ROUTE(newDataset));
+      setDataset({ ...dataset, title: newDataset.title });
+      setEditingTitle(false);
     },
 
     onError: (error) =>
@@ -67,7 +71,6 @@ export function DatasetSettingsTitle({
           name="title"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel className="text-lg font-bold">Dataset Title</FormLabel>
               <div className="flex space-x-2">
                 <div className="w-full">
                   <FormControl>
@@ -87,6 +90,16 @@ export function DatasetSettingsTitle({
                     </div>
                   </div>
                 </div>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="lift"
+                  disabled={pending}
+                  onClick={() => setEditingTitle(false)}
+                >
+                  Cancel
+                </Button>
                 <Button
                   type="submit"
                   variant="gold"

@@ -47,11 +47,11 @@ export function DatasetSideStatus({
         <HoverCard openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
             <CircleHelpIcon
-              className="size-[18px] cursor-help text-muted-foreground max-sm:hidden"
+              className="size-[18px] cursor-help text-muted-foreground"
               tabIndex={0}
             />
           </HoverCardTrigger>
-          <HoverCardContent side="left" align="start" className="w-80 !p-0">
+          <HoverCardContent className="w-80 max-w-[100dvw] !p-0">
             <div className="p-2 text-muted-foreground">
               Only visible to you.
             </div>

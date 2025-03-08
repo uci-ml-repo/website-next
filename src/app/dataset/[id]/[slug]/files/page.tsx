@@ -138,7 +138,7 @@ export default function Page() {
                 className="lift"
                 onClick={() => setViewPendingFiles(true)}
               >
-                View pending files
+                <PencilIcon /> View pending files
               </Button>
             ))}
         </div>
@@ -150,8 +150,8 @@ export default function Page() {
         ) : (
           <AlternativeCard>
             <div className="text-pretty text-center text-muted-foreground">
-              Files not available for browsing. This may be because the dataset
-              is too large. Download the dataset to view files locally.
+              Files are not available for browsing. This may be because the
+              dataset is too large. Download the dataset to view files locally.
             </div>
             <DatasetDownloadButton className="w-fit" />
           </AlternativeCard>

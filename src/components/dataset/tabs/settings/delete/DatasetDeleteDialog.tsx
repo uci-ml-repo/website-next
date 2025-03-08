@@ -36,7 +36,13 @@ export function DatasetDeleteDialog({
   const [confirmInput, setConfirmInput] = useState<string>("");
 
   const datasetRemoveMutation = trpc.dataset.remove.byId.useMutation({
-    onSuccess: () => router.push(PROFILE_DATASETS_ROUTE),
+    onSuccess: (dataset) => {
+      toast({
+        title: "Dataset deleted",
+        description: `${dataset.title} has successfully been deleted`,
+      });
+      router.push(PROFILE_DATASETS_ROUTE);
+    },
     onError: (error) => {
       toast({
         title: "Error deleting dataset",

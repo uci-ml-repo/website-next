@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  CogIcon,
   EllipsisVerticalIcon,
   FlagIcon,
   Link2Icon,
+  SettingsIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -80,7 +80,7 @@ export function DatasetExtendedOptions({
               session.user.id === dataset.userId) && (
               <Link href={DATASET_SETTINGS_ROUTE(dataset)}>
                 <DropdownMenuItem>
-                  <CogIcon />
+                  <SettingsIcon />
                   <span>Dataset Settings</span>
                 </DropdownMenuItem>
               </Link>
