@@ -15,8 +15,14 @@ import {
 } from "@/components/ui/tooltip";
 import { trpc } from "@/server/trpc/query/client";
 
-export function ProfileSettingsEmail({ session }: { session: Session }) {
-  const { update } = useSession();
+export function ProfileSettingsEmail({
+  initialSession,
+}: {
+  initialSession: Session;
+}) {
+  const { data: _session, update } = useSession();
+
+  const session = _session ?? initialSession;
 
   const verifyEmailMutation =
     trpc.user.credentials.sendVerificationEmail.useMutation();

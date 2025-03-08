@@ -16,7 +16,7 @@ export default async function Page() {
     <div className="space-y-8">
       <TabHeader title="Profile Settings" />
       <div className="space-y-6">
-        <ProfileSettingsEmail session={session} />
+        <ProfileSettingsEmail initialSession={session} />
         <hr />
         <ProfileSettingsDelete session={session} />
       </div>
