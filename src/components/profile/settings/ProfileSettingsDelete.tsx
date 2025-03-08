@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import type { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
 
 import { toast } from "@/components/hooks/use-toast";
@@ -21,9 +22,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { CONTACT_ROUTE, HOME_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-export function ProfileSettingsDelete() {
-  const { data: session } = useSession();
-
+export function ProfileSettingsDelete({ session }: { session: Session }) {
   const [confirmInput, setConfirmInput] = useState<string>("");
 
   const userDeleteMutation = trpc.user.remove.byId.useMutation({
@@ -60,65 +59,59 @@ export function ProfileSettingsDelete() {
         </p>
       </div>
 
-      {session ? (
-        <Dialog onOpenChange={(open) => !open && setConfirmInput("")}>
-          <DialogTrigger asChild>
-            <Button variant="outline-destructive">Delete Account</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle>Permanently delete your account</DialogTitle>
-            <DialogHeader className="space-y-4">
-              <AlertIrreversible />
-              <ul className="list-inside list-disc">
-                <li>
-                  You will no longer have access to any datasets donated by you
-                </li>
-                <li>Your discussion posts and comments will be deleted</li>
-              </ul>
-            </DialogHeader>
+      <Dialog onOpenChange={(open) => !open && setConfirmInput("")}>
+        <DialogTrigger asChild>
+          <Button variant="outline-destructive">Delete Account</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Permanently delete your account</DialogTitle>
+          <DialogHeader className="space-y-4">
+            <AlertIrreversible />
+            <ul className="list-inside list-disc">
+              <li>
+                You will no longer have access to any datasets donated by you
+              </li>
+              <li>Your discussion posts and comments will be deleted</li>
+            </ul>
+          </DialogHeader>
 
-            <div className="space-y-4">
-              <div className="text-muted-foreground">
-                For account related questions{" "}
-                <Link href={CONTACT_ROUTE} className="underline">
-                  contact us
-                </Link>
-                .
-              </div>
-              <div className="select-none space-y-1">
-                <div>
-                  To confirm, type your email{" "}
-                  <span className="font-bold">{session.user.email}</span> below.
-                </div>
-                <Input
-                  aria-label="Confirm delete"
-                  onChange={(e) => setConfirmInput(e.target.value)}
-                  value={confirmInput}
-                />
-              </div>
+          <div className="space-y-4">
+            <div className="text-muted-foreground">
+              For account related questions{" "}
+              <Link href={CONTACT_ROUTE} className="underline">
+                contact us
+              </Link>
+              .
             </div>
+            <div className="select-none space-y-1">
+              <div>
+                To confirm, type your email{" "}
+                <span className="font-bold">{session.user.email}</span> below.
+              </div>
+              <Input
+                aria-label="Confirm delete"
+                onChange={(e) => setConfirmInput(e.target.value)}
+                value={confirmInput}
+              />
+            </div>
+          </div>
 
-            <DialogFooter className="items-center !justify-between gap-4">
-              <DialogClose asChild>
-                <Button variant="secondary" disabled={isDeleting}>
-                  Cancel
-                </Button>
-              </DialogClose>
-              <Button
-                variant="destructive"
-                disabled={!confirmed || isDeleting}
-                onClick={deleteAccount}
-              >
-                {isDeleting && <Spinner />} Delete account
+          <DialogFooter className="items-center !justify-between gap-4">
+            <DialogClose asChild>
+              <Button variant="secondary" disabled={isDeleting}>
+                Cancel
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      ) : (
-        <div className="flex h-10 items-center">
-          <Spinner />
-        </div>
-      )}
+            </DialogClose>
+            <Button
+              variant="destructive"
+              disabled={!confirmed || isDeleting}
+              onClick={deleteAccount}
+            >
+              {isDeleting && <Spinner />} Delete account
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
