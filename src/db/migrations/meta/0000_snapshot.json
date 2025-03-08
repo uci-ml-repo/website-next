@@ -1,5 +1,5 @@
 {
-  "id": "2d5c568e-7a0d-4466-8a96-b9ffe9dc2423",
+  "id": "ce17e6e6-72c0-4fd0-9c51-31c6ffd86641",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -321,19 +321,22 @@
           "name": "data_types",
           "type": "dataset_characteristic[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'{}'"
         },
         "tasks": {
           "name": "tasks",
           "type": "dataset_task[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'{}'"
         },
         "feature_types": {
           "name": "feature_types",
           "type": "dataset_feature_type[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'{}'"
         },
         "size": {
           "name": "size",
@@ -360,12 +363,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "unzipped": {
-          "name": "unzipped",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -404,7 +401,7 @@
         },
         "files_exist_parity": {
           "name": "files_exist_parity",
-          "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n          AND \"dataset\".\"unzipped\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
+          "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
         }
       },
       "isRLSEnabled": false
@@ -629,19 +626,19 @@
           "name": "data_types",
           "type": "dataset_characteristic[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "tasks": {
           "name": "tasks",
           "type": "dataset_task[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "feature_types": {
           "name": "feature_types",
           "type": "dataset_feature_type[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "size": {
           "name": "size",
@@ -700,12 +697,6 @@
         "introductory_paper": {
           "name": "introductory_paper",
           "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "unzipped": {
-          "name": "unzipped",
-          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         }

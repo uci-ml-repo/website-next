@@ -99,9 +99,12 @@ export const dataset = pgTable(
       .notNull(),
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count"),
-    dataTypes: datasetDataType("data_types").array(),
-    tasks: datasetTask("tasks").array(),
-    featureTypes: datasetFeatureType("feature_types").array(),
+    dataTypes: datasetDataType("data_types").array().default([]).notNull(),
+    tasks: datasetTask("tasks").array().default([]).notNull(),
+    featureTypes: datasetFeatureType("feature_types")
+      .array()
+      .default([])
+      .notNull(),
     size: bigint("size", { mode: "number" }),
     fileCount: integer("file_count"),
     userId: uuid("user_id")
@@ -192,9 +195,9 @@ export const datasetView = pgTable(
     status: approvalStatus("status").notNull(),
     viewCount: integer("view_count").notNull(),
     downloadCount: integer("download_count"),
-    dataTypes: datasetDataType("data_types").array(),
-    tasks: datasetTask("tasks").array(),
-    featureTypes: datasetFeatureType("feature_types").array(),
+    dataTypes: datasetDataType("data_types").array().notNull(),
+    tasks: datasetTask("tasks").array().notNull(),
+    featureTypes: datasetFeatureType("feature_types").array().notNull(),
     size: bigint("size", { mode: "number" }),
     fileCount: integer("file_count"),
     userId: uuid("user_id").notNull(),

@@ -1,5 +1,3 @@
-import type { AcceptedDatasetRequiredFields } from "@/db/lib/types";
-import type { RequireNonNullable } from "@/lib/utils";
 import type { RouterOutput } from "@/server/trpc/router";
 
 export type DatasetResponse = NonNullable<
@@ -8,11 +6,6 @@ export type DatasetResponse = NonNullable<
 
 export type DatasetPreviewResponse = NonNullable<
   RouterOutput["dataset"]["find"]["byQuery"]["datasets"][number]
->;
-
-export type AcceptedDatasetResponse = RequireNonNullable<
-  DatasetResponse,
-  AcceptedDatasetRequiredFields
 >;
 
 export type DiscussionResponse = NonNullable<

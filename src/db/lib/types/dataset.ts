@@ -1,17 +1,10 @@
 import { createSelectSchema } from "drizzle-zod";
-import type { z } from "zod";
+import { z } from "zod";
 
+import { Enums } from "@/db/lib/enums";
 import { selectColumns } from "@/db/lib/utils";
-import { datasetView } from "@/db/schema";
-export type AcceptedDatasetRequiredFields =
-  | "doi"
-  | "yearCreated"
-  | "instanceCount"
-  | "description"
-  | "subjectArea"
-  | "dataTypes"
-  | "tasks"
-  | "featureTypes";
+import { author, datasetView, paper, user, variable } from "@/db/schema";
+import { enumToArray } from "@/lib/utils";
 
 export type DatasetSelect = typeof datasetView.$inferSelect;
 
@@ -63,3 +56,22 @@ export type DatasetPreviewSelect = z.infer<typeof datasetPreviewSelectSchema>;
 export type DatasetIdentificationSelect = z.infer<
   typeof datasetIdentificationSelectSchema
 >;
+
+export const datasetPreApprovalSelect = createSelectSchema(datasetView).extend({
+  yearCreated: z.number().int(),
+  instanceCount: z.number().int(),
+  description: z.string().min(20),
+  subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)),
+  authors: createSelectSchema(author).array(),
+  variables: createSelectSchema(variable).array(),
+  user: createSelectSchema(user),
+  introductoryPaper: createSelectSchema(paper),
+});
+
+export type DatasetPreApprovalSelect = z.infer<typeof datasetPreApprovalSelect>;
+
+export const datasetApprovedSelect = datasetPreApprovalSelect.extend({
+  doi: z.string(),
+});
+
+export type DatasetApprovedSelect = z.infer<typeof datasetApprovedSelect>;

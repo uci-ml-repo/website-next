@@ -2,10 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { Enums } from "@/db/lib/enums";
-import type {
-  AcceptedDatasetResponse,
-  DatasetPreviewResponse,
-} from "@/lib/types";
+import type { DatasetApprovedSelect } from "@/db/lib/types";
+import type { DatasetPreviewResponse } from "@/lib/types";
 import { caller } from "@/server/trpc/query/server";
 
 import { datasetToPythonMetadata } from "./schema";
@@ -62,6 +60,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     status: 200,
     statusText: "OK",
-    data: datasetToPythonMetadata(dataset as AcceptedDatasetResponse),
+    data: datasetToPythonMetadata(dataset as DatasetApprovedSelect),
   });
 }

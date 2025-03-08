@@ -1,6 +1,6 @@
 import { Enums } from "@/db/lib/enums";
+import type { DatasetApprovedSelect } from "@/db/lib/types";
 import { DATASET_API_PYTHON_DATA_ROUTE, DATASET_ROUTE } from "@/lib/routes";
-import type { AcceptedDatasetResponse } from "@/lib/types";
 
 export type IntroPaperMetadata = {
   title: string;
@@ -47,16 +47,12 @@ export type PythonMetadata = {
   external_url?: string | null;
 };
 
-// function paperUrl({ semanticScholarId }: { semanticScholarId: number }) {
-//   return `https://api.semanticscholar.org/CorpusID:${semanticScholarId}`;
-// }
-
 function paperUrl({ url }: { url: string }) {
   return url;
 }
 
 export function datasetToPythonMetadata(
-  dataset: AcceptedDatasetResponse,
+  dataset: DatasetApprovedSelect,
 ): PythonMetadata {
   return {
     uci_id: dataset.id,
