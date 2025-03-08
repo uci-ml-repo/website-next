@@ -303,7 +303,13 @@ const CarouselNext = React.forwardRef<
   },
 );
 CarouselNext.displayName = "CarouselNext";
-const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
+const CarouselScrollDots = ({
+  api,
+  className,
+}: {
+  api: CarouselApi;
+  className?: string;
+}) => {
   const [slideNodes, setSlideNodes] = useState<HTMLElement[]>([]);
   const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
@@ -329,7 +335,7 @@ const CarouselScrollDots = ({ api }: { api: CarouselApi }) => {
   const SHOW_NODES_SIDES = 3;
 
   return (
-    <div className="flex h-4 items-end justify-center">
+    <div className={cn("flex h-4 items-end justify-center", className)}>
       {!!slidesInView.length && (
         <div className="flex items-center justify-center space-x-1 transition-opacity animate-in fade-in-0">
           {slideNodes.map((_, index) => {

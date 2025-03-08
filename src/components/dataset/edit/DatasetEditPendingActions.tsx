@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRightIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import * as React from "react";
 import { useState } from "react";
 
@@ -19,6 +20,7 @@ import {
   CarouselScrollDots,
 } from "@/components/ui/carousel";
 import { datasetPreApprovalSelect } from "@/db/lib/types";
+import { DATASET_FILES_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +30,7 @@ type ActionItem = {
   title: string;
   description: string;
   priority: ActionPriority;
+  onClick?: () => void;
   children?: React.ReactNode;
   disabled?: boolean;
 };
@@ -48,6 +51,7 @@ function actionItems({
       title: "Upload Files",
       description: "Upload dataset files to share with the community.",
       priority: "required",
+      onClick: () => redirect(DATASET_FILES_ROUTE(dataset)),
     });
   }
 
@@ -126,7 +130,10 @@ export function DatasetEditPendingActions() {
       <div>
         <CarouselContent gutter className="flex items-stretch">
           {items.map(
-            ({ title, description, priority, children, disabled }, index) => (
+            (
+              { title, description, priority, children, disabled, onClick },
+              index,
+            ) => (
               <CarouselItem
                 key={index}
                 className="flex basis-full @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
@@ -135,6 +142,7 @@ export function DatasetEditPendingActions() {
                   className={cn(
                     "flex w-full flex-1",
                     { lift: !disabled },
+                    { "bg-muted": disabled },
                     {
                       "border-b-[3px] border-b-uci-gold":
                         priority === "required",
@@ -144,7 +152,8 @@ export function DatasetEditPendingActions() {
                         priority == "recommended",
                     },
                   )}
-                  tabIndex={0}
+                  onClick={onClick}
+                  tabIndex={disabled ? -1 : 0}
                 >
                   <CardContent className="flex flex-1 flex-col space-y-4">
                     <div className="flex h-full flex-col space-y-0.5">
@@ -172,7 +181,7 @@ export function DatasetEditPendingActions() {
             ),
           )}
         </CarouselContent>
-        <CarouselScrollDots api={api} />
+        <CarouselScrollDots api={api} className="mt-1" />
       </div>
     </Carousel>
   );
