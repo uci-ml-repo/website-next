@@ -13,6 +13,7 @@ import {
   LinearTabsTrigger,
   TabsListBorder,
 } from "@/components/ui/linear-tabs";
+import { Enums } from "@/db/lib/enums";
 import { DATASET_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -79,7 +80,7 @@ export function DatasetTabs({
             Discussions
           </LinearTabsTrigger>
 
-          {editable && (
+          {editable && dataset.status !== Enums.ApprovalStatus.DRAFT && (
             <LinearTabsTrigger
               value="changelog"
               link={path.join(basePath, "changelog")}
