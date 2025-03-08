@@ -44,6 +44,7 @@ const config = [
       "prettier/prettier": "error",
       "import/first": "error",
       "import/no-duplicates": "error",
+      "import/newline-after-import": ["error", { count: 1 }],
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "unused-imports/no-unused-imports": "error",
