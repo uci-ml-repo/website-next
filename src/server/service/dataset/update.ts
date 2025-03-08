@@ -5,7 +5,9 @@ import { db } from "@/db";
 import { dataset } from "@/db/schema";
 import {
   DATASET_FILES_UNZIPPED_PATH,
+  DATASET_FILES_UNZIPPED_PENDING_PATH,
   DATASET_FILES_ZIP_PATH,
+  DATASET_FILES_ZIP_PENDING_PATH,
 } from "@/lib/routes";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
@@ -27,28 +29,20 @@ export class DatasetUpdateService {
     return zipStats;
   }
 
-  async title({
-    datasetId,
-    title,
-    isExternal,
-  }: {
-    datasetId: number;
-    title: string;
-    isExternal: boolean;
-  }) {
+  async title({ datasetId, title }: { datasetId: number; title: string }) {
     const existingDataset = await service.dataset.find.byId(datasetId);
     const newSlug = await service.dataset.create.getSlug(title);
 
-    if (!isExternal) {
+    if (!existingDataset.externalLink) {
       const oldZipPath = absoluteStaticPath(
         DATASET_FILES_ZIP_PATH(existingDataset),
       );
 
-      const newZipPath = absoluteStaticPath(
-        DATASET_FILES_ZIP_PATH({ ...existingDataset, slug: newSlug }),
-      );
-
       if (fs.existsSync(oldZipPath)) {
+        const newZipPath = absoluteStaticPath(
+          DATASET_FILES_ZIP_PATH({ ...existingDataset, slug: newSlug }),
+        );
+
         fs.moveSync(oldZipPath, newZipPath, { overwrite: true });
       }
 
@@ -56,12 +50,41 @@ export class DatasetUpdateService {
         DATASET_FILES_UNZIPPED_PATH(existingDataset),
       );
 
-      const newUnzippedPath = absoluteStaticPath(
-        DATASET_FILES_UNZIPPED_PATH({ ...existingDataset, slug: newSlug }),
+      if (fs.existsSync(oldUnzippedPath)) {
+        const newUnzippedPath = absoluteStaticPath(
+          DATASET_FILES_UNZIPPED_PATH({ ...existingDataset, slug: newSlug }),
+        );
+
+        fs.moveSync(oldUnzippedPath, newUnzippedPath, { overwrite: true });
+      }
+
+      const oldPendingZipPath = absoluteStaticPath(
+        DATASET_FILES_ZIP_PENDING_PATH(existingDataset),
       );
 
-      if (fs.existsSync(oldUnzippedPath)) {
-        fs.moveSync(oldUnzippedPath, newUnzippedPath, { overwrite: true });
+      if (fs.existsSync(oldPendingZipPath)) {
+        const newPendingZipPath = absoluteStaticPath(
+          DATASET_FILES_ZIP_PENDING_PATH({ ...existingDataset, slug: newSlug }),
+        );
+
+        fs.moveSync(oldPendingZipPath, newPendingZipPath, { overwrite: true });
+      }
+
+      const oldPendingUnzippedPath = absoluteStaticPath(
+        DATASET_FILES_UNZIPPED_PENDING_PATH(existingDataset),
+      );
+
+      if (fs.existsSync(oldPendingUnzippedPath)) {
+        const newPendingUnzippedPath = absoluteStaticPath(
+          DATASET_FILES_UNZIPPED_PENDING_PATH({
+            ...existingDataset,
+            slug: newSlug,
+          }),
+        );
+
+        fs.moveSync(oldPendingUnzippedPath, newPendingUnzippedPath, {
+          overwrite: true,
+        });
       }
     }
 

@@ -2,6 +2,7 @@
 
 import { PencilIcon, RotateCcwIcon } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
@@ -10,10 +11,10 @@ import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/browse/Datas
 import { DatasetFilesProvider } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
 import { ZipFileUploadForm } from "@/components/dataset/tabs/files/upload/ZipFileUploadForm";
 import { ZipFileUploadProcessing } from "@/components/dataset/tabs/files/upload/ZipFileUploadProcessing";
-import { AlertError } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
 import { CONTACT_ROUTE } from "@/lib/routes";
@@ -165,5 +166,9 @@ export default function Page() {
     return <ZipFileUploadProcessing />;
   }
 
-  return <AlertError text="failed to read dataset files" />;
+  return (
+    <div className="flex h-20 w-full items-center justify-center">
+      <Spinner className="size-10" />
+    </div>
+  );
 }

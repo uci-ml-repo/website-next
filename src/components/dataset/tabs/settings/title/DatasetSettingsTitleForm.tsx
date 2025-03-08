@@ -54,7 +54,6 @@ export function DatasetSettingsTitleForm({
     await datasetTitleMutation.mutateAsync({
       datasetId: dataset.id,
       title: values.title,
-      isExternal: !!dataset.externalLink,
     });
   }
 

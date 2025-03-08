@@ -58,7 +58,7 @@ function actionItems({
   if (!dataset.introductoryPaper) {
     actions.push({
       title: "Add an introductory paper",
-      description: "Datasets must me published in a peer-reviewed venue.",
+      description: "Datasets must be published in a peer-reviewed venue.",
       priority: "required",
     });
   }

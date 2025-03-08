@@ -32,7 +32,8 @@ export function ZipFileUploadForm({
 }: {
   requireApproval?: boolean;
 }) {
-  const { stopEditingField, dataset, setDataset } = useDataset();
+  const { stopEditingField, dataset, setDataset, setViewPendingFiles } =
+    useDataset();
   const { setFileStatus, setPendingFileStatus } = useDatasetFileStatus();
 
   const [uploadProgress, setUploadProgress] = useState<AxiosProgressEvent>();
@@ -59,6 +60,9 @@ export function ZipFileUploadForm({
         fileCount: response.dataset.fileCount,
       });
       stopEditingField("files");
+      if (requireApproval) {
+        setViewPendingFiles(true);
+      }
     },
   });
 
