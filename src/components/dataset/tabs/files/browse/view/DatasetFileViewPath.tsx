@@ -3,7 +3,7 @@ import path from "path";
 import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { useDatasetFileBrowser } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
 import {
   DATASET_FILES_UNZIPPED_PATH,
   DATASET_FILES_UNZIPPED_PENDING_PATH,
@@ -11,7 +11,7 @@ import {
 
 export function DatasetFileViewPath() {
   const { dataset, viewPendingFiles } = useDataset();
-  const { currentEntry, setCurrentEntry } = useDatasetFiles();
+  const { currentEntry, setCurrentEntry } = useDatasetFileBrowser();
 
   const basePath = viewPendingFiles
     ? DATASET_FILES_UNZIPPED_PENDING_PATH(dataset)

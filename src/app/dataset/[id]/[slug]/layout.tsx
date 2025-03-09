@@ -96,7 +96,7 @@ export default async function Layout({
     editCount = 0;
   }
 
-  const datasetFileStatuses = await service.dataset.file.zipStatuses(dataset);
+  const datasetFileStatuses = await service.dataset.file.fileStatuses(dataset);
 
   return (
     <DatasetBookmarkProvider initialBookmarked={initialBookmarked}>
@@ -105,6 +105,9 @@ export default async function Layout({
           dataset={dataset}
           initialStatus={datasetFileStatuses.status}
           initialPendingStatus={datasetFileStatuses.pendingStatus}
+          initialHasPendingThumbnail={
+            datasetFileStatuses.pendingThumbnailStatus
+          }
         >
           <Main>
             <div className="backdrop-gradient-blur space-y-6">

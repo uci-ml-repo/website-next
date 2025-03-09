@@ -7,8 +7,8 @@ import React from "react";
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetDownloadButton } from "@/components/dataset/interactions/buttons/DatasetDownloadButton";
+import { DatasetFileBrowserProvider } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
 import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/browse/DatasetFilesBrowse";
-import { DatasetFilesProvider } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
 import { ZipFileUploadForm } from "@/components/dataset/tabs/files/upload/ZipFileUploadForm";
 import { ZipFileUploadProcessing } from "@/components/dataset/tabs/files/upload/ZipFileUploadProcessing";
 import { Badge } from "@/components/ui/badge";
@@ -146,9 +146,9 @@ export default function Page() {
         </div>
         {(!viewPendingFiles && fileStatus === "unzipped") ||
         (viewPendingFiles && pendingFileStatus === "unzipped") ? (
-          <DatasetFilesProvider>
+          <DatasetFileBrowserProvider>
             <DatasetFilesBrowse />
-          </DatasetFilesProvider>
+          </DatasetFileBrowserProvider>
         ) : (
           <AlternativeCard>
             <div className="text-pretty text-center text-muted-foreground">

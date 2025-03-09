@@ -3,14 +3,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosProgressEvent } from "axios";
 import axios from "axios";
-import { UploadIcon } from "lucide-react";
+import { FolderArchiveIcon, UploadIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
-import { ZipFileUploadFormItem } from "@/components/dataset/tabs/files/upload/ZipFileUploadFormItem";
+import {
+  FileUploadFormItem,
+  formSchema,
+} from "@/components/dataset/tabs/files/upload/FileUploadFormItem";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -22,10 +25,6 @@ import {
   DATASET_FILES_ZIP_PENDING_PATH,
 } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
-
-export const formSchema = z.object({
-  zipFile: z.instanceof(File, { message: "A zip file is required" }),
-});
 
 export function ZipFileUploadForm({
   requireApproval,
@@ -41,7 +40,7 @@ export function ZipFileUploadForm({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { zipFile: undefined },
+    defaultValues: { file: undefined },
   });
 
   const utils = trpc.useUtils();
@@ -67,7 +66,7 @@ export function ZipFileUploadForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!values.zipFile) return;
+    if (!values.file) return;
 
     controllerRef.current = new AbortController();
 
@@ -76,7 +75,7 @@ export function ZipFileUploadForm({
         requireApproval
           ? DATASET_API_ZIP_PENDING_ROUTE(dataset)
           : DATASET_API_ZIP_ROUTE(dataset),
-        { file: values.zipFile },
+        { file: values.file },
         {
           headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (progressEvent) => {
@@ -123,11 +122,13 @@ export function ZipFileUploadForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <ZipFileUploadFormItem
+        <FileUploadFormItem
           form={form}
           pending={pending}
           uploadProgress={uploadProgress}
           cancelUpload={cancelUpload}
+          fileIcon={<FolderArchiveIcon />}
+          accept={{ "application/zip": [".zip"] }}
         />
         <Button
           type="submit"

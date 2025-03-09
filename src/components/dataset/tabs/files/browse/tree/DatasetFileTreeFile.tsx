@@ -1,7 +1,7 @@
 import path from "path";
 import { useMemo } from "react";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { useDatasetFileBrowser } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/browse/lib/FileToIcon";
 import { DatasetFileTreeButton } from "@/components/dataset/tabs/files/browse/tree/DatasetFileTreeButton";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ export function DatasetFileTreeFile({
   file: Entry;
   displayFullPath?: boolean;
 }) {
-  const { currentEntry, setCurrentEntry, rootPath } = useDatasetFiles();
+  const { currentEntry, setCurrentEntry, rootPath } = useDatasetFileBrowser();
 
   const icon = useMemo(() => fileToIcon(file), [file]);
 

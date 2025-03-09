@@ -128,6 +128,26 @@ export function DATASET_API_THUMBNAIL_ROUTE({
 }
 
 /**
+ * @example "/api/static/public/53/thumbnail.pending.png"
+ */
+export function DATASET_API_THUMBNAIL_PENDING_ROUTE({
+  status,
+  hasGraphics,
+  id,
+}: {
+  status: string;
+  hasGraphics: boolean;
+  id: number;
+}) {
+  return path.join(
+    hasGraphics
+      ? DATASET_API_FILES_ROUTE({ id, status })
+      : path.join(STATIC_FILES_ROUTE, "public", "default"),
+    "thumbnail.pending.png",
+  );
+}
+
+/**
  * @example "/public/53"
  */
 export function DATASET_FILES_PATH({

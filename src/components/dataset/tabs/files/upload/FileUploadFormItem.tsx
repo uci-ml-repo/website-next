@@ -1,9 +1,10 @@
 import type { AxiosProgressEvent } from "axios";
-import { FolderArchiveIcon, UploadIcon, XIcon } from "lucide-react";
+import { UploadIcon, XIcon } from "lucide-react";
 import { useCallback } from "react";
-import { type FileRejection, useDropzone } from "react-dropzone";
+import type { Accept, FileRejection } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import type { UseFormReturn } from "react-hook-form";
-import type { z } from "zod";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,61 +22,64 @@ import {
 } from "@/components/ui/tooltip";
 import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
 
-import type { formSchema } from "./ZipFileUploadForm";
-
-interface ZipFileUploadFormItemProps {
+interface FileUploadFormItemProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
+  accept?: Accept;
   pending: boolean;
   uploadProgress?: AxiosProgressEvent;
   cancelUpload: () => void;
+  maxUploadSize?: number;
+  fileIcon?: React.ReactNode;
 }
 
-export function ZipFileUploadFormItem({
+export const formSchema = z.object({
+  file: z.instanceof(File, { message: "A file is required" }),
+});
+
+export function FileUploadFormItem({
   form,
+  accept,
   pending,
   uploadProgress,
   cancelUpload,
-}: ZipFileUploadFormItemProps) {
+  maxUploadSize = 1024 * 1024 * 1024, // 1GB
+  fileIcon,
+}: FileUploadFormItemProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
-        form.clearErrors("zipFile");
-        form.setValue("zipFile", acceptedFiles[0], { shouldValidate: true });
+        form.clearErrors("file");
+        form.setValue("file", acceptedFiles[0], { shouldValidate: true });
       }
     },
     [form],
   );
+
   const onDropRejected = useCallback(
     (fileRejections: FileRejection[]) => {
-      let message;
-      switch (fileRejections[0].errors[0]?.code) {
-        case "file-invalid-type":
-          message = "File type must be .zip";
-          break;
-        case "file-too-large":
-          message = "Maximum upload size is 1GB.";
-          break;
-        default:
-          message = "An error occurred while uploading the file.";
-          break;
-      }
-      form.setError("zipFile", { type: "manual", message });
+      form.setError("file", {
+        type: "manual",
+        message: fileRejections[0].errors[0]?.message,
+      });
     },
     [form],
   );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     onDropRejected,
     multiple: false,
-    accept: { "application/zip": [".zip"] },
+    accept,
     maxFiles: 1,
-    maxSize: 1024 * 1024 * 1024, // 1GB
+    maxSize: maxUploadSize,
   });
-  const zipFile = form.watch("zipFile");
+
+  const file = form.watch("file");
+
   return (
     <FormField
       control={form.control}
-      name="zipFile"
+      name="file"
       render={() => (
         <FormItem>
           <FormControl>
@@ -84,21 +88,21 @@ export function ZipFileUploadFormItem({
               className={cn(
                 "flex h-44 items-center justify-center rounded-md border-2 border-dashed p-6 text-center",
                 { "bg-uci-blue/10": isDragActive },
-                { "cursor-pointer": !zipFile },
+                { "cursor-pointer": !file },
               )}
             >
-              <input {...getInputProps()} disabled={!!zipFile || pending} />
+              <input {...getInputProps()} disabled={!!file || pending} />
               {isDragActive ? (
                 <div className="flex flex-col items-center space-y-2">
                   <UploadIcon />
                   <div>Drop to upload file</div>
                 </div>
-              ) : zipFile ? (
+              ) : file ? (
                 <div className="flex w-full items-center justify-between space-x-1">
-                  <div className="flex items-center space-x-2 overflow-hidden">
-                    <FolderArchiveIcon className="shrink-0" />
+                  <div className="flex items-center space-x-2 overflow-hidden [&>svg]:shrink-0">
+                    {fileIcon}
                     <span className="truncate text-lg font-bold">
-                      {zipFile.name}
+                      {file.name}
                     </span>
                   </div>
                   {uploadProgress ? (
@@ -138,7 +142,7 @@ export function ZipFileUploadFormItem({
                   ) : (
                     <div className="flex items-center space-x-2">
                       <div className="text-nowrap text-muted-foreground">
-                        {abbreviateFileSize(zipFile.size)}
+                        {abbreviateFileSize(file.size)}
                       </div>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -163,7 +167,7 @@ export function ZipFileUploadFormItem({
               ) : (
                 <div className="space-y-1">
                   <FormLabel className="text-pretty text-lg font-bold">
-                    Drag & drop a file to upload (.zip)
+                    Drag & drop a file to upload
                   </FormLabel>
                   <div className="text-muted-foreground">or</div>
                   <Button variant="outline" tabIndex={-1} type="button">

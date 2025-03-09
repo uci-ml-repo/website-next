@@ -11,6 +11,8 @@ interface DatasetFileStatusContextProps {
   setFileStatus: (status: DatasetFileStatus) => void;
   pendingFileStatus: DatasetFileStatus;
   setPendingFileStatus: (status: DatasetFileStatus) => void;
+  hasPendingThumbnail: boolean;
+  setHasPendingThumbnail: (status: boolean) => void;
 }
 
 const DatasetFileStatusContext = createContext<
@@ -22,11 +24,13 @@ export function DatasetFileStatusProvider({
   dataset,
   initialStatus,
   initialPendingStatus,
+  initialHasPendingThumbnail,
 }: {
   children: React.ReactNode;
   dataset: DatasetResponse;
   initialStatus: DatasetFileStatus;
   initialPendingStatus: DatasetFileStatus;
+  initialHasPendingThumbnail: boolean;
 }) {
   const [fileStatus, setFileStatus] =
     useState<DatasetFileStatus>(initialStatus);
@@ -34,8 +38,12 @@ export function DatasetFileStatusProvider({
   const [pendingFileStatus, setPendingFileStatus] =
     useState<DatasetFileStatus>(initialPendingStatus);
 
+  const [hasPendingThumbnail, setHasPendingThumbnail] = useState<boolean>(
+    initialHasPendingThumbnail,
+  );
+
   const { data: datasetFileStatusPoll, isFetching } =
-    trpc.dataset.file.zipStatuses.useQuery(
+    trpc.dataset.file.fileStatuses.useQuery(
       { datasetId: dataset.id },
       {
         refetchInterval: (data) => {
@@ -65,6 +73,8 @@ export function DatasetFileStatusProvider({
         setFileStatus,
         pendingFileStatus,
         setPendingFileStatus,
+        hasPendingThumbnail,
+        setHasPendingThumbnail,
       }}
     >
       {children}

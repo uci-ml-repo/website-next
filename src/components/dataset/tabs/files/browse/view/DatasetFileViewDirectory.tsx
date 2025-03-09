@@ -1,7 +1,7 @@
 import { AlertCircleIcon } from "lucide-react";
 import path from "path";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { useDatasetFileBrowser } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
 import { fileToIcon } from "@/components/dataset/tabs/files/browse/lib/FileToIcon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
@@ -13,7 +13,7 @@ export function DatasetFileViewDirectory({
 }: {
   directoryEntry: Entry;
 }) {
-  const { setCurrentEntry } = useDatasetFiles();
+  const { setCurrentEntry } = useDatasetFileBrowser();
 
   const { data, isLoading, isError } = trpc.file.find.list.useQuery(
     { path: directoryEntry.path ?? "" },

@@ -100,7 +100,7 @@ export function DatasetSettingsTitleForm() {
                   className="lift"
                   disabled={pending}
                 >
-                  {pending && <Spinner />}Save
+                  {pending && <Spinner />} Save
                 </Button>
               </div>
             </FormItem>

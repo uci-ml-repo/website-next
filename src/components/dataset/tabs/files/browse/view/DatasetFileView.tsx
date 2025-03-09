@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import path from "path";
 
-import { useDatasetFiles } from "@/components/dataset/tabs/files/browse/DatasetFilesContext";
+import { useDatasetFileBrowser } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
 import { DatasetFileViewDirectory } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDirectory";
 import { DatasetFileViewDownloadButton } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewDownloadButton";
 import { DatasetFileViewFile } from "@/components/dataset/tabs/files/browse/view/DatasetFileViewFile";
@@ -14,7 +14,7 @@ import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetFileView() {
   const { currentEntry, entryHistory, back, entryForwardHistory, forward } =
-    useDatasetFiles();
+    useDatasetFileBrowser();
 
   const directoryQuery = trpc.file.find.list.useQuery(
     {

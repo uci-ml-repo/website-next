@@ -10,7 +10,7 @@ import {
 } from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 
-interface DatasetFilesContextProps {
+interface DatasetFileBrowserContextProps {
   entryHistory: Entry[];
   entryForwardHistory: Entry[];
   rootPath: string;
@@ -20,11 +20,15 @@ interface DatasetFilesContextProps {
   forward: () => void;
 }
 
-const DatasetFilesContext = createContext<DatasetFilesContextProps | undefined>(
-  undefined,
-);
+const DatasetFileBrowserContext = createContext<
+  DatasetFileBrowserContextProps | undefined
+>(undefined);
 
-export function DatasetFilesProvider({ children }: { children: ReactNode }) {
+export function DatasetFileBrowserProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const { dataset, viewPendingFiles } = useDataset();
 
   const rootPath = viewPendingFiles
@@ -71,7 +75,7 @@ export function DatasetFilesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DatasetFilesContext.Provider
+    <DatasetFileBrowserContext.Provider
       value={{
         entryHistory,
         entryForwardHistory,
@@ -83,12 +87,12 @@ export function DatasetFilesProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </DatasetFilesContext.Provider>
+    </DatasetFileBrowserContext.Provider>
   );
 }
 
-export function useDatasetFiles() {
-  const context = useContext(DatasetFilesContext);
+export function useDatasetFileBrowser() {
+  const context = useContext(DatasetFileBrowserContext);
   if (!context) {
     throw new Error("useFileContext must be used within a FileProvider");
   }

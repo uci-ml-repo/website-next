@@ -29,16 +29,21 @@ export type DatasetFileStatus =
  * | -   | -    | -     | awaiting-upload |
  */
 export class DatasetFileService {
-  async zipStatuses(dataset: {
+  async fileStatuses(dataset: {
     id: number;
     slug: string;
     status: string;
     externalLink: string | null;
   }) {
+    const pendingThumbnailStatus = fs.existsSync(
+      absoluteStaticPath(DATASET_FILES_ZIP_PENDING_PATH(dataset)),
+    );
+
     if (dataset.externalLink) {
       return {
         status: null,
         pendingStatus: null,
+        pendingThumbnailStatus,
       };
     }
 
@@ -77,6 +82,6 @@ export class DatasetFileService {
           : "not-unzipped"
       : "awaiting-upload";
 
-    return { status, pendingStatus };
+    return { status, pendingStatus, pendingThumbnailStatus };
   }
 }
