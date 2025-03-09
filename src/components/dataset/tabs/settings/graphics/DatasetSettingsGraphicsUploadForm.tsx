@@ -99,9 +99,6 @@ export function DatasetSettingsGraphicsUploadForm({
           accept={{
             "image/jpeg": [".jpeg", ".jpg"],
             "image/png": [".png"],
-            "image/webp": [".webp"],
-            "image/avif": [".avif"],
-            "image/svg+xml": [".svg"],
           }}
         />
         <Button
