@@ -114,13 +114,15 @@ export function DATASET_API_THUMBNAIL_ROUTE({
   status,
   hasGraphics,
   id,
+  fallback = true,
 }: {
   status: string;
   hasGraphics: boolean;
   id: number;
+  fallback?: boolean;
 }) {
   return path.join(
-    hasGraphics
+    hasGraphics || !fallback
       ? DATASET_API_FILES_ROUTE({ id, status })
       : path.join(STATIC_FILES_ROUTE, "public", "default"),
     "thumbnail.png",
@@ -134,13 +136,15 @@ export function DATASET_API_THUMBNAIL_PENDING_ROUTE({
   status,
   hasGraphics,
   id,
+  fallback = true,
 }: {
   status: string;
   hasGraphics: boolean;
   id: number;
+  fallback?: boolean;
 }) {
   return path.join(
-    hasGraphics
+    hasGraphics || !fallback
       ? DATASET_API_FILES_ROUTE({ id, status })
       : path.join(STATIC_FILES_ROUTE, "public", "default"),
     "thumbnail.pending.png",

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosProgressEvent } from "axios";
 import axios from "axios";
-import { FolderArchiveIcon, UploadIcon } from "lucide-react";
+import { ImageIcon, UploadIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -20,17 +20,17 @@ import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
 import {
-  DATASET_API_ZIP_PENDING_ROUTE,
-  DATASET_API_ZIP_ROUTE,
-  DATASET_FILES_ZIP_PATH,
-  DATASET_FILES_ZIP_PENDING_PATH,
+  DATASET_API_THUMBNAIL_PENDING_ROUTE,
+  DATASET_API_THUMBNAIL_ROUTE,
 } from "@/lib/routes";
-import { trpc } from "@/server/trpc/query/client";
 
-export function ZipFileUploadForm() {
-  const { stopEditingField, dataset, setDataset, setViewPendingFiles } =
-    useDataset();
-  const { setFileStatus, setPendingFileStatus } = useDatasetFileStatus();
+export function DatasetSettingsGraphicsUploadForm({
+  onUpload,
+}: {
+  onUpload: () => void;
+}) {
+  const { dataset } = useDataset();
+  const { setHasPendingThumbnail } = useDatasetFileStatus();
 
   const requireApproval = dataset.status !== Enums.ApprovalStatus.DRAFT;
 
@@ -42,28 +42,6 @@ export function ZipFileUploadForm() {
     defaultValues: { file: undefined },
   });
 
-  const utils = trpc.useUtils();
-
-  const unzipMutation = trpc.file.zip.unzip.useMutation({
-    onSuccess: (response) => {
-      if (response.success) {
-        setFileStatus("unzipped");
-        utils.file.find.list.invalidate().then();
-      } else {
-        setFileStatus("not-unzipped");
-      }
-      setDataset({
-        ...dataset,
-        size: response.dataset.size,
-        fileCount: response.dataset.fileCount,
-      });
-      stopEditingField("files");
-      if (requireApproval) {
-        setViewPendingFiles(true);
-      }
-    },
-  });
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.file) return;
 
@@ -72,8 +50,8 @@ export function ZipFileUploadForm() {
     try {
       await axios.putForm(
         requireApproval
-          ? DATASET_API_ZIP_PENDING_ROUTE(dataset)
-          : DATASET_API_ZIP_ROUTE(dataset),
+          ? DATASET_API_THUMBNAIL_PENDING_ROUTE({ ...dataset, fallback: false })
+          : DATASET_API_THUMBNAIL_ROUTE({ ...dataset, fallback: false }),
         { file: values.file },
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -86,26 +64,17 @@ export function ZipFileUploadForm() {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error uploading dataset",
+        title: "Error uploading thumbnail",
         description: (error as Error).message,
       });
       return;
     }
 
     if (requireApproval) {
-      setPendingFileStatus("unzipping");
-    } else {
-      setFileStatus("unzipping");
+      setHasPendingThumbnail(true);
     }
 
-    unzipMutation.mutate({
-      path: requireApproval
-        ? DATASET_FILES_ZIP_PENDING_PATH(dataset)
-        : DATASET_FILES_ZIP_PATH(dataset),
-      datasetId: dataset.id,
-      overwrite: true,
-      updateZipStats: !requireApproval,
-    });
+    onUpload();
   }
 
   function cancelUpload() {
@@ -126,8 +95,14 @@ export function ZipFileUploadForm() {
           pending={pending}
           uploadProgress={uploadProgress}
           cancelUpload={cancelUpload}
-          fileIcon={<FolderArchiveIcon />}
-          accept={{ "application/zip": [".zip"] }}
+          fileIcon={<ImageIcon />}
+          accept={{
+            "image/jpeg": [".jpeg", ".jpg"],
+            "image/png": [".png"],
+            "image/webp": [".webp"],
+            "image/avif": [".avif"],
+            "image/svg+xml": [".svg"],
+          }}
         />
         <Button
           type="submit"
@@ -135,7 +110,7 @@ export function ZipFileUploadForm() {
           variant="gold"
           disabled={pending}
         >
-          {pending ? <Spinner /> : <UploadIcon />} Upload Dataset
+          {pending ? <Spinner /> : <UploadIcon />} Upload thumbnail
         </Button>
       </form>
     </Form>

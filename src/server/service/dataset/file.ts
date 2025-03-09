@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 
 import {
+  DATASET_FILES_THUMBNAIL_PENDING_PATH,
   DATASET_FILES_UNZIPPED_PENDING_PATH,
   DATASET_FILES_ZIP_LOCK_PATH,
   DATASET_FILES_ZIP_PATH,
@@ -35,15 +36,15 @@ export class DatasetFileService {
     status: string;
     externalLink: string | null;
   }) {
-    const pendingThumbnailStatus = fs.existsSync(
-      absoluteStaticPath(DATASET_FILES_ZIP_PENDING_PATH(dataset)),
+    const hasPendingThumbnail = fs.existsSync(
+      absoluteStaticPath(DATASET_FILES_THUMBNAIL_PENDING_PATH(dataset)),
     );
 
     if (dataset.externalLink) {
       return {
         status: null,
         pendingStatus: null,
-        pendingThumbnailStatus,
+        hasPendingThumbnail,
       };
     }
 
@@ -82,6 +83,6 @@ export class DatasetFileService {
           : "not-unzipped"
       : "awaiting-upload";
 
-    return { status, pendingStatus, pendingThumbnailStatus };
+    return { status, pendingStatus, hasPendingThumbnail };
   }
 }

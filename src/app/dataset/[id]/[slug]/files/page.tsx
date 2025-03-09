@@ -91,9 +91,7 @@ export default function Page() {
           </div>
         </div>
 
-        <ZipFileUploadForm
-          requireApproval={dataset.status !== Enums.ApprovalStatus.DRAFT}
-        />
+        <ZipFileUploadForm />
       </div>
     );
   }

@@ -166,8 +166,15 @@ export function FileUploadFormItem({
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <FormLabel className="text-pretty text-lg font-bold">
-                    Drag & drop a file to upload
+                  <FormLabel>
+                    <div className="text-pretty text-lg font-bold">
+                      Drag & drop a file to upload
+                    </div>
+                    {accept && (
+                      <div className="leading-snug">
+                        ({Object.values(accept).flat().join(", ")})
+                      </div>
+                    )}
                   </FormLabel>
                   <div className="text-muted-foreground">or</div>
                   <Button variant="outline" tabIndex={-1} type="button">

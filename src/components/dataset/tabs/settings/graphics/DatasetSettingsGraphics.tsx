@@ -16,19 +16,27 @@ import { cn } from "@/lib/utils";
 export function DatasetSettingsGraphics() {
   const { dataset } = useDataset();
   const { hasPendingThumbnail } = useDatasetFileStatus();
+  const [thumbnailParam, setThumbnailParam] = React.useState<number>(0);
+
+  function resetThumbnail() {
+    setThumbnailParam((prev) => prev + 1);
+  }
 
   return (
     <div className="space-y-1">
       <h3 className="text-xl font-bold">Thumbnail</h3>
       <div className="space-y-2">
         <div className="text-muted-foreground">
-          Add an image to appear with your dataset ().
+          Add an image to appear with your dataset (275 x 100).
         </div>
         <div className="relative w-fit">
           <Image
             src={
               hasPendingThumbnail
-                ? DATASET_API_THUMBNAIL_PENDING_ROUTE(dataset)
+                ? DATASET_API_THUMBNAIL_PENDING_ROUTE({
+                    ...dataset,
+                    fallback: false,
+                  }) + `?${thumbnailParam}`
                 : DATASET_API_THUMBNAIL_ROUTE(dataset)
             }
             alt={`${dataset.title} thumbnail`}
@@ -36,7 +44,7 @@ export function DatasetSettingsGraphics() {
             height={100}
             className={cn(
               "h-[100px] w-[275px] shrink-0",
-              "rounded-2xl border-2 object-cover object-center dark:brightness-90 max-2lg:hidden",
+              "rounded-2xl border-2 object-cover object-center dark:brightness-90",
             )}
           />
           {hasPendingThumbnail && (
@@ -44,8 +52,13 @@ export function DatasetSettingsGraphics() {
               <Badge variant="gold-strong">PENDING</Badge>
             </div>
           )}
+          {!dataset.hasGraphics && !hasPendingThumbnail && (
+            <div className="absolute right-2 top-2">
+              <Badge variant="gold-strong">DEFAULT</Badge>
+            </div>
+          )}
         </div>
-        <DatasetSettingsGraphicsDialog />
+        <DatasetSettingsGraphicsDialog resetThumbnail={resetThumbnail} />
       </div>
     </div>
   );

@@ -105,9 +105,7 @@ export default async function Layout({
           dataset={dataset}
           initialStatus={datasetFileStatuses.status}
           initialPendingStatus={datasetFileStatuses.pendingStatus}
-          initialHasPendingThumbnail={
-            datasetFileStatuses.pendingThumbnailStatus
-          }
+          initialHasPendingThumbnail={datasetFileStatuses.hasPendingThumbnail}
         >
           <Main>
             <div className="backdrop-gradient-blur space-y-6">
