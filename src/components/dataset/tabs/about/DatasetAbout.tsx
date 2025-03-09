@@ -1,46 +1,38 @@
 "use client";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
-import { MDXEditor } from "@/components/editor/MDXEditor";
-import { Button } from "@/components/ui/button";
-import { Expandable } from "@/components/ui/expandable";
+import { DatasetEditPendingActions } from "@/components/dataset/edit/actions/DatasetEditPendingActions";
+import { DatasetDescription } from "@/components/dataset/tabs/about/sections/DatasetDescription";
+import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/sections/DatasetIntroductoryPaper";
+import { DatasetQuickStats } from "@/components/dataset/tabs/about/sections/DatasetQuickStats";
+import { DatasetSideData } from "@/components/dataset/tabs/about/sections/DatasetSideData";
+import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/DatasetSideStatus";
+import { DatasetVariables } from "@/components/dataset/tabs/about/sections/DatasetVariables";
+import { DatasetMetadata } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadata";
+import { Enums } from "@/db/lib/enums";
 
 export function DatasetAbout() {
-  const { dataset, startEditingField, stopEditingField, editingFields } =
-    useDataset();
+  const { dataset, editable } = useDataset();
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center space-x-1">
-        <h2 className="text-2xl font-bold">About Dataset</h2>
-        {!editingFields["about"] && (
-          <DatasetEditFieldButton onClick={() => startEditingField("about")} />
+    <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
+      <div className="w-full space-y-6">
+        {dataset.status === Enums.ApprovalStatus.DRAFT && (
+          <DatasetEditPendingActions />
         )}
-      </div>
-      {editingFields["about"] ? (
-        <div className="space-y-2">
-          <MDXEditor markdown={dataset.description ?? ""} />
-          <div className="flex items-center justify-end space-x-2">
-            <Button
-              onClick={() => stopEditingField("about")}
-              variant="secondary"
-              className="lift"
-            >
-              Cancel
-            </Button>
-            <Button onClick={() => stopEditingField("about")} className="lift">
-              Save
-            </Button>
-          </div>
+        <div className="space-y-12">
+          <DatasetDescription />
+          <DatasetQuickStats />
+          <DatasetVariables />
+          <DatasetIntroductoryPaper />
+          <DatasetMetadata />
         </div>
-      ) : dataset.description ? (
-        <Expandable className="whitespace-pre-wrap break-words">
-          {dataset.description}
-        </Expandable>
-      ) : (
-        <div className="text-muted-foreground">No information</div>
-      )}
+      </div>
+
+      <div className="w-56 shrink-0 space-y-6">
+        {editable && <DatasetSideStatus status={dataset.status} />}
+        <DatasetSideData />
+      </div>
     </div>
   );
 }

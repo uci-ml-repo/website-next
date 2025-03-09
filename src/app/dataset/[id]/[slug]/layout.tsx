@@ -17,7 +17,7 @@ import { service } from "@/server/service";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
-const getDataset = cache(async (id: number) => {
+export const getDataset = cache(async (id: number) => {
   try {
     if (!id) {
       return null;

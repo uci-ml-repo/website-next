@@ -1,10 +1,10 @@
 import { forbidden, notFound, unauthorized } from "next/navigation";
 
+import { getDataset } from "@/app/dataset/[id]/[slug]/layout";
 import { auth } from "@/auth";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
-import { caller } from "@/server/trpc/query/server";
 
 export default async function Page({
   params,
@@ -18,9 +18,9 @@ export default async function Page({
   }
 
   const { id } = await params;
-  const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
+  const dataset = await getDataset(Number(id));
 
-  if (dataset.status === Enums.ApprovalStatus.DRAFT) {
+  if (!dataset || dataset.status === Enums.ApprovalStatus.DRAFT) {
     return notFound();
   }
 

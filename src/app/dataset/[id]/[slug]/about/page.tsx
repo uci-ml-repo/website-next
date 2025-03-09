@@ -1,38 +1,19 @@
-"use client";
+import { notFound } from "next/navigation";
 
-import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { DatasetEditPendingActions } from "@/components/dataset/edit/actions/DatasetEditPendingActions";
+import { getDataset } from "@/app/dataset/[id]/[slug]/layout";
 import { DatasetAbout } from "@/components/dataset/tabs/about/DatasetAbout";
-import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/DatasetIntroductoryPaper";
-import { DatasetQuickStats } from "@/components/dataset/tabs/about/DatasetQuickStats";
-import { DatasetSideData } from "@/components/dataset/tabs/about/DatasetSideData";
-import { DatasetSideStatus } from "@/components/dataset/tabs/about/DatasetSideStatus";
-import { DatasetVariables } from "@/components/dataset/tabs/about/DatasetVariables";
-import { DatasetMetadata } from "@/components/dataset/tabs/about/metadata/DatasetMetadata";
-import { Enums } from "@/db/lib/enums";
 
-export default function Page() {
-  const { dataset, editable } = useDataset();
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; slug: string }>;
+}) {
+  const { id } = await params;
 
-  return (
-    <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
-      <div className="w-full space-y-6">
-        {dataset.status === Enums.ApprovalStatus.DRAFT && (
-          <DatasetEditPendingActions />
-        )}
-        <div className="space-y-12">
-          <DatasetAbout />
-          <DatasetQuickStats />
-          <DatasetVariables />
-          <DatasetIntroductoryPaper />
-          <DatasetMetadata />
-        </div>
-      </div>
+  const dataset = await getDataset(Number(id));
 
-      <div className="w-56 shrink-0 space-y-6">
-        {editable && <DatasetSideStatus status={dataset.status} />}
-        <DatasetSideData />
-      </div>
-    </div>
-  );
+  if (!dataset) {
+    return notFound();
+  }
+  return <DatasetAbout />;
 }

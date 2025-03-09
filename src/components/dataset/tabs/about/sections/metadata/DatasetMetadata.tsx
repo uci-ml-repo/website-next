@@ -8,9 +8,9 @@ import {
 import { useState } from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/metadata/DatasetMetadataAuthors";
-import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/metadata/DatasetMetadataCollapsible";
-import { DatasetMetadataDonor } from "@/components/dataset/tabs/about/metadata/DatasetMetadataDonor";
+import { DatasetMetadataAuthors } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadataAuthors";
+import { DatasetMetadataCollapsible } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadataCollapsible";
+import { DatasetMetadataDonor } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadataDonor";
 import { Button } from "@/components/ui/button";
 
 export function DatasetMetadata() {
