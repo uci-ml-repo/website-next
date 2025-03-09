@@ -57,7 +57,7 @@ export default function Page() {
     );
   }
 
-  if (editing && editingFields.includes("files")) {
+  if (editing && editingFields["files"]) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">

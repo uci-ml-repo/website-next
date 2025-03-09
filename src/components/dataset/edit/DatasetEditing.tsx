@@ -63,7 +63,7 @@ export function DatasetEditing() {
                 size="default"
                 className="lift"
                 onClick={() => {
-                  if (editingFields.length > 0) {
+                  if (Object.values(editingFields).some((value) => value)) {
                     setFinishEditingDialogOpen(true);
                   } else {
                     setEditing(false);

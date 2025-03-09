@@ -11,13 +11,9 @@ import {
   diffSourcePlugin,
   DiffSourceToggleWrapper,
   headingsPlugin,
-  imagePlugin,
   InsertCodeBlock,
-  InsertImage,
   InsertTable,
   InsertThematicBreak,
-  linkDialogPlugin,
-  linkPlugin,
   listsPlugin,
   ListsToggle,
   markdownShortcutPlugin,
@@ -38,12 +34,6 @@ export const allPlugins = [
   listsPlugin(),
   quotePlugin(),
   headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
-  linkPlugin(),
-  linkDialogPlugin(),
-  imagePlugin({
-    imageUploadHandler: async () =>
-      Promise.resolve("https://picsum.photos/200/300"),
-  }),
   tablePlugin(),
   thematicBreakPlugin(),
   codeBlockPlugin({ defaultCodeBlockLanguage: "text" }),
@@ -120,8 +110,6 @@ function ToolbarContents() {
 
       <BlockTypeSelect />
       <VerticalSeparator />
-
-      <InsertImage />
 
       <InsertTable />
       <InsertThematicBreak />
