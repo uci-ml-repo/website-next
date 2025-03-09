@@ -86,7 +86,12 @@ function actionItems({
     priority: null,
     children: (
       <div className="flex h-full items-center justify-between">
-        <Button disabled={!canSubmit} className="mx-auto" variant="positive">
+        <Button
+          disabled={!canSubmit}
+          className="mx-auto"
+          variant="positive"
+          tabIndex={-1}
+        >
           Submit
         </Button>
       </div>

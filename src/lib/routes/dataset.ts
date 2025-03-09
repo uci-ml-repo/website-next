@@ -145,6 +145,26 @@ export function DATASET_FILES_PATH({
 }
 
 /**
+ * @example "/public/53/thumbnail.png
+ */
+export function DATASET_FILES_THUMBNAIL_PATH(input: {
+  id: number;
+  status: string;
+}) {
+  return path.join(DATASET_FILES_PATH(input), "thumbnail.png");
+}
+
+/**
+ * @example "/public/53/thumbnail.pending.png
+ */
+export function DATASET_FILES_THUMBNAIL_PENDING_PATH(input: {
+  id: number;
+  status: string;
+}) {
+  return path.join(DATASET_FILES_PATH(input), "thumbnail.pending.png");
+}
+
+/**
  * @example "/public/53/iris"
  */
 export function DATASET_FILES_UNZIPPED_PATH({
