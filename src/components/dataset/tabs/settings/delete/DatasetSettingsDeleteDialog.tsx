@@ -25,7 +25,7 @@ import type { DatasetResponse } from "@/lib/types";
 import { isSuperPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetDeleteDialog({
+export function DatasetSettingsDeleteDialog({
   dataset,
   session,
 }: {

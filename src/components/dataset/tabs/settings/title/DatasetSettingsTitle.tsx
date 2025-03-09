@@ -22,7 +22,7 @@ export function DatasetSettingsTitle() {
 
   return (
     <div className="space-y-1">
-      <h3 className="text-xl font-bold">Dataset Title</h3>
+      <h3 className="text-xl font-bold">Title</h3>
 
       {editingFields.includes("title") ? (
         <DatasetSettingsTitleForm />

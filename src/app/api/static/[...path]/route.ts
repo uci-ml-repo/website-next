@@ -10,6 +10,8 @@ import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { dataset } from "@/db/schema";
 import {
+  DATASET_FILES_THUMBNAIL_PATH,
+  DATASET_FILES_THUMBNAIL_PENDING_PATH,
   DATASET_FILES_ZIP_PATH,
   DATASET_FILES_ZIP_PENDING_PATH,
 } from "@/lib/routes";
@@ -136,7 +138,9 @@ export async function PUT(
 
       if (
         relativePath !== DATASET_FILES_ZIP_PENDING_PATH(uploadToDataset) &&
-        relativePath !== DATASET_FILES_ZIP_PATH(uploadToDataset)
+        relativePath !== DATASET_FILES_ZIP_PATH(uploadToDataset) &&
+        relativePath !== DATASET_FILES_THUMBNAIL_PATH(uploadToDataset) &&
+        relativePath !== DATASET_FILES_THUMBNAIL_PENDING_PATH(uploadToDataset)
       ) {
         return NextResponse.json(
           { error: "Invalid upload path for dataset" },

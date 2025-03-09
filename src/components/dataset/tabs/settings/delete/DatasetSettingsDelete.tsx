@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Session } from "next-auth";
 
-import { DatasetDeleteDialog } from "@/components/dataset/tabs/settings/delete/DatasetDeleteDialog";
+import { DatasetSettingsDeleteDialog } from "@/components/dataset/tabs/settings/delete/DatasetSettingsDeleteDialog";
 import { CONTACT_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { canDeleteDataset } from "@/server/trpc/middleware/lib/roles";
@@ -21,7 +21,7 @@ export function DatasetSettingsDelete({
           <p className="text-lg text-muted-foreground">
             Permanently delete this dataset and all associated data.
           </p>
-          <DatasetDeleteDialog dataset={dataset} session={session} />
+          <DatasetSettingsDeleteDialog dataset={dataset} session={session} />
         </div>
       ) : (
         <p className="text-lg text-muted-foreground">
