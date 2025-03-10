@@ -11,6 +11,7 @@ import { DatasetFileBrowserProvider } from "@/components/dataset/tabs/files/brow
 import { DatasetFilesBrowse } from "@/components/dataset/tabs/files/browse/DatasetFilesBrowse";
 import { ZipFileUploadForm } from "@/components/dataset/tabs/files/upload/ZipFileUploadForm";
 import { ZipFileUploadProcessing } from "@/components/dataset/tabs/files/upload/ZipFileUploadProcessing";
+import { AlertError } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlternativeCard } from "@/components/ui/card";
@@ -36,6 +37,12 @@ export function DatasetFiles() {
     return (
       <div className="space-y-4">
         <div className="text-2xl font-bold">Upload Dataset Files</div>
+
+        {dataset.fileCount && (
+          <AlertError>
+            Dataset files are missing from local storage. Re-upload them here.
+          </AlertError>
+        )}
 
         <div className="pb-2 text-muted-foreground">
           <div>

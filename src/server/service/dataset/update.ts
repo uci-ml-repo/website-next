@@ -4,6 +4,8 @@ import fs from "fs-extra";
 import { db } from "@/db";
 import { dataset } from "@/db/schema";
 import {
+  DATASET_FILES_THUMBNAIL_PATH,
+  DATASET_FILES_THUMBNAIL_PENDING_PATH,
   DATASET_FILES_UNZIPPED_PATH,
   DATASET_FILES_UNZIPPED_PENDING_PATH,
   DATASET_FILES_ZIP_PATH,
@@ -11,6 +13,7 @@ import {
 } from "@/lib/routes";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
+import { ServiceError } from "@/server/service/errors";
 
 export class DatasetUpdateService {
   async zipStats(input: { id: number; slug: string; status: string }) {
@@ -95,6 +98,50 @@ export class DatasetUpdateService {
       .returning();
 
     return updatedDataset;
+  }
+
+  async hasGraphics({
+    datasetId,
+    hasGraphics,
+  }: {
+    datasetId: number;
+    hasGraphics: boolean;
+  }) {
+    const existingDataset = await service.dataset.find.byId(datasetId);
+
+    const thumbnailPath = absoluteStaticPath(
+      DATASET_FILES_THUMBNAIL_PATH(existingDataset),
+    );
+
+    if (!hasGraphics) {
+      const pendingThumbnailPath = absoluteStaticPath(
+        DATASET_FILES_THUMBNAIL_PENDING_PATH(existingDataset),
+      );
+
+      if (fs.existsSync(thumbnailPath)) {
+        fs.removeSync(thumbnailPath);
+      }
+
+      if (fs.existsSync(pendingThumbnailPath)) {
+        fs.removeSync(pendingThumbnailPath);
+      }
+    } else {
+      if (!fs.existsSync(thumbnailPath)) {
+        throw new ServiceError({
+          origin: "Dataset",
+          message:
+            "Cannot set hasGraphics to true without an existing thumbnail",
+        });
+      }
+    }
+
+    return await db
+      .update(dataset)
+      .set({
+        hasGraphics,
+      })
+      .where(eq(dataset.id, datasetId))
+      .returning();
   }
 
   async refreshView(id?: number) {

@@ -41,4 +41,8 @@ export const datasetUpdateRouter = router({
 
       return service.dataset.update.title(input);
     }),
+
+  hasGraphics: datasetUpdateProcedure
+    .input(z.object({ datasetId: z.number(), hasGraphics: z.boolean() }))
+    .mutation(({ input }) => service.dataset.update.hasGraphics(input)),
 });

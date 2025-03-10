@@ -19,6 +19,7 @@ export function DatasetSettingsGraphics() {
   const [thumbnailParam, setThumbnailParam] = React.useState<number>(0);
 
   function resetThumbnail() {
+    console.log("X");
     setThumbnailParam((prev) => prev + 1);
   }
 
@@ -37,7 +38,7 @@ export function DatasetSettingsGraphics() {
                     ...dataset,
                     fallback: false,
                   }) + `?${thumbnailParam}`
-                : DATASET_API_THUMBNAIL_ROUTE(dataset)
+                : DATASET_API_THUMBNAIL_ROUTE(dataset) + `?${thumbnailParam}`
             }
             alt={`${dataset.title} thumbnail`}
             width={275}

@@ -23,6 +23,7 @@ import {
   DATASET_API_THUMBNAIL_PENDING_ROUTE,
   DATASET_API_THUMBNAIL_ROUTE,
 } from "@/lib/routes";
+import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetSettingsGraphicsUploadForm({
   onUpload,
@@ -40,6 +41,15 @@ export function DatasetSettingsGraphicsUploadForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { file: undefined },
+  });
+
+  const hasGraphicsMutation = trpc.dataset.update.hasGraphics.useMutation({
+    onError: (error) =>
+      toast({
+        variant: "destructive",
+        title: "Error uploading thumbnail",
+        description: error.message,
+      }),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -72,6 +82,11 @@ export function DatasetSettingsGraphicsUploadForm({
 
     if (requireApproval) {
       setHasPendingThumbnail(true);
+    } else {
+      hasGraphicsMutation.mutate({
+        datasetId: dataset.id,
+        hasGraphics: true,
+      });
     }
 
     onUpload();

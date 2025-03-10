@@ -133,7 +133,9 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
               User: <span className="font-semibold">{user.email}</span>
             </div>
             {user.email === session?.user.email && (
-              <AlertWarning text="You are changing your own role. You will be signed out." />
+              <AlertWarning>
+                You are changing your own role. You will be signed out.
+              </AlertWarning>
             )}
             <hr />
             <div className="flex items-center justify-around">

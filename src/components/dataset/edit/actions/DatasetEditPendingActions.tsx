@@ -93,12 +93,15 @@ export function DatasetEditPendingActions() {
       children: (
         <div className="flex h-full items-center justify-between">
           <Button
+            asChild
             disabled={!canSubmit}
-            className="mx-auto"
+            className={cn("mx-auto", {
+              "bg-secondary-foreground opacity-50": !canSubmit,
+            })}
             variant="positive"
             tabIndex={-1}
           >
-            Submit
+            <div>Submit</div>
           </Button>
         </div>
       ),
@@ -152,41 +155,45 @@ export function DatasetEditPendingActions() {
                 key={index}
                 className="flex basis-full select-none @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
               >
-                <Card
-                  className={cn(
-                    "flex w-full flex-1",
-                    { lift: !disabled },
-                    { "bg-muted": disabled },
-                    {
-                      "border-b-[3px] border-b-uci-gold":
-                        priority === "required",
-                    },
-                    {
-                      "border-b-[3px] border-b-uci-blue":
-                        priority == "recommended",
-                    },
-                  )}
+                <button
+                  disabled={disabled}
                   onClick={onClick}
-                  tabIndex={disabled ? -1 : 0}
+                  className="h-full w-full rounded-2xl text-left"
                 >
-                  <CardContent className="flex flex-1 flex-col space-y-4">
-                    <div className="flex h-full flex-col space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <div className="font-bold">{title}</div>
-                        {!disabled && <ArrowRightIcon className="size-5" />}
-                      </div>
-                      <CardDescription>{description}</CardDescription>
-                      {children}
-                    </div>
-                    {priority && (
-                      <div className="flex justify-end">
-                        {priority === "required" && (
-                          <Badge variant="gold-strong">REQUIRED</Badge>
-                        )}
-                      </div>
+                  <Card
+                    className={cn(
+                      "flex h-full w-full flex-1",
+                      { lift: !disabled },
+                      { "bg-muted": disabled },
+                      {
+                        "border-b-[3px] border-b-uci-gold":
+                          priority === "required",
+                      },
+                      {
+                        "border-b-[3px] border-b-uci-blue":
+                          priority == "recommended",
+                      },
                     )}
-                  </CardContent>
-                </Card>
+                  >
+                    <CardContent className="flex flex-1 flex-col space-y-4">
+                      <div className="flex h-full flex-col space-y-0.5">
+                        <div className="flex items-center justify-between">
+                          <div className="font-bold">{title}</div>
+                          {!disabled && <ArrowRightIcon className="size-5" />}
+                        </div>
+                        <CardDescription>{description}</CardDescription>
+                        {children}
+                      </div>
+                      {priority && (
+                        <div className="flex justify-end">
+                          {priority === "required" && (
+                            <Badge variant="gold-strong">REQUIRED</Badge>
+                          )}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </button>
               </CarouselItem>
             ),
           )}
