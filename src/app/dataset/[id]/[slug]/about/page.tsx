@@ -15,5 +15,6 @@ export default async function Page({
   if (!dataset) {
     return notFound();
   }
+
   return <DatasetAbout />;
 }

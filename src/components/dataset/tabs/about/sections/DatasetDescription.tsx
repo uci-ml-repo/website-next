@@ -1,5 +1,8 @@
 "use client";
 
+import type { MDXEditorMethods } from "@mdxeditor/editor";
+import { useRef } from "react";
+
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { MDXEditor } from "@/components/editor/MDXEditor";
@@ -7,8 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Expandable } from "@/components/ui/expandable";
 
 export function DatasetDescription() {
-  const { dataset, startEditingField, stopEditingField, editingFields } =
-    useDataset();
+  const {
+    dataset,
+    setDataset,
+    startEditingField,
+    stopEditingField,
+    editingFields,
+  } = useDataset();
+
+  const ref = useRef<MDXEditorMethods>(null);
 
   return (
     <div className="space-y-2">
@@ -22,7 +32,7 @@ export function DatasetDescription() {
       </div>
       {editingFields["description"] ? (
         <div className="space-y-2">
-          <MDXEditor markdown={dataset.description ?? ""} />
+          <MDXEditor markdown={dataset.description ?? ""} ref={ref} />
           <div className="flex items-center justify-end space-x-2">
             <Button
               onClick={() => stopEditingField("description")}
@@ -32,7 +42,13 @@ export function DatasetDescription() {
               Cancel
             </Button>
             <Button
-              onClick={() => stopEditingField("description")}
+              onClick={() => {
+                setDataset({
+                  ...dataset,
+                  description: ref.current?.getMarkdown() ?? null,
+                });
+                stopEditingField("description");
+              }}
               className="lift"
             >
               Save

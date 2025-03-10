@@ -156,9 +156,10 @@ export function DatasetEditPendingActions() {
                 className="flex basis-full select-none @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
               >
                 <button
-                  disabled={disabled}
-                  onClick={onClick}
-                  className="h-full w-full rounded-2xl text-left"
+                  onClick={disabled ? undefined : onClick}
+                  className={cn("h-full w-full rounded-2xl text-left", {
+                    "cursor-default": disabled,
+                  })}
                 >
                   <Card
                     className={cn(

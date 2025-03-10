@@ -65,7 +65,9 @@ export function DatasetSettingsGraphics() {
             </div>
           )}
         </div>
-        <DatasetSettingsGraphicsDialog resetThumbnail={resetThumbnail} />
+        <div className="flex items-center space-x-2">
+          <DatasetSettingsGraphicsDialog resetThumbnail={resetThumbnail} />
+        </div>
       </div>
     </div>
   );
