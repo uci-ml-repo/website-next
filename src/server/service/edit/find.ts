@@ -1,8 +1,10 @@
-import { and, count, eq, inArray } from "drizzle-orm";
+import { and, count, eq, inArray, max } from "drizzle-orm";
 
 import { db } from "@/db";
+import { Enums } from "@/db/lib/enums";
 import { edit } from "@/db/schema";
 import type { EditQuery } from "@/server/schema/edit";
+import { ServiceError } from "@/server/service/errors";
 
 function buildQuery(query: EditQuery) {
   const conditions = [];
@@ -19,6 +21,31 @@ function buildQuery(query: EditQuery) {
 }
 
 export class EditFindService {
+  async byId({
+    datasetId,
+    pending,
+    version,
+  }: {
+    datasetId: number;
+    pending?: boolean;
+    version?: number;
+  }) {
+    if (!pending && !version) {
+      throw new ServiceError({
+        origin: "Edit",
+        message: "Must provide either `pending` or `versionId`",
+      });
+    }
+
+    return db.query.edit.findFirst({
+      where: and(
+        eq(edit.datasetId, datasetId),
+        version ? eq(edit.version, version) : undefined,
+        pending ? eq(edit.status, Enums.EditStatus.PENDING) : undefined,
+      ),
+    });
+  }
+
   async byQuery(query: EditQuery) {
     const edits = db
       .select()
@@ -45,5 +72,15 @@ export class EditFindService {
       .where(buildQuery(query));
 
     return countQuery.count;
+  }
+
+  async nextVersion(datasetId: number) {
+    const maxVersion = await db
+      .select({ maxVersion: max(edit.version) })
+      .from(edit)
+      .where(eq(edit.datasetId, datasetId))
+      .then((res) => (res.length > 0 ? res[0].maxVersion : null));
+
+    return maxVersion ? maxVersion + 1 : 1;
   }
 }

@@ -35,77 +35,78 @@ type ActionItem = {
   disabled?: boolean;
 };
 
-function actionItems({
-  dataset,
-  hasFiles,
-  canSubmit,
-}: {
-  dataset: DatasetResponse;
-  hasFiles: boolean;
-  canSubmit: boolean;
-}) {
-  const actions: ActionItem[] = [];
-
-  if (!dataset.externalLink && !hasFiles) {
-    actions.push({
-      title: "Upload Files",
-      description: "Upload dataset files to share with the community.",
-      priority: "required",
-      onClick: () => redirect(DATASET_FILES_ROUTE(dataset)),
-    });
-  }
-
-  if (!dataset.introductoryPaper) {
-    actions.push({
-      title: "Add an introductory paper",
-      description: "Datasets must be published in a peer-reviewed venue.",
-      priority: "required",
-    });
-  }
-
-  if (!dataset.description) {
-    actions.push({
-      title: "Add description",
-      description:
-        "Add details about your dataset to help others understand its contents.",
-      priority: "required",
-    });
-  }
-
-  if (!dataset.hasGraphics) {
-    actions.push({
-      title: "Upload thumbnail",
-      description: "Upload a thumbnail image to represent your dataset.",
-      priority: "recommended",
-    });
-  }
-
-  actions.push({
-    title: "Submit for review",
-    description: "Submit your dataset for review.",
-    priority: null,
-    children: (
-      <div className="flex h-full items-center justify-between">
-        <Button
-          disabled={!canSubmit}
-          className="mx-auto"
-          variant="positive"
-          tabIndex={-1}
-        >
-          Submit
-        </Button>
-      </div>
-    ),
-    disabled: !canSubmit,
-  });
-
-  return actions;
-}
-
 export function DatasetEditPendingActions() {
   const [api, setApi] = useState<CarouselApi>();
-  const { dataset } = useDataset();
+  const { dataset, startEditingField } = useDataset();
   const { fileStatus } = useDatasetFileStatus();
+
+  function actionItems({
+    dataset,
+    hasFiles,
+    canSubmit,
+  }: {
+    dataset: DatasetResponse;
+    hasFiles: boolean;
+    canSubmit: boolean;
+  }) {
+    const actions: ActionItem[] = [];
+
+    if (!dataset.externalLink && !hasFiles) {
+      actions.push({
+        title: "Upload Files",
+        description: "Upload dataset files to share with the community.",
+        priority: "required",
+        onClick: () => redirect(DATASET_FILES_ROUTE(dataset)),
+      });
+    }
+
+    if (!dataset.introductoryPaper) {
+      actions.push({
+        title: "Add an introductory paper",
+        description: "Datasets must be published in a peer-reviewed venue.",
+        priority: "required",
+      });
+    }
+
+    if (!dataset.description) {
+      actions.push({
+        title: "Add description",
+        description:
+          "Add details about your dataset to help others understand its contents.",
+        priority: "required",
+        onClick: () => startEditingField("description"),
+      });
+    }
+
+    if (!dataset.hasGraphics) {
+      actions.push({
+        title: "Upload thumbnail",
+        description: "Upload a thumbnail image to represent your dataset.",
+        priority: "recommended",
+      });
+    }
+
+    actions.push({
+      title: "Submit for review",
+      description: "Submit your dataset for review.",
+      priority: null,
+      children: (
+        <div className="flex h-full items-center justify-between">
+          <Button
+            disabled={!canSubmit}
+            className="mx-auto"
+            variant="positive"
+            tabIndex={-1}
+          >
+            Submit
+          </Button>
+        </div>
+      ),
+      disabled: !canSubmit,
+    });
+
+    return actions;
+  }
 
   const items = actionItems({
     dataset,

@@ -13,27 +13,6 @@ interface FooterLinkGroupProps {
   links: { name: string; href: string }[];
 }
 
-function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
-  return (
-    <div className="space-y-4 text-uci-blue-foreground">
-      <div className="font-bold">{title}</div>
-      <div className="space-y-3">
-        {links.map((link) => (
-          <div key={link.href}>
-            <Link
-              href={link.href}
-              className="hover:underline"
-              target={link.href.startsWith("http") ? "_blank" : undefined}
-            >
-              {link.name}
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function Footer() {
   const linkGroups: FooterLinkGroupProps[] = [
     {
@@ -92,5 +71,27 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLinkGroup({ title, links }: FooterLinkGroupProps) {
+  return (
+    <div className="space-y-4 text-uci-blue-foreground">
+      <div className="font-bold">{title}</div>
+      <div className="space-y-3">
+        {links.map((link) => (
+          <div key={link.href}>
+            <Link
+              href={link.href}
+              className="hover:underline"
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              prefetch={false}
+            >
+              {link.name}
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

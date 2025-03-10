@@ -14,22 +14,27 @@ export function DatasetDescription() {
     <div className="space-y-2">
       <div className="flex items-center space-x-1">
         <h2 className="text-2xl font-bold">About Dataset</h2>
-        {!editingFields["about"] && (
-          <DatasetEditFieldButton onClick={() => startEditingField("about")} />
+        {!editingFields["description"] && (
+          <DatasetEditFieldButton
+            onClick={() => startEditingField("description")}
+          />
         )}
       </div>
-      {editingFields["about"] ? (
+      {editingFields["description"] ? (
         <div className="space-y-2">
           <MDXEditor markdown={dataset.description ?? ""} />
           <div className="flex items-center justify-end space-x-2">
             <Button
-              onClick={() => stopEditingField("about")}
+              onClick={() => stopEditingField("description")}
               variant="secondary"
               className="lift"
             >
               Cancel
             </Button>
-            <Button onClick={() => stopEditingField("about")} className="lift">
+            <Button
+              onClick={() => stopEditingField("description")}
+              className="lift"
+            >
               Save
             </Button>
           </div>

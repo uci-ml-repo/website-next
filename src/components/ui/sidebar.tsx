@@ -470,7 +470,7 @@ const SidebarMenuButton = React.forwardRef<
           data-active={_isActive}
           className={cn(
             _isActive ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50",
-            "peer/menu-button flex h-12 w-full items-center gap-5 p-2 pl-[22px] ring-inset focus-visible:ring-2",
+            "peer/menu-button flex h-12 w-full items-center gap-[22px] p-2 pl-[22px] ring-inset focus-visible:ring-2",
             "text-left text-lg font-semibold outline-none ring-ring transition-[width,height,padding]",
             "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50",
             "data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:text-sidebar-accent-foreground",

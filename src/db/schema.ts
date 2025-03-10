@@ -15,6 +15,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -262,6 +263,9 @@ export const edit = pgTable(
   },
   (t) => [
     primaryKey({ columns: [t.datasetId, t.version] }),
+    uniqueIndex("single_pending_edit")
+      .on(t.datasetId)
+      .where(sql`${t.status} = 'pending'`),
     check(
       "reviewed_check",
       sql`

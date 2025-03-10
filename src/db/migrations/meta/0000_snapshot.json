@@ -1,5 +1,5 @@
 {
-  "id": "ce17e6e6-72c0-4fd0-9c51-31c6ffd86641",
+  "id": "19cb2cde-b45a-462c-b4b1-3636c377bc62",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1326,7 +1326,24 @@
           "default": "'pending'"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "single_pending_edit": {
+          "name": "single_pending_edit",
+          "columns": [
+            {
+              "expression": "dataset_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"edit\".\"status\" = 'pending'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "edit_dataset_id_dataset_id_fk": {
           "name": "edit_dataset_id_dataset_id_fk",

@@ -162,7 +162,7 @@ body {
 }
 
 .mdxeditor-toolbar {
-  @apply !rounded-b-none !bg-secondary;
+  @apply !rounded-b-none !bg-muted;
 }
 
 .mdx-readonly {
@@ -180,7 +180,7 @@ body {
 }
 
 ._toolbarToggleItem_uazmk_206 {
-  @apply focus-visible:!ring-2;
+  @apply hover:!bg-accent focus-visible:!ring-2 data-[state=on]:!bg-accent;
 }
 
 ._toolbarButton_uazmk_237 {

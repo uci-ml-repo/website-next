@@ -6,10 +6,11 @@
 
 export type ServiceErrorOrigin =
   | "Dataset"
-  | "File"
+  | "Discussion"
+  | "Edit"
   | "Email"
-  | "User"
-  | "Discussion";
+  | "File"
+  | "User";
 
 interface ServiceErrorInterface {
   origin: ServiceErrorOrigin;

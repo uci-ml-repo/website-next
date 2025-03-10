@@ -525,6 +525,11 @@ CREATE INDEX "dataset_view_trgm_search_index" ON "dataset_view" USING gin ("titl
 CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 
 --> statement-breakpoint
+CREATE UNIQUE INDEX "single_pending_edit" ON "edit" USING btree ("dataset_id")
+WHERE
+  "edit"."status" = 'pending';
+
+--> statement-breakpoint
 CREATE INDEX "keyword_trgm_search_index" ON "keyword" USING gin ("name" gin_trgm_ops);
 
 --> statement-breakpoint
