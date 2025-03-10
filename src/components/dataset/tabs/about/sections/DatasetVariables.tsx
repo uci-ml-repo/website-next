@@ -1,4 +1,5 @@
 import { useDataset } from "@/components/dataset/context/DatasetContext";
+import { Copy } from "@/components/ui/copy";
 import { Expandable } from "@/components/ui/expandable";
 import {
   Table,
@@ -8,14 +9,66 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { VariableSelect } from "@/db/lib/types";
 import { cn } from "@/lib/utils";
+
+/**
+ * @example
+ * ```
+ * name,role,type,description,units,missingvalues
+ * sepal length,feature,continuous,,cm,no
+ * ```
+ */
+function variablesToCsv(variables: VariableSelect[]): string {
+  const header = [
+    "name",
+    "role",
+    "type",
+    "description",
+    "units",
+    "missingvalues",
+  ];
+
+  function escapeCell(cell: string): string {
+    if (cell.includes(",") || cell.includes('"') || cell.includes("\n")) {
+      return `"${cell.replace(/"/g, '""')}"`;
+    }
+    return cell;
+  }
+
+  const rows = variables.map((variable) => {
+    const row = [
+      variable.name,
+      variable.role,
+      variable.type,
+      variable.description ?? "",
+      variable.units ?? "",
+      variable.missingValues ? "yes" : "no",
+    ];
+    return row.map(escapeCell).join(",");
+  });
+
+  return [header.join(","), ...rows].join("\n");
+}
 
 export function DatasetVariables() {
   const { dataset } = useDataset();
 
   return (
     <div>
-      <h2 className="text-2xl font-bold">Variables</h2>
+      <div className="flex items-center space-x-4">
+        <h2 className="text-2xl font-bold">Variables</h2>
+        {dataset.variables.length > 0 && (
+          <Copy
+            copyText={variablesToCsv(dataset.variables)}
+            absolute={false}
+            className="px-2 py-1"
+            tooltip="Copy variables as CSV"
+          >
+            CSV
+          </Copy>
+        )}
+      </div>
 
       <Expandable className="space-y-2" truncationHeight={300}>
         {dataset.variables.length > 0 ? (

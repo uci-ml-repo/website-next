@@ -69,7 +69,7 @@ export function DatasetCitationButton() {
                 <pre className="whitespace-pre-wrap pr-12 text-sm">
                   {citationText}
                 </pre>
-                <Copy text={citationText} />
+                <Copy copyText={citationText} />
               </>
             ) : (
               <div className="flex h-16 w-full items-center justify-center">

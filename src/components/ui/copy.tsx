@@ -10,17 +10,28 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface CopyProps {
-  text: string;
+  copyText: string;
+  absolute?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+  tooltip?: string;
 }
 
-export function Copy({ text }: CopyProps) {
+export function Copy({
+  copyText,
+  absolute = true,
+  children,
+  className,
+  tooltip,
+}: CopyProps) {
   const [copied, setCopied] = useState(false);
   const triggerRef = useRef(null);
 
   const copy = () => {
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(copyText).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1000);
     });
@@ -38,12 +49,19 @@ export function Copy({ text }: CopyProps) {
         >
           <Button
             variant="outline"
-            size="icon"
-            className="absolute right-1.5 top-1.5 rounded-md text-primary"
+            size={!children ? "icon" : "sm"}
+            className={cn(
+              "rounded-md text-primary",
+              {
+                "absolute right-1.5 top-1.5": absolute,
+              },
+              className,
+            )}
             onClick={copy}
             aria-label="Copy text"
           >
             {copied ? <CheckIcon className="text-positive" /> : <CopyIcon />}
+            {children}
           </Button>
         </TooltipTrigger>
         <TooltipContent
@@ -51,7 +69,7 @@ export function Copy({ text }: CopyProps) {
             if (event.target === triggerRef.current) event.preventDefault();
           }}
         >
-          <p>{copied ? "Copied" : "Copy"}</p>
+          {copied ? "Copied" : (tooltip ?? "Copy")}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

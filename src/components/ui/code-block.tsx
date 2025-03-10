@@ -20,7 +20,7 @@ export const CodeBlock = ({
       <pre>
         <code className={cn("pr-12 text-sm", language)}>{code}</code>
       </pre>
-      <Copy text={code} />
+      <Copy copyText={code} />
     </div>
   );
 };
