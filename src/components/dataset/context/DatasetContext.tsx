@@ -72,7 +72,7 @@ export function DatasetProvider({
 }) {
   const [dataset, setDataset] = useState<DatasetResponse>(initialDataset);
   const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
-  const [editingState, dispatch] = useReducer(
+  const [editingFields, dispatch] = useReducer(
     editingReducer,
     initialEditingState,
   );
@@ -104,7 +104,7 @@ export function DatasetProvider({
         editable,
         editing,
         setEditing,
-        editingFields: editingState,
+        editingFields,
         startEditingField,
         stopEditingField,
         viewPendingFiles,
