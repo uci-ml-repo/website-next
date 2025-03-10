@@ -78,6 +78,22 @@ export function DatasetEditPendingActions() {
       });
     }
 
+    if (!dataset.variables.length) {
+      actions.push({
+        title: "Add variables information",
+        description: "Add information about the variables in the dataset.",
+        priority: "recommended",
+      });
+    }
+
+    if (!dataset.authors.length) {
+      actions.push({
+        title: "Add authors",
+        description: "Add information about the authors of the dataset.",
+        priority: "recommended",
+      });
+    }
+
     if (!dataset.hasGraphics) {
       actions.push({
         title: "Upload thumbnail",

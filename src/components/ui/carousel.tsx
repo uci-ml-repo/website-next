@@ -327,6 +327,11 @@ const CarouselScrollDots = ({
       setSlidesInView(api.slidesInView());
     });
 
+    api.on("slidesChanged", () => {
+      setSlideNodes(api.slideNodes());
+      setSlidesInView(api.slidesInView());
+    });
+
     api.on("slidesInView", () => {
       setSlidesInView(api.slidesInView());
     });
