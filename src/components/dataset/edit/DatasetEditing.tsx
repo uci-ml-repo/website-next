@@ -82,11 +82,21 @@ export function DatasetEditing() {
           <DialogContent aria-describedby={undefined}>
             <DialogTitle>Discard edits?</DialogTitle>
             <p>
-              You have dataset edits in progress, discard them without saving?
+              You have the following dataset edits in progress, discard them
+              without saving?
             </p>
+            <ul className="list-inside list-disc">
+              {Object.entries(editingFields).map(([field, editing]) =>
+                editing ? (
+                  <li key={field} className="font-bold">
+                    {field}
+                  </li>
+                ) : null,
+              )}
+            </ul>
             <div className="flex justify-between">
               <DialogClose asChild>
-                <Button variant="secondary">Cancel</Button>
+                <Button variant="secondary">Continue editing</Button>
               </DialogClose>
               <Button
                 variant="destructive"
