@@ -63,7 +63,9 @@ export function DatasetMultiSelectFilter({
   }, [selectedValues, filterKey, setFilters, filterValues]);
 
   useEffect(() => {
-    setSelectedValues((filterValues as string[]) ?? []);
+    if (!filterValues) {
+      setSelectedValues([]);
+    }
   }, [filterValues]);
 
   const { data, isLoading, isError } = useData(selectedValues);
@@ -77,7 +79,10 @@ export function DatasetMultiSelectFilter({
       tooltipOpen={tooltipOpen}
       active={selectedValues.length > 0}
       activeCount={selectedValues.length}
-      clearFilter={() => setFilters({ [filterKey]: undefined })}
+      clearFilter={() => {
+        setSelectedValues([]);
+        setFilters({ [filterKey]: undefined });
+      }}
     >
       {isError ? (
         <Alert variant="destructive">
