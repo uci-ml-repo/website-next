@@ -78,9 +78,17 @@ export function DatasetEditPendingActions() {
       });
     }
 
+    if (!dataset.yearCreated) {
+      actions.push({
+        title: "Add year created",
+        description: "Add what year the dataset was originally created.",
+        priority: "required",
+      });
+    }
+
     if (!dataset.variables.length) {
       actions.push({
-        title: "Add variables information",
+        title: "Add variable information",
         description: "Add information about the variables in the dataset.",
         priority: "recommended",
       });
@@ -90,6 +98,14 @@ export function DatasetEditPendingActions() {
       actions.push({
         title: "Add authors",
         description: "Add information about the authors of the dataset.",
+        priority: "recommended",
+      });
+    }
+
+    if (!dataset.keywords.length) {
+      actions.push({
+        title: "Add keywords",
+        description: "Add keywords to help others find your dataset.",
         priority: "recommended",
       });
     }
