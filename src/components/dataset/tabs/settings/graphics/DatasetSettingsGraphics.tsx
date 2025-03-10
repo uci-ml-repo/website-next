@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetSettingsGraphicsDialog } from "@/components/dataset/tabs/settings/graphics/DatasetSettingsGraphicsDialog";
+import { AlertInfo } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import {
   DATASET_API_THUMBNAIL_PENDING_ROUTE,
@@ -19,8 +19,7 @@ export function DatasetSettingsGraphics() {
   const [thumbnailParam, setThumbnailParam] = React.useState<number>(0);
 
   function resetThumbnail() {
-    console.log("X");
-    setThumbnailParam((prev) => prev + 1);
+    setThumbnailParam(Date.now());
   }
 
   return (
@@ -30,8 +29,15 @@ export function DatasetSettingsGraphics() {
         <div className="text-muted-foreground">
           Add an image to appear with your dataset (275 x 100).
         </div>
+        {!!thumbnailParam && (
+          <AlertInfo className="w-fit">
+            Thumbnail updated. Changes may take several minutes to reflect on
+            your dataset.
+          </AlertInfo>
+        )}
         <div className="relative w-fit">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={
               hasPendingThumbnail
                 ? DATASET_API_THUMBNAIL_PENDING_ROUTE({

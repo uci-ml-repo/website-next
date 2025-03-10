@@ -7,7 +7,7 @@ import type { Session } from "next-auth";
 import { useState } from "react";
 
 import { toast } from "@/components/hooks/use-toast";
-import { AlertIrreversible } from "@/components/ui/alert";
+import { AlertWarning } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -74,7 +74,7 @@ export function DatasetSettingsDeleteDialog({
       <DialogContent>
         <DialogTitle>Delete {dataset.title}?</DialogTitle>
         <DialogHeader className="space-y-4">
-          <AlertIrreversible />
+          <AlertWarning>this action cannot be undone.</AlertWarning>
           <ul className="list-inside list-disc">
             <li>All associated files will be deleted</li>
             <li>Associated metadata will be deleted</li>

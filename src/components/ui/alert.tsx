@@ -60,8 +60,29 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = "AlertDescription";
 
-const AlertWarning = ({ children }: { children: React.ReactNode }) => (
-  <Alert variant="destructive">
+const AlertInfo = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <Alert variant="blue" className={className}>
+    <div className="flex items-center space-x-2">
+      <AlertCircleIcon className="size-5" />
+      <div>{children}</div>
+    </div>
+  </Alert>
+);
+
+const AlertWarning = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <Alert variant="destructive" className={className}>
     <div className="flex items-center space-x-2">
       <AlertCircleIcon className="size-5" />
       <div>
@@ -71,9 +92,15 @@ const AlertWarning = ({ children }: { children: React.ReactNode }) => (
   </Alert>
 );
 
-const AlertError = ({ children }: { children: React.ReactNode }) => {
+const AlertError = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" className={className}>
       <div className="flex items-center space-x-2">
         <AlertCircleIcon className="size-5" />
         <div>
@@ -84,15 +111,11 @@ const AlertError = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const AlertIrreversible = () => (
-  <AlertWarning>this action cannot be undone.</AlertWarning>
-);
-
 export {
   Alert,
   AlertDescription,
   AlertError,
-  AlertIrreversible,
+  AlertInfo,
   AlertTitle,
   AlertWarning,
 };

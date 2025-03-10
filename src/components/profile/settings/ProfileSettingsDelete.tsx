@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 
 import { toast } from "@/components/hooks/use-toast";
-import { AlertIrreversible } from "@/components/ui/alert";
+import { AlertWarning } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -66,7 +66,7 @@ export function ProfileSettingsDelete({ session }: { session: Session }) {
         <DialogContent>
           <DialogTitle>Permanently delete your account</DialogTitle>
           <DialogHeader className="space-y-4">
-            <AlertIrreversible />
+            <AlertWarning>this action cannot be undone.</AlertWarning>
             <ul className="list-inside list-disc">
               <li>
                 You will no longer have access to any datasets donated by you
