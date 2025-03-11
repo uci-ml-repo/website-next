@@ -2,13 +2,13 @@
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditPendingActions } from "@/components/dataset/edit/actions/DatasetEditPendingActions";
-import { DatasetDescription } from "@/components/dataset/tabs/about/sections/DatasetDescription";
-import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/sections/DatasetIntroductoryPaper";
-import { DatasetQuickStats } from "@/components/dataset/tabs/about/sections/DatasetQuickStats";
-import { DatasetSideData } from "@/components/dataset/tabs/about/sections/DatasetSideData";
-import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/DatasetSideStatus";
-import { DatasetVariables } from "@/components/dataset/tabs/about/sections/DatasetVariables";
+import { DatasetClassification } from "@/components/dataset/tabs/about/sections/classification/DatasetClassification";
+import { DatasetDescription } from "@/components/dataset/tabs/about/sections/description/DatasetDescription";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadata";
+import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/sections/paper/DatasetIntroductoryPaper";
+import { DatasetSideData } from "@/components/dataset/tabs/about/sections/side/DatasetSideData";
+import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/side/DatasetSideStatus";
+import { DatasetVariables } from "@/components/dataset/tabs/about/sections/variables/DatasetVariables";
 import { Enums } from "@/db/lib/enums";
 
 export function DatasetAbout() {
@@ -22,7 +22,7 @@ export function DatasetAbout() {
         )}
         <div className="space-y-12">
           <DatasetDescription />
-          <DatasetQuickStats />
+          <DatasetClassification />
           <DatasetVariables />
           <DatasetIntroductoryPaper />
           <DatasetMetadata />

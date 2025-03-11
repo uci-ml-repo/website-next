@@ -130,7 +130,7 @@ export function DiscussionCommentCreateInput({
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard comment?</DialogTitle>
-          <p>You have a comment in progress, discard it?</p>
+          <div>You have a comment in progress, discard it?</div>
           <div className="flex items-center justify-between">
             <Button
               variant="secondary"

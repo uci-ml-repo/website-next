@@ -29,7 +29,7 @@ export function DatasetSettingsGraphics() {
         <div className="text-muted-foreground">
           Add an image to appear with your dataset (275 x 100).
         </div>
-        {!!thumbnailParam && (
+        {!!thumbnailParam && !hasPendingThumbnail && (
           <AlertInfo className="w-fit">
             Thumbnail updated. Changes may take several minutes to reflect on
             your dataset.

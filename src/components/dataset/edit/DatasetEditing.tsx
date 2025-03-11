@@ -81,10 +81,10 @@ export function DatasetEditing() {
         >
           <DialogContent aria-describedby={undefined}>
             <DialogTitle>Discard edits?</DialogTitle>
-            <p>
+            <div>
               You have the following dataset edits in progress, discard them
               without saving?
-            </p>
+            </div>
             <ul className="list-inside list-disc">
               {Object.entries(editingFields).map(([field, editing]) =>
                 editing ? (

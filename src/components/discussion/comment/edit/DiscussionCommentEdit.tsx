@@ -110,7 +110,7 @@ export function DiscussionCommentEdit({
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard edits?</DialogTitle>
-          <p>You have an edit in progress, discard it without saving?</p>
+          <div>You have an edit in progress, discard it without saving?</div>
           <div className="flex justify-between">
             <Button
               variant="secondary"

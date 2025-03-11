@@ -4,7 +4,6 @@ import { z } from "zod";
 import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { dataset, edit } from "@/db/schema";
-import { logger } from "@/lib/logger";
 import { service } from "@/server/service";
 
 export const datasetEditFields = z
@@ -27,8 +26,6 @@ export class EditCreateService {
     editFields: DatasetEditFields;
   }) {
     const dataset = await service.dataset.find.byId(datasetId);
-
-    logger.info("X");
 
     if (dataset.status === Enums.ApprovalStatus.DRAFT) {
       return this.instantEdit({ datasetId, userId, editFields });

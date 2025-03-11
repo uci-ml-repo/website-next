@@ -3,6 +3,7 @@
 import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 
+import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetSettingsGraphicsUploadForm } from "@/components/dataset/tabs/settings/graphics/DatasetSettingsGraphicsUploadForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +18,15 @@ export function DatasetSettingsGraphicsDialog({
 }: {
   resetThumbnail: () => void;
 }) {
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { setEditing } = useDataset();
+  const [dialogOpen, _setDialogOpen] = useState<boolean>(false);
+
+  function setDialogOpen(openState: boolean) {
+    if (openState) {
+      setEditing(true);
+    }
+    _setDialogOpen(openState);
+  }
 
   function onUpload() {
     setDialogOpen(false);

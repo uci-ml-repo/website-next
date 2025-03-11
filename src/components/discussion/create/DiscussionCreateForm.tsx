@@ -176,7 +176,7 @@ export function DiscussionCreateForm({
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogTitle>Discard discussion?</DialogTitle>
-          <p>You have a discussion in progress, discard it?</p>
+          <div>You have a discussion in progress, discard it?</div>
           <div className="flex justify-between">
             <Button
               variant="secondary"

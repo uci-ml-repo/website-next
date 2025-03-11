@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRightIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ import {
   CarouselScrollDots,
 } from "@/components/ui/carousel";
 import { datasetPreApprovalSelect } from "@/db/lib/types";
-import { DATASET_FILES_ROUTE } from "@/lib/routes";
+import { DATASET_FILES_ROUTE, DATASET_SETTINGS_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +36,8 @@ type ActionItem = {
 };
 
 export function DatasetEditPendingActions() {
+  const router = useRouter();
+
   const [api, setApi] = useState<CarouselApi>();
   const { dataset, startEditingField } = useDataset();
   const { fileStatus } = useDatasetFileStatus();
@@ -56,7 +58,27 @@ export function DatasetEditPendingActions() {
         title: "Upload Files",
         description: "Upload dataset files to share with the community.",
         priority: "required",
-        onClick: () => redirect(DATASET_FILES_ROUTE(dataset)),
+        onClick: () => router.push(DATASET_FILES_ROUTE(dataset)),
+      });
+    }
+
+    if (!dataset.description) {
+      actions.push({
+        title: "Add description",
+        description:
+          "Add details about your dataset to help others understand its contents.",
+        priority: "required",
+        onClick: () => startEditingField("description"),
+      });
+    }
+
+    if (!dataset.subjectArea || dataset.instanceCount === null) {
+      actions.push({
+        title: "Add classifying information",
+        description:
+          "Add additional information to help users find your dataset.",
+        priority: "required",
+        onClick: () => startEditingField("classification"),
       });
     }
 
@@ -68,13 +90,11 @@ export function DatasetEditPendingActions() {
       });
     }
 
-    if (!dataset.description) {
+    if (!dataset.introductoryPaper) {
       actions.push({
-        title: "Add description",
-        description:
-          "Add details about your dataset to help others understand its contents.",
+        title: "Add an introductory paper",
+        description: "Datasets must be published in a peer-reviewed venue.",
         priority: "required",
-        onClick: () => startEditingField("description"),
       });
     }
 
@@ -115,6 +135,7 @@ export function DatasetEditPendingActions() {
         title: "Upload thumbnail",
         description: "Upload a thumbnail image to represent your dataset.",
         priority: "recommended",
+        onClick: () => router.push(DATASET_SETTINGS_ROUTE(dataset)),
       });
     }
 

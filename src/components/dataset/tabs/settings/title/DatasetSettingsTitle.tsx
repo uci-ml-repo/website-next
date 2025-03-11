@@ -16,8 +16,7 @@ import {
 import { CONTACT_ROUTE } from "@/lib/routes";
 
 export function DatasetSettingsTitle() {
-  const { dataset, editing, setEditing, editingFields, startEditingField } =
-    useDataset();
+  const { dataset, editing, setEditing, editingFields } = useDataset();
   const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
   return (
@@ -32,11 +31,11 @@ export function DatasetSettingsTitle() {
           {fileStatus !== "unzipping" && pendingFileStatus !== "unzipping" ? (
             <DatasetEditFieldButton
               alwaysVisible
+              field="title"
               onClick={() => {
                 if (!editing) {
                   setEditing(true);
                 }
-                startEditingField("title");
               }}
             />
           ) : (
