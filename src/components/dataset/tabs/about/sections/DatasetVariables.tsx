@@ -54,15 +54,17 @@ function variablesToCsv(variables: VariableSelect[]): string {
 export function DatasetVariables() {
   const { dataset } = useDataset();
 
+  const variablesCsv = variablesToCsv(dataset.variables);
+
   return (
     <div>
       <div className="flex items-center space-x-4">
         <h2 className="text-2xl font-bold">Variables</h2>
         {dataset.variables.length > 0 && (
           <Copy
-            copyText={variablesToCsv(dataset.variables)}
+            copyText={variablesCsv}
             absolute={false}
-            className="px-2 py-1"
+            className={cn("px-2 py-1")}
             tooltip="Copy variables as CSV"
           >
             CSV

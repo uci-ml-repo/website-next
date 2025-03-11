@@ -39,10 +39,7 @@ export const allPlugins = [
   codeBlockPlugin({ defaultCodeBlockLanguage: "text" }),
   codeMirrorPlugin({
     codeBlockLanguages: {
-      "C++": "C/C++",
-      r: "R",
       python: "Python",
-      js: "JavaScript",
       text: "text",
     },
   }),

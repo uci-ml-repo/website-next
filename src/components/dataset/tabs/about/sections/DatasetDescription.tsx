@@ -129,6 +129,7 @@ export function DatasetDescription() {
       ) : dataset.description ? (
         <Expandable className="whitespace-pre-wrap break-words">
           <MDXViewer markdown={dataset.description} />
+          {/*{dataset.description}*/}
         </Expandable>
       ) : (
         <div className="text-muted-foreground">No information</div>

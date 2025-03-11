@@ -37,8 +37,6 @@ export function Copy({
     });
   };
 
-  if (typeof navigator.clipboard === "undefined") return <div />;
-
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0}>
