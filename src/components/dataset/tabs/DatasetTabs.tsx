@@ -84,7 +84,8 @@ export function DatasetTabs({
             <LinearTabsTrigger
               value="changelog"
               link={path.join(basePath, "changelog")}
-              badgeValue={editCount}
+              badgeValue={!!editCount ? "PENDING" : undefined}
+              badgeVariant="gold-strong"
             >
               Changelog
             </LinearTabsTrigger>

@@ -19,10 +19,22 @@ import { DATASET_CHANGELOG_ROUTE } from "@/lib/routes";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export function DatasetEditing() {
-  const { editing, setEditing, dataset, editingFields } = useDataset();
+  const {
+    editing,
+    setEditing,
+    dataset,
+    editingFields,
+    initialDataset,
+    setDataset,
+  } = useDataset();
 
   const [cancelDialogOpen, setFinishEditingDialogOpen] =
     useState<boolean>(false);
+
+  function finishEditing() {
+    setEditing(false);
+    setDataset(initialDataset);
+  }
 
   return (
     editing &&
@@ -66,7 +78,7 @@ export function DatasetEditing() {
                   if (Object.values(editingFields).some((value) => value)) {
                     setFinishEditingDialogOpen(true);
                   } else {
-                    setEditing(false);
+                    finishEditing();
                   }
                 }}
               >
@@ -101,7 +113,7 @@ export function DatasetEditing() {
               <Button
                 variant="destructive"
                 onClick={() => {
-                  setEditing(false);
+                  finishEditing();
                   setFinishEditingDialogOpen(false);
                 }}
               >
