@@ -35,6 +35,7 @@ export function SidebarBookmarks({ session }: { session: Session | null }) {
           <Link
             href={PROFILE_BOOKMARKS_ROUTE}
             className="mx-2 h-fit w-fit text-sm hover:underline"
+            prefetch={false}
           >
             Bookmarks
           </Link>
