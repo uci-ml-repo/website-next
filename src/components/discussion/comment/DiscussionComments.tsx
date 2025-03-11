@@ -86,12 +86,9 @@ export function DiscussionComments({
           setIsCommenting={setIsCommenting}
         />
       )}
-      <div className="space-y-3">
+      <div className="space-y-2 divide-y">
         {comments.map((comment) => (
-          <React.Fragment key={comment.id}>
-            <DiscussionComment discussionComment={comment} />
-            <hr />
-          </React.Fragment>
+          <DiscussionComment discussionComment={comment} key={comment.id} />
         ))}
       </div>
       {isFetchingNextPage && (

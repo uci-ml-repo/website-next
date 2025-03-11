@@ -55,22 +55,20 @@ export function DatasetSideStatus({
             <div className="p-2 text-muted-foreground">
               Only visible to you.
             </div>
-            <ul>
+            <hr />
+            <ul className="divide-y">
               {statusOptions.map((option) => (
-                <React.Fragment key={option.value}>
-                  <hr />
-
-                  <li
-                    className={cn("space-y-1 p-2", {
-                      "bg-muted": status === option.value,
-                    })}
-                  >
-                    <DatasetStatusBadge status={option.value} />
-                    <div className="text-sm text-muted-foreground">
-                      {option.tooltip}
-                    </div>
-                  </li>
-                </React.Fragment>
+                <li
+                  key={option.value}
+                  className={cn("space-y-1 p-2", {
+                    "bg-muted": status === option.value,
+                  })}
+                >
+                  <DatasetStatusBadge status={option.value} />
+                  <div className="text-sm text-muted-foreground">
+                    {option.tooltip}
+                  </div>
+                </li>
               ))}
             </ul>
           </HoverCardContent>

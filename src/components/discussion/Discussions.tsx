@@ -120,15 +120,15 @@ export function Discussions({
               {searchValue}'
             </div>
           )}
-          {discussions.map((discussion) => (
-            <React.Fragment key={discussion.id}>
+          <div className="divide-y">
+            {discussions.map((discussion) => (
               <DiscussionPreview
+                key={discussion.id}
                 discussion={discussion}
                 showDatasetTitle={!!userId}
               />
-              <hr />
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 

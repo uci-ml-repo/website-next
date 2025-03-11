@@ -81,12 +81,17 @@ export function ProfileDatasetsSearch({ session }: { session: Session }) {
         data && (
           <div className="space-y-2">
             <div>
-              {data.datasets.map((dataset) => (
-                <React.Fragment key={dataset.id}>
-                  <DatasetRow hoverCard dataset={dataset} displayStatus />
-                  <hr />
-                </React.Fragment>
-              ))}
+              <div className="divide-y">
+                {data.datasets.map((dataset) => (
+                  <DatasetRow
+                    hoverCard
+                    dataset={dataset}
+                    displayStatus
+                    key={dataset.id}
+                  />
+                ))}
+              </div>
+              <hr />
             </div>
             {data.count && (
               <SmartPagination

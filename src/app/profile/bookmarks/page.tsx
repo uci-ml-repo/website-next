@@ -92,12 +92,13 @@ export default function Page() {
                 </div>
               )}
 
-              <div className="relative">
+              <div className="relative divide-y">
                 {bookmarks.map((bookmark) => (
-                  <React.Fragment key={bookmark.dataset.id}>
-                    <DatasetRow hoverCard dataset={bookmark.dataset} />
-                    <hr />
-                  </React.Fragment>
+                  <DatasetRow
+                    hoverCard
+                    dataset={bookmark.dataset}
+                    key={bookmark.dataset.id}
+                  />
                 ))}
               </div>
             </>

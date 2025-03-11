@@ -132,12 +132,9 @@ export function DatasetSearch() {
           </div>
 
           {!data && isLoading ? (
-            <div>
+            <div className="divide-y">
               {Array.from({ length: limit }).map((_, index) => (
-                <React.Fragment key={index}>
-                  <DatasetRowSkeleton />
-                  <hr />
-                </React.Fragment>
+                <DatasetRowSkeleton key={index} />
               ))}
             </div>
           ) : data?.datasets.length ? (
@@ -163,16 +160,13 @@ export function DatasetSearch() {
                     <Spinner className="mx-1 size-5" />
                   )}
                 </div>
-                <div>
+                <div className="divide-y">
                   {data.datasets.map((dataset) => (
-                    <React.Fragment key={dataset.id}>
-                      <DatasetRow hoverCard dataset={dataset} />
-                      <hr />
-                    </React.Fragment>
+                    <DatasetRow hoverCard dataset={dataset} key={dataset.id} />
                   ))}
                 </div>
+                <hr />
               </div>
-
               <SmartPagination
                 totalCount={data.count}
                 limit={limit}
