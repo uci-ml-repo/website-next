@@ -1,14 +1,20 @@
 import { and, eq } from "drizzle-orm";
+import { z } from "zod";
 
 import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
-import { edit } from "@/db/schema";
+import { dataset, edit } from "@/db/schema";
+import { logger } from "@/lib/logger";
 import { service } from "@/server/service";
 
-export type DatasetEditFields = {
-  title: string;
-  description: string;
-};
+export const datasetEditFields = z
+  .object({
+    title: z.string(),
+    description: z.string(),
+  })
+  .partial();
+
+export type DatasetEditFields = z.infer<typeof datasetEditFields>;
 
 export class EditCreateService {
   async editFields({
@@ -21,6 +27,8 @@ export class EditCreateService {
     editFields: DatasetEditFields;
   }) {
     const dataset = await service.dataset.find.byId(datasetId);
+
+    logger.info("X");
 
     if (dataset.status === Enums.ApprovalStatus.DRAFT) {
       return this.instantEdit({ datasetId, userId, editFields });
@@ -95,6 +103,14 @@ export class EditCreateService {
       });
     }
 
-    return service.dataset.find.byId(datasetId);
+    const [updatedDataset] = await db
+      .update(dataset)
+      .set({
+        description: editFields.description,
+      })
+      .where(eq(dataset.id, datasetId))
+      .returning();
+
+    return updatedDataset;
   }
 }
