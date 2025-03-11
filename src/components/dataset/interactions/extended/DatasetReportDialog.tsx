@@ -8,6 +8,7 @@ import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -96,7 +97,7 @@ export function DatasetReportDialog({
                     <RadioGroup
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      className="flex flex-col space-y-1"
+                      className="flex flex-col"
                     >
                       {datasetReportReasons.map((reason) => (
                         <FormItem
@@ -151,13 +152,11 @@ export function DatasetReportDialog({
             </div>
 
             <DialogFooter className="!w-full !justify-between gap-2">
-              <Button
-                onClick={() => setOpen(false)}
-                variant="secondary"
-                type="button"
-              >
-                Cancel
-              </Button>
+              <DialogClose asChild>
+                <Button variant="secondary" type="button">
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button
                 type="submit"
                 variant="gold"

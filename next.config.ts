@@ -11,10 +11,10 @@ const nextConfig: NextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true, // TODO
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // TODO
+    ignoreBuildErrors: true,
   },
   experimental: {
     mdxRs: true,

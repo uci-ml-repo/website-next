@@ -13,7 +13,16 @@ import type { DatasetResponse } from "@/lib/types";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-export type DatasetField = "files" | "title" | "description" | "classification";
+export type DatasetField =
+  | "files"
+  | "title"
+  | "description"
+  | "subjectArea"
+  | "instances"
+  | "features"
+  | "dataTypes"
+  | "tasks"
+  | "featureTypes";
 
 type EditingState = {
   [key in DatasetField]: boolean;
@@ -27,7 +36,12 @@ const initialEditingState: EditingState = {
   files: false,
   title: false,
   description: false,
-  classification: false,
+  subjectArea: false,
+  instances: false,
+  features: false,
+  dataTypes: false,
+  tasks: false,
+  featureTypes: false,
 };
 
 function editingReducer(

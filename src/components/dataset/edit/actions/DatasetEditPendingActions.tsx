@@ -74,19 +74,10 @@ export function DatasetEditPendingActions() {
 
     if (!dataset.subjectArea || dataset.instanceCount === null) {
       actions.push({
-        title: "Add classifying information",
-        description:
-          "Add additional information to help users find your dataset.",
+        title: "Add a subject area",
+        description: "Add a subject area to help others find your dataset.",
         priority: "required",
-        onClick: () => startEditingField("classification"),
-      });
-    }
-
-    if (!dataset.introductoryPaper) {
-      actions.push({
-        title: "Add an introductory paper",
-        description: "Datasets must be published in a peer-reviewed venue.",
-        priority: "required",
+        onClick: () => startEditingField("subjectArea"),
       });
     }
 
@@ -231,7 +222,7 @@ export function DatasetEditPendingActions() {
                   >
                     <CardContent className="flex flex-1 flex-col space-y-4">
                       <div className="flex h-full flex-col space-y-0.5">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between space-x-1">
                           <div className="font-bold">{title}</div>
                           {!disabled && <ArrowRightIcon className="size-5" />}
                         </div>

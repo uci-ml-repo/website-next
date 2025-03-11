@@ -2,12 +2,12 @@
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditPendingActions } from "@/components/dataset/edit/actions/DatasetEditPendingActions";
-import { DatasetClassification } from "@/components/dataset/tabs/about/sections/classification/DatasetClassification";
 import { DatasetDescription } from "@/components/dataset/tabs/about/sections/description/DatasetDescription";
 import { DatasetMetadata } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadata";
 import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/sections/paper/DatasetIntroductoryPaper";
 import { DatasetSideData } from "@/components/dataset/tabs/about/sections/side/DatasetSideData";
 import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/side/DatasetSideStatus";
+import { DatasetStats } from "@/components/dataset/tabs/about/sections/stats/DatasetStats";
 import { DatasetVariables } from "@/components/dataset/tabs/about/sections/variables/DatasetVariables";
 import { Enums } from "@/db/lib/enums";
 
@@ -22,7 +22,7 @@ export function DatasetAbout() {
         )}
         <div className="space-y-12">
           <DatasetDescription />
-          <DatasetClassification />
+          <DatasetStats />
           <DatasetVariables />
           <DatasetIntroductoryPaper />
           <DatasetMetadata />

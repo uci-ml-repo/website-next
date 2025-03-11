@@ -92,7 +92,7 @@ export function DiscussionCommentReportDialog({
                     <RadioGroup
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      className="flex flex-col space-y-1"
+                      className="flex flex-col"
                     >
                       {discussionReportReasons.map((reason) => (
                         <FormItem

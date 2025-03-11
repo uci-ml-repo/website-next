@@ -250,7 +250,7 @@ export const edit = pgTable(
     newData: jsonb("new_data").$type<DatasetSelect>().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .defaultNow()
-      .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
+      .$onUpdate(() => new Date())
       .notNull(),
     submittedBy: uuid("submitted_by").references(() => user.id, {
       onDelete: "set null",
