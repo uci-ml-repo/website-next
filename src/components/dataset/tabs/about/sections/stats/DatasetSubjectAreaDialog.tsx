@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
+import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,15 +22,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
 import { enumToArray, formatEnum } from "@/lib/utils";
+import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
   subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)),
 });
 
 export function DatasetSubjectAreaDialog() {
-  const { dataset, editingFields, stopEditingField } = useDataset();
+  const { dataset, setDataset, editingFields, stopEditingField } = useDataset();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,11 +41,30 @@ export function DatasetSubjectAreaDialog() {
     },
   });
 
+  const editMutation = trpc.edit.create.editFields.useMutation({
+    onSuccess: (editedDataset) => {
+      setDataset({ ...dataset, subjectArea: editedDataset.subjectArea });
+      stopEditingField("subjectArea");
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error editing dataset subject area",
+        description: error.message,
+      });
+    },
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("submit", values);
+    editMutation.mutate({
+      datasetId: dataset.id,
+      editFields: {
+        subjectArea: values.subjectArea,
+      },
+    });
   }
 
-  const pending = form.formState.isSubmitting;
+  const pending = editMutation.isPending;
 
   return (
     <>
@@ -103,7 +125,7 @@ export function DatasetSubjectAreaDialog() {
                   variant="gold"
                   disabled={pending || !form.watch("subjectArea")}
                 >
-                  Submit
+                  {pending && <Spinner />} Submit
                 </Button>
               </DialogFooter>
             </form>

@@ -4,12 +4,14 @@ import { z } from "zod";
 import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { dataset, edit } from "@/db/schema";
+import { enumToArray } from "@/lib/utils";
 import { service } from "@/server/service";
 
 export const datasetEditFields = z
   .object({
     title: z.string(),
     description: z.string(),
+    subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)),
   })
   .partial();
 
@@ -53,6 +55,10 @@ export class EditCreateService {
       dataset.description = editFields.description;
     }
 
+    if (editFields.subjectArea) {
+      dataset.subjectArea = editFields.subjectArea;
+    }
+
     const pendingEdit = await service.edit.find.byId({
       datasetId: datasetId,
       pending: true,
@@ -69,7 +75,7 @@ export class EditCreateService {
           ),
         )
         .returning()
-        .then((res) => res[0]);
+        .then((res) => res[0].newData);
     } else {
       return db
         .insert(edit)
@@ -81,7 +87,7 @@ export class EditCreateService {
           status: Enums.EditStatus.PENDING,
         })
         .returning()
-        .then((res) => res[0]);
+        .then((res) => res[0].newData);
     }
   }
 
@@ -104,6 +110,7 @@ export class EditCreateService {
       .update(dataset)
       .set({
         description: editFields.description,
+        subjectArea: editFields.subjectArea,
       })
       .where(eq(dataset.id, datasetId))
       .returning();
