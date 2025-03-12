@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
+import { SideDatum } from "@/components/dataset/tabs/about/sections/side/DatasetSideDatum";
 import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/side/status/DatasetSideStatus";
 import { Badge } from "@/components/ui/badge";
 import { DATASETS_QUERY } from "@/lib/routes";
@@ -81,25 +82,6 @@ export function DatasetSideData() {
           </Link>
         </SideDatum>
       )}
-    </div>
-  );
-}
-
-function SideDatum({
-  title,
-  children,
-  className,
-}: {
-  title: string;
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  const blank = <div className="text-muted-foreground">&ndash;</div>;
-
-  return (
-    <div className="space-y-2">
-      <div className="text-lg font-bold">{title}</div>
-      <div className={className}>{children ? children : blank}</div>
     </div>
   );
 }

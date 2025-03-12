@@ -7,7 +7,7 @@ Includecmd: no
 
 %post
     apk add --update --no-cache git libc6-compat openssl
-    npm i -g pnpm pm2
+    npm i -g pnpm
     cp -r /extra/dataweb3/website-next /website
     mkdir -p /extra/dataweb3/static
     mkdir -p /extra/dataweb3/datasets
