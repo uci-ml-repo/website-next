@@ -6,7 +6,7 @@
 module.exports = [
   {
     name: "uci-ml-repo",
-    script: "npm",
+    script: "pnpm",
     args: "start",
     autorestart: true,
     env: {

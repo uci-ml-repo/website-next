@@ -8,9 +8,9 @@ Includecmd: no
 %post
     apk add --update --no-cache git libc6-compat openssl
     npm i -g pnpm
-    cp -r /extra/dataweb3/website-next /website
+    cp -r /extra/dataweb3/website-next /website-next
     mkdir -p /extra/dataweb3/static-next
-    cd /website
+    cd /website-next
     source .env
     pnpm install --frozen-lockfile
     pnpm build
@@ -19,5 +19,5 @@ Includecmd: no
     chmod -R 0755 .
 
 %startscript
-    cd /website
-    pnpm run server
+    cd /website-next
+    pnpm run start
