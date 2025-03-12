@@ -87,7 +87,7 @@ export default async function Layout({
                     "peer-data-[state=expanded]:xl:pl-[--sidebar-width]",
                   )}
                 >
-                  <div className={cn("flex min-h-[100svh] flex-col")}>
+                  <div className="flex min-h-[100svh] flex-col">
                     <div className="flex flex-grow flex-col">
                       <Header session={session} />
                       {children}
