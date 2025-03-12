@@ -9,8 +9,7 @@ Includecmd: no
     apk add --update --no-cache git libc6-compat openssl
     npm i -g pnpm
     cp -r /extra/dataweb3/website-next /website
-    mkdir -p /extra/dataweb3/static
-    mkdir -p /extra/dataweb3/datasets
+    mkdir -p /extra/dataweb3/static-next
     cd /website
     source .env
     pnpm install --frozen-lockfile
