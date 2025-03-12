@@ -1,10 +1,10 @@
 # Include additional variables from an env file.
 include .env
 
-WEBSITE_NAME=website
-NGINX_NAME=nginx
+WEBSITE_NAME=website-next
+NGINX_NAME=nginx-next
 
-datalab: $(CONTAINERS_DIRECTORY) website nginx
+datalab: $(CONTAINERS_DIRECTORY) website-next nginx-next
 
 $(WEBSITE_NAME): $(CONTAINERS_DIRECTORY)/$(WEBSITE_NAME).sif
 	- singularity instance stop $@
