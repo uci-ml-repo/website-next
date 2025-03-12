@@ -4,29 +4,26 @@ include .env
 WEBSITE_NAME=website
 NGINX_NAME=nginx
 
-datalab: $(DATALAB12_CONTAINERS) website nginx
+datalab: $(CONTAINERS_DIRECTORY) website nginx
 
-$(WEBSITE_NAME): $(DATALAB12_CONTAINERS)/$(WEBSITE_NAME).sif
+$(WEBSITE_NAME): $(CONTAINERS_DIRECTORY)/$(WEBSITE_NAME).sif
 	- singularity instance stop $@
 	singularity instance start --writable \
-	-B $(STATIC_DIRECTORY) \
-	-B $(DATASET_DIRECTORY) \
-	-B $(LEGACY_DATASET_DIRECTORY) \
-	-B $(CRON_LOG_FILE) \
+	-B $(STATIC_FILES_DIRECTORY) \
 	$^ $(WEBSITE_NAME)
 
-$(NGINX_NAME): $(DATALAB12_CONTAINERS)/$(NGINX_NAME).sif
+$(NGINX_NAME): $(CONTAINERS_DIRECTORY)/$(NGINX_NAME).sif
 	- singularity instance stop $@
 	singularity instance start --writable $^ $(NGINX_NAME)
 
 # Given the name of a .sif sandbox directory, search for corresponding .def file and build it.
 # e.g. `make website.sif` will look for the "website.def" file to build the "website.sif" container.
 # Whenever any files changes, this is eligible for rebuilding.
-$(DATALAB12_CONTAINERS)/%.sif: $(WILDCARD *)
+$(CONTAINERS_DIRECTORY)/%.sif: $(WILDCARD *)
 	# - singularity instance stop $*
 	singularity build --force --fakeroot --sandbox $@ ./deploy/singularity/$*.def
 
-$(DATALAB12_CONTAINERS):
+$(CONTAINERS_DIRECTORY):
 	@ echo Creating directory for containers...
 	@ mkdir -p $@
 
@@ -34,7 +31,7 @@ $(DATALAB12_CONTAINERS):
 .PHONY: clean
 clean:
 	- singularity instance stop -a
-	rm -rf $(DATALAB12_CONTAINERS)/*.sif
+	rm -rf $(CONTAINERS_DIRECTORY)/*.sif
 
 # Help message.
 .PHONY: help
