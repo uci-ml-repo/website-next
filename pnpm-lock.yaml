@@ -203,6 +203,9 @@ importers:
       pino-pretty:
         specifier: 13.0.0
         version: 13.0.0
+      pm2:
+        specifier: 5.4.3
+        version: 5.4.3
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -230,6 +233,9 @@ importers:
       tailwind-merge:
         specifier: 3.0.2
         version: 3.0.2
+      tailwindcss:
+        specifier: 3.4.17
+        version: 3.4.17
       tailwindcss-animate:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.17)
@@ -333,9 +339,6 @@ importers:
       lint-staged:
         specifier: 15.5.0
         version: 15.5.0
-      pm2:
-        specifier: 5.4.3
-        version: 5.4.3
       postcss:
         specifier: 8.5.3
         version: 8.5.3
@@ -360,9 +363,6 @@ importers:
       react-email:
         specifier: 3.0.7
         version: 3.0.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      tailwindcss:
-        specifier: 3.4.17
-        version: 3.4.17
       tsx:
         specifier: 4.19.3
         version: 4.19.3
