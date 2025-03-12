@@ -3,17 +3,16 @@ From: node:lts-alpine
 Includecmd: no
 
 %files
-    /extra/dataweb3/website
+    /extra/dataweb3/website-next
 
 %post
     apk add --update --no-cache git libc6-compat openssl
     npm i -g pnpm pm2
-    cp -r /extra/dataweb3/website /website
+    cp -r /extra/dataweb3/website-next /website
     mkdir -p /extra/dataweb3/static
     mkdir -p /extra/dataweb3/datasets
-    mkdir -p /extra/dataweb2/public_html/ml/machine-learning-databases
     cd /website
-    . .env
+    source .env
     pnpm install --frozen-lockfile
     pnpm build
     find /opt -name 'yarn*' -perm 755 -exec chmod 777 {} \;
