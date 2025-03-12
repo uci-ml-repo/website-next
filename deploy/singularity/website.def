@@ -13,7 +13,7 @@ Includecmd: no
     mkdir -p /extra/dataweb3/datasets
     cd /website
     source .env
-    pnpm install --frozen-lockfile
+    pnpm install --frozen-lockfile --prod
     pnpm build
     find /opt -name 'yarn*' -perm 755 -exec chmod 777 {} \;
     find /opt -name 'yarn*' -perm 644 -exec chmod 666 {} \;
@@ -21,4 +21,4 @@ Includecmd: no
 
 %startscript
     cd /website
-    pnpm server
+    pnpm run server
