@@ -3,8 +3,8 @@ From: nginx:latest
 Includecmd: no
 
 %files
-    /extra/dataweb3/website/deploy/singularity/nginx/nginx.conf /etc/nginx/nginx.conf
-    /extra/dataweb3/website/deploy/singularity/nginx/conf.d /etc/nginx
+    /extra/dataweb3/website-next/deploy/singularity/nginx/nginx.conf /etc/nginx/nginx.conf
+    /extra/dataweb3/website-next/deploy/singularity/nginx/conf.d /etc/nginx
     /extra/dataweb3/sslcerts /etc/nginx/certs
 
 %startscript
