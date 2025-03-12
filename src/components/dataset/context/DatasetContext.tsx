@@ -9,8 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { Enums } from "@/db/lib/enums";
 import type { DatasetResponse } from "@/lib/types";
-import { isDraftOrPending } from "@/lib/utils/dataset";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
 export type DatasetField =
@@ -22,7 +22,8 @@ export type DatasetField =
   | "features"
   | "dataTypes"
   | "tasks"
-  | "featureTypes";
+  | "featureTypes"
+  | "status";
 
 type EditingState = {
   [key in DatasetField]: boolean;
@@ -42,6 +43,7 @@ const initialEditingState: EditingState = {
   dataTypes: false,
   tasks: false,
   featureTypes: false,
+  status: false,
 };
 
 function editingReducer(
@@ -86,7 +88,9 @@ export function DatasetProvider({
   children: React.ReactNode;
 }) {
   const [dataset, setDataset] = useState<DatasetResponse>(initialDataset);
-  const [editing, setEditing] = useState<boolean>(isDraftOrPending(dataset));
+  const [editing, setEditing] = useState<boolean>(
+    dataset.status === Enums.ApprovalStatus.DRAFT,
+  );
   const [editingFields, dispatch] = useReducer(
     editingReducer,
     initialEditingState,

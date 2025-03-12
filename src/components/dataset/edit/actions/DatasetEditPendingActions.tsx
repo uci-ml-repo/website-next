@@ -56,7 +56,7 @@ export function DatasetEditPendingActions() {
     if (!dataset.externalLink && !hasFiles) {
       actions.push({
         title: "Upload Files",
-        description: "Upload dataset files to share with the community.",
+        description: "Upload files for your dataset.",
         priority: "required",
         onClick: () => router.push(DATASET_FILES_ROUTE(dataset)),
       });
@@ -72,7 +72,7 @@ export function DatasetEditPendingActions() {
       });
     }
 
-    if (!dataset.subjectArea || dataset.instanceCount === null) {
+    if (!dataset.subjectArea) {
       actions.push({
         title: "Add a subject area",
         description: "Add a subject area to help others find your dataset.",

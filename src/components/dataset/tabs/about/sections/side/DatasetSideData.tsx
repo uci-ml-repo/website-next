@@ -3,14 +3,17 @@ import Link from "next/link";
 import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
+import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/side/status/DatasetSideStatus";
 import { Badge } from "@/components/ui/badge";
 import { DATASETS_QUERY } from "@/lib/routes";
 
 export function DatasetSideData() {
-  const { dataset } = useDataset();
+  const { dataset, editable } = useDataset();
 
   return (
     <div className="space-y-6">
+      {editable && <DatasetSideStatus status={dataset.status} />}
+
       {/* Keywords */}
       <SideDatum title="Keywords" className="flex flex-wrap gap-1">
         {dataset.keywords.length > 0 &&

@@ -61,7 +61,7 @@ export function DatasetSettingsGraphics() {
           )}
           {!dataset.hasGraphics && !hasPendingThumbnail && (
             <div className="absolute right-2 top-2">
-              <Badge variant="gold-strong">DEFAULT</Badge>
+              <Badge variant="secondary">DEFAULT</Badge>
             </div>
           )}
         </div>

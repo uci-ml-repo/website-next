@@ -65,13 +65,13 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
   const [changeToRole, setChangeToRole] = useState<Enums.UserRole>(roleSelect);
 
   const roleChangeMutation = trpc.user.update.role.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       user.role = changeToRole;
       setRoleSelect(changeToRole);
       setDialogOpen(false);
 
       if (user.email === session?.user.email) {
-        signOut();
+        await signOut();
       }
     },
     onError: (error) => {
@@ -137,8 +137,7 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
                 You are changing your own role. You will be signed out.
               </AlertWarning>
             )}
-            <hr />
-            <div className="flex items-center justify-around">
+            <div className="flex items-center justify-around border-y py-4">
               <div
                 className={cn({
                   "text-destructive-muted": user.role === UserRole.ADMIN,
@@ -155,7 +154,6 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
                 {formatEnum(changeToRole)}
               </div>
             </div>
-            <hr />
           </div>
           <DialogFooter className="mt-2 !justify-between gap-2">
             <DialogClose asChild disabled={pending}>

@@ -24,7 +24,8 @@ export function DatasetEditFieldButton({
   const { startEditingField, editingFields, editing } = useDataset();
 
   return (
-    ((editing && !editingFields[field]) || alwaysVisible) && (
+    !editingFields[field] &&
+    (editing || alwaysVisible) && (
       <Button
         variant="ghost"
         size="icon"

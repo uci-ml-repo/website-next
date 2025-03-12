@@ -6,13 +6,12 @@ import { DatasetDescription } from "@/components/dataset/tabs/about/sections/des
 import { DatasetMetadata } from "@/components/dataset/tabs/about/sections/metadata/DatasetMetadata";
 import { DatasetIntroductoryPaper } from "@/components/dataset/tabs/about/sections/paper/DatasetIntroductoryPaper";
 import { DatasetSideData } from "@/components/dataset/tabs/about/sections/side/DatasetSideData";
-import { DatasetSideStatus } from "@/components/dataset/tabs/about/sections/side/DatasetSideStatus";
 import { DatasetStats } from "@/components/dataset/tabs/about/sections/stats/DatasetStats";
 import { DatasetVariables } from "@/components/dataset/tabs/about/sections/variables/DatasetVariables";
 import { Enums } from "@/db/lib/enums";
 
 export function DatasetAbout() {
-  const { dataset, editable } = useDataset();
+  const { dataset } = useDataset();
 
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
@@ -29,8 +28,7 @@ export function DatasetAbout() {
         </div>
       </div>
 
-      <div className="w-56 shrink-0 space-y-6">
-        {editable && <DatasetSideStatus status={dataset.status} />}
+      <div className="w-56 shrink-0">
         <DatasetSideData />
       </div>
     </div>
