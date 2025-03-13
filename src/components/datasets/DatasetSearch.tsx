@@ -26,6 +26,9 @@ export function DatasetSearch() {
   const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
 
+  const { inputValue, setInputValue, searchValue, handleChange } =
+    useDebouncedSearch({ defaultValue: filters.search });
+
   const [autoOrder, setAutoOrder] = useState(true);
   const [localOrder, setLocalOrder] = useState<string>(
     filters.search
@@ -46,9 +49,6 @@ export function DatasetSearch() {
     }) -
     +(!!filters.instanceCountMax && !!filters.instanceCountMin) -
     +(!!filters.featureCountMax && !!filters.featureCountMin);
-
-  const { inputValue, setInputValue, searchValue, handleChange } =
-    useDebouncedSearch({ defaultValue: filters.search });
 
   useEffect(() => {
     if (searchValue) {

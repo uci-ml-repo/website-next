@@ -1,13 +1,13 @@
 "use client";
 
-import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
+import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { Card } from "@/components/ui/card";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { DATASETS_QUERY } from "@/lib/routes";
@@ -15,26 +15,13 @@ import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetPreviewSearch() {
+  const { inputValue, setInputValue, searchValue, handleChange } =
+    useDebouncedSearch();
+
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>("");
-  const [searchValue, setSearchValue] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-
-  const debouncedSetSearchValue = useMemo(
-    () =>
-      debounce((value: string) => {
-        setSearchValue(value);
-      }, 100),
-    [],
-  );
-
-  useEffect(() => {
-    if (inputValue === "") {
-      setSearchValue("");
-    }
-  }, [inputValue]);
 
   const { data, isPending } = trpc.dataset.find.byQuery.useQuery(
     {
@@ -45,12 +32,6 @@ export function DatasetPreviewSearch() {
       enabled: searchValue.length > 0,
     },
   );
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
-    debouncedSetSearchValue(newValue);
-  };
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (e.currentTarget.contains(e.relatedTarget)) {
@@ -153,7 +134,7 @@ export function DatasetPreviewSearch() {
 
         {inputValue ? (
           isPending &&
-          Array.from({ length: 1 }).map((_, index) => (
+          Array.from({ length: 4 }).map((_, index) => (
             <DatasetRowSkeleton key={index} />
           ))
         ) : (
