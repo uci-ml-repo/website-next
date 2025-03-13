@@ -37,7 +37,7 @@
     "lint": "eslint --fix",
     "tscheck": "tsc --noEmit --incremental false --excludeDirectories '.next'",
     "prepare": "husky",
-    "start": "dotenv -e .env -- next start -p 8449",
+    "start": "dotenv -e .env -- next start",
     "server": "pm2-runtime start ecosystem.config.cjs"
   },
   "lint-staged": {
