@@ -64,6 +64,14 @@ export default async function Layout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* TODO REMOVE */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script
+          crossOrigin="anonymous"
+          src="//unpkg.com/react-scan/dist/auto.global.js"
+        />
+      </head>
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>

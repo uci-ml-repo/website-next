@@ -1,22 +1,16 @@
 "use client";
 
 import { isEqual } from "lodash";
-import { SearchIcon, Undo2Icon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Undo2Icon } from "lucide-react";
+import React from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/DatasetRow";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/DatasetRowSkeleton";
 import { DatasetFiltersDesktop } from "@/components/datasets/DatasetFiltersDesktop";
-import { DatasetFiltersMobile } from "@/components/datasets/DatasetFiltersMobile";
-import {
-  DatasetSearchOrderBy,
-  orderByOptions,
-} from "@/components/datasets/DatasetSearchOrderBy";
-import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
+import { DatasetSearchInput } from "@/components/datasets/DatasetSearchInput";
 import { usePrevious } from "@/components/hooks/use-previous";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
-import { InputClearable } from "@/components/ui/input-clearable";
 import { SmartPagination } from "@/components/ui/smart-pagination";
 import { Spinner } from "@/components/ui/spinner";
 import type { DatasetQuery } from "@/server/schema/dataset";
@@ -26,55 +20,12 @@ export function DatasetSearch() {
   const { filters, setFilters, clearFilters, filterCountExcept } =
     useQueryFilters<DatasetQuery>();
 
-  const { inputValue, setInputValue, searchValue, handleChange } =
-    useDebouncedSearch({ defaultValue: filters.search });
-
-  const [autoOrder, setAutoOrder] = useState(true);
-  const [localOrder, setLocalOrder] = useState<string>(
-    filters.search
-      ? "relevance"
-      : Object.keys(filters.order || {})[0] || "viewCount",
-  );
-
-  const handleOrderChange = (newOrder: string) => {
-    if (localOrder !== newOrder) {
-      setLocalOrder(newOrder);
-      setAutoOrder(false);
-    }
-  };
-
   const filterCount =
     filterCountExcept({
       except: ["search", "order", "limit", "cursor"],
     }) -
     +(!!filters.instanceCountMax && !!filters.instanceCountMin) -
     +(!!filters.featureCountMax && !!filters.featureCountMin);
-
-  useEffect(() => {
-    if (searchValue) {
-      if (autoOrder && localOrder !== "relevance") {
-        setLocalOrder("relevance");
-      }
-    } else {
-      setAutoOrder(true);
-      if (localOrder === "relevance") {
-        setLocalOrder("viewCount");
-      }
-    }
-  }, [searchValue, autoOrder, localOrder]);
-
-  useEffect(() => {
-    const order =
-      localOrder === "relevance"
-        ? undefined
-        : { [localOrder]: orderByOptions[localOrder].sort };
-
-    setFilters({
-      search: searchValue,
-      order: localOrder !== "viewCount" ? order : undefined,
-      cursor: 0,
-    });
-  }, [filters.order?.viewCount, localOrder, searchValue, setFilters]);
 
   const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
     filters,
@@ -104,32 +55,7 @@ export function DatasetSearch() {
       <div className="flex flex-1 flex-col p-1">
         <h1 className="text-2xl font-bold max-lg:pb-2">Browse datasets</h1>
         <div className="space-y-4">
-          <div className="flex w-full flex-col items-end justify-between gap-4 md:flex-row">
-            <InputClearable
-              placeholder="Search datasets"
-              icon={SearchIcon}
-              value={inputValue}
-              setValue={setInputValue}
-              onChange={handleChange}
-              containerClassName="w-full"
-              aria-label="Search datasets"
-            />
-            <div className="flex items-end max-lg:justify-between max-md:w-full">
-              <div className="mr-4 lg:hidden">
-                <DatasetFiltersMobile />
-              </div>
-              <div>
-                <div className="mb-1 text-sm text-muted-foreground max-md:hidden">
-                  Sort By
-                </div>
-                <DatasetSearchOrderBy
-                  value={localOrder}
-                  onChange={handleOrderChange}
-                  searchActive={!!inputValue}
-                />
-              </div>
-            </div>
-          </div>
+          <DatasetSearchInput />
 
           {!data && isLoading ? (
             <div className="divide-y">
