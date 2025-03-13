@@ -5,13 +5,12 @@ import { Main } from "@/components/layout/Main";
 
 export const metadata: Metadata = {
   title: "Datasets",
-  description:
-    "Browse hundreds of datasets from the UCI Machine Learning Repository.",
+  description: "Browse datasets from the UCI Machine Learning Repository.",
 };
 
 export default function Page() {
   return (
-    <Main className="backdrop-gradient-blur">
+    <Main className="h-[calc(100svh-var(--header-height))]">
       <DatasetSearch />
     </Main>
   );

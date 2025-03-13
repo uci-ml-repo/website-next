@@ -1,4 +1,4 @@
-import { count, desc, eq, gt, inArray, sql } from "drizzle-orm";
+import { and, count, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { userColumns, userSelect } from "@/db/lib/types";
@@ -51,7 +51,7 @@ function buildQuery(query: UserQuery) {
     conditions.push(gt(user.createdAt, query.createdAfter));
   }
 
-  return conditions.length > 0 ? sql`${conditions.join(" AND ")}` : undefined;
+  return and(...conditions);
 }
 
 export namespace userFindService {

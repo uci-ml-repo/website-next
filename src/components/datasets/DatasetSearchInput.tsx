@@ -58,7 +58,7 @@ export function DatasetSearchInput() {
   }, [localOrder, searchValue, setFilters]);
 
   return (
-    <div className="flex w-full flex-col items-end justify-between gap-4 md:flex-row">
+    <div className="flex w-full flex-col items-end justify-between gap-4 p-[1px] md:flex-row">
       <InputClearable
         placeholder="Search datasets"
         icon={SearchIcon}

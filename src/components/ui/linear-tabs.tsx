@@ -9,6 +9,7 @@ import * as React from "react";
 
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge, SpinnerBadge } from "@/components/ui/badge";
+import { ScrollGradient } from "@/components/ui/scroll-gradient";
 import { Spinner } from "@/components/ui/spinner";
 import { abbreviateDecimal, cn } from "@/lib/utils";
 
@@ -93,11 +94,8 @@ export const LinearTabsList = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
     VariantProps<typeof linearTabsListVariants>
 >(({ variant, className, children, ...props }, forwardedRef) => {
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const activeValue = useTabsValue();
-
-  const [showLeftGradient, setShowLeftGradient] = React.useState(false);
-  const [showRightGradient, setShowRightGradient] = React.useState(false);
 
   const [indicatorStyle, setIndicatorStyle] = React.useState({
     x: 0,
@@ -121,10 +119,6 @@ export const LinearTabsList = React.forwardRef<
       } else {
         setIndicatorStyle({ x: 0, width: 0 });
       }
-
-      const { scrollWidth, clientWidth, scrollLeft } = containerRef.current;
-      setShowLeftGradient(scrollLeft > 0);
-      setShowRightGradient(scrollWidth > clientWidth + scrollLeft);
     };
 
     update();
@@ -144,47 +138,43 @@ export const LinearTabsList = React.forwardRef<
   }, [activeValue]);
 
   return (
-    <div className="relative overflow-hidden">
-      <div className="relative overflow-x-auto" ref={containerRef}>
-        <TabsPrimitive.List
-          ref={(node) => {
-            if (typeof forwardedRef === "function") {
-              forwardedRef(node as null);
-            } else if (forwardedRef) {
-              (
-                forwardedRef as React.MutableRefObject<HTMLDivElement | null>
-              ).current = node;
+    <ScrollGradient
+      orientation="horizontal"
+      containerClassName="relative overflow-hidden"
+      className="relative overflow-x-auto"
+      ref={containerRef}
+    >
+      <TabsPrimitive.List
+        ref={(node) => {
+          if (typeof forwardedRef === "function") {
+            forwardedRef(node as null);
+          } else if (forwardedRef) {
+            (
+              forwardedRef as React.MutableRefObject<HTMLDivElement | null>
+            ).current = node;
+          }
+        }}
+        className={cn(linearTabsListVariants({ variant }), className)}
+        {...props}
+      >
+        {React.Children.map(
+          children as TriggerElement[],
+          (child: TriggerElement) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, {
+                "data-value": child.props.value,
+              });
             }
-          }}
-          className={cn(linearTabsListVariants({ variant }), className)}
-          {...props}
-        >
-          {React.Children.map(
-            children as TriggerElement[],
-            (child: TriggerElement) => {
-              if (React.isValidElement(child)) {
-                return React.cloneElement(child, {
-                  "data-value": child.props.value,
-                });
-              }
-              return child;
-            },
-          )}
-
-          <motion.span
-            animate={indicatorStyle}
-            transition={{ ease: "easeOut", duration: 0.175 }}
-            className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
-          />
-        </TabsPrimitive.List>
-      </div>
-      {showLeftGradient && (
-        <div className="absolute bottom-0 left-0 top-0 z-10 !ml-0 w-4 bg-gradient-to-r from-background" />
-      )}
-      {showRightGradient && (
-        <div className="absolute bottom-0 right-0 top-0 z-10 !ml-0 w-4 bg-gradient-to-l from-background" />
-      )}
-    </div>
+            return child;
+          },
+        )}
+        <motion.span
+          animate={indicatorStyle}
+          transition={{ ease: "easeOut", duration: 0.175 }}
+          className="absolute bottom-0 !ml-0 h-[4px] rounded-t-full"
+        />
+      </TabsPrimitive.List>
+    </ScrollGradient>
   );
 });
 LinearTabsList.displayName = "LinearTabsList";
