@@ -21,35 +21,33 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Enums } from "@/db/lib/enums";
-import { enumToArray, formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
-  subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)),
+  instanceCount: z.number().int().nonnegative(),
 });
 
-export function DatasetSubjectAreaDialog() {
+export function DatasetInstanceCountDialog() {
   const { dataset, setDataset, editingFields, stopEditingField } = useDataset();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      subjectArea: dataset.subjectArea ?? undefined,
+      instanceCount: dataset.instanceCount ?? undefined,
     },
   });
 
   const editMutation = trpc.edit.create.editFields.useMutation({
     onSuccess: (editedDataset) => {
-      setDataset({ ...dataset, subjectArea: editedDataset.subjectArea });
-      stopEditingField("subjectArea");
+      setDataset({ ...dataset, instanceCount: editedDataset.instanceCount });
+      stopEditingField("instanceCount");
     },
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Error editing dataset subject area",
+        title: "Error editing dataset instance count",
         description: error.message,
       });
     },
@@ -59,7 +57,7 @@ export function DatasetSubjectAreaDialog() {
     editMutation.mutate({
       datasetId: dataset.id,
       editFields: {
-        subjectArea: values.subjectArea,
+        instanceCount: values.instanceCount,
       },
     });
   }
@@ -68,11 +66,11 @@ export function DatasetSubjectAreaDialog() {
 
   return (
     <>
-      <DatasetEditFieldButton field="subjectArea" />
+      <DatasetEditFieldButton field="instanceCount" />
       <Dialog
-        open={editingFields["subjectArea"]}
+        open={editingFields["instanceCount"]}
         onOpenChange={(open) => {
-          if (!open) stopEditingField("subjectArea");
+          if (!open) stopEditingField("instanceCount");
         }}
       >
         <DialogContent>
@@ -80,34 +78,14 @@ export function DatasetSubjectAreaDialog() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="subjectArea"
+                name="instanceCount"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
                     <FormLabel>
-                      <DialogTitle>Edit dataset subject area</DialogTitle>
+                      <DialogTitle>Edit dataset instance count</DialogTitle>
                     </FormLabel>
                     <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col"
-                      >
-                        {enumToArray(Enums.DatasetSubjectArea).map(
-                          (subjectArea) => (
-                            <FormItem
-                              key={subjectArea}
-                              className="flex items-center space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <RadioGroupItem value={subjectArea} />
-                              </FormControl>
-                              <FormLabel className="cursor-pointer text-lg font-normal">
-                                {formatEnum(subjectArea)}
-                              </FormLabel>
-                            </FormItem>
-                          ),
-                        )}
-                      </RadioGroup>
+                      <Input type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -123,7 +101,7 @@ export function DatasetSubjectAreaDialog() {
                 <Button
                   type="submit"
                   variant="gold"
-                  disabled={pending || !form.watch("subjectArea")}
+                  disabled={pending || !form.watch("instanceCount")}
                 >
                   {pending && <Spinner />} Submit
                 </Button>

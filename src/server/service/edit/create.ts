@@ -12,6 +12,7 @@ export const datasetEditFields = z
     title: z.string(),
     description: z.string(),
     subjectArea: z.enum(enumToArray(Enums.DatasetSubjectArea)),
+    instanceCount: z.number().int().nonnegative(),
   })
   .partial();
 

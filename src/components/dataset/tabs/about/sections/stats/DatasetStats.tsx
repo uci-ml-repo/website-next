@@ -1,6 +1,7 @@
 "use client";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
+import { DatasetInstanceCountDialog } from "@/components/dataset/tabs/about/sections/stats/DatasetInstanceCountDialog";
 import { DatasetSubjectAreaDialog } from "@/components/dataset/tabs/about/sections/stats/DatasetSubjectAreaDialog";
 import { formatEnum } from "@/lib/utils";
 
@@ -22,7 +23,7 @@ export function DatasetStats() {
     {
       name: "Instances",
       value: dataset.instanceCount,
-      edit: <div />,
+      edit: <DatasetInstanceCountDialog />,
     },
     {
       name: "Features",

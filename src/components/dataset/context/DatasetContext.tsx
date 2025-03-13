@@ -18,8 +18,8 @@ export type DatasetField =
   | "title"
   | "description"
   | "subjectArea"
-  | "instances"
-  | "features"
+  | "instanceCount"
+  | "featureCount"
   | "dataTypes"
   | "tasks"
   | "featureTypes"
@@ -38,8 +38,8 @@ const initialEditingState: EditingState = {
   title: false,
   description: false,
   subjectArea: false,
-  instances: false,
-  features: false,
+  instanceCount: false,
+  featureCount: false,
   dataTypes: false,
   tasks: false,
   featureTypes: false,
