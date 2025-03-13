@@ -49,7 +49,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="mt-12 flex justify-center bg-uci-blue py-8 text-primary-foreground dark:bg-uci-blue/40">
+    <footer className="flex justify-center bg-uci-blue py-8 text-primary-foreground dark:bg-uci-blue/40">
       <div className="content-x w-full">
         <div className="grid grid-flow-row gap-10 max-sm:justify-center sm:grid-flow-col">
           <div>
