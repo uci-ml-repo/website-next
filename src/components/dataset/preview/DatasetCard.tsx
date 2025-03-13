@@ -109,7 +109,6 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
             alt={`${dataset.title} thumbnail`}
             width={350}
             height={100}
-            loading="eager"
             placeholder={placeholder as PlaceholderValue}
             className={cn(
               "h-24 w-full rounded-t-2xl object-cover object-center",

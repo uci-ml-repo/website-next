@@ -93,13 +93,14 @@ export function DatasetSearch() {
                 )}
               </div>
               <ScrollGradient
-                containerClassName="flex min-h-0 flex-1 "
-                className="min-h-0 flex-1 overflow-y-auto"
+                containerClassName="flex min-h-0 flex-1"
+                className="min-h-0 flex-1 divide-y overflow-y-auto"
                 orientation="vertical"
               >
                 {data.datasets.map((dataset) => (
                   <DatasetRow hoverCard dataset={dataset} key={dataset.id} />
                 ))}
+                <hr />
               </ScrollGradient>
             </div>
             <SmartPagination

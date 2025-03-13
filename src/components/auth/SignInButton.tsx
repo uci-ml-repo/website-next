@@ -32,12 +32,12 @@ export function SignInButton(props: SignInButtonProps) {
     return null;
   }
 
-  const callbackUrl = `${pathname || ""}${searchParams.toString() ? `?${searchParams.toString()}` : ""}${hash}`;
+  const redirectUrl = `${pathname || ""}${searchParams.toString() ? `?${searchParams.toString()}` : ""}${hash}`;
 
   return (
     <Button variant="outline" asChild {...props}>
       <a
-        href={`${SIGN_IN_ROUTE}?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+        href={`${SIGN_IN_ROUTE}?redirectUrl=${encodeURIComponent(redirectUrl)}`}
       >
         <LogInIcon className="size-6" />
         <p>Sign In</p>

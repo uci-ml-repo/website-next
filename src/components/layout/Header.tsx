@@ -3,6 +3,7 @@
 import { LayoutDashboardIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { SignInButton } from "@/components/auth/SignInButton";
@@ -21,9 +22,13 @@ import { Enums } from "@/db/lib/enums";
 import { ADMIN_ROUTE, PROFILE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-export function Header({ session }: { session: Session | null }) {
+export function Header({ initialSession }: { initialSession: Session | null }) {
   const isMobile = useIsMobile();
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  const { data: _session } = useSession();
+
+  const session = _session ?? initialSession;
 
   useEffect(() => {
     const handleScroll = () => {

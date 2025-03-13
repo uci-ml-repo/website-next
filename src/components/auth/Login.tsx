@@ -1,10 +1,10 @@
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 import type { useForm } from "react-hook-form";
 
-import { credentialsLogin, providerLogin } from "@/actions/auth.actions";
 import { AuthButton } from "@/components/auth/AuthButton";
 import type { LoginFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { TextDivider } from "@/components/ui/text-divider";
 import { FORGOT_PASSWORD_ROUTE } from "@/lib/routes";
+import { trpc } from "@/server/trpc/query/client";
 
 interface LoginProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
@@ -30,19 +31,32 @@ interface LoginProps {
 
 export function Login({ setTab, redirectTo, form }: LoginProps) {
   const router = useRouter();
-
   const [error, setError] = useState<string>();
-  const [isPending, startTransition] = useTransition();
 
-  function onSubmit(values: LoginFormSchema) {
-    setError(undefined);
-    startTransition(async () => {
-      const res = await credentialsLogin(values);
-      if (res.success) {
-        router.replace(redirectTo);
-      } else {
-        setError(res.message ?? "An unknown error occurred");
-      }
+  const credentialsLoginMutations =
+    trpc.user.credentials.credentialsLogin.useMutation({
+      onMutate: () => setError(undefined),
+      onError: (error) => setError(error.message),
+    });
+
+  async function credentialsLogin(values: LoginFormSchema) {
+    credentialsLoginMutations.mutate(values, {
+      onSuccess: async (result) => {
+        if (result.success) {
+          const response = await signIn("credentials", {
+            redirect: false,
+            email: values.email,
+            password: values.password,
+          });
+          if (response?.ok) {
+            router.replace(redirectTo);
+          } else {
+            setError("Sign in failed. Please try again.");
+          }
+        } else {
+          setError(result.message ?? "An unknown error occurred");
+        }
+      },
     });
   }
 
@@ -57,7 +71,10 @@ export function Login({ setTab, redirectTo, form }: LoginProps) {
             </div>
           </Alert>
         )}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(credentialsLogin)}
+          className="space-y-4"
+        >
           <div className="space-y-2">
             <FormField
               control={form.control}
@@ -98,25 +115,30 @@ export function Login({ setTab, redirectTo, form }: LoginProps) {
             icon={<MailIcon />}
             label="Sign in with Email"
             type="submit"
-            isPending={isPending}
+            isPending={credentialsLoginMutations.isPending}
           />
         </form>
       </Form>
-
       <TextDivider text="OR" />
       <AuthButton
         icon={<GoogleIcon />}
         label="Sign in with Google"
-        onClick={async () => {
-          await providerLogin({ provider: "google", redirectTo });
-        }}
+        onClick={() =>
+          signIn("google", {
+            redirect: true,
+            redirectTo,
+          })
+        }
       />
       <AuthButton
         icon={<GithubIcon />}
         label="Sign in with Github"
-        onClick={async () => {
-          await providerLogin({ provider: "github", redirectTo });
-        }}
+        onClick={() =>
+          signIn("github", {
+            redirect: true,
+            redirectTo,
+          })
+        }
       />
       <div className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Don't have an account?</span>

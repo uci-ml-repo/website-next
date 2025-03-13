@@ -1,10 +1,10 @@
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 import type { useForm } from "react-hook-form";
 
-import { credentialsRegister, providerLogin } from "@/actions/auth.actions";
 import { AuthButton } from "@/components/auth/AuthButton";
 import type { RegisterFormSchema, Tab } from "@/components/auth/LoginRegister";
 import { GithubIcon, GoogleIcon } from "@/components/icons";
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { TextDivider } from "@/components/ui/text-divider";
 import { cn } from "@/lib/utils";
+import { trpc } from "@/server/trpc/query/client";
 
 interface RegisterProps {
   setTab: React.Dispatch<React.SetStateAction<Tab>>;
@@ -38,19 +39,32 @@ export function Register({
   setEmailFormIsOpen,
 }: RegisterProps) {
   const router = useRouter();
-
   const [error, setError] = useState<string>();
-  const [isPending, startTransition] = useTransition();
 
-  function onSubmit(values: RegisterFormSchema) {
-    setError(undefined);
-    startTransition(async () => {
-      const res = await credentialsRegister(values);
-      if (res.success) {
-        router.replace(redirectTo);
-      } else {
-        setError(res.message ?? "An unknown error occurred");
-      }
+  const credentialsRegisterMutation =
+    trpc.user.credentials.credentialsRegister.useMutation({
+      onMutate: () => setError(undefined),
+      onError: (error) => setError(error.message),
+    });
+
+  async function onSubmit(values: RegisterFormSchema) {
+    credentialsRegisterMutation.mutate(values, {
+      onSuccess: async (result) => {
+        if (result.success) {
+          const response = await signIn("credentials", {
+            redirect: false,
+            email: values.email,
+            password: values.password,
+          });
+          if (response?.ok) {
+            router.replace(redirectTo);
+          } else {
+            setError("Sign in failed after registration");
+          }
+        } else {
+          setError(result.message ?? "An unknown error occurred");
+        }
+      },
     });
   }
 
@@ -130,7 +144,7 @@ export function Register({
                 icon={<MailIcon />}
                 label="Register with Email"
                 type="submit"
-                isPending={isPending}
+                isPending={credentialsRegisterMutation.isPending}
               />
             </form>
           </Form>
@@ -140,7 +154,7 @@ export function Register({
         <AuthButton
           icon={<MailIcon />}
           label="Register with Email"
-          isPending={isPending}
+          isPending={credentialsRegisterMutation.isPending}
           onClick={() => setEmailFormIsOpen(true)}
         />
       )}
@@ -148,16 +162,12 @@ export function Register({
       <AuthButton
         icon={<GoogleIcon />}
         label="Register with Google"
-        onClick={async () => {
-          await providerLogin({ provider: "google", redirectTo });
-        }}
+        onClick={() => signIn("google", { redirect: true, redirectTo })}
       />
       <AuthButton
         icon={<GithubIcon />}
         label="Register with Github"
-        onClick={async () => {
-          await providerLogin({ provider: "github", redirectTo });
-        }}
+        onClick={() => signIn("github", { redirect: true, redirectTo })}
       />
       <p className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Have an account?</span>

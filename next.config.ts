@@ -19,9 +19,6 @@ const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
     authInterrupts: true,
-    serverActions: {
-      allowedOrigins: ["archive.ics.uci.edu"],
-    },
   },
   // webpack(webpackConfig) {
   //   return {

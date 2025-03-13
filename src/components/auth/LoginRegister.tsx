@@ -62,8 +62,8 @@ export function LoginRegister() {
 
   const searchParams = useSearchParams();
 
-  const callbackUrl = searchParams.get("callbackUrl")?.replace(/ /, "+");
-  const redirectTo = callbackUrl ? getFullURLPath(callbackUrl) : HOME_ROUTE;
+  const redirectUrl = searchParams.get("redirectUrl")?.replace(/ /, "+");
+  const redirectTo = redirectUrl ? getFullURLPath(redirectUrl) : HOME_ROUTE;
 
   const onTabChange = (tab: string) => {
     setTab(tab as Tab);

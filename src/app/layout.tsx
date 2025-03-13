@@ -83,7 +83,7 @@ export default async function Layout({
                   )}
                 >
                   <div className="flex min-h-[100svh] flex-grow flex-col">
-                    <Header session={session} />
+                    <Header initialSession={session} />
                     {children}
                   </div>
                   <Footer />
