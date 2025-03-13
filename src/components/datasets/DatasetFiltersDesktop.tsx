@@ -20,9 +20,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-export function DatasetFiltersDesktop() {
+export function DatasetFiltersDesktop({ className }: { className: string }) {
   const [tooltipsOpen, setTooltipsOpen] = useState<boolean>(false);
   const { filters } = useQueryFilters<DatasetQuery>();
   const [openStates, setOpenStates] = useState<boolean[]>([
@@ -40,7 +41,7 @@ export function DatasetFiltersDesktop() {
   const isAnyOpen = openStates.some((state) => state);
 
   return (
-    <div className="mt-6 space-y-2">
+    <div className={cn("space-y-2", className)}>
       <div className="mr-3 flex items-center justify-between space-x-2 text-lg text-muted-foreground">
         <div className="flex items-center space-x-2">
           <span>Filters</span>

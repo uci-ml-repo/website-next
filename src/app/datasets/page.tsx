@@ -11,10 +11,8 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Main>
-      <div className="backdrop-gradient-blur">
-        <DatasetSearch />
-      </div>
+    <Main className="backdrop-gradient-blur">
+      <DatasetSearch />
     </Main>
   );
 }

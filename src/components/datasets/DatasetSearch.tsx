@@ -49,9 +49,7 @@ export function DatasetSearch() {
 
   return (
     <div className="flex w-full">
-      <div className="mr-4 w-60 max-lg:hidden xl:w-72">
-        <DatasetFiltersDesktop />
-      </div>
+      <DatasetFiltersDesktop className="mr-4 mt-6 w-60 shrink-0 max-lg:hidden xl:w-72" />
       <div className="flex flex-1 flex-col p-1">
         <h1 className="text-2xl font-bold max-lg:pb-2">Browse datasets</h1>
         <div className="space-y-4">

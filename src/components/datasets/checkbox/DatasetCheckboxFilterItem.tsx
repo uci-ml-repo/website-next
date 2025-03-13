@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatEnum } from "@/lib/utils";
@@ -19,10 +19,15 @@ export function DatasetCheckboxFilterItem<T extends string>({
   formatText = true,
 }: DatasetFilterCheckboxItemProps<T>) {
   const text = formatText ? formatEnum(value) : value;
+
+  const onClick = useCallback(() => {
+    toggle(!checked, value);
+  }, [toggle, checked, value]);
+
   return (
     <div
       className="flex w-full cursor-pointer items-center justify-between space-x-1 py-1"
-      onClick={() => toggle(!checked, value)}
+      onClick={onClick}
     >
       <div>{text}</div>
       <Checkbox

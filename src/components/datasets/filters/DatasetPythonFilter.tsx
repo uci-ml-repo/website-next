@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { DatasetCheckboxFilterItem } from "@/components/datasets/checkbox/DatasetCheckboxFilterItem";
 import { DatasetFilterItem } from "@/components/datasets/DatasetFilterItem";
 import type { DatasetFilterProps } from "@/components/datasets/DatasetFiltersContent";
@@ -11,6 +13,16 @@ export function DatasetPythonFilter({
 }: DatasetFilterProps) {
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
+  const clearFilter = useCallback(
+    () => setFilters({ python: undefined }),
+    [setFilters],
+  );
+
+  const setFilter = useCallback(
+    (checked: boolean) => setFilters({ python: checked, cursor: undefined }),
+    [setFilters],
+  );
+
   return (
     <DatasetFilterItem
       label="Python Available"
@@ -19,10 +31,10 @@ export function DatasetPythonFilter({
       dropdownOpen={dropdownOpen}
       onDropdownOpenChange={onDropdownOpenChange}
       active={filters.python}
-      clearFilter={() => setFilters({ python: undefined })}
+      clearFilter={clearFilter}
     >
       <DatasetCheckboxFilterItem
-        toggle={(checked) => setFilters({ python: checked, cursor: undefined })}
+        toggle={setFilter}
         value="Available for Python import"
         formatText={false}
         checked={!!filters.python}
