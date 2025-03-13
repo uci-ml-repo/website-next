@@ -5,6 +5,7 @@ import {
   MicroscopeIcon,
   Rows3Icon,
 } from "lucide-react";
+import type { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,7 +37,6 @@ interface DatasetCardProps {
   dataset: DatasetPreviewResponse;
   ref?: React.Ref<HTMLDivElement>;
   className?: string;
-  priority?: boolean;
 }
 
 type DatasetStat = {
@@ -45,12 +45,28 @@ type DatasetStat = {
   tooltip?: string;
 };
 
-export function DatasetCard({
-  dataset,
-  ref,
-  className,
-  priority,
-}: DatasetCardProps) {
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#DDD" offset="20%" />
+      <stop stop-color="#CCC" offset="50%" />
+      <stop stop-color="#DDD" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#DDD" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
+
+const placeholder = `data:image/svg+xml;base64,${toBase64(shimmer(350, 100))}`;
+
+export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
   const thumbnail = DATASET_API_THUMBNAIL_ROUTE(dataset);
   const href = DATASET_ROUTE(dataset);
 
@@ -87,14 +103,18 @@ export function DatasetCard({
         className={cn("group flex h-[355px] flex-col", className)}
         ref={ref}
       >
-        <CardHeader className="p-0">
+        <CardHeader className="relative p-0">
           <Image
             src={thumbnail}
             alt={`${dataset.title} thumbnail`}
             width={350}
             height={100}
-            priority={priority}
-            className="h-24 w-full rounded-t-2xl object-cover object-center dark:brightness-90"
+            loading="eager"
+            placeholder={placeholder as PlaceholderValue}
+            className={cn(
+              "h-24 w-full rounded-t-2xl object-cover object-center",
+              "transition-opacity duration-500 dark:brightness-90",
+            )}
           />
         </CardHeader>
         <CardContent className="flex flex-1 flex-col space-y-2">

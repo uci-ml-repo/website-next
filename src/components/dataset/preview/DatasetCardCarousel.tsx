@@ -66,13 +66,9 @@ export function DatasetCardCarousel({
           setApi={setApi}
         >
           <CarouselContent gutter>
-            {datasets.map((dataset, index) => (
+            {datasets.map((dataset) => (
               <CarouselItem key={dataset.id} className={cardBreakpoints}>
-                <DatasetCard
-                  dataset={dataset}
-                  className="select-none"
-                  priority={index < 5}
-                />
+                <DatasetCard dataset={dataset} className="select-none" />
               </CarouselItem>
             ))}
             {seeAllHref && (
