@@ -1,5 +1,3 @@
-import * as process from "node:process";
-
 import { OAuth2Client } from "google-auth-library";
 import type { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
@@ -8,6 +6,7 @@ import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import { env } from "@/env";
 import { EmailTemplateService } from "@/server/service/email/templates";
 import { ServiceError } from "@/server/service/errors";
 
@@ -26,13 +25,13 @@ export class EmailService {
 
   constructor(readonly template = new EmailTemplateService()) {
     this.oauth = new OAuth2Client({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
       redirectUri: "https://developers.google.com/oauthplayground",
     });
 
     this.oauth.setCredentials({
-      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+      refresh_token: env.GOOGLE_REFRESH_TOKEN,
     });
 
     this.transporter = createTransport({
@@ -41,10 +40,10 @@ export class EmailService {
       secure: true,
       auth: {
         type: "OAuth2",
-        user: process.env.GOOGLE_EMAIL,
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+        user: env.GOOGLE_EMAIL,
+        clientId: env.GOOGLE_CLIENT_ID,
+        clientSecret: env.GOOGLE_CLIENT_SECRET,
+        refreshToken: env.GOOGLE_REFRESH_TOKEN,
       },
     });
 
@@ -86,7 +85,7 @@ export class EmailService {
     const { html, text } = await this.template.registration(name);
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Successfully Registered - UCI Machine Learning Repository",
       html,
@@ -109,7 +108,7 @@ export class EmailService {
     });
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Password Reset - UCI Machine Learning Repository",
       html,
@@ -132,7 +131,7 @@ export class EmailService {
     });
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Password Reset - UCI Machine Learning Repository",
       html,
@@ -150,7 +149,7 @@ export class EmailService {
     const { html, text } = await this.template.resetPasswordSuccess({ name });
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Password Reset - UCI Machine Learning Repository",
       html,
@@ -173,7 +172,7 @@ export class EmailService {
     });
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Verify Email - UCI Machine Learning Repository",
       html,
@@ -191,7 +190,7 @@ export class EmailService {
     const { html, text } = await this.template.accountDeletion({ name });
 
     await this.sendEmail({
-      from: process.env.GOOGLE_EMAIL,
+      from: env.GOOGLE_EMAIL,
       to: email,
       subject: "Account Deletion - UCI Machine Learning Repository",
       html,

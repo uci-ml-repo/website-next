@@ -2,6 +2,8 @@ import fg from "fast-glob";
 import fs from "fs-extra";
 import path from "path";
 
+import { env } from "@/env";
+
 type DirectoryEntityType = "directory" | "file" | null;
 
 export interface Entry {
@@ -10,15 +12,9 @@ export interface Entry {
 }
 
 function nodeToDirectoryEntity(node: fs.Dirent, absolutePath: string): Entry {
-  if (!process.env.STATIC_FILES_DIRECTORY) {
-    throw new Error("STATIC_FILES_DIRECTORY is not set");
-  }
-
   return {
     path: path.join(
-      absolutePath.slice(
-        fs.realpathSync(process.env.STATIC_FILES_DIRECTORY).length,
-      ),
+      absolutePath.slice(fs.realpathSync(env.STATIC_FILES_DIRECTORY).length),
       node.name,
     ),
     type: node.isDirectory() ? "directory" : node.isFile() ? "file" : null,
@@ -52,10 +48,6 @@ export namespace fileFindService {
     absolutePath: string,
     search: string,
   ): Promise<Entry[]> {
-    if (!process.env.STATIC_FILES_DIRECTORY) {
-      throw new Error("STATIC_FILES_DIRECTORY is not set");
-    }
-
     const filePaths = await fg(`${absolutePath}/**/*${search}*`, {
       caseSensitiveMatch: false,
       dot: true,
@@ -66,7 +58,7 @@ export namespace fileFindService {
       const stat = await fs.stat(filePath);
       directoryEntities.push({
         path: filePath.slice(
-          fs.realpathSync(process.env.STATIC_FILES_DIRECTORY).length,
+          fs.realpathSync(env.STATIC_FILES_DIRECTORY).length,
         ),
         type: stat.isDirectory() ? "directory" : stat.isFile() ? "file" : null,
       });

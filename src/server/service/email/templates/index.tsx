@@ -1,6 +1,7 @@
 import { render } from "@react-email/render";
 import path from "path";
 
+import { env } from "@/env";
 import { RESET_PASSWORD_ROUTE, VERIFY_EMAIL_ROUTE } from "@/lib/routes";
 import {
   AccountDeletion,
@@ -36,15 +37,7 @@ export class EmailTemplateService {
   }
 
   async resetPassword({ name, token }: { name: string; token: string }) {
-    if (!process.env.ORIGIN) {
-      throw new Error("ORIGIN is not set");
-    }
-
-    const resetLink = path.join(
-      process.env.ORIGIN,
-      RESET_PASSWORD_ROUTE,
-      token,
-    );
+    const resetLink = path.join(env.ORIGIN, RESET_PASSWORD_ROUTE, token);
 
     return {
       html: await render(<ResetPassword name={name} resetLink={resetLink} />),
@@ -68,15 +61,11 @@ export class EmailTemplateService {
   }
 
   async verificationEmail({ name, token }: { name: string; token: string }) {
-    if (!process.env.ORIGIN) {
+    if (!env.ORIGIN) {
       throw new Error("ORIGIN is not set");
     }
 
-    const verificationLink = path.join(
-      process.env.ORIGIN,
-      VERIFY_EMAIL_ROUTE,
-      token,
-    );
+    const verificationLink = path.join(env.ORIGIN, VERIFY_EMAIL_ROUTE, token);
 
     return {
       html: await render(

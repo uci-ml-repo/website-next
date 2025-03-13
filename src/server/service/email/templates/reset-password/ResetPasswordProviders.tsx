@@ -1,7 +1,6 @@
-import * as process from "node:process";
-
 import path from "path";
 
+import { env } from "@/env";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
@@ -12,10 +11,6 @@ export function ResetPasswordProviders({
   name: string;
   providers: string[];
 }) {
-  if (!process.env.ORIGIN) {
-    throw new Error("ORIGIN is not set");
-  }
-
   return (
     <EmailLayout>
       <p>Hello {name},</p>
@@ -31,7 +26,7 @@ export function ResetPasswordProviders({
       <p>
         To access you account, try{" "}
         <a
-          href={path.join(process.env.ORIGIN, SIGN_IN_ROUTE)}
+          href={path.join(env.ORIGIN, SIGN_IN_ROUTE)}
           className="text-blue-500 hover:underline"
         >
           logging in

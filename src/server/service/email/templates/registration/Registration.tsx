@@ -1,13 +1,10 @@
 import path from "path";
 
+import { env } from "@/env";
 import { PROFILE_SETTINGS_ROUTE } from "@/lib/routes";
 import { EmailLayout } from "@/server/service/email/templates/EmailLayout";
 
 export function Registration({ name }: { name: string }) {
-  if (!process.env.ORIGIN) {
-    throw new Error("ORIGIN is not set");
-  }
-
   return (
     <EmailLayout>
       <p>Hello {name},</p>
@@ -18,7 +15,7 @@ export function Registration({ name }: { name: string }) {
       <p>
         You can access your account by visiting{" "}
         <a
-          href={path.join(process.env.ORIGIN, PROFILE_SETTINGS_ROUTE)}
+          href={path.join(env.ORIGIN, PROFILE_SETTINGS_ROUTE)}
           className="text-blue-500 hover:underline"
         >
           your profile

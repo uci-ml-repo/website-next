@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { dataset } from "@/db/schema";
+import { env } from "@/env";
 import {
   DATASET_FILES_THUMBNAIL_PATH,
   DATASET_FILES_THUMBNAIL_PENDING_PATH,
@@ -25,7 +26,7 @@ export async function GET(
 ) {
   return auth(async (req, { params }) => {
     try {
-      if (!process.env.STATIC_FILES_DIRECTORY) {
+      if (!env.STATIC_FILES_DIRECTORY) {
         return NextResponse.json(
           { error: "Storage path is not defined" },
           { status: 500 },
@@ -82,13 +83,6 @@ export async function PUT(
 ) {
   return auth(async (req, { params }) => {
     try {
-      if (!process.env.STATIC_FILES_DIRECTORY) {
-        return NextResponse.json(
-          { error: "Storage path is not defined" },
-          { status: 500 },
-        );
-      }
-
       if (!params) {
         return NextResponse.json({ error: "Bad request" }, { status: 400 });
       }
@@ -109,7 +103,7 @@ export async function PUT(
       }
 
       const datasetRegex = RegExp(
-        String.raw`^${process.env.STATIC_FILES_DIRECTORY}\/(private|public)\/(?<datasetId>\d+)`,
+        String.raw`^${env.STATIC_FILES_DIRECTORY}\/(private|public)\/(?<datasetId>\d+)`,
       );
       const isDatasetPath = datasetRegex.test(filePath);
 

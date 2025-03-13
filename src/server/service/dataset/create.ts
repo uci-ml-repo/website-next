@@ -41,10 +41,6 @@ export namespace datasetCreateService {
     userId: string;
   }) {
     const createdDataset = await db.transaction(async (tx) => {
-      if (!process.env.STATIC_FILES_DIRECTORY) {
-        throw new Error("Storage path is not defined");
-      }
-
       const slug = await getSlug(title);
 
       const [createdDataset] = await tx

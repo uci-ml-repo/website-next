@@ -1,5 +1,6 @@
 import { Enums } from "@/db/lib/enums";
 import type { DatasetApprovedSelect } from "@/db/lib/types";
+import { env } from "@/env";
 import { DATASET_API_PYTHON_DATA_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 
 export type IntroPaperMetadata = {
@@ -57,8 +58,8 @@ export function datasetToPythonMetadata(
   return {
     uci_id: dataset.id,
     name: dataset.title,
-    repository_url: process.env.ORIGIN + DATASET_ROUTE(dataset),
-    data_url: process.env.ORIGIN + DATASET_API_PYTHON_DATA_ROUTE(dataset),
+    repository_url: env.ORIGIN + DATASET_ROUTE(dataset),
+    data_url: env.ORIGIN + DATASET_API_PYTHON_DATA_ROUTE(dataset),
     abstract: dataset.description,
     area: dataset.subjectArea,
     tasks: dataset.tasks,

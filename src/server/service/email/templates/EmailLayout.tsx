@@ -1,15 +1,10 @@
-import * as process from "node:process";
-
 import { Img, Tailwind } from "@react-email/components";
 import path from "path";
 
+import { env } from "@/env";
 import { ABOUT_ROUTE, CONTACT_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 
 export function EmailLayout({ children }: { children: React.ReactNode }) {
-  if (!process.env.ORIGIN) {
-    throw new Error("ORIGIN is not set");
-  }
-
   return (
     <Tailwind
       config={{
@@ -19,12 +14,12 @@ export function EmailLayout({ children }: { children: React.ReactNode }) {
       <body className="mx-auto max-w-4xl">
         <header className="bg-gray-300 p-4">
           <Img
-            src={path.join(process.env.ORIGIN, "img", "logo.png")}
+            src={path.join(env.ORIGIN, "img", "logo.png")}
             alt="UCI Machine Learning Repository"
             className="h-20 w-auto dark:hidden"
           />
           <Img
-            src={path.join(process.env.ORIGIN, "img", "logo-dark.png")}
+            src={path.join(env.ORIGIN, "img", "logo-dark.png")}
             alt="UCI Machine Learning Repository"
             className="hidden h-20 w-auto dark:block"
           />
@@ -42,21 +37,21 @@ export function EmailLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <a
-                href={path.join(process.env.ORIGIN, ABOUT_ROUTE)}
+                href={path.join(env.ORIGIN, ABOUT_ROUTE)}
                 className="text-white"
               >
                 About
               </a>
               <span className="text-white"> | </span>
               <a
-                href={path.join(process.env.ORIGIN, CONTACT_ROUTE)}
+                href={path.join(env.ORIGIN, CONTACT_ROUTE)}
                 className="text-white"
               >
                 Contact
               </a>
               <span className="text-white"> | </span>
               <a
-                href={path.join(process.env.ORIGIN, PRIVACY_POLICY_ROUTE)}
+                href={path.join(env.ORIGIN, PRIVACY_POLICY_ROUTE)}
                 className="text-white"
               >
                 Privacy

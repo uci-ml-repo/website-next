@@ -9,6 +9,7 @@ import authConfig from "@/auth.config";
 import { db } from "@/db";
 import type { UserRole } from "@/db/lib/enums";
 import { account, session, user } from "@/db/schema";
+import { env } from "@/env";
 import { SIGN_IN_ROUTE } from "@/lib/routes";
 import { service } from "@/server/service";
 
@@ -121,7 +122,7 @@ export const authOptions = NextAuth({
   pages: {
     signIn: SIGN_IN_ROUTE,
   },
-  secret: process.env.AUTH_SECRET,
+  secret: env.AUTH_SECRET,
 });
 
 export const { handlers, auth, signIn, signOut } = authOptions;

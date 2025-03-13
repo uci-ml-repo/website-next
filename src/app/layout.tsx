@@ -1,7 +1,5 @@
 import "@/app/globals.css";
 
-import * as process from "node:process";
-
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
@@ -17,12 +15,9 @@ import { Header } from "@/components/layout/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { env } from "@/env";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/server/trpc/query/client";
-
-if (!process.env.ORIGIN) {
-  throw new Error("ORIGIN is not set");
-}
 
 const inter = Inter({ subsets: ["latin"], fallback: ["sans-serif"] });
 
@@ -33,7 +28,7 @@ export const metadata: Metadata = {
   },
   description:
     "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
-  metadataBase: new URL(process.env.ORIGIN),
+  metadataBase: new URL(env.ORIGIN),
   openGraph: {
     images: [
       {
@@ -64,14 +59,6 @@ export default async function Layout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* TODO REMOVE */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script
-          crossOrigin="anonymous"
-          src="//unpkg.com/react-scan/dist/auto.global.js"
-        />
-      </head>
       <SessionProvider>
         <TRPCProvider>
           <body className={cn(inter.className)}>
