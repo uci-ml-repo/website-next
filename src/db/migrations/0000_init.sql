@@ -1,6 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
---> statement-breakpoint
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
 
 --> statement-breakpoint
@@ -138,14 +137,19 @@ CREATE TABLE "dataset" (
       AND "dataset"."download_count" IS NULL
     )
   ),
-  CONSTRAINT "accepted_check" CHECK (
-    "dataset"."status" = 'draft'
-    OR (
-      "dataset"."year_created" IS NOT NULL
-      AND "dataset"."doi" IS NOT NULL
-      AND "dataset"."instance_count" IS NOT NULL
-      AND "dataset"."description" IS NOT NULL
-      AND "dataset"."subject_area" IS NOT NULL
+  CONSTRAINT "approved_check" CHECK (
+    (
+      "dataset"."status" = 'draft'
+      OR (
+        "dataset"."year_created" IS NOT NULL
+        AND "dataset"."instance_count" IS NOT NULL
+        AND "dataset"."description" IS NOT NULL
+        AND "dataset"."subject_area" IS NOT NULL
+      )
+    )
+    AND (
+      "dataset"."status" != 'approved'
+      OR "dataset"."doi" IS NOT NULL
     )
   ),
   CONSTRAINT "files_check" CHECK (

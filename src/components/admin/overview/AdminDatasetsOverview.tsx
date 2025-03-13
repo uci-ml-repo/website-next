@@ -12,6 +12,7 @@ import { caller } from "@/server/trpc/query/server";
 export async function AdminDatasetsOverview() {
   const datasetsQuery = await caller.dataset.find.privilegedByQuery({
     status: [Enums.ApprovalStatus.PENDING],
+    limit: 4,
   });
 
   const datasetsCount = datasetsQuery.count;

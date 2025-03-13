@@ -130,15 +130,20 @@ export const dataset = pgTable(
       `,
     ),
     check(
-      "accepted_check",
+      "approved_check",
       sql`
-        ${t.status} = 'draft'
-        OR (
-          ${t.yearCreated} IS NOT NULL
-          AND ${t.doi} IS NOT NULL
-          AND ${t.instanceCount} IS NOT NULL
-          AND ${t.description} IS NOT NULL
-          AND ${t.subjectArea} IS NOT NULL
+        (
+          ${t.status} = 'draft'
+          OR (
+            ${t.yearCreated} IS NOT NULL
+            AND ${t.instanceCount} IS NOT NULL
+            AND ${t.description} IS NOT NULL
+            AND ${t.subjectArea} IS NOT NULL
+          )
+        )
+        AND (
+          ${t.status} != 'approved'
+          OR ${t.doi} IS NOT NULL
         )
       `,
     ),
