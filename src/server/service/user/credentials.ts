@@ -7,8 +7,8 @@ import { formatEnum, generateToken } from "@/lib/utils";
 import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
 
-export class UserCredentialsService {
-  async sendResetPasswordEmail({ email }: { email: string }) {
+export namespace userCredentialsService {
+  export async function sendResetPasswordEmail({ email }: { email: string }) {
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),
     });
@@ -27,9 +27,7 @@ export class UserCredentialsService {
       });
     } else {
       const token = generateToken();
-
       const hashedToken = await bcryptjs.hash(token, 10);
-
       const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
       const [createdToken] = await db
@@ -51,7 +49,7 @@ export class UserCredentialsService {
     }
   }
 
-  async sendVerificationEmail({
+  export async function sendVerificationEmail({
     userId,
     email,
     name,
@@ -79,7 +77,6 @@ export class UserCredentialsService {
     }
 
     const token = generateToken();
-
     const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
     const [createdVerificationToken] = await db
@@ -100,90 +97,65 @@ export class UserCredentialsService {
     });
   }
 
-  async getEmailVerificationToken(tokenString: string) {
-    const id = tokenString.split(":")[0];
-    const token = tokenString.split(":")[1];
+  export async function getEmailVerificationToken(tokenString: string) {
+    const [id, token] = tokenString.split(":");
 
     if (!id || !token) {
-      return {
-        success: false,
-        message: "Invalid verification token",
-      };
+      return { success: false, message: "Invalid verification token" };
     }
 
     const existingVerificationToken =
       await db.query.emailVerificationToken.findFirst({
         where: eq(emailVerificationToken.id, id),
-        with: {
-          user: true,
-        },
+        with: { user: true },
       });
 
     if (!existingVerificationToken) {
-      return {
-        success: false,
-        message: "Invalid verification token",
-      };
+      return { success: false, message: "Invalid verification token" };
     }
 
     if (existingVerificationToken.expires < new Date()) {
-      return {
-        success: false,
-        message: "Verification token expired",
-      };
+      return { success: false, message: "Verification token expired" };
     }
 
     return { success: true, verificationToken: existingVerificationToken };
   }
 
-  async getResetPasswordToken(tokenString: string) {
-    const id = tokenString.split(":")[0];
-    const token = tokenString.split(":")[1];
+  export async function getResetPasswordToken(tokenString: string) {
+    const [id, token] = tokenString.split(":");
 
     if (!id || !token) {
-      return {
-        success: false,
-        message: "Invalid reset token",
-      };
+      return { success: false, message: "Invalid reset token" };
     }
 
     const existingPasswordResetToken =
       await db.query.passwordResetToken.findFirst({
         where: eq(passwordResetToken.id, id),
-        with: {
-          user: true,
-        },
+        with: { user: true },
       });
 
     if (
       !existingPasswordResetToken ||
       !bcryptjs.compareSync(token, existingPasswordResetToken.token)
     ) {
-      return {
-        success: false,
-        message: "Invalid reset token",
-      };
+      return { success: false, message: "Invalid reset token" };
     }
 
     if (existingPasswordResetToken.expires < new Date()) {
-      return {
-        success: false,
-        message: "Reset token expired",
-      };
+      return { success: false, message: "Reset token expired" };
     }
 
     return { success: true, resetToken: existingPasswordResetToken };
   }
 
-  async resetPassword({
+  export async function resetPassword({
     token,
     password,
   }: {
     token: string;
     password: string;
   }) {
-    const { success, message, resetToken } =
-      await this.getResetPasswordToken(token);
+    const { success, message, resetToken } = await getResetPasswordToken(token);
 
     if (!success || !resetToken?.user.password) {
       throw new ServiceError({
@@ -218,9 +190,9 @@ export class UserCredentialsService {
     return { success: true };
   }
 
-  async verifyEmail({ token }: { token: string }) {
+  export async function verifyEmail({ token }: { token: string }) {
     const { success, message, verificationToken } =
-      await this.getEmailVerificationToken(token);
+      await getEmailVerificationToken(token);
 
     if (!success || !verificationToken) {
       throw new ServiceError({

@@ -1,13 +1,11 @@
-import { FileBackupService } from "@/server/service/file/backup";
-import { FileFindService } from "@/server/service/file/find";
-import { FileReadService } from "@/server/service/file/read";
-import { FileZipService } from "@/server/service/file/zip";
+import { fileBackupService } from "@/server/service/file/backup";
+import { fileFindService } from "@/server/service/file/find";
+import { fileReadService } from "@/server/service/file/read";
+import { fileZipService } from "@/server/service/file/zip";
 
-export class FileService {
-  constructor(
-    readonly backup = new FileBackupService(),
-    readonly find = new FileFindService(),
-    readonly read = new FileReadService(),
-    readonly zip = new FileZipService(),
-  ) {}
+export namespace fileService {
+  export const backup = fileBackupService;
+  export const find = fileFindService;
+  export const read = fileReadService;
+  export const zip = fileZipService;
 }

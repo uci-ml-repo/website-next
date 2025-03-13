@@ -1,15 +1,13 @@
-import { DiscussionCommentCreateService } from "@/server/service/discussion/comment/create";
-import { DiscussionCommentFindService } from "@/server/service/discussion/comment/find";
-import { DiscussionCommentRemoveService } from "@/server/service/discussion/comment/remove";
-import { DiscussionCommentUpdateService } from "@/server/service/discussion/comment/update";
-import { DiscussionCommentUpvoteService } from "@/server/service/discussion/comment/upvote";
+import { discussionCommentCreateService } from "@/server/service/discussion/comment/create";
+import { discussionCommentFindService } from "@/server/service/discussion/comment/find";
+import { discussionCommentRemoveService } from "@/server/service/discussion/comment/remove";
+import { discussionCommentUpdateService } from "@/server/service/discussion/comment/update";
+import { discussionCommentUpvoteService } from "@/server/service/discussion/comment/upvote";
 
-export class DiscussionCommentService {
-  constructor(
-    readonly create = new DiscussionCommentCreateService(),
-    readonly find = new DiscussionCommentFindService(),
-    readonly remove = new DiscussionCommentRemoveService(),
-    readonly update = new DiscussionCommentUpdateService(),
-    readonly upvote = new DiscussionCommentUpvoteService(),
-  ) {}
+export namespace discussionCommentService {
+  export const create = discussionCommentCreateService;
+  export const find = discussionCommentFindService;
+  export const remove = discussionCommentRemoveService;
+  export const update = discussionCommentUpdateService;
+  export const upvote = discussionCommentUpvoteService;
 }

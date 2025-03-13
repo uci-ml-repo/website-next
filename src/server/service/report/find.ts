@@ -7,8 +7,8 @@ import {
   discussionReport,
 } from "@/db/schema";
 
-export class ReportFindService {
-  async countAll() {
+export namespace reportFindService {
+  export async function countAll() {
     const [datasetReportCount] = await db
       .select({ count: count() })
       .from(datasetReport);

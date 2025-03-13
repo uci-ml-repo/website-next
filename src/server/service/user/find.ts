@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gt, inArray, sql } from "drizzle-orm";
+import { count, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { userColumns, userSelect } from "@/db/lib/types";
@@ -20,13 +20,11 @@ function buildSearchQuery(search: string) {
       ${search}
     )
   `;
-
   const trigramSimilarity = sql`
     (
       ${nameTrigramSimilarity} + ${emailTrigramSimilarity}
     ) / 2
   `;
-
   const searchCondition = sql`(${trigramSimilarity} > 0.1)`;
 
   return {
@@ -53,50 +51,50 @@ function buildQuery(query: UserQuery) {
     conditions.push(gt(user.createdAt, query.createdAfter));
   }
 
-  return and(...conditions);
+  return conditions.length > 0 ? sql`${conditions.join(" AND ")}` : undefined;
 }
 
-export class UserFindService {
-  async byId(id: string) {
+export namespace userFindService {
+  export async function byId(id: string) {
     return db.query.user.findFirst({
       where: eq(user.id, id),
       columns: userColumns,
     });
   }
 
-  async batch(ids: string[]) {
+  export async function batch(ids: string[]) {
     const users = await db
       .select(userSelect)
       .from(user)
-      .where(and(inArray(user.id, ids)));
+      .where(inArray(user.id, ids));
 
-    const userMap = new Map(users.map((user) => [user.id, user]));
+    const userMap = new Map(users.map((u) => [u.id, u]));
 
     return ids.map((id) => {
-      const user = userMap.get(id);
-      if (!user) {
+      const u = userMap.get(id);
+      if (!u) {
         throw new ServiceError({
           origin: "User",
           message: "User not found",
         });
       }
-      return user;
+      return u;
     });
   }
 
-  async accounts(userId: string) {
+  export async function accounts(userId: string) {
     return db
       .select(accountSelect)
       .from(account)
       .where(eq(account.userId, userId));
   }
 
-  async byQuery(query: UserQuery) {
+  export async function byQuery(query: UserQuery) {
     let users;
     if (query.search) {
-      users = await this.bySearchQuery(query as UserSearchQuery);
+      users = await bySearchQuery(query as UserSearchQuery);
     } else {
-      users = await this.byRawQuery(query);
+      users = await byRawQuery(query);
     }
 
     let nextCursor: number | undefined = undefined;
@@ -117,7 +115,7 @@ export class UserFindService {
     };
   }
 
-  async countByQuery(query: UserQuery) {
+  export async function countByQuery(query: UserQuery) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(user)
@@ -126,7 +124,7 @@ export class UserFindService {
     return countQuery.count;
   }
 
-  private async byRawQuery(query: UserQuery) {
+  async function byRawQuery(query: UserQuery) {
     return db
       .select(userSelect)
       .from(user)
@@ -136,7 +134,7 @@ export class UserFindService {
       .orderBy(user.role);
   }
 
-  private async bySearchQuery(query: UserSearchQuery) {
+  async function bySearchQuery(query: UserSearchQuery) {
     const { trigramSimilarity } = buildSearchQuery(query.search);
 
     const users = await db
@@ -150,6 +148,6 @@ export class UserFindService {
       .offset(query.cursor ?? 0)
       .orderBy((t) => desc(t.similarity));
 
-    return this.batch(users.map((d) => d.id));
+    return batch(users.map((d) => d.id));
   }
 }

@@ -14,15 +14,8 @@ import { datasetPreviewSelect } from "@/db/lib/types";
 import { bookmark, dataset, datasetView } from "@/db/schema";
 import type { BookmarkQuery } from "@/server/schema/bookmark";
 
-const DATASET_WEIGHTS = sql`
-  SETWEIGHT(
-    TO_TSVECTOR('simple', ${dataset.title}),
-    'A'
-  )
-`;
-
-export class BookmarkFindService {
-  async batch(ids: string[]) {
+export namespace bookmarkFindService {
+  export async function batch(ids: string[]) {
     return db
       .select({
         bookmark: getTableColumns(bookmark),
@@ -34,13 +27,16 @@ export class BookmarkFindService {
       .orderBy(desc(bookmark.createdAt));
   }
 
-  async byUserQuery(query: BookmarkQuery, user: Session["user"]) {
+  export async function byUserQuery(
+    query: BookmarkQuery,
+    user: Session["user"],
+  ) {
     let bookmarks;
 
     if (query.search) {
-      bookmarks = await this.byUserSearchQuery(query, user);
+      bookmarks = await byUserSearchQuery(query, user);
     } else {
-      bookmarks = await this.byUserRawQuery(query, user);
+      bookmarks = await byUserRawQuery(query, user);
     }
 
     let nextCursor: number | undefined = undefined;
@@ -57,7 +53,7 @@ export class BookmarkFindService {
     return { bookmarks, nextCursor, count: countQuery.count };
   }
 
-  private async byUserRawQuery(query: BookmarkQuery, user: Session["user"]) {
+  async function byUserRawQuery(query: BookmarkQuery, user: Session["user"]) {
     return db
       .select({
         bookmark: getTableColumns(bookmark),
@@ -71,23 +67,10 @@ export class BookmarkFindService {
       .limit(query.limit ? query.limit + 1 : 11);
   }
 
-  private async byUserSearchQuery(query: BookmarkQuery, user: Session["user"]) {
-    const tsQuery = sql` PLAINTO_TSQUERY('simple', ${query.search ?? ""}) `;
-    const normalizedTsQuery = sql`
-      CASE
-        WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
-          'simple',
-          ${tsQuery}::TEXT || ':*'
-        )
-        ELSE ''
-      END
-    `;
-    const rank = sql`
-      TS_RANK(
-        ${DATASET_WEIGHTS},
-        ${normalizedTsQuery}
-      )
-    `;
+  async function byUserSearchQuery(
+    query: BookmarkQuery,
+    user: Session["user"],
+  ) {
     const trigramSimilarity = sql`
       similarity (
         ${dataset.title},
@@ -99,7 +82,6 @@ export class BookmarkFindService {
       .select({
         id: bookmark.id,
         createdAt: bookmark.createdAt,
-        rank: rank.mapWith(Number),
         similarity: trigramSimilarity.mapWith(Number),
       })
       .from(bookmark)
@@ -110,9 +92,6 @@ export class BookmarkFindService {
           query.search
             ? sql`
                 (
-                  ${DATASET_WEIGHTS} @@ ${normalizedTsQuery}
-                )
-                OR (
                   similarity (
                     ${dataset.title},
                     ${query.search}
@@ -124,12 +103,12 @@ export class BookmarkFindService {
       )
       .offset(query.cursor ?? 0)
       .limit(query.limit ? query.limit + 1 : 10)
-      .orderBy((t) => [desc(t.rank), desc(t.similarity), desc(t.createdAt)]);
+      .orderBy((t) => [desc(t.similarity), desc(t.createdAt)]);
 
-    return this.batch(bookmarkIds.map(({ id }) => id));
+    return batch(bookmarkIds.map(({ id }) => id));
   }
 
-  async isBookmarked({
+  export async function isBookmarked({
     datasetId,
     userId,
   }: {

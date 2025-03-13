@@ -1,13 +1,11 @@
-import { ReportDatasetService } from "@/server/service/report/dataset";
-import { ReportDiscussionService } from "@/server/service/report/discussion";
-import { ReportDiscussionCommentService } from "@/server/service/report/discussion-comment";
-import { ReportFindService } from "@/server/service/report/find";
+import { reportDatasetService } from "@/server/service/report/dataset";
+import { reportDiscussionService } from "@/server/service/report/discussion";
+import { reportDiscussionCommentService } from "@/server/service/report/discussion-comment";
+import { reportFindService } from "@/server/service/report/find";
 
-export class ReportService {
-  constructor(
-    readonly dataset = new ReportDatasetService(),
-    readonly discussion = new ReportDiscussionService(),
-    readonly discussionComment = new ReportDiscussionCommentService(),
-    readonly find = new ReportFindService(),
-  ) {}
+export namespace reportService {
+  export const dataset = reportDatasetService;
+  export const discussion = reportDiscussionService;
+  export const discussionComment = reportDiscussionCommentService;
+  export const find = reportFindService;
 }

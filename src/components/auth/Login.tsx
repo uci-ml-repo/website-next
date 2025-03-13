@@ -31,11 +31,11 @@ interface LoginProps {
 export function Login({ setTab, redirectTo, form }: LoginProps) {
   const router = useRouter();
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
   function onSubmit(values: LoginFormSchema) {
-    setError(null);
+    setError(undefined);
     startTransition(async () => {
       const res = await credentialsLogin(values);
       if (res.success) {

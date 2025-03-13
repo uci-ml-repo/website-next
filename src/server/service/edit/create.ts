@@ -18,8 +18,8 @@ export const datasetEditFields = z
 
 export type DatasetEditFields = z.infer<typeof datasetEditFields>;
 
-export class EditCreateService {
-  async editFields({
+export namespace editCreateService {
+  export async function editFields({
     datasetId,
     userId,
     editFields,
@@ -30,14 +30,12 @@ export class EditCreateService {
   }) {
     const dataset = await service.dataset.find.byId(datasetId);
 
-    if (dataset.status === Enums.ApprovalStatus.DRAFT) {
-      return this.instantEdit({ datasetId, userId, editFields });
-    } else {
-      return this.unapprovedEdit({ datasetId, userId, editFields });
-    }
+    return dataset.status === Enums.ApprovalStatus.DRAFT
+      ? instantEdit({ datasetId, userId, editFields })
+      : unapprovedEdit({ datasetId, userId, editFields });
   }
 
-  private async unapprovedEdit({
+  async function unapprovedEdit({
     datasetId,
     userId,
     editFields,
@@ -48,51 +46,41 @@ export class EditCreateService {
   }) {
     const dataset = await service.dataset.find.byId(datasetId);
 
-    if (editFields.title) {
-      dataset.title = editFields.title;
-    }
-
-    if (editFields.description) {
-      dataset.description = editFields.description;
-    }
-
-    if (editFields.subjectArea) {
-      dataset.subjectArea = editFields.subjectArea;
-    }
+    if (editFields.title) dataset.title = editFields.title;
+    if (editFields.description) dataset.description = editFields.description;
+    if (editFields.subjectArea) dataset.subjectArea = editFields.subjectArea;
 
     const pendingEdit = await service.edit.find.byId({
-      datasetId: datasetId,
+      datasetId,
       pending: true,
     });
 
-    if (pendingEdit) {
-      return db
-        .update(edit)
-        .set({ newData: dataset, submittedBy: userId })
-        .where(
-          and(
-            eq(edit.datasetId, datasetId),
-            eq(edit.version, pendingEdit.version),
-          ),
-        )
-        .returning()
-        .then((res) => res[0].newData);
-    } else {
-      return db
-        .insert(edit)
-        .values({
-          datasetId: datasetId,
-          version: await service.edit.find.nextVersion(datasetId),
-          newData: dataset,
-          submittedBy: userId,
-          status: Enums.EditStatus.PENDING,
-        })
-        .returning()
-        .then((res) => res[0].newData);
-    }
+    return pendingEdit
+      ? db
+          .update(edit)
+          .set({ newData: dataset, submittedBy: userId })
+          .where(
+            and(
+              eq(edit.datasetId, datasetId),
+              eq(edit.version, pendingEdit.version),
+            ),
+          )
+          .returning()
+          .then((res) => res[0].newData)
+      : db
+          .insert(edit)
+          .values({
+            datasetId,
+            version: await service.edit.find.nextVersion(datasetId),
+            newData: dataset,
+            submittedBy: userId,
+            status: Enums.EditStatus.PENDING,
+          })
+          .returning()
+          .then((res) => res[0].newData);
   }
 
-  private async instantEdit({
+  async function instantEdit({
     datasetId,
     editFields,
   }: {
@@ -102,7 +90,7 @@ export class EditCreateService {
   }) {
     if (editFields.title) {
       await service.dataset.update.title({
-        datasetId: datasetId,
+        datasetId,
         title: editFields.title,
       });
     }

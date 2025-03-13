@@ -5,8 +5,8 @@ import { user } from "@/db/schema";
 import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
 
-export class UserRemoveService {
-  async byId({ userId }: { userId: string }) {
+export namespace userRemoveService {
+  export async function byId({ userId }: { userId: string }) {
     const existingUser = await db.query.user.findFirst({
       where: eq(user.id, userId),
     });

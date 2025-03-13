@@ -1,8 +1,8 @@
 import { db } from "@/db";
 import { bookmark } from "@/db/schema";
 
-export class BookmarkCreateService {
-  async addBookmark({
+export namespace bookmarkCreateService {
+  export async function addBookmark({
     datasetId,
     userId,
   }: {

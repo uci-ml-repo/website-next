@@ -8,8 +8,8 @@ import { DATASET_FILES_PATH } from "@/lib/routes";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
 
-export class DatasetCreateService {
-  async getSlug(title: string) {
+export namespace datasetCreateService {
+  export async function getSlug(title: string) {
     const baseSlug = slugify(title, { replacement: "+", lower: true });
 
     const existingSlugs = await db
@@ -31,7 +31,7 @@ export class DatasetCreateService {
     return slug;
   }
 
-  async draft({
+  export async function draft({
     title,
     externalLink,
     userId,
@@ -45,7 +45,7 @@ export class DatasetCreateService {
         throw new Error("Storage path is not defined");
       }
 
-      const slug = await this.getSlug(title);
+      const slug = await getSlug(title);
 
       const [createdDataset] = await tx
         .insert(dataset)

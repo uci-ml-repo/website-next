@@ -45,8 +45,8 @@ function transformRow({ upvotes, ...discussion }: RawDiscussion) {
   };
 }
 
-export class DiscussionFindService {
-  async byId(id: string, session?: Session | null) {
+export namespace discussionFindService {
+  export async function byId(id: string, session?: Session | null) {
     return db.query.discussion
       .findFirst({
         where: (discussion, { eq }) => eq(discussion.id, id),
@@ -67,13 +67,16 @@ export class DiscussionFindService {
       .then((discussion) => (discussion ? transformRow(discussion) : null));
   }
 
-  async byQuery(query: DiscussionQuery, session?: Session | null) {
+  export async function byQuery(
+    query: DiscussionQuery,
+    session?: Session | null,
+  ) {
     let discussions;
 
     if (query.search) {
-      discussions = await this.bySearchQuery(query, session);
+      discussions = await bySearchQuery(query, session);
     } else {
-      discussions = await this.byRawQuery(query, session);
+      discussions = await byRawQuery(query, session);
     }
 
     let nextCursor: number | undefined = undefined;
@@ -94,7 +97,7 @@ export class DiscussionFindService {
     };
   }
 
-  async countByQuery(query: DiscussionQuery) {
+  export async function countByQuery(query: DiscussionQuery) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(discussion)
@@ -103,7 +106,7 @@ export class DiscussionFindService {
     return countQuery.count;
   }
 
-  private async byRawQuery(query: DiscussionQuery, session?: Session | null) {
+  async function byRawQuery(query: DiscussionQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
           sortFunction(sort)(discussion[orderBy as keyof typeof query.order]),
@@ -133,7 +136,7 @@ export class DiscussionFindService {
       .then((discussions) => discussions.map(transformRow));
   }
 
-  private async bySearchQuery(
+  async function bySearchQuery(
     query: DiscussionQuery,
     session?: Session | null,
   ) {

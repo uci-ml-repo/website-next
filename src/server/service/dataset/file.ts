@@ -29,8 +29,8 @@ export type DatasetFileStatus =
  * | -   | -    | X     | -               |
  * | -   | -    | -     | awaiting-upload |
  */
-export class DatasetFileService {
-  async fileStatuses(dataset: {
+export namespace datasetFileService {
+  export async function fileStatuses(dataset: {
     id: number;
     slug: string;
     status: string;

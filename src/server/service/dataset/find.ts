@@ -25,38 +25,16 @@ import { sortFunction } from "@/server/schema/lib/order";
 import { ServiceError } from "@/server/service/errors";
 
 function buildSearchQuery(search: string) {
-  const tsQuery = sql` PLAINTO_TSQUERY('simple', ${search ?? ""}) `;
-  const normalizedTsQuery = sql`
-    CASE
-      WHEN NUMNODE(${tsQuery}) > 0 THEN TO_TSQUERY(
-        'simple',
-        ${tsQuery}::TEXT || ':*'
-      )
-      ELSE ''
-    END
-  `;
-  const tsWeights = sql`
-    SETWEIGHT(
-      TO_TSVECTOR('simple', ${datasetView.title}),
-      'A'
-    )
-  `;
-  const tsRank = sql`
-    TS_RANK(
-      ${tsWeights},
-      ${normalizedTsQuery}
-    )
-  `;
   const trigramSimilarity = sql`
     similarity (
       ${datasetView.title},
       ${search}
     )
   `;
+
   const searchCondition = sql`
     (
-      ${tsWeights} @@ ${normalizedTsQuery}
-      OR similarity (
+      similarity (
         ${datasetView.title},
         ${search}
       ) > 0.05
@@ -64,7 +42,6 @@ function buildSearchQuery(search: string) {
   `;
 
   return {
-    tsRank,
     trigramSimilarity,
     searchCondition,
   };
@@ -141,8 +118,8 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   return and(...conditions);
 }
 
-export class DatasetFindService {
-  async byId(id: number) {
+export namespace datasetFindService {
+  export async function byId(id: number) {
     const [dataset] = await db
       .select()
       .from(datasetView)
@@ -151,7 +128,7 @@ export class DatasetFindService {
     return dataset;
   }
 
-  async approvedById(id: number) {
+  export async function approvedById(id: number) {
     const [dataset] = await db
       .select()
       .from(datasetView)
@@ -164,7 +141,7 @@ export class DatasetFindService {
     return dataset;
   }
 
-  async batch(ids: number[]) {
+  export async function batch(ids: number[]) {
     const datasets = await db
       .select(datasetPreviewSelect)
       .from(datasetView)
@@ -186,12 +163,12 @@ export class DatasetFindService {
     });
   }
 
-  async byQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
+  export async function byQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     let datasets;
     if (query.search) {
-      datasets = await this.bySearchQuery(query as DatasetSearchQuery);
+      datasets = await bySearchQuery(query as DatasetSearchQuery);
     } else {
-      datasets = await this.byRawQuery(query);
+      datasets = await byRawQuery(query);
     }
 
     let nextCursor: number | undefined = undefined;
@@ -212,7 +189,9 @@ export class DatasetFindService {
     };
   }
 
-  async countByQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
+  export async function countByQuery(
+    query: DatasetQuery | PrivilegedDatasetQuery,
+  ) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(datasetView)
@@ -221,7 +200,7 @@ export class DatasetFindService {
     return countQuery.count;
   }
 
-  private async byRawQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
+  async function byRawQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     const orderBy = [];
 
     if ("pendingFirst" in query && query.pendingFirst) {
@@ -250,14 +229,13 @@ export class DatasetFindService {
       .orderBy(...orderBy);
   }
 
-  private async bySearchQuery(query: DatasetSearchQuery) {
-    const { trigramSimilarity, tsRank } = buildSearchQuery(query.search);
+  async function bySearchQuery(query: DatasetSearchQuery) {
+    const { trigramSimilarity } = buildSearchQuery(query.search);
 
     const datasets = await db
       .select({
         id: datasetView.id,
         similarity: trigramSimilarity.mapWith(Number),
-        rank: tsRank.mapWith(Number),
       })
       .from(datasetView)
       .where(buildQuery(query))
@@ -270,9 +248,9 @@ export class DatasetFindService {
                 datasetView[field as keyof typeof query.order],
               ),
             )
-          : [desc(t.rank), desc(t.similarity)],
+          : [desc(t.similarity)],
       );
 
-    return this.batch(datasets.map((d) => d.id));
+    return batch(datasets.map((d) => d.id));
   }
 }

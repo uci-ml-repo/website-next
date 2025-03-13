@@ -39,8 +39,8 @@ function sortDirectoryEntities(a: Entry, b: Entry) {
   return path.basename(a.path).localeCompare(path.basename(b.path));
 }
 
-export class FileFindService {
-  async list(absolutePath: string) {
+export namespace fileFindService {
+  export async function list(absolutePath: string) {
     const nodes = await fs.readdir(absolutePath, { withFileTypes: true });
 
     return nodes
@@ -48,7 +48,10 @@ export class FileFindService {
       .sort(sortDirectoryEntities);
   }
 
-  async search(absolutePath: string, search: string): Promise<Entry[]> {
+  export async function search(
+    absolutePath: string,
+    search: string,
+  ): Promise<Entry[]> {
     if (!process.env.STATIC_FILES_DIRECTORY) {
       throw new Error("STATIC_FILES_DIRECTORY is not set");
     }
@@ -74,7 +77,7 @@ export class FileFindService {
     return directoryEntities;
   }
 
-  async exists(absolutePath: string) {
+  export async function exists(absolutePath: string) {
     return fs.pathExists(absolutePath);
   }
 }

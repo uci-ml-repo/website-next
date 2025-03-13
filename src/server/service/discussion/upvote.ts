@@ -4,8 +4,8 @@ import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
 
-export class DiscussionUpvoteService {
-  async create({
+export namespace discussionUpvoteService {
+  export async function create({
     discussionId,
     userId,
   }: {
@@ -33,7 +33,7 @@ export class DiscussionUpvoteService {
     });
   }
 
-  async remove({
+  export async function remove({
     discussionId,
     userId,
   }: {

@@ -17,8 +17,8 @@ import { datasetView } from "@/db/schema";
 import type { DatasetQuery } from "@/server/schema/dataset";
 import { buildQuery } from "@/server/service/dataset/find";
 
-export class AttributeFindService {
-  async remainingFilters({
+export namespace attributeFindService {
+  export async function remainingFilters({
     attributeFilters,
     query,
   }: {

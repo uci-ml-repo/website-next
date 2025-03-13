@@ -7,8 +7,8 @@ import { db } from "@/db";
 import { dataset } from "@/db/schema";
 import { service } from "@/server/service";
 
-export class FileZipService {
-  async unzip({
+export namespace fileZipService {
+  export async function unzip({
     absolutePath,
     datasetId,
     overwrite,
@@ -57,10 +57,7 @@ export class FileZipService {
       await new Promise<void>((resolve, reject) => {
         yauzl.open(absolutePath, { lazyEntries: true }, (err, zipfile) => {
           if (err) return reject(err);
-
-          if (!zipfile) {
-            return reject(new Error("Could not open zip file"));
-          }
+          if (!zipfile) return reject(new Error("Could not open zip file"));
 
           zipfile.readEntry();
 
@@ -77,13 +74,11 @@ export class FileZipService {
               fs.ensureDir(path.dirname(fullPath))
                 .then(() => {
                   zipfile.openReadStream(entry, (err, readStream) => {
-                    if (err) {
+                    if (err || !readStream) {
                       zipfile.close();
-                      return reject(err);
-                    }
-                    if (!readStream) {
-                      zipfile.close();
-                      return reject(new Error("Could not open read stream"));
+                      return reject(
+                        err || new Error("Could not open read stream"),
+                      );
                     }
                     const writeStream = fs.createWriteStream(fullPath);
 
@@ -137,9 +132,7 @@ export class FileZipService {
         });
       });
     } catch (error) {
-      // Clean up unzipped files
       await fs.remove(unzipPath);
-
       return {
         success: false,
         message: (error as Error).message,

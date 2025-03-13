@@ -20,8 +20,8 @@ function buildQuery(query: EditQuery) {
   return and(...conditions);
 }
 
-export class EditFindService {
-  async byId({
+export namespace editFindService {
+  export async function byId({
     datasetId,
     pending,
     version,
@@ -46,7 +46,7 @@ export class EditFindService {
     });
   }
 
-  async byQuery(query: EditQuery) {
+  export async function byQuery(query: EditQuery) {
     const edits = db
       .select()
       .from(edit)
@@ -65,7 +65,7 @@ export class EditFindService {
     };
   }
 
-  async countByQuery(query: EditQuery) {
+  export async function countByQuery(query: EditQuery) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(edit)
@@ -74,7 +74,7 @@ export class EditFindService {
     return countQuery.count;
   }
 
-  async nextVersion(datasetId: number) {
+  export async function nextVersion(datasetId: number) {
     const maxVersion = await db
       .select({ maxVersion: max(edit.version) })
       .from(edit)

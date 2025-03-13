@@ -39,11 +39,11 @@ export function Register({
 }: RegisterProps) {
   const router = useRouter();
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
   function onSubmit(values: RegisterFormSchema) {
-    setError(null);
+    setError(undefined);
     startTransition(async () => {
       const res = await credentialsRegister(values);
       if (res.success) {

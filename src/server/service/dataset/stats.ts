@@ -4,8 +4,8 @@ import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { datasetView } from "@/db/schema";
 
-export class DatasetStatsService {
-  async maxDataSize() {
+export namespace datasetStatsService {
+  export async function maxDataSize() {
     const [maxInstanceCount] = await db
       .select()
       .from(datasetView)

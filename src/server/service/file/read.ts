@@ -5,8 +5,8 @@ import readline from "readline";
 
 import { ServiceError } from "@/server/service/errors";
 
-export class FileReadService {
-  async readZippedFile({
+export namespace fileReadService {
+  export async function readZippedFile({
     absoluteZipPath,
     relativeFilePath,
     cursor = 0,
@@ -28,7 +28,6 @@ export class FileReadService {
       }
 
       const fileStream = await zip.stream(relativeFilePath);
-
       const rl = readline.createInterface({
         input: fileStream,
         crlfDelay: Infinity,
@@ -48,16 +47,13 @@ export class FileReadService {
       await zip.close();
 
       const hasMoreLines = lines.length === takeLines;
-      return {
-        lines,
-        cursor: hasMoreLines ? cursor + takeLines : undefined,
-      };
+      return { lines, cursor: hasMoreLines ? cursor + takeLines : undefined };
     } finally {
       await zip.close();
     }
   }
 
-  async readFile({
+  export async function readFile({
     absolutePath,
     cursor = 0,
     takeLines = 50,
@@ -89,24 +85,20 @@ export class FileReadService {
 
     const hasMoreLines = lines.length === takeLines;
 
-    return {
-      lines,
-      cursor: hasMoreLines ? cursor + takeLines : undefined,
-    };
+    return { lines, cursor: hasMoreLines ? cursor + takeLines : undefined };
   }
 
-  async stats({ absolutePath }: { absolutePath: string }) {
+  export async function stats({ absolutePath }: { absolutePath: string }) {
     if (!fs.pathExistsSync(absolutePath)) {
       throw new ServiceError({
         origin: "File",
         message: `Invalid file path: ${absolutePath}`,
       });
     }
-
     return fs.stat(absolutePath);
   }
 
-  async zipStats({ absolutePath }: { absolutePath: string }) {
+  export async function zipStats({ absolutePath }: { absolutePath: string }) {
     const zip = new StreamZip.async({ file: absolutePath });
 
     const entries = Object.entries(await zip.entries());
@@ -129,7 +121,7 @@ export class FileReadService {
     };
   }
 
-  async checksum({
+  export async function checksum({
     absolutePath,
     algorithm = "sha512",
   }: {

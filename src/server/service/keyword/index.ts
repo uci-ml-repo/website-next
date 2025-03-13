@@ -1,5 +1,5 @@
-import { KeywordFindService } from "@/server/service/keyword/find";
+import { keywordFindService } from "@/server/service/keyword/find";
 
-export class KeywordService {
-  constructor(readonly find = new KeywordFindService()) {}
+export namespace keywordService {
+  export const find = keywordFindService;
 }

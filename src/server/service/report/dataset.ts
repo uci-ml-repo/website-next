@@ -5,8 +5,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { datasetReport } from "@/db/schema";
 
-export class ReportDatasetService {
-  async create({
+export namespace reportDatasetService {
+  export async function create({
     datasetId,
     reason,
     details,
@@ -25,7 +25,7 @@ export class ReportDatasetService {
     });
   }
 
-  async resolve({ reportId }: { reportId: string }) {
+  export async function resolve({ reportId }: { reportId: string }) {
     return db
       .delete(datasetReport)
       .where(eq(datasetReport.id, reportId))

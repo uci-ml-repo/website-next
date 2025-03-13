@@ -15,8 +15,12 @@ import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
 
-export class DatasetUpdateService {
-  async zipStats(input: { id: number; slug: string; status: string }) {
+export namespace datasetUpdateService {
+  export async function zipStats(input: {
+    id: number;
+    slug: string;
+    status: string;
+  }) {
     const zipStats = await service.file.read.zipStats({
       absolutePath: absoluteStaticPath(DATASET_FILES_ZIP_PATH(input)),
     });
@@ -32,7 +36,13 @@ export class DatasetUpdateService {
     return zipStats;
   }
 
-  async title({ datasetId, title }: { datasetId: number; title: string }) {
+  export async function title({
+    datasetId,
+    title,
+  }: {
+    datasetId: number;
+    title: string;
+  }) {
     const existingDataset = await service.dataset.find.byId(datasetId);
     const newSlug = await service.dataset.create.getSlug(title);
 
@@ -100,7 +110,7 @@ export class DatasetUpdateService {
     return updatedDataset;
   }
 
-  async hasGraphics({
+  export async function hasGraphics({
     datasetId,
     hasGraphics,
   }: {
@@ -144,7 +154,7 @@ export class DatasetUpdateService {
       .returning();
   }
 
-  async refreshView(id?: number) {
+  export async function refreshView(id?: number) {
     await db.execute(sql`
       SELECT
         refresh_dataset_view (${id})

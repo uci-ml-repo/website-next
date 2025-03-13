@@ -1,19 +1,18 @@
-import { db } from "@/db";
-import { Enums } from "@/db/lib/enums";
-import DiscussionReportReason = Enums.DiscussionReportReason;
 import { eq } from "drizzle-orm";
 
+import { db } from "@/db";
+import type { Enums } from "@/db/lib/enums";
 import { discussionCommentReport } from "@/db/schema";
 
-export class ReportDiscussionCommentService {
-  async create({
+export namespace reportDiscussionCommentService {
+  export async function create({
     discussionCommentId,
     reason,
     details,
     userId,
   }: {
     discussionCommentId: string;
-    reason: DiscussionReportReason;
+    reason: Enums.DiscussionReportReason;
     details?: string;
     userId?: string;
   }) {
@@ -25,7 +24,7 @@ export class ReportDiscussionCommentService {
     });
   }
 
-  async resolve({ reportId }: { reportId: string }) {
+  export async function resolve({ reportId }: { reportId: string }) {
     return db
       .delete(discussionCommentReport)
       .where(eq(discussionCommentReport.id, reportId))

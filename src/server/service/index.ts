@@ -1,27 +1,23 @@
-import { AttributeService } from "@/server/service/attribute";
-import { BookmarkService } from "@/server/service/bookmark";
-import { DatasetService } from "@/server/service/dataset";
-import { DiscussionService } from "@/server/service/discussion";
-import { EditService } from "@/server/service/edit";
-import { EmailSendService } from "@/server/service/email/send";
-import { FileService } from "@/server/service/file";
-import { KeywordService } from "@/server/service/keyword";
-import { ReportService } from "@/server/service/report";
-import { UserService } from "@/server/service/user";
+import { attributeService } from "@/server/service/attribute";
+import { bookmarkService } from "@/server/service/bookmark";
+import { datasetService } from "@/server/service/dataset";
+import { discussionService } from "@/server/service/discussion";
+import { editService } from "@/server/service/edit";
+import { EmailService } from "@/server/service/email";
+import { fileService } from "@/server/service/file";
+import { keywordService } from "@/server/service/keyword";
+import { reportService } from "@/server/service/report";
+import { userService } from "@/server/service/user";
 
-class Service {
-  constructor(
-    readonly attribute = new AttributeService(),
-    readonly bookmark = new BookmarkService(),
-    readonly dataset = new DatasetService(),
-    readonly discussion = new DiscussionService(),
-    readonly edit = new EditService(),
-    readonly email = new EmailSendService(),
-    readonly file = new FileService(),
-    readonly keyword = new KeywordService(),
-    readonly report = new ReportService(),
-    readonly user = new UserService(),
-  ) {}
+export namespace service {
+  export const attribute = attributeService;
+  export const bookmark = bookmarkService;
+  export const dataset = datasetService;
+  export const discussion = discussionService;
+  export const edit = editService;
+  export const email = new EmailService();
+  export const file = fileService;
+  export const keyword = keywordService;
+  export const report = reportService;
+  export const user = userService;
 }
-
-export const service = new Service();

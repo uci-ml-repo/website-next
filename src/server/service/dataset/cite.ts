@@ -2,8 +2,8 @@ import { db } from "@/db";
 import type { AuthorSelect } from "@/db/lib/types";
 import { ServiceError } from "@/server/service/errors";
 
-export class DatasetCiteService {
-  async byDatasetId(id: number) {
+export namespace datasetCiteService {
+  export async function byDatasetId(id: number) {
     const dataset = await db.query.dataset.findFirst({
       where: (dataset, { eq }) => eq(dataset.id, id),
       with: {
@@ -97,17 +97,6 @@ class Citation {
     return name.charAt(0).toUpperCase() + (punctuate ? "." : "");
   }
 
-  /**
-   * Formats a list of authors in the given style.
-   *
-   * @param authors the list of authors to format
-   * @param firstAuthorFormatter the formatter for the first author
-   * @param subsequentAuthorsFormatter the formatter for subsequent authors (can be the same as the first)
-   * @param etAlCutoff the number of authors to display before using "[first author] et al.", or -1 to disable
-   * @param listFormatter the list formatter to use to join the authors
-   *
-   * @returns the formatted list of authors
-   */
   private static formatAuthors({
     authors,
     firstAuthorFormatter,
@@ -123,13 +112,11 @@ class Citation {
   }) {
     if (authors.length === 0) return "";
 
-    // using et al.
     if (etAlCutoff > 0 && authors.length > etAlCutoff) {
       const firstAuthor = firstAuthorFormatter(authors[0]);
       return listFormatter.format([`${firstAuthor}, et al`]);
     }
 
-    // normal formatting without et al.
     const formattedAuthors = authors.map((author, index) =>
       index === 0
         ? firstAuthorFormatter(author)
@@ -139,11 +126,6 @@ class Citation {
     return listFormatter.format(formattedAuthors);
   }
 
-  /**
-   * Returns all citation formats for this dataset.
-   *
-   * @returns all citation formats
-   */
   public allCitations() {
     return {
       apa: this.apa(),
@@ -155,13 +137,6 @@ class Citation {
     };
   }
 
-  /**
-   * APA citation format
-   *
-   * @example `Iris [Dataset]. (1936). UCI Machine Learning Repository. https://doi.org/10.24432/C56C76.`
-   *
-   * @see https://libguides.murdoch.edu.au/APA/dataset
-   */
   public apa() {
     const formattedAuthors = Citation.formatAuthors({
       authors: this.authors,
@@ -183,11 +158,6 @@ class Citation {
     return citation.trim();
   }
 
-  /**
-   * MLA citation format
-   *
-   * @see https://libguides.murdoch.edu.au/MLA/internet
-   */
   public mla() {
     const formattedAuthors = Citation.formatAuthors({
       authors: this.authors,
@@ -207,11 +177,6 @@ class Citation {
     return mla.trim();
   }
 
-  /**
-   * Chicago citation format
-   *
-   * @see https://libguides.murdoch.edu.au/Chicago/dataset
-   */
   public chicago(): string {
     const formattedAuthors = Citation.formatAuthors({
       authors: this.authors,
@@ -232,11 +197,6 @@ class Citation {
     return chicago.trim();
   }
 
-  /**
-   * Vancouver citation format
-   *
-   * @see https://libguides.murdoch.edu.au/Vancouver/dataset
-   */
   public vancouver(): string {
     const formattedAuthors = Citation.formatAuthors({
       authors: this.authors,
@@ -259,11 +219,6 @@ class Citation {
     return vancouver.trim();
   }
 
-  /**
-   * IEEE citation format
-   *
-   * @see https://libguides.murdoch.edu.au/IEEE/dataset
-   */
   public ieee(): string {
     const formattedAuthors = Citation.formatAuthors({
       authors: this.authors,
@@ -287,11 +242,6 @@ class Citation {
     return ieee.trim();
   }
 
-  /**
-   * BibTeX citation format
-   *
-   * @see https://www.bibtex.com/format/
-   */
   public bibtex(): string {
     function formatField(name: string, value: string | number) {
       return name.padEnd(13, " ").padStart(15, " ") + `= {${value}}`;

@@ -33,8 +33,8 @@ function transformRow({ upvotes, ...comment }: RawComment) {
   };
 }
 
-export class DiscussionCommentFindService {
-  async byId(id: string, session?: Session | null) {
+export namespace discussionCommentFindService {
+  export async function byId(id: string, session?: Session | null) {
     return db.query.discussionComment
       .findFirst({
         where: eq(discussionComment.id, id),
@@ -52,7 +52,7 @@ export class DiscussionCommentFindService {
       .then((comment) => (comment ? transformRow(comment) : null));
   }
 
-  async byQuery(query: CommentQuery, session?: Session | null) {
+  export async function byQuery(query: CommentQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
           sortFunction(sort)(

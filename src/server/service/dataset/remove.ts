@@ -7,8 +7,8 @@ import { DATASET_FILES_PATH } from "@/lib/routes";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { ServiceError } from "@/server/service/errors";
 
-export class DatasetRemoveService {
-  async byId(datasetId: number) {
+export namespace datasetRemoveService {
+  export async function byId(datasetId: number) {
     const existingDataset = await db.query.dataset.findFirst({
       where: eq(dataset.id, datasetId),
     });

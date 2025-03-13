@@ -1,11 +1,9 @@
-import { BookmarkCreateService } from "@/server/service/bookmark/create";
-import { BookmarkFindService } from "@/server/service/bookmark/find";
-import { BookmarkRemoveService } from "@/server/service/bookmark/remove";
+import { bookmarkCreateService } from "@/server/service/bookmark/create";
+import { bookmarkFindService } from "@/server/service/bookmark/find";
+import { bookmarkRemoveService } from "@/server/service/bookmark/remove";
 
-export class BookmarkService {
-  constructor(
-    readonly create = new BookmarkCreateService(),
-    readonly find = new BookmarkFindService(),
-    readonly remove = new BookmarkRemoveService(),
-  ) {}
+export namespace bookmarkService {
+  export const create = bookmarkCreateService;
+  export const find = bookmarkFindService;
+  export const remove = bookmarkRemoveService;
 }

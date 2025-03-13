@@ -4,8 +4,8 @@ import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
 import { keyword } from "@/db/schema";
 
-export class KeywordFindService {
-  async approved() {
+export namespace keywordFindService {
+  export async function approved() {
     const keywords = await db
       .select({
         name: keyword.name,

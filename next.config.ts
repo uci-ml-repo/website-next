@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
     mdxRs: true,
     authInterrupts: true,
   },
+  // webpack(webpackConfig) {
+  //   return {
+  //     ...webpackConfig,
+  //     optimization: {
+  //       minimize: false,
+  //     },
+  //   };
+  // },
   async redirects() {
     return [
       {
