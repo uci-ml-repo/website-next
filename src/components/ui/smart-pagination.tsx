@@ -85,7 +85,11 @@ export function SmartPagination({
             }}
           >
             <SelectTrigger size="sm" className="w-fit">
-              <SelectValue />
+              {perPageOptions.includes(limit) ? (
+                <SelectValue />
+              ) : (
+                <div>{limit.toLocaleString()}</div>
+              )}
             </SelectTrigger>
             <SelectContent>
               {perPageOptions.map((option) => (
@@ -94,7 +98,7 @@ export function SmartPagination({
                   className="cursor-pointer"
                   value={option.toString()}
                 >
-                  {option}
+                  {option.toLocaleString()}
                 </SelectItem>
               ))}
             </SelectContent>
