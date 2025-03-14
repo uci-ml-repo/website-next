@@ -57,6 +57,12 @@ export function DatasetSearchInput() {
     });
   }, [localOrder, searchValue, setFilters]);
 
+  useEffect(() => {
+    if (!filters.search?.length) {
+      setInputValue("");
+    }
+  }, [filters.search, setInputValue]);
+
   return (
     <div className="flex w-full flex-col items-end justify-between gap-4 p-[1px] md:flex-row">
       <InputClearable
