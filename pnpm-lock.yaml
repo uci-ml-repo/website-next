@@ -27,8 +27,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(@types/react@19.0.10)(react@19.0.0)
       '@mdxeditor/editor':
-        specifier: 3.26.0
-        version: 3.26.0(@codemirror/language@6.10.8)(@lezer/highlight@1.2.1)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.24)
+        specifier: 3.27.0
+        version: 3.27.0(@codemirror/language@6.10.8)(@lezer/highlight@1.2.1)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.24)
       '@next/mdx':
         specifier: 15.2.2
         version: 15.2.2(@mdx-js/loader@3.1.0(acorn@8.14.1))(@mdx-js/react@3.1.0(@types/react@19.0.10)(react@19.0.0))
@@ -111,14 +111,14 @@ importers:
         specifier: 0.5.16
         version: 0.5.16(tailwindcss@3.4.17)
       '@tanstack/react-query':
-        specifier: 5.67.3
-        version: 5.67.3(react@19.0.0)
+        specifier: 5.68.0
+        version: 5.68.0(react@19.0.0)
       '@trpc/client':
         specifier: 11.0.0-rc.660
         version: 11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3)
       '@trpc/react-query':
         specifier: 11.0.0-rc.660
-        version: 11.0.0-rc.660(@tanstack/react-query@5.67.3(react@19.0.0))(@trpc/client@11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+        version: 11.0.0-rc.660(@tanstack/react-query@5.68.0(react@19.0.0))(@trpc/client@11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       '@trpc/server':
         specifier: 11.0.0-rc.660
         version: 11.0.0-rc.660(typescript@5.7.3)
@@ -177,8 +177,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: 0.479.0
-        version: 0.479.0(react@19.0.0)
+        specifier: 0.482.0
+        version: 0.482.0(react@19.0.0)
       match-sorter:
         specifier: 8.0.0
         version: 8.0.0
@@ -280,8 +280,8 @@ importers:
         specifier: 15.2.2
         version: 15.2.2
       '@types/bcryptjs':
-        specifier: 2.4.6
-        version: 2.4.6
+        specifier: 3.0.0
+        version: 3.0.0
       '@types/fs-extra':
         specifier: 11.0.4
         version: 11.0.4
@@ -1587,8 +1587,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@mdxeditor/editor@3.26.0':
-    resolution: {integrity: sha512-qaQLh0Yc3TY3uMFV588qtPHb2BaEgJz2mxMRLbHQ1pS85rIYQQgkoMHc3oQglfRv6lVdg3xk6QEyWU0QxbUJMA==}
+  '@mdxeditor/editor@3.27.0':
+    resolution: {integrity: sha512-uGH9f7xZ1Ok9nMchfvFHRRxlm6N/q3JHMcbuGhFkl9b7ZMxD+AN2sJv1h09/b80i9u7/dmBYaxVUPE22RMehcw==}
     engines: {node: '>=16'}
     peerDependencies:
       react: '>= 18 || >= 19'
@@ -2541,11 +2541,11 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
 
-  '@tanstack/query-core@5.67.3':
-    resolution: {integrity: sha512-pq76ObpjcaspAW4OmCbpXLF6BCZP2Zr/J5ztnyizXhSlNe7fIUp0QKZsd0JMkw9aDa+vxDX/OY7N+hjNY/dCGg==}
+  '@tanstack/query-core@5.68.0':
+    resolution: {integrity: sha512-r8rFYYo8/sY/LNaOqX84h12w7EQev4abFXDWy4UoDVUJzJ5d9Fbmb8ayTi7ScG+V0ap44SF3vNs/45mkzDGyGw==}
 
-  '@tanstack/react-query@5.67.3':
-    resolution: {integrity: sha512-u/n2HsQeH1vpZIOzB/w2lqKlXUDUKo6BxTdGXSMvNzIq5MHYFckRMVuFABp+QB7RN8LFXWV6X1/oSkuDq+MPIA==}
+  '@tanstack/react-query@5.68.0':
+    resolution: {integrity: sha512-mMOdGDKlwTP/WV72QqSNf4PAMeoBp/DqBHQ222wBfb51Looi8QUqnCnb9O98ZgvNISmy6fzxRGBJdZ+9IBvX2Q==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -2580,8 +2580,9 @@ packages:
   '@types/acorn@4.0.6':
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
 
-  '@types/bcryptjs@2.4.6':
-    resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
+  '@types/bcryptjs@3.0.0':
+    resolution: {integrity: sha512-WRZOuCuaz8UcZZE4R5HXTco2goQSI2XxjGY3hbM/xDvwmqFWd4ivooImsMx65OKM6CtNKbnZ5YL+YwAwK7c1dg==}
+    deprecated: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
 
   '@types/caseless@0.12.5':
     resolution: {integrity: sha512-hWtVTC2q7hc7xZ/RLbxapMvDMgUnDvKvMOpKal4DrMyfGBUfB1oKaZlIRr6mJL+If3bAP6sV/QneGzF6tJjZDg==}
@@ -4677,8 +4678,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@0.479.0:
-    resolution: {integrity: sha512-aBhNnveRhorBOK7uA4gDjgaf+YlHMdMhQ/3cupk6exM10hWlEU+2QtWYOfhXhjAsmdb6LeKR+NZnow4UxRRiTQ==}
+  lucide-react@0.482.0:
+    resolution: {integrity: sha512-XM8PzHzSrg8ATmmO+fzf+JyYlVVdQnJjuyLDj2p4V2zEtcKeBNAqAoJIGFv1x2HSBa7kT8gpYUxwdQ0g7nypfw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -7799,7 +7800,7 @@ snapshots:
       '@types/react': 19.0.10
       react: 19.0.0
 
-  '@mdxeditor/editor@3.26.0(@codemirror/language@6.10.8)(@lezer/highlight@1.2.1)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.24)':
+  '@mdxeditor/editor@3.27.0(@codemirror/language@6.10.8)(@lezer/highlight@1.2.1)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.24)':
     dependencies:
       '@codemirror/lang-markdown': 6.3.2
       '@codemirror/language-data': 6.5.1
@@ -8783,11 +8784,11 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.17
 
-  '@tanstack/query-core@5.67.3': {}
+  '@tanstack/query-core@5.68.0': {}
 
-  '@tanstack/react-query@5.67.3(react@19.0.0)':
+  '@tanstack/react-query@5.68.0(react@19.0.0)':
     dependencies:
-      '@tanstack/query-core': 5.67.3
+      '@tanstack/query-core': 5.68.0
       react: 19.0.0
 
   '@tootallnate/once@2.0.0': {}
@@ -8799,9 +8800,9 @@ snapshots:
       '@trpc/server': 11.0.0-rc.660(typescript@5.7.3)
       typescript: 5.7.3
 
-  '@trpc/react-query@11.0.0-rc.660(@tanstack/react-query@5.67.3(react@19.0.0))(@trpc/client@11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@trpc/react-query@11.0.0-rc.660(@tanstack/react-query@5.68.0(react@19.0.0))(@trpc/client@11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
-      '@tanstack/react-query': 5.67.3(react@19.0.0)
+      '@tanstack/react-query': 5.68.0(react@19.0.0)
       '@trpc/client': 11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.3))(typescript@5.7.3)
       '@trpc/server': 11.0.0-rc.660(typescript@5.7.3)
       react: 19.0.0
@@ -8816,7 +8817,9 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.6
 
-  '@types/bcryptjs@2.4.6': {}
+  '@types/bcryptjs@3.0.0':
+    dependencies:
+      bcryptjs: 3.0.2
 
   '@types/caseless@0.12.5': {}
 
@@ -11160,7 +11163,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@0.479.0(react@19.0.0):
+  lucide-react@0.482.0(react@19.0.0):
     dependencies:
       react: 19.0.0
 
