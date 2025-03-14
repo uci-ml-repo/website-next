@@ -96,6 +96,7 @@ export function DatasetSearch() {
                 containerClassName="flex min-h-0 flex-1"
                 className="min-h-0 flex-1 divide-y overflow-y-auto"
                 orientation="vertical"
+                gradientClassName="from-background h-14"
               >
                 {data.datasets.map((dataset) => (
                   <DatasetRow hoverCard dataset={dataset} key={dataset.id} />

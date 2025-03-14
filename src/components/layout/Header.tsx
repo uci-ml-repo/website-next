@@ -52,9 +52,7 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
       <BackgroundGraph className="max absolute right-0 top-0 -z-10 md:hidden" />
 
       <div className="flex items-center justify-between">
-        <div>
-          <SidebarTrigger className="md:hidden" />
-        </div>
+        <SidebarTrigger className="md:invisible" />
         <div className="mx-4 md:my-4">
           {session?.user ? (
             <DropdownMenu>

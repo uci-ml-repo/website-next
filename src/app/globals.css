@@ -132,10 +132,6 @@ body {
   @apply content-x w-full;
 }
 
-.hide-inactive [data-state="inactive"] {
-  @apply hidden;
-}
-
 .backdrop-gradient-blur {
   position: relative;
 }
