@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 
 import {
   DATASET_FILES_THUMBNAIL_PENDING_PATH,
+  DATASET_FILES_UNZIPPED_PATH,
   DATASET_FILES_UNZIPPED_PENDING_PATH,
   DATASET_FILES_ZIP_LOCK_PATH,
   DATASET_FILES_ZIP_PATH,
@@ -55,7 +56,7 @@ export namespace datasetFileService {
       absoluteStaticPath(DATASET_FILES_ZIP_LOCK_PATH(dataset)),
     );
     const unzippedExists = fs.existsSync(
-      absoluteStaticPath(DATASET_FILES_ZIP_PATH(dataset)),
+      absoluteStaticPath(DATASET_FILES_UNZIPPED_PATH(dataset)),
     );
     const pendingZipExists = fs.existsSync(
       absoluteStaticPath(DATASET_FILES_ZIP_PENDING_PATH(dataset)),

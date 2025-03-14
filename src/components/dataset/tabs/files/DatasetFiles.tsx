@@ -33,7 +33,7 @@ export function DatasetFiles() {
 
   const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
-  if (fileStatus === "awaiting-upload") {
+  if (fileStatus === "awaiting-upload" && editing) {
     return (
       <div className="space-y-4">
         <div className="text-2xl font-bold">Upload Dataset Files</div>
