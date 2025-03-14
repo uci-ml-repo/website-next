@@ -43,13 +43,19 @@ export function ProfileDatasetsSearch({ session }: { session: Session }) {
     { value: ApprovalStatus.REJECTED, label: "Rejected" },
   ];
 
-  const { data, isLoading } = trpc.dataset.find.privilegedByQuery.useQuery({
-    search: searchValue,
-    userId: session?.user?.id,
-    status: status === "all" ? enumToArray(Enums.ApprovalStatus) : [status],
-    limit,
-    cursor,
-  });
+  const { data, isLoading } = trpc.dataset.find.privilegedByQuery.useQuery(
+    {
+      search: searchValue,
+      userId: session?.user?.id,
+      status: status === "all" ? enumToArray(Enums.ApprovalStatus) : [status],
+      limit,
+      cursor,
+    },
+    {
+      staleTime: 0,
+      refetchOnMount: true,
+    },
+  );
 
   return (
     <div className="max-w-full space-y-4">
