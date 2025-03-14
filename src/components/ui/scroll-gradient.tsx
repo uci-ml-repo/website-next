@@ -116,42 +116,50 @@ export const ScrollGradient = React.forwardRef<
         <div className={cn(className)} ref={setRefs}>
           {children}
         </div>
-        {orientation === "vertical" && showStartGradient && (
+        {orientation === "vertical" && (
           <div
             data-orientation="vertical"
             style={verticalStyle}
             className={cn(
               "pointer-events-none absolute top-0 z-10 h-4 bg-gradient-to-b from-background",
+              showStartGradient ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-150",
               gradientClassName,
             )}
           />
         )}
-        {orientation === "vertical" && showEndGradient && (
+        {orientation === "vertical" && (
           <div
             data-orientation="vertical"
             style={verticalStyle}
             className={cn(
               "pointer-events-none absolute bottom-0 z-10 h-4 bg-gradient-to-t from-background",
+              showEndGradient ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-150",
               gradientClassName,
             )}
           />
         )}
-        {orientation === "horizontal" && showStartGradient && (
+        {orientation === "horizontal" && (
           <div
             data-orientation="horizontal"
             style={horizontalStyle}
             className={cn(
               "pointer-events-none absolute left-0 z-10 w-4 bg-gradient-to-r from-background",
+              showStartGradient ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-150",
               gradientClassName,
             )}
           />
         )}
-        {orientation === "horizontal" && showEndGradient && (
+        {orientation === "horizontal" && (
           <div
             data-orientation="horizontal"
             style={horizontalStyle}
             className={cn(
               "pointer-events-none absolute right-0 z-10 w-4 bg-gradient-to-l from-background",
+              showEndGradient ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-150",
               gradientClassName,
             )}
           />
