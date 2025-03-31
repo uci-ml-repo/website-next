@@ -6,12 +6,7 @@ import { VerificationRequired } from "@/components/auth/VerificationRequired";
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import type { ButtonProps } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DATASET_DISCUSSION_CREATE_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 

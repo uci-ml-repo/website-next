@@ -36,11 +36,7 @@ export async function ProfileDiscussionsOverview() {
         <>
           <div>
             {discussionsQuery.discussions.map((discussion) => (
-              <DiscussionMiniRow
-                key={discussion.id}
-                discussion={discussion}
-                className="lift"
-              />
+              <DiscussionMiniRow key={discussion.id} discussion={discussion} className="lift" />
             ))}
           </div>
 

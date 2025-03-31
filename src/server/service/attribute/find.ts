@@ -1,14 +1,4 @@
-import {
-  and,
-  arrayContains,
-  count,
-  desc,
-  eq,
-  gt,
-  notIlike,
-  notInArray,
-  sql,
-} from "drizzle-orm";
+import { and, arrayContains, count, desc, eq, gt, notIlike, notInArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import { Enums } from "@/db/lib/enums";
@@ -36,15 +26,10 @@ export namespace attributeFindService {
       `)
       .where(
         and(
-          query
-            ? buildQuery(query)
-            : eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
+          query ? buildQuery(query) : eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
           notInArray(sql`attribute`, attributeFilters),
           attributeFilters.length > 0
-            ? arrayContains(
-                datasetView.variableNames,
-                sqlArray(attributeFilters),
-              )
+            ? arrayContains(datasetView.variableNames, sqlArray(attributeFilters))
             : undefined,
           notIlike(sql`attribute`, "attribute%"),
           notIlike(sql`attribute`, "variable%"),

@@ -14,8 +14,7 @@ export const MiddlewareRoles = {
   ...Enums.UserRole,
 } as const;
 
-export type MiddlewareRole =
-  (typeof MiddlewareRoles)[keyof typeof MiddlewareRoles];
+export type MiddlewareRole = (typeof MiddlewareRoles)[keyof typeof MiddlewareRoles];
 
 export const PRIVILEGED_ROLES: Enums.UserRole[] = [
   Enums.UserRole.ADMIN,
@@ -61,8 +60,5 @@ export function canDeleteDataset({
 }) {
   const isDatasetOwner = user.id === dataset.userId;
 
-  return (
-    isSuperPriviliged(user.role) ||
-    (isDatasetOwner && isDraftOrPending(dataset))
-  );
+  return isSuperPriviliged(user.role) || (isDatasetOwner && isDraftOrPending(dataset));
 }

@@ -57,11 +57,7 @@ export function Expandable({
         )}
       </div>
       {needsTruncation && (
-        <Button
-          variant="link"
-          onClick={() => setIsExpanded((prev) => !prev)}
-          className="text-link"
-        >
+        <Button variant="link" onClick={() => setIsExpanded((prev) => !prev)} className="text-link">
           {isExpanded ? (
             <>
               <ChevronUpIcon /> Show Less

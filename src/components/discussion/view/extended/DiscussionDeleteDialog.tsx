@@ -14,11 +14,7 @@ interface DiscussionDeleteDialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function DiscussionDeleteDialog({
-  discussion,
-  open,
-  setOpen,
-}: DiscussionDeleteDialogProps) {
+export function DiscussionDeleteDialog({ discussion, open, setOpen }: DiscussionDeleteDialogProps) {
   const utils = trpc.useUtils();
 
   const removeMutation = trpc.discussion.remove.byId.useMutation({
@@ -45,18 +41,10 @@ export function DiscussionDeleteDialog({
           <div>This action can not be undone.</div>
         </div>
         <div className="flex justify-between">
-          <Button
-            variant="secondary"
-            onClick={() => setOpen(false)}
-            disabled={pending}
-          >
+          <Button variant="secondary" onClick={() => setOpen(false)} disabled={pending}>
             Cancel
           </Button>
-          <Button
-            variant="destructive"
-            disabled={pending}
-            onClick={removeDiscussion}
-          >
+          <Button variant="destructive" disabled={pending} onClick={removeDiscussion}>
             {pending && <Spinner />}
             Delete
           </Button>

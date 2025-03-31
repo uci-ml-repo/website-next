@@ -47,10 +47,7 @@ export class EmailService {
       },
     });
 
-    this.templatesFolder = path.join(
-      path.dirname(fileURLToPath(import.meta.url)),
-      "templates",
-    );
+    this.templatesFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), "templates");
   }
 
   async sendEmail(options: SendMailOptions) {
@@ -75,13 +72,7 @@ export class EmailService {
     });
   }
 
-  async sendRegistrationEmail({
-    email,
-    name,
-  }: {
-    email: string;
-    name: string;
-  }) {
+  async sendRegistrationEmail({ email, name }: { email: string; name: string }) {
     const { html, text } = await this.template.registration(name);
 
     await this.sendEmail({
@@ -139,13 +130,7 @@ export class EmailService {
     });
   }
 
-  async sendResetPasswordSuccessEmail({
-    email,
-    name,
-  }: {
-    email: string;
-    name: string;
-  }) {
+  async sendResetPasswordSuccessEmail({ email, name }: { email: string; name: string }) {
     const { html, text } = await this.template.resetPasswordSuccess({ name });
 
     await this.sendEmail({
@@ -180,13 +165,7 @@ export class EmailService {
     });
   }
 
-  async sendAccountDeletionEmail({
-    email,
-    name,
-  }: {
-    email: string;
-    name: string;
-  }) {
+  async sendAccountDeletionEmail({ email, name }: { email: string; name: string }) {
     const { html, text } = await this.template.accountDeletion({ name });
 
     await this.sendEmail({

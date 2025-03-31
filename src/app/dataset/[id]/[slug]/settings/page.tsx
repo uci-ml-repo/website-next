@@ -8,11 +8,7 @@ import { TabHeader } from "@/components/ui/tab-header";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string; slug: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ id: string; slug: string }> }) {
   const session = await auth();
 
   if (!session?.user) {
@@ -22,10 +18,7 @@ export default async function Page({
   const { id } = await params;
   const dataset = await caller.dataset.find.byId({ datasetId: Number(id) });
 
-  if (
-    !isPriviliged(session?.user.role) &&
-    dataset.userId !== session?.user.id
-  ) {
+  if (!isPriviliged(session?.user.role) && dataset.userId !== session?.user.id) {
     return forbidden();
   }
 

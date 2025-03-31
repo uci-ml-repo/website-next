@@ -12,26 +12,11 @@ import Link from "next/link";
 import React from "react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
-import {
-  abbreviateDecimal,
-  abbreviateFileSize,
-  cn,
-  formatEnum,
-} from "@/lib/utils";
+import { abbreviateDecimal, abbreviateFileSize, cn, formatEnum } from "@/lib/utils";
 
 type DatasetStat = {
   icon: React.ReactNode;
@@ -40,11 +25,7 @@ type DatasetStat = {
   mobileExclude?: boolean;
 };
 
-export function DatasetHoverCard({
-  dataset,
-}: {
-  dataset: DatasetPreviewResponse;
-}) {
+export function DatasetHoverCard({ dataset }: { dataset: DatasetPreviewResponse }) {
   const datasetStats: DatasetStat[] = [
     {
       icon: <Columns3Icon />,
@@ -98,9 +79,7 @@ export function DatasetHoverCard({
             </Link>
           </CardTitle>
           <CardDescription>
-            <p className="line-clamp-4 text-base">
-              {dataset.description?.slice(0, 1000)}
-            </p>
+            <p className="line-clamp-4 text-base">{dataset.description?.slice(0, 1000)}</p>
           </CardDescription>
         </div>
         <CardDescription className="flex items-end">
@@ -119,9 +98,7 @@ export function DatasetHoverCard({
                         {stat.icon}
                         <span className="truncate">{stat.text}</span>
                       </TooltipTrigger>
-                      <TooltipContent side="left">
-                        {stat.tooltip}
-                      </TooltipContent>
+                      <TooltipContent side="left">{stat.tooltip}</TooltipContent>
                     </Tooltip>
                   );
               })}
@@ -149,9 +126,7 @@ export function DatasetHoverCard({
             {dataset.fileCount !== null && dataset.size !== null ? (
               <div className="flex items-center space-x-1">
                 <span className="hidden @3xs:block">
-                  {dataset.fileCount === 1
-                    ? "1 File"
-                    : `${dataset.fileCount} Files`}
+                  {dataset.fileCount === 1 ? "1 File" : `${dataset.fileCount} Files`}
                 </span>
                 <span className="hidden @2xs:block">&middot;</span>
                 <span>{abbreviateFileSize(dataset.size)}</span>

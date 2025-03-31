@@ -8,11 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFileViewDirectory({
-  directoryEntry,
-}: {
-  directoryEntry: Entry;
-}) {
+export function DatasetFileViewDirectory({ directoryEntry }: { directoryEntry: Entry }) {
   const { setCurrentEntry } = useDatasetFileBrowser();
 
   const { data, isLoading, isError } = trpc.file.find.list.useQuery(

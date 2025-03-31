@@ -31,29 +31,18 @@ export function EmailLayout({ children }: { children: React.ReactNode }) {
           <div className="mx-auto space-y-2">
             <div>
               <div className="text-white">UCI Machine Learning Repository</div>
-              <div className="text-sm text-gray-300">
-                Donald Bren Hall, Irvine, CA 92617
-              </div>
+              <div className="text-sm text-gray-300">Donald Bren Hall, Irvine, CA 92617</div>
             </div>
             <div>
-              <a
-                href={path.join(env.ORIGIN, ABOUT_ROUTE)}
-                className="text-white"
-              >
+              <a href={path.join(env.ORIGIN, ABOUT_ROUTE)} className="text-white">
                 About
               </a>
               <span className="text-white"> | </span>
-              <a
-                href={path.join(env.ORIGIN, CONTACT_ROUTE)}
-                className="text-white"
-              >
+              <a href={path.join(env.ORIGIN, CONTACT_ROUTE)} className="text-white">
                 Contact
               </a>
               <span className="text-white"> | </span>
-              <a
-                href={path.join(env.ORIGIN, PRIVACY_POLICY_ROUTE)}
-                className="text-white"
-              >
+              <a href={path.join(env.ORIGIN, PRIVACY_POLICY_ROUTE)} className="text-white">
                 Privacy
               </a>
             </div>

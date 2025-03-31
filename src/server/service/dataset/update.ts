@@ -16,11 +16,7 @@ import { service } from "@/server/service";
 import { ServiceError } from "@/server/service/errors";
 
 export namespace datasetUpdateService {
-  export async function zipStats(input: {
-    id: number;
-    slug: string;
-    status: string;
-  }) {
+  export async function zipStats(input: { id: number; slug: string; status: string }) {
     const zipStats = await service.file.read.zipStats({
       absolutePath: absoluteStaticPath(DATASET_FILES_ZIP_PATH(input)),
     });
@@ -36,20 +32,12 @@ export namespace datasetUpdateService {
     return zipStats;
   }
 
-  export async function title({
-    datasetId,
-    title,
-  }: {
-    datasetId: number;
-    title: string;
-  }) {
+  export async function title({ datasetId, title }: { datasetId: number; title: string }) {
     const existingDataset = await service.dataset.find.byId(datasetId);
     const newSlug = await service.dataset.create.getSlug(title);
 
     if (!existingDataset.externalLink) {
-      const oldZipPath = absoluteStaticPath(
-        DATASET_FILES_ZIP_PATH(existingDataset),
-      );
+      const oldZipPath = absoluteStaticPath(DATASET_FILES_ZIP_PATH(existingDataset));
 
       if (fs.existsSync(oldZipPath)) {
         const newZipPath = absoluteStaticPath(
@@ -59,9 +47,7 @@ export namespace datasetUpdateService {
         fs.moveSync(oldZipPath, newZipPath, { overwrite: true });
       }
 
-      const oldUnzippedPath = absoluteStaticPath(
-        DATASET_FILES_UNZIPPED_PATH(existingDataset),
-      );
+      const oldUnzippedPath = absoluteStaticPath(DATASET_FILES_UNZIPPED_PATH(existingDataset));
 
       if (fs.existsSync(oldUnzippedPath)) {
         const newUnzippedPath = absoluteStaticPath(
@@ -71,9 +57,7 @@ export namespace datasetUpdateService {
         fs.moveSync(oldUnzippedPath, newUnzippedPath, { overwrite: true });
       }
 
-      const oldPendingZipPath = absoluteStaticPath(
-        DATASET_FILES_ZIP_PENDING_PATH(existingDataset),
-      );
+      const oldPendingZipPath = absoluteStaticPath(DATASET_FILES_ZIP_PENDING_PATH(existingDataset));
 
       if (fs.existsSync(oldPendingZipPath)) {
         const newPendingZipPath = absoluteStaticPath(
@@ -119,9 +103,7 @@ export namespace datasetUpdateService {
   }) {
     const existingDataset = await service.dataset.find.byId(datasetId);
 
-    const thumbnailPath = absoluteStaticPath(
-      DATASET_FILES_THUMBNAIL_PATH(existingDataset),
-    );
+    const thumbnailPath = absoluteStaticPath(DATASET_FILES_THUMBNAIL_PATH(existingDataset));
 
     if (!hasGraphics) {
       const pendingThumbnailPath = absoluteStaticPath(
@@ -139,8 +121,7 @@ export namespace datasetUpdateService {
       if (!fs.existsSync(thumbnailPath)) {
         throw new ServiceError({
           origin: "Dataset",
-          message:
-            "Cannot set hasGraphics to true without an existing thumbnail",
+          message: "Cannot set hasGraphics to true without an existing thumbnail",
         });
       }
     }

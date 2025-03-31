@@ -63,10 +63,7 @@ export namespace userFindService {
   }
 
   export async function batch(ids: string[]) {
-    const users = await db
-      .select(userSelect)
-      .from(user)
-      .where(inArray(user.id, ids));
+    const users = await db.select(userSelect).from(user).where(inArray(user.id, ids));
 
     const userMap = new Map(users.map((u) => [u.id, u]));
 
@@ -83,10 +80,7 @@ export namespace userFindService {
   }
 
   export async function accounts(userId: string) {
-    return db
-      .select(accountSelect)
-      .from(account)
-      .where(eq(account.userId, userId));
+    return db.select(accountSelect).from(account).where(eq(account.userId, userId));
   }
 
   export async function byQuery(query: UserQuery) {
@@ -103,10 +97,7 @@ export namespace userFindService {
       nextCursor = (query.cursor ?? 0) + query.limit;
     }
 
-    const [countQuery] = await db
-      .select({ count: count() })
-      .from(user)
-      .where(buildQuery(query));
+    const [countQuery] = await db.select({ count: count() }).from(user).where(buildQuery(query));
 
     return {
       users,
@@ -116,10 +107,7 @@ export namespace userFindService {
   }
 
   export async function countByQuery(query: UserQuery) {
-    const [countQuery] = await db
-      .select({ count: count() })
-      .from(user)
-      .where(buildQuery(query));
+    const [countQuery] = await db.select({ count: count() }).from(user).where(buildQuery(query));
 
     return countQuery.count;
   }

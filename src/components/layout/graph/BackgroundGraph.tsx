@@ -7,18 +7,13 @@ import { cn } from "@/lib/utils";
 
 import styles from "./BackgroundGraph.module.css";
 
-export function BackgroundGraph({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function BackgroundGraph({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
 
   const ANIMATION_DELAY = 0.01;
 
   useEffect(() => {
-    const worker = new Worker(
-      new URL("./backgroundGraphWorker.ts", import.meta.url),
-    );
+    const worker = new Worker(new URL("./backgroundGraphWorker.ts", import.meta.url));
 
     worker.onmessage = (event: MessageEvent) => {
       startTransition(() => {

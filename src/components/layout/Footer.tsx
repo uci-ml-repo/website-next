@@ -1,12 +1,7 @@
 import Link from "next/link";
 
 import { Anteater, Banner } from "@/components/icons";
-import {
-  ABOUT_ROUTE,
-  CONTACT_ROUTE,
-  HOME_ROUTE,
-  PRIVACY_POLICY_ROUTE,
-} from "@/lib/routes";
+import { ABOUT_ROUTE, CONTACT_ROUTE, HOME_ROUTE, PRIVACY_POLICY_ROUTE } from "@/lib/routes";
 
 interface FooterLinkGroupProps {
   title: string;
@@ -56,11 +51,7 @@ export function Footer() {
             <Link href={HOME_ROUTE} className="flex h-full w-fit items-center">
               <div className="flex h-24 w-fit items-center">
                 <Anteater className="mr-4 h-1/2 fill-uci-blue-foreground max-lg:hidden" />
-                <Banner
-                  variant="logo"
-                  textColor="blue-foreground"
-                  className="w-56"
-                />
+                <Banner variant="logo" textColor="blue-foreground" className="w-56" />
               </div>
             </Link>
           </div>

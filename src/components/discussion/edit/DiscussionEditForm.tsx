@@ -13,30 +13,15 @@ import { DiscussionDeleteDialog } from "@/components/discussion/view/extended/Di
 import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { DATASET_DISCUSSION_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DiscussionEditForm({
-  discussion,
-}: {
-  discussion: DiscussionResponse;
-}) {
+export function DiscussionEditForm({ discussion }: { discussion: DiscussionResponse }) {
   const router = useRouter();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
@@ -92,9 +77,7 @@ export function DiscussionEditForm({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between space-x-2">
-        <div className="truncate text-2xl font-bold">
-          Edit: {discussion.title}
-        </div>
+        <div className="truncate text-2xl font-bold">Edit: {discussion.title}</div>
         <Button
           variant="ghost-destructive"
           size="icon"
@@ -146,18 +129,12 @@ export function DiscussionEditForm({
           <div className="flex items-center justify-between">
             <Button
               variant="secondary"
-              onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : redirect(redirectRoute)
-              }
+              onClick={() => (isDirty ? setCancelDialogOpen(true) : redirect(redirectRoute))}
               type="button"
             >
               Cancel
             </Button>
-            <Button
-              variant="gold"
-              type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
-            >
+            <Button variant="gold" type="submit" disabled={isSubmitting || isSubmitSuccessful}>
               {(isSubmitting || isSubmitSuccessful) && <Spinner />}
               Submit <PencilIcon />
             </Button>
@@ -173,10 +150,7 @@ export function DiscussionEditForm({
             <DialogClose asChild>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={() => redirect(redirectRoute)}
-            >
+            <Button variant="destructive" onClick={() => redirect(redirectRoute)}>
               Discard
             </Button>
           </div>

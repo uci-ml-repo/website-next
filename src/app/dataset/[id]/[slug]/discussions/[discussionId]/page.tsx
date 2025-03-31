@@ -14,9 +14,7 @@ export default async function Page({
 }: {
   params: Promise<{ id: string; slug: string; discussionId: string }>;
 }) {
-  const discussion = await caller.discussion.find.byId(
-    (await params).discussionId,
-  );
+  const discussion = await caller.discussion.find.byId((await params).discussionId);
 
   if (!discussion) {
     return notFound();
@@ -28,16 +26,11 @@ export default async function Page({
       <div className="space-y-2">
         <div className="flex justify-between space-x-2">
           <div className="flex items-center">
-            <ProfileAvatar
-              src={discussion.user.image}
-              className="mr-2 size-8 max-sm:hidden"
-            />
+            <ProfileAvatar src={discussion.user.image} className="mr-2 size-8 max-sm:hidden" />
             <div className="space-x-1.5 text-xs text-muted-foreground">
               <span>{discussion.user.name}</span>
               <span>&middot; {timeSince(discussion.createdAt)} ago</span>
-              {discussion.updatedAt && (
-                <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-              )}
+              {discussion.updatedAt && <span>(edited {timeSince(discussion.updatedAt)} ago)</span>}
             </div>
           </div>
 

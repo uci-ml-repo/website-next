@@ -50,35 +50,32 @@ export const iconPadding = {
   },
 };
 
-const iconVariants = cva(
-  "absolute flex items-center justify-center text-muted-foreground",
-  {
-    variants: {
-      variantSize: {
-        sm: "h-4 w-4",
-        default: "h-5 w-5",
-        lg: "h-6 w-6",
-        xl: "h-6 w-6",
-      },
-      iconPosition: {
-        left: "left-2",
-        right: "right-2",
-      },
+const iconVariants = cva("absolute flex items-center justify-center text-muted-foreground", {
+  variants: {
+    variantSize: {
+      sm: "h-4 w-4",
+      default: "h-5 w-5",
+      lg: "h-6 w-6",
+      xl: "h-6 w-6",
     },
-    compoundVariants: [
-      { variantSize: "default", iconPosition: "left", class: "left-3" },
-      { variantSize: "lg", iconPosition: "left", class: "left-3" },
-      { variantSize: "xl", iconPosition: "left", class: "left-4" },
-      { variantSize: "default", iconPosition: "right", class: "right-3" },
-      { variantSize: "lg", iconPosition: "right", class: "right-3" },
-      { variantSize: "xl", iconPosition: "right", class: "right-4" },
-    ],
-    defaultVariants: {
-      variantSize: "default",
-      iconPosition: "left",
+    iconPosition: {
+      left: "left-2",
+      right: "right-2",
     },
   },
-);
+  compoundVariants: [
+    { variantSize: "default", iconPosition: "left", class: "left-3" },
+    { variantSize: "lg", iconPosition: "left", class: "left-3" },
+    { variantSize: "xl", iconPosition: "left", class: "left-4" },
+    { variantSize: "default", iconPosition: "right", class: "right-3" },
+    { variantSize: "lg", iconPosition: "right", class: "right-3" },
+    { variantSize: "xl", iconPosition: "right", class: "right-4" },
+  ],
+  defaultVariants: {
+    variantSize: "default",
+    iconPosition: "left",
+  },
+});
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
@@ -106,18 +103,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref,
   ) => {
     const extraPadding = Icon
-      ? iconPadding[iconPosition][variantSize ?? "default"][
-          pill ? "pill" : "nonPill"
-        ]
+      ? iconPadding[iconPosition][variantSize ?? "default"][pill ? "pill" : "nonPill"]
       : "";
     return (
       <div className={cn("relative flex items-center", containerClassName)}>
         <input
           ref={ref}
-          className={cn(
-            inputVariants({ variantSize, pill, className }),
-            extraPadding,
-          )}
+          className={cn(inputVariants({ variantSize, pill, className }), extraPadding)}
           {...props}
         />
         {Icon &&

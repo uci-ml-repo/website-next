@@ -46,12 +46,11 @@ export function DatasetFiles() {
 
         <div className="pb-2 text-muted-foreground">
           <div>
-            Upload a single zip file containing the entire contents of your
-            dataset, including any additional files and documentation.
+            Upload a single zip file containing the entire contents of your dataset, including any
+            additional files and documentation.
           </div>
           <div>
-            Note: the maximum upload size is 1GB. If your dataset is larger than
-            this, please{" "}
+            Note: the maximum upload size is 1GB. If your dataset is larger than this, please{" "}
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
             </Link>
@@ -69,28 +68,22 @@ export function DatasetFiles() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold">Replace Dataset Files</div>
-          <Button
-            variant="secondary"
-            className="lift"
-            onClick={() => stopEditingField("files")}
-          >
+          <Button variant="secondary" className="lift" onClick={() => stopEditingField("files")}>
             Cancel
           </Button>
         </div>
 
         <div className="pb-2 text-muted-foreground">
           <div>
-            <span className="font-bold">Warning:</span> uploading a new zip file
-            will overwrite your existing dataset files. This action cannot be
-            undone.
+            <span className="font-bold">Warning:</span> uploading a new zip file will overwrite your
+            existing dataset files. This action cannot be undone.
           </div>
           <div>
-            Upload a single zip file containing the entire contents of your
-            dataset, including any additional files and documentation.
+            Upload a single zip file containing the entire contents of your dataset, including any
+            additional files and documentation.
           </div>
           <div>
-            Note: the maximum upload size is 1GB. If your dataset is larger than
-            this, please{" "}
+            Note: the maximum upload size is 1GB. If your dataset is larger than this, please{" "}
             <Link href={CONTACT_ROUTE} className="underline">
               contact us
             </Link>
@@ -104,11 +97,8 @@ export function DatasetFiles() {
   }
 
   if (
-    (!viewPendingFiles &&
-      (fileStatus === "unzipped" || fileStatus === "not-unzipped")) ||
-    (viewPendingFiles &&
-      (pendingFileStatus === "unzipped" ||
-        pendingFileStatus === "not-unzipped"))
+    (!viewPendingFiles && (fileStatus === "unzipped" || fileStatus === "not-unzipped")) ||
+    (viewPendingFiles && (pendingFileStatus === "unzipped" || pendingFileStatus === "not-unzipped"))
   ) {
     return (
       <div className="space-y-2">
@@ -140,11 +130,7 @@ export function DatasetFiles() {
                 </Button>
               </div>
             ) : (
-              <Button
-                variant="gold"
-                className="lift"
-                onClick={() => setViewPendingFiles(true)}
-              >
+              <Button variant="gold" className="lift" onClick={() => setViewPendingFiles(true)}>
                 <PencilIcon /> View pending files
               </Button>
             ))}
@@ -157,8 +143,8 @@ export function DatasetFiles() {
         ) : (
           <AlternativeCard>
             <div className="text-pretty text-center text-muted-foreground">
-              Files are not available for browsing. This may be because the
-              dataset is too large. Download the dataset to view files locally.
+              Files are not available for browsing. This may be because the dataset is too large.
+              Download the dataset to view files locally.
             </div>
             <DatasetDownloadButton className="w-fit" />
           </AlternativeCard>

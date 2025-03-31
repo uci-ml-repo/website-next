@@ -14,9 +14,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
 
   const filterCountExcept = useCallback(
     ({ except = [] }: { except?: (keyof T)[] } = {}) => {
-      return Array.from(searchParams.entries()).filter(
-        ([key]) => !except.includes(key),
-      ).length;
+      return Array.from(searchParams.entries()).filter(([key]) => !except.includes(key)).length;
     },
     [searchParams],
   );
@@ -63,9 +61,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   }, [debouncedSetFilters]);
 
   const clearFilters = ({ except = [] }: { except?: (keyof T)[] } = {}) => {
-    const clearedFilters = (Object.keys(filters) as (keyof T)[]).reduce<
-      Partial<T>
-    >((acc, key) => {
+    const clearedFilters = (Object.keys(filters) as (keyof T)[]).reduce<Partial<T>>((acc, key) => {
       acc[key] = except.includes(key as string) ? filters[key] : undefined;
       return acc;
     }, {});
@@ -73,9 +69,7 @@ export function useQueryFilters<T extends Record<string, unknown>>() {
   };
 
   const filterActive = ({ except = [] }: { except?: (keyof T)[] } = {}) =>
-    Object.entries(filters).some(
-      ([key, value]) => !except.includes(key) && value !== undefined,
-    );
+    Object.entries(filters).some(([key, value]) => !except.includes(key) && value !== undefined);
 
   return {
     filters,

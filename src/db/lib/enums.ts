@@ -83,14 +83,12 @@ export namespace Enums {
 
 export type UserRole = (typeof Enums.UserRole)[keyof typeof Enums.UserRole];
 
-export type DatasetStatus =
-  (typeof Enums.ApprovalStatus)[keyof typeof Enums.ApprovalStatus];
+export type DatasetStatus = (typeof Enums.ApprovalStatus)[keyof typeof Enums.ApprovalStatus];
 
 export type DatasetSubjectArea =
   (typeof Enums.DatasetSubjectArea)[keyof typeof Enums.DatasetSubjectArea];
 
-export type DatasetTask =
-  (typeof Enums.DatasetTask)[keyof typeof Enums.DatasetTask];
+export type DatasetTask = (typeof Enums.DatasetTask)[keyof typeof Enums.DatasetTask];
 
 export type DatasetCharacteristic =
   (typeof Enums.DatasetDataType)[keyof typeof Enums.DatasetDataType];

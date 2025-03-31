@@ -13,29 +13,20 @@ import { caller } from "@/server/trpc/query/server";
 
 export const metadata: Metadata = { title: "Verify Email" };
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ token: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
 
   const parsedToken = decodeURIComponent(token);
 
-  const existingToken = await caller.user.credentials.getEmailVerificationToken(
-    {
-      token: parsedToken,
-    },
-  );
+  const existingToken = await caller.user.credentials.getEmailVerificationToken({
+    token: parsedToken,
+  });
 
   if (!existingToken.success) {
     return (
       <ErrorGraphic header={existingToken.message}>
         <div>
-          <a
-            href={PROFILE_SETTINGS_ROUTE}
-            className="text-link hover:underline"
-          >
+          <a href={PROFILE_SETTINGS_ROUTE} className="text-link hover:underline">
             Generate another token
           </a>
         </div>

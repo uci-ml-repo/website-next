@@ -7,7 +7,5 @@ interface Props {
 }
 
 export function VisuallyHidden({ children }: Props) {
-  return (
-    <VisuallyHiddenPrimitive.Root>{children}</VisuallyHiddenPrimitive.Root>
-  );
+  return <VisuallyHiddenPrimitive.Root>{children}</VisuallyHiddenPrimitive.Root>;
 }

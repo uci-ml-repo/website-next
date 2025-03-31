@@ -8,12 +8,7 @@ import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -89,11 +84,7 @@ export function DatasetDescriptionForm() {
               <FormItem>
                 <FormLabel className="sr-only">About Dataset</FormLabel>
                 <FormControl>
-                  <MDXEditor
-                    ref={ref}
-                    disabled={pending}
-                    markdown={dataset.description ?? ""}
-                  />
+                  <MDXEditor ref={ref} disabled={pending} markdown={dataset.description ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,17 +117,13 @@ export function DatasetDescriptionForm() {
         <DialogContent>
           <DialogTitle>Discard description edit?</DialogTitle>
           <div>
-            You have unsaved changes to the dataset description, discard them
-            without saving?
+            You have unsaved changes to the dataset description, discard them without saving?
           </div>
           <div className="flex justify-between">
             <DialogClose asChild>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={() => stopEditingField("description")}
-            >
+            <Button variant="destructive" onClick={() => stopEditingField("description")}>
               Discard
             </Button>
           </div>

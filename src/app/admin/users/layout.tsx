@@ -3,11 +3,7 @@ import { forbidden, unauthorized } from "next/navigation";
 import { auth } from "@/auth";
 import { Enums } from "@/db/lib/enums";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   if (!session) {

@@ -61,14 +61,8 @@ export function LinearTabs({
   }
 
   return (
-    <TabsPrimitive.Root
-      value={currentValue}
-      onValueChange={onValueChange}
-      {...props}
-    >
-      <TabsValueContext.Provider value={currentValue}>
-        {children}
-      </TabsValueContext.Provider>
+    <TabsPrimitive.Root value={currentValue} onValueChange={onValueChange} {...props}>
+      <TabsValueContext.Provider value={currentValue}>{children}</TabsValueContext.Provider>
     </TabsPrimitive.Root>
   );
 }
@@ -149,25 +143,20 @@ export const LinearTabsList = React.forwardRef<
           if (typeof forwardedRef === "function") {
             forwardedRef(node as null);
           } else if (forwardedRef) {
-            (
-              forwardedRef as React.MutableRefObject<HTMLDivElement | null>
-            ).current = node;
+            (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
           }
         }}
         className={cn(linearTabsListVariants({ variant }), className)}
         {...props}
       >
-        {React.Children.map(
-          children as TriggerElement[],
-          (child: TriggerElement) => {
-            if (React.isValidElement(child)) {
-              return React.cloneElement(child, {
-                "data-value": child.props.value,
-              });
-            }
-            return child;
-          },
-        )}
+        {React.Children.map(children as TriggerElement[], (child: TriggerElement) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, {
+              "data-value": child.props.value,
+            });
+          }
+          return child;
+        })}
         <motion.span
           animate={indicatorStyle}
           transition={{ ease: "easeOut", duration: 0.175 }}
@@ -197,78 +186,66 @@ export const LinearTabsTrigger = React.forwardRef<
     badgeValue?: number | string | null;
     link?: string;
   }
->(
-  (
-    {
-      className,
-      children,
-      badgeVariant = "secondary",
-      badgeValue,
-      link,
-      ...triggerProps
-    },
-    ref,
-  ) => {
-    if (link) {
-      return (
-        <TabsPrimitive.Trigger asChild ref={ref} {...triggerProps}>
-          <Link
-            href={link}
-            className={cn(
-              "data-[state=active]:text-foreground",
-              "inline-flex items-center whitespace-nowrap px-1 py-2 text-xl font-medium",
-              "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-              className,
-            )}
-            tabIndex={0}
-            onFocus={(e) => e.preventDefault()}
-          >
-            {badgeValue !== undefined ? (
-              <div className="flex items-center space-x-2">
-                <span>{children}</span>
-                <SpinnerBadge variant={badgeVariant} value={badgeValue} />
-              </div>
-            ) : (
-              children
-            )}
-          </Link>
-        </TabsPrimitive.Trigger>
-      );
-    }
-
+>(({ className, children, badgeVariant = "secondary", badgeValue, link, ...triggerProps }, ref) => {
+  if (link) {
     return (
-      <TabsPrimitive.Trigger
-        ref={ref}
-        {...triggerProps}
-        className={cn(
-          "inline-flex items-center whitespace-nowrap p-2 text-xl font-medium ring-offset-background",
-          "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-          "data-[state=active]:text-foreground",
-          className,
-        )}
-      >
-        {badgeValue !== undefined ? (
-          <div className="flex items-center space-x-2">
-            <span>{children}</span>
-            <Badge variant={badgeVariant}>
-              {badgeValue ? (
-                typeof badgeValue === "number" ? (
-                  abbreviateDecimal(badgeValue)
-                ) : (
-                  badgeValue
-                )
-              ) : (
-                <Spinner className="size-4" />
-              )}
-            </Badge>
-          </div>
-        ) : (
-          children
-        )}
+      <TabsPrimitive.Trigger asChild ref={ref} {...triggerProps}>
+        <Link
+          href={link}
+          className={cn(
+            "data-[state=active]:text-foreground",
+            "inline-flex items-center whitespace-nowrap px-1 py-2 text-xl font-medium",
+            "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+            className,
+          )}
+          tabIndex={0}
+          onFocus={(e) => e.preventDefault()}
+        >
+          {badgeValue !== undefined ? (
+            <div className="flex items-center space-x-2">
+              <span>{children}</span>
+              <SpinnerBadge variant={badgeVariant} value={badgeValue} />
+            </div>
+          ) : (
+            children
+          )}
+        </Link>
       </TabsPrimitive.Trigger>
     );
-  },
-);
+  }
+
+  return (
+    <TabsPrimitive.Trigger
+      ref={ref}
+      {...triggerProps}
+      className={cn(
+        "inline-flex items-center whitespace-nowrap p-2 text-xl font-medium ring-offset-background",
+        "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "data-[state=active]:text-foreground",
+        className,
+      )}
+    >
+      {badgeValue !== undefined ? (
+        <div className="flex items-center space-x-2">
+          <span>{children}</span>
+          <Badge variant={badgeVariant}>
+            {badgeValue ? (
+              typeof badgeValue === "number" ? (
+                abbreviateDecimal(badgeValue)
+              ) : (
+                badgeValue
+              )
+            ) : (
+              <Spinner className="size-4" />
+            )}
+          </Badge>
+        </div>
+      ) : (
+        children
+      )}
+    </TabsPrimitive.Trigger>
+  );
+});
 LinearTabsTrigger.displayName = "LinearTabsTrigger";
 
 export const LinearTabsContent = React.forwardRef<

@@ -7,13 +7,11 @@ import { service } from "@/server/service";
 import { procedure, protectedProcedure, router } from "@/server/trpc";
 
 export const userCredentialsRouter = router({
-  sendResetPasswordEmail: procedure
-    .input(z.object({ email: z.string() }))
-    .mutation(({ input }) =>
-      service.user.credentials.sendResetPasswordEmail({
-        email: input.email,
-      }),
-    ),
+  sendResetPasswordEmail: procedure.input(z.object({ email: z.string() })).mutation(({ input }) =>
+    service.user.credentials.sendResetPasswordEmail({
+      email: input.email,
+    }),
+  ),
 
   sendVerificationEmail: protectedProcedure.mutation(({ ctx }) =>
     service.user.credentials.sendVerificationEmail({
@@ -25,15 +23,11 @@ export const userCredentialsRouter = router({
 
   getEmailVerificationToken: procedure
     .input(z.object({ token: z.string() }))
-    .query(({ input }) =>
-      service.user.credentials.getEmailVerificationToken(input.token),
-    ),
+    .query(({ input }) => service.user.credentials.getEmailVerificationToken(input.token)),
 
   getResetPasswordToken: procedure
     .input(z.object({ token: z.string() }))
-    .query(({ input }) =>
-      service.user.credentials.getResetPasswordToken(input.token),
-    ),
+    .query(({ input }) => service.user.credentials.getResetPasswordToken(input.token)),
 
   resetPassword: procedure
     .input(z.object({ password: z.string(), token: z.string() }))
@@ -65,10 +59,7 @@ export const userCredentialsRouter = router({
           };
         }
 
-        const isPasswordMatches = bcryptjs.compareSync(
-          input.password,
-          existingUser.password,
-        );
+        const isPasswordMatches = bcryptjs.compareSync(input.password, existingUser.password);
 
         if (!isPasswordMatches) {
           return {
@@ -87,9 +78,7 @@ export const userCredentialsRouter = router({
     }),
 
   credentialsRegister: procedure
-    .input(
-      z.object({ email: z.string(), password: z.string(), name: z.string() }),
-    )
+    .input(z.object({ email: z.string(), password: z.string(), name: z.string() }))
     .mutation(async ({ input }) => {
       try {
         const existingUser = await db.query.user.findFirst({
@@ -99,8 +88,7 @@ export const userCredentialsRouter = router({
         if (existingUser) {
           return {
             success: false,
-            message:
-              "An account with this email already exists. Try signing in.",
+            message: "An account with this email already exists. Try signing in.",
           };
         }
 
@@ -112,9 +100,7 @@ export const userCredentialsRouter = router({
           name: input.name,
         });
 
-        service.email
-          .sendRegistrationEmail({ email: input.email, name: input.name })
-          .then();
+        service.email.sendRegistrationEmail({ email: input.email, name: input.name }).then();
 
         return { success: true, email: input.email };
       } catch (error: unknown) {

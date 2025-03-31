@@ -8,10 +8,7 @@ export function enumToArray<T extends Record<string, string>>(
   return values as [T[keyof T], ...T[keyof T][]];
 }
 
-export function formatEnum(
-  enumString: string | string[],
-  titleCase: boolean = true,
-) {
+export function formatEnum(enumString: string | string[], titleCase: boolean = true) {
   const lowercaseWords = new Set(["the", "and", "or"]);
 
   function formatSingleEnum(str: string) {

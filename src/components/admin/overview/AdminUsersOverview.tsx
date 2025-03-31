@@ -1,9 +1,6 @@
 import { TrendingUpIcon, UserIcon } from "lucide-react";
 
-import {
-  OverviewCard,
-  OverviewCardViewMore,
-} from "@/components/ui/overview-card";
+import { OverviewCard, OverviewCardViewMore } from "@/components/ui/overview-card";
 import { ADMIN_USERS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
@@ -14,11 +11,7 @@ export async function AdminUsersOverview() {
   });
 
   return (
-    <OverviewCard
-      title="Users"
-      icon={<UserIcon className="size-5" />}
-      href={ADMIN_USERS_ROUTE}
-    >
+    <OverviewCard title="Users" icon={<UserIcon className="size-5" />} href={ADMIN_USERS_ROUTE}>
       <div className="flex h-full w-full items-center justify-around">
         <div className="flex flex-col items-center">
           <div className="flex items-center space-x-2 text-2xl font-bold">

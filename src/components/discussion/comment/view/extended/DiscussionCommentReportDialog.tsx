@@ -46,8 +46,7 @@ export function DiscussionCommentReportDialog({
 }) {
   const session = useSession();
 
-  const createReportMutation =
-    trpc.report.discussionComment.create.useMutation();
+  const createReportMutation = trpc.report.discussionComment.create.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -95,10 +94,7 @@ export function DiscussionCommentReportDialog({
                       className="flex flex-col"
                     >
                       {discussionReportReasons.map((reason) => (
-                        <FormItem
-                          key={reason}
-                          className="flex items-center space-x-3 space-y-0"
-                        >
+                        <FormItem key={reason} className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value={reason} />
                           </FormControl>
@@ -120,9 +116,7 @@ export function DiscussionCommentReportDialog({
                 <FormItem>
                   <FormLabel className="space-x-1">
                     <span>Details</span>
-                    <span className="text-sm text-muted-foreground">
-                      (optional)
-                    </span>
+                    <span className="text-sm text-muted-foreground">(optional)</span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -137,18 +131,10 @@ export function DiscussionCommentReportDialog({
             />
 
             <DialogFooter className="!w-full !justify-between gap-2">
-              <Button
-                onClick={() => setOpen(false)}
-                variant="secondary"
-                type="button"
-              >
+              <Button onClick={() => setOpen(false)} variant="secondary" type="button">
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                variant="gold"
-                disabled={!form.watch("reason")}
-              >
+              <Button type="submit" variant="gold" disabled={!form.watch("reason")}>
                 Submit
               </Button>
             </DialogFooter>

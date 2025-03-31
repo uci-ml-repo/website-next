@@ -31,10 +31,4 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 const TooltipArrow = TooltipPrimitive.Arrow;
 
-export {
-  Tooltip,
-  TooltipArrow,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-};
+export { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger };

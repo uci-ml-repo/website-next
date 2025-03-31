@@ -2,10 +2,7 @@ import { SearchIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { DatasetFiltersMobile } from "@/components/datasets/DatasetFiltersMobile";
-import {
-  DatasetSearchOrderBy,
-  orderByOptions,
-} from "@/components/datasets/DatasetSearchOrderBy";
+import { DatasetSearchOrderBy, orderByOptions } from "@/components/datasets/DatasetSearchOrderBy";
 import { useDebouncedSearch } from "@/components/hooks/use-debounced-search";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { InputClearable } from "@/components/ui/input-clearable";
@@ -14,14 +11,13 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 export function DatasetSearchInput() {
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
-  const { inputValue, setInputValue, searchValue, handleChange } =
-    useDebouncedSearch({ defaultValue: filters.search });
+  const { inputValue, setInputValue, searchValue, handleChange } = useDebouncedSearch({
+    defaultValue: filters.search,
+  });
 
   const [autoOrder, setAutoOrder] = useState(true);
   const [localOrder, setLocalOrder] = useState<string>(
-    filters.search
-      ? "relevance"
-      : Object.keys(filters.order || {})[0] || "viewCount",
+    filters.search ? "relevance" : Object.keys(filters.order || {})[0] || "viewCount",
   );
 
   const handleOrderChange = (newOrder: string) => {
@@ -46,9 +42,7 @@ export function DatasetSearchInput() {
 
   useEffect(() => {
     const order =
-      localOrder === "relevance"
-        ? undefined
-        : { [localOrder]: orderByOptions[localOrder].sort };
+      localOrder === "relevance" ? undefined : { [localOrder]: orderByOptions[localOrder].sort };
 
     setFilters({
       search: searchValue,
@@ -79,9 +73,7 @@ export function DatasetSearchInput() {
           <DatasetFiltersMobile />
         </div>
         <div>
-          <div className="mb-1 text-sm text-muted-foreground max-md:hidden">
-            Sort By
-          </div>
+          <div className="mb-1 text-sm text-muted-foreground max-md:hidden">Sort By</div>
           <DatasetSearchOrderBy
             value={localOrder}
             onChange={handleOrderChange}

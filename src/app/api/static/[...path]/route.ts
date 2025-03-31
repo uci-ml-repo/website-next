@@ -20,17 +20,11 @@ import { toStringArray } from "@/lib/utils";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-export async function GET(
-  req: NextRequest,
-  ctx: { params: Promise<{ path: string[] }> },
-) {
+export async function GET(req: NextRequest, ctx: { params: Promise<{ path: string[] }> }) {
   return auth(async (req, { params }) => {
     try {
       if (!env.STATIC_FILES_DIRECTORY) {
-        return NextResponse.json(
-          { error: "Storage path is not defined" },
-          { status: 500 },
-        );
+        return NextResponse.json({ error: "Storage path is not defined" }, { status: 500 });
       }
 
       if (!params) {
@@ -67,20 +61,14 @@ export async function GET(
         },
       });
     } catch (error: unknown) {
-      return NextResponse.json(
-        { error: (error as Error).message },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
   })(req, {
     params: { path: (await ctx.params).path },
   });
 }
 
-export async function PUT(
-  req: NextRequest,
-  ctx: { params: Promise<{ path: string[] }> },
-) {
+export async function PUT(req: NextRequest, ctx: { params: Promise<{ path: string[] }> }) {
   return auth(async (req, { params }) => {
     try {
       if (!params) {
@@ -92,10 +80,7 @@ export async function PUT(
       const directoryPath = path.dirname(filePath);
 
       if (!(await fs.pathExists(directoryPath))) {
-        return NextResponse.json(
-          { error: "Upload directory not found" },
-          { status: 404 },
-        );
+        return NextResponse.json({ error: "Upload directory not found" }, { status: 404 });
       }
 
       if (!req.auth) {
@@ -118,16 +103,10 @@ export async function PUT(
         );
       }
 
-      const [uploadToDataset] = await db
-        .select()
-        .from(dataset)
-        .where(eq(dataset.id, datasetId));
+      const [uploadToDataset] = await db.select().from(dataset).where(eq(dataset.id, datasetId));
 
       if (!uploadToDataset) {
-        return NextResponse.json(
-          { error: "Dataset not found" },
-          { status: 404 },
-        );
+        return NextResponse.json({ error: "Dataset not found" }, { status: 404 });
       }
 
       if (
@@ -136,10 +115,7 @@ export async function PUT(
         relativePath !== DATASET_FILES_THUMBNAIL_PATH(uploadToDataset) &&
         relativePath !== DATASET_FILES_THUMBNAIL_PENDING_PATH(uploadToDataset)
       ) {
-        return NextResponse.json(
-          { error: "Invalid upload path for dataset" },
-          { status: 400 },
-        );
+        return NextResponse.json({ error: "Invalid upload path for dataset" }, { status: 400 });
       }
 
       if (
@@ -152,10 +128,7 @@ export async function PUT(
         );
       }
 
-      if (
-        !isPriviliged(req.auth.user.role) &&
-        req.auth.user.id !== uploadToDataset.userId
-      ) {
+      if (!isPriviliged(req.auth.user.role) && req.auth.user.id !== uploadToDataset.userId) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
 
@@ -163,10 +136,7 @@ export async function PUT(
 
       const file = formData.get("file") as Blob | null;
       if (!file) {
-        return NextResponse.json(
-          { error: "File blob is required." },
-          { status: 400 },
-        );
+        return NextResponse.json({ error: "File blob is required." }, { status: 400 });
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
@@ -174,10 +144,7 @@ export async function PUT(
 
       return NextResponse.json({ path: filePath });
     } catch (error: unknown) {
-      return NextResponse.json(
-        { error: (error as Error).message },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
   })(req, {
     params: { path: (await ctx.params).path },

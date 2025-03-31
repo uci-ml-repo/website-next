@@ -19,8 +19,7 @@ import type { DatasetQuery } from "@/server/schema/dataset";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetSearch() {
-  const { filters, setFilters, clearFilters, filterCountExcept } =
-    useQueryFilters<DatasetQuery>();
+  const { filters, setFilters, clearFilters, filterCountExcept } = useQueryFilters<DatasetQuery>();
 
   const filterCount =
     filterCountExcept({
@@ -29,12 +28,9 @@ export function DatasetSearch() {
     +(!!filters.instanceCountMax && !!filters.instanceCountMin) -
     +(!!filters.featureCountMax && !!filters.featureCountMin);
 
-  const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(
-    filters,
-    {
-      placeholderData: (prev) => prev,
-    },
-  );
+  const { data, isLoading, isFetching } = trpc.dataset.find.byQuery.useQuery(filters, {
+    placeholderData: (prev) => prev,
+  });
 
   const limit = filters.limit || 10;
   const offset = filters.cursor || 0;
@@ -76,21 +72,13 @@ export function DatasetSearch() {
             <div className="mb-2 flex flex-1 flex-col overflow-hidden">
               <div className="ml-2 mt-2 flex items-center text-lg text-muted-foreground">
                 Found{" "}
-                {isFiltering ? (
-                  <Spinner className="mx-1 size-5" />
-                ) : (
-                  data.count.toLocaleString()
-                )}{" "}
+                {isFiltering ? <Spinner className="mx-1 size-5" /> : data.count.toLocaleString()}{" "}
                 {data.datasets.length === 1 ? "dataset" : "datasets"}{" "}
                 {filters.search && !isLoading ? `for '${filters.search}'` : ""}{" "}
                 {filterCount
-                  ? `matching ${filterCount} ${
-                      filterCount === 1 ? "filter" : "filters"
-                    }`
+                  ? `matching ${filterCount} ${filterCount === 1 ? "filter" : "filters"}`
                   : ""}
-                {!isFiltering && isFetching && (
-                  <Spinner className="mx-1 size-5" />
-                )}
+                {!isFiltering && isFetching && <Spinner className="mx-1 size-5" />}
               </div>
               <ScrollGradient
                 containerClassName="flex min-h-0 flex-1"
@@ -109,9 +97,7 @@ export function DatasetSearch() {
               limit={limit}
               offset={offset}
               onPageChange={(newOffset) => setFilters({ cursor: newOffset })}
-              onLimitChange={(newLimit) =>
-                setFilters({ limit: newLimit, cursor: 0 })
-              }
+              onLimitChange={(newLimit) => setFilters({ limit: newLimit, cursor: 0 })}
             />
           </>
         ) : (

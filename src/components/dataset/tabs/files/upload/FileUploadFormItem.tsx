@@ -7,19 +7,9 @@ import type { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ProgressCircle } from "@/components/ui/progress-circle";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { abbreviateFileSize, abbreviateTime, cn } from "@/lib/utils";
 
 interface FileUploadFormItemProps {
@@ -101,9 +91,7 @@ export function FileUploadFormItem({
                 <div className="flex w-full items-center justify-between space-x-1">
                   <div className="flex items-center space-x-2 overflow-hidden [&>svg]:shrink-0">
                     {fileIcon}
-                    <span className="truncate text-lg font-bold">
-                      {file.name}
-                    </span>
+                    <span className="truncate text-lg font-bold">{file.name}</span>
                   </div>
                   {uploadProgress ? (
                     <div className="flex items-center text-muted-foreground">
@@ -113,12 +101,9 @@ export function FileUploadFormItem({
                           {abbreviateFileSize(uploadProgress.total)}
                         </div>
                       )}
-                      {uploadProgress.estimated &&
-                        uploadProgress.estimated > 0 && (
-                          <div>
-                            ({abbreviateTime(uploadProgress.estimated)})
-                          </div>
-                        )}
+                      {uploadProgress.estimated && uploadProgress.estimated > 0 && (
+                        <div>({abbreviateTime(uploadProgress.estimated)})</div>
+                      )}
                       {uploadProgress.progress && (
                         <ProgressCircle progress={uploadProgress.progress} />
                       )}

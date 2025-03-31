@@ -47,9 +47,7 @@ export function DatasetFilterContent({
             tooltipOpen={tooltipsOpen}
             dropdownOpen={openStates?.[index]}
             onDropdownOpenChange={() =>
-              setOpenStates?.((prev) =>
-                prev.map((state, i) => (i === index ? !state : state)),
-              )
+              setOpenStates?.((prev) => prev.map((state, i) => (i === index ? !state : state)))
             }
           />
         </React.Fragment>

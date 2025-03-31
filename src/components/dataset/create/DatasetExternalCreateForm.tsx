@@ -64,8 +64,7 @@ export function DatasetExternalCreateForm() {
     await datasetCreateMutation.mutateAsync(values);
   }
 
-  const pending =
-    form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+  const pending = form.formState.isSubmitting || form.formState.isSubmitSuccessful;
 
   return (
     <Form {...form}>
@@ -108,12 +107,7 @@ export function DatasetExternalCreateForm() {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          variant="gold"
-          className="lift w-full"
-          disabled={pending}
-        >
+        <Button type="submit" variant="gold" className="lift w-full" disabled={pending}>
           {pending ? <Spinner /> : <PlusIcon />} Create Dataset
         </Button>
       </form>

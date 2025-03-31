@@ -1,25 +1,14 @@
 "use client";
 
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  CircleHelpIcon,
-} from "lucide-react";
+import { ChevronsDownUpIcon, ChevronsUpDownIcon, CircleHelpIcon } from "lucide-react";
 import React, { useState } from "react";
 
 import { DatasetFiltersClear } from "@/components/datasets/DatasetFiltersClear";
-import {
-  DatasetFilterContent,
-  datasetFilters,
-} from "@/components/datasets/DatasetFiltersContent";
+import { DatasetFilterContent, datasetFilters } from "@/components/datasets/DatasetFiltersContent";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
@@ -84,9 +73,7 @@ export function DatasetFiltersDesktop({ className }: { className: string }) {
                 {isAnyOpen ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              {isAnyOpen ? "Collapse" : "Expand"} All
-            </TooltipContent>
+            <TooltipContent>{isAnyOpen ? "Collapse" : "Expand"} All</TooltipContent>
           </Tooltip>
         </div>
         <DatasetFiltersClear />

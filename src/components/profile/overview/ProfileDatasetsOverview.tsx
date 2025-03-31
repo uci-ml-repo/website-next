@@ -39,12 +39,7 @@ export async function ProfileDatasetsOverview() {
         <>
           <div>
             {datasetsQuery.datasets.map((dataset) => (
-              <DatasetMiniRow
-                key={dataset.id}
-                dataset={dataset}
-                className="lift"
-                showStatus
-              />
+              <DatasetMiniRow key={dataset.id} dataset={dataset} className="lift" showStatus />
             ))}
           </div>
 

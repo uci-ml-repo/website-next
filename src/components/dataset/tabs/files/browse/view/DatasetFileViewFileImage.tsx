@@ -33,12 +33,7 @@ export function DatasetFileViewFileImage({ source }: { source: string }) {
 
   return (
     <div className="relative flex-1">
-      <Image
-        src={source}
-        alt={path.basename(source)}
-        fill
-        className="object-contain"
-      />
+      <Image src={source} alt={path.basename(source)} fill className="object-contain" />
       <div className="absolute bottom-0 right-0 rounded-tl-lg bg-muted/70 px-1 py-0.5">
         {imageDimensions.height && imageDimensions.width ? (
           <div className="text-sm">

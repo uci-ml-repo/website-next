@@ -23,7 +23,5 @@ export const reportDiscussionCommentRouter = router({
         reportId: z.string(),
       }),
     )
-    .mutation(async ({ input }) =>
-      service.report.discussionComment.resolve(input),
-    ),
+    .mutation(async ({ input }) => service.report.discussionComment.resolve(input)),
 });

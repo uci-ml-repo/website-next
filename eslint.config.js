@@ -59,10 +59,7 @@ const config = [
       ],
       "react-hooks/exhaustive-deps": "error",
       "react/no-unescaped-entities": "off",
-      "react/jsx-curly-brace-presence": [
-        "error",
-        { props: "never", children: "never" },
-      ],
+      "react/jsx-curly-brace-presence": ["error", { props: "never", children: "never" }],
       "react/self-closing-comp": "error",
     },
   },

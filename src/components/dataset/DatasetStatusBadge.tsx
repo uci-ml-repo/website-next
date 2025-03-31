@@ -2,13 +2,7 @@ import type { BadgeSize, BadgeVariant } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
 import { Enums } from "@/db/lib/enums";
 
-export function DatasetStatusBadge({
-  status,
-  size,
-}: {
-  status: string;
-  size?: BadgeSize;
-}) {
+export function DatasetStatusBadge({ status, size }: { status: string; size?: BadgeSize }) {
   let variant: BadgeVariant;
 
   switch (status) {

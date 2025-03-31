@@ -44,14 +44,9 @@ export function DatasetFileViewFile({ fileEntry }: { fileEntry: Entry }) {
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const element = event.currentTarget;
-    const bottom =
-      element.scrollHeight - element.scrollTop - element.clientHeight < 200;
+    const bottom = element.scrollHeight - element.scrollTop - element.clientHeight < 200;
 
-    if (
-      bottom &&
-      readFileQuery.hasNextPage &&
-      !readFileQuery.isFetchingNextPage
-    ) {
+    if (bottom && readFileQuery.hasNextPage && !readFileQuery.isFetchingNextPage) {
       readFileQuery.fetchNextPage();
     }
   };
@@ -90,10 +85,7 @@ export function DatasetFileViewFile({ fileEntry }: { fileEntry: Entry }) {
   ) : (
     <div ref={containerRef} onScroll={handleScroll} className="overflow-auto">
       {Object.keys(tabularToDelimiter).includes(extension) ? (
-        <DatasetFileViewFileTabular
-          lines={lines}
-          delimiter={tabularToDelimiter[extension]}
-        />
+        <DatasetFileViewFileTabular lines={lines} delimiter={tabularToDelimiter[extension]} />
       ) : (
         <DatasetFileViewFileText lines={lines} />
       )}

@@ -5,14 +5,8 @@ export type GraphNode = {
   edgesTo: GraphNode[];
 };
 
-function randomHalfNormal(
-  max: number,
-  direction: number,
-  standardDeviation: number,
-) {
-  const z0 =
-    Math.sqrt(-2.0 * Math.log(Math.random())) *
-    Math.cos(2.0 * Math.PI * Math.random());
+function randomHalfNormal(max: number, direction: number, standardDeviation: number) {
+  const z0 = Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random());
 
   return direction * Math.abs(z0) * standardDeviation + max;
 }
@@ -36,8 +30,7 @@ const MAX_DISTANCE = 100;
 const DISTANCE_EDGE_MULTIPLIER = 15;
 
 self.onmessage = () => {
-  const nodeCount =
-    Math.floor(Math.random() * NUM_NODES_VARIANCE) + MIN_NUM_NODES;
+  const nodeCount = Math.floor(Math.random() * NUM_NODES_VARIANCE) + MIN_NUM_NODES;
 
   const nodes: GraphNode[] = Array.from({ length: nodeCount }, () => {
     const x = randomHalfNormal(TOTAL_SIZE, -1, NODES_X_DEVIATION);
@@ -46,10 +39,7 @@ self.onmessage = () => {
     return {
       x,
       y,
-      size: Math.max(
-        BASE_SIZE + (Math.random() * (x - y) * SIZE_SCALE) / 100,
-        MIN_SIZE,
-      ),
+      size: Math.max(BASE_SIZE + (Math.random() * (x - y) * SIZE_SCALE) / 100, MIN_SIZE),
       edgesTo: [],
     };
   });
@@ -59,10 +49,7 @@ self.onmessage = () => {
   for (let i = 0; i < nodeCount; i++) {
     for (let j = i + 1; j < nodeCount; j++) {
       const dis = quickDistance(nodes[i], nodes[j]);
-      if (
-        dis < MAX_DISTANCE &&
-        Math.random() < DISTANCE_EDGE_MULTIPLIER / dis
-      ) {
+      if (dis < MAX_DISTANCE && Math.random() < DISTANCE_EDGE_MULTIPLIER / dis) {
         nodes[i].edgesTo.push(nodes[j]);
       }
     }

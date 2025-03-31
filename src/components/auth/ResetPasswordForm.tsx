@@ -26,8 +26,7 @@ export function ResetPasswordForm({
   token: string;
   form: ReturnType<typeof useForm<FormSchema>>;
 }) {
-  const resetPasswordMutation =
-    trpc.user.credentials.resetPassword.useMutation();
+  const resetPasswordMutation = trpc.user.credentials.resetPassword.useMutation();
 
   function onSubmit(values: FormSchema) {
     resetPasswordMutation.mutate({
@@ -62,9 +61,7 @@ export function ResetPasswordForm({
           <Alert variant="destructive">
             <div className="flex items-center space-x-2">
               <AlertCircleIcon className="size-4" />
-              <AlertDescription>
-                {resetPasswordMutation.error.message}
-              </AlertDescription>
+              <AlertDescription>{resetPasswordMutation.error.message}</AlertDescription>
             </div>
           </Alert>
         )}

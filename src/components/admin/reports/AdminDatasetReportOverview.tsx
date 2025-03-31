@@ -1,10 +1,7 @@
 import { DatabaseIcon } from "lucide-react";
 
 import { DatasetMiniRow } from "@/components/dataset/preview/DatasetMiniRow";
-import {
-  OverviewCard,
-  OverviewCardViewMore,
-} from "@/components/ui/overview-card";
+import { OverviewCard, OverviewCardViewMore } from "@/components/ui/overview-card";
 import { Enums } from "@/db/lib/enums";
 import { ADMIN_DATASETS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
@@ -25,12 +22,7 @@ export async function AdminDatasetsOverview() {
       {datasetsCount > 0 ? (
         <div>
           {datasetsQuery.datasets.map((dataset) => (
-            <DatasetMiniRow
-              key={dataset.id}
-              dataset={dataset}
-              className="lift"
-              showStatus
-            />
+            <DatasetMiniRow key={dataset.id} dataset={dataset} className="lift" showStatus />
           ))}
         </div>
       ) : (

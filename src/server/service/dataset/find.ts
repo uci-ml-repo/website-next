@@ -66,15 +66,11 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   }
 
   if (query.keywords?.length) {
-    conditions.push(
-      arrayOverlaps(datasetView.keywords, sqlArray(query.keywords)),
-    );
+    conditions.push(arrayOverlaps(datasetView.keywords, sqlArray(query.keywords)));
   }
 
   if (query.attributes?.length) {
-    conditions.push(
-      arrayContains(datasetView.variableNames, sqlArray(query.attributes)),
-    );
+    conditions.push(arrayContains(datasetView.variableNames, sqlArray(query.attributes)));
   }
 
   if (query.dataTypes?.length) {
@@ -90,9 +86,7 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   }
 
   if (query.featureTypes) {
-    conditions.push(
-      arrayOverlaps(datasetView.featureTypes, query.featureTypes),
-    );
+    conditions.push(arrayOverlaps(datasetView.featureTypes, query.featureTypes));
   }
 
   if (query.instanceCountMin) {
@@ -132,12 +126,7 @@ export namespace datasetFindService {
     const [dataset] = await db
       .select()
       .from(datasetView)
-      .where(
-        and(
-          eq(datasetView.id, id),
-          eq(datasetView.status, Enums.ApprovalStatus.APPROVED),
-        ),
-      );
+      .where(and(eq(datasetView.id, id), eq(datasetView.status, Enums.ApprovalStatus.APPROVED)));
     return dataset;
   }
 
@@ -147,9 +136,7 @@ export namespace datasetFindService {
       .from(datasetView)
       .where(and(inArray(datasetView.id, ids)));
 
-    const datasetMap = new Map(
-      datasets.map((dataset) => [dataset.id, dataset]),
-    );
+    const datasetMap = new Map(datasets.map((dataset) => [dataset.id, dataset]));
 
     return ids.map((id) => {
       const dataset = datasetMap.get(id);
@@ -189,9 +176,7 @@ export namespace datasetFindService {
     };
   }
 
-  export async function countByQuery(
-    query: DatasetQuery | PrivilegedDatasetQuery,
-  ) {
+  export async function countByQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     const [countQuery] = await db
       .select({ count: count() })
       .from(datasetView)
@@ -244,9 +229,7 @@ export namespace datasetFindService {
       .orderBy((t) =>
         query.order
           ? Object.entries(query.order).map(([field, sort]) =>
-              sortFunction(sort)(
-                datasetView[field as keyof typeof query.order],
-              ),
+              sortFunction(sort)(datasetView[field as keyof typeof query.order]),
             )
           : [desc(t.similarity)],
       );

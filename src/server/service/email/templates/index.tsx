@@ -45,17 +45,9 @@ export class EmailTemplateService {
     };
   }
 
-  async resetPasswordProviders({
-    name,
-    providers,
-  }: {
-    name: string;
-    providers: string[];
-  }) {
+  async resetPasswordProviders({ name, providers }: { name: string; providers: string[] }) {
     return {
-      html: await render(
-        <ResetPasswordProviders name={name} providers={providers} />,
-      ),
+      html: await render(<ResetPasswordProviders name={name} providers={providers} />),
       text: resetPasswordProviders({ name, providers }),
     };
   }
@@ -68,9 +60,7 @@ export class EmailTemplateService {
     const verificationLink = path.join(env.ORIGIN, VERIFY_EMAIL_ROUTE, token);
 
     return {
-      html: await render(
-        <VerificationEmail name={name} verificationLink={verificationLink} />,
-      ),
+      html: await render(<VerificationEmail name={name} verificationLink={verificationLink} />),
       text: verificationEmail({ name, verificationLink }),
     };
   }

@@ -72,11 +72,7 @@ export function SignInRequired({
           <p>{body}</p>
           <DialogFooter className="items-center !justify-between gap-4">
             <DialogClose asChild>
-              <Button
-                variant="secondary"
-                className="max-sm:w-full"
-                disabled={disabled}
-              >
+              <Button variant="secondary" className="max-sm:w-full" disabled={disabled}>
                 Cancel
               </Button>
             </DialogClose>

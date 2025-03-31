@@ -27,46 +27,30 @@ const Alert = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, ...props }, ref) => (
-  <div
-    ref={ref}
-    role="alert"
-    className={cn(alertVariants({ variant }), className)}
-    {...props}
-  />
+  <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
 ));
 Alert.displayName = "Alert";
 
-const AlertTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h5
-    ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
-    {...props}
-  />
-));
+const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h5
+      ref={ref}
+      className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+      {...props}
+    />
+  ),
+);
 AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed", className)}
-    {...props}
-  />
+  <div ref={ref} className={cn("text-sm [&_p]:leading-relaxed", className)} {...props} />
 ));
 AlertDescription.displayName = "AlertDescription";
 
-const AlertInfo = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => (
+const AlertInfo = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <Alert variant="blue" className={className}>
     <div className="flex items-center space-x-2">
       <AlertCircleIcon className="size-5" />
@@ -92,13 +76,7 @@ const AlertWarning = ({
   </Alert>
 );
 
-const AlertError = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+const AlertError = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   return (
     <Alert variant="destructive" className={className}>
       <div className="flex items-center space-x-2">
@@ -111,11 +89,4 @@ const AlertError = ({
   );
 };
 
-export {
-  Alert,
-  AlertDescription,
-  AlertError,
-  AlertInfo,
-  AlertTitle,
-  AlertWarning,
-};
+export { Alert, AlertDescription, AlertError, AlertInfo, AlertTitle, AlertWarning };

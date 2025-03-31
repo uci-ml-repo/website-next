@@ -14,11 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type { DiscussionResponse } from "@/lib/types";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DiscussionComments({
-  discussion,
-}: {
-  discussion: DiscussionResponse;
-}) {
+export function DiscussionComments({ discussion }: { discussion: DiscussionResponse }) {
   const [orderBy, setOrderBy] = useState<string>("top");
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
@@ -27,9 +23,7 @@ export function DiscussionComments({
       {
         discussionId: discussion.id,
         order:
-          orderBy === "top"
-            ? { upvoteCount: "desc", createdAt: "desc" }
-            : { createdAt: "desc" },
+          orderBy === "top" ? { upvoteCount: "desc", createdAt: "desc" } : { createdAt: "desc" },
         limit: 10,
       },
       {
@@ -69,9 +63,7 @@ export function DiscussionComments({
             {totalCount} Comment{totalCount !== 1 && "s"}
           </span>
         </div>
-        {comments.length > 0 && (
-          <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />
-        )}
+        {comments.length > 0 && <DiscussionsOrderBy orderBy={orderBy} setOrderBy={setOrderBy} />}
       </div>
       {isCommenting ? (
         <DiscussionCommentCreateInput

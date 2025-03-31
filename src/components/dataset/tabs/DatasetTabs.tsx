@@ -22,10 +22,7 @@ interface DatasetTabsProps {
   initialEditCount: number;
 }
 
-export function DatasetTabs({
-  initialDiscussionCount,
-  initialEditCount,
-}: DatasetTabsProps) {
+export function DatasetTabs({ initialDiscussionCount, initialEditCount }: DatasetTabsProps) {
   const { editable, dataset } = useDataset();
 
   const basePath = DATASET_ROUTE(dataset);
@@ -51,11 +48,7 @@ export function DatasetTabs({
   );
 
   return (
-    <LinearTabs
-      defaultValue={activeTab}
-      routerStore={basePath}
-      routerSegment={3}
-    >
+    <LinearTabs defaultValue={activeTab} routerStore={basePath} routerSegment={3}>
       <div className="flex items-center justify-between space-x-6 overflow-x-auto">
         <LinearTabsList>
           <LinearTabsTrigger value="about" link={path.join(basePath, "about")}>

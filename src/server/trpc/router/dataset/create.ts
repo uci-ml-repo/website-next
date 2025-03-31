@@ -17,7 +17,5 @@ export const datasetCreateRouter = router({
           .optional(),
       }),
     )
-    .mutation(({ input, ctx }) =>
-      service.dataset.create.draft({ ...input, userId: ctx.user.id }),
-    ),
+    .mutation(({ input, ctx }) => service.dataset.create.draft({ ...input, userId: ctx.user.id })),
 });

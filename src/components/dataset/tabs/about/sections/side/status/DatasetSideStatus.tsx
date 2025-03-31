@@ -4,31 +4,21 @@ import React from "react";
 import { DatasetStatusBadge } from "@/components/dataset/DatasetStatusBadge";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { DatasetSideStatusDialog } from "@/components/dataset/tabs/about/sections/side/status/DataseSideStatusDialog";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Enums } from "@/db/lib/enums";
 import { cn } from "@/lib/utils";
 
-export function DatasetSideStatus({
-  status,
-}: {
-  status: Enums.ApprovalStatus;
-}) {
+export function DatasetSideStatus({ status }: { status: Enums.ApprovalStatus }) {
   const statusOptions = [
     {
       value: Enums.ApprovalStatus.DRAFT,
       label: "Draft",
-      tooltip:
-        "This dataset is a draft. You can freely edit it before submitting it for approval.",
+      tooltip: "This dataset is a draft. You can freely edit it before submitting it for approval.",
     },
     {
       value: Enums.ApprovalStatus.PENDING,
       label: "Pending",
-      tooltip:
-        "This dataset is pending approval. We are in the process of reviewing it.",
+      tooltip: "This dataset is pending approval. We are in the process of reviewing it.",
     },
     {
       value: Enums.ApprovalStatus.APPROVED,
@@ -55,9 +45,7 @@ export function DatasetSideStatus({
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-80 max-w-[100dvw] !p-0">
-              <div className="p-2 text-muted-foreground">
-                Only visible to you.
-              </div>
+              <div className="p-2 text-muted-foreground">Only visible to you.</div>
               <hr />
               <ul className="divide-y">
                 {statusOptions.map((option) => (
@@ -68,9 +56,7 @@ export function DatasetSideStatus({
                     })}
                   >
                     <DatasetStatusBadge status={option.value} />
-                    <div className="text-sm text-muted-foreground">
-                      {option.tooltip}
-                    </div>
+                    <div className="text-sm text-muted-foreground">{option.tooltip}</div>
                   </li>
                 ))}
               </ul>

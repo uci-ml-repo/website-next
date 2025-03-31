@@ -54,9 +54,7 @@ export namespace datasetCreateService {
         })
         .returning();
 
-      const directoryPath = absoluteStaticPath(
-        DATASET_FILES_PATH(createdDataset),
-      );
+      const directoryPath = absoluteStaticPath(DATASET_FILES_PATH(createdDataset));
 
       if (!fs.existsSync(directoryPath)) {
         fs.mkdirSync(directoryPath);

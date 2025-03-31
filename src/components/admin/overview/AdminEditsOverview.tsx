@@ -1,9 +1,6 @@
 import { PencilIcon } from "lucide-react";
 
-import {
-  OverviewCard,
-  OverviewCardViewMore,
-} from "@/components/ui/overview-card";
+import { OverviewCard, OverviewCardViewMore } from "@/components/ui/overview-card";
 import { ADMIN_EDITS_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
@@ -11,11 +8,7 @@ export async function AdminEditsOverview() {
   const editsCount = await caller.edit.find.countByQuery({});
 
   return (
-    <OverviewCard
-      title="Edits"
-      icon={<PencilIcon className="size-5" />}
-      href={ADMIN_EDITS_ROUTE}
-    >
+    <OverviewCard title="Edits" icon={<PencilIcon className="size-5" />} href={ADMIN_EDITS_ROUTE}>
       {editsCount > 0 ? (
         <div>X</div>
       ) : (
@@ -26,9 +19,7 @@ export async function AdminEditsOverview() {
       <OverviewCardViewMore
         href={ADMIN_EDITS_ROUTE}
         text={
-          editsCount > 0
-            ? `View ${editsCount.toLocaleString()} pending edits`
-            : "View all edits"
+          editsCount > 0 ? `View ${editsCount.toLocaleString()} pending edits` : "View all edits"
         }
       />
     </OverviewCard>

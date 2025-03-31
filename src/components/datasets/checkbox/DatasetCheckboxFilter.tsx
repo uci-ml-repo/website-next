@@ -18,11 +18,7 @@ export function DatasetCheckboxFilter<T extends string>({
       {values.map((value, index) => (
         <React.Fragment key={value}>
           {index > 0 && <hr className="border-border/60" />}
-          <DatasetCheckboxFilterItem
-            toggle={toggle}
-            value={value}
-            checked={isToggled(value)}
-          />
+          <DatasetCheckboxFilterItem toggle={toggle} value={value} checked={isToggled(value)} />
         </React.Fragment>
       ))}
     </div>

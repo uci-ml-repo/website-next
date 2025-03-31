@@ -7,10 +7,7 @@ import { AssertOwner } from "@/server/trpc/middleware/lib/owner";
 import type { MiddlewareRole } from "@/server/trpc/middleware/lib/roles";
 import { MiddlewareRoles } from "@/server/trpc/middleware/lib/roles";
 
-const t = initTRPC
-  .context<typeof createContext>()
-  .meta<MiddlewareRole[]>()
-  .create({ transformer });
+const t = initTRPC.context<typeof createContext>().meta<MiddlewareRole[]>().create({ transformer });
 
 export const protectedProcedure = t.procedure
   .input(

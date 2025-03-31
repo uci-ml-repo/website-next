@@ -52,9 +52,7 @@ function paperUrl({ url }: { url: string }) {
   return url;
 }
 
-export function datasetToPythonMetadata(
-  dataset: DatasetApprovedSelect,
-): PythonMetadata {
+export function datasetToPythonMetadata(dataset: DatasetApprovedSelect): PythonMetadata {
   return {
     uci_id: dataset.id,
     name: dataset.title,
@@ -73,15 +71,11 @@ export function datasetToPythonMetadata(
     index_col: dataset.variables
       .filter((v) => v.role === Enums.DatasetFeatureRole.ID)
       .map((v) => v.name),
-    has_missing_values: dataset.variables.some((v) => v.missingValues)
-      ? "yes"
-      : "no",
+    has_missing_values: dataset.variables.some((v) => v.missingValues) ? "yes" : "no",
     year_of_dataset_creation: dataset.yearCreated,
     last_updated: dataset.donatedAt.toString(), // TODO: use edits to infer
     dataset_doi: dataset.doi,
-    creators: dataset.authors.map(
-      (author) => `${author.firstName} ${author.lastName}`,
-    ),
+    creators: dataset.authors.map((author) => `${author.firstName} ${author.lastName}`),
     intro_paper: dataset.introductoryPaper && {
       title: dataset.introductoryPaper.title,
       authors: dataset.introductoryPaper.authors.join(", "),

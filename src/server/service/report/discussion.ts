@@ -26,9 +26,6 @@ export namespace reportDiscussionService {
   }
 
   export async function resolve({ reportId }: { reportId: string }) {
-    return db
-      .delete(discussionReport)
-      .where(eq(discussionReport.id, reportId))
-      .returning();
+    return db.delete(discussionReport).where(eq(discussionReport.id, reportId)).returning();
   }
 }

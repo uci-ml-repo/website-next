@@ -7,9 +7,7 @@ import { protectedProcedure, router } from "@/server/trpc";
 export const bookmarkFindRouter = router({
   byUserQuery: protectedProcedure
     .input(bookmarkQuery)
-    .query(({ input, ctx }) =>
-      service.bookmark.find.byUserQuery(input, ctx.user),
-    ),
+    .query(({ input, ctx }) => service.bookmark.find.byUserQuery(input, ctx.user)),
 
   isBookmarked: protectedProcedure
     .input(z.object({ datasetId: z.number(), userId: z.string() }))

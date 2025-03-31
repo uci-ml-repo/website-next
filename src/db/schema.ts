@@ -35,10 +35,7 @@ import { enumToArray } from "@/lib/utils";
  */
 export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
 
-export const approvalStatus = pgEnum(
-  "approval_status",
-  enumToArray(Enums.ApprovalStatus),
-);
+export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
 
 export const editStatus = pgEnum("edit_status", enumToArray(Enums.EditStatus));
 
@@ -47,15 +44,9 @@ export const datasetSubjectArea = pgEnum(
   enumToArray(Enums.DatasetSubjectArea),
 );
 
-export const datasetTask = pgEnum(
-  "dataset_task",
-  enumToArray(Enums.DatasetTask),
-);
+export const datasetTask = pgEnum("dataset_task", enumToArray(Enums.DatasetTask));
 
-export const datasetDataType = pgEnum(
-  "dataset_characteristic",
-  enumToArray(Enums.DatasetDataType),
-);
+export const datasetDataType = pgEnum("dataset_characteristic", enumToArray(Enums.DatasetDataType));
 
 export const datasetFeatureRole = pgEnum(
   "dataset_feature_role",
@@ -95,17 +86,12 @@ export const dataset = pgTable(
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
     slug: text("slug").notNull().unique(),
-    status: approvalStatus("status")
-      .default(Enums.ApprovalStatus.DRAFT)
-      .notNull(),
+    status: approvalStatus("status").default(Enums.ApprovalStatus.DRAFT).notNull(),
     viewCount: integer("view_count").default(0).notNull(),
     downloadCount: integer("download_count"),
     dataTypes: datasetDataType("data_types").array().default([]).notNull(),
     tasks: datasetTask("tasks").array().default([]).notNull(),
-    featureTypes: datasetFeatureType("feature_types")
-      .array()
-      .default([])
-      .notNull(),
+    featureTypes: datasetFeatureType("feature_types").array().default([]).notNull(),
     size: bigint("size", { mode: "number" }),
     fileCount: integer("file_count"),
     userId: uuid("user_id")
@@ -223,10 +209,7 @@ export const datasetView = pgTable(
     index("dataset_view_keywords_index").using("gin", t.keywords),
     index("dataset_view_variable_names_index").using("gin", t.variableNames),
     index("dataset_view_status_index").on(t.status),
-    index("dataset_view_trgm_search_index").using(
-      "gin",
-      sql`${t.title} gin_trgm_ops`,
-    ),
+    index("dataset_view_trgm_search_index").using("gin", sql`${t.title} gin_trgm_ops`),
   ],
 );
 
@@ -378,10 +361,7 @@ export const keyword = pgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [
-    index("keyword_trgm_search_index").using(
-      "gin",
-      sql`${t.name} gin_trgm_ops`,
-    ),
+    index("keyword_trgm_search_index").using("gin", sql`${t.name} gin_trgm_ops`),
     index("keyword_name_index").on(t.name),
     index("keyword_status_index").on(t.status),
   ],
@@ -486,12 +466,7 @@ export const discussion = pgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }),
   },
-  (t) => [
-    index("discussion_trgm_search_index").using(
-      "gin",
-      sql`${t.title} gin_trgm_ops`,
-    ),
-  ],
+  (t) => [index("discussion_trgm_search_index").using("gin", sql`${t.title} gin_trgm_ops`)],
 );
 
 export const discussionRelations = relations(discussion, ({ one, many }) => ({
@@ -521,20 +496,17 @@ export const discussionComment = pgTable("discussion_comment", {
   updatedAt: timestamp("updated_at", { mode: "date" }),
 });
 
-export const discussionCommentRelations = relations(
-  discussionComment,
-  ({ one, many }) => ({
-    upvotes: many(discussionCommentUpvote),
-    user: one(user, {
-      fields: [discussionComment.userId],
-      references: [user.id],
-    }),
-    discussion: one(discussion, {
-      fields: [discussionComment.discussionId],
-      references: [discussion.id],
-    }),
+export const discussionCommentRelations = relations(discussionComment, ({ one, many }) => ({
+  upvotes: many(discussionCommentUpvote),
+  user: one(user, {
+    fields: [discussionComment.userId],
+    references: [user.id],
   }),
-);
+  discussion: one(discussion, {
+    fields: [discussionComment.discussionId],
+    references: [discussion.id],
+  }),
+}));
 
 export const discussionUpvote = pgTable(
   "discussion_upvote",
@@ -550,19 +522,16 @@ export const discussionUpvote = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.discussionId] })],
 );
 
-export const discussionUpvoteRelations = relations(
-  discussionUpvote,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [discussionUpvote.userId],
-      references: [user.id],
-    }),
-    discussion: one(discussion, {
-      fields: [discussionUpvote.discussionId],
-      references: [discussion.id],
-    }),
+export const discussionUpvoteRelations = relations(discussionUpvote, ({ one }) => ({
+  user: one(user, {
+    fields: [discussionUpvote.userId],
+    references: [user.id],
   }),
-);
+  discussion: one(discussion, {
+    fields: [discussionUpvote.discussionId],
+    references: [discussion.id],
+  }),
+}));
 
 export const discussionCommentUpvote = pgTable(
   "discussion_comment_upvote",
@@ -578,19 +547,16 @@ export const discussionCommentUpvote = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.discussionCommentId] })],
 );
 
-export const discussionCommentUpvoteRelations = relations(
-  discussionCommentUpvote,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [discussionCommentUpvote.userId],
-      references: [user.id],
-    }),
-    comment: one(discussionComment, {
-      fields: [discussionCommentUpvote.discussionCommentId],
-      references: [discussionComment.id],
-    }),
+export const discussionCommentUpvoteRelations = relations(discussionCommentUpvote, ({ one }) => ({
+  user: one(user, {
+    fields: [discussionCommentUpvote.userId],
+    references: [user.id],
   }),
-);
+  comment: one(discussionComment, {
+    fields: [discussionCommentUpvote.discussionCommentId],
+    references: [discussionComment.id],
+  }),
+}));
 
 export const discussionReport = pgTable("discussion_report", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -603,19 +569,16 @@ export const discussionReport = pgTable("discussion_report", {
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const discussionReportRelations = relations(
-  discussionReport,
-  ({ one }) => ({
-    discussion: one(discussion, {
-      fields: [discussionReport.discussionId],
-      references: [discussion.id],
-    }),
-    user: one(user, {
-      fields: [discussionReport.userId],
-      references: [user.id],
-    }),
+export const discussionReportRelations = relations(discussionReport, ({ one }) => ({
+  discussion: one(discussion, {
+    fields: [discussionReport.discussionId],
+    references: [discussion.id],
   }),
-);
+  user: one(user, {
+    fields: [discussionReport.userId],
+    references: [user.id],
+  }),
+}));
 
 export const discussionCommentReport = pgTable("discussion_comment_report", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -628,19 +591,16 @@ export const discussionCommentReport = pgTable("discussion_comment_report", {
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const commentReportRelations = relations(
-  discussionCommentReport,
-  ({ one }) => ({
-    comment: one(discussionComment, {
-      fields: [discussionCommentReport.discussionCommentId],
-      references: [discussionComment.id],
-    }),
-    user: one(user, {
-      fields: [discussionCommentReport.userId],
-      references: [user.id],
-    }),
+export const commentReportRelations = relations(discussionCommentReport, ({ one }) => ({
+  comment: one(discussionComment, {
+    fields: [discussionCommentReport.discussionCommentId],
+    references: [discussionComment.id],
   }),
-);
+  user: one(user, {
+    fields: [discussionCommentReport.userId],
+    references: [user.id],
+  }),
+}));
 
 /**
  * User tables
@@ -660,14 +620,8 @@ export const user = pgTable(
   (t) => [
     index("user_role_index").on(t.role),
     index("user_created_at_index").on(t.createdAt),
-    index("user_email_trgm_search_index").using(
-      "gin",
-      sql`${t.email} gin_trgm_ops`,
-    ),
-    index("user_name_trgm_search_index").using(
-      "gin",
-      sql`${t.name} gin_trgm_ops`,
-    ),
+    index("user_email_trgm_search_index").using("gin", sql`${t.email} gin_trgm_ops`),
+    index("user_name_trgm_search_index").using("gin", sql`${t.name} gin_trgm_ops`),
   ],
 );
 
@@ -740,15 +694,12 @@ export const emailVerificationToken = pgTable("email_verification_token", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-export const emailVerificationTokenRelations = relations(
-  emailVerificationToken,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [emailVerificationToken.userId],
-      references: [user.id],
-    }),
+export const emailVerificationTokenRelations = relations(emailVerificationToken, ({ one }) => ({
+  user: one(user, {
+    fields: [emailVerificationToken.userId],
+    references: [user.id],
   }),
-);
+}));
 
 export const passwordResetToken = pgTable("password_reset_token", {
   id: text("id")
@@ -761,12 +712,9 @@ export const passwordResetToken = pgTable("password_reset_token", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-export const passwordResetTokenRelations = relations(
-  passwordResetToken,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [passwordResetToken.userId],
-      references: [user.id],
-    }),
+export const passwordResetTokenRelations = relations(passwordResetToken, ({ one }) => ({
+  user: one(user, {
+    fields: [passwordResetToken.userId],
+    references: [user.id],
   }),
-);
+}));

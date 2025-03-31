@@ -4,11 +4,7 @@ import Link from "next/link";
 
 import { DatasetStatusBadge } from "@/components/dataset/DatasetStatusBadge";
 import { DatasetHoverCard } from "@/components/dataset/preview/DatasetHoverCard";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
 import { abbreviateDecimal, cn } from "@/lib/utils";
@@ -103,11 +99,7 @@ export function DatasetRow({
     return (
       <HoverCard openDelay={500} closeDelay={100}>
         <HoverCardTrigger asChild>{row}</HoverCardTrigger>
-        <HoverCardContent
-          className="w-[50dvw] min-w-64 max-w-xl !p-0"
-          align="end"
-          side="top"
-        >
+        <HoverCardContent className="w-[50dvw] min-w-64 max-w-xl !p-0" align="end" side="top">
           <DatasetHoverCard dataset={dataset} />
         </HoverCardContent>
       </HoverCard>

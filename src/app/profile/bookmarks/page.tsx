@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  BookmarkIcon,
-  ChevronDownIcon,
-  SearchIcon,
-  Undo2Icon,
-} from "lucide-react";
+import { BookmarkIcon, ChevronDownIcon, SearchIcon, Undo2Icon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -46,11 +41,7 @@ export default function Page() {
 
   return (
     <div className="space-y-4">
-      <TabHeader
-        title="Bookmarks"
-        icon={BookmarkIcon}
-        className="[&>svg]:fill-uci-gold"
-      />
+      <TabHeader title="Bookmarks" icon={BookmarkIcon} className="[&>svg]:fill-uci-gold" />
       {!isLoading && !(data && data.pages[0].bookmarks.length > 0) ? (
         <AlternativeCard>
           <div className="text-muted-foreground">
@@ -85,28 +76,20 @@ export default function Page() {
                 <div className="text-lg text-muted-foreground">
                   Found {bookmarks.length.toLocaleString()}
                   {hasNextPage && "+"}{" "}
-                  {bookmarks.length === 1
-                    ? "bookmarked dataset"
-                    : "bookmarked datasets"}{" "}
-                  for '{searchValue}'
+                  {bookmarks.length === 1 ? "bookmarked dataset" : "bookmarked datasets"} for '
+                  {searchValue}'
                 </div>
               )}
 
               <div className="relative divide-y">
                 {bookmarks.map((bookmark) => (
-                  <DatasetRow
-                    hoverCard
-                    dataset={bookmark.dataset}
-                    key={bookmark.dataset.id}
-                  />
+                  <DatasetRow hoverCard dataset={bookmark.dataset} key={bookmark.dataset.id} />
                 ))}
               </div>
             </>
           ) : (
             <div className="flex h-20 flex-col items-center justify-center space-y-2">
-              <div className="text-muted-foreground">
-                No bookmarked datasets found
-              </div>
+              <div className="text-muted-foreground">No bookmarked datasets found</div>
               <Button variant="secondary" onClick={clearSearch}>
                 Clear search <Undo2Icon />
               </Button>

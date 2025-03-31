@@ -1,10 +1,4 @@
-import {
-  ListIcon,
-  PlusIcon,
-  SearchIcon,
-  SparklesIcon,
-  TrendingUpIcon,
-} from "lucide-react";
+import { ListIcon, PlusIcon, SearchIcon, SparklesIcon, TrendingUpIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -35,27 +29,17 @@ export default async function Page() {
         <div className="space-y-4">
           <Banner variant="hero" className="backdrop-gradient-blur" />
           <p className="text-pretty text-lg sm:text-xl">
-            We currently maintain {datasetCount[0].count} datasets used by
-            millions in the machine learning community.
+            We currently maintain {datasetCount[0].count} datasets used by millions in the machine
+            learning community.
           </p>
         </div>
         <div className="flex flex-wrap gap-4">
-          <Button
-            variant="blue"
-            size="lg"
-            className="lift w-full sm:w-fit"
-            asChild
-          >
+          <Button variant="blue" size="lg" className="lift w-full sm:w-fit" asChild>
             <Link href={DATASETS_ROUTE}>
               <ListIcon /> Explore All Datasets
             </Link>
           </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="lift w-full sm:w-fit"
-            asChild
-          >
+          <Button variant="secondary" size="lg" className="lift w-full sm:w-fit" asChild>
             <Link href={CONTRIBUTE_ROUTE}>
               <PlusIcon />
               Contribute Dataset

@@ -12,10 +12,9 @@ export function DatasetDataTypesFilter({
   dropdownOpen,
   onDropdownOpenChange,
 }: DatasetFilterProps) {
-  const { filters, toggle, isToggled, clear } = useToggleFilter<
+  const { filters, toggle, isToggled, clear } = useToggleFilter<"dataTypes", Enums.DatasetDataType>(
     "dataTypes",
-    Enums.DatasetDataType
-  >("dataTypes");
+  );
 
   return (
     <DatasetFilterItem

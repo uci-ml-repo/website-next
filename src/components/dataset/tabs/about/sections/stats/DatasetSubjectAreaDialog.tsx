@@ -92,21 +92,19 @@ export function DatasetSubjectAreaDialog() {
                         defaultValue={field.value}
                         className="flex flex-col"
                       >
-                        {enumToArray(Enums.DatasetSubjectArea).map(
-                          (subjectArea) => (
-                            <FormItem
-                              key={subjectArea}
-                              className="flex items-center space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <RadioGroupItem value={subjectArea} />
-                              </FormControl>
-                              <FormLabel className="cursor-pointer text-lg font-normal">
-                                {formatEnum(subjectArea)}
-                              </FormLabel>
-                            </FormItem>
-                          ),
-                        )}
+                        {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => (
+                          <FormItem
+                            key={subjectArea}
+                            className="flex items-center space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <RadioGroupItem value={subjectArea} />
+                            </FormControl>
+                            <FormLabel className="cursor-pointer text-lg font-normal">
+                              {formatEnum(subjectArea)}
+                            </FormLabel>
+                          </FormItem>
+                        ))}
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />

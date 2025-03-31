@@ -5,13 +5,7 @@ import { db } from "@/db";
 import { discussion, discussionUpvote } from "@/db/schema";
 
 export namespace discussionUpvoteService {
-  export async function create({
-    discussionId,
-    userId,
-  }: {
-    discussionId: string;
-    userId: string;
-  }) {
+  export async function create({ discussionId, userId }: { discussionId: string; userId: string }) {
     return await db.transaction(async (tx) => {
       try {
         await tx.insert(discussionUpvote).values({
@@ -33,21 +27,12 @@ export namespace discussionUpvoteService {
     });
   }
 
-  export async function remove({
-    discussionId,
-    userId,
-  }: {
-    discussionId: string;
-    userId: string;
-  }) {
+  export async function remove({ discussionId, userId }: { discussionId: string; userId: string }) {
     return await db.transaction(async (tx) => {
       const [upvote] = await tx
         .delete(discussionUpvote)
         .where(
-          and(
-            eq(discussionUpvote.userId, userId),
-            eq(discussionUpvote.discussionId, discussionId),
-          ),
+          and(eq(discussionUpvote.userId, userId), eq(discussionUpvote.discussionId, discussionId)),
         )
         .returning();
 

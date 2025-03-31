@@ -18,10 +18,7 @@ import { abbreviateFileSize, cn } from "@/lib/utils";
 
 interface DatasetDownloadButtonProps extends ButtonProps {}
 
-export function DatasetDownloadButton({
-  className,
-  ...props
-}: DatasetDownloadButtonProps) {
+export function DatasetDownloadButton({ className, ...props }: DatasetDownloadButtonProps) {
   const { dataset, editing } = useDataset();
   const { fileStatus, pendingFileStatus } = useDatasetFileStatus();
 
@@ -92,9 +89,7 @@ export function DatasetDownloadButton({
         <div>
           <span>Download</span>
           {dataset.size && (
-            <span className="ml-1 text-sm">
-              ({abbreviateFileSize(dataset.size)})
-            </span>
+            <span className="ml-1 text-sm">({abbreviateFileSize(dataset.size)})</span>
           )}
         </div>
       </a>

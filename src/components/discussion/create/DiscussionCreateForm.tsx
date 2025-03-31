@@ -12,19 +12,10 @@ import { MDXEditor } from "@/components/editor/MDXEditor";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  DATASET_DISCUSSION_ROUTE,
-  DATASET_DISCUSSIONS_ROUTE,
-} from "@/lib/routes";
+import { DATASET_DISCUSSION_ROUTE, DATASET_DISCUSSIONS_ROUTE } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 interface DiscussionCreateFormProps {
@@ -42,10 +33,7 @@ export const formSchema = z.object({
   content: z.string().optional(),
 });
 
-export function DiscussionCreateForm({
-  datasetId,
-  datasetSlug,
-}: DiscussionCreateFormProps) {
+export function DiscussionCreateForm({ datasetId, datasetSlug }: DiscussionCreateFormProps) {
   const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
 
@@ -134,10 +122,7 @@ export function DiscussionCreateForm({
             render={() => (
               <FormItem>
                 <FormControl>
-                  <MDXEditor
-                    ref={ref}
-                    disabled={isSubmitting || isSubmitSuccessful}
-                  />
+                  <MDXEditor ref={ref} disabled={isSubmitting || isSubmitSuccessful} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,11 +146,7 @@ export function DiscussionCreateForm({
             >
               Cancel
             </Button>
-            <Button
-              variant="gold"
-              type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
-            >
+            <Button variant="gold" type="submit" disabled={isSubmitting || isSubmitSuccessful}>
               {(isSubmitting || isSubmitSuccessful) && <Spinner />}
               Post <SendHorizontalIcon />
             </Button>
@@ -178,10 +159,7 @@ export function DiscussionCreateForm({
           <DialogTitle>Discard discussion?</DialogTitle>
           <div>You have a discussion in progress, discard it?</div>
           <div className="flex justify-between">
-            <Button
-              variant="secondary"
-              onClick={() => setCancelDialogOpen(false)}
-            >
+            <Button variant="secondary" onClick={() => setCancelDialogOpen(false)}>
               Cancel
             </Button>
             <Button

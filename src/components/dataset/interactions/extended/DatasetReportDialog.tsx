@@ -83,9 +83,7 @@ export function DatasetReportDialog({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
-              <DialogTitle className="text-xl">
-                Report Dataset Issue
-              </DialogTitle>
+              <DialogTitle className="text-xl">Report Dataset Issue</DialogTitle>
             </DialogHeader>
 
             <FormField
@@ -100,10 +98,7 @@ export function DatasetReportDialog({
                       className="flex flex-col"
                     >
                       {datasetReportReasons.map((reason) => (
-                        <FormItem
-                          key={reason}
-                          className="flex items-center space-x-3 space-y-0"
-                        >
+                        <FormItem key={reason} className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value={reason} />
                           </FormControl>
@@ -126,9 +121,7 @@ export function DatasetReportDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      <span className="after:text-destructive after:content-['*']">
-                        Details
-                      </span>
+                      <span className="after:text-destructive after:content-['*']">Details</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea

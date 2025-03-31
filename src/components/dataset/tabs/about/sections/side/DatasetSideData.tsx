@@ -20,10 +20,7 @@ export function DatasetSideData() {
         {dataset.keywords.length > 0 &&
           dataset.keywords.map((keyword) => (
             <Link key={keyword} href={DATASETS_QUERY({ keywords: [keyword] })}>
-              <Badge
-                variant="blue"
-                className="lift text-uci-blue hover:underline"
-              >
+              <Badge variant="blue" className="lift text-uci-blue hover:underline">
                 {keyword}
               </Badge>
             </Link>

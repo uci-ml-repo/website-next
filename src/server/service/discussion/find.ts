@@ -67,10 +67,7 @@ export namespace discussionFindService {
       .then((discussion) => (discussion ? transformRow(discussion) : null));
   }
 
-  export async function byQuery(
-    query: DiscussionQuery,
-    session?: Session | null,
-  ) {
+  export async function byQuery(query: DiscussionQuery, session?: Session | null) {
     let discussions;
 
     if (query.search) {
@@ -136,10 +133,7 @@ export namespace discussionFindService {
       .then((discussions) => discussions.map(transformRow));
   }
 
-  async function bySearchQuery(
-    query: DiscussionQuery,
-    session?: Session | null,
-  ) {
+  async function bySearchQuery(query: DiscussionQuery, session?: Session | null) {
     const trigramSimilarity = sql`
       similarity (
         ${discussion.title},

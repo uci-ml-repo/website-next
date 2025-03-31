@@ -26,9 +26,7 @@ export function DiscussionMiniRow({
       )}
     >
       <ProfileAvatar src={discussion.user.image} className="size-7" />
-      <div className="truncate text-base font-bold group-hover:underline">
-        {discussion.title}
-      </div>
+      <div className="truncate text-base font-bold group-hover:underline">{discussion.title}</div>
     </Link>
   );
 }

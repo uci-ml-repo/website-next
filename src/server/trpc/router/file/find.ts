@@ -10,9 +10,7 @@ export const fileFindRouter = router({
 
   search: fileAccessProcedure
     .input(z.object({ path: z.string(), search: z.string() }))
-    .query(({ ctx, input }) =>
-      service.file.find.search(ctx.absolutePath, input.search),
-    ),
+    .query(({ ctx, input }) => service.file.find.search(ctx.absolutePath, input.search)),
 
   exists: fileAccessProcedure
     .input(z.object({ path: z.string() }))

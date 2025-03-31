@@ -68,10 +68,7 @@ export default async function Layout({
   if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
     if (!session?.user) {
       return unauthorized();
-    } else if (
-      !isPriviliged(session?.user.role) &&
-      dataset.userId !== session?.user.id
-    ) {
+    } else if (!isPriviliged(session?.user.role) && dataset.userId !== session?.user.id) {
       return forbidden();
     }
   }
@@ -113,17 +110,11 @@ export default async function Layout({
                 <DatasetTitleGroup />
 
                 <Card className="rounded-full 2lg:hidden">
-                  <DatasetInteractions
-                    dataset={dataset}
-                    className="w-full justify-around"
-                  />
+                  <DatasetInteractions dataset={dataset} className="w-full justify-around" />
                 </Card>
               </div>
 
-              <DatasetTabs
-                initialDiscussionCount={discussionCount}
-                initialEditCount={editCount}
-              />
+              <DatasetTabs initialDiscussionCount={discussionCount} initialEditCount={editCount} />
 
               <DatasetEditing />
 

@@ -13,10 +13,7 @@ export function DatasetDescription() {
     <div className="space-y-2">
       <div className="flex items-center space-x-1">
         <h2 className="text-2xl font-bold">About Dataset</h2>
-        <DatasetEditFieldButton
-          field="description"
-          aria-label="Edit dataset description"
-        />
+        <DatasetEditFieldButton field="description" aria-label="Edit dataset description" />
       </div>
       {editingFields["description"] ? (
         <DatasetDescriptionForm />

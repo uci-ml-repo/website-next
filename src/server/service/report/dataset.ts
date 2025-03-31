@@ -26,9 +26,6 @@ export namespace reportDatasetService {
   }
 
   export async function resolve({ reportId }: { reportId: string }) {
-    return db
-      .delete(datasetReport)
-      .where(eq(datasetReport.id, reportId))
-      .returning();
+    return db.delete(datasetReport).where(eq(datasetReport.id, reportId)).returning();
   }
 }

@@ -7,13 +7,7 @@ import { z } from "zod";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
@@ -79,10 +73,7 @@ export function DiscussionCommentCreateInput({
   return (
     <>
       <div className="flex w-full py-4">
-        <ProfileAvatar
-          src={session?.user.image}
-          className="mr-3 size-10 max-sm:hidden"
-        />
+        <ProfileAvatar src={session?.user.image} className="mr-3 size-10 max-sm:hidden" />
         <div className="w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -92,11 +83,7 @@ export function DiscussionCommentCreateInput({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Add comment"
-                        disabled={isSubmitting}
-                      />
+                      <Textarea {...field} placeholder="Add comment" disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -106,18 +93,12 @@ export function DiscussionCommentCreateInput({
                 <Button
                   variant="secondary"
                   disabled={isSubmitting}
-                  onClick={() =>
-                    isDirty ? setCancelDialogOpen(true) : setIsCommenting(false)
-                  }
+                  onClick={() => (isDirty ? setCancelDialogOpen(true) : setIsCommenting(false))}
                   type="button"
                 >
                   Cancel
                 </Button>
-                <Button
-                  variant="gold"
-                  type="submit"
-                  disabled={!isDirty || isSubmitting}
-                >
+                <Button variant="gold" type="submit" disabled={!isDirty || isSubmitting}>
                   {isSubmitting && <Spinner />}
                   Comment
                 </Button>
@@ -132,10 +113,7 @@ export function DiscussionCommentCreateInput({
           <DialogTitle>Discard comment?</DialogTitle>
           <div>You have a comment in progress, discard it?</div>
           <div className="flex items-center justify-between">
-            <Button
-              variant="secondary"
-              onClick={() => setCancelDialogOpen(false)}
-            >
+            <Button variant="secondary" onClick={() => setCancelDialogOpen(false)}>
               Cancel
             </Button>
             <Button

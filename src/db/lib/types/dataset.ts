@@ -37,13 +37,11 @@ export const datasetPreviewSelect = {
   donatedAt: datasetView.donatedAt,
 };
 
-export const datasetIdentificationSelectColumns = selectColumns(
-  datasetIdentificationSelect,
-);
+export const datasetIdentificationSelectColumns = selectColumns(datasetIdentificationSelect);
 
-export const datasetIdentificationSelectSchema = createSelectSchema(
-  datasetView,
-).pick(datasetIdentificationSelectColumns);
+export const datasetIdentificationSelectSchema = createSelectSchema(datasetView).pick(
+  datasetIdentificationSelectColumns,
+);
 
 export const datasetPreviewSelectColumns = selectColumns(datasetPreviewSelect);
 
@@ -53,9 +51,7 @@ export const datasetPreviewSelectSchema = createSelectSchema(datasetView).pick(
 
 export type DatasetPreviewSelect = z.infer<typeof datasetPreviewSelectSchema>;
 
-export type DatasetIdentificationSelect = z.infer<
-  typeof datasetIdentificationSelectSchema
->;
+export type DatasetIdentificationSelect = z.infer<typeof datasetIdentificationSelectSchema>;
 
 export const datasetPreApprovalSelect = createSelectSchema(datasetView).extend({
   yearCreated: z.number().int(),

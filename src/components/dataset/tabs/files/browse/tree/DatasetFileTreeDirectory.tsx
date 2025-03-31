@@ -66,10 +66,7 @@ export function DatasetFileTreeDirectory({ directory }: { directory: Entry }) {
                     );
                   } else if (directoryEntity.type === "file") {
                     return (
-                      <DatasetFileTreeFile
-                        file={directoryEntity}
-                        key={directoryEntity.path}
-                      />
+                      <DatasetFileTreeFile file={directoryEntity} key={directoryEntity.path} />
                     );
                   }
                 })}

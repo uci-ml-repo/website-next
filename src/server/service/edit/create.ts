@@ -59,12 +59,7 @@ export namespace editCreateService {
       ? db
           .update(edit)
           .set({ newData: dataset, submittedBy: userId })
-          .where(
-            and(
-              eq(edit.datasetId, datasetId),
-              eq(edit.version, pendingEdit.version),
-            ),
-          )
+          .where(and(eq(edit.datasetId, datasetId), eq(edit.version, pendingEdit.version)))
           .returning()
           .then((res) => res[0].newData)
       : db

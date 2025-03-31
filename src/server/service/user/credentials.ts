@@ -104,11 +104,10 @@ export namespace userCredentialsService {
       return { success: false, message: "Invalid verification token" };
     }
 
-    const existingVerificationToken =
-      await db.query.emailVerificationToken.findFirst({
-        where: eq(emailVerificationToken.id, id),
-        with: { user: true },
-      });
+    const existingVerificationToken = await db.query.emailVerificationToken.findFirst({
+      where: eq(emailVerificationToken.id, id),
+      with: { user: true },
+    });
 
     if (!existingVerificationToken) {
       return { success: false, message: "Invalid verification token" };
@@ -128,11 +127,10 @@ export namespace userCredentialsService {
       return { success: false, message: "Invalid reset token" };
     }
 
-    const existingPasswordResetToken =
-      await db.query.passwordResetToken.findFirst({
-        where: eq(passwordResetToken.id, id),
-        with: { user: true },
-      });
+    const existingPasswordResetToken = await db.query.passwordResetToken.findFirst({
+      where: eq(passwordResetToken.id, id),
+      with: { user: true },
+    });
 
     if (
       !existingPasswordResetToken ||
@@ -148,13 +146,7 @@ export namespace userCredentialsService {
     return { success: true, resetToken: existingPasswordResetToken };
   }
 
-  export async function resetPassword({
-    token,
-    password,
-  }: {
-    token: string;
-    password: string;
-  }) {
+  export async function resetPassword({ token, password }: { token: string; password: string }) {
     const { success, message, resetToken } = await getResetPasswordToken(token);
 
     if (!success || !resetToken?.user.password) {
@@ -173,14 +165,9 @@ export namespace userCredentialsService {
       });
     }
 
-    await db
-      .update(user)
-      .set({ password: hashedPassword })
-      .where(eq(user.id, resetToken.userId));
+    await db.update(user).set({ password: hashedPassword }).where(eq(user.id, resetToken.userId));
 
-    await db
-      .delete(passwordResetToken)
-      .where(eq(passwordResetToken.token, token));
+    await db.delete(passwordResetToken).where(eq(passwordResetToken.token, token));
 
     await service.email.sendResetPasswordSuccessEmail({
       email: resetToken.user.email,
@@ -191,8 +178,7 @@ export namespace userCredentialsService {
   }
 
   export async function verifyEmail({ token }: { token: string }) {
-    const { success, message, verificationToken } =
-      await getEmailVerificationToken(token);
+    const { success, message, verificationToken } = await getEmailVerificationToken(token);
 
     if (!success || !verificationToken) {
       throw new ServiceError({
@@ -213,9 +199,7 @@ export namespace userCredentialsService {
       .set({ emailVerified: new Date() })
       .where(eq(user.id, verificationToken.user.id));
 
-    await db
-      .delete(emailVerificationToken)
-      .where(eq(emailVerificationToken.token, token));
+    await db.delete(emailVerificationToken).where(eq(emailVerificationToken.token, token));
 
     return verificationToken.user;
   }

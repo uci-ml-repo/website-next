@@ -38,23 +38,15 @@ export function CookiesAlert() {
             <InfoIcon className="size-5 shrink-0" />
 
             <div>
-              By using the UCI Machine Learning Repository, you acknowledge and
-              accept our{" "}
-              <a
-                className="text-link hover:underline"
-                href={PRIVACY_POLICY_ROUTE}
-              >
+              By using the UCI Machine Learning Repository, you acknowledge and accept our{" "}
+              <a className="text-link hover:underline" href={PRIVACY_POLICY_ROUTE}>
                 Privacy Policy
               </a>
               .
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button
-              onClick={acceptCookies}
-              className="lift w-full"
-              variant="blue"
-            >
+            <Button onClick={acceptCookies} className="lift w-full" variant="blue">
               Accept
             </Button>
             <Button className="lift w-full" variant="secondary">

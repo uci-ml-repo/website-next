@@ -78,9 +78,7 @@ export class GoogleAnalyticsService {
    */
   async datasetViews(startDate = analyticsInceptionDate, endDate = "today") {
     const datasets = await service.dataset.find.byQuery({});
-    const pagePaths = datasets.datasets.map((dataset) =>
-      DATASET_ROUTE(dataset),
-    );
+    const pagePaths = datasets.datasets.map((dataset) => DATASET_ROUTE(dataset));
 
     const analytics = await this.asObject({
       dateRanges: [
@@ -114,11 +112,7 @@ export class GoogleAnalyticsService {
    *
    * @returns the dataset's views
    */
-  async datasetViewsById(
-    id: number,
-    startDate = analyticsInceptionDate,
-    endDate = "today",
-  ) {
+  async datasetViewsById(id: number, startDate = analyticsInceptionDate, endDate = "today") {
     const dataset = await service.dataset.find.byId(id);
 
     if (!dataset) {

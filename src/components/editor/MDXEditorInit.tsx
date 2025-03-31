@@ -45,10 +45,7 @@ export const allPlugins = [
   }),
 ];
 
-export type MDXEditorProps = Omit<
-  React.ComponentProps<typeof MDXEditor>,
-  "markdown"
-> & {
+export type MDXEditorProps = Omit<React.ComponentProps<typeof MDXEditor>, "markdown"> & {
   markdown?: string;
   disabled?: boolean;
 };
@@ -86,9 +83,7 @@ export default function MDXEditorInit({
 }
 
 function ToolbarContents() {
-  const VerticalSeparator = () => (
-    <Separator orientation="vertical" className="h-5" />
-  );
+  const VerticalSeparator = () => <Separator orientation="vertical" className="h-5" />;
 
   return (
     <DiffSourceToggleWrapper options={["rich-text", "source"]}>

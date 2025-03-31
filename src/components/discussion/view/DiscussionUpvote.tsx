@@ -16,9 +16,7 @@ interface DiscussionUpvoteProps {
 export function DiscussionUpvote({ discussion }: DiscussionUpvoteProps) {
   const [isUpvoted, setIsUpvoted] = useState<boolean>(discussion.upvoted);
 
-  const [upvoteCount, setUpvoteCount] = useState<number>(
-    discussion.upvoteCount,
-  );
+  const [upvoteCount, setUpvoteCount] = useState<number>(discussion.upvoteCount);
 
   const upvoteMutation = trpc.discussion.upvote.create.useMutation({
     onSuccess: () => {

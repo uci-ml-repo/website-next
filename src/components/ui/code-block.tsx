@@ -4,13 +4,7 @@ import { useEffect } from "react";
 import { Copy } from "@/components/ui/copy";
 import { cn } from "@/lib/utils";
 
-export const CodeBlock = ({
-  code,
-  language,
-}: {
-  code: string;
-  language?: string;
-}) => {
+export const CodeBlock = ({ code, language }: { code: string; language?: string }) => {
   useEffect(() => {
     hljs.highlightAll();
   }, []);

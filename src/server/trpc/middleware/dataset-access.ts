@@ -21,10 +21,7 @@ export const datasetAccessProcedure = t.procedure
     if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
       if (!ctx.session?.user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
-      } else if (
-        !isPriviliged(ctx.session.user.role) &&
-        dataset.userId !== ctx.session.user.id
-      ) {
+      } else if (!isPriviliged(ctx.session.user.role) && dataset.userId !== ctx.session.user.id) {
         throw new TRPCError({ code: "FORBIDDEN" });
       }
     }

@@ -52,10 +52,7 @@ export function SimpleSearch({
         <div className="text-nowrap text-sm text-muted-foreground max-2xs:hidden">
           {filterLabel}
         </div>
-        <Select
-          value={filterValue || "all"}
-          onValueChange={(value) => onFilterChange(value)}
-        >
+        <Select value={filterValue || "all"} onValueChange={(value) => onFilterChange(value)}>
           <SelectTrigger className="w-32" size="lg">
             <SelectValue />
           </SelectTrigger>

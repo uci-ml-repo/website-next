@@ -21,11 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { TableCell, TableRow } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Enums } from "@/db/lib/enums";
 import type { UserSelect } from "@/db/lib/types";
 import { cn, formatEnum } from "@/lib/utils";
@@ -112,10 +108,7 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem
-            value={UserRole.ADMIN}
-            className="!text-destructive-muted"
-          >
+          <SelectItem value={UserRole.ADMIN} className="!text-destructive-muted">
             Admin
           </SelectItem>
           <SelectItem value={UserRole.LIBRARIAN}>Librarian</SelectItem>
@@ -125,17 +118,13 @@ function UserRoleSelect({ user }: { user: UserSelect }) {
       </Select>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
-          <DialogTitle>
-            Confirm role change to {formatEnum(changeToRole)}?
-          </DialogTitle>
+          <DialogTitle>Confirm role change to {formatEnum(changeToRole)}?</DialogTitle>
           <div className="space-y-4">
             <div>
               User: <span className="font-semibold">{user.email}</span>
             </div>
             {user.email === session?.user.email && (
-              <AlertWarning>
-                You are changing your own role. You will be signed out.
-              </AlertWarning>
+              <AlertWarning>You are changing your own role. You will be signed out.</AlertWarning>
             )}
             <div className="flex items-center justify-around border-y py-4">
               <div

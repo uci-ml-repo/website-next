@@ -58,8 +58,7 @@ export function DatasetSettingsDeleteDialog({
     });
   }
 
-  const isDeleting =
-    datasetRemoveMutation.isPending || datasetRemoveMutation.isSuccess;
+  const isDeleting = datasetRemoveMutation.isPending || datasetRemoveMutation.isSuccess;
 
   const confirmed = confirmInput.trim() === "delete me";
 
@@ -93,13 +92,9 @@ export function DatasetSettingsDeleteDialog({
           )}
           <div className="select-none space-y-1">
             <div className="text-muted-foreground">
-              To confirm, type <span className="font-bold">delete me</span>{" "}
-              below.
+              To confirm, type <span className="font-bold">delete me</span> below.
             </div>
-            <Input
-              onChange={(e) => setConfirmInput(e.target.value)}
-              value={confirmInput}
-            />
+            <Input onChange={(e) => setConfirmInput(e.target.value)} value={confirmInput} />
           </div>
         </div>
 
@@ -109,11 +104,7 @@ export function DatasetSettingsDeleteDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button
-            variant="destructive"
-            disabled={!confirmed || isDeleting}
-            onClick={deleteDataset}
-          >
+          <Button variant="destructive" disabled={!confirmed || isDeleting} onClick={deleteDataset}>
             {isDeleting && <Spinner />} Delete dataset
           </Button>
         </DialogFooter>

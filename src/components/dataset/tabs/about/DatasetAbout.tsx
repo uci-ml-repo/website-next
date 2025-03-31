@@ -16,9 +16,7 @@ export function DatasetAbout() {
   return (
     <div className="flex justify-between gap-x-14 gap-y-10 max-lg:flex-col">
       <div className="w-full space-y-6">
-        {dataset.status === Enums.ApprovalStatus.DRAFT && (
-          <DatasetEditPendingActions />
-        )}
+        {dataset.status === Enums.ApprovalStatus.DRAFT && <DatasetEditPendingActions />}
         <div className="space-y-12">
           <div className="space-y-8">
             <DatasetDescription />

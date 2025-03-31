@@ -30,10 +30,7 @@ export function DatasetCheckboxFilterItem<T extends string>({
       onClick={onClick}
     >
       <div>{text}</div>
-      <Checkbox
-        checked={checked}
-        aria-label={ariaLabel ?? "Filter by " + text}
-      />
+      <Checkbox checked={checked} aria-label={ariaLabel ?? "Filter by " + text} />
     </div>
   );
 }

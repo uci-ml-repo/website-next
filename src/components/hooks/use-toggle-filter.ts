@@ -3,11 +3,7 @@ import { useCallback } from "react";
 import { useQueryFilters } from "@/components/hooks/use-query-filters";
 import type { DatasetQuery } from "@/server/schema/dataset";
 
-function toggleFilter<T>(
-  current: T[] | undefined,
-  checked: boolean,
-  value: T,
-): T[] | undefined {
+function toggleFilter<T>(current: T[] | undefined, checked: boolean, value: T): T[] | undefined {
   if (checked) {
     return [...(current ?? []), value];
   }

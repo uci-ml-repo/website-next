@@ -26,8 +26,7 @@ export function ForgotPassword() {
     },
   });
 
-  const resetPasswordMutation =
-    trpc.user.credentials.sendResetPasswordEmail.useMutation();
+  const resetPasswordMutation = trpc.user.credentials.sendResetPasswordEmail.useMutation();
 
   return (
     <>
@@ -35,10 +34,7 @@ export function ForgotPassword() {
       <div className="mx-auto flex max-w-[450px] flex-col items-center space-y-4 sm:hidden">
         <div className="space-y-2">
           <div className="text-xl font-bold">Reset your password</div>
-          <div>
-            If the email you enter matches an account, we'll send a reset link
-            to:
-          </div>
+          <div>If the email you enter matches an account, we'll send a reset link to:</div>
           <ForgotPasswordForm
             form={form}
             resetPasswordMutation={resetPasswordMutation}
@@ -56,10 +52,7 @@ export function ForgotPassword() {
         <CardContent className="w-full space-y-6">
           <div className="space-y-2">
             <div className="text-xl font-bold">Reset your password</div>
-            <div>
-              If the email you enter matches an account, we'll send a reset code
-              to:
-            </div>
+            <div>If the email you enter matches an account, we'll send a reset code to:</div>
           </div>
           <ForgotPasswordForm
             form={form}

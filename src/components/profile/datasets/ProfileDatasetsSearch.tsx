@@ -89,12 +89,7 @@ export function ProfileDatasetsSearch({ session }: { session: Session }) {
             <div>
               <div className="divide-y">
                 {data.datasets.map((dataset) => (
-                  <DatasetRow
-                    hoverCard
-                    dataset={dataset}
-                    displayStatus
-                    key={dataset.id}
-                  />
+                  <DatasetRow hoverCard dataset={dataset} displayStatus key={dataset.id} />
                 ))}
               </div>
               <hr />

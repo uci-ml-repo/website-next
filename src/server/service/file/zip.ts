@@ -76,9 +76,7 @@ export namespace fileZipService {
                   zipfile.openReadStream(entry, (err, readStream) => {
                     if (err || !readStream) {
                       zipfile.close();
-                      return reject(
-                        err || new Error("Could not open read stream"),
-                      );
+                      return reject(err || new Error("Could not open read stream"));
                     }
                     const writeStream = fs.createWriteStream(fullPath);
 
@@ -86,9 +84,7 @@ export namespace fileZipService {
                       totalSize += chunk.length;
                       if (totalSize > limitSize && !cancelled) {
                         cancelled = true;
-                        readStream.destroy(
-                          new Error(`Exceeded limit of ${limitSize} bytes`),
-                        );
+                        readStream.destroy(new Error(`Exceeded limit of ${limitSize} bytes`));
                       }
                     });
 

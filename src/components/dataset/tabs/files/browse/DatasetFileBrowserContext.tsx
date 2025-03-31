@@ -4,10 +4,7 @@ import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
-import {
-  DATASET_FILES_UNZIPPED_PATH,
-  DATASET_FILES_UNZIPPED_PENDING_PATH,
-} from "@/lib/routes";
+import { DATASET_FILES_UNZIPPED_PATH, DATASET_FILES_UNZIPPED_PENDING_PATH } from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 
 interface DatasetFileBrowserContextProps {
@@ -20,15 +17,11 @@ interface DatasetFileBrowserContextProps {
   forward: () => void;
 }
 
-const DatasetFileBrowserContext = createContext<
-  DatasetFileBrowserContextProps | undefined
->(undefined);
+const DatasetFileBrowserContext = createContext<DatasetFileBrowserContextProps | undefined>(
+  undefined,
+);
 
-export function DatasetFileBrowserProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function DatasetFileBrowserProvider({ children }: { children: ReactNode }) {
   const { dataset, viewPendingFiles } = useDataset();
 
   const rootPath = viewPendingFiles

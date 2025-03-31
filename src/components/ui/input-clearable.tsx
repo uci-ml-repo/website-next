@@ -32,18 +32,14 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputClearableProps>(
     ref,
   ) => {
     const extraIconPadding = Icon
-      ? iconPadding[iconPosition][variantSize ?? "default"][
-          pill ? "pill" : "nonPill"
-        ]
+      ? iconPadding[iconPosition][variantSize ?? "default"][pill ? "pill" : "nonPill"]
       : "";
     const clearButtonPadding = value ? "pr-10" : "";
 
     return (
       <div className={cn("relative flex items-center", containerClassName)}>
         {Icon && iconPosition === "left" && (
-          <span
-            className={cn(iconVariants({ variantSize, iconPosition: "left" }))}
-          >
+          <span className={cn(iconVariants({ variantSize, iconPosition: "left" }))}>
             <Icon />
           </span>
         )}
@@ -61,10 +57,7 @@ const InputClearable = React.forwardRef<HTMLInputElement, InputClearableProps>(
         />
         {Icon && iconPosition === "right" && (
           <span
-            className={cn(
-              iconVariants({ variantSize, iconPosition: "right" }),
-              value && "mr-4",
-            )}
+            className={cn(iconVariants({ variantSize, iconPosition: "right" }), value && "mr-4")}
           >
             <Icon />
           </span>

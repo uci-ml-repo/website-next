@@ -7,10 +7,7 @@ import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesS
 import { DatasetSettingsGraphicsDialog } from "@/components/dataset/tabs/settings/graphics/DatasetSettingsGraphicsDialog";
 import { AlertInfo } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import {
-  DATASET_API_THUMBNAIL_PENDING_ROUTE,
-  DATASET_API_THUMBNAIL_ROUTE,
-} from "@/lib/routes";
+import { DATASET_API_THUMBNAIL_PENDING_ROUTE, DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 export function DatasetSettingsGraphics() {
@@ -31,8 +28,7 @@ export function DatasetSettingsGraphics() {
         </div>
         {!!thumbnailParam && !hasPendingThumbnail && (
           <AlertInfo className="w-fit">
-            Thumbnail updated. Changes may take several minutes to reflect on
-            your dataset.
+            Thumbnail updated. Changes may take several minutes to reflect on your dataset.
           </AlertInfo>
         )}
         <div className="relative w-fit">

@@ -4,10 +4,7 @@ import React from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileBrowser } from "@/components/dataset/tabs/files/browse/DatasetFileBrowserContext";
-import {
-  DATASET_FILES_UNZIPPED_PATH,
-  DATASET_FILES_UNZIPPED_PENDING_PATH,
-} from "@/lib/routes";
+import { DATASET_FILES_UNZIPPED_PATH, DATASET_FILES_UNZIPPED_PENDING_PATH } from "@/lib/routes";
 
 export function DatasetFileViewPath() {
   const { dataset, viewPendingFiles } = useDataset();
@@ -27,10 +24,7 @@ export function DatasetFileViewPath() {
     <div className="min-w-0 flex-1 @container">
       <div className="ml-1 hidden items-center space-x-1 overflow-hidden text-lg @3xs:flex max-md:overflow-x-auto">
         {pathParts.map((part, index) => {
-          const cumulativePath = path.join(
-            basePath,
-            ...pathParts.slice(0, index + 1),
-          );
+          const cumulativePath = path.join(basePath, ...pathParts.slice(0, index + 1));
 
           const isLast = index === pathParts.length - 1;
 

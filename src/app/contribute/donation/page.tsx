@@ -33,12 +33,7 @@ export default function Page() {
           verifiedRedirect={CONTRIBUTE_DONATION_FORM_ROUTE}
           disabled={checked !== true}
         >
-          <Button
-            className="lift w-full"
-            variant="gold"
-            size="lg"
-            disabled={checked !== true}
-          >
+          <Button className="lift w-full" variant="gold" size="lg" disabled={checked !== true}>
             <PlusIcon /> Donate Dataset
           </Button>
         </VerificationRequired>

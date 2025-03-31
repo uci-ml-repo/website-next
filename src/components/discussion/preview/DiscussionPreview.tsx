@@ -20,10 +20,7 @@ export function DiscussionPreview({
         className="flex w-full min-w-0 items-center px-2 py-4 sm:px-4"
         prefetch={false}
       >
-        <ProfileAvatar
-          src={discussion.user.image}
-          className="mr-3 size-12 max-sm:hidden"
-        />
+        <ProfileAvatar src={discussion.user.image} className="mr-3 size-12 max-sm:hidden" />
         <div className="min-w-0">
           <div className="overflow-hidden text-ellipsis text-pretty text-xl font-bold group-hover:underline max-md:line-clamp-3 md:whitespace-nowrap">
             {discussion.title}
@@ -32,12 +29,8 @@ export function DiscussionPreview({
             <span>{discussion.user.name}</span>
             <span>&middot; {timeSince(discussion.createdAt)} ago</span>
             <span className="max-sm:hidden">
-              {discussion.updatedAt && (
-                <span>(edited {timeSince(discussion.updatedAt)} ago)</span>
-              )}
-              {showDatasetTitle && (
-                <span>&middot; {discussion.dataset.title}</span>
-              )}
+              {discussion.updatedAt && <span>(edited {timeSince(discussion.updatedAt)} ago)</span>}
+              {showDatasetTitle && <span>&middot; {discussion.dataset.title}</span>}
             </span>
           </div>
         </div>

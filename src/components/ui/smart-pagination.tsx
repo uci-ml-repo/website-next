@@ -74,9 +74,7 @@ export function SmartPagination({
     <Pagination className="flex justify-between gap-x-2 gap-y-4 max-md:flex-col-reverse">
       {totalCount > Math.min(...perPageOptions) ? (
         <div className="flex items-center space-x-2">
-          <div className="text-nowrap text-sm text-muted-foreground">
-            Results per page
-          </div>
+          <div className="text-nowrap text-sm text-muted-foreground">Results per page</div>
 
           <Select
             value={limit.toString()}
@@ -93,11 +91,7 @@ export function SmartPagination({
             </SelectTrigger>
             <SelectContent>
               {perPageOptions.map((option) => (
-                <SelectItem
-                  key={option}
-                  className="cursor-pointer"
-                  value={option.toString()}
-                >
+                <SelectItem key={option} className="cursor-pointer" value={option.toString()}>
                   {option.toLocaleString()}
                 </SelectItem>
               ))}
@@ -110,8 +104,7 @@ export function SmartPagination({
 
       <div className="flex items-center gap-2 max-md:flex-col-reverse">
         <div className="mr-2 text-nowrap text-sm text-muted-foreground">
-          {offset} &ndash; {Math.min(totalCount, offset + limit)} of{" "}
-          {totalCount}
+          {offset} &ndash; {Math.min(totalCount, offset + limit)} of {totalCount}
         </div>
         <PaginationContent>
           <PaginationItem>
@@ -145,9 +138,7 @@ export function SmartPagination({
 
           <PaginationItem>
             <PaginationNext
-              onClick={() =>
-                onPageChange(Math.min(offset + limit, (totalPages - 1) * limit))
-              }
+              onClick={() => onPageChange(Math.min(offset + limit, (totalPages - 1) * limit))}
               disabled={offset + limit >= totalCount}
             />
           </PaginationItem>

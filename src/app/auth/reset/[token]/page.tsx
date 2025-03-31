@@ -8,11 +8,7 @@ import { caller } from "@/server/trpc/query/server";
 
 export const metadata: Metadata = { title: "Reset Password" };
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ token: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
 
   const parsedToken = decodeURIComponent(token);

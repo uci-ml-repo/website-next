@@ -20,14 +20,7 @@ import { cn } from "@/lib/utils";
  * ```
  */
 function variablesToCsv(variables: VariableSelect[]): string {
-  const header = [
-    "name",
-    "role",
-    "type",
-    "description",
-    "units",
-    "missingvalues",
-  ];
+  const header = ["name", "role", "type", "description", "units", "missingvalues"];
 
   function escapeCell(cell: string): string {
     if (cell.includes(",") || cell.includes('"') || cell.includes("\n")) {
@@ -87,16 +80,11 @@ export function DatasetVariables() {
             </TableHeader>
             <TableBody>
               {dataset.variables.map((variable, index) => (
-                <TableRow
-                  key={variable.id}
-                  className={cn({ "bg-muted/70": index % 2 == 0 })}
-                >
+                <TableRow key={variable.id} className={cn({ "bg-muted/70": index % 2 == 0 })}>
                   <TableCell className="font-bold">{variable.name}</TableCell>
                   <TableCell>{variable.role}</TableCell>
                   <TableCell>{variable.type}</TableCell>
-                  <TableCell className="max-md:hidden">
-                    {variable.description ?? "-"}
-                  </TableCell>
+                  <TableCell className="max-md:hidden">{variable.description ?? "-"}</TableCell>
                   <TableCell>{variable.units ?? "-"}</TableCell>
                   <TableCell>{variable.missingValues ? "yes" : "no"}</TableCell>
                 </TableRow>

@@ -46,10 +46,7 @@ export namespace discussionCommentUpvoteService {
         .where(
           and(
             eq(discussionCommentUpvote.userId, userId),
-            eq(
-              discussionCommentUpvote.discussionCommentId,
-              discussionCommentId,
-            ),
+            eq(discussionCommentUpvote.discussionCommentId, discussionCommentId),
           ),
         )
         .returning();

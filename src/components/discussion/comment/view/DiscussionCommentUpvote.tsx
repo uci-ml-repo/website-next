@@ -13,15 +13,9 @@ interface DiscussionCommentUpvoteProps {
   discussionComment: DiscussionCommentResponse;
 }
 
-export function DiscussionCommentUpvote({
-  discussionComment,
-}: DiscussionCommentUpvoteProps) {
-  const [isUpvoted, setIsUpvoted] = useState<boolean>(
-    discussionComment.upvoted,
-  );
-  const [upvoteCount, setUpvoteCount] = useState<number>(
-    discussionComment.upvoteCount,
-  );
+export function DiscussionCommentUpvote({ discussionComment }: DiscussionCommentUpvoteProps) {
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(discussionComment.upvoted);
+  const [upvoteCount, setUpvoteCount] = useState<number>(discussionComment.upvoteCount);
 
   const upvoteMutation = trpc.discussion.comment.upvote.create.useMutation({
     onSuccess: () => {
@@ -30,13 +24,12 @@ export function DiscussionCommentUpvote({
     },
   });
 
-  const removeUpvoteMutation =
-    trpc.discussion.comment.upvote.remove.useMutation({
-      onSuccess: () => {
-        setIsUpvoted(false);
-        setUpvoteCount((prev) => prev - 1);
-      },
-    });
+  const removeUpvoteMutation = trpc.discussion.comment.upvote.remove.useMutation({
+    onSuccess: () => {
+      setIsUpvoted(false);
+      setUpvoteCount((prev) => prev - 1);
+    },
+  });
 
   const isPending = upvoteMutation.isPending || removeUpvoteMutation.isPending;
 

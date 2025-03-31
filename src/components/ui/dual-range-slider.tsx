@@ -6,8 +6,7 @@ import { useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
-interface DualRangeSliderProps
-  extends React.ComponentProps<typeof SliderPrimitive.Root> {
+interface DualRangeSliderProps extends React.ComponentProps<typeof SliderPrimitive.Root> {
   value: number[];
   min: number;
   max: number;
@@ -36,10 +35,7 @@ const Thumb = React.forwardRef<
     )}
   >
     {labelContent && (
-      <span
-        ref={labelRef}
-        className={cn("absolute flex w-full justify-center", labelClass)}
-      >
+      <span ref={labelRef} className={cn("absolute flex w-full justify-center", labelClass)}>
         {labelContent}
       </span>
     )}
@@ -50,78 +46,67 @@ Thumb.displayName = "Thumb";
 const DualRangeSlider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   DualRangeSliderProps
->(
-  (
-    { className, label, inactive = false, labelPosition = "top", ...props },
-    ref,
-  ) => {
-    const currentValue = useMemo(
-      () => props.value ?? [props.min, props.max],
-      [props.max, props.min, props.value],
-    );
-    const leftLabelRef = React.useRef<HTMLSpanElement>(null);
-    const rightLabelRef = React.useRef<HTMLSpanElement>(null);
-    const [isCollision, setIsCollision] = React.useState(false);
+>(({ className, label, inactive = false, labelPosition = "top", ...props }, ref) => {
+  const currentValue = useMemo(
+    () => props.value ?? [props.min, props.max],
+    [props.max, props.min, props.value],
+  );
+  const leftLabelRef = React.useRef<HTMLSpanElement>(null);
+  const rightLabelRef = React.useRef<HTMLSpanElement>(null);
+  const [isCollision, setIsCollision] = React.useState(false);
 
-    React.useLayoutEffect(() => {
-      if (leftLabelRef.current && rightLabelRef.current) {
-        const leftRect = leftLabelRef.current.getBoundingClientRect();
-        const rightRect = rightLabelRef.current.getBoundingClientRect();
-        if (leftRect.right > rightRect.left) {
-          setIsCollision(true);
-        } else {
-          setIsCollision(false);
-        }
+  React.useLayoutEffect(() => {
+    if (leftLabelRef.current && rightLabelRef.current) {
+      const leftRect = leftLabelRef.current.getBoundingClientRect();
+      const rightRect = rightLabelRef.current.getBoundingClientRect();
+      if (leftRect.right > rightRect.left) {
+        setIsCollision(true);
+      } else {
+        setIsCollision(false);
       }
-    }, [currentValue]);
+    }
+  }, [currentValue]);
 
-    const leftLabelClass = cn(
-      "-right-[14px] pr-5",
-      labelPosition === "top" ? "-top-6" : "top-4",
-    );
-    const rightLabelClass = cn(
-      "-left-[14px] pl-5",
-      isCollision || labelPosition === "bottom" ? "top-4" : "-top-6",
-    );
+  const leftLabelClass = cn("-right-[14px] pr-5", labelPosition === "top" ? "-top-6" : "top-4");
+  const rightLabelClass = cn(
+    "-left-[14px] pl-5",
+    isCollision || labelPosition === "bottom" ? "top-4" : "-top-6",
+  );
 
-    return (
-      <SliderPrimitive.Root
-        ref={ref}
-        className={cn(
-          "relative flex w-full touch-none select-none items-center",
-          { "py-6": label },
-          className,
-        )}
-        {...props}
-        value={currentValue}
-        onValueChange={(newValue: number[]) => {
-          props.onValueChange?.(newValue);
-        }}
-      >
-        <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-          <SliderPrimitive.Range
-            className={cn(
-              "absolute h-full",
-              inactive ? "bg-muted-foreground" : "bg-uci-blue",
-            )}
-          />
-        </SliderPrimitive.Track>
-        <Thumb
-          labelContent={label ? label(currentValue[0]) : null}
-          labelRef={leftLabelRef}
-          labelClass={leftLabelClass}
-          inactive={inactive}
+  return (
+    <SliderPrimitive.Root
+      ref={ref}
+      className={cn(
+        "relative flex w-full touch-none select-none items-center",
+        { "py-6": label },
+        className,
+      )}
+      {...props}
+      value={currentValue}
+      onValueChange={(newValue: number[]) => {
+        props.onValueChange?.(newValue);
+      }}
+    >
+      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
+        <SliderPrimitive.Range
+          className={cn("absolute h-full", inactive ? "bg-muted-foreground" : "bg-uci-blue")}
         />
-        <Thumb
-          labelContent={label ? label(currentValue[1]) : null}
-          labelRef={rightLabelRef}
-          labelClass={rightLabelClass}
-          inactive={inactive}
-        />
-      </SliderPrimitive.Root>
-    );
-  },
-);
+      </SliderPrimitive.Track>
+      <Thumb
+        labelContent={label ? label(currentValue[0]) : null}
+        labelRef={leftLabelRef}
+        labelClass={leftLabelClass}
+        inactive={inactive}
+      />
+      <Thumb
+        labelContent={label ? label(currentValue[1]) : null}
+        labelRef={rightLabelRef}
+        labelClass={rightLabelClass}
+        inactive={inactive}
+      />
+    </SliderPrimitive.Root>
+  );
+});
 DualRangeSlider.displayName = "DualRangeSlider";
 
 export { DualRangeSlider };

@@ -4,12 +4,7 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface CopyProps {
@@ -20,13 +15,7 @@ interface CopyProps {
   tooltip?: string;
 }
 
-export function Copy({
-  copyText,
-  absolute = true,
-  children,
-  className,
-  tooltip,
-}: CopyProps) {
+export function Copy({ copyText, absolute = true, children, className, tooltip }: CopyProps) {
   const [copied, setCopied] = useState(false);
   const triggerRef = useRef(null);
 
@@ -40,11 +29,7 @@ export function Copy({
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0}>
-        <TooltipTrigger
-          asChild
-          onClick={(event) => event.preventDefault()}
-          ref={triggerRef}
-        >
+        <TooltipTrigger asChild onClick={(event) => event.preventDefault()} ref={triggerRef}>
           <Button
             variant="outline"
             size={!children ? "icon" : "sm"}

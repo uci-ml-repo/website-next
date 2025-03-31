@@ -1,13 +1,7 @@
 "use client";
 
 import type { Session } from "next-auth";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 
 import { Enums } from "@/db/lib/enums";
 import type { DatasetResponse } from "@/lib/types";
@@ -29,9 +23,7 @@ type EditingState = {
   [key in DatasetField]: boolean;
 };
 
-type EditingAction =
-  | { type: "start"; field: DatasetField }
-  | { type: "stop"; field: DatasetField };
+type EditingAction = { type: "start"; field: DatasetField } | { type: "stop"; field: DatasetField };
 
 const initialEditingState: EditingState = {
   files: false,
@@ -46,10 +38,7 @@ const initialEditingState: EditingState = {
   status: false,
 };
 
-function editingReducer(
-  state: EditingState,
-  action: EditingAction,
-): EditingState {
+function editingReducer(state: EditingState, action: EditingAction): EditingState {
   switch (action.type) {
     case "start":
       return { ...state, [action.field]: true };
@@ -74,9 +63,7 @@ interface DatasetContextProps {
   initialDataset: DatasetResponse;
 }
 
-const DatasetContext = createContext<DatasetContextProps | undefined>(
-  undefined,
-);
+const DatasetContext = createContext<DatasetContextProps | undefined>(undefined);
 
 export function DatasetProvider({
   user,
@@ -88,13 +75,8 @@ export function DatasetProvider({
   children: React.ReactNode;
 }) {
   const [dataset, setDataset] = useState<DatasetResponse>(initialDataset);
-  const [editing, setEditing] = useState<boolean>(
-    dataset.status === Enums.ApprovalStatus.DRAFT,
-  );
-  const [editingFields, dispatch] = useReducer(
-    editingReducer,
-    initialEditingState,
-  );
+  const [editing, setEditing] = useState<boolean>(dataset.status === Enums.ApprovalStatus.DRAFT);
+  const [editingFields, dispatch] = useReducer(editingReducer, initialEditingState);
   const [viewPendingFiles, setViewPendingFiles] = useState<boolean>(false);
 
   const startEditingField = (field: DatasetField) => {
@@ -114,8 +96,7 @@ export function DatasetProvider({
     }
   }, [editing]);
 
-  const editable =
-    !!user && (isPriviliged(user.role) || dataset.userId === user.id);
+  const editable = !!user && (isPriviliged(user.role) || dataset.userId === user.id);
 
   return (
     <DatasetContext.Provider

@@ -7,11 +7,7 @@ interface ProfileAvatarProps extends React.ComponentPropsWithoutRef<"div"> {
   src?: string | null;
 }
 
-export function ProfileAvatar({
-  src,
-  className,
-  ...props
-}: ProfileAvatarProps) {
+export function ProfileAvatar({ src, className, ...props }: ProfileAvatarProps) {
   return (
     <Avatar className={cn("size-10", className)} {...props}>
       {src && <AvatarImage src={src} alt="Avatar" fetchPriority="high" />}

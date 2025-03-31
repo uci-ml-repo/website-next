@@ -29,9 +29,7 @@ export default async function Page() {
       <div className="space-y-4">
         <TabHeader icon={DatabaseIcon} title="Your Datasets" />
         <AlternativeCard>
-          <div className="text-muted-foreground">
-            You currently have no datasets.
-          </div>
+          <div className="text-muted-foreground">You currently have no datasets.</div>
           <Button variant="gold" className="lift" asChild>
             <Link href={CONTRIBUTE_ROUTE} className="flex items-center">
               <PlusIcon />

@@ -25,10 +25,7 @@ export default async function Page() {
   return (
     <div className="space-y-4">
       <TabHeader title="Discussions" icon={MessageSquareTextIcon} />
-      <Discussions
-        userId={session.user.id}
-        initialHasDiscussions={hasDiscussions}
-      />
+      <Discussions userId={session.user.id} initialHasDiscussions={hasDiscussions} />
     </div>
   );
 }

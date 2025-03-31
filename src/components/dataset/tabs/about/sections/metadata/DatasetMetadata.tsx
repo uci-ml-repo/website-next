@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  FileChartColumnIcon,
-} from "lucide-react";
+import { ChevronsDownUpIcon, ChevronsUpDownIcon, FileChartColumnIcon } from "lucide-react";
 import { useState } from "react";
 
 import { useDataset } from "@/components/dataset/context/DatasetContext";
@@ -16,17 +12,16 @@ import { Button } from "@/components/ui/button";
 export function DatasetMetadata() {
   const { dataset } = useDataset();
 
-  const datasetMetadataContent: { title: string; children: React.ReactNode }[] =
-    [
-      {
-        title: "Authors",
-        children: <DatasetMetadataAuthors authors={dataset.authors} />,
-      },
-      {
-        title: "Donor",
-        children: <DatasetMetadataDonor donor={dataset.user} />,
-      },
-    ];
+  const datasetMetadataContent: { title: string; children: React.ReactNode }[] = [
+    {
+      title: "Authors",
+      children: <DatasetMetadataAuthors authors={dataset.authors} />,
+    },
+    {
+      title: "Donor",
+      children: <DatasetMetadataDonor donor={dataset.user} />,
+    },
+  ];
 
   const [openStates, setOpenStates] = useState<boolean[]>(
     Array(datasetMetadataContent.length).fill(false),

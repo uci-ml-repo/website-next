@@ -11,19 +11,15 @@ const badgeVariants = cva(
       variant: {
         default: "border-transparent bg-primary text-primary-foreground shadow",
         secondary: "border-border bg-secondary text-secondary-foreground",
-        "secondary-strong":
-          "border-primary/25 bg-secondary text-secondary-foreground",
-        destructive:
-          "border-destructive bg-destructive/5 text-destructive shadow",
+        "secondary-strong": "border-primary/25 bg-secondary text-secondary-foreground",
+        destructive: "border-destructive bg-destructive/5 text-destructive shadow",
         "destructive-muted":
           "border-destructive-muted bg-destructive-muted/5 text-destructive-muted shadow",
         positive: "border-positive bg-positive/5 text-positive shadow",
         blue: "border-uci-blue bg-uci-blue/5 text-uci-blue shadow",
-        "blue-strong":
-          "border-uci-blue bg-uci-blue text-uci-blue-foreground shadow",
+        "blue-strong": "border-uci-blue bg-uci-blue text-uci-blue-foreground shadow",
         gold: "border-uci-gold bg-uci-gold/5 text-uci-gold shadow brightness-[.8]",
-        "gold-strong":
-          "border-uci-gold bg-uci-gold text-uci-gold-foreground shadow",
+        "gold-strong": "border-uci-gold bg-uci-gold text-uci-gold-foreground shadow",
         outline: "text-foreground",
       },
       size: {
@@ -48,10 +44,7 @@ export interface BadgeProps
 function Badge({ className, variant, size, ...props }: BadgeProps) {
   return (
     <div className="z-10 flex w-fit items-center rounded-full bg-background">
-      <div
-        className={cn(badgeVariants({ variant, size }), className)}
-        {...props}
-      />
+      <div className={cn(badgeVariants({ variant, size }), className)} {...props} />
     </div>
   );
 }

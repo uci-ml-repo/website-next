@@ -10,20 +10,14 @@ export function ResetPasswordSuccess({ name }: { name: string }) {
       <p>Hello {name},</p>
       <p>
         You have successfully reset your password. You can now{" "}
-        <a
-          className="text-blue-500 hover:underline"
-          href={path.join(env.ORIGIN, SIGN_IN_ROUTE)}
-        >
+        <a className="text-blue-500 hover:underline" href={path.join(env.ORIGIN, SIGN_IN_ROUTE)}>
           log in
         </a>{" "}
         using your new password.
       </p>
       <p>
         If you did not perform this action, contact{" "}
-        <a
-          className="text-blue-500 hover:underline"
-          href="mailto:ml-repository@ics.uci.edu"
-        >
+        <a className="text-blue-500 hover:underline" href="mailto:ml-repository@ics.uci.edu">
           ml-repository@ics.uci.edu
         </a>
         .

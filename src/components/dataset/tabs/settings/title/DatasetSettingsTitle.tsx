@@ -8,11 +8,7 @@ import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { useDatasetFileStatus } from "@/components/dataset/context/DatasetFilesStatusContext";
 import { DatasetEditFieldButton } from "@/components/dataset/edit/DatasetEditFieldButton";
 import { DatasetSettingsTitleForm } from "@/components/dataset/tabs/settings/title/DatasetSettingsTitleForm";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { CONTACT_ROUTE } from "@/lib/routes";
 
 export function DatasetSettingsTitle() {

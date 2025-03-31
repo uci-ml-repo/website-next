@@ -13,8 +13,6 @@ export namespace bookmarkRemoveService {
   }) {
     return db
       .delete(bookmark)
-      .where(
-        and(eq(bookmark.datasetId, datasetId), eq(bookmark.userId, userId)),
-      );
+      .where(and(eq(bookmark.datasetId, datasetId), eq(bookmark.userId, userId)));
   }
 }

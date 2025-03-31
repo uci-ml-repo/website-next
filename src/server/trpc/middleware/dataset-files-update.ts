@@ -29,10 +29,7 @@ export const datasetFilesUpdateProcedure = t.procedure
   .unstable_concat(fileAccessProcedure)
   .unstable_concat(datasetUpdateProcedure)
   .use(({ ctx, input, next }) => {
-    if (
-      !input.path ||
-      !datasetEditablePaths(ctx.dataset).includes(input.path)
-    ) {
+    if (!input.path || !datasetEditablePaths(ctx.dataset).includes(input.path)) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: `Dataset id ${input.datasetId} does not have ${input.path}`,

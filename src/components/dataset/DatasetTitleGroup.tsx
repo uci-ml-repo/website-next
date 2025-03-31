@@ -19,9 +19,7 @@ export function DatasetTitleGroup() {
   return (
     <div className="flex items-center justify-between">
       <div className="w-full min-w-0 space-y-6">
-        <h1 className="truncate text-pretty text-3xl font-bold text-foreground">
-          {dataset.title}
-        </h1>
+        <h1 className="truncate text-pretty text-3xl font-bold text-foreground">{dataset.title}</h1>
         <div className="flex w-fit gap-2 max-md:w-full max-md:flex-col">
           <DatasetDownloadButton />
 
@@ -30,12 +28,7 @@ export function DatasetTitleGroup() {
           <DatasetCitationButton />
 
           {editable && !editing && (
-            <Button
-              size="lg"
-              variant="secondary"
-              className="lift"
-              onClick={() => setEditing(true)}
-            >
+            <Button size="lg" variant="secondary" className="lift" onClick={() => setEditing(true)}>
               <PencilIcon /> Edit
             </Button>
           )}

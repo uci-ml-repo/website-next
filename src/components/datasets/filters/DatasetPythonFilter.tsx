@@ -13,10 +13,7 @@ export function DatasetPythonFilter({
 }: DatasetFilterProps) {
   const { filters, setFilters } = useQueryFilters<DatasetQuery>();
 
-  const clearFilter = useCallback(
-    () => setFilters({ python: undefined }),
-    [setFilters],
-  );
+  const clearFilter = useCallback(() => setFilters({ python: undefined }), [setFilters]);
 
   const setFilter = useCallback(
     (checked: boolean) => setFilters({ python: checked, cursor: undefined }),

@@ -8,24 +8,15 @@ import { usePoll } from "@/components/hooks/use-poll";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/server/trpc/query/client";
 
-export function ProfileSettingsEmail({
-  initialSession,
-}: {
-  initialSession: Session;
-}) {
+export function ProfileSettingsEmail({ initialSession }: { initialSession: Session }) {
   const { data: _session, update } = useSession();
 
   const session = _session ?? initialSession;
 
-  const verifyEmailMutation =
-    trpc.user.credentials.sendVerificationEmail.useMutation();
+  const verifyEmailMutation = trpc.user.credentials.sendVerificationEmail.useMutation();
 
   function onClickVerifyEmail() {
     verifyEmailMutation.mutate({});
@@ -44,9 +35,7 @@ export function ProfileSettingsEmail({
       <div className="space-y-2">
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
-            <div className="truncate text-lg text-muted-foreground">
-              {session.user.email}
-            </div>
+            <div className="truncate text-lg text-muted-foreground">{session.user.email}</div>
             {session.user.emailVerified && (
               <Tooltip>
                 <TooltipTrigger aria-label="Email Verified">
@@ -67,10 +56,7 @@ export function ProfileSettingsEmail({
           )}
         </div>
         {verifyEmailMutation.isSuccess && !session.user.emailVerified && (
-          <Alert
-            variant="positive"
-            className="flex items-center justify-between"
-          >
+          <Alert variant="positive" className="flex items-center justify-between">
             <div>Verification email sent</div>
             <button onClick={onClickVerifyEmail} className="text-link">
               Resend

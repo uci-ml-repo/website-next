@@ -7,9 +7,7 @@ interface DatasetBookmarkContextProps {
   setIsBookmarked: (value: boolean) => void;
 }
 
-const DatasetBookmarkContext = createContext<
-  DatasetBookmarkContextProps | undefined
->(undefined);
+const DatasetBookmarkContext = createContext<DatasetBookmarkContextProps | undefined>(undefined);
 
 export function DatasetBookmarkProvider({
   children,
@@ -30,9 +28,7 @@ export function DatasetBookmarkProvider({
 export function useDatasetBookmark() {
   const context = useContext(DatasetBookmarkContext);
   if (!context) {
-    throw new Error(
-      "useDatasetBookmark must be used within a DatasetBookmarkProvider",
-    );
+    throw new Error("useDatasetBookmark must be used within a DatasetBookmarkProvider");
   }
   return context;
 }

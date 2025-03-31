@@ -9,11 +9,7 @@ import { FixedSizeList as List } from "react-window";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandItem, CommandList } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
@@ -108,10 +104,7 @@ export function Multiselect({
             }}
             aria-label={placeholder}
           />
-          <PopoverTrigger
-            tabIndex={-1}
-            className="invisible -mt-[5px] h-[1px] pb-1"
-          />
+          <PopoverTrigger tabIndex={-1} className="invisible -mt-[5px] h-[1px] pb-1" />
           <PopoverContent
             avoidCollisions={false}
             onOpenAutoFocus={(event) => event.preventDefault()}
@@ -146,14 +139,9 @@ export function Multiselect({
                           className="cursor-pointer gap-0.5 pl-1.5"
                           onSelect={(selectValue) => {
                             if (!selectedValues.includes(selectValue)) {
-                              setSelectedValues((prev) => [
-                                ...prev,
-                                selectValue,
-                              ]);
+                              setSelectedValues((prev) => [...prev, selectValue]);
                             } else {
-                              setSelectedValues((prev) =>
-                                prev.filter((v) => v !== selectValue),
-                              );
+                              setSelectedValues((prev) => prev.filter((v) => v !== selectValue));
                             }
                           }}
                           style={style}
@@ -166,9 +154,7 @@ export function Multiselect({
                           {values instanceof Map ? (
                             <span className="flex w-full min-w-0 justify-between space-x-1">
                               <span className="truncate">{value}</span>
-                              <span className="text-muted-foreground">
-                                ({values.get(value)})
-                              </span>
+                              <span className="text-muted-foreground">({values.get(value)})</span>
                             </span>
                           ) : (
                             <span className="truncate">{value}</span>

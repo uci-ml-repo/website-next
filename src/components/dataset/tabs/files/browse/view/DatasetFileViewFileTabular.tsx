@@ -19,10 +19,7 @@ export function DatasetFileViewFileTabular({
               </TableCell>
 
               {cells.slice(0, 50).map((cell, index) => (
-                <TableCell
-                  key={index}
-                  className={index % 2 == 1 ? "bg-muted/50" : ""}
-                >
+                <TableCell key={index} className={index % 2 == 1 ? "bg-muted/50" : ""}>
                   <pre>{cell}</pre>
                 </TableCell>
               ))}

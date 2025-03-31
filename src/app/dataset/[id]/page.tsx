@@ -4,11 +4,7 @@ import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
 import { DATASET_ROUTE } from "@/lib/routes";
 import { caller } from "@/server/trpc/query/server";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   try {

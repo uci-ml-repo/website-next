@@ -15,9 +15,7 @@ export const datasetFindRouter = router({
     .input(z.number())
     .query(({ input }) => service.dataset.find.approvedById(input)),
 
-  byQuery: procedure
-    .input(datasetQuery)
-    .query(({ input }) => service.dataset.find.byQuery(input)),
+  byQuery: procedure.input(datasetQuery).query(({ input }) => service.dataset.find.byQuery(input)),
 
   countByQuery: procedure
     .input(datasetQuery)

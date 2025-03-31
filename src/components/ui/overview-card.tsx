@@ -13,12 +13,7 @@ interface OverviewCardProps {
   href: string;
 }
 
-export function OverviewCard({
-  title,
-  icon,
-  children,
-  href,
-}: OverviewCardProps) {
+export function OverviewCard({ title, icon, children, href }: OverviewCardProps) {
   return (
     <Card
       className={cn(
@@ -52,13 +47,7 @@ export function OverviewCard({
   );
 }
 
-export function OverviewCardViewMore({
-  href,
-  text,
-}: {
-  href: string;
-  text: string;
-}) {
+export function OverviewCardViewMore({ href, text }: { href: string; text: string }) {
   return (
     <div className="flex flex-1 items-end">
       <Link
@@ -86,9 +75,7 @@ export function OverviewCardAlternativeButton({
 }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center space-y-2">
-      {description && (
-        <div className="text-muted-foreground">{description}</div>
-      )}
+      {description && <div className="text-muted-foreground">{description}</div>}
 
       <Link href={href}>
         <Button variant="gold" className="lift">

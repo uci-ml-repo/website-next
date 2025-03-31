@@ -36,9 +36,7 @@ export function SignInButton(props: SignInButtonProps) {
 
   return (
     <Button variant="outline" asChild {...props}>
-      <a
-        href={`${SIGN_IN_ROUTE}?redirectUrl=${encodeURIComponent(redirectUrl)}`}
-      >
+      <a href={`${SIGN_IN_ROUTE}?redirectUrl=${encodeURIComponent(redirectUrl)}`}>
         <LogInIcon className="size-6" />
         <p>Sign In</p>
       </a>

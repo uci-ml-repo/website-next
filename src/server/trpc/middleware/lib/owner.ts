@@ -3,13 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { service } from "@/server/service";
 
 export namespace AssertOwner {
-  export const dataset = async ({
-    datasetId,
-    userId,
-  }: {
-    datasetId: number;
-    userId: string;
-  }) => {
+  export const dataset = async ({ datasetId, userId }: { datasetId: number; userId: string }) => {
     const dataset = await service.dataset.find.byId(datasetId);
 
     if (!dataset) {
@@ -46,8 +40,7 @@ export namespace AssertOwner {
     discussionCommentId: string;
     userId: string;
   }) => {
-    const discussionComment =
-      await service.discussion.comment.find.byId(discussionCommentId);
+    const discussionComment = await service.discussion.comment.find.byId(discussionCommentId);
 
     if (!discussionComment) {
       throw new TRPCError({ code: "NOT_FOUND" });

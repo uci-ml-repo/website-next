@@ -31,9 +31,7 @@ export default function Page() {
         <Contribution />
       </div>
       <div className="space-y-2">
-        <div className="text-muted-foreground">
-          Select a way to contribute below:
-        </div>
+        <div className="text-muted-foreground">Select a way to contribute below:</div>
         <div className="grid grid-cols-2 gap-4 max-lg:grid-cols-1">
           {options.map(({ href, Icon, title }) => (
             <DonationOption key={href} href={href}>
@@ -56,15 +54,14 @@ export default function Page() {
         <div>Need help deciding?</div>
         <ul className="ml-6 list-disc space-y-2">
           <li>
-            Choose <span className="font-bold">Upload Dataset</span> if you
-            would like to upload a dataset to the UCI Machine Learning
-            repository, making it publicly available for others to download
-            directly from our website.
+            Choose <span className="font-bold">Upload Dataset</span> if you would like to upload a
+            dataset to the UCI Machine Learning repository, making it publicly available for others
+            to download directly from our website.
           </li>
           <li>
-            Choose <span className="font-bold">Link External Dataset</span> if
-            you would like to link a dataset from an external website. The UCI
-            Machine Learning repository will direct users to the external page.
+            Choose <span className="font-bold">Link External Dataset</span> if you would like to
+            link a dataset from an external website. The UCI Machine Learning repository will direct
+            users to the external page.
           </li>
         </ul>
       </div>
@@ -79,13 +76,7 @@ export default function Page() {
   );
 }
 
-function DonationOption({
-  children,
-  href,
-}: {
-  children: React.ReactNode;
-  href: string;
-}) {
+function DonationOption({ children, href }: { children: React.ReactNode; href: string }) {
   return (
     <VerificationRequired
       signInTitle="An account is required to contribute datasets"

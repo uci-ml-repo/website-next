@@ -8,17 +8,10 @@ export function ProfileHeader({ session }: { session: Session }) {
   return (
     <div className="flex items-center justify-between space-x-2">
       <div className="flex min-w-0 items-center space-x-4">
-        <ProfileAvatar
-          src={session.user.image}
-          className="size-16 sm:size-20"
-        />
+        <ProfileAvatar src={session.user.image} className="size-16 sm:size-20" />
         <div className="min-w-0">
-          <h1 className="truncate text-xl font-semibold sm:text-3xl">
-            {session.user.name}
-          </h1>
-          <div className="text-base text-muted-foreground sm:text-xl">
-            {session.user.email}
-          </div>
+          <h1 className="truncate text-xl font-semibold sm:text-3xl">{session.user.name}</h1>
+          <div className="text-base text-muted-foreground sm:text-xl">{session.user.email}</div>
         </div>
       </div>
       <ProfileHeaderRoleBadge role={session.user.role} />
@@ -32,11 +25,7 @@ function ProfileHeaderRoleBadge({ role }: { role: UserRole }) {
   }
 
   return (
-    <Badge
-      variant={role === "admin" ? "destructive" : "blue"}
-      size="lg"
-      className="z-50"
-    >
+    <Badge variant={role === "admin" ? "destructive" : "blue"} size="lg" className="z-50">
       {role.toUpperCase()}
     </Badge>
   );

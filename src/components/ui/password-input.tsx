@@ -3,8 +3,7 @@ import * as React from "react";
 
 import { Input, type InputProps } from "@/components/ui/input";
 
-interface PasswordInputProps
-  extends Omit<InputProps, "type" | "icon" | "iconPosition"> {}
+interface PasswordInputProps extends Omit<InputProps, "type" | "icon" | "iconPosition"> {}
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ ...props }, ref) => {

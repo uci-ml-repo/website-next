@@ -29,14 +29,10 @@ export function DatasetMiniRow({
         alt={`${dataset.title} thumbnail`}
         height={100}
         width={100}
-        className={cn(
-          "size-7 shrink-0 rounded-md object-cover dark:brightness-90",
-        )}
+        className={cn("size-7 shrink-0 rounded-md object-cover dark:brightness-90")}
       />
       <div className="flex w-full min-w-0 items-center justify-between space-x-2">
-        <div className="truncate text-base font-bold group-hover:underline">
-          {dataset.title}
-        </div>
+        <div className="truncate text-base font-bold group-hover:underline">{dataset.title}</div>
         {showStatus && <DatasetStatusBadge status={dataset.status} />}
       </div>
     </Link>

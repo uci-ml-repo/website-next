@@ -37,8 +37,7 @@ export function ProfileSettingsDelete({ session }: { session: Session }) {
 
   const confirmed = confirmInput.trim() === session?.user.email;
 
-  const isDeleting =
-    userDeleteMutation.isPending || userDeleteMutation.isSuccess;
+  const isDeleting = userDeleteMutation.isPending || userDeleteMutation.isSuccess;
 
   async function deleteAccount() {
     if (!session) return;
@@ -68,9 +67,7 @@ export function ProfileSettingsDelete({ session }: { session: Session }) {
           <DialogHeader className="space-y-4">
             <AlertWarning>this action cannot be undone.</AlertWarning>
             <ul className="list-inside list-disc">
-              <li>
-                You will no longer have access to any datasets donated by you
-              </li>
+              <li>You will no longer have access to any datasets donated by you</li>
               <li>Your discussion posts and comments will be deleted</li>
             </ul>
           </DialogHeader>
@@ -85,8 +82,8 @@ export function ProfileSettingsDelete({ session }: { session: Session }) {
             </div>
             <div className="select-none space-y-1">
               <div>
-                To confirm, type your email{" "}
-                <span className="font-bold">{session.user.email}</span> below.
+                To confirm, type your email <span className="font-bold">{session.user.email}</span>{" "}
+                below.
               </div>
               <Input
                 aria-label="Confirm delete"

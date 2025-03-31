@@ -12,10 +12,9 @@ export function DatasetTasksFilter({
   dropdownOpen,
   onDropdownOpenChange,
 }: DatasetFilterProps) {
-  const { filters, toggle, isToggled, clear } = useToggleFilter<
+  const { filters, toggle, isToggled, clear } = useToggleFilter<"tasks", Enums.DatasetTask>(
     "tasks",
-    Enums.DatasetTask
-  >("tasks");
+  );
 
   return (
     <DatasetFilterItem

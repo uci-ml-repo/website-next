@@ -10,21 +10,8 @@ interface ScrollGradientProps extends React.HTMLAttributes<HTMLDivElement> {
   gradientClassName?: string;
 }
 
-export const ScrollGradient = React.forwardRef<
-  HTMLDivElement,
-  ScrollGradientProps
->(
-  (
-    {
-      children,
-      orientation,
-      className,
-      containerClassName,
-      gradientClassName,
-      ...props
-    },
-    ref,
-  ) => {
+export const ScrollGradient = React.forwardRef<HTMLDivElement, ScrollGradientProps>(
+  ({ children, orientation, className, containerClassName, gradientClassName, ...props }, ref) => {
     const localRef = React.useRef<HTMLDivElement>(null);
 
     const setRefs = (node: HTMLDivElement) => {
@@ -102,14 +89,10 @@ export const ScrollGradient = React.forwardRef<
 
     // For vertical gradients, use the first child’s left offset and width.
     const verticalStyle =
-      childDims.width > 0
-        ? { left: childDims.left, width: childDims.width }
-        : {};
+      childDims.width > 0 ? { left: childDims.left, width: childDims.width } : {};
     // For horizontal gradients, use the first child’s top offset and height.
     const horizontalStyle =
-      childDims.height > 0
-        ? { top: childDims.top, height: childDims.height }
-        : {};
+      childDims.height > 0 ? { top: childDims.top, height: childDims.height } : {};
 
     return (
       <div className={cn("relative", containerClassName)} {...props}>

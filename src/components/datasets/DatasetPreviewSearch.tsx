@@ -15,8 +15,7 @@ import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
 
 export function DatasetPreviewSearch() {
-  const { inputValue, setInputValue, searchValue, handleChange } =
-    useDebouncedSearch();
+  const { inputValue, setInputValue, searchValue, handleChange } = useDebouncedSearch();
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -53,9 +52,7 @@ export function DatasetPreviewSearch() {
       redirect(DATASETS_QUERY({ search: inputValue }));
     } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
-      const focusableItems = cardRef.current?.querySelectorAll(
-        '[data-focusable="true"]',
-      );
+      const focusableItems = cardRef.current?.querySelectorAll('[data-focusable="true"]');
       if (focusableItems && focusableItems.length > 0) {
         if (e.key === "ArrowDown") {
           (focusableItems[0] as HTMLElement).focus();
@@ -67,9 +64,7 @@ export function DatasetPreviewSearch() {
   };
 
   const handleItemKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    const focusableItems = cardRef.current?.querySelectorAll(
-      '[data-focusable="true"]',
-    );
+    const focusableItems = cardRef.current?.querySelectorAll('[data-focusable="true"]');
     if (!focusableItems) return;
     const itemsArray = Array.from(focusableItems);
     const currentIndex = itemsArray.indexOf(e.currentTarget as HTMLElement);
@@ -114,10 +109,9 @@ export function DatasetPreviewSearch() {
       />
       <Card
         ref={cardRef}
-        className={cn(
-          "absolute left-0 right-0 top-[calc(100%+1px)] z-40 shadow-2xl",
-          { hidden: !isFocused },
-        )}
+        className={cn("absolute left-0 right-0 top-[calc(100%+1px)] z-40 shadow-2xl", {
+          hidden: !isFocused,
+        })}
       >
         {inputValue && (
           <Link
@@ -134,13 +128,9 @@ export function DatasetPreviewSearch() {
 
         {inputValue ? (
           isPending &&
-          Array.from({ length: 4 }).map((_, index) => (
-            <DatasetRowSkeleton key={index} />
-          ))
+          Array.from({ length: 4 }).map((_, index) => <DatasetRowSkeleton key={index} />)
         ) : (
-          <div className="truncate p-4 text-lg text-muted-foreground">
-            Begin typing to search
-          </div>
+          <div className="truncate p-4 text-lg text-muted-foreground">Begin typing to search</div>
         )}
 
         {data?.datasets && (

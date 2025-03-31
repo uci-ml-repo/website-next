@@ -30,10 +30,7 @@ const components = {
     );
   },
   ol: (props: ComponentPropsWithoutRef<"ol">) => (
-    <ol
-      className="list-inside list-decimal space-y-4 py-2 text-lg"
-      {...props}
-    />
+    <ol className="list-inside list-decimal space-y-4 py-2 text-lg" {...props} />
   ),
   ul: (props: ComponentPropsWithoutRef<"ul">) => (
     <ul className="list-inside list-disc space-y-4 py-2 text-lg" {...props} />

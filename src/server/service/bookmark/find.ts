@@ -1,12 +1,4 @@
-import {
-  and,
-  count,
-  desc,
-  eq,
-  getTableColumns,
-  inArray,
-  sql,
-} from "drizzle-orm";
+import { and, count, desc, eq, getTableColumns, inArray, sql } from "drizzle-orm";
 import type { Session } from "next-auth";
 
 import { db } from "@/db";
@@ -27,10 +19,7 @@ export namespace bookmarkFindService {
       .orderBy(desc(bookmark.createdAt));
   }
 
-  export async function byUserQuery(
-    query: BookmarkQuery,
-    user: Session["user"],
-  ) {
+  export async function byUserQuery(query: BookmarkQuery, user: Session["user"]) {
     let bookmarks;
 
     if (query.search) {
@@ -67,10 +56,7 @@ export namespace bookmarkFindService {
       .limit(query.limit ? query.limit + 1 : 11);
   }
 
-  async function byUserSearchQuery(
-    query: BookmarkQuery,
-    user: Session["user"],
-  ) {
+  async function byUserSearchQuery(query: BookmarkQuery, user: Session["user"]) {
     const trigramSimilarity = sql`
       similarity (
         ${dataset.title},
@@ -108,13 +94,7 @@ export namespace bookmarkFindService {
     return batch(bookmarkIds.map(({ id }) => id));
   }
 
-  export async function isBookmarked({
-    datasetId,
-    userId,
-  }: {
-    datasetId: number;
-    userId: string;
-  }) {
+  export async function isBookmarked({ datasetId, userId }: { datasetId: number; userId: string }) {
     const bookmark = await db.query.bookmark.findFirst({
       where: (bookmark, { and, eq }) =>
         and(eq(bookmark.datasetId, datasetId), eq(bookmark.userId, userId)),

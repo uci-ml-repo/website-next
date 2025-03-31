@@ -7,9 +7,7 @@ export function useIsMobile() {
 }
 
 export function useIsBreakpoint(breakpoint: number) {
-  const [isBreakpoint, setIsBreakpoint] = React.useState<boolean | undefined>(
-    undefined,
-  );
+  const [isBreakpoint, setIsBreakpoint] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);

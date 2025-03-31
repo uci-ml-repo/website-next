@@ -44,10 +44,7 @@ export namespace fileFindService {
       .sort(sortDirectoryEntities);
   }
 
-  export async function search(
-    absolutePath: string,
-    search: string,
-  ): Promise<Entry[]> {
+  export async function search(absolutePath: string, search: string): Promise<Entry[]> {
     const filePaths = await fg(`${absolutePath}/**/*${search}*`, {
       caseSensitiveMatch: false,
       dot: true,
@@ -57,9 +54,7 @@ export namespace fileFindService {
     for (const filePath of filePaths) {
       const stat = await fs.stat(filePath);
       directoryEntities.push({
-        path: filePath.slice(
-          fs.realpathSync(env.STATIC_FILES_DIRECTORY).length,
-        ),
+        path: filePath.slice(fs.realpathSync(env.STATIC_FILES_DIRECTORY).length),
         type: stat.isDirectory() ? "directory" : stat.isFile() ? "file" : null,
       });
     }

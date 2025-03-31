@@ -46,9 +46,7 @@ export function Discussions({
         userId,
         search: searchValue,
         order:
-          orderBy === "top"
-            ? { upvoteCount: "desc", createdAt: "desc" }
-            : { createdAt: "desc" },
+          orderBy === "top" ? { upvoteCount: "desc", createdAt: "desc" } : { createdAt: "desc" },
         limit: 15,
       },
       {
@@ -61,9 +59,7 @@ export function Discussions({
   const discussionsCount = data?.pages[0] ? data?.pages[0].count : 0;
 
   const hasDiscussions =
-    discussionsCount === undefined
-      ? initialHasDiscussions
-      : discussionsCount > 0;
+    discussionsCount === undefined ? initialHasDiscussions : discussionsCount > 0;
 
   const discussions = data?.pages.flatMap((page) => page.discussions) || [];
 
@@ -94,9 +90,7 @@ export function Discussions({
             clearSearch={clearSearch}
             className="flex justify-end"
           />
-          {allowCreate && discussions.length && (
-            <DiscussionCreateButton tooltip />
-          )}
+          {allowCreate && discussions.length && <DiscussionCreateButton tooltip />}
         </div>
       </div>
 
@@ -116,8 +110,7 @@ export function Discussions({
           {searchValue && data && (
             <div className="text-lg text-muted-foreground">
               Found {discussionsCount.toLocaleString()}{" "}
-              {discussionsCount === 1 ? "discussion" : "discussions"} for '
-              {searchValue}'
+              {discussionsCount === 1 ? "discussion" : "discussions"} for '{searchValue}'
             </div>
           )}
           <div className="divide-y">
@@ -149,9 +142,7 @@ export function Discussions({
     </div>
   ) : userId ? (
     <AlternativeCard>
-      <div className="text-muted-foreground">
-        You have not created any discussions yet.
-      </div>
+      <div className="text-muted-foreground">You have not created any discussions yet.</div>
       <Button variant="gold" asChild className="lift">
         <Link href={DATASETS_ROUTE}>
           <SearchIcon /> Find datasets to discuss

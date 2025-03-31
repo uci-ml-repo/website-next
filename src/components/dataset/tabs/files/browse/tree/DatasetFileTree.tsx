@@ -11,10 +11,7 @@ import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InputClearable } from "@/components/ui/input-clearable";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  DATASET_FILES_UNZIPPED_PATH,
-  DATASET_FILES_UNZIPPED_PENDING_PATH,
-} from "@/lib/routes";
+import { DATASET_FILES_UNZIPPED_PATH, DATASET_FILES_UNZIPPED_PENDING_PATH } from "@/lib/routes";
 import type { Entry } from "@/server/service/file/find";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -45,9 +42,7 @@ export function DatasetFileTree() {
   const isLoading = rootDirectoryQuery.isLoading || searchQuery.isLoading;
 
   const data: Entry[] =
-    searchValue.length > 0 && searchQuery.data
-      ? searchQuery.data
-      : (rootDirectoryQuery.data ?? []);
+    searchValue.length > 0 && searchQuery.data ? searchQuery.data : (rootDirectoryQuery.data ?? []);
 
   return (
     <>
@@ -84,9 +79,7 @@ export function DatasetFileTree() {
           </div>
         ) : (
           <div className="min-w-fit space-y-2 p-2">
-            {searchValue.length > 0 && (
-              <div className="text-muted-foreground">Search Results:</div>
-            )}
+            {searchValue.length > 0 && <div className="text-muted-foreground">Search Results:</div>}
             <div>
               {data.map((directoryEntity) =>
                 directoryEntity.type === "directory" ? (

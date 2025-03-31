@@ -27,10 +27,7 @@ export function DatasetFileTreeButton({
       <div className="w-4">
         {chevron && (
           <ChevronRightIcon
-            className={cn(
-              "!size-4 transition-all",
-              chevronDown ? "rotate-90" : "",
-            )}
+            className={cn("!size-4 transition-all", chevronDown ? "rotate-90" : "")}
           />
         )}
       </div>

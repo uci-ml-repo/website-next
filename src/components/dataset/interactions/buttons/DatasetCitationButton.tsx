@@ -66,9 +66,7 @@ export function DatasetCitationButton() {
           <div className="relative min-h-11 overflow-x-auto rounded-lg bg-muted p-2">
             {citations ? (
               <>
-                <pre className="whitespace-pre-wrap pr-12 text-sm">
-                  {citationText}
-                </pre>
+                <pre className="whitespace-pre-wrap pr-12 text-sm">{citationText}</pre>
                 <Copy copyText={citationText} />
               </>
             ) : (
@@ -83,8 +81,7 @@ export function DatasetCitationButton() {
               <div className="flex items-center space-x-1">
                 <InfoIcon className="size-5" />
                 <span>
-                  To populate citation data, add dataset author and year created
-                  metadata.
+                  To populate citation data, add dataset author and year created metadata.
                 </span>
               </div>
             </Alert>

@@ -6,18 +6,9 @@ import { useState } from "react";
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { DatasetSettingsGraphicsUploadForm } from "@/components/dataset/tabs/settings/graphics/DatasetSettingsGraphicsUploadForm";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-export function DatasetSettingsGraphicsDialog({
-  resetThumbnail,
-}: {
-  resetThumbnail: () => void;
-}) {
+export function DatasetSettingsGraphicsDialog({ resetThumbnail }: { resetThumbnail: () => void }) {
   const { setEditing } = useDataset();
   const [dialogOpen, _setDialogOpen] = useState<boolean>(false);
 
@@ -43,9 +34,7 @@ export function DatasetSettingsGraphicsDialog({
       <DialogContent>
         <div className="space-y-1">
           <DialogTitle>Edit thumbnail</DialogTitle>
-          <div className="text-muted-foreground">
-            Upload an image to appear with your dataset.
-          </div>
+          <div className="text-muted-foreground">Upload an image to appear with your dataset.</div>
         </div>
         <div className="min-w-0">
           <DatasetSettingsGraphicsUploadForm onUpload={onUpload} />

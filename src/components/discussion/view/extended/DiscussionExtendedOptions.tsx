@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  EllipsisVerticalIcon,
-  FlagIcon,
-  PencilIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { EllipsisVerticalIcon, FlagIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -22,11 +17,7 @@ import {
 import { DATASET_DISCUSSION_EDIT_ROUTE } from "@/lib/routes";
 import type { DiscussionResponse } from "@/lib/types";
 
-export function DiscussionExtendedOptions({
-  discussion,
-}: {
-  discussion: DiscussionResponse;
-}) {
+export function DiscussionExtendedOptions({ discussion }: { discussion: DiscussionResponse }) {
   const { data: session } = useSession();
 
   const [isReportDialogOpen, setIsReportDialogOpen] = useState<boolean>(false);
@@ -55,18 +46,12 @@ export function DiscussionExtendedOptions({
                   Edit
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem
-                destructive
-                onClick={() => setIsDeleteDialogOpen(true)}
-              >
+              <DropdownMenuItem destructive onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2Icon /> Delete
               </DropdownMenuItem>
             </>
           ) : (
-            <DropdownMenuItem
-              destructive
-              onClick={() => setIsReportDialogOpen(true)}
-            >
+            <DropdownMenuItem destructive onClick={() => setIsReportDialogOpen(true)}>
               <FlagIcon /> Report
             </DropdownMenuItem>
           )}

@@ -101,10 +101,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              activePath={RegExp(`^${DATASET_BASE_ROUTE}`)}
-              asChild
-            >
+            <SidebarMenuButton activePath={RegExp(`^${DATASET_BASE_ROUTE}`)} asChild>
               <Link href={DATASETS_ROUTE}>
                 <DatabaseIcon />
                 <span>Datasets</span>
@@ -120,11 +117,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          <Separator
-            orientation="horizontal"
-            className="mx-4 my-2 w-auto"
-            aria-hidden={true}
-          />
+          <Separator orientation="horizontal" className="mx-4 my-2 w-auto" aria-hidden={true} />
 
           {session?.user ? (
             <SidebarMenuItem>
@@ -138,9 +131,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
           ) : (
             <SidebarMenuItem>
               <SidebarMenuButton
-                activePath={RegExp(
-                  `^${SIGN_IN_ROUTE}|^${FORGOT_PASSWORD_ROUTE}`,
-                )}
+                activePath={RegExp(`^${SIGN_IN_ROUTE}|^${FORGOT_PASSWORD_ROUTE}`)}
                 asChild
               >
                 <Link href={SIGN_IN_ROUTE}>

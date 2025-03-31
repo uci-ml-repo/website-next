@@ -37,16 +37,9 @@ export const registerFormSchema = z
       .string()
       .min(1, { message: "Name is required" })
       .max(255, { message: "Name cannot exceed 255 characters" }),
-    email: z
-      .string()
-      .email()
-      .max(255, { message: "Email cannot exceed 255 characters" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm Password is required" }),
+    email: z.string().email().max(255, { message: "Email cannot exceed 255 characters" }),
+    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string().min(1, { message: "Confirm Password is required" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -57,8 +50,7 @@ export type RegisterFormSchema = z.infer<typeof registerFormSchema>;
 
 export function LoginRegister() {
   const [tab, setTab] = useState<Tab>("signin");
-  const [registerEmailFormIsOpen, setRegisterEmailFormIsOpen] =
-    useState<boolean>(false);
+  const [registerEmailFormIsOpen, setRegisterEmailFormIsOpen] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 

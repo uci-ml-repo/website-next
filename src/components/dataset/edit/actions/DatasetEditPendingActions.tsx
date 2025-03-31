@@ -65,8 +65,7 @@ export function DatasetEditPendingActions() {
     if (!dataset.description) {
       actions.push({
         title: "Add description",
-        description:
-          "Add details about your dataset to help others understand its contents.",
+        description: "Add details about your dataset to help others understand its contents.",
         priority: "required",
         onClick: () => startEditingField("description"),
       });
@@ -161,9 +160,7 @@ export function DatasetEditPendingActions() {
     canSubmit: datasetPreApprovalSelect.safeParse(dataset).success,
   });
 
-  const requiredCount = items.filter(
-    (item) => item.priority === "required",
-  ).length;
+  const requiredCount = items.filter((item) => item.priority === "required").length;
 
   return (
     <Carousel
@@ -190,58 +187,49 @@ export function DatasetEditPendingActions() {
       </div>
       <div>
         <CarouselContent gutter className="flex items-stretch">
-          {items.map(
-            (
-              { title, description, priority, children, disabled, onClick },
-              index,
-            ) => (
-              <CarouselItem
-                key={index}
-                className="flex basis-full select-none @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
+          {items.map(({ title, description, priority, children, disabled, onClick }, index) => (
+            <CarouselItem
+              key={index}
+              className="flex basis-full select-none @md:basis-1/2 @3xl:basis-1/3 @4xl:basis-1/4"
+            >
+              <button
+                onClick={disabled ? undefined : onClick}
+                className={cn("h-full w-full rounded-2xl text-left", {
+                  "cursor-default": disabled,
+                })}
               >
-                <button
-                  onClick={disabled ? undefined : onClick}
-                  className={cn("h-full w-full rounded-2xl text-left", {
-                    "cursor-default": disabled,
-                  })}
+                <Card
+                  className={cn(
+                    "flex h-full w-full flex-1",
+                    { lift: !disabled },
+                    { "bg-muted": disabled },
+                    {
+                      "border-b-[3px] border-b-uci-gold": priority === "required",
+                    },
+                    {
+                      "border-b-[3px] border-b-uci-blue": priority == "recommended",
+                    },
+                  )}
                 >
-                  <Card
-                    className={cn(
-                      "flex h-full w-full flex-1",
-                      { lift: !disabled },
-                      { "bg-muted": disabled },
-                      {
-                        "border-b-[3px] border-b-uci-gold":
-                          priority === "required",
-                      },
-                      {
-                        "border-b-[3px] border-b-uci-blue":
-                          priority == "recommended",
-                      },
-                    )}
-                  >
-                    <CardContent className="flex flex-1 flex-col space-y-4">
-                      <div className="flex h-full flex-col space-y-0.5">
-                        <div className="flex items-center justify-between space-x-1">
-                          <div className="font-bold">{title}</div>
-                          {!disabled && <ArrowRightIcon className="size-5" />}
-                        </div>
-                        <CardDescription>{description}</CardDescription>
-                        {children}
+                  <CardContent className="flex flex-1 flex-col space-y-4">
+                    <div className="flex h-full flex-col space-y-0.5">
+                      <div className="flex items-center justify-between space-x-1">
+                        <div className="font-bold">{title}</div>
+                        {!disabled && <ArrowRightIcon className="size-5" />}
                       </div>
-                      {priority && (
-                        <div className="flex justify-end">
-                          {priority === "required" && (
-                            <Badge variant="gold-strong">REQUIRED</Badge>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </button>
-              </CarouselItem>
-            ),
-          )}
+                      <CardDescription>{description}</CardDescription>
+                      {children}
+                    </div>
+                    {priority && (
+                      <div className="flex justify-end">
+                        {priority === "required" && <Badge variant="gold-strong">REQUIRED</Badge>}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </button>
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <CarouselScrollDots api={api} className="mt-1" />
       </div>

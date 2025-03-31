@@ -28,8 +28,7 @@ import {
 import { trpc } from "@/server/trpc/query/client";
 
 export function ZipFileUploadForm() {
-  const { stopEditingField, dataset, setDataset, setViewPendingFiles } =
-    useDataset();
+  const { stopEditingField, dataset, setDataset, setViewPendingFiles } = useDataset();
   const { setFileStatus, setPendingFileStatus } = useDatasetFileStatus();
 
   const requireApproval = dataset.status !== Enums.ApprovalStatus.DRAFT;
@@ -71,9 +70,7 @@ export function ZipFileUploadForm() {
 
     try {
       await axios.putForm(
-        requireApproval
-          ? DATASET_API_ZIP_PENDING_ROUTE(dataset)
-          : DATASET_API_ZIP_ROUTE(dataset),
+        requireApproval ? DATASET_API_ZIP_PENDING_ROUTE(dataset) : DATASET_API_ZIP_ROUTE(dataset),
         { file: values.file },
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -115,8 +112,7 @@ export function ZipFileUploadForm() {
     }
   }
 
-  const pending =
-    form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+  const pending = form.formState.isSubmitting || form.formState.isSubmitSuccessful;
 
   return (
     <Form {...form}>
@@ -129,12 +125,7 @@ export function ZipFileUploadForm() {
           fileIcon={<FolderArchiveIcon />}
           accept={{ "application/zip": [".zip"] }}
         />
-        <Button
-          type="submit"
-          className="lift w-full"
-          variant="gold"
-          disabled={pending}
-        >
+        <Button type="submit" className="lift w-full" variant="gold" disabled={pending}>
           {pending ? <Spinner /> : <UploadIcon />} Upload Dataset
         </Button>
       </form>

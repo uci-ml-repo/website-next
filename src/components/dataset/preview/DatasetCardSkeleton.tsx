@@ -14,18 +14,10 @@ interface DatasetCardSkeletonProps {
   children?: React.ReactNode;
 }
 
-export function DatasetCardSkeleton({
-  children,
-  className,
-}: DatasetCardSkeletonProps) {
+export function DatasetCardSkeleton({ children, className }: DatasetCardSkeletonProps) {
   if (children) {
     return (
-      <Card
-        className={cn(
-          "flex h-[360px] w-full items-center justify-center",
-          className,
-        )}
-      >
+      <Card className={cn("flex h-[360px] w-full items-center justify-center", className)}>
         {children}
       </Card>
     );

@@ -7,10 +7,6 @@ export const metadata: Metadata = {
   description: "Contribute a dataset to the UCI Machine Learning Repository.",
 };
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   return <Main className="!max-w-4xl">{children}</Main>;
 }

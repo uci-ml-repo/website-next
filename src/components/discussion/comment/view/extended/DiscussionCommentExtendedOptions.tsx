@@ -1,9 +1,4 @@
-import {
-  EllipsisVerticalIcon,
-  FlagIcon,
-  PencilIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { EllipsisVerticalIcon, FlagIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -45,18 +40,12 @@ export function DiscussionCommentExtendedOptions({
                 <PencilIcon />
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem
-                destructive
-                onClick={() => setIsDeleteDialogOpen(true)}
-              >
+              <DropdownMenuItem destructive onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2Icon /> Delete
               </DropdownMenuItem>
             </>
           ) : (
-            <DropdownMenuItem
-              destructive
-              onClick={() => setIsReportDialogOpen(true)}
-            >
+            <DropdownMenuItem destructive onClick={() => setIsReportDialogOpen(true)}>
               <FlagIcon /> Report
             </DropdownMenuItem>
           )}

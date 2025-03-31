@@ -16,8 +16,7 @@ const logoVariants = cva(cn("w-fit"), {
     textColor: {
       default: "[&>div]:text-uci-blue [&>svg]:fill-primary",
       mono: "[&>div]:text-primary [&>svg]:fill-primary",
-      "blue-foreground":
-        "[&>div]:text-uci-blue-foreground [&>svg]:fill-uci-blue-foreground",
+      "blue-foreground": "[&>div]:text-uci-blue-foreground [&>svg]:fill-uci-blue-foreground",
     },
   },
   defaultVariants: {
@@ -33,13 +32,7 @@ interface LogoProps
   abbreviate?: boolean;
 }
 
-export function Banner({
-  variant,
-  textColor,
-  className,
-  link,
-  abbreviate,
-}: LogoProps) {
+export function Banner({ variant, textColor, className, link, abbreviate }: LogoProps) {
   const Comp = variant === "hero" ? "h1" : "div";
 
   const content = (

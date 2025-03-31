@@ -9,7 +9,5 @@ export const discussionCommentRemoveRouter = router({
   byId: protectedProcedure
     .meta([Enums.UserRole.ADMIN, MiddlewareRoles.COMMENT_AUTHOR])
     .input(z.object({ commentId: z.string() }))
-    .mutation(({ input }) =>
-      service.discussion.comment.remove.byId(input.commentId),
-    ),
+    .mutation(({ input }) => service.discussion.comment.remove.byId(input.commentId)),
 });

@@ -20,10 +20,7 @@ export function DiscussionComment({
   return (
     <div className="flex justify-between space-x-1">
       <div className="flex w-full py-4">
-        <ProfileAvatar
-          src={discussionComment.user.image}
-          className="mr-3 size-10 max-sm:hidden"
-        />
+        <ProfileAvatar src={discussionComment.user.image} className="mr-3 size-10 max-sm:hidden" />
         <div className="w-full space-y-1">
           <div className="space-x-1.5 text-xs text-muted-foreground">
             <span>{discussionComment.user.name}</span>
@@ -40,9 +37,7 @@ export function DiscussionComment({
             />
           ) : (
             <Expandable truncationHeight={100}>
-              <div className="whitespace-pre-wrap">
-                {discussionComment.content}
-              </div>
+              <div className="whitespace-pre-wrap">{discussionComment.content}</div>
             </Expandable>
           )}
         </div>

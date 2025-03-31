@@ -7,15 +7,11 @@ import { procedure, router } from "@/server/trpc";
 export const discussionFindRouter = router({
   byId: procedure
     .input(z.string().uuid())
-    .query(({ input, ctx }) =>
-      service.discussion.find.byId(input, ctx.session),
-    ),
+    .query(({ input, ctx }) => service.discussion.find.byId(input, ctx.session)),
 
   byQuery: procedure
     .input(discussionQuery)
-    .query(({ input, ctx }) =>
-      service.discussion.find.byQuery(input, ctx.session),
-    ),
+    .query(({ input, ctx }) => service.discussion.find.byQuery(input, ctx.session)),
 
   countByQuery: procedure
     .input(discussionQuery)

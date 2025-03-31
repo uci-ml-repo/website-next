@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  EllipsisVerticalIcon,
-  FlagIcon,
-  Link2Icon,
-  SettingsIcon,
-} from "lucide-react";
+import { EllipsisVerticalIcon, FlagIcon, Link2Icon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import path from "path";
@@ -24,11 +19,7 @@ import { DATASET_ROUTE, DATASET_SETTINGS_ROUTE } from "@/lib/routes";
 import type { DatasetResponse } from "@/lib/types";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-export function DatasetExtendedOptions({
-  dataset,
-}: {
-  dataset: DatasetResponse;
-}) {
+export function DatasetExtendedOptions({ dataset }: { dataset: DatasetResponse }) {
   const { data: session } = useSession();
 
   const [reportDialogOpen, setReportDialogOpen] = useState<boolean>(false);
@@ -66,25 +57,20 @@ export function DatasetExtendedOptions({
           )}
 
           {(!session || session.user.id !== dataset.userId) && (
-            <DropdownMenuItem
-              destructive
-              onClick={() => setReportDialogOpen(true)}
-            >
+            <DropdownMenuItem destructive onClick={() => setReportDialogOpen(true)}>
               <FlagIcon />
               <span>Report Issue</span>
             </DropdownMenuItem>
           )}
 
-          {session &&
-            (isPriviliged(session.user.role) ||
-              session.user.id === dataset.userId) && (
-              <Link href={DATASET_SETTINGS_ROUTE(dataset)}>
-                <DropdownMenuItem>
-                  <SettingsIcon />
-                  <span>Dataset Settings</span>
-                </DropdownMenuItem>
-              </Link>
-            )}
+          {session && (isPriviliged(session.user.role) || session.user.id === dataset.userId) && (
+            <Link href={DATASET_SETTINGS_ROUTE(dataset)}>
+              <DropdownMenuItem>
+                <SettingsIcon />
+                <span>Dataset Settings</span>
+              </DropdownMenuItem>
+            </Link>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DatasetReportDialog

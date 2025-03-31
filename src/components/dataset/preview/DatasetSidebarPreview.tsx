@@ -5,11 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { DatasetPreviewSelect } from "@/db/lib/types";
 import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -44,17 +40,13 @@ export function DatasetSidebarPreview({
             alt={`${dataset.title} thumbnail`}
             height={100}
             width={100}
-            className={cn(
-              "size-7 shrink-0 rounded-md object-cover dark:brightness-90",
-            )}
+            className={cn("size-7 shrink-0 rounded-md object-cover dark:brightness-90")}
           />
           <div className="ml-2 flex w-full min-w-0 items-center justify-between space-x-1">
             <div className="truncate text-base font-bold group-hover/dataset:underline">
               {dataset.title}
             </div>
-            {isActive && (
-              <div className="size-1.5 shrink-0 rounded-full bg-muted-foreground" />
-            )}
+            {isActive && <div className="size-1.5 shrink-0 rounded-full bg-muted-foreground" />}
           </div>
         </Link>
       </TooltipTrigger>

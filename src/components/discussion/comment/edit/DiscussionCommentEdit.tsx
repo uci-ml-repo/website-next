@@ -7,13 +7,7 @@ import type { z } from "zod";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import type { DiscussionCommentResponse } from "@/lib/types";
@@ -88,9 +82,7 @@ export function DiscussionCommentEdit({
           <div className="flex items-center justify-end space-x-2">
             <Button
               variant="secondary"
-              onClick={() =>
-                isDirty ? setCancelDialogOpen(true) : setIsEditing(false)
-              }
+              onClick={() => (isDirty ? setCancelDialogOpen(true) : setIsEditing(false))}
               type="button"
             >
               Cancel
@@ -112,10 +104,7 @@ export function DiscussionCommentEdit({
           <DialogTitle>Discard edits?</DialogTitle>
           <div>You have an edit in progress, discard it without saving?</div>
           <div className="flex justify-between">
-            <Button
-              variant="secondary"
-              onClick={() => setCancelDialogOpen(false)}
-            >
+            <Button variant="secondary" onClick={() => setCancelDialogOpen(false)}>
               Cancel
             </Button>
             <Button variant="destructive" onClick={() => setIsEditing(false)}>

@@ -89,9 +89,7 @@ export const authOptions = NextAuth({
 
       // if the user was just created
       if (Date.now() - existingUser.createdAt.getTime() < 1000) {
-        service.email
-          .sendRegistrationEmail(user as { email: string; name: string })
-          .then();
+        service.email.sendRegistrationEmail(user as { email: string; name: string }).then();
       }
     },
   },

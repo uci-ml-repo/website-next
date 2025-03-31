@@ -6,13 +6,7 @@ import type {
   ReactNode,
   TouchEvent as ReactTouchEvent,
 } from "react";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -171,16 +165,11 @@ export function Split({
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("flex h-full w-full flex-row", className)}
-    >
+    <div ref={containerRef} className={cn("flex h-full w-full flex-row", className)}>
       <motion.div
         animate={{
           width:
-            leftPercent === 0
-              ? `${minSizes[0]}px`
-              : `calc(${leftPercent}% - ${gutterSize / 2}px)`,
+            leftPercent === 0 ? `${minSizes[0]}px` : `calc(${leftPercent}% - ${gutterSize / 2}px)`,
           minWidth: `${minSizes[0]}px`,
         }}
         transition={{ duration: shouldAnimate ? 0.3 : 0 }}

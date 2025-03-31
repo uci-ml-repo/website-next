@@ -9,9 +9,9 @@ export default function Page() {
       <div className="space-y-6">
         <h1 className="text-3xl font-bold text-uci-blue">Create Dataset</h1>
         <div className="text-lg">
-          Provide a title for your dataset to begin the donation process. You'll
-          have the opportunity to upload files, add details, and submit your
-          dataset for review in the next steps.
+          Provide a title for your dataset to begin the donation process. You'll have the
+          opportunity to upload files, add details, and submit your dataset for review in the next
+          steps.
         </div>
         <DatasetDonationCreateForm />
       </div>

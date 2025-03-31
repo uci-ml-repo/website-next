@@ -85,9 +85,7 @@ export function DatasetCardCarousel({
             )}
             {endCard && (
               <CarouselItem className={cardBreakpoints}>
-                <DatasetCardSkeleton className="bg-muted">
-                  {endCard}
-                </DatasetCardSkeleton>
+                <DatasetCardSkeleton className="bg-muted">{endCard}</DatasetCardSkeleton>
               </CarouselItem>
             )}
           </CarouselContent>

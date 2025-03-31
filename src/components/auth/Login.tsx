@@ -33,11 +33,10 @@ export function Login({ setTab, redirectTo, form }: LoginProps) {
   const router = useRouter();
   const [error, setError] = useState<string>();
 
-  const credentialsLoginMutations =
-    trpc.user.credentials.credentialsLogin.useMutation({
-      onMutate: () => setError(undefined),
-      onError: (error) => setError(error.message),
-    });
+  const credentialsLoginMutations = trpc.user.credentials.credentialsLogin.useMutation({
+    onMutate: () => setError(undefined),
+    onError: (error) => setError(error.message),
+  });
 
   async function credentialsLogin(values: LoginFormSchema) {
     credentialsLoginMutations.mutate(values, {
@@ -71,10 +70,7 @@ export function Login({ setTab, redirectTo, form }: LoginProps) {
             </div>
           </Alert>
         )}
-        <form
-          onSubmit={form.handleSubmit(credentialsLogin)}
-          className="space-y-4"
-        >
+        <form onSubmit={form.handleSubmit(credentialsLogin)} className="space-y-4">
           <div className="space-y-2">
             <FormField
               control={form.control}
@@ -142,10 +138,7 @@ export function Login({ setTab, redirectTo, form }: LoginProps) {
       />
       <div className="w-full space-x-1 text-center text-sm text-muted-foreground">
         <span>Don't have an account?</span>
-        <button
-          className="text-foreground underline"
-          onClick={() => setTab("register")}
-        >
+        <button className="text-foreground underline" onClick={() => setTab("register")}>
           Register
         </button>
       </div>

@@ -4,13 +4,7 @@
  * Used to distinguish tRPC and Next errors from service errors.
  */
 
-export type ServiceErrorOrigin =
-  | "Dataset"
-  | "Discussion"
-  | "Edit"
-  | "Email"
-  | "File"
-  | "User";
+export type ServiceErrorOrigin = "Dataset" | "Discussion" | "Edit" | "Email" | "File" | "User";
 
 interface ServiceErrorInterface {
   origin: ServiceErrorOrigin;

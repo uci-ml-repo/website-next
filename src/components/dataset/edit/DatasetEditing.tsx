@@ -8,28 +8,15 @@ import React, { useState } from "react";
 import { useDataset } from "@/components/dataset/context/DatasetContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { HoverCard, HoverCardContent } from "@/components/ui/hover-card";
 import { DATASET_CHANGELOG_ROUTE } from "@/lib/routes";
 import { isDraftOrPending } from "@/lib/utils/dataset";
 
 export function DatasetEditing() {
-  const {
-    editing,
-    setEditing,
-    dataset,
-    editingFields,
-    initialDataset,
-    setDataset,
-  } = useDataset();
+  const { editing, setEditing, dataset, editingFields, initialDataset, setDataset } = useDataset();
 
-  const [cancelDialogOpen, setFinishEditingDialogOpen] =
-    useState<boolean>(false);
+  const [cancelDialogOpen, setFinishEditingDialogOpen] = useState<boolean>(false);
 
   function finishEditing() {
     setEditing(false);
@@ -52,16 +39,10 @@ export function DatasetEditing() {
                 </HoverCardTrigger>
                 <HoverCardContent className="space-y-2">
                   <p className="font-bold">Edits require approval</p>
-                  <p>
-                    Edits made on this dataset must be approved before becoming
-                    public.
-                  </p>
+                  <p>Edits made on this dataset must be approved before becoming public.</p>
                   <p>
                     You can review your pending edits in the{" "}
-                    <Link
-                      href={DATASET_CHANGELOG_ROUTE(dataset)}
-                      className="underline"
-                    >
+                    <Link href={DATASET_CHANGELOG_ROUTE(dataset)} className="underline">
                       changelog
                     </Link>
                     .
@@ -87,15 +68,11 @@ export function DatasetEditing() {
             </div>
           </CardContent>
         </Card>
-        <Dialog
-          open={cancelDialogOpen}
-          onOpenChange={setFinishEditingDialogOpen}
-        >
+        <Dialog open={cancelDialogOpen} onOpenChange={setFinishEditingDialogOpen}>
           <DialogContent aria-describedby={undefined}>
             <DialogTitle>Discard edits?</DialogTitle>
             <div>
-              You have the following dataset edits in progress, discard them
-              without saving?
+              You have the following dataset edits in progress, discard them without saving?
             </div>
             <ul className="list-inside list-disc">
               {Object.entries(editingFields).map(([field, editing]) =>

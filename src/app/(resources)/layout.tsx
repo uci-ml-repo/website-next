@@ -18,12 +18,7 @@ export default function Layout({
       <div className="backdrop-gradient-blur">{children}</div>
       <div className="space-y-8">
         <hr />
-        <Button
-          variant="secondary"
-          size="lg"
-          className="lift w-full sm:w-fit"
-          asChild
-        >
+        <Button variant="secondary" size="lg" className="lift w-full sm:w-fit" asChild>
           <Link href={HOME_ROUTE}>
             <ArrowLeftIcon />
             Return Home

@@ -33,10 +33,7 @@ export function DATASET_FILES_ROUTE(dataset: { id: number; slug: string }) {
 /**
  * @example "/dataset/53/iris/discussions"
  */
-export function DATASET_DISCUSSIONS_ROUTE(dataset: {
-  id: number;
-  slug: string;
-}) {
+export function DATASET_DISCUSSIONS_ROUTE(dataset: { id: number; slug: string }) {
   return path.join(DATASET_ROUTE(dataset), "discussions");
 }
 
@@ -58,10 +55,7 @@ export function DATASET_DISCUSSION_ROUTE({
 /**
  * @example "/dataset/53/iris/discussions/create"
  */
-export function DATASET_DISCUSSION_CREATE_ROUTE(dataset: {
-  id: number;
-  slug: string;
-}) {
+export function DATASET_DISCUSSION_CREATE_ROUTE(dataset: { id: number; slug: string }) {
   return path.join(DATASET_DISCUSSIONS_ROUTE(dataset), "create");
 }
 
@@ -77,10 +71,7 @@ export function DATASET_DISCUSSION_EDIT_ROUTE({
   slug: string;
   discussionId: string;
 }) {
-  return path.join(
-    DATASET_DISCUSSION_ROUTE({ id, slug, discussionId }),
-    "edit",
-  );
+  return path.join(DATASET_DISCUSSION_ROUTE({ id, slug, discussionId }), "edit");
 }
 
 /**
@@ -100,10 +91,7 @@ export function DATASET_SETTINGS_ROUTE(dataset: { id: number; slug: string }) {
 /**
  * @example "/api/static/public/53"
  */
-export function DATASET_API_FILES_ROUTE(dataset: {
-  id: number;
-  status: string;
-}) {
+export function DATASET_API_FILES_ROUTE(dataset: { id: number; status: string }) {
   return path.join(STATIC_FILES_ROUTE, DATASET_FILES_PATH(dataset));
 }
 
@@ -154,13 +142,7 @@ export function DATASET_API_THUMBNAIL_PENDING_ROUTE({
 /**
  * @example "/public/53"
  */
-export function DATASET_FILES_PATH({
-  id,
-  status,
-}: {
-  id: number;
-  status: string;
-}) {
+export function DATASET_FILES_PATH({ id, status }: { id: number; status: string }) {
   return path.join(
     "/",
     status === Enums.ApprovalStatus.APPROVED ? "public" : "private",
@@ -171,20 +153,14 @@ export function DATASET_FILES_PATH({
 /**
  * @example "/public/53/thumbnail.png
  */
-export function DATASET_FILES_THUMBNAIL_PATH(input: {
-  id: number;
-  status: string;
-}) {
+export function DATASET_FILES_THUMBNAIL_PATH(input: { id: number; status: string }) {
   return path.join(DATASET_FILES_PATH(input), "thumbnail.png");
 }
 
 /**
  * @example "/public/53/thumbnail.pending.png
  */
-export function DATASET_FILES_THUMBNAIL_PENDING_PATH(input: {
-  id: number;
-  status: string;
-}) {
+export function DATASET_FILES_THUMBNAIL_PENDING_PATH(input: { id: number; status: string }) {
   return path.join(DATASET_FILES_PATH(input), "thumbnail.pending.png");
 }
 
@@ -217,22 +193,14 @@ export function DATASET_FILES_UNZIPPED_PENDING_PATH(dataset: {
 /**
  * @example "/public/53/iris.zip"
  */
-export function DATASET_FILES_ZIP_PATH(dataset: {
-  id: number;
-  slug: string;
-  status: string;
-}) {
+export function DATASET_FILES_ZIP_PATH(dataset: { id: number; slug: string; status: string }) {
   return DATASET_FILES_UNZIPPED_PATH(dataset) + ".zip";
 }
 
 /**
  * @example "/public/53/iris.zip.lock"
  */
-export function DATASET_FILES_ZIP_LOCK_PATH(dataset: {
-  id: number;
-  slug: string;
-  status: string;
-}) {
+export function DATASET_FILES_ZIP_LOCK_PATH(dataset: { id: number; slug: string; status: string }) {
   return DATASET_FILES_ZIP_PATH(dataset) + ".lock";
 }
 
@@ -261,10 +229,7 @@ export function DATASET_FILES_ZIP_PENDING_LOCK_PATH(dataset: {
 /**
  * @example "/api/static/public/53/data.csv"
  */
-export function DATASET_API_PYTHON_DATA_ROUTE(dataset: {
-  id: number;
-  status: string;
-}) {
+export function DATASET_API_PYTHON_DATA_ROUTE(dataset: { id: number; status: string }) {
   return path.join(DATASET_API_FILES_ROUTE(dataset), "data.csv");
 }
 
@@ -295,8 +260,5 @@ export function DATASET_API_ZIP_PENDING_ROUTE({
   slug: string;
   status: string;
 }) {
-  return path.join(
-    DATASET_API_FILES_ROUTE({ id, status }),
-    `${slug}.pending.zip`,
-  );
+  return path.join(DATASET_API_FILES_ROUTE({ id, status }), `${slug}.pending.zip`);
 }

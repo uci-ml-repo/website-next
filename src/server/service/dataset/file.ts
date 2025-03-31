@@ -49,15 +49,9 @@ export namespace datasetFileService {
       };
     }
 
-    const zipExists = fs.existsSync(
-      absoluteStaticPath(DATASET_FILES_ZIP_PATH(dataset)),
-    );
-    const zipLockExists = fs.existsSync(
-      absoluteStaticPath(DATASET_FILES_ZIP_LOCK_PATH(dataset)),
-    );
-    const unzippedExists = fs.existsSync(
-      absoluteStaticPath(DATASET_FILES_UNZIPPED_PATH(dataset)),
-    );
+    const zipExists = fs.existsSync(absoluteStaticPath(DATASET_FILES_ZIP_PATH(dataset)));
+    const zipLockExists = fs.existsSync(absoluteStaticPath(DATASET_FILES_ZIP_LOCK_PATH(dataset)));
+    const unzippedExists = fs.existsSync(absoluteStaticPath(DATASET_FILES_UNZIPPED_PATH(dataset)));
     const pendingZipExists = fs.existsSync(
       absoluteStaticPath(DATASET_FILES_ZIP_PENDING_PATH(dataset)),
     );

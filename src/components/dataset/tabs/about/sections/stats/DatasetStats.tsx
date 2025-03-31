@@ -56,9 +56,7 @@ export function DatasetStats() {
               <div className="text-sm text-muted-foreground">{stat.name}</div>
               {stat.value ? (
                 <div className="font-semibold">
-                  {typeof stat.value === "number"
-                    ? stat.value.toLocaleString("en")
-                    : stat.value}
+                  {typeof stat.value === "number" ? stat.value.toLocaleString("en") : stat.value}
                 </div>
               ) : (
                 <div className="text-muted-foreground">&ndash;</div>

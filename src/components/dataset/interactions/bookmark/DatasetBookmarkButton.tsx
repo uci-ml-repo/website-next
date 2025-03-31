@@ -8,11 +8,7 @@ import { useDatasetBookmark } from "@/components/dataset/context/DatasetBookmark
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { DatasetResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -77,12 +73,7 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
   return (
     <>
       {addBookmark.isPending || removeBookmark.isPending ? (
-        <Button
-          size="icon"
-          variant="ghost"
-          disabled
-          aria-label="Bookmarking dataset"
-        >
+        <Button size="icon" variant="ghost" disabled aria-label="Bookmarking dataset">
           <Spinner className="!size-5 opacity-70" />
         </Button>
       ) : (
@@ -96,15 +87,10 @@ export function DatasetBookmarkButton({ dataset }: DatasetBookmarkButtonProps) {
               <Button
                 size="icon"
                 variant="ghost"
-                aria-label={
-                  isBookmarked ? "Remove bookmark" : "Bookmark dataset"
-                }
+                aria-label={isBookmarked ? "Remove bookmark" : "Bookmark dataset"}
               >
                 <BookmarkIcon
-                  className={cn(
-                    "!size-5 cursor-pointer",
-                    isBookmarked ? "fill-uci-gold" : "",
-                  )}
+                  className={cn("!size-5 cursor-pointer", isBookmarked ? "fill-uci-gold" : "")}
                   aria-hidden={true}
                 />
               </Button>

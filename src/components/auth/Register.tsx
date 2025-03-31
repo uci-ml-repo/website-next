@@ -41,11 +41,10 @@ export function Register({
   const router = useRouter();
   const [error, setError] = useState<string>();
 
-  const credentialsRegisterMutation =
-    trpc.user.credentials.credentialsRegister.useMutation({
-      onMutate: () => setError(undefined),
-      onError: (error) => setError(error.message),
-    });
+  const credentialsRegisterMutation = trpc.user.credentials.credentialsRegister.useMutation({
+    onMutate: () => setError(undefined),
+    onError: (error) => setError(error.message),
+  });
 
   async function onSubmit(values: RegisterFormSchema) {
     credentialsRegisterMutation.mutate(values, {

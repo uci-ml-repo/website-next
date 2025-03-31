@@ -82,11 +82,7 @@ export default function Page() {
             <div>
               <div className="divide-y">
                 {data.datasets.map((dataset) => (
-                  <DatasetRow
-                    dataset={dataset}
-                    displayStatus
-                    key={dataset.id}
-                  />
+                  <DatasetRow dataset={dataset} displayStatus key={dataset.id} />
                 ))}
               </div>
               <hr />

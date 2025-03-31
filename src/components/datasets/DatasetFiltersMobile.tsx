@@ -4,23 +4,13 @@ import { FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { DatasetFiltersClear } from "@/components/datasets/DatasetFiltersClear";
-import {
-  DatasetFilterContent,
-  datasetFilters,
-} from "@/components/datasets/DatasetFiltersContent";
+import { DatasetFilterContent, datasetFilters } from "@/components/datasets/DatasetFiltersContent";
 import { useIsBreakpoint } from "@/components/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 export function DatasetFiltersMobile() {
-  const [openStates, setOpenStates] = useState<boolean[]>(
-    Array(datasetFilters.length).fill(false),
-  );
+  const [openStates, setOpenStates] = useState<boolean[]>(Array(datasetFilters.length).fill(false));
 
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -52,10 +42,7 @@ export function DatasetFiltersMobile() {
           <DatasetFiltersClear />
         </SheetTitle>
 
-        <DatasetFilterContent
-          openStates={openStates}
-          setOpenStates={setOpenStates}
-        />
+        <DatasetFilterContent openStates={openStates} setOpenStates={setOpenStates} />
         <hr />
       </SheetContent>
     </Sheet>

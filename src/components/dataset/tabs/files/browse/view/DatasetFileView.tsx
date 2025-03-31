@@ -65,9 +65,7 @@ export function DatasetFileView() {
             <div className="whitespace-nowrap text-sm text-muted-foreground">
               {currentEntry.type === "directory" ? (
                 directoryQuery.data ? (
-                  <span className="mr-1">
-                    ({directoryQuery.data?.length} items)
-                  </span>
+                  <span className="mr-1">({directoryQuery.data?.length} items)</span>
                 ) : (
                   <Spinner className="size-4" />
                 )

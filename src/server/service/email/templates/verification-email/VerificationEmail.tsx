@@ -15,8 +15,8 @@ export function VerificationEmail({
         <a href={verificationLink}>{verificationLink}</a>
       </p>
       <p>
-        This link will expire in 5 minutes. If you did not request to verify
-        your email, you can ignore this message.
+        This link will expire in 5 minutes. If you did not request to verify your email, you can
+        ignore this message.
       </p>
     </EmailLayout>
   );

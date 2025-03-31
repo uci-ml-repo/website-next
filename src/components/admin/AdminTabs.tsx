@@ -29,15 +29,14 @@ export function AdminTabs({
   const segments = pathname.split("/").filter(Boolean);
   const activeTab = segments[1] || "overview";
 
-  const { data: datasetCount } =
-    trpc.dataset.find.privilegedCountByQuery.useQuery(
-      {
-        status: [Enums.ApprovalStatus.PENDING],
-      },
-      {
-        initialData: initialDatasetCount,
-      },
-    );
+  const { data: datasetCount } = trpc.dataset.find.privilegedCountByQuery.useQuery(
+    {
+      status: [Enums.ApprovalStatus.PENDING],
+    },
+    {
+      initialData: initialDatasetCount,
+    },
+  );
 
   const { data: editCount } = trpc.edit.find.countByQuery.useQuery(
     {
@@ -56,17 +55,10 @@ export function AdminTabs({
   );
 
   return (
-    <LinearTabs
-      defaultValue={activeTab}
-      routerStore={ADMIN_ROUTE}
-      routerSegment={3}
-    >
+    <LinearTabs defaultValue={activeTab} routerStore={ADMIN_ROUTE} routerSegment={3}>
       <div className="flex items-center justify-between space-x-6 overflow-x-auto">
         <LinearTabsList>
-          <LinearTabsTrigger
-            value="overview"
-            link={path.join(ADMIN_ROUTE, "overview")}
-          >
+          <LinearTabsTrigger value="overview" link={path.join(ADMIN_ROUTE, "overview")}>
             Overview
           </LinearTabsTrigger>
 
@@ -98,10 +90,7 @@ export function AdminTabs({
           </LinearTabsTrigger>
 
           {role === Enums.UserRole.ADMIN && (
-            <LinearTabsTrigger
-              value="users"
-              link={path.join(ADMIN_ROUTE, "users")}
-            >
+            <LinearTabsTrigger value="users" link={path.join(ADMIN_ROUTE, "users")}>
               Users
             </LinearTabsTrigger>
           )}

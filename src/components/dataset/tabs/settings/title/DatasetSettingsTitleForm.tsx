@@ -9,13 +9,7 @@ import type { FormData } from "@/components/dataset/create/DatasetDonationCreate
 import { formSchema } from "@/components/dataset/create/DatasetDonationCreateForm";
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { DATASET_SETTINGS_ROUTE } from "@/lib/routes";
@@ -55,10 +49,7 @@ export function DatasetSettingsTitleForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-center"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center">
         <FormField
           control={form.control}
           name="title"
@@ -67,20 +58,14 @@ export function DatasetSettingsTitleForm() {
               <div className="flex space-x-2">
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      className="font-bold"
-                      {...field}
-                      disabled={pending}
-                    />
+                    <Input className="font-bold" {...field} disabled={pending} />
                   </FormControl>
                   <div className="flex justify-between">
                     <div>
                       <FormMessage className="text-sm" />
                     </div>
 
-                    <div className="text-sm text-muted-foreground">
-                      {field.value.length}/100
-                    </div>
+                    <div className="text-sm text-muted-foreground">{field.value.length}/100</div>
                   </div>
                 </div>
                 <Button
@@ -93,13 +78,7 @@ export function DatasetSettingsTitleForm() {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  variant="gold"
-                  size="lg"
-                  className="lift"
-                  disabled={pending}
-                >
+                <Button type="submit" variant="gold" size="lg" className="lift" disabled={pending}>
                   {pending && <Spinner />} Save
                 </Button>
               </div>

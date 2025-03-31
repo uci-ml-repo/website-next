@@ -2,10 +2,7 @@ import { TRPCError } from "@trpc/server";
 import fs from "fs-extra";
 import { z } from "zod";
 
-import {
-  DATASET_FILES_ZIP_LOCK_PATH,
-  DATASET_FILES_ZIP_PENDING_LOCK_PATH,
-} from "@/lib/routes";
+import { DATASET_FILES_ZIP_LOCK_PATH, DATASET_FILES_ZIP_PENDING_LOCK_PATH } from "@/lib/routes";
 import { absoluteStaticPath } from "@/lib/utils/file";
 import { service } from "@/server/service";
 import { router } from "@/server/trpc";
@@ -23,13 +20,9 @@ export const datasetUpdateRouter = router({
   title: datasetUpdateProcedure
     .input(z.object({ datasetId: z.number(), title: z.string() }))
     .mutation(({ input, ctx }) => {
-      const zipLock = absoluteStaticPath(
-        DATASET_FILES_ZIP_LOCK_PATH(ctx.dataset),
-      );
+      const zipLock = absoluteStaticPath(DATASET_FILES_ZIP_LOCK_PATH(ctx.dataset));
 
-      const zipPendingLock = absoluteStaticPath(
-        DATASET_FILES_ZIP_PENDING_LOCK_PATH(ctx.dataset),
-      );
+      const zipPendingLock = absoluteStaticPath(DATASET_FILES_ZIP_PENDING_LOCK_PATH(ctx.dataset));
 
       if (fs.existsSync(zipLock) || fs.existsSync(zipPendingLock)) {
         throw new TRPCError({

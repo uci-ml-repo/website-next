@@ -48,11 +48,7 @@ export function DatasetFilterDualSlider({
       }
       const ratio = raw / maxRawValue;
       return Math.round(
-        Number(
-          Math.round(
-            Math.pow(maxRawValue, Math.pow(ratio, exponent)),
-          ).toPrecision(2),
-        ),
+        Number(Math.round(Math.pow(maxRawValue, Math.pow(ratio, exponent))).toPrecision(2)),
       );
     },
     [maxRawValue, exponent],
@@ -63,9 +59,7 @@ export function DatasetFilterDualSlider({
       if (!maxRawValue || maxRawValue <= 1 || curved <= 1) {
         return curved;
       }
-      const raw =
-        maxRawValue *
-        Math.pow(Math.log(curved) / Math.log(maxRawValue), 1 / exponent);
+      const raw = maxRawValue * Math.pow(Math.log(curved) / Math.log(maxRawValue), 1 / exponent);
       return Math.round(raw);
     },
     [maxRawValue, exponent],
@@ -98,15 +92,7 @@ export function DatasetFilterDualSlider({
       [filterMaxKey]: maxCurved === maxLog ? undefined : maxCurved,
       cursor: 0,
     });
-  }, [
-    values,
-    debouncedSetFilters,
-    log,
-    filterMinKey,
-    filterMaxKey,
-    maxLog,
-    initialized,
-  ]);
+  }, [values, debouncedSetFilters, log, filterMinKey, filterMaxKey, maxLog, initialized]);
 
   return (
     <DatasetFilterItem

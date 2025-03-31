@@ -1,10 +1,4 @@
-import {
-  CalendarDaysIcon,
-  Columns3Icon,
-  EyeIcon,
-  MicroscopeIcon,
-  Rows3Icon,
-} from "lucide-react";
+import { CalendarDaysIcon, Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
 import type { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,20 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DATASET_API_THUMBNAIL_ROUTE, DATASET_ROUTE } from "@/lib/routes";
 import type { DatasetPreviewResponse } from "@/lib/types";
-import {
-  abbreviateDecimal,
-  abbreviateFileSize,
-  cn,
-  formatEnum,
-} from "@/lib/utils";
+import { abbreviateDecimal, abbreviateFileSize, cn, formatEnum } from "@/lib/utils";
 
 interface DatasetCardProps {
   dataset: DatasetPreviewResponse;
@@ -60,9 +44,7 @@ const shimmer = (w: number, h: number) => `
 </svg>`;
 
 const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
+  typeof window === "undefined" ? Buffer.from(str).toString("base64") : window.btoa(str);
 
 const placeholder = `data:image/svg+xml;base64,${toBase64(shimmer(350, 100))}`;
 
@@ -78,16 +60,12 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
     },
     {
       icon: <Columns3Icon />,
-      text: dataset.featureCount
-        ? `${abbreviateDecimal(dataset.featureCount)} Features`
-        : null,
+      text: dataset.featureCount ? `${abbreviateDecimal(dataset.featureCount)} Features` : null,
       tooltip: "Number of Features",
     },
     {
       icon: <Rows3Icon />,
-      text: dataset.instanceCount
-        ? `${abbreviateDecimal(dataset.instanceCount)} Instances`
-        : null,
+      text: dataset.instanceCount ? `${abbreviateDecimal(dataset.instanceCount)} Instances` : null,
       tooltip: "Number of Instances",
     },
     {
@@ -99,10 +77,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
 
   return (
     <Link href={href} className="lift-lg flex flex-1 flex-col rounded-2xl">
-      <Card
-        className={cn("group flex h-[355px] flex-col", className)}
-        ref={ref}
-      >
+      <Card className={cn("group flex h-[355px] flex-col", className)} ref={ref}>
         <CardHeader className="relative p-0">
           <Image
             src={thumbnail}
@@ -119,14 +94,10 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
         <CardContent className="flex flex-1 flex-col space-y-2">
           <div className="flex flex-1 flex-col space-y-2">
             <CardTitle>
-              <div className="line-clamp-2 group-hover:underline">
-                {dataset.title}
-              </div>
+              <div className="line-clamp-2 group-hover:underline">{dataset.title}</div>
             </CardTitle>
             <CardDescription>
-              <p className="line-clamp-2 text-sm">
-                {dataset.description?.slice(0, 200)}
-              </p>
+              <p className="line-clamp-2 text-sm">{dataset.description?.slice(0, 200)}</p>
             </CardDescription>
           </div>
           <CardDescription className="space-y-1">
@@ -142,11 +113,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
                         {stat.icon}
                         <span className="truncate text-sm">{stat.text}</span>
                       </TooltipTrigger>
-                      {stat.tooltip && (
-                        <TooltipContent side="left">
-                          {stat.tooltip}
-                        </TooltipContent>
-                      )}
+                      {stat.tooltip && <TooltipContent side="left">{stat.tooltip}</TooltipContent>}
                     </Tooltip>
                   ),
               )}
@@ -165,9 +132,7 @@ export function DatasetCard({ dataset, ref, className }: DatasetCardProps) {
               {dataset.fileCount !== null && dataset.size !== null ? (
                 <div className="flex items-center space-x-1">
                   <span className="hidden @3xs:block">
-                    {dataset.fileCount === 1
-                      ? "1 File"
-                      : `${dataset.fileCount} Files`}
+                    {dataset.fileCount === 1 ? "1 File" : `${dataset.fileCount} Files`}
                   </span>
                   <span className="hidden @3xs:block">&middot;</span>
                   <span>{abbreviateFileSize(dataset.size)}</span>

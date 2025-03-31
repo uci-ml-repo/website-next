@@ -55,9 +55,7 @@ export namespace discussionCommentFindService {
   export async function byQuery(query: CommentQuery, session?: Session | null) {
     const orderBy = query.order
       ? Object.entries(query.order).map(([orderBy, sort]) =>
-          sortFunction(sort)(
-            discussionComment[orderBy as keyof typeof query.order],
-          ),
+          sortFunction(sort)(discussionComment[orderBy as keyof typeof query.order]),
         )
       : [asc(discussionComment.createdAt)];
 

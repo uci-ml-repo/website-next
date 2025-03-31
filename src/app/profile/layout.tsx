@@ -22,11 +22,7 @@ export const metadata: Metadata = {
   description: "View and edit your profile and work.",
 };
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   if (!session || !session.user) {
@@ -48,16 +44,9 @@ export default async function Layout({
     <Main className="space-y-8">
       <ProfileHeader session={session} />
 
-      <LinearTabs
-        defaultValue="overview"
-        routerStore={PROFILE_ROUTE}
-        routerSegment={1}
-      >
+      <LinearTabs defaultValue="overview" routerStore={PROFILE_ROUTE} routerSegment={1}>
         <LinearTabsList>
-          <LinearTabsTrigger
-            value="overview"
-            link={path.join(PROFILE_ROUTE, "overview")}
-          >
+          <LinearTabsTrigger value="overview" link={path.join(PROFILE_ROUTE, "overview")}>
             Overview
           </LinearTabsTrigger>
           <LinearTabsTrigger

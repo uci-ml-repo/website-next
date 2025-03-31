@@ -118,9 +118,7 @@ class Citation {
     }
 
     const formattedAuthors = authors.map((author, index) =>
-      index === 0
-        ? firstAuthorFormatter(author)
-        : subsequentAuthorsFormatter(author),
+      index === 0 ? firstAuthorFormatter(author) : subsequentAuthorsFormatter(author),
     );
 
     return listFormatter.format(formattedAuthors);
@@ -210,9 +208,7 @@ class Citation {
     const title = `${this.title} [dataset].`;
     const year = this.yearCreated ? `${this.yearCreated}.` : undefined;
     const source = `${Citation.source}.`;
-    const doi = this.doi
-      ? `Available from: ${Citation.doiLinkPrefix}${this.doi}.`
-      : "";
+    const doi = this.doi ? `Available from: ${Citation.doiLinkPrefix}${this.doi}.` : "";
 
     const parts = [authors, title, year, source, doi].filter((part) => !!part);
     const vancouver = parts.join(" ");
@@ -231,13 +227,9 @@ class Citation {
     const title = `"${this.title},"`;
     const source = `${Citation.source}${this.yearCreated ? "," : "."}`;
     const year = this.yearCreated ? `${this.yearCreated}.` : undefined;
-    const doi = this.doi
-      ? `Available: ${Citation.doiLinkPrefix}${this.doi}.`
-      : "";
+    const doi = this.doi ? `Available: ${Citation.doiLinkPrefix}${this.doi}.` : "";
 
-    const parts = [authors, title, source, year, "[Online].", doi].filter(
-      (part) => !!part,
-    );
+    const parts = [authors, title, source, year, "[Online].", doi].filter((part) => !!part);
     const ieee = parts.join(" ");
     return ieee.trim();
   }
@@ -255,17 +247,11 @@ class Citation {
     });
 
     const identifier = `${this.title.toLowerCase().replace(/ /g, "_")}_${this.id}`;
-    const authors = this.authors.length
-      ? formatField("author", formattedAuthors)
-      : "";
+    const authors = this.authors.length ? formatField("author", formattedAuthors) : "";
     const title = formatField("title", `{${this.title}}`);
-    const year = this.yearCreated
-      ? formatField("year", this.yearCreated)
-      : undefined;
+    const year = this.yearCreated ? formatField("year", this.yearCreated) : undefined;
     const howPublished = formatField("howpublished", Citation.source);
-    const doi = this.doi
-      ? formatField("note", `{DOI}: ${Citation.doiLinkPrefix}${this.doi}`)
-      : "";
+    const doi = this.doi ? formatField("note", `{DOI}: ${Citation.doiLinkPrefix}${this.doi}`) : "";
 
     const fields = [identifier, authors, title, year, howPublished, doi]
       .filter((field) => !!field)

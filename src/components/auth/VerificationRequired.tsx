@@ -91,11 +91,7 @@ export function VerificationRequired({
           <p>{verificationBody}</p>
           <DialogFooter className="items-center !justify-between gap-4">
             <DialogClose asChild>
-              <Button
-                variant="secondary"
-                className="max-sm:w-full"
-                disabled={disabled}
-              >
+              <Button variant="secondary" className="max-sm:w-full" disabled={disabled}>
                 Cancel
               </Button>
             </DialogClose>
@@ -115,11 +111,7 @@ export function VerificationRequired({
           <p>{signInBody}</p>
           <DialogFooter className="items-center !justify-between gap-4">
             <DialogClose asChild>
-              <Button
-                variant="secondary"
-                className="max-sm:w-full"
-                disabled={disabled}
-              >
+              <Button variant="secondary" className="max-sm:w-full" disabled={disabled}>
                 Cancel
               </Button>
             </DialogClose>

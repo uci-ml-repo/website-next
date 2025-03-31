@@ -9,13 +9,7 @@ import { SimpleSearch } from "@/components/search/SimpleSearch";
 import { Button } from "@/components/ui/button";
 import { SmartPagination } from "@/components/ui/smart-pagination";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Enums } from "@/db/lib/enums";
 import { formatEnum } from "@/lib/utils";
 import { trpc } from "@/server/trpc/query/client";
@@ -86,12 +80,9 @@ export default function Page() {
           <div className="w-full space-y-2">
             {data.users && (
               <div className="text-lg text-muted-foreground">
-                Found {data.count.toLocaleString()}{" "}
-                {data.count === 1 ? "user" : "users"}{" "}
+                Found {data.count.toLocaleString()} {data.count === 1 ? "user" : "users"}{" "}
                 {searchValue && `for '${searchValue}'`}
-                {roleFilter &&
-                  roleFilter !== "all" &&
-                  ` with role '${formatEnum(roleFilter)}'`}
+                {roleFilter && roleFilter !== "all" && ` with role '${formatEnum(roleFilter)}'`}
               </div>
             )}
             <div className="w-full overflow-x-auto">

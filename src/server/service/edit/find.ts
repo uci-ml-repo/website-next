@@ -54,10 +54,7 @@ export namespace editFindService {
       .offset(query.offset ?? 0)
       .limit(query.limit ?? 10);
 
-    const [countQuery] = await db
-      .select({ count: count() })
-      .from(edit)
-      .where(buildQuery(query));
+    const [countQuery] = await db.select({ count: count() }).from(edit).where(buildQuery(query));
 
     return {
       edits,
@@ -66,10 +63,7 @@ export namespace editFindService {
   }
 
   export async function countByQuery(query: EditQuery) {
-    const [countQuery] = await db
-      .select({ count: count() })
-      .from(edit)
-      .where(buildQuery(query));
+    const [countQuery] = await db.select({ count: count() }).from(edit).where(buildQuery(query));
 
     return countQuery.count;
   }

@@ -25,10 +25,7 @@ export function DatasetMetadataAuthors({ authors }: AuthorsSectionProps) {
               <div className="text-sm text-muted-foreground">
                 <span>Email: </span>
                 {author.email ? (
-                  <a
-                    href={`mailto:${author.email}`}
-                    className="hover:underline"
-                  >
+                  <a href={`mailto:${author.email}`} className="hover:underline">
                     {author.email}
                   </a>
                 ) : (

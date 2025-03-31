@@ -4,6 +4,7 @@
 const prettierConfig = {
   endOfLine: "lf",
   tabWidth: 2,
+  printWidth: 100,
   plugins: [
     "prettier-plugin-packagejson",
     "prettier-plugin-sql",
