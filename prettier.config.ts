@@ -1,7 +1,9 @@
-// @ts-check
+import type { Config } from "prettier";
+import type { PluginEmbedOptions as PluginEmbedConfig } from "prettier-plugin-embed";
+import type { SqlBaseOptions as PluginSqlConfig } from "prettier-plugin-sql";
+import type { PluginOptions as PluginTailwindCssConfig } from "prettier-plugin-tailwindcss";
 
-/** @type {import('prettier').Config} */
-const prettierConfig = {
+const prettierConfig: Config = {
   endOfLine: "lf",
   tabWidth: 2,
   printWidth: 100,
@@ -14,25 +16,21 @@ const prettierConfig = {
   ],
 };
 
-/** @type {import('prettier-plugin-embed').PluginEmbedOptions} */
-const prettierPluginEmbedConfig = {
+const prettierPluginEmbedConfig: PluginEmbedConfig = {
   embeddedSqlTags: ["sql"],
 };
 
-/** @type {import('prettier-plugin-sql').SqlBaseOptions} */
-const prettierPluginSqlConfig = {
+const prettierPluginSqlConfig: PluginSqlConfig = {
   language: "postgresql",
   keywordCase: "upper",
   dataTypeCase: "upper",
   functionCase: "upper",
 };
 
-/** @type {import('prettier-plugin-tailwindcss').PluginOptions} */
-const prettierPluginTailwindCssConfig = {
+const prettierPluginTailwindCssConfig: PluginTailwindCssConfig = {
   tailwindFunctions: ["cva", "clsx", "cn"],
 };
 
-/** @type {import("prettier").Options} */
 const config = {
   ...prettierConfig,
   ...prettierPluginEmbedConfig,
