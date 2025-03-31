@@ -8,7 +8,7 @@ export function Main({ children, className, ...props }: MainProps) {
   return (
     <main
       className={cn(
-        "content mx-auto",
+        "content mx-auto mb-12",
         "max-md:mt-[--header-height] max-md:pt-4",
         className,
       )}

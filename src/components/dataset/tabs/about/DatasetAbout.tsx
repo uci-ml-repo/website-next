@@ -20,8 +20,10 @@ export function DatasetAbout() {
           <DatasetEditPendingActions />
         )}
         <div className="space-y-12">
-          <DatasetDescription />
-          <DatasetStats />
+          <div className="space-y-8">
+            <DatasetDescription />
+            <DatasetStats />
+          </div>
           <DatasetVariables />
           <DatasetIntroductoryPaper />
           <DatasetMetadata />

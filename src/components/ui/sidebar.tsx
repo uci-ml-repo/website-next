@@ -194,7 +194,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         className={cn(
           "group peer fixed bottom-0 left-0 top-0 z-50 hidden max-md:hidden md:flex md:flex-col",
           "data-[state=collapsed]:w-[--sidebar-width-collapsed] data-[state=expanded]:w-[--sidebar-width] data-[state=expanded]:max-xl:shadow-sidebar",
-          "transition-all duration-150 ease-out",
+          "transition-all ease-out",
           "overflow-x-hidden border-r bg-sidebar text-sidebar-foreground",
           {
             "!w-[--sidebar-width] data-[state=collapsed]:shadow-sidebar":
