@@ -1,11 +1,15 @@
 import { notFound } from "next/navigation";
 import React from "react";
 
-import { getDataset } from "@/app/dataset/[id]/[slug]/layout";
+import { getDataset } from "@/app/dataset/[id]/[slug]/get-dataset";
 import { Discussions } from "@/components/discussion/Discussions";
 import { caller } from "@/server/trpc/query/server";
 
-export default async function Page({ params }: { params: Promise<{ id: string; slug: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; slug: string }>;
+}) {
   const { id } = await params;
 
   const dataset = await getDataset(Number(id));
@@ -22,5 +26,11 @@ export default async function Page({ params }: { params: Promise<{ id: string; s
       })
     ).discussions.length > 0;
 
-  return <Discussions datasetId={dataset.id} initialHasDiscussions={hasDiscussions} allowCreate />;
+  return (
+    <Discussions
+      datasetId={dataset.id}
+      initialHasDiscussions={hasDiscussions}
+      allowCreate
+    />
+  );
 }

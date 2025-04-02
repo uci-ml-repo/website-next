@@ -1,5 +1,3 @@
-"use client";
-
 import { isEqual } from "lodash";
 import { AlertCircleIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -88,7 +86,9 @@ export function DatasetMultiSelectFilter({
         <Alert variant="destructive">
           <div className="flex items-center space-x-2">
             <AlertCircleIcon className="size-4" />
-            <AlertDescription>Error loading {label.toLowerCase()} filters</AlertDescription>
+            <AlertDescription>
+              Error loading {label.toLowerCase()} filters
+            </AlertDescription>
           </div>
         </Alert>
       ) : (

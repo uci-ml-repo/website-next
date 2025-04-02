@@ -1,6 +1,7 @@
 import { forbidden, notFound, redirect, unauthorized } from "next/navigation";
-import React, { cache } from "react";
+import React from "react";
 
+import { getDataset } from "@/app/dataset/[id]/[slug]/get-dataset";
 import { auth } from "@/auth";
 import { DatasetBookmarkProvider } from "@/components/dataset/context/DatasetBookmarkContext";
 import { DatasetProvider } from "@/components/dataset/context/DatasetContext";
@@ -16,18 +17,6 @@ import { DATASET_ROUTE } from "@/lib/routes";
 import { service } from "@/server/service";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 import { caller } from "@/server/trpc/query/server";
-
-export const getDataset = cache(async (id: number) => {
-  try {
-    if (!id) {
-      return null;
-    }
-
-    return await caller.dataset.find.byId({ datasetId: id });
-  } catch {
-    return null;
-  }
-});
 
 export async function generateMetadata({
   params,
@@ -68,7 +57,10 @@ export default async function Layout({
   if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
     if (!session?.user) {
       return unauthorized();
-    } else if (!isPriviliged(session?.user.role) && dataset.userId !== session?.user.id) {
+    } else if (
+      !isPriviliged(session?.user.role) &&
+      dataset.userId !== session?.user.id
+    ) {
       return forbidden();
     }
   }
@@ -110,11 +102,17 @@ export default async function Layout({
                 <DatasetTitleGroup />
 
                 <Card className="rounded-full 2lg:hidden">
-                  <DatasetInteractions dataset={dataset} className="w-full justify-around" />
+                  <DatasetInteractions
+                    dataset={dataset}
+                    className="w-full justify-around"
+                  />
                 </Card>
               </div>
 
-              <DatasetTabs initialDiscussionCount={discussionCount} initialEditCount={editCount} />
+              <DatasetTabs
+                initialDiscussionCount={discussionCount}
+                initialEditCount={editCount}
+              />
 
               <DatasetEditing />
 

@@ -1,12 +1,16 @@
 import { forbidden, notFound, unauthorized } from "next/navigation";
 
-import { getDataset } from "@/app/dataset/[id]/[slug]/layout";
+import { getDataset } from "@/app/dataset/[id]/[slug]/get-dataset";
 import { auth } from "@/auth";
 import { TabHeader } from "@/components/ui/tab-header";
 import { Enums } from "@/db/lib/enums";
 import { isPriviliged } from "@/server/trpc/middleware/lib/roles";
 
-export default async function Page({ params }: { params: Promise<{ id: string; slug: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; slug: string }>;
+}) {
   const session = await auth();
 
   if (!session?.user) {
@@ -20,7 +24,10 @@ export default async function Page({ params }: { params: Promise<{ id: string; s
     return notFound();
   }
 
-  if (!isPriviliged(session?.user.role) && dataset.userId !== session?.user.id) {
+  if (
+    !isPriviliged(session?.user.role) &&
+    dataset.userId !== session?.user.id
+  ) {
     return forbidden();
   }
 

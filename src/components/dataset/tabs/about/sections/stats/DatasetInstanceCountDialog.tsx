@@ -26,7 +26,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { trpc } from "@/server/trpc/query/client";
 
 const formSchema = z.object({
-  instanceCount: z.string().regex(/\d+/).transform(Number),
+  instanceCount: z.coerce.number().min(0),
 });
 
 export function DatasetInstanceCountDialog() {

@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosProgressEvent } from "axios";
 import axios from "axios";
@@ -19,10 +17,17 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { Enums } from "@/db/lib/enums";
-import { DATASET_API_THUMBNAIL_PENDING_ROUTE, DATASET_API_THUMBNAIL_ROUTE } from "@/lib/routes";
+import {
+  DATASET_API_THUMBNAIL_PENDING_ROUTE,
+  DATASET_API_THUMBNAIL_ROUTE,
+} from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetSettingsGraphicsUploadForm({ onUpload }: { onUpload: () => void }) {
+export function DatasetSettingsGraphicsUploadForm({
+  onUpload,
+}: {
+  onUpload: () => void;
+}) {
   const { dataset } = useDataset();
   const { setHasPendingThumbnail } = useDatasetFileStatus();
 
@@ -92,7 +97,8 @@ export function DatasetSettingsGraphicsUploadForm({ onUpload }: { onUpload: () =
     }
   }
 
-  const pending = form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+  const pending =
+    form.formState.isSubmitting || form.formState.isSubmitSuccessful;
 
   return (
     <Form {...form}>
@@ -108,7 +114,12 @@ export function DatasetSettingsGraphicsUploadForm({ onUpload }: { onUpload: () =
             "image/png": [".png"],
           }}
         />
-        <Button type="submit" className="lift w-full" variant="gold" disabled={pending}>
+        <Button
+          type="submit"
+          className="lift w-full"
+          variant="gold"
+          disabled={pending}
+        >
           {pending ? <Spinner /> : <UploadIcon />} Upload thumbnail
         </Button>
       </form>
