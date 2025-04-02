@@ -383,123 +383,123 @@ CREATE TABLE "variable" (
 
 --> statement-breakpoint
 ALTER TABLE "account"
-ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "author"
-ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset"
-ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE no action;
+ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset_keyword"
-ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset_keyword"
-ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset_report"
-ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset_report"
-ADD CONSTRAINT "dataset_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "dataset_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "dataset_view"
-ADD CONSTRAINT "dataset_view_id_dataset_id_fk" FOREIGN KEY ("id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "dataset_view_id_dataset_id_fk" FOREIGN KEY ("id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "discussion_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion"
-ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment"
-ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment_report"
-ADD CONSTRAINT "discussion_comment_report_comment_id_discussion_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_report_comment_id_discussion_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment_report"
-ADD CONSTRAINT "discussion_comment_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_comment_upvote"
-ADD CONSTRAINT "discussion_comment_upvote_comment_id_discussion_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_comment_upvote_comment_id_discussion_comment_id_fk" FOREIGN KEY ("comment_id") REFERENCES "public"."discussion_comment" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_report"
-ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_report_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_report"
-ADD CONSTRAINT "discussion_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+ADD CONSTRAINT "discussion_report_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "edit"
-ADD CONSTRAINT "edit_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "edit_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "edit"
-ADD CONSTRAINT "edit_submitted_by_user_id_fk" FOREIGN KEY ("submitted_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+ADD CONSTRAINT "edit_submitted_by_user_id_fk" FOREIGN KEY ("submitted_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "edit"
-ADD CONSTRAINT "edit_reviewed_by_user_id_fk" FOREIGN KEY ("reviewed_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE no action;
+ADD CONSTRAINT "edit_reviewed_by_user_id_fk" FOREIGN KEY ("reviewed_by") REFERENCES "public"."user" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "email_verification_token"
-ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "email_verification_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "paper"
-ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "password_reset_token"
-ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "password_reset_token_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "session"
-ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "variable"
-ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "variable_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 CREATE INDEX "dataset_view_view_count_index" ON "dataset_view" USING btree ("view_count");

@@ -161,7 +161,7 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-unused-imports": "4.1.4",
     "lint-staged": "15.5.0",
-    "prettier": "3.4.2",
+    "prettier": "3.5.3",
     "prettier-plugin-embed": "0.5.0",
     "prettier-plugin-packagejson": "2.5.10",
     "prettier-plugin-sh": "0.16.0",
@@ -171,6 +171,11 @@
     "typescript-eslint": "8.29.0"
   },
   "packageManager": "pnpm@10.7.1",
+  "pnpm": {
+    "overrides": {
+      "prettier": "3.5.3"
+    }
+  },
   "engines": {
     "node": ">=22.0.0",
     "pnpm": ">=10.0.0"

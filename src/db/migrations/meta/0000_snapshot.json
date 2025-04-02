@@ -1923,15 +1923,7 @@
     "public.dataset_feature_type": {
       "name": "dataset_feature_type",
       "schema": "public",
-      "values": [
-        "categorical",
-        "integer",
-        "continuous",
-        "binary",
-        "text",
-        "date",
-        "other"
-      ]
+      "values": ["categorical", "integer", "continuous", "binary", "text", "date", "other"]
     },
     "public.dataset_report_reason": {
       "name": "dataset_report_reason",

@@ -646,7 +646,7 @@ WHERE
   );
 
 ALTER TABLE "author"
-ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "dataset" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "dataset" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -------------------------------------------------------------------------------
 -- dataset_keyword + keyword
@@ -831,7 +831,7 @@ WHERE
   );
 
 ALTER TABLE "paper"
-ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES dataset ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "paper_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES dataset ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -------------------------------------------------------------------------------
 -- dataset bookmarks
@@ -931,31 +931,31 @@ CREATE TABLE account (
 -------------------------------------------------------------------------------
 -- noinspection SqlResolve
 ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "bookmark"
-ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "dataset"
-ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "dataset_report"
-ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "dataset_report_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE no action ON UPDATE no action;
+ADD CONSTRAINT "discussion_upvote_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "discussion_upvote"
-ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "discussion_upvote_discussion_id_discussion_id_fk" FOREIGN KEY ("discussion_id") REFERENCES "public"."discussion" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- noinspection SqlResolve
 ALTER TABLE "session"
-ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE cascade ON UPDATE no action;
+ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 CREATE INDEX "discussion_trgm_search_index" ON "discussion" USING gin ("title" gin_trgm_ops);
 

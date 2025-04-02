@@ -58,10 +58,7 @@ export function ForgotPasswordForm({
           )}
         />
         {resetPasswordMutation.isSuccess && submittedEmail === inputEmail && (
-          <Alert
-            variant="positive"
-            className="flex items-center justify-between"
-          >
+          <Alert variant="positive" className="flex items-center justify-between">
             <div>Password reset email sent</div>
             <button type="submit" className="text-link">
               Resend
@@ -69,19 +66,12 @@ export function ForgotPasswordForm({
           </Alert>
         )}
         <div className="flex items-center justify-between space-x-2">
-          <Button
-            className="px-3"
-            variant="ghost"
-            type="button"
-            size="lg"
-            asChild
-          >
+          <Button className="px-3" variant="ghost" type="button" size="lg" asChild>
             <Link href={SIGN_IN_ROUTE}>
               <ArrowLeftIcon /> Back
             </Link>
           </Button>
-          {(!resetPasswordMutation.isSuccess ||
-            submittedEmail !== inputEmail) && (
+          {(!resetPasswordMutation.isSuccess || submittedEmail !== inputEmail) && (
             <Button
               variant="blue"
               type="submit"

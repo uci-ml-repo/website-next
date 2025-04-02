@@ -53,12 +53,7 @@ export function DatasetFilesBrowse() {
           </button>
         </div>
       </div>
-      <Split
-        className="h-[75dvh]"
-        gutterSize={12}
-        sizes={splitSizes}
-        setSizes={setSplitSizes}
-      >
+      <Split className="h-[75dvh]" gutterSize={12} sizes={splitSizes} setSizes={setSplitSizes}>
         <div className="flex h-full flex-col overflow-hidden rounded-l-xl border-2 border-r-0">
           <DatasetFileTree />
         </div>
