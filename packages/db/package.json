@@ -1,0 +1,33 @@
+{
+  "name": "@packages/db",
+  "version": "0.1.0",
+  "description": "Drizzle client, schema, and utilities for the UCI Machine Learning Repository database",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./env": "./env.ts",
+    "./schema": "./schema.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "format": "prettier --write .",
+    "lint": "eslint --fix",
+    "tscheck": "tsc --noEmit --incremental false"
+  },
+  "prettier": "@packages/prettier-config",
+  "dependencies": {
+    "@packages/typescript-config": "workspace:*",
+    "@t3-oss/env-core": "0.13.8",
+    "drizzle-orm": "0.44.2",
+    "pg": "8.16.2",
+    "zod": "3.25.67"
+  },
+  "devDependencies": {
+    "@packages/eslint-config": "workspace:*",
+    "@packages/prettier-config": "workspace:*",
+    "@types/pg": "8.15.4",
+    "drizzle-kit": "0.31.3"
+  },
+  "packageManager": "pnpm@10.12.4"
+}

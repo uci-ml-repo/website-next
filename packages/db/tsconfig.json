@@ -1,0 +1,10 @@
+{
+  "extends": "@packages/typescript-config",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@packages/db/*": ["src/*"],
+      "@packages/db/env": ["env.ts"]
+    }
+  }
+}

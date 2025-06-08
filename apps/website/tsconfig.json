@@ -1,0 +1,19 @@
+{
+  "extends": "@packages/typescript-config",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@website/*": ["src/*"],
+      "@website/env": ["env.ts"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,106 @@
+services:
+  mysql:
+    container_name: mysql-legacy
+    image: mysql:8.0
+    restart: no
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mlrepo
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+
+  postgres:
+    container_name: postgres-current
+    image: postgres:alpine
+    restart: no
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mlrepo
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  postgres-legacy:
+    container_name: postgres-legacy
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mlrepo
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  pgloader:
+    container_name: pgloader
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: postgres
+    command: >
+      sh -c "
+        if [ ! -f /tmp/legacy.sql ]; then
+          pgloader mysql://root:root@mysql:3306/mlrepo postgresql://postgres:postgres@postgres-legacy:5432/mlrepo;
+
+          psql -h postgres-legacy -U postgres -d mlrepo -c \"
+            DROP SCHEMA IF EXISTS public CASCADE;
+            ALTER SCHEMA mlrepo RENAME TO public;
+            ALTER TABLE datasets RENAME TO datasets_legacy;
+          \";
+
+          pg_dump -h postgres-legacy -U postgres -d mlrepo -F c -b -f /tmp/legacy.sql;
+        fi
+
+        psql -h postgres -U postgres -c \"DROP DATABASE IF EXISTS mlrepo;\";
+        psql -h postgres -U postgres -c \"CREATE DATABASE mlrepo;\";
+
+        pg_restore -h postgres -U postgres -d mlrepo -v /tmp/legacy.sql;
+      "
+
+  migrator:
+    container_name: migrator
+    image: postgres:alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-legacy:
+        condition: service_healthy
+      pgloader:
+        condition: service_completed_successfully
+    environment:
+      PGPASSWORD: postgres
+    command: >
+      sh -c '
+        set -e
+        for script in $(ls /migrate/*.sql | sort); do
+          echo "Running $$script"
+          psql -h postgres -U postgres -d mlrepo -q -f "$$script"
+        done
+
+        pg_dump -h postgres -U postgres -d mlrepo --data-only -Fc --file=/output/out.dump
+      '
+    volumes:
+      - ./migrate:/migrate
+      - ./:/output

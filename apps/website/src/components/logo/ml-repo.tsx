@@ -1,0 +1,51 @@
+import { cn } from "@website/lib/utils/cn";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Montserrat } from "next/font/google";
+import Link from "next/link";
+import React from "react";
+
+const logoVariants = cva("w-fit text-nowrap", {
+  variants: {
+    variant: {
+      hero: ":xs:text-[45px] xs:h-[45px] text-[30px] md:text-[55px]",
+      logo: "space-y-0.5 text-[24px] select-none",
+      "logo-sm": "space-y-0.5 text-[18px] select-none",
+    },
+    textColor: {
+      default: "[&>[data-line='1']]:text-primary [&>[data-line='2']]:text-blue",
+      mono: "text-primary",
+      "blue-foreground": "text-blue-foreground",
+    },
+  },
+  defaultVariants: {
+    variant: "hero",
+    textColor: "default",
+  },
+});
+
+interface LogoProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof logoVariants> {
+  href?: string;
+  abbreviate?: boolean;
+}
+
+const montserrat = Montserrat({ subsets: ["latin"] });
+
+export function MLRepoLogo({ variant, textColor, className, href, abbreviate }: LogoProps) {
+  const content = (
+    <div className={cn(logoVariants({ variant, textColor }), className)}>
+      <div
+        data-line="1"
+        className={cn(montserrat.className, "leading-[0.9] font-extrabold tracking-tighter")}
+      >
+        UC Irvine
+      </div>
+      <div data-line="2" className="leading-none font-bold">
+        {abbreviate ? "ML Repository" : "Machine Learning Repository"}
+      </div>
+    </div>
+  );
+
+  return <>{href ? <Link href={href}>{content}</Link> : content}</>;
+}

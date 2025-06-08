@@ -1,0 +1,12 @@
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# credentails
+credentials.json
+
+# typescript
+next-env.d.ts

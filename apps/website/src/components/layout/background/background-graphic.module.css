@@ -1,0 +1,121 @@
+@keyframes spring {
+  0.00% {
+    transform: scale(0);
+  }
+  3.23% {
+    transform: scale(0.009);
+  }
+  6.45% {
+    transform: scale(0.114);
+  }
+  9.68% {
+    transform: scale(0.271);
+  }
+  12.9% {
+    transform: scale(0.446);
+  }
+  16.1% {
+    transform: scale(0.616);
+  }
+  19.4% {
+    transform: scale(0.764);
+  }
+  22.6% {
+    transform: scale(0.885);
+  }
+  25.8% {
+    transform: scale(0.974);
+  }
+  29.0% {
+    transform: scale(1.04);
+  }
+  32.3% {
+    transform: scale(1.07);
+  }
+  35.5% {
+    transform: scale(1.09);
+  }
+  38.7% {
+    transform: scale(1.09);
+  }
+  41.9% {
+    transform: scale(1.08);
+  }
+  45.2% {
+    transform: scale(1.07);
+  }
+  48.4% {
+    transform: scale(1.05);
+  }
+  51.6% {
+    transform: scale(1.04);
+  }
+  54.8% {
+    transform: scale(1.02);
+  }
+  58.1% {
+    transform: scale(1.01);
+  }
+  61.3% {
+    transform: scale(1);
+  }
+  64.5% {
+    transform: scale(0.998);
+  }
+  67.7% {
+    transform: scale(0.994);
+  }
+  71.0% {
+    transform: scale(0.992);
+  }
+  74.2% {
+    transform: scale(0.992);
+  }
+  77.4% {
+    transform: scale(0.993);
+  }
+  80.6% {
+    transform: scale(0.994);
+  }
+  83.9% {
+    transform: scale(0.995);
+  }
+  87.1% {
+    transform: scale(0.996);
+  }
+  90.3% {
+    transform: scale(0.998);
+  }
+  93.5% {
+    transform: scale(0.999);
+  }
+  96.8% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes draw {
+  0% {
+    stroke-dasharray: 0 100%;
+  }
+  100% {
+    stroke-dasharray: 100% 0;
+  }
+}
+
+.spring {
+  transform-box: fill-box;
+  transform-origin: center;
+
+  animation: spring 500ms ease-out forwards;
+  animation-fill-mode: backwards;
+}
+
+.draw {
+  animation: draw 4s ease-out forwards;
+  animation-fill-mode: backwards;
+  stroke-dasharray: 100% 0;
+}

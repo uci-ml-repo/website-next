@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "description": "UCI Machine Learning Repository's website",
+  "homepage": "https://archive.ics.uci.edu",
+  "bugs": {
+    "url": "https://github.com/uci-ml-repo/ucimlrepo-feedback",
+    "email": "ucirepository@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "contributors": [
+    {
+      "name": "Andrew Wang",
+      "email": "awwang3@uci.edu",
+      "url": "https://github.com/andrew-wang0"
+    }
+  ],
+  "scripts": {
+    "format": "pnpm -r --parallel format --log-level error",
+    "lint": "pnpm -r --parallel lint",
+    "prepare": "husky",
+    "tscheck": "pnpm -r --parallel tscheck"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "prettier": "@packages/prettier-config",
+  "devDependencies": {
+    "@types/node": "24.0.4",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "husky": "9.1.7",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3"
+  },
+  "packageManager": "pnpm@10.12.4"
+}
