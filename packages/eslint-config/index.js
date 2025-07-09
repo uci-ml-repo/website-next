@@ -6,6 +6,7 @@ import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 
 const config = [
+  // Typescript
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -25,8 +26,17 @@ const config = [
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
+
+  // Prettier
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
@@ -36,6 +46,8 @@ const config = [
       "prettier/prettier": "error",
     },
   },
+
+  // Imports
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
@@ -44,22 +56,13 @@ const config = [
       import: importPlugin,
     },
     rules: {
-      "no-unused-expressions": "error",
+      "no-unused-expressions": ["error", { allowTernary: true, allowShortCircuit: true }],
       "import/first": "error",
       "import/no-duplicates": "error",
       "import/newline-after-import": ["error", { count: 1 }],
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "error",
-        {
-          vars: "all",
-          varsIgnorePattern: "^_",
-          args: "after-used",
-          argsIgnorePattern: "^_",
-        },
-      ],
     },
   },
 ];

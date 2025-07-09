@@ -6,7 +6,7 @@ import { cn } from "@website/lib/utils/cn";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import { MenuIcon, XIcon } from "lucide-react";
-import type { ComponentProps, ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
 
 export const Sheet = Root;
@@ -29,7 +29,7 @@ export const SheetOverlay = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<
 );
 SheetOverlay.displayName = Overlay.displayName;
 
-const SidebarTrigger = forwardRef<HTMLButtonElement, ComponentProps<typeof Button>>(
+const SidebarTrigger = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof Button>>(
   ({ className, onClick, ...props }, ref) => {
     const { toggleSidebar } = useSidebar();
 
