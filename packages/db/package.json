@@ -28,6 +28,5 @@
     "@packages/prettier-config": "workspace:*",
     "@types/pg": "8.15.4",
     "drizzle-kit": "0.31.4"
-  },
-  "packageManager": "pnpm@10.12.4"
+  }
 }

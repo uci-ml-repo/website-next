@@ -54,6 +54,5 @@
     "@types/react-dom": "19.1.6",
     "tailwindcss": "4.1.11",
     "tw-animate-css": "1.3.5"
-  },
-  "packageManager": "pnpm@10.12.4"
+  }
 }
