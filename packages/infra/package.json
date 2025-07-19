@@ -1,6 +1,6 @@
 {
-  "name": "@packages/db-legacy",
-  "version": "0.0.0",
+  "name": "@packages/infra",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,6 +8,7 @@
   },
   "prettier": "@packages/prettier-config",
   "devDependencies": {
-    "@packages/prettier-config": "workspace:*"
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*"
   }
 }

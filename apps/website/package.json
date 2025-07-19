@@ -8,7 +8,7 @@
     "format": "prettier --write .",
     "lint": "next lint --fix",
     "start": "next start",
-    "tscheck": "tsc --noEmit --incremental false --excludeDirectories '.next'"
+    "tscheck": "tsc --noEmit --excludeDirectories '.next'"
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
-    "@packages/prettier-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "4.1.11",
     "@types/mdx": "2.0.13",

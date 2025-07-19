@@ -123,9 +123,6 @@ importers:
       '@packages/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@packages/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
       '@packages/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -150,9 +147,6 @@ importers:
 
   packages/db:
     dependencies:
-      '@packages/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
       '@t3-oss/env-core':
         specifier: 0.13.8
         version: 0.13.8(typescript@5.8.3)(zod@4.0.5)
@@ -169,9 +163,9 @@ importers:
       '@packages/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@packages/prettier-config':
+      '@packages/typescript-config':
         specifier: workspace:*
-        version: link:../prettier-config
+        version: link:../typescript-config
       '@types/pg':
         specifier: 8.15.4
         version: 8.15.4
@@ -226,6 +220,15 @@ importers:
       eslint-plugin-unused-imports:
         specifier: 4.1.4
         version: 4.1.4(@typescript-eslint/eslint-plugin@8.36.0(@typescript-eslint/parser@8.36.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.31.0(jiti@2.4.2))
+
+  packages/infra:
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/prettier-config:
     devDependencies:
