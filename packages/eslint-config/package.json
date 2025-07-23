@@ -3,11 +3,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.js",
+    ".": "./eslint.config.js",
     "./next": "./next.js"
   },
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint --fix --max-warnings=0"
   },
   "prettier": "@packages/prettier-config",
   "devDependencies": {
@@ -19,6 +20,7 @@
     "eslint": "9.31.0",
     "eslint-config-next": "15.4.3",
     "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-only-warn": "1.1.0",
     "eslint-plugin-prettier": "5.5.3",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",

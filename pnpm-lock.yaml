@@ -223,6 +223,9 @@ importers:
       eslint-plugin-import:
         specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.31.0(jiti@2.4.2))
+      eslint-plugin-only-warn:
+        specifier: 1.1.0
+        version: 1.1.0
       eslint-plugin-prettier:
         specifier: 5.5.3
         version: 5.5.3(eslint@9.31.0(jiti@2.4.2))(prettier@3.6.2)
@@ -241,6 +244,9 @@ importers:
 
   packages/prettier-config:
     devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       prettier:
         specifier: 3.6.2
         version: 3.6.2
@@ -2763,6 +2769,10 @@ packages:
     engines: {node: '>=4.0'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
+
+  eslint-plugin-only-warn@1.1.0:
+    resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
+    engines: {node: '>=6'}
 
   eslint-plugin-prettier@5.5.3:
     resolution: {integrity: sha512-NAdMYww51ehKfDyDhv59/eIItUVzU0Io9H2E8nHNGKEeeqlnci+1gCvrHib6EmZdf6GxF+LCV5K7UC65Ezvw7w==}
@@ -7284,6 +7294,8 @@ snapshots:
       object.fromentries: 2.0.8
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
+
+  eslint-plugin-only-warn@1.1.0: {}
 
   eslint-plugin-prettier@5.5.3(eslint@9.31.0(jiti@2.4.2))(prettier@3.6.2):
     dependencies:

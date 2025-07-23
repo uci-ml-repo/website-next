@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
-    "lint": "next lint --fix",
+    "lint": "next lint --fix --max-warnings=0",
     "sst:dev": "sst dev",
     "start": "next start",
     "tscheck": "tsc --noEmit --excludeDirectories '.next'"

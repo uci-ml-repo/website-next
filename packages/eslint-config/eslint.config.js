@@ -1,9 +1,10 @@
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import parser from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
+import onlyWarnPlugin from "eslint-plugin-only-warn";
 import prettierPlugin from "eslint-plugin-prettier";
 import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
-import importPlugin from "eslint-plugin-import";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
-import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 
 const config = [
   // Typescript
@@ -63,6 +64,11 @@ const config = [
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "unused-imports/no-unused-imports": "error",
+    },
+  },
+  {
+    plugins: {
+      "only-warn": onlyWarnPlugin,
     },
   },
 ];
