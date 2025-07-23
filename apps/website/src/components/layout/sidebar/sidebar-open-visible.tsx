@@ -1,4 +1,4 @@
-import { useSidebar } from "@website/components/layout/sidebar/sidebar-provider";
+import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { cn } from "@website/lib/utils/cn";
 import type { HTMLAttributes } from "react";
 

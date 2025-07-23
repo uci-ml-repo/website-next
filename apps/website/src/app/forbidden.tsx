@@ -1,4 +1,4 @@
-import { ErrorPage } from "@website/components/layout/error-page";
+import { ErrorPage } from "@components/layout/error-page";
 import { auth } from "@website/lib/auth/auth";
 import { authClient } from "@website/lib/auth/auth-client";
 import { ROUTES } from "@website/lib/routes";

@@ -1,4 +1,4 @@
-import { useSidebar } from "@website/components/layout/sidebar/sidebar-provider";
+import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import type { ComponentProps } from "react";
 import { forwardRef, useRef } from "react";
 

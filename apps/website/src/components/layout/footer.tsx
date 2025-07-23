@@ -1,5 +1,5 @@
-import { AnteaterLogo } from "@website/components/logo/anteater";
-import { MLRepoLogo } from "@website/components/logo/ml-repo";
+import { AnteaterLogo } from "@components/logo/anteater";
+import { MLRepoLogo } from "@components/logo/ml-repo";
 import { ROUTES } from "@website/lib/routes";
 import Link from "next/link";
 

@@ -1,13 +1,13 @@
 import "./globals.css";
 
-import { BackgroundGraphic } from "@website/components/layout/background/background-graphic";
-import { Footer } from "@website/components/layout/footer";
-import { Header } from "@website/components/layout/header";
-import { Sidebar } from "@website/components/layout/sidebar";
-import { SidebarMargin } from "@website/components/layout/sidebar/sidebar-margin";
-import { SidebarProvider } from "@website/components/layout/sidebar/sidebar-provider";
+import { BackgroundGraphic } from "@components/layout/background/background-graphic";
+import { Footer } from "@components/layout/footer";
+import { Header } from "@components/layout/header";
+import { Sidebar } from "@components/layout/sidebar";
+import { SidebarMargin } from "@components/layout/sidebar/sidebar-margin";
+import { SidebarProvider } from "@components/layout/sidebar/sidebar-provider";
+import { TRPCProvider } from "@server/trpc/query/client";
 import { env } from "@website/env";
-import { TRPCProvider } from "@website/server/trpc/query/client";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";

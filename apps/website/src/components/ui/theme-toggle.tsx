@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@website/components/ui/switch";
+import { Switch } from "@components/ui/switch";
 import { cn } from "@website/lib/utils/cn";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";

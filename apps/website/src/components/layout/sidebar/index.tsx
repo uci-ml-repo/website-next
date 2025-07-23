@@ -1,7 +1,7 @@
 "use client";
 
-import { SidebarContent } from "@website/components/layout/sidebar/sidebar-content";
-import { useSidebar } from "@website/components/layout/sidebar/sidebar-provider";
+import { SidebarContent } from "@components/layout/sidebar/sidebar-content";
+import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { cn } from "@website/lib/utils/cn";
 import React from "react";
 

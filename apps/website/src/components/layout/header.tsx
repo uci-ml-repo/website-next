@@ -1,9 +1,9 @@
 "use client";
 
-import { useHasScrolledX } from "@website/components/hooks/use-has-scrolled";
-import { BackgroundGraphic } from "@website/components/layout/background/background-graphic";
-import { useSidebar } from "@website/components/layout/sidebar/sidebar-provider";
-import { SidebarTrigger } from "@website/components/layout/sidebar/sidebar-trigger";
+import { useHasScrolledX } from "@components/hooks/use-has-scrolled";
+import { BackgroundGraphic } from "@components/layout/background/background-graphic";
+import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
+import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
 import { cn } from "@website/lib/utils/cn";
 import React from "react";
 

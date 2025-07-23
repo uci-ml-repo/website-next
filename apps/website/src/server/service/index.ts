@@ -1,4 +1,4 @@
-import { userService } from "@website/server/service/user";
+import { userService } from "@server/service/user";
 
 export const service = {
   user: userService,

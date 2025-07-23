@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@website/components/ui/button";
+import { Button } from "@components/ui/button";
 import { cn } from "@website/lib/utils/cn";
 import { MenuIcon } from "lucide-react";
 import type { ComponentProps } from "react";

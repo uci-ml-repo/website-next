@@ -1,4 +1,4 @@
-import { ErrorPage } from "@website/components/layout/error-page";
+import { ErrorPage } from "@components/layout/error-page";
 import { ROUTES } from "@website/lib/routes";
 import Link from "next/link";
 

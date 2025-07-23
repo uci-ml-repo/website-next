@@ -1,10 +1,10 @@
-import { SidebarHoverExpandable } from "@website/components/layout/sidebar/sidebar-hover-expandable";
-import { SidebarNav, SidebarNavLink } from "@website/components/layout/sidebar/sidebar-nav";
-import { SidebarOpenVisible } from "@website/components/layout/sidebar/sidebar-open-visible";
-import { SidebarTrigger } from "@website/components/layout/sidebar/sidebar-trigger";
-import { MLRepoLogo } from "@website/components/logo/ml-repo";
-import { Separator } from "@website/components/ui/separator";
-import { ThemeToggle } from "@website/components/ui/theme-toggle";
+import { SidebarHoverExpandable } from "@components/layout/sidebar/sidebar-hover-expandable";
+import { SidebarNav, SidebarNavLink } from "@components/layout/sidebar/sidebar-nav";
+import { SidebarOpenVisible } from "@components/layout/sidebar/sidebar-open-visible";
+import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
+import { MLRepoLogo } from "@components/logo/ml-repo";
+import { Separator } from "@components/ui/separator";
+import { ThemeToggle } from "@components/ui/theme-toggle";
 import { ROUTES } from "@website/lib/routes";
 import { cn } from "@website/lib/utils/cn";
 import { DatabaseIcon, HomeIcon, LogInIcon, PlusIcon } from "lucide-react";

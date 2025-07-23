@@ -1,4 +1,4 @@
-import { MLRepoLogo } from "@website/components/logo/ml-repo";
+import { MLRepoLogo } from "@components/logo/ml-repo";
 
 export default function Page() {
   return (

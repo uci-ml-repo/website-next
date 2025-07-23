@@ -4,6 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@website/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@server/*": ["src/server/*"],
       "@website/env": ["env.ts"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],

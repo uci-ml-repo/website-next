@@ -1,4 +1,4 @@
-import { userFindService } from "@website/server/service/user/find";
+import { userFindService } from "@server/service/user/find";
 
 export const userService = {
   find: userFindService,

@@ -1,4 +1,5 @@
-import { Card } from "@website/components/ui/card";
+import { Card } from "@components/ui/card";
+import { Tabs } from "@components/ui/tabs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div>
-      <Card>X</Card>
+      <Tabs>
+        <Card>X</Card>
+      </Tabs>
     </div>
   );
 }
