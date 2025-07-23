@@ -1,17 +1,24 @@
-import { Card } from "@components/ui/card";
-import { Tabs } from "@components/ui/tabs";
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Login or Register",
-  description: "Login or register for a UCI Machine Learning Repository account.",
-};
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
+import { useState } from "react";
 
 export default function Page() {
+  const [tab, setTab] = useState<string>("signIn");
+
   return (
     <div>
-      <Tabs>
-        <Card>X</Card>
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList className="grid grid-cols-2">
+          <TabsTrigger value="signIn">Sign In</TabsTrigger>
+          <TabsTrigger value="register">Register</TabsTrigger>
+        </TabsList>
+        <TabsContent value="signIn">SIGNIN</TabsContent>
+        <TabsContent value="register">REGISTER</TabsContent>
+
+        <div className="bg-destructive invisible">
+          <div className="visible">X</div>
+        </div>
       </Tabs>
     </div>
   );

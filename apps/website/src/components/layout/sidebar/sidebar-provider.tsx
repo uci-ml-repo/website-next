@@ -23,6 +23,7 @@ type SidebarContext = {
   mobileState: SidebarMobileState;
   setDesktopState: Dispatch<SetStateAction<SidebarDesktopState>>;
   setMobileState: Dispatch<SetStateAction<SidebarMobileState>>;
+  currentState: SidebarDesktopState | SidebarMobileState;
   view: SidebarView | undefined;
 };
 
@@ -73,7 +74,6 @@ export const SidebarProvider = forwardRef<HTMLDivElement, ComponentProps<"div">>
       } else {
         setDesktopState((prev) => (prev === "collapsed" ? "expanded" : "collapsed"));
       }
-      console.log("Sidebar toggled:", view);
     }, [view]);
 
     const contextValue = useMemo<SidebarContext>(
@@ -83,6 +83,7 @@ export const SidebarProvider = forwardRef<HTMLDivElement, ComponentProps<"div">>
         mobileState,
         setDesktopState,
         setMobileState,
+        currentState: view === "mobile" ? mobileState : desktopState,
         view,
       }),
       [toggleSidebar, desktopState, mobileState, view],

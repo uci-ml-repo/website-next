@@ -2,6 +2,7 @@ import { cn } from "@website/lib/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Montserrat } from "next/font/google";
 import Link from "next/link";
+import type { HTMLAttributes } from "react";
 import React from "react";
 
 const logoVariants = cva("w-fit", {
@@ -23,18 +24,23 @@ const logoVariants = cva("w-fit", {
   },
 });
 
-interface LogoProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof logoVariants> {
+interface LogoProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof logoVariants> {
   href?: string;
   abbreviate?: boolean;
 }
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
-export function MLRepoLogo({ variant, textColor, className, href, abbreviate }: LogoProps) {
+export function MLRepoLogo({
+  variant,
+  textColor,
+  className,
+  href,
+  abbreviate,
+  ...props
+}: LogoProps) {
   const content = (
-    <div className={cn(logoVariants({ variant, textColor }), className)}>
+    <div className={cn(logoVariants({ variant, textColor }), className)} {...props}>
       <div data-line="1" className={cn(montserrat.className, "leading-[0.9] font-extrabold")}>
         UC Irvine
       </div>
@@ -44,5 +50,5 @@ export function MLRepoLogo({ variant, textColor, className, href, abbreviate }: 
     </div>
   );
 
-  return <>{href ? <Link href={href}>{content}</Link> : content}</>;
+  return href ? <Link href={href}>{content}</Link> : content;
 }

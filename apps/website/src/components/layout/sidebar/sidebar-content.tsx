@@ -1,6 +1,7 @@
 import { SidebarHoverExpandable } from "@components/layout/sidebar/sidebar-hover-expandable";
 import { SidebarNav, SidebarNavLink } from "@components/layout/sidebar/sidebar-nav";
 import { SidebarOpenVisible } from "@components/layout/sidebar/sidebar-open-visible";
+import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
 import { MLRepoLogo } from "@components/logo/ml-repo";
 import { Separator } from "@components/ui/separator";
@@ -12,11 +13,17 @@ import type { HTMLAttributes } from "react";
 import React from "react";
 
 export function SidebarContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  const { currentState } = useSidebar();
+
   return (
     <div className={cn("flex h-full flex-col", className)} {...props}>
       <div className="flex items-center">
         <SidebarTrigger />
-        <MLRepoLogo variant="logo-sm" abbreviate href={ROUTES.HOME} />
+        <MLRepoLogo
+          variant="logo-sm"
+          abbreviate
+          href={currentState !== "collapsed" ? ROUTES.HOME : undefined}
+        />
       </div>
 
       <SidebarHoverExpandable className="flex grow flex-col">
