@@ -1,5 +1,3 @@
-import "@/app/globals.css";
-
 import { Button } from "@website/components/ui/button";
 import { ROUTES } from "@website/lib/routes";
 import { ArrowLeftIcon } from "lucide-react";

@@ -1,9 +1,9 @@
-import { Button } from "@website/components/ui/button";
+import { MLRepoLogo } from "@website/components/logo/ml-repo";
 
 export default function Page() {
   return (
     <div>
-      <Button>Press me</Button>
+      <MLRepoLogo variant="hero" />
     </div>
   );
 }
