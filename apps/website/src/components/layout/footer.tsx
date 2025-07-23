@@ -44,7 +44,7 @@ const linkGroups: FooterLinkGroupProps[] = [
 
 export function Footer() {
   return (
-    <footer className="bg-blue dark:bg-blue/60 text-blue-foreground py-8">
+    <footer className="bg-blue text-blue-foreground py-8">
       <div className="content flex justify-around gap-10 max-md:flex-col">
         <div className="flex h-24 w-fit items-center self-center">
           <AnteaterLogo className="fill-blue-foreground mr-4 h-1/2 max-lg:hidden" />

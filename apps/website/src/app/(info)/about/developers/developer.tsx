@@ -1,5 +1,4 @@
-import { AvatarFallback } from "@radix-ui/react-avatar";
-import { Avatar, AvatarImage } from "@website/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@website/components/ui/avatar";
 import { CircleUserRoundIcon } from "lucide-react";
 import Link from "next/link";
 import { VscGithubInverted } from "react-icons/vsc";

@@ -1,4 +1,4 @@
-import { Close, Content, Overlay, Portal, Root, Title } from "@radix-ui/react-dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useSidebar } from "@website/components/layout/sidebar/sidebar-provider";
 import { Button } from "@website/components/ui/button";
@@ -9,25 +9,26 @@ import { MenuIcon, XIcon } from "lucide-react";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
 
-export const Sheet = Root;
+export const Sheet = DialogPrimitive.Root;
 
-export const SheetTitle = Title;
+export const SheetTitle = DialogPrimitive.Title;
 
-export const SheetOverlay = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof Overlay>>(
-  ({ className, ...props }, ref) => (
-    <Overlay
-      className={cn(
-        "fixed inset-0 z-50 bg-black/20",
-        "data-[state=open]:animate-in data-[state=open]:fade-in-0",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
-        className,
-      )}
-      {...props}
-      ref={ref}
-    />
-  ),
-);
-SheetOverlay.displayName = Overlay.displayName;
+export const SheetOverlay = forwardRef<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    className={cn(
+      "fixed inset-0 z-50 bg-black/20",
+      "data-[state=open]:animate-in data-[state=open]:fade-in-0",
+      "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+      className,
+    )}
+    {...props}
+    ref={ref}
+  />
+));
+SheetOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const SidebarTrigger = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof Button>>(
   ({ className, onClick, ...props }, ref) => {
@@ -77,18 +78,22 @@ const sheetVariants = cva(
 );
 
 interface SheetContentProps
-  extends ComponentPropsWithoutRef<typeof Content>,
+  extends ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   closeButton?: boolean;
 }
 
 export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(
   ({ side, className, children, closeButton = true, ...props }, ref) => (
-    <Portal>
+    <DialogPrimitive.Portal>
       <SheetOverlay />
-      <Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ side }), className)}
+        {...props}
+      >
         {closeButton && (
-          <Close
+          <DialogPrimitive.Close
             className={cn(
               "ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity",
               "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
@@ -97,11 +102,11 @@ export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(
           >
             <XIcon className="size-4" />
             <VisuallyHidden>Close</VisuallyHidden>
-          </Close>
+          </DialogPrimitive.Close>
         )}
         {children}
-      </Content>
-    </Portal>
+      </DialogPrimitive.Content>
+    </DialogPrimitive.Portal>
   ),
 );
-SheetContent.displayName = Content.displayName;
+SheetContent.displayName = DialogPrimitive.Content.displayName;

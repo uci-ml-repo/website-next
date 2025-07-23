@@ -1,4 +1,4 @@
-import { Button } from "@website/components/ui/button";
+import { Card } from "@website/components/ui/card";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div>
-      <Button>X</Button>
+      <Card>X</Card>
     </div>
   );
 }
