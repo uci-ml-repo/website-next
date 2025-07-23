@@ -7,6 +7,7 @@ import { Sidebar } from "@website/components/layout/sidebar";
 import { SidebarMargin } from "@website/components/layout/sidebar/sidebar-margin";
 import { SidebarProvider } from "@website/components/layout/sidebar/sidebar-provider";
 import { env } from "@website/env";
+import { TRPCProvider } from "@website/server/trpc/query/client";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -41,29 +42,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          themes={["light", "dark"]}
-          disableTransitionOnChange
-        >
-          <BackgroundGraphic className="absolute top-0 right-0 -z-10 max-md:hidden" />
+      <TRPCProvider>
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            themes={["light", "dark"]}
+            disableTransitionOnChange
+          >
+            <BackgroundGraphic className="absolute top-0 right-0 -z-10 max-md:hidden" />
 
-          <SidebarProvider>
-            <Sidebar />
-            <SidebarMargin>
-              <div className="flex min-h-dvh flex-col">
-                <Header />
-                <main className="content mx-auto mb-12 flex grow flex-col max-md:mt-(--header-height) max-md:pt-4">
-                  {children}
-                </main>
-              </div>
-              <Footer />
-            </SidebarMargin>
-          </SidebarProvider>
-        </ThemeProvider>
-      </body>
+            <SidebarProvider>
+              <Sidebar />
+              <SidebarMargin>
+                <div className="flex min-h-dvh flex-col">
+                  <Header />
+                  <main className="content mx-auto mb-12 flex grow flex-col max-md:mt-(--header-height) max-md:pt-4">
+                    {children}
+                  </main>
+                </div>
+                <Footer />
+              </SidebarMargin>
+            </SidebarProvider>
+          </ThemeProvider>
+        </body>
+      </TRPCProvider>
     </html>
   );
 }

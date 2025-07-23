@@ -4,8 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./env": "./env.ts",
-    "./schema": "./schema.ts"
+    "./schema": "./src/schema.ts",
+    "./env": "./env.ts"
   },
   "scripts": {
     "db:generate": "drizzle-kit generate",
