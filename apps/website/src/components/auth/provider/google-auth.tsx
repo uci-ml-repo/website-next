@@ -1,22 +1,10 @@
-import { Button } from "@components/ui/button";
-import { authClient } from "@lib/auth-client";
-import type { ReactNode } from "react";
+import { ProviderAuth } from "@components/auth/provider/provider-auth";
 import { FaGoogle } from "react-icons/fa6";
 
-export function GoogleAuth({ children }: { children?: ReactNode }) {
+export function GoogleAuth() {
   return (
-    <Button
-      className="w-full"
-      variant="outline"
-      size="lg"
-      onClick={async () => {
-        await authClient.signIn.social({
-          provider: "google",
-        });
-      }}
-    >
-      <FaGoogle />
-      {children}
-    </Button>
+    <ProviderAuth provider="google" icon={<FaGoogle />}>
+      Sign in with Google
+    </ProviderAuth>
   );
 }

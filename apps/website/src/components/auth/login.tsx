@@ -15,8 +15,8 @@ export function Login({ setTab }: Props) {
       <div className="space-y-4">
         <LoginForm />
         <TextSeparator text="OR" />
-        <GoogleAuth>SIgn in with Google</GoogleAuth>
-        <GithubAuth>Sign in with Github</GithubAuth>
+        <GoogleAuth />
+        <GithubAuth />
       </div>
       <div className="text-muted-foreground w-full space-x-1 text-center text-sm">
         <span>Don't have an account?</span>

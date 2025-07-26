@@ -46,7 +46,7 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
                 className="cursor-pointer rounded-full"
                 aria-label="Expand profile options"
               >
-                <Avatar>
+                <Avatar className="size-11">
                   {session.user.image && <AvatarImage src={session.user.image} />}
                   <AvatarFallback>
                     <CircleUserRoundIcon className="text-muted-foreground size-4/5" />
