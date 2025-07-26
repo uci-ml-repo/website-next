@@ -21,6 +21,7 @@ const config = [
     rules: {
       ...reactPlugin.configs.flat.recommended.rules,
       "react/react-in-jsx-scope": "off",
+      "react/no-unescaped-entities": "off",
       "react/self-closing-comp": "error",
       "react/jsx-curly-brace-presence": "error",
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import { ROUTES } from "@website/lib/routes";
+import { ROUTES } from "@lib/routes";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";

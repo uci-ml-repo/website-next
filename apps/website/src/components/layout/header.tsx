@@ -1,15 +1,30 @@
 "use client";
 
 import { useHasScrolledX } from "@components/hooks/use-has-scrolled";
-import { BackgroundGraphic } from "@components/layout/background/background-graphic";
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
+import { useSessionWithInitial } from "@components/hooks/use-session-with-initial";
 import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
-import { cn } from "@website/lib/utils/cn";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@components/ui/dropdown-menu";
+import type { Session } from "@lib/auth";
+import { authClient } from "@lib/auth-client";
+import { ROUTES } from "@lib/routes";
+import { cn } from "@lib/utils/cn";
+import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-export function Header() {
-  const { view } = useSidebar();
+export function Header({ initialSession }: { initialSession: Session | null }) {
+  const router = useRouter();
   const hasScrolled = useHasScrolledX();
+
+  const session = useSessionWithInitial(initialSession);
 
   return (
     <header
@@ -19,9 +34,52 @@ export function Header() {
         { "max-md:shadow-md": hasScrolled },
       )}
     >
-      {view === "mobile" && <SidebarTrigger />}
+      {/*<BackgroundGraphic className="absolute top-0 right-0 -z-10 md:hidden" />*/}
 
-      <BackgroundGraphic className="absolute top-0 right-0 -z-10 md:hidden" />
+      <div className="flex items-center justify-between">
+        <SidebarTrigger className="transition-none md:invisible" />
+
+        {session && (
+          <div className="mx-4 md:my-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="cursor-pointer rounded-full"
+                aria-label="Expand profile options"
+              >
+                <Avatar>
+                  {session.user.image && <AvatarImage src={session.user.image} />}
+                  <AvatarFallback>
+                    <CircleUserRoundIcon className="text-muted-foreground size-4/5" />
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuItem asChild>
+                  <Link href={ROUTES.PROFILE.ROOT}>
+                    <UserIcon />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    authClient.signOut({
+                      fetchOptions: {
+                        onSuccess: () => {
+                          router.push(ROUTES.HOME);
+                        },
+                      },
+                    })
+                  }
+                >
+                  <LogOutIcon />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

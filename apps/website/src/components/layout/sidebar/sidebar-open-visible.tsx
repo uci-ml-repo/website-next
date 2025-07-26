@@ -1,5 +1,5 @@
 import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import { cn } from "@website/lib/utils/cn";
+import { cn } from "@lib/utils/cn";
 import type { HTMLAttributes } from "react";
 
 export function SidebarOpenVisible({

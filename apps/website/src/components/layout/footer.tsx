@@ -1,6 +1,6 @@
 import { AnteaterLogo } from "@components/logo/anteater";
 import { MLRepoLogo } from "@components/logo/ml-repo";
-import { ROUTES } from "@website/lib/routes";
+import { ROUTES } from "@lib/routes";
 import Link from "next/link";
 
 interface FooterLinkGroupProps {

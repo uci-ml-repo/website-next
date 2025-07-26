@@ -1,7 +1,7 @@
 "use client";
 
 import type { GraphNode } from "@components/layout/background/background-graphic-worker";
-import { cn } from "@website/lib/utils/cn";
+import { cn } from "@lib/utils/cn";
 import type { HTMLAttributes } from "react";
 import { startTransition, useEffect, useState } from "react";
 

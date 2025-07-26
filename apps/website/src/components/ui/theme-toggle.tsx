@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch } from "@components/ui/switch";
-import { cn } from "@website/lib/utils/cn";
+import { cn } from "@lib/utils/cn";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";

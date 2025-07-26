@@ -1,7 +1,7 @@
 import { ErrorPage } from "@components/layout/error-page";
-import { auth } from "@website/lib/auth/auth";
-import { authClient } from "@website/lib/auth/auth-client";
-import { ROUTES } from "@website/lib/routes";
+import { auth } from "@lib/auth";
+import { authClient } from "@lib/auth-client";
+import { ROUTES } from "@lib/routes";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -25,12 +25,9 @@ export default async function Forbidden() {
             Sign in
           </Link>
         )}
-        <div className="text-lg">
-          <span>Go back </span>
-          <Link href={ROUTES.HOME} className="text hover:underline">
-            Home
-          </Link>
-        </div>
+        <Link href={ROUTES.HOME} className="text-link hover:underline">
+          Return Home
+        </Link>
       </div>
     </ErrorPage>
   );

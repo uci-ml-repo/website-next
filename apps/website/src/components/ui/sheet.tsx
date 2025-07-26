@@ -1,8 +1,8 @@
 import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { Button } from "@components/ui/button";
+import { cn } from "@lib/utils/cn";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { cn } from "@website/lib/utils/cn";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import { MenuIcon, XIcon } from "lucide-react";

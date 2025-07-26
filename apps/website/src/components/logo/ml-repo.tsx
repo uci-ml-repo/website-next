@@ -1,5 +1,5 @@
-import { ROUTES } from "@website/lib/routes";
-import { cn } from "@website/lib/utils/cn";
+import { ROUTES } from "@lib/routes";
+import { cn } from "@lib/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Montserrat } from "next/font/google";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 "use client";
 
+import { cn } from "@lib/utils/cn";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { cn } from "@website/lib/utils/cn";
 import type { ComponentPropsWithoutRef, ComponentRef } from "react";
 import { forwardRef } from "react";
 

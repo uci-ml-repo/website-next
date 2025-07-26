@@ -5,7 +5,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema.ts",
-    "./env": "./env.ts"
+    "./env": "./env.ts",
+    "./enum": "./src/enum.ts"
   },
   "scripts": {
     "db:generate": "drizzle-kit generate",

@@ -1,3 +1,4 @@
+import { useSessionWithInitial } from "@components/hooks/use-session-with-initial";
 import { SidebarHoverExpandable } from "@components/layout/sidebar/sidebar-hover-expandable";
 import { SidebarNav, SidebarNavLink } from "@components/layout/sidebar/sidebar-nav";
 import { SidebarOpenVisible } from "@components/layout/sidebar/sidebar-open-visible";
@@ -6,14 +7,21 @@ import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
 import { MLRepoLogo } from "@components/logo/ml-repo";
 import { Separator } from "@components/ui/separator";
 import { ThemeToggle } from "@components/ui/theme-toggle";
-import { ROUTES } from "@website/lib/routes";
-import { cn } from "@website/lib/utils/cn";
-import { DatabaseIcon, HomeIcon, LogInIcon, PlusIcon } from "lucide-react";
+import type { Session } from "@lib/auth";
+import { ROUTES } from "@lib/routes";
+import { cn } from "@lib/utils/cn";
+import { DatabaseIcon, HomeIcon, LogInIcon, PlusIcon, UserIcon } from "lucide-react";
 import type { HTMLAttributes } from "react";
 import React from "react";
 
-export function SidebarContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  initialSession: Session | null;
+}
+
+export function SidebarContent({ className, initialSession, ...props }: Props) {
   const { currentState } = useSidebar();
+
+  const session = useSessionWithInitial(initialSession);
 
   return (
     <div className={cn("flex h-full flex-col", className)} {...props}>
@@ -52,14 +60,25 @@ export function SidebarContent({ className, ...props }: HTMLAttributes<HTMLDivEl
 
           <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
 
-          {/* Sign In */}
-          <SidebarNavLink
-            href={ROUTES.AUTH.SIGN_IN}
-            activePath={RegExp(`^(${ROUTES.AUTH.SIGN_IN}|${ROUTES.AUTH.FORGOT_PASSWORD})`)}
-          >
-            <LogInIcon />
-            <div>Sign In</div>
-          </SidebarNavLink>
+          {session ? (
+            // Profile
+            <SidebarNavLink
+              href={ROUTES.PROFILE.ROOT}
+              activePath={RegExp(`^${ROUTES.PROFILE.ROOT}`)}
+            >
+              <UserIcon />
+              <div>Profile</div>
+            </SidebarNavLink>
+          ) : (
+            // Sign In
+            <SidebarNavLink
+              href={ROUTES.AUTH.SIGN_IN}
+              activePath={RegExp(`^(${ROUTES.AUTH.SIGN_IN}|${ROUTES.AUTH.FORGOT_PASSWORD})`)}
+            >
+              <LogInIcon />
+              <div>Sign In</div>
+            </SidebarNavLink>
+          )}
 
           {/* Admin */}
           {/*<SidebarMenuItem>*/}

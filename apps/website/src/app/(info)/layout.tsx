@@ -1,5 +1,5 @@
 import { Button } from "@components/ui/button";
-import { ROUTES } from "@website/lib/routes";
+import { ROUTES } from "@lib/routes";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";

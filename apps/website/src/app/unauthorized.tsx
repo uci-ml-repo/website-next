@@ -1,5 +1,5 @@
 import { ErrorPage } from "@components/layout/error-page";
-import { ROUTES } from "@website/lib/routes";
+import { ROUTES } from "@lib/routes";
 import Link from "next/link";
 
 export default function Unauthorized() {
@@ -9,12 +9,9 @@ export default function Unauthorized() {
         <Link href={ROUTES.AUTH.SIGN_IN} className="text-link hover:underline">
           Sign in
         </Link>
-        <div className="text-lg">
-          <span>Go back </span>
-          <Link href={ROUTES.HOME} className="text-link hover:underline">
-            Home
-          </Link>
-        </div>
+        <Link href={ROUTES.HOME} className="text-link hover:underline">
+          Return Home
+        </Link>
       </div>
     </ErrorPage>
   );

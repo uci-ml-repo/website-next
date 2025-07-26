@@ -1,7 +1,7 @@
 import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { Sheet, SheetContent, SheetTitle } from "@components/ui/sheet";
+import { cn } from "@lib/utils/cn";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { cn } from "@website/lib/utils/cn";
 import type { ReactNode } from "react";
 
 export function SidebarMobileSheet({ children, ...props }: { children: ReactNode }) {

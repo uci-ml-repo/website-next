@@ -5,7 +5,6 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]),
-    BASE_URL: z.string(),
 
     //------------------------------------------------------------------------------
     // Auth config
@@ -30,6 +29,12 @@ export const env = createEnv({
     EZID_PASSWORD: z.string(),
     EZID_SHOULDER: z.string(),
   },
+  client: {
+    NEXT_PUBLIC_BASE_URL: z.string(),
+  },
+
   extends: [dbEnv],
-  experimental__runtimeEnv: process.env,
+  experimental__runtimeEnv: {
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  },
 });

@@ -1,16 +1,13 @@
 import { ErrorPage } from "@components/layout/error-page";
-import { ROUTES } from "@website/lib/routes";
+import { ROUTES } from "@lib/routes";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
     <ErrorPage code={404} header="Page not found">
-      <div className="text-lg">
-        <span>Return </span>
-        <Link href={ROUTES.HOME} className="text-link hover:underline">
-          Home
-        </Link>
-      </div>
+      <Link href={ROUTES.HOME} className="text-link text-lg hover:underline">
+        Return Home
+      </Link>
     </ErrorPage>
   );
 }

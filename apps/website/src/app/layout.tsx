@@ -5,11 +5,13 @@ import { Footer } from "@components/layout/footer";
 import { Header } from "@components/layout/header";
 import { Sidebar } from "@components/layout/sidebar";
 import { SidebarProvider } from "@components/layout/sidebar/sidebar-provider";
+import { env } from "@env";
+import { auth } from "@lib/auth";
+import { cn } from "@lib/utils/cn";
 import { TRPCProvider } from "@server/trpc/query/client";
-import { env } from "@website/env";
-import { cn } from "@website/lib/utils/cn";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import React from "react";
 
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
   },
   description:
     "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
-  metadataBase: new URL(env.BASE_URL),
+  metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
   openGraph: {
     images: [
       {
@@ -35,11 +37,15 @@ export const metadata: Metadata = {
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <html lang="en" suppressHydrationWarning>
       <TRPCProvider>
@@ -53,7 +59,7 @@ export default function RootLayout({
             <BackgroundGraphic className="absolute top-0 right-0 -z-10 max-md:hidden" />
 
             <SidebarProvider>
-              <Sidebar />
+              <Sidebar session={session} />
               <div
                 className={cn(
                   "w-full",
@@ -62,7 +68,7 @@ export default function RootLayout({
                 )}
               >
                 <div className="flex min-h-dvh flex-col">
-                  <Header />
+                  <Header initialSession={session} />
                   <main
                     className={cn(
                       "content mx-auto mb-12 flex grow flex-col",

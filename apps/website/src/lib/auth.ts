@@ -1,10 +1,11 @@
+import { env } from "@env";
 import { db } from "@packages/db";
-import { env } from "@website/env";
+import { Enums, enumToArray } from "@packages/db/enum";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
 export const auth = betterAuth({
-  baseURL: env.BASE_URL,
+  baseURL: env.NEXT_PUBLIC_BASE_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
@@ -21,4 +22,15 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: enumToArray(Enums.UserRole),
+        defaultValue: Enums.UserRole.BASIC,
+        input: false,
+      },
+    },
+  },
 });
+
+export type Session = typeof auth.$Infer.Session;

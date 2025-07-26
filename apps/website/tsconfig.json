@@ -5,8 +5,9 @@
     "paths": {
       "@website/*": ["src/*"],
       "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"],
       "@server/*": ["src/server/*"],
-      "@website/env": ["env.ts"]
+      "@env": ["env.ts"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
