@@ -1,3 +1,4 @@
+import { ROUTES } from "@website/lib/routes";
 import { cn } from "@website/lib/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Montserrat } from "next/font/google";
@@ -25,7 +26,7 @@ const logoVariants = cva("w-fit", {
 });
 
 interface LogoProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof logoVariants> {
-  href?: string;
+  href?: string | boolean;
   abbreviate?: boolean;
 }
 
@@ -50,5 +51,5 @@ export function MLRepoLogo({
     </div>
   );
 
-  return href ? <Link href={href}>{content}</Link> : content;
+  return href ? <Link href={href === true ? ROUTES.HOME : href}>{content}</Link> : content;
 }
