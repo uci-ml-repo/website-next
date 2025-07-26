@@ -15,10 +15,6 @@ export default function Page() {
         </TabsList>
         <TabsContent value="signIn">SIGNIN</TabsContent>
         <TabsContent value="register">REGISTER</TabsContent>
-
-        <div className="bg-destructive invisible">
-          <div className="visible">X</div>
-        </div>
       </Tabs>
     </div>
   );

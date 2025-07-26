@@ -4,10 +4,10 @@ import { BackgroundGraphic } from "@components/layout/background/background-grap
 import { Footer } from "@components/layout/footer";
 import { Header } from "@components/layout/header";
 import { Sidebar } from "@components/layout/sidebar";
-import { SidebarMargin } from "@components/layout/sidebar/sidebar-margin";
 import { SidebarProvider } from "@components/layout/sidebar/sidebar-provider";
 import { TRPCProvider } from "@server/trpc/query/client";
 import { env } from "@website/env";
+import { cn } from "@website/lib/utils/cn";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -54,15 +54,26 @@ export default function RootLayout({
 
             <SidebarProvider>
               <Sidebar />
-              <SidebarMargin>
+              <div
+                className={cn(
+                  "w-full",
+                  "md:ml-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!ml-(--sidebar-width)",
+                  "transition-margin duration-100 ease-out",
+                )}
+              >
                 <div className="flex min-h-dvh flex-col">
                   <Header />
-                  <main className="content mx-auto mb-12 flex grow flex-col max-md:mt-(--header-height) max-md:pt-4">
+                  <main
+                    className={cn(
+                      "content mx-auto mb-12 flex grow flex-col",
+                      "max-md:mt-(--header-height) max-md:pt-4",
+                    )}
+                  >
                     {children}
                   </main>
                 </div>
                 <Footer />
-              </SidebarMargin>
+              </div>
             </SidebarProvider>
           </ThemeProvider>
         </body>
