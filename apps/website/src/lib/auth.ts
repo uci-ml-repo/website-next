@@ -3,6 +3,7 @@ import { db } from "@packages/db";
 import { Enums, enumToArray } from "@packages/db/enum";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { v7 as uuidv7 } from "uuid";
 
 export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_BASE_URL,
@@ -29,6 +30,11 @@ export const auth = betterAuth({
         defaultValue: Enums.UserRole.BASIC,
         input: false,
       },
+    },
+  },
+  advanced: {
+    database: {
+      generateId: () => uuidv7(),
     },
   },
 });
