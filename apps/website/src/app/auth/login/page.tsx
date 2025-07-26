@@ -15,9 +15,13 @@ export default function Page() {
   return (
     <div className="flex grow items-center justify-center">
       <Card className="w-full max-w-[30rem] max-md:invisible">
-        <Tabs value={tab} onValueChange={(tab) => setTab(tab as AuthTab)} className="visible">
-          <CardHeader className="space-y-4">
-            <MLRepoLogo variant="logo" />
+        <Tabs
+          value={tab}
+          onValueChange={(tab) => setTab(tab as AuthTab)}
+          className="visible max-md:[&>*]:!px-0"
+        >
+          <CardHeader className="space-y-4 pb-4">
+            <MLRepoLogo variant="logo" className="text-wrap" />
             <TabsList className="grid grid-cols-2">
               <TabsTrigger value="signIn">Sign In</TabsTrigger>
               <TabsTrigger value="register">Register</TabsTrigger>

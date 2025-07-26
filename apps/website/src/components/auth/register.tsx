@@ -1,4 +1,6 @@
-import { RegisterForm } from "@components/auth/register-form";
+import { GithubAuth } from "@components/auth/button/github-auth";
+import { GoogleAuth } from "@components/auth/button/google-auth";
+import { CredentialsRegisterForm } from "@components/auth/credentials-register-form";
 import type { AuthTab } from "@website/app/auth/login/page";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -8,8 +10,13 @@ interface Props {
 
 export function Register({ setTab }: Props) {
   return (
-    <div>
-      <RegisterForm />
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <CredentialsRegisterForm />
+        <GoogleAuth>Register with Google</GoogleAuth>
+        <GithubAuth>Register with Github</GithubAuth>
+      </div>
+
       <div className="text-muted-foreground w-full space-x-1 text-center text-sm">
         <span>Have an account?</span>
         <button

@@ -1,6 +1,6 @@
-import { LoginForm } from "@components/auth/login-form";
-import { GithubAuth } from "@components/auth/provider/github-auth";
-import { GoogleAuth } from "@components/auth/provider/google-auth";
+import { GithubAuth } from "@components/auth/button/github-auth";
+import { GoogleAuth } from "@components/auth/button/google-auth";
+import { CredentialsLoginForm } from "@components/auth/credentials-login-form";
 import { TextSeparator } from "@components/ui/text-separator";
 import type { AuthTab } from "@website/app/auth/login/page";
 import type { Dispatch, SetStateAction } from "react";
@@ -13,11 +13,12 @@ export function Login({ setTab }: Props) {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <LoginForm />
+        <CredentialsLoginForm />
         <TextSeparator text="OR" />
-        <GoogleAuth />
-        <GithubAuth />
+        <GoogleAuth>Sign in with Google</GoogleAuth>
+        <GithubAuth>Sign in with Github</GithubAuth>
       </div>
+
       <div className="text-muted-foreground w-full space-x-1 text-center text-sm">
         <span>Don't have an account?</span>
         <button

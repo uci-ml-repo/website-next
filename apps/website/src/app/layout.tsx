@@ -5,6 +5,7 @@ import { Footer } from "@components/layout/footer";
 import { Header } from "@components/layout/header";
 import { Sidebar } from "@components/layout/sidebar";
 import { SidebarProvider } from "@components/layout/sidebar/sidebar-provider";
+import { Toaster } from "@components/ui/sonner";
 import { env } from "@env";
 import { auth } from "@lib/auth";
 import { cn } from "@lib/utils/cn";
@@ -79,6 +80,7 @@ export default async function RootLayout({
                   </main>
                 </div>
                 <Footer />
+                <Toaster />
               </div>
             </SidebarProvider>
           </ThemeProvider>

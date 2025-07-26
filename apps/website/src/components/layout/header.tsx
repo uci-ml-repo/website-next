@@ -19,12 +19,24 @@ import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 export function Header({ initialSession }: { initialSession: Session | null }) {
   const router = useRouter();
   const hasScrolled = useHasScrolledX();
 
   const session = useSessionWithInitial(initialSession);
+
+  function signOut() {
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("Signed out successfully");
+          router.push(ROUTES.HOME);
+        },
+      },
+    });
+  }
 
   return (
     <header
@@ -34,8 +46,6 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
         { "max-md:shadow-md": hasScrolled },
       )}
     >
-      {/*<BackgroundGraphic className="absolute top-0 right-0 -z-10 md:hidden" />*/}
-
       <div className="flex items-center justify-between">
         <SidebarTrigger className="transition-none md:invisible" />
 
@@ -43,7 +53,10 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
           <div className="mx-4 md:my-4">
             <DropdownMenu>
               <DropdownMenuTrigger
-                className="cursor-pointer rounded-full"
+                className={cn(
+                  "cursor-pointer rounded-full outline-4",
+                  "outline-background focus-visible:outline-foreground",
+                )}
                 aria-label="Expand profile options"
               >
                 <Avatar className="size-11">
@@ -53,7 +66,11 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuContent
+                align="end"
+                className="w-44"
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
                 <DropdownMenuItem asChild>
                   <Link href={ROUTES.PROFILE.ROOT}>
                     <UserIcon />
@@ -61,17 +78,7 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() =>
-                    authClient.signOut({
-                      fetchOptions: {
-                        onSuccess: () => {
-                          router.push(ROUTES.HOME);
-                        },
-                      },
-                    })
-                  }
-                >
+                <DropdownMenuItem onClick={signOut}>
                   <LogOutIcon />
                   Sign Out
                 </DropdownMenuItem>
