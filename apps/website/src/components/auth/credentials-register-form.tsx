@@ -13,7 +13,7 @@ import {
 import { Input } from "@components/ui/input";
 import { TextSeparator } from "@components/ui/text-separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@lib/auth-client";
+import { authClient } from "@lib/auth/auth-client";
 import { ROUTES } from "@lib/routes";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";

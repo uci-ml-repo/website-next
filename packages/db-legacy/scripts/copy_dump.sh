@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../../.env
+source ../.env
 
 echo "$REMOTE_HOST"
 
@@ -12,4 +12,4 @@ fi
 echo "DB dump created at: ${DUMP_FILE}"
 echo "Copying dump file from $REMOTE_HOST:${DUMP_FILE} to local machine..."
 
-scp "$REMOTE_HOST:${DUMP_FILE}" ../dump.sql
+scp "$REMOTE_HOST:${DUMP_FILE}" ../data/dump.sql

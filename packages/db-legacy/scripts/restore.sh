@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../../.env
+source ../.env
 
 # Truncate all tables
 psql --dbname="$DATABASE_URL" -c "DO \$\$

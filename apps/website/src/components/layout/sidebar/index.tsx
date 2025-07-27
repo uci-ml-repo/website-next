@@ -2,8 +2,8 @@
 
 import { SidebarContent } from "@components/layout/sidebar/sidebar-content";
 import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import type { Session } from "@lib/auth";
-import { cn } from "@lib/utils/cn";
+import type { Session } from "@lib/auth/auth";
+import { cn } from "@lib/util/cn";
 import React from "react";
 
 import { SidebarMobileSheet } from "./sidebar-mobile-sheet";

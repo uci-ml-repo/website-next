@@ -1,7 +1,7 @@
 "use client";
 
 import { useIsBreakpoint } from "@components/hooks/use-is-breakpoint";
-import { cn } from "@lib/utils/cn";
+import { cn } from "@lib/util/cn";
 import type { ComponentProps, Dispatch, SetStateAction } from "react";
 import {
   createContext,

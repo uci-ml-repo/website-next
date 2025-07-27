@@ -1,4 +1,4 @@
-import { cn } from "@lib/utils/cn";
+import { cn } from "@lib/util/cn";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import type { ComponentPropsWithoutRef, ComponentRef } from "react";
 import { forwardRef } from "react";
@@ -9,7 +9,7 @@ const Avatar = forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
+    className={cn("relative flex size-10 shrink-0 overflow-hidden rounded-full", className)}
     {...props}
   />
 ));

@@ -4,8 +4,6 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(["development", "production"]),
-
     //------------------------------------------------------------------------------
     // Auth config
     //------------------------------------------------------------------------------

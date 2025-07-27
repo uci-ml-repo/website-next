@@ -12,7 +12,7 @@ import {
 } from "@components/ui/form";
 import { Input } from "@components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@lib/auth-client";
+import { authClient } from "@lib/auth/auth-client";
 import { ROUTES } from "@lib/routes";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import Link from "next/link";

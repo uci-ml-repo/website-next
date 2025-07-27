@@ -2,6 +2,7 @@
 
 import { useHasScrolledX } from "@components/hooks/use-has-scrolled";
 import { useSessionWithInitial } from "@components/hooks/use-session-with-initial";
+import { BackgroundGraphic } from "@components/layout/background/background-graphic";
 import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
 import {
@@ -11,10 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
-import type { Session } from "@lib/auth";
-import { authClient } from "@lib/auth-client";
+import type { Session } from "@lib/auth/auth";
+import { authClient } from "@lib/auth/auth-client";
 import { ROUTES } from "@lib/routes";
-import { cn } from "@lib/utils/cn";
+import { cn } from "@lib/util/cn";
 import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -43,24 +44,28 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
       className={cn(
         "z-50 h-(--header-height) overflow-y-hidden transition-shadow",
         "max-md:bg-background max-md:fixed max-md:top-0 max-md:right-0 max-md:left-0",
-        { "max-md:shadow-md": hasScrolled },
+        { "border-b max-md:shadow-sm": hasScrolled },
       )}
     >
       <div className="flex items-center justify-between">
         <SidebarTrigger className="transition-none md:invisible" />
+
+        <BackgroundGraphic className="absolute top-0 right-0 -z-10 md:hidden" />
 
         {session && (
           <div className="mx-4 md:my-4">
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={cn(
-                  "cursor-pointer rounded-full outline-4",
-                  "outline-background focus-visible:outline-foreground",
+                  "cursor-pointer rounded-full ring-3",
+                  "ring-background focus-visible:ring-ring",
                 )}
                 aria-label="Expand profile options"
               >
-                <Avatar className="size-11">
-                  {session.user.image && <AvatarImage src={session.user.image} />}
+                <Avatar>
+                  {session.user.image && (
+                    <AvatarImage className="animate-in fade-in" src={session.user.image} />
+                  )}
                   <AvatarFallback>
                     <CircleUserRoundIcon className="text-muted-foreground size-4/5" />
                   </AvatarFallback>

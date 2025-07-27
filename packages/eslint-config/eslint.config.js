@@ -39,7 +39,7 @@ const config = [
 
   // Prettier
   {
-    files: ["**/*.{js,jsx,ts,tsx}"],
+    files: ["**/*"],
     plugins: {
       prettier: prettierPlugin,
     },

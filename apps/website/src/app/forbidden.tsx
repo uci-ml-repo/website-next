@@ -1,5 +1,5 @@
 import { ErrorPage } from "@components/layout/error-page";
-import { auth } from "@lib/auth";
+import { auth } from "@lib/auth/auth";
 import { ROUTES } from "@lib/routes";
 import { headers } from "next/headers";
 import Link from "next/link";

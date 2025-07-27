@@ -1,6 +1,6 @@
 import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import { Sheet, SheetContent, SheetTitle } from "@components/ui/sheet";
-import { cn } from "@lib/utils/cn";
+import { cn } from "@lib/util/cn";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { ReactNode } from "react";
 

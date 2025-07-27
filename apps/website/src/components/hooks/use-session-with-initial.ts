@@ -1,5 +1,5 @@
-import type { Session } from "@lib/auth";
-import { authClient } from "@website/lib/auth-client";
+import type { Session } from "@lib/auth/auth";
+import { authClient } from "@lib/auth/auth-client";
 
 export function useSessionWithInitial(initialSession: Session | null) {
   const { data: _session, isPending } = authClient.useSession();
