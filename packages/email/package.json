@@ -1,7 +1,10 @@
 {
-  "name": "@packages/mail",
+  "name": "@packages/email",
   "version": "0.1.0",
   "type": "module",
+  "exports": {
+    ".": "./emails/index.ts"
+  },
   "scripts": {
     "dev": "email dev",
     "format": "prettier --write .",
@@ -11,6 +14,9 @@
   "prettier": "@packages/prettier-config",
   "dependencies": {
     "@react-email/components": "0.3.3",
+    "@t3-oss/env-core": "0.13.8",
+    "@t3-oss/env-nextjs": "0.13.8",
+    "dotenv": "17.2.1",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },

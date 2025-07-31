@@ -16,7 +16,7 @@ export async function sendEmail({
 }) {
   await client.send(
     new SendEmailCommand({
-      FromEmailAddress: "no-reply@" + Resource.Email.sender,
+      FromEmailAddress: `UCI Machine Learning Repository <no-reply@${Resource.Email.sender}>`,
       Destination: {
         ToAddresses: Array.isArray(to) ? to : [to],
       },
@@ -26,8 +26,8 @@ export async function sendEmail({
             Data: subject,
           },
           Body: {
-            Text: text ? { Data: text } : undefined,
-            Html: html ? { Data: html } : undefined,
+            Text: text ? { Data: text, Charset: "UTF-8" } : undefined,
+            Html: html ? { Data: html, Charset: "UTF-8" } : undefined,
           },
         },
       },

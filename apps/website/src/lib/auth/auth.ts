@@ -2,6 +2,7 @@ import { env } from "@env";
 import { sendEmail } from "@lib/mail";
 import { db } from "@packages/db";
 import { Enums, enumToArray } from "@packages/db/enum";
+import { resetPassword, verifyEmail } from "@packages/email";
 import bcrypt from "bcrypt";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -23,6 +24,16 @@ export const auth = betterAuth({
     password: {
       hash: (password) => bcrypt.hash(password, 10),
       verify: ({ hash, password }) => bcrypt.compare(password, hash),
+    },
+    sendResetPassword: async ({ user, url }) => {
+      const { email, name } = user;
+
+      await sendEmail({
+        to: email,
+        subject: "Reset password - UCI Machine Learning Repository",
+        html: await resetPassword({ name, url }),
+        text: await resetPassword({ name, url }, { plainText: true }),
+      });
     },
   },
   socialProviders: {
@@ -52,9 +63,17 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendOnSignUp: true,
+    sendOnSignIn: true,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
-      await sendEmail({ to: user.email, subject: "Verify your email", text: url });
+      const { email, name } = user;
+
+      await sendEmail({
+        to: email,
+        subject: "Verify email - UCI Machine Learning Repository",
+        html: await verifyEmail({ name, url }),
+        text: await verifyEmail({ name, url }, { plainText: true }),
+      });
     },
   },
 });
