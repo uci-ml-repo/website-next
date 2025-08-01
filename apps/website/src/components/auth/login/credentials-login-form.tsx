@@ -50,12 +50,14 @@ export function CredentialsLoginForm() {
       password,
     });
 
-    if (data) {
-      toast.success(`Signed in as ${data.user.name}`);
+    if (error?.code === "EMAIL_NOT_VERIFIED") {
+      router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
+    } else if (data) {
+      toast.success(`Signed in as: ${data.user.name}`);
       router.push(ROUTES.HOME);
+    } else {
+      setError(error?.message);
     }
-
-    setError(error?.message);
   }
 
   return (

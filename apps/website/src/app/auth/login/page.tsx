@@ -1,7 +1,7 @@
 "use client";
 
-import { Login } from "@components/auth/login";
-import { Register } from "@components/auth/register";
+import { LoginContent } from "@components/auth/login/login-content";
+import { RegisterContent } from "@components/auth/register/register-content";
 import { MLRepoLogo } from "@components/logo/ml-repo";
 import { Card, CardContent, CardHeader } from "@components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
@@ -29,10 +29,10 @@ export default function Page() {
           </CardHeader>
           <CardContent>
             <TabsContent value="signIn">
-              <Login setTab={setTab} />
+              <LoginContent setTab={setTab} />
             </TabsContent>
             <TabsContent value="register">
-              <Register setTab={setTab} />
+              <RegisterContent setTab={setTab} />
             </TabsContent>
           </CardContent>
         </Tabs>

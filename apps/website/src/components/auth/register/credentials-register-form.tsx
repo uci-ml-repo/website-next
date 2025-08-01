@@ -20,7 +20,6 @@ import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 export const formSchema = z
@@ -69,11 +68,10 @@ export function CredentialsRegisterForm() {
     });
 
     if (data) {
-      toast.success(`Successfully registered`);
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
+    } else {
+      setError(error?.message);
     }
-
-    setError(error?.message);
   }
 
   return formOpen ? (

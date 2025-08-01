@@ -2,8 +2,14 @@ import { db } from "@packages/db";
 import { user } from "@packages/db/schema";
 import { eq } from "drizzle-orm";
 
-function byId(id: string) {
-  return db.select().from(user).where(eq(user.id, id));
+async function byId(id: string) {
+  const [result] = await db.select().from(user).where(eq(user.id, id));
+  return result;
 }
 
-export const userFindService = { byId };
+async function byEmail(email: string) {
+  const [result] = await db.select().from(user).where(eq(user.email, email));
+  return result;
+}
+
+export const userFindService = { byId, byEmail };

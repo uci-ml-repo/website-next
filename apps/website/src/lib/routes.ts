@@ -18,7 +18,8 @@ export const ROUTES = {
     SIGN_IN: "/auth/login",
     FORGOT_PASSWORD: "/auth/forgot",
     RESET_PASSWORD: "/auth/reset",
-    VERIFY_EMAIL: "/auth/verify",
+    VERIFY: "/auth/verify",
+    VERIFY_EMAIL: (email: string) => `/auth/verify?email=${email}`,
   },
 
   ADMIN: {

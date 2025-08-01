@@ -73,7 +73,9 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
             // Sign In
             <SidebarNavLink
               href={ROUTES.AUTH.SIGN_IN}
-              activePath={RegExp(`^(${ROUTES.AUTH.SIGN_IN}|${ROUTES.AUTH.FORGOT_PASSWORD})`)}
+              activePath={RegExp(
+                `^(${ROUTES.AUTH.SIGN_IN}|${ROUTES.AUTH.FORGOT_PASSWORD}|${ROUTES.AUTH.VERIFY})`,
+              )}
             >
               <LogInIcon />
               <div>Sign In</div>
