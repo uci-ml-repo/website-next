@@ -1,10 +1,11 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "@components/ui/alert";
-import { Separator } from "@components/ui/separator";
-import { ROUTES } from "@lib/routes";
 import { AlertCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { ROUTES } from "@/lib/routes";
 
 export function ForgotPasswordInvalidToken() {
   const router = useRouter();

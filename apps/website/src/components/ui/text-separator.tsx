@@ -1,6 +1,7 @@
-import { Separator } from "@components/ui/separator";
-import { cn } from "@lib/util/cn";
 import type { HTMLAttributes } from "react";
+
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/util/cn";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   text: string;

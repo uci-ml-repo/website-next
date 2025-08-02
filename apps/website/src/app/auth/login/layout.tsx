@@ -1,9 +1,10 @@
-import { auth } from "@lib/auth/auth";
-import { ROUTES } from "@lib/routes";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+
+import { auth } from "@/lib/auth/auth";
+import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Login or Register",

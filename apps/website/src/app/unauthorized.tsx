@@ -1,6 +1,7 @@
-import { ErrorPage } from "@components/layout/error-page";
-import { ROUTES } from "@lib/routes";
 import Link from "next/link";
+
+import { ErrorPage } from "@/components/layout/error-page";
+import { ROUTES } from "@/lib/routes";
 
 export default function Unauthorized() {
   return (

@@ -1,9 +1,10 @@
-import { ForgotPasswordInputEmailForm } from "@components/auth/forgot/forgot-password-input-email-form";
-import { ForgotPasswordInvalidToken } from "@components/auth/forgot/forgot-password-invalid-token";
-import { ForgotPasswordResetForm } from "@components/auth/forgot/forgot-password-reset-form";
-import { MLRepoLogo } from "@components/logo/ml-repo";
-import { Card, CardContent, CardHeader } from "@components/ui/card";
 import type { Metadata } from "next";
+
+import { ForgotPasswordInputEmailForm } from "@/components/auth/forgot/forgot-password-input-email-form";
+import { ForgotPasswordInvalidToken } from "@/components/auth/forgot/forgot-password-invalid-token";
+import { ForgotPasswordResetForm } from "@/components/auth/forgot/forgot-password-reset-form";
+import { MLRepoLogo } from "@/components/logo/ml-repo";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Reset Password",

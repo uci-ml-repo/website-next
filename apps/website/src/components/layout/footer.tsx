@@ -1,7 +1,8 @@
-import { AnteaterLogo } from "@components/logo/anteater";
-import { MLRepoLogo } from "@components/logo/ml-repo";
-import { ROUTES } from "@lib/routes";
 import Link from "next/link";
+
+import { AnteaterLogo } from "@/components/logo/anteater";
+import { MLRepoLogo } from "@/components/logo/ml-repo";
+import { ROUTES } from "@/lib/routes";
 
 interface FooterLinkGroupProps {
   title: string;

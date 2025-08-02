@@ -1,7 +1,15 @@
 "use client";
 
-import { AuthButton } from "@components/auth/button/auth-button";
-import { Alert, AlertDescription } from "@components/ui/alert";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertCircleIcon, MailIcon } from "lucide-react";
+import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { AuthButton } from "@/components/auth/button/auth-button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -9,18 +17,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@components/ui/form";
-import { Input } from "@components/ui/input";
-import { TextSeparator } from "@components/ui/text-separator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@lib/auth/auth-client";
-import { ROUTES } from "@lib/routes";
-import { AlertCircleIcon, MailIcon } from "lucide-react";
-import { motion } from "motion/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { TextSeparator } from "@/components/ui/text-separator";
+import { authClient } from "@/lib/auth/auth-client";
+import { ROUTES } from "@/lib/routes";
 
 const formSchema = z
   .object({

@@ -1,7 +1,8 @@
-import { Alert, AlertTitle } from "@components/ui/alert";
-import { ROUTES } from "@lib/routes";
 import { AlertCircleIcon } from "lucide-react";
 import Link from "next/link";
+
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { ROUTES } from "@/lib/routes";
 
 export function VerifyInvalidEmailAlert() {
   return (

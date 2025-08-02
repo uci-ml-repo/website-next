@@ -1,8 +1,9 @@
-import { Button } from "@components/ui/button";
-import { ROUTES } from "@lib/routes";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/lib/routes";
 
 export default function Layout({
   children,

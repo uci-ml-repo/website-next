@@ -1,10 +1,11 @@
 "use client";
 
-import { Switch } from "@components/ui/switch";
-import { cn } from "@lib/util/cn";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/util/cn";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);

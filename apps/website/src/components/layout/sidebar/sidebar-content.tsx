@@ -1,18 +1,19 @@
-import { useSessionWithInitial } from "@components/hooks/use-session-with-initial";
-import { SidebarHoverExpandable } from "@components/layout/sidebar/sidebar-hover-expandable";
-import { SidebarNav, SidebarNavLink } from "@components/layout/sidebar/sidebar-nav";
-import { SidebarOpenVisible } from "@components/layout/sidebar/sidebar-open-visible";
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
-import { MLRepoLogo } from "@components/logo/ml-repo";
-import { Separator } from "@components/ui/separator";
-import { ThemeToggle } from "@components/ui/theme-toggle";
-import type { Session } from "@lib/auth/auth";
-import { ROUTES } from "@lib/routes";
-import { cn } from "@lib/util/cn";
 import { DatabaseIcon, HomeIcon, LogInIcon, PlusIcon, UserIcon } from "lucide-react";
 import type { HTMLAttributes } from "react";
 import React from "react";
+
+import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
+import { SidebarHoverExpandable } from "@/components/layout/sidebar/sidebar-hover-expandable";
+import { SidebarNav, SidebarNavLink } from "@/components/layout/sidebar/sidebar-nav";
+import { SidebarOpenVisible } from "@/components/layout/sidebar/sidebar-open-visible";
+import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
+import { SidebarTrigger } from "@/components/layout/sidebar/sidebar-trigger";
+import { MLRepoLogo } from "@/components/logo/ml-repo";
+import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import type { Session } from "@/lib/auth/auth";
+import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/util/cn";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   initialSession: Session | null;
@@ -44,7 +45,10 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
           </SidebarNavLink>
 
           {/* Datasets */}
-          <SidebarNavLink href={ROUTES.DATASET.ROOT} activePath={RegExp(`^${ROUTES.DATASET.BASE}`)}>
+          <SidebarNavLink
+            href={ROUTES.DATASET.SEARCH}
+            activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}
+          >
             <DatabaseIcon />
             <div>Datasets</div>
           </SidebarNavLink>

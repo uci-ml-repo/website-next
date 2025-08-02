@@ -7,10 +7,10 @@ export const ROUTES = {
   PRIVACY_POLICY: "/privacy",
 
   DATASET: {
-    BASE: "/dataset",
-    ROOT: "/datasets",
+    ROOT: "/dataset",
+    SEARCH: "/datasets",
     DATASET: ({ id, slug }: { id: number; slug: string }) =>
-      path.join("/dataset", String(id), slug),
+      path.join(ROUTES.DATASET.ROOT, String(id), slug),
   },
 
   AUTH: {

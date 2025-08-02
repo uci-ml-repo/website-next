@@ -1,8 +1,9 @@
-import type { AuthTab } from "@app/auth/login/page";
-import { GithubAuth } from "@components/auth/button/github-auth";
-import { GoogleAuth } from "@components/auth/button/google-auth";
-import { RegisterCredentialsForm } from "@components/auth/register/register-credentials-form";
 import type { Dispatch, SetStateAction } from "react";
+
+import type { AuthTab } from "@/app/auth/login/page";
+import { GithubAuth } from "@/components/auth/button/github-auth";
+import { GoogleAuth } from "@/components/auth/button/google-auth";
+import { RegisterCredentialsForm } from "@/components/auth/register/register-credentials-form";
 
 interface Props {
   setTab: Dispatch<SetStateAction<AuthTab>>;

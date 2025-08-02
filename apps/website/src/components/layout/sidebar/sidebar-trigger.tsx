@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@components/ui/button";
-import { cn } from "@lib/util/cn";
 import { MenuIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { forwardRef } from "react";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/util/cn";
 
 import { useSidebar } from "./sidebar-provider";
 

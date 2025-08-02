@@ -1,8 +1,9 @@
-import { ErrorPage } from "@components/layout/error-page";
-import { auth } from "@lib/auth/auth";
-import { ROUTES } from "@lib/routes";
 import { headers } from "next/headers";
 import Link from "next/link";
+
+import { ErrorPage } from "@/components/layout/error-page";
+import { auth } from "@/lib/auth/auth";
+import { ROUTES } from "@/lib/routes";
 
 export default async function Forbidden() {
   const session = await auth.api.getSession({ headers: await headers() });

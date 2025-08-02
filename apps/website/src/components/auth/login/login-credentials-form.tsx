@@ -1,19 +1,6 @@
 "use client";
 
-import { AuthButton } from "@components/auth/button/auth-button";
-import { Alert, AlertDescription } from "@components/ui/alert";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@components/ui/form";
-import { Input } from "@components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@lib/auth/auth-client";
-import { ROUTES } from "@lib/routes";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +8,20 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+
+import { AuthButton } from "@/components/auth/button/auth-button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth/auth-client";
+import { ROUTES } from "@/lib/routes";
 
 const formSchema = z.object({
   email: z.string().min(1, { error: "Email is required" }),

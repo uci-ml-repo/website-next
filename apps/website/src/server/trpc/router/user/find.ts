@@ -1,6 +1,7 @@
-import { service } from "@server/service";
-import { procedure, router } from "@server/trpc";
 import { z } from "zod";
+
+import { service } from "@/server/service";
+import { procedure, router } from "@/server/trpc";
 
 export const userFindRouter = router({
   byId: procedure

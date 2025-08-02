@@ -42,8 +42,6 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -68,6 +66,8 @@
   --gold-foreground: oklch(0.205 0 0);
   --positive: oklch(0.516 0.136 141.686);
   --positive-foreground: oklch(0.985 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -90,7 +90,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --link: oklch(0.633 0.131 233.056);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.55 0 0);
   --blue: oklch(0.489 0.125 251.208);
   --blue-foreground: oklch(1 0 0);
   --gold: oklch(0.864 0.176 90.671);
@@ -119,4 +119,9 @@
 
 .blur-background::before {
   @apply bg-background absolute -z-10 size-full blur-xl content-[''];
+}
+
+.lift {
+  @apply cursor-pointer transition-transform duration-[250ms] will-change-transform hover:scale-[1.03] hover:shadow-md focus-visible:scale-[1.03] focus-visible:shadow-md;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

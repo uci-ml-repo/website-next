@@ -1,6 +1,3 @@
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import { Button } from "@components/ui/button";
-import { cn } from "@lib/util/cn";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { VariantProps } from "class-variance-authority";
@@ -8,6 +5,10 @@ import { cva } from "class-variance-authority";
 import { MenuIcon, XIcon } from "lucide-react";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
+
+import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/util/cn";
 
 export const Sheet = DialogPrimitive.Root;
 

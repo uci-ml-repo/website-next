@@ -1,11 +1,12 @@
 "use client";
 
-import { LoginContent } from "@components/auth/login/login-content";
-import { RegisterContent } from "@components/auth/register/register-content";
-import { MLRepoLogo } from "@components/logo/ml-repo";
-import { Card, CardContent, CardHeader } from "@components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { useState } from "react";
+
+import { LoginContent } from "@/components/auth/login/login-content";
+import { RegisterContent } from "@/components/auth/register/register-content";
+import { MLRepoLogo } from "@/components/logo/ml-repo";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export type AuthTab = "signIn" | "register";
 

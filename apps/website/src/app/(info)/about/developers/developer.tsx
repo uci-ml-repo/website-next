@@ -1,7 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
 import { CircleUserRoundIcon } from "lucide-react";
 import Link from "next/link";
 import { VscGithubInverted } from "react-icons/vsc";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Developer({
   name,

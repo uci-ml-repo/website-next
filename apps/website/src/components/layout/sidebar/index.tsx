@@ -1,10 +1,11 @@
 "use client";
 
-import { SidebarContent } from "@components/layout/sidebar/sidebar-content";
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import type { Session } from "@lib/auth/auth";
-import { cn } from "@lib/util/cn";
 import React from "react";
+
+import { SidebarContent } from "@/components/layout/sidebar/sidebar-content";
+import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
+import type { Session } from "@/lib/auth/auth";
+import { cn } from "@/lib/util/cn";
 
 import { SidebarMobileSheet } from "./sidebar-mobile-sheet";
 

@@ -1,6 +1,7 @@
-import { cn } from "@lib/util/cn";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/lib/util/cn";
 
 const components = {
   h1: (props: ComponentPropsWithoutRef<"h1">) => (

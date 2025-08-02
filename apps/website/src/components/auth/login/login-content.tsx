@@ -1,9 +1,10 @@
-import type { AuthTab } from "@app/auth/login/page";
-import { GithubAuth } from "@components/auth/button/github-auth";
-import { GoogleAuth } from "@components/auth/button/google-auth";
-import { LoginCredentialsForm } from "@components/auth/login/login-credentials-form";
-import { TextSeparator } from "@components/ui/text-separator";
 import type { Dispatch, SetStateAction } from "react";
+
+import type { AuthTab } from "@/app/auth/login/page";
+import { GithubAuth } from "@/components/auth/button/github-auth";
+import { GoogleAuth } from "@/components/auth/button/google-auth";
+import { LoginCredentialsForm } from "@/components/auth/login/login-credentials-form";
+import { TextSeparator } from "@/components/ui/text-separator";
 
 interface Props {
   setTab: Dispatch<SetStateAction<AuthTab>>;

@@ -1,6 +1,7 @@
-import { cn } from "@lib/util/cn";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import React from "react";
+
+import { cn } from "@/lib/util/cn";
 
 type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>;
 

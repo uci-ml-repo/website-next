@@ -1,7 +1,5 @@
 "use client";
 
-import { useIsBreakpoint } from "@components/hooks/use-is-breakpoint";
-import { cn } from "@lib/util/cn";
 import type { ComponentProps, Dispatch, SetStateAction } from "react";
 import {
   createContext,
@@ -12,6 +10,9 @@ import {
   useMemo,
   useState,
 } from "react";
+
+import { useIsBreakpoint } from "@/components/hooks/use-is-breakpoint";
+import { cn } from "@/lib/util/cn";
 
 type SidebarDesktopState = "expanded" | "collapsed" | "hovered";
 type SidebarMobileState = "expanded" | "collapsed";

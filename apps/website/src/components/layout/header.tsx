@@ -1,26 +1,27 @@
 "use client";
 
-import { useHasScrolledX } from "@components/hooks/use-has-scrolled";
-import { useSessionWithInitial } from "@components/hooks/use-session-with-initial";
-import { BackgroundGraphic } from "@components/layout/background/background-graphic";
-import { SidebarTrigger } from "@components/layout/sidebar/sidebar-trigger";
-import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { toast } from "sonner";
+
+import { useHasScrolledX } from "@/components/hooks/use-has-scrolled";
+import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
+import { BackgroundGraphic } from "@/components/layout/background/background-graphic";
+import { SidebarTrigger } from "@/components/layout/sidebar/sidebar-trigger";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@components/ui/dropdown-menu";
-import type { Session } from "@lib/auth/auth";
-import { authClient } from "@lib/auth/auth-client";
-import { ROUTES } from "@lib/routes";
-import { cn } from "@lib/util/cn";
-import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { toast } from "sonner";
+} from "@/components/ui/dropdown-menu";
+import type { Session } from "@/lib/auth/auth";
+import { authClient } from "@/lib/auth/auth-client";
+import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/util/cn";
 
 export function Header({ initialSession }: { initialSession: Session | null }) {
   const router = useRouter();

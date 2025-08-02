@@ -1,20 +1,21 @@
 import "./globals.css";
 
-import { BackgroundGraphic } from "@components/layout/background/background-graphic";
-import { Footer } from "@components/layout/footer";
-import { Header } from "@components/layout/header";
-import { Sidebar } from "@components/layout/sidebar";
-import { SidebarProvider } from "@components/layout/sidebar/sidebar-provider";
-import { Toaster } from "@components/ui/sonner";
-import { env } from "@env";
-import { auth } from "@lib/auth/auth";
-import { cn } from "@lib/util/cn";
-import { TRPCProvider } from "@server/trpc/query/client";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import React from "react";
+
+import { BackgroundGraphic } from "@/components/layout/background/background-graphic";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Sidebar } from "@/components/layout/sidebar";
+import { SidebarProvider } from "@/components/layout/sidebar/sidebar-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { env } from "@/env";
+import { auth } from "@/lib/auth/auth";
+import { cn } from "@/lib/util/cn";
+import { TRPCProvider } from "@/server/trpc/query/client";
 
 export const metadata: Metadata = {
   title: {

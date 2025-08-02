@@ -1,11 +1,12 @@
 "use client";
 
-import { ROUTES } from "@lib/routes";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useRef } from "react";
+
+import { ROUTES } from "@/lib/routes";
 
 interface ErrorGraphicProps {
   code?: number | string;

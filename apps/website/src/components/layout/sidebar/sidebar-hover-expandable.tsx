@@ -1,6 +1,7 @@
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
 import type { ComponentProps } from "react";
 import { forwardRef, useRef } from "react";
+
+import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
 
 export const SidebarHoverExpandable = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ children, ...props }, ref) => {

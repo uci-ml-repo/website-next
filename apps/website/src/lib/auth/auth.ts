@@ -1,5 +1,3 @@
-import { env } from "@env";
-import { sendEmail } from "@lib/mail";
 import { db } from "@packages/db";
 import { Enums, enumToArray } from "@packages/db/enum";
 import { resetPassword, verifyEmail } from "@packages/email";
@@ -8,6 +6,9 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { emailOTP } from "better-auth/plugins";
 import { v7 as uuid } from "uuid";
+
+import { env } from "@/env";
+import { sendEmail } from "@/lib/mail";
 
 export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_BASE_URL,

@@ -1,8 +1,9 @@
 "use client";
 
-import { Button } from "@components/ui/button";
 import type { ComponentProps, MouseEvent, ReactNode } from "react";
 import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 interface Props extends ComponentProps<typeof Button> {
   children?: ReactNode;

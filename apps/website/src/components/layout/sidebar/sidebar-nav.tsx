@@ -1,10 +1,11 @@
 "use client";
 
-import { cn } from "@lib/util/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps } from "react";
 import { forwardRef } from "react";
+
+import { cn } from "@/lib/util/cn";
 
 export const SidebarNav = forwardRef<HTMLUListElement, ComponentProps<"ul">>(
   ({ className, ...props }, ref) => (

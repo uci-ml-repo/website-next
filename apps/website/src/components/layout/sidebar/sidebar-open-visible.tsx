@@ -1,6 +1,7 @@
-import { useSidebar } from "@components/layout/sidebar/sidebar-provider";
-import { cn } from "@lib/util/cn";
 import type { HTMLAttributes } from "react";
+
+import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
+import { cn } from "@/lib/util/cn";
 
 export function SidebarOpenVisible({
   children,

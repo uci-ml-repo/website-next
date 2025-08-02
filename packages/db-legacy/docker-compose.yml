@@ -110,7 +110,7 @@ services:
           psql -h postgres-current -U postgres -d mlrepo -q -f "$$script"
         done
 
-        pg_dump -h postgres-current -U postgres -d mlrepo --data-only -n public -f /output/out.sql
+        pg_dump -h postgres-current -U postgres -d mlrepo --data-only -n public --inserts -f /output/out.sql
       '
     volumes:
       - ./migrate:/migrate
