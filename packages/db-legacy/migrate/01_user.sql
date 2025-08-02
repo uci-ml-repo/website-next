@@ -5,27 +5,17 @@ WITH
       GEN_RANDOM_UUID() AS new_id
     FROM
       legacy.users
-  ),
-  inserted AS (
-    INSERT INTO
-      public."user" (id, email, name, role)
-    SELECT
-      id_map.new_id,
-      lu."user",
-      lu.firstname || ' ' || lu.lastname,
-      lu.role::TEXT::public.user_role
-    FROM
-      legacy.users lu
-      JOIN id_map ON lu.id = id_map.old_id
-    RETURNING
-      id
   )
+INSERT INTO
+  public."user" (id, email, name, role)
 SELECT
-  id_map.old_id,
-  inserted.id AS new_id INTO TEMP TABLE user_id_map
+  id_map.new_id,
+  lu."user",
+  lu.firstname || ' ' || lu.lastname,
+  lu.role::TEXT::public.user_role
 FROM
-  inserted
-  JOIN id_map ON id_map.new_id = inserted.id;
+  legacy.users lu
+  JOIN id_map ON lu.id = id_map.old_id;
 
 UPDATE "user"
 SET

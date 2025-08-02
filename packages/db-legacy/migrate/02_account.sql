@@ -1,5 +1,5 @@
 INSERT INTO
-  account (
+  "account" (
     id,
     account_id,
     user_id,
@@ -10,14 +10,14 @@ INSERT INTO
   )
 SELECT
   GEN_RANDOM_UUID(),
-  u.id,
-  u.id,
+  "u".id,
+  "u".id,
   'credential',
-  lu.pass,
+  "lu".pass,
   NOW(),
   NOW()
 FROM
-  legacy.users lu
-  JOIN public."user" u ON lu.user = u.email
+  "legacy"."users" AS "lu"
+  INNER JOIN "public"."user" AS "u" ON "lu".user = "u".email
 WHERE
-  lu.pass IS NOT NULL;
+  "lu".pass IS NOT NULL

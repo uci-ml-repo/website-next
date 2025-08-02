@@ -1,5 +1,5 @@
 {
-  "id": "c1bf2f2d-f094-4b2d-841e-16720957e131",
+  "id": "5ebc3570-1777-4f43-af05-9871265480d7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -384,7 +384,98 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "dataset_view_view_count_index": {
+          "name": "dataset_view_view_count_index",
+          "columns": [
+            {
+              "expression": "view_count",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dataset_view_donated_at_index": {
+          "name": "dataset_view_donated_at_index",
+          "columns": [
+            {
+              "expression": "donated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dataset_view_instance_count_index": {
+          "name": "dataset_view_instance_count_index",
+          "columns": [
+            {
+              "expression": "instance_count",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dataset_view_feature_count_index": {
+          "name": "dataset_view_feature_count_index",
+          "columns": [
+            {
+              "expression": "feature_count",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dataset_view_status_index": {
+          "name": "dataset_view_status_index",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dataset_view_trgm_search_index": {
+          "name": "dataset_view_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"title\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "dataset_user_id_user_id_fk": {
           "name": "dataset_user_id_user_id_fk",
@@ -405,7 +496,24 @@
         }
       },
       "policies": {},
-      "checkConstraints": {},
+      "checkConstraints": {
+        "external_check": {
+          "name": "external_check",
+          "value": "\n        (\n          \"dataset\".\"external_link\" IS NULL\n          AND \"dataset\".\"download_count\" IS NOT NULL\n        )\n        OR (\n          \"dataset\".\"external_link\" IS NOT NULL\n          AND \"dataset\".\"external_link\" ~* '^https?://'\n          AND \"dataset\".\"download_count\" IS NULL\n        )\n      "
+        },
+        "approved_check": {
+          "name": "approved_check",
+          "value": "\n        (\n          \"dataset\".\"status\" = 'draft'\n          OR (\n            \"dataset\".\"year_created\" IS NOT NULL\n            AND \"dataset\".\"instance_count\" IS NOT NULL\n            AND \"dataset\".\"description\" IS NOT NULL\n            AND \"dataset\".\"subject_area\" IS NOT NULL\n          )\n        )\n        AND (\n          \"dataset\".\"status\" != 'approved'\n          OR \"dataset\".\"doi\" IS NOT NULL\n        )\n      "
+        },
+        "files_check": {
+          "name": "files_check",
+          "value": "\n        \"dataset\".\"status\" = 'draft'\n        OR (\n          (\n            \"dataset\".\"external_link\" IS NULL\n            AND \"dataset\".\"size\" IS NOT NULL\n            AND \"dataset\".\"file_count\" IS NOT NULL\n          )\n          OR (\n            \"dataset\".\"external_link\" IS NOT NULL\n            AND \"dataset\".\"size\" IS NULL\n            AND \"dataset\".\"file_count\" IS NULL\n          )\n        )\n      "
+        },
+        "files_exist_parity": {
+          "name": "files_exist_parity",
+          "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
+        }
+      },
       "isRLSEnabled": false
     },
     "public.user": {

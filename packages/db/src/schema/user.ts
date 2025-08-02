@@ -12,5 +12,8 @@ export const user = pgTable("user", {
   image: text("image"),
   role: userRole("role").default(Enums.UserRole.BASIC).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });

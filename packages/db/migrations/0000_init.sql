@@ -108,7 +108,58 @@ CREATE TABLE "dataset" (
   "file_count" INTEGER,
   "user_id" UUID DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
-  CONSTRAINT "dataset_slug_unique" UNIQUE ("slug")
+  CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
+  CONSTRAINT "external_check" CHECK (
+    (
+      "dataset"."external_link" IS NULL
+      AND "dataset"."download_count" IS NOT NULL
+    )
+    OR (
+      "dataset"."external_link" IS NOT NULL
+      AND "dataset"."external_link" ~* '^https?://'
+      AND "dataset"."download_count" IS NULL
+    )
+  ),
+  CONSTRAINT "approved_check" CHECK (
+    (
+      "dataset"."status" = 'draft'
+      OR (
+        "dataset"."year_created" IS NOT NULL
+        AND "dataset"."instance_count" IS NOT NULL
+        AND "dataset"."description" IS NOT NULL
+        AND "dataset"."subject_area" IS NOT NULL
+      )
+    )
+    AND (
+      "dataset"."status" != 'approved'
+      OR "dataset"."doi" IS NOT NULL
+    )
+  ),
+  CONSTRAINT "files_check" CHECK (
+    "dataset"."status" = 'draft'
+    OR (
+      (
+        "dataset"."external_link" IS NULL
+        AND "dataset"."size" IS NOT NULL
+        AND "dataset"."file_count" IS NOT NULL
+      )
+      OR (
+        "dataset"."external_link" IS NOT NULL
+        AND "dataset"."size" IS NULL
+        AND "dataset"."file_count" IS NULL
+      )
+    )
+  ),
+  CONSTRAINT "files_exist_parity" CHECK (
+    (
+      "dataset"."file_count" IS NULL
+      AND "dataset"."size" IS NULL
+    )
+    OR (
+      "dataset"."file_count" IS NOT NULL
+      AND "dataset"."size" IS NOT NULL
+    )
+  )
 );
 
 --> statement-breakpoint
@@ -135,3 +186,21 @@ ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "
 --> statement-breakpoint
 ALTER TABLE "dataset"
 ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE NO ACTION;
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_view_count_index" ON "dataset" USING btree ("view_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_donated_at_index" ON "dataset" USING btree ("donated_at");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_instance_count_index" ON "dataset" USING btree ("instance_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_feature_count_index" ON "dataset" USING btree ("feature_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_status_index" ON "dataset" USING btree ("status");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_view_trgm_search_index" ON "dataset" USING gin ("title" gin_trgm_ops);

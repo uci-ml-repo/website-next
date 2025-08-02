@@ -72,7 +72,12 @@ services:
           pg_dump -h postgres-legacy -U postgres -d mlrepo -F c -b -n legacy -f /tmp/legacy.sql;
         fi
 
-        psql -h postgres-current -U postgres -c "DROP DATABASE IF EXISTS mlrepo;";
+        psql -h postgres-current -U postgres -d postgres -c "
+          SELECT pg_terminate_backend(pid)
+          FROM pg_stat_activity
+          WHERE datname = '\''mlrepo'\'' AND pid <> pg_backend_pid();
+        "        
+        psql -h postgres-current -U postgres -c "DROP DATABASE mlrepo;";
         psql -h postgres-current -U postgres -c "CREATE DATABASE mlrepo;";
 
         pg_restore -h postgres-current -U postgres -d mlrepo -v /tmp/legacy.sql;
@@ -105,7 +110,7 @@ services:
           psql -h postgres-current -U postgres -d mlrepo -q -f "$$script"
         done
 
-        pg_dump -h postgres-current -U postgres -d mlrepo --data-only -Fc --file=/output/out.dump
+        pg_dump -h postgres-current -U postgres -d mlrepo --data-only -n public -f /output/out.sql
       '
     volumes:
       - ./migrate:/migrate

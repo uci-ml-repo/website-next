@@ -9,7 +9,7 @@
     "./env": "./env.ts"
   },
   "scripts": {
-    "db:generate": "drizzle-kit generate",
+    "db:generate": "drizzle-kit generate --name",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
