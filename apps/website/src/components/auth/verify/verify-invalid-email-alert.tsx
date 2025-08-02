@@ -8,7 +8,7 @@ export function VerifyInvalidEmailAlert() {
     <div className="space-y-4">
       <Alert variant="destructive" className="animate-in fade-in">
         <AlertCircleIcon />
-        <AlertTitle>Invalid email supplied</AlertTitle>
+        <AlertTitle>Invalid email</AlertTitle>
       </Alert>
       <div className="text-center">
         <Link href={ROUTES.AUTH.SIGN_IN} className="text-link underline">

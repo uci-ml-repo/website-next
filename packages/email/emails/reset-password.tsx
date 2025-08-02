@@ -17,7 +17,7 @@ export default function ResetPassword({ name, url }: Props) {
       <Text>
         <Link href={url}>{url}</Link>
       </Text>
-      <Text>If you did not request to reset your password, you may ignore this message.</Text>
+      <Text>If you did not request to reset your password, you can ignore this message.</Text>
     </EmailLayout>
   );
 }

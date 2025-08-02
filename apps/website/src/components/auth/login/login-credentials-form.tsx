@@ -23,8 +23,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: "Email is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
+  email: z.string().min(1, { error: "Email is required" }),
+  password: z.string().min(1, { error: "Password is required" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -32,6 +32,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export function LoginCredentialsForm() {
   const router = useRouter();
 
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const form = useForm<FormSchema>({
@@ -42,8 +43,9 @@ export function LoginCredentialsForm() {
     },
   });
 
-  async function credentialsLogin({ email, password }: FormSchema) {
+  async function onSubmit({ email, password }: FormSchema) {
     setError(undefined);
+    setIsPending(true);
 
     const { data, error } = await authClient.signIn.email({
       email,
@@ -57,12 +59,13 @@ export function LoginCredentialsForm() {
       router.push(ROUTES.HOME);
     } else {
       setError(error?.message);
+      setIsPending(false);
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(credentialsLogin)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {error && (
           <Alert variant="destructive" className="animate-in fade-in">
             <AlertCircleIcon />
@@ -111,7 +114,7 @@ export function LoginCredentialsForm() {
           </div>
         </div>
 
-        <AuthButton icon={<MailIcon />} type="submit" pending={form.formState.isSubmitting}>
+        <AuthButton icon={<MailIcon />} type="submit" pending={isPending}>
           Sign in with Email
         </AuthButton>
       </form>

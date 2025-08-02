@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@components/ui/button";
-import { Loader2Icon } from "lucide-react";
 import type { ComponentProps, MouseEvent, ReactNode } from "react";
 import { useState } from "react";
 
@@ -28,9 +27,10 @@ export function AuthButton({ onClick, disabled, icon, children, pending, ...prop
       size="lg"
       onClick={handleAuth}
       disabled={isPending || disabled}
+      spinner={isPending}
       {...props}
     >
-      {isPending ? <Loader2Icon className="animate-spin" /> : icon}
+      {!isPending && icon}
       {children}
     </Button>
   );

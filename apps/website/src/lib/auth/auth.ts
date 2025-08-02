@@ -6,6 +6,7 @@ import { resetPassword, verifyEmail } from "@packages/email";
 import bcrypt from "bcrypt";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { emailOTP } from "better-auth/plugins";
 import { v7 as uuid } from "uuid";
 
 export const auth = betterAuth({
@@ -47,10 +48,7 @@ export const auth = betterAuth({
     },
   },
   account: {
-    accountLinking: {
-      enabled: true,
-      trustedProviders: ["github", "google"],
-    },
+    accountLinking: { enabled: true },
   },
   user: {
     additionalFields: {
@@ -64,18 +62,21 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true,
     sendOnSignIn: true,
-    autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, url }) => {
-      const { email, name } = user;
-
-      await sendEmail({
-        to: email,
-        subject: "Verify email - UCI Machine Learning Repository",
-        html: await verifyEmail({ name, url }),
-        text: await verifyEmail({ name, url }, { plainText: true }),
-      });
-    },
   },
+  plugins: [
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      storeOTP: "hashed",
+      async sendVerificationOTP({ email, otp }) {
+        await sendEmail({
+          to: email,
+          subject: "Verify email - UCI Machine Learning Repository",
+          html: await verifyEmail({ otp }),
+          text: await verifyEmail({ otp }, { plainText: true }),
+        });
+      },
+    }),
+  ],
 });
 
 export type Session = typeof auth.$Infer.Session;

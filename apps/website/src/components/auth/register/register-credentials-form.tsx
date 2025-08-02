@@ -26,17 +26,17 @@ const formSchema = z
   .object({
     name: z
       .string()
-      .min(1, { message: "Name is required" })
-      .max(255, { message: "Name cannot exceed 255 characters" }),
+      .min(1, { error: "Name is required" })
+      .max(255, { error: "Name cannot exceed 255 characters" }),
     email: z.email(),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .max(128, { message: "Password cannot exceed 128 characters" }),
-    confirmPassword: z.string().min(1, { message: "Confirm password is required" }),
+      .min(8, { error: "Password must be at least 8 characters" })
+      .max(128, { error: "Password cannot exceed 128 characters" }),
+    confirmPassword: z.string().min(1, { error: "Confirm password is required" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    error: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
@@ -58,7 +58,7 @@ export function RegisterCredentialsForm() {
     },
   });
 
-  async function credentialsRegister({ name, email, password }: FormSchema) {
+  async function onSubmit({ name, email, password }: FormSchema) {
     setError(undefined);
 
     const { data, error } = await authClient.signUp.email({
@@ -77,7 +77,7 @@ export function RegisterCredentialsForm() {
   return formOpen ? (
     <div className="space-y-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(credentialsRegister)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {error && (
             <Alert variant="destructive" className="animate-in fade-in">
               <AlertCircleIcon />

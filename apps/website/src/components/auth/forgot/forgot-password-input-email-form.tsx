@@ -14,7 +14,6 @@ import { Separator } from "@components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@lib/auth/auth-client";
 import { ROUTES } from "@lib/routes";
-import { Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -30,7 +29,7 @@ export function ForgotPasswordInputEmailForm() {
     defaultValues: { email: "" },
   });
 
-  async function submit({ email }: FormSchema) {
+  async function onSubmit({ email }: FormSchema) {
     await authClient.requestPasswordReset({
       email,
       redirectTo: ROUTES.AUTH.FORGOT_PASSWORD,
@@ -56,7 +55,7 @@ export function ForgotPasswordInputEmailForm() {
       <h1 className="text-xl font-bold">Reset password</h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(submit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             name="email"
             render={({ field }) => (
@@ -71,8 +70,12 @@ export function ForgotPasswordInputEmailForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={form.formState.isSubmitting}
+            spinner={form.formState.isSubmitting}
+          >
             Submit
           </Button>
         </form>

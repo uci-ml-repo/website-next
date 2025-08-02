@@ -1,21 +1,21 @@
 import type { Options } from "@react-email/components";
-import { Link, render, Text } from "@react-email/components";
+import { render, Text } from "@react-email/components";
 
 import { EmailLayout } from "../layout";
 
 interface Props {
-  name: string;
-  url: string;
+  otp: string;
 }
 
-export default function VerifyEmail({ name, url }: Props) {
+export default function VerifyEmail({ otp }: Props) {
   return (
-    <EmailLayout name={name}>
-      <Text>Please click the following link to verify your email address:</Text>
-      <Text>
-        <Link href={url}>{url}</Link>
-      </Text>
-      <Text>If you did not request to verify your email, you may ignore this message.</Text>
+    <EmailLayout>
+      <Text>Your One Time Passcode for email verification is:</Text>
+      <div className="w-fit bg-white">
+        <Text className="px-4 py-2 text-2xl font-bold">{otp}</Text>
+      </div>
+      <Text>This passcode will expire in 5 minutes.</Text>
+      <Text>If you did not request to verify your email, you can ignore this message.</Text>
     </EmailLayout>
   );
 }

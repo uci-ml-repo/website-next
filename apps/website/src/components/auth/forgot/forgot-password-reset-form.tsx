@@ -14,7 +14,7 @@ import { Input } from "@components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@lib/auth/auth-client";
 import { ROUTES } from "@lib/routes";
-import { AlertCircleIcon, Loader2Icon } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,12 +25,12 @@ const formSchema = z
   .object({
     newPassword: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .max(128, { message: "Password cannot exceed 128 characters" }),
-    confirmPassword: z.string().min(1, { message: "Confirm password is required" }),
+      .min(8, { error: "Password must be at least 8 characters" })
+      .max(128, { error: "Password cannot exceed 128 characters" }),
+    confirmPassword: z.string().min(1, { error: "Confirm password is required" }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
+    error: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
@@ -50,7 +50,7 @@ export function ForgotPasswordResetForm({ token }: { token: string }) {
     },
   });
 
-  async function resetPassword({ newPassword }: FormSchema) {
+  async function onSubmit({ newPassword }: FormSchema) {
     setError(undefined);
     setSubmitting(true);
 
@@ -70,7 +70,7 @@ export function ForgotPasswordResetForm({ token }: { token: string }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(resetPassword)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <h1 className="text-xl font-bold">Reset password</h1>
 
         {error && (
@@ -110,8 +110,7 @@ export function ForgotPasswordResetForm({ token }: { token: string }) {
           />
         </div>
 
-        <Button type="submit" className="w-full" disabled={submitting}>
-          {submitting && <Loader2Icon className="animate-spin" />}
+        <Button type="submit" className="w-full" disabled={submitting} spinner={submitting}>
           Submit
         </Button>
       </form>

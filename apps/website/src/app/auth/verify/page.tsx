@@ -1,4 +1,4 @@
-import { VerifyContent } from "@components/auth/verify/verify-content";
+import { VerifyForm } from "@components/auth/verify/verify-form";
 import { VerifyInvalidEmailAlert } from "@components/auth/verify/verify-invalid-email-alert";
 import { MLRepoLogo } from "@components/logo/ml-repo";
 import { Card, CardContent, CardHeader } from "@components/ui/card";
@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
           <MLRepoLogo variant="logo" className="text-wrap" />
         </CardHeader>
         <CardContent>
-          {!user.emailVerified ? <VerifyContent email={email} /> : <VerifyInvalidEmailAlert />}
+          {user && !user.emailVerified ? <VerifyForm email={email} /> : <VerifyInvalidEmailAlert />}
         </CardContent>
       </Card>
     </div>
