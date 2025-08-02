@@ -34,6 +34,7 @@ const config = [
           varsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-deprecated": "error",
     },
   },
 

@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./eslint.config.js",
-    "./next": "./next.js"
+    "./next": "./eslint.config.next.js",
+    "./react": "./eslint.config.react.js"
   },
   "scripts": {
     "format": "prettier --write .",

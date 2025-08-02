@@ -3,7 +3,9 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
+  - '@tailwindcss/oxide'
+  - aws-sdk
+  - bcrypt
   - esbuild
   - sharp
   - unrs-resolver

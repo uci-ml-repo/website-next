@@ -6,8 +6,5 @@
   "scripts": {
     "format": "prettier --write ."
   },
-  "prettier": "@packages/prettier-config",
-  "devDependencies": {
-    "@packages/prettier-config": "workspace:*"
-  }
+  "prettier": "@packages/prettier-config"
 }
