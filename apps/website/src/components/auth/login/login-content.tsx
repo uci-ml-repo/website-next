@@ -1,8 +1,8 @@
+import type { AuthTab } from "@app/auth/login/page";
 import { GithubAuth } from "@components/auth/button/github-auth";
 import { GoogleAuth } from "@components/auth/button/google-auth";
-import { CredentialsLoginForm } from "@components/auth/login/credentials-login-form";
+import { LoginCredentialsForm } from "@components/auth/login/login-credentials-form";
 import { TextSeparator } from "@components/ui/text-separator";
-import type { AuthTab } from "@website/app/auth/login/page";
 import type { Dispatch, SetStateAction } from "react";
 
 interface Props {
@@ -13,7 +13,7 @@ export function LoginContent({ setTab }: Props) {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <CredentialsLoginForm />
+        <LoginCredentialsForm />
         <TextSeparator text="OR" />
         <GoogleAuth>Sign in with Google</GoogleAuth>
         <GithubAuth>Sign in with Github</GithubAuth>

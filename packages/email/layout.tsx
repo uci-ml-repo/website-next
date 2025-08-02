@@ -15,7 +15,7 @@ export function EmailLayout({ name, children }: { name?: string; children: React
           </header>
           <main>
             <div className="bg-gray-100 p-4 pb-8">
-              {name && <Text className="mb-6">Hello {name},</Text>}
+              {name && <Text className="mb-6">{name},</Text>}
               {children}
             </div>
           </main>

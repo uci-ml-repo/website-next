@@ -15,7 +15,7 @@ export default function VerifyEmail({ name, url }: Props) {
       <Text>
         <Link href={url}>{url}</Link>
       </Text>
-      <Text>If you did not request to verify your email, please ignore this message.</Text>
+      <Text>If you did not request to verify your email, you may ignore this message.</Text>
     </EmailLayout>
   );
 }

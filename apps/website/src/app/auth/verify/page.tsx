@@ -1,14 +1,12 @@
-import { VerifyContent } from "@components/auth/verify/verify";
+import { VerifyContent } from "@components/auth/verify/verify-content";
+import { VerifyInvalidEmailAlert } from "@components/auth/verify/verify-invalid-email-alert";
 import { MLRepoLogo } from "@components/logo/ml-repo";
-import { Alert, AlertTitle } from "@components/ui/alert";
 import { Card, CardContent, CardHeader } from "@components/ui/card";
 import { auth } from "@lib/auth/auth";
 import { ROUTES } from "@lib/routes";
 import { trpc } from "@server/trpc/query/server";
-import { AlertCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -24,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
     redirect(ROUTES.HOME);
   }
 
-  const email = (await searchParams).email;
+  const { email } = await searchParams;
 
   const user = await trpc.user.find.byEmail({ email });
 
@@ -35,21 +33,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
           <MLRepoLogo variant="logo" className="text-wrap" />
         </CardHeader>
         <CardContent>
-          {!user.emailVerified ? (
-            <VerifyContent email={email} />
-          ) : (
-            <div className="space-y-4">
-              <Alert variant="destructive" className="animate-in fade-in">
-                <AlertCircleIcon />
-                <AlertTitle>Invalid email supplied</AlertTitle>
-              </Alert>
-              <div className="text-center">
-                <Link href={ROUTES.AUTH.SIGN_IN} className="text-link underline">
-                  Return to sign in page
-                </Link>
-              </div>
-            </div>
-          )}
+          {!user.emailVerified ? <VerifyContent email={email} /> : <VerifyInvalidEmailAlert />}
         </CardContent>
       </Card>
     </div>

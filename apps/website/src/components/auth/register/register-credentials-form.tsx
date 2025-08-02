@@ -22,13 +22,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const formSchema = z
+const formSchema = z
   .object({
     name: z
       .string()
       .min(1, { message: "Name is required" })
       .max(255, { message: "Name cannot exceed 255 characters" }),
-    email: z.email().max(255, { message: "Email cannot exceed 255 characters" }),
+    email: z.email(),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters" })
@@ -42,7 +42,7 @@ export const formSchema = z
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CredentialsRegisterForm() {
+export function RegisterCredentialsForm() {
   const router = useRouter();
 
   const [formOpen, setFormOpen] = useState(false);

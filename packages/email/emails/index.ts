@@ -1,2 +1,2 @@
 export { resetPassword } from "./reset-password";
-export { verifyEmail } from "./verify";
+export { verifyEmail } from "./verify-email";

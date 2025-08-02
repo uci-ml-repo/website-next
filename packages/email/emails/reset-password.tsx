@@ -11,11 +11,13 @@ interface Props {
 export default function ResetPassword({ name, url }: Props) {
   return (
     <EmailLayout name={name}>
-      <Text>Please click the following link to reset your password:</Text>
+      <Text>
+        Please click the following link to reset your password. This link will expire in 1 hour:
+      </Text>
       <Text>
         <Link href={url}>{url}</Link>
       </Text>
-      <Text>If you did not request to reset your password, please ignore this message.</Text>
+      <Text>If you did not request to reset your password, you may ignore this message.</Text>
     </EmailLayout>
   );
 }

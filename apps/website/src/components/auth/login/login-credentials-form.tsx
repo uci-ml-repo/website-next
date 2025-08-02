@@ -22,14 +22,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const formSchema = z.object({
+const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CredentialsLoginForm() {
+export function LoginCredentialsForm() {
   const router = useRouter();
 
   const [error, setError] = useState<string | undefined>(undefined);
