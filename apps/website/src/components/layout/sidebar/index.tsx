@@ -1,5 +1,6 @@
 "use client";
 
+import { useClickOutside } from "@mantine/hooks";
 import React from "react";
 
 import { SidebarContent } from "@/components/layout/sidebar/sidebar-content";
@@ -10,13 +11,21 @@ import { cn } from "@/lib/util/cn";
 import { SidebarMobileSheet } from "./sidebar-mobile-sheet";
 
 export function Sidebar({ session }: { session: Session | null }) {
-  const { view, desktopState } = useSidebar();
+  const { view, desktopState, setDesktopState } = useSidebar();
+
+  const ref = useClickOutside(() => {
+    if (desktopState === "expanded" && view === "desktop") {
+      setDesktopState("collapsed");
+    }
+  });
+
   return view === "mobile" ? (
     <SidebarMobileSheet>
       <SidebarContent initialSession={session} />
     </SidebarMobileSheet>
   ) : (
     <SidebarContent
+      ref={ref}
       initialSession={session}
       className={cn(
         "max-md:hidden",

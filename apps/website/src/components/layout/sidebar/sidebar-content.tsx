@@ -6,7 +6,7 @@ import {
   PlusIcon,
   UserIcon,
 } from "lucide-react";
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, RefObject } from "react";
 import React from "react";
 
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
@@ -25,6 +25,7 @@ import { isPriviliged } from "@/server/trpc/middleware/util/role";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   initialSession: Session | null;
+  ref?: RefObject<HTMLDivElement>;
 }
 
 export function SidebarContent({ className, initialSession, ...props }: Props) {
@@ -53,10 +54,7 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
           </SidebarNavLink>
 
           {/* Datasets */}
-          <SidebarNavLink
-            href={ROUTES.DATASET.SEARCH}
-            activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}
-          >
+          <SidebarNavLink href={ROUTES.SEARCH} activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}>
             <DatabaseIcon />
             <div>Datasets</div>
           </SidebarNavLink>

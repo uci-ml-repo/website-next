@@ -24,7 +24,7 @@ const CardTitle = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("text-2xl leading-none font-semibold tracking-tight", className)}
+      className={cn("text-xl leading-none font-semibold tracking-tight", className)}
       {...props}
     />
   ),
@@ -47,7 +47,11 @@ CardContent.displayName = "CardContent";
 
 const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex items-center px-4 pt-0 pb-6 text-sm", className)}
+      {...props}
+    />
   ),
 );
 CardFooter.displayName = "CardFooter";

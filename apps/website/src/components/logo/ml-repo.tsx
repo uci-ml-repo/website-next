@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { HTMLAttributes } from "react";
 import React from "react";
 
-import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
 
 const logoVariants = cva("w-fit", {
@@ -27,7 +26,7 @@ const logoVariants = cva("w-fit", {
 });
 
 interface LogoProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof logoVariants> {
-  href?: string | boolean;
+  href?: string;
   abbreviate?: boolean;
 }
 
@@ -52,5 +51,5 @@ export function MLRepoLogo({
     </div>
   );
 
-  return href ? <Link href={href === true ? ROUTES.HOME : href}>{content}</Link> : content;
+  return href ? <Link href={href}>{content}</Link> : content;
 }

@@ -32,7 +32,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --container-8xl: 96rem;
+  --container-9xl: 140rem;
+  --container-4xs: 14rem;
 
   --shadow-sidebar: 0px 0px 16px 8px rgba(0, 0, 0, 0.1);
   --sidebar-width: 16rem;
@@ -53,7 +56,7 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.521 0 89.876);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -84,7 +87,7 @@
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --muted-foreground: oklch(0.764 0 89.876);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
@@ -112,7 +115,7 @@
 }
 
 .content {
-  @apply mx-auto w-full max-w-[105rem] px-6 sm:px-10 2xl:px-16;
+  @apply mx-auto w-full max-w-[184rem] px-6 sm:px-10 2xl:px-20;
 }
 
 .blur-background {

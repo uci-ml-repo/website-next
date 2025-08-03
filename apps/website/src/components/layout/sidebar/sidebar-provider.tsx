@@ -41,7 +41,7 @@ export function useSidebar() {
 export const SidebarProvider = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ className, children, ...props }, ref) => {
     const isMobile = useIsBreakpoint("md");
-    const isSmallDesktop = useIsBreakpoint("lg");
+    const isSmallDesktop = useIsBreakpoint("xl");
 
     const view = isMobile ? "mobile" : isSmallDesktop ? "desktop" : "desktop-xl";
 

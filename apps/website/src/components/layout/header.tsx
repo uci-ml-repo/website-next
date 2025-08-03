@@ -43,7 +43,7 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
   return (
     <header
       className={cn(
-        "z-50 h-(--header-height) overflow-y-hidden transition-shadow",
+        "z-40 h-(--header-height) overflow-y-hidden transition-shadow",
         "max-md:bg-background max-md:fixed max-md:top-0 max-md:right-0 max-md:left-0",
         { "border-b max-md:shadow-sm": hasScrolled },
       )}

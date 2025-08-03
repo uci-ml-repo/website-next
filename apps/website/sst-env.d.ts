@@ -13,6 +13,10 @@ declare module "sst" {
       "type": "sst.aws.Postgres"
       "username": string
     }
+    "DatasetBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
     "Email": {
       "configSet": string
       "sender": string

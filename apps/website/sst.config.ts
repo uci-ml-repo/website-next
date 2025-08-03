@@ -31,6 +31,14 @@ export default $config({
       },
     });
 
-    new sst.aws.Nextjs("Website", { link: [rds, email], vpc });
+    const bucket = sst.aws.Bucket.get("DatasetBucket", "uci-ml-repo-datasets");
+
+    new sst.aws.Nextjs("Website", {
+      link: [rds, email, bucket],
+      vpc,
+      environment: {
+        NEXT_PUBLIC_BUCKET_URL: bucket.domain,
+      },
+    });
   },
 });

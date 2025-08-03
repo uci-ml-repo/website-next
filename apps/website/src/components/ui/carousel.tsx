@@ -143,7 +143,7 @@ function CarouselContent({
     <div
       ref={carouselRef}
       className={cn("overflow-hidden", {
-        "-m-4 -mb-6 mask-x-from-99% mask-x-to-100% p-4 pb-6": gutter,
+        "-m-4 -mb-6 mask-x-from-[calc(100%-1rem)] mask-x-to-100% p-4 pb-6": gutter,
       })}
       data-slot="carousel-content "
     >
@@ -248,9 +248,6 @@ const CarouselScrollDots = ({
 
   useEffect(() => {
     if (!api) return;
-
-    setSlideNodes(api.slideNodes());
-    setSlidesInView(api.slidesInView());
 
     api.on("init", () => {
       setSlideNodes(api.slideNodes());
