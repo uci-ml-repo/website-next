@@ -32,12 +32,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --container-8xl: 96rem;
 
   --shadow-sidebar: 0px 0px 16px 8px rgba(0, 0, 0, 0.1);
   --sidebar-width: 16rem;
   --sidebar-width-collapsed: 4rem;
 
   --header-height: 4rem;
+  --dataset-card-height: 22rem;
 }
 
 :root {
@@ -118,10 +120,10 @@
 }
 
 .blur-background::before {
-  @apply bg-background absolute -z-10 size-full blur-xl content-[''];
+  @apply bg-background absolute -z-10 size-full blur-lg content-[''];
 }
 
 .lift {
-  @apply cursor-pointer transition-transform duration-[250ms] will-change-transform hover:scale-[1.03] hover:shadow-md focus-visible:scale-[1.03] focus-visible:shadow-md;
+  @apply cursor-pointer transition-transform duration-[250ms] will-change-transform hover:scale-[1.02] hover:shadow-md focus-visible:scale-[1.02] focus-visible:shadow-md;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

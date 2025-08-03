@@ -1,10 +1,13 @@
-import { db } from "@packages/db";
-import { dataset } from "@packages/db/schema";
-import { eq } from "drizzle-orm";
+import { z } from "zod";
 
-async function byId(id: number) {
-  const [result] = await db.select().from(dataset).where(eq(dataset.id, id));
-  return result;
-}
+import { service } from "@/server/service";
+import { procedure, router } from "@/server/trpc";
+import { datasetQuery } from "@/server/types/dataset/request";
 
-export const userFindService = { byId };
+export const datasetFindRouter = router({
+  byId: procedure
+    .input(z.object({ id: z.number() }))
+    .query(({ input }) => service.dataset.find.byId(input.id)),
+
+  byQuery: procedure.input(datasetQuery).query(({ input }) => service.dataset.find.byQuery(input)),
+});

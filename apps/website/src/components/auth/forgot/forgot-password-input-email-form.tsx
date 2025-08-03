@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2Icon } from "lucide-react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -71,12 +73,8 @@ export function ForgotPasswordInputEmailForm() {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={form.formState.isSubmitting}
-            spinner={form.formState.isSubmitting}
-          >
+          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
             Submit
           </Button>
         </form>

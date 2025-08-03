@@ -15,7 +15,7 @@ export default function Layout({
       <div>{children}</div>
       <div className="space-y-8">
         <hr />
-        <Button variant="secondary" size="lg" className="lift w-full sm:w-fit" asChild>
+        <Button variant="secondary" size="lg" className="w-full sm:w-fit" asChild>
           <Link href={ROUTES.HOME}>
             <ArrowLeftIcon />
             Return Home

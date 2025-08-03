@@ -55,7 +55,6 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: enumToArray(Enums.UserRole),
-        defaultValue: Enums.UserRole.BASIC,
         input: false,
       },
     },

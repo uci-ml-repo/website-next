@@ -1,4 +1,11 @@
-import { DatabaseIcon, HomeIcon, LogInIcon, PlusIcon, UserIcon } from "lucide-react";
+import {
+  DatabaseIcon,
+  HomeIcon,
+  LayoutDashboardIcon,
+  LogInIcon,
+  PlusIcon,
+  UserIcon,
+} from "lucide-react";
 import type { HTMLAttributes } from "react";
 import React from "react";
 
@@ -14,6 +21,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import type { Session } from "@/lib/auth/auth";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
+import { isPriviliged } from "@/server/trpc/middleware/util/role";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   initialSession: Session | null;
@@ -65,14 +73,28 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
           <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
 
           {session ? (
-            // Profile
-            <SidebarNavLink
-              href={ROUTES.PROFILE.ROOT}
-              activePath={RegExp(`^${ROUTES.PROFILE.ROOT}`)}
-            >
-              <UserIcon />
-              <div>Profile</div>
-            </SidebarNavLink>
+            <>
+              {/* Profile */}
+              <SidebarNavLink
+                href={ROUTES.PROFILE.ROOT}
+                activePath={RegExp(`^${ROUTES.PROFILE.ROOT}`)}
+              >
+                <UserIcon />
+                <div>Profile</div>
+              </SidebarNavLink>
+
+              {/* Admin */}
+              {isPriviliged(session.user.role) && (
+                <SidebarNavLink
+                  href={ROUTES.ADMIN.ROOT}
+                  activePath={RegExp(`^${ROUTES.ADMIN.ROOT}`)}
+                  className="text-destructive"
+                >
+                  <LayoutDashboardIcon />
+                  <div>Admin</div>
+                </SidebarNavLink>
+              )}
+            </>
           ) : (
             // Sign In
             <SidebarNavLink
@@ -85,14 +107,6 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
               <div>Sign In</div>
             </SidebarNavLink>
           )}
-
-          {/* Admin */}
-          {/*<SidebarMenuItem>*/}
-          {/*  <SidebarMenuLink href={ROUTES.HOME} activePath={RegExp("")}>*/}
-          {/*    <HomeIcon />*/}
-          {/*    <div>Home</div>*/}
-          {/*  </SidebarMenuLink>*/}
-          {/*</SidebarMenuItem>*/}
         </SidebarNav>
 
         <SidebarOpenVisible className="flex items-center justify-between p-4">

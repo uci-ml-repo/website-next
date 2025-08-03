@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -103,12 +104,8 @@ export function VerifyForm({ email }: { email: string }) {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            spinner={form.formState.isSubmitting}
-            className="w-68"
-          >
+          <Button type="submit" disabled={form.formState.isSubmitting} className="w-68">
+            {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
             Verify
           </Button>
         </form>

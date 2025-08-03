@@ -130,11 +130,23 @@ function Carousel({
   );
 }
 
-function CarouselContent({ className, ...props }: ComponentProps<"div">) {
+function CarouselContent({
+  className,
+  gutter,
+  ...props
+}: ComponentProps<"div"> & {
+  gutter?: boolean;
+}) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className="overflow-hidden" data-slot="carousel-content">
+    <div
+      ref={carouselRef}
+      className={cn("overflow-hidden", {
+        "-m-4 -mb-6 mask-x-from-99% mask-x-to-100% p-4 pb-6": gutter,
+      })}
+      data-slot="carousel-content "
+    >
       <div
         className={cn("flex", orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className)}
         {...props}
