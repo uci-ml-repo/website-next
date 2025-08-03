@@ -4,7 +4,7 @@ import { SearchIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 
-export function QuickSearch() {
+export function DatasetQuickSearch() {
   return (
     <div className="bg-background relative rounded-full">
       <Input

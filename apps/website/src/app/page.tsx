@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { NewDatasetsCarousel } from "@/components/dataset/dataset-carousel/new-datasets-carousel";
 import { PopularDatasetsCarousel } from "@/components/dataset/dataset-carousel/popular-datasets-carousel";
-import { QuickSearch } from "@/components/dataset/search/quick-search";
+import { DatasetQuickSearch } from "@/components/dataset/search/dataset-quick-search";
 import { MLRepoLogo } from "@/components/logo/ml-repo";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
@@ -15,7 +15,7 @@ export default function Page() {
 
       <div className="blur-background space-y-16">
         <div className="space-y-10">
-          <QuickSearch />
+          <DatasetQuickSearch />
           <PopularDatasetsCarousel />
           <NewDatasetsCarousel />
         </div>

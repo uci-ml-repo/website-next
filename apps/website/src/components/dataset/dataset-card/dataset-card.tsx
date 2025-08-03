@@ -88,7 +88,7 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
         </CardContent>
         <CardFooter className="@container h-9 justify-between border-t py-2.5">
           <div className="flex items-center space-x-1">
-            <EyeIcon />
+            <EyeIcon className="size-4" />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
           {dataset.externalLink ? (
