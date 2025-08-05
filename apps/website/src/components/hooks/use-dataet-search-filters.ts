@@ -1,4 +1,5 @@
-import { parseAsBoolean, useQueryState } from "nuqs";
+import { Enums } from "@packages/db/enum";
+import { parseAsArrayOf, parseAsBoolean, parseAsStringEnum, useQueryState } from "nuqs";
 
 export enum DatasetSearchFilter {
   Python = "python",
@@ -6,13 +7,32 @@ export enum DatasetSearchFilter {
 }
 
 export function useDatasetSearchFilters() {
-  const [filterPython, setFilterPython] = useQueryState(DatasetSearchFilter.Python, parseAsBoolean);
-  const [filterSubjectArea, setFilterSubjectArea] = useQueryState(DatasetSearchFilter.SubjectArea);
+  const [filterTitle, setFilterTitle] = useQueryState("title");
 
-  return {
-    filterPython,
-    setFilterPython,
-    filterSubjectArea,
-    setFilterSubjectArea,
+  const [filterSubjectArea, setFilterSubjectArea] = useQueryState(
+    DatasetSearchFilter.SubjectArea,
+    parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetSubjectArea))),
+  );
+
+  const [filterPython, setFilterPython] = useQueryState(DatasetSearchFilter.Python, parseAsBoolean);
+
+  const clearAllFilters = () => {
+    setFilterSubjectArea(null);
+    setFilterPython(null);
   };
+
+  const filters = {
+    filterTitle: filterTitle?.length ? filterTitle : undefined,
+    setFilterTitle,
+
+    filterSubjectArea: filterSubjectArea?.length ? filterSubjectArea : undefined,
+    setFilterSubjectArea,
+
+    filterPython: filterPython === true ? true : undefined,
+    setFilterPython,
+  };
+
+  const anyFilterActive = filters.filterPython || filters.filterSubjectArea;
+
+  return { ...filters, clearFilters: clearAllFilters, anyFilterActive };
 }

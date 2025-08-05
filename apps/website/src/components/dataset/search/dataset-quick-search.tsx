@@ -1,17 +1,21 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { useState } from "react";
 
-import { Input } from "@/components/ui/input";
+import { SearchInput } from "@/components/ui/input";
 
 export function DatasetQuickSearch() {
+  const [searchValue, setSearchValue] = useState("");
+
   return (
-    <div className="bg-background relative rounded-full">
-      <Input
-        className="h-12 py-4 pl-11 !text-xl placeholder:text-xl"
+    <div>
+      <SearchInput
         placeholder="Search datasets"
+        size="lg"
+        value={searchValue}
+        setValue={setSearchValue}
       />
-      <SearchIcon className="text-muted-foreground absolute top-3 left-3.5" />
+      {searchValue}
     </div>
   );
 }

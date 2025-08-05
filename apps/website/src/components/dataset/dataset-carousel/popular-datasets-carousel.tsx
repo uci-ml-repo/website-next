@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export function PopularDatasetsCarousel() {
-  const { data: popularDatasets } = trpc.dataset.find.byQuery.useQuery({
+  const { data } = trpc.dataset.find.byQuery.useQuery({
     order: { viewCount: "desc" },
     limit: 15,
   });
@@ -15,7 +15,7 @@ export function PopularDatasetsCarousel() {
   return (
     <DatasetCardCarousel
       heading="Popular Datasets"
-      datasets={popularDatasets}
+      datasets={data?.datasets}
       icon={<TrendingUpIcon />}
       seeAllHref={ROUTES.SEARCH}
     />

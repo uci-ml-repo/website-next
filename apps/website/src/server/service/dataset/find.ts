@@ -1,8 +1,10 @@
 import { db } from "@packages/db";
+import { Enums } from "@packages/db/enum";
 import { dataset } from "@packages/db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 
 import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/dataset/request";
+import { datasetColumns } from "@/server/types/dataset/request";
 import { sortMap } from "@/server/types/util/order";
 import { entriesT } from "@/server/types/util/type";
 
@@ -14,15 +16,43 @@ async function byId(id: number) {
 function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   const conditions = [];
 
+  if ("status" in query && query.status) {
+    conditions.push(inArray(dataset.status, query.status));
+  } else {
+    conditions.push(eq(dataset.status, Enums.ApprovalStatus.APPROVED));
+  }
+
   if ("userId" in query && query.userId) {
     conditions.push(eq(dataset.userId, query.userId));
+  }
+
+  if (query.search) {
+    conditions.push(buildSearchQuery(query.search).searchCondition);
   }
 
   if (query.isAvailablePython !== undefined) {
     conditions.push(eq(dataset.isAvailablePython, query.isAvailablePython));
   }
 
+  if (query.subjectAreas) {
+    conditions.push(inArray(dataset.subjectArea, query.subjectAreas));
+  }
+
   return and(...conditions);
+}
+
+function buildSearchQuery(search: string, minSimilarity = 0.04) {
+  const trigramSimilarity = sql`
+    similarity (
+      ${dataset.title},
+      ${search}
+    )
+  `;
+
+  return {
+    trigramSimilarity,
+    searchCondition: sql`${trigramSimilarity} > ${minSimilarity}`,
+  };
 }
 
 async function byQuery(query: DatasetQuery) {
@@ -30,13 +60,28 @@ async function byQuery(query: DatasetQuery) {
     ? entriesT(query.order).map(([field, sort]) => sortMap[sort ?? "asc"](dataset[field]))
     : [desc(dataset.viewCount)];
 
-  return db
-    .select()
+  const datasets = await db
+    .select({
+      ...datasetColumns,
+      ...(query.search
+        ? { similarity: buildSearchQuery(query.search).trigramSimilarity.mapWith(Number) }
+        : {}),
+    })
     .from(dataset)
     .where(buildQuery(query))
-    .orderBy(...orderBy)
+    .orderBy((t) => (t.similarity ? [desc(t.similarity), ...orderBy] : orderBy))
     .offset(query.cursor ?? 0)
-    .limit(query.limit ? query.limit + 1 : 10);
+    .limit(query.limit + 1);
+
+  let nextCursor: number | undefined = undefined;
+  if (datasets.length > query.limit) {
+    datasets.pop();
+    nextCursor = (query.cursor ?? 0) + query.limit;
+  }
+
+  const count = await db.$count(dataset, buildQuery(query));
+
+  return { datasets, count, nextCursor };
 }
 
 export const datasetFindService = { byId, byQuery };

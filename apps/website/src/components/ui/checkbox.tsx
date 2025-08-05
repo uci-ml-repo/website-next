@@ -3,6 +3,7 @@
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "lucide-react";
 import * as React from "react";
+import { type HTMLAttributes } from "react";
 
 import { cn } from "@/lib/util/cn";
 
@@ -30,4 +31,26 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
   );
 }
 
-export { Checkbox };
+function CheckboxLabeled({
+  checked,
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & {
+  checked?: CheckboxPrimitive.CheckedState;
+}) {
+  return (
+    <div
+      className={cn("group/checkgroup flex w-fit cursor-pointer items-center space-x-2", className)}
+      {...props}
+    >
+      <Checkbox
+        checked={checked}
+        className="ring-ring/50 data-[state=unchecked]:group-hover/checkgroup:ring-3"
+      />
+      <div>{children}</div>
+    </div>
+  );
+}
+
+export { Checkbox, CheckboxLabeled };

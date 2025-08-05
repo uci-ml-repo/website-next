@@ -1,8 +1,12 @@
-import * as React from "react";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import { CircleXIcon, SearchIcon } from "lucide-react";
+import type { ChangeEvent, ComponentProps, HTMLAttributes } from "react";
+import { useCallback } from "react";
 
 import { cn } from "@/lib/util/cn";
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input({ className, type, ...props }: ComponentProps<"input">) {
   return (
     <input
       type={type}
@@ -21,4 +25,66 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   );
 }
 
-export { Input };
+const searchInputVariants = cva(
+  cn("bg-background relative rounded-full", "[&_svg]:text-muted-foreground [&_svg]:absolute"),
+  {
+    variants: {
+      size: {
+        md: cn(
+          "[&_input]:h-10 [&_input]:py-1.5 [&_input]:pl-10 [&_input]:!text-base [&_input]:placeholder:text-base [&_svg]:top-2",
+          "[&_svg:not([class*='size-'])]:size-6 [&_svg[data-icon=clear]]:right-3 [&_svg[data-icon=search]]:left-3",
+        ),
+        lg: cn(
+          "[&_input]:h-12 [&_input]:py-4 [&_input]:pl-11 [&_input]:!text-xl [&_input]:placeholder:text-xl [&_svg]:top-3",
+          "[&_svg:not([class*='size-'])]:size-6 [&_svg[data-icon=clear]]:right-3.5 [&_svg[data-icon=search]]:left-3.5",
+        ),
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
+
+function SearchInput({
+  className,
+  placeholder,
+  size,
+  value,
+  setValue,
+  ...props
+}: HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof searchInputVariants> & {
+    setValue: (value: string) => void;
+    value: string;
+    placeholder?: string;
+  }) {
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value;
+      setValue(newValue);
+    },
+    [setValue],
+  );
+
+  return (
+    <div className={cn(searchInputVariants({ size, className }))} {...props}>
+      <Input placeholder={placeholder} value={value} onChange={handleChange} />
+      <SearchIcon data-icon="search" />
+      {value && (
+        <CircleXIcon
+          data-icon="clear"
+          className="hover:text-muted-foreground/75 cursor-pointer transition-colors"
+          onClick={(e) => {
+            e.preventDefault();
+            if (setValue) setValue("");
+          }}
+          aria-label="Clear search"
+          role="button"
+        />
+      )}
+    </div>
+  );
+}
+
+export { Input, SearchInput };

@@ -14,18 +14,22 @@ interface Props extends ComponentProps<typeof AccordionItem> {
   clearFilter?: () => void;
 }
 
-export function DatasetSearchFiltersAccordionItem({
+export function DatasetSearchFilterAccordionItem({
   name,
   badge,
   children,
   tooltip,
   tooltipOpen,
   clearFilter,
+  className,
   ...props
 }: Props) {
   return (
     <Tooltip open={tooltipOpen}>
-      <AccordionItem {...props}>
+      <AccordionItem
+        className={cn("last:[&>[data-slot=accordion-content]]:rounded-b-2xl", className)}
+        {...props}
+      >
         <div className="relative">
           <AccordionTrigger
             className={cn(
@@ -35,7 +39,7 @@ export function DatasetSearchFiltersAccordionItem({
           >
             <div className="flex w-full items-center justify-between">
               <div>{name}</div>
-              {badge && (
+              {!!badge && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Badge
@@ -58,14 +62,10 @@ export function DatasetSearchFiltersAccordionItem({
                       tabIndex={0}
                       role="button"
                     >
-                      {badge === true ? (
-                        <>
-                          <CheckIcon className="size-3.5 group-hover/clear:hidden group-focus-visible/clear:hidden" />
-                          <XIcon className="hidden size-3.5 group-hover/clear:block group-focus-visible/clear:block" />
-                        </>
-                      ) : (
-                        badge
-                      )}
+                      <div className="text-sm font-normal group-hover/clear:hidden group-focus-visible/clear:hidden">
+                        {badge === true ? <CheckIcon className="size-3.5" /> : badge}
+                      </div>
+                      <XIcon className="hidden size-3.5 group-hover/clear:block group-focus-visible/clear:block" />
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent>Clear</TooltipContent>
@@ -76,9 +76,7 @@ export function DatasetSearchFiltersAccordionItem({
           <TooltipTrigger className="invisible absolute top-1/2 right-0" />
         </div>
 
-        <AccordionContent className="bg-accent p-4 select-none last:rounded-b-2xl">
-          {children}
-        </AccordionContent>
+        <AccordionContent className="bg-accent p-4 select-none">{children}</AccordionContent>
       </AccordionItem>
       <TooltipContent
         side="right"
