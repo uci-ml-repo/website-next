@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React from "react";
 
 import { BackgroundGraphic } from "@/components/layout/background/background-graphic";
@@ -50,43 +51,45 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <TRPCProvider>
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            themes={["light", "dark"]}
-            disableTransitionOnChange
-          >
-            <BackgroundGraphic className="absolute top-0 right-0 -z-10 max-md:hidden" />
+      <body className={inter.className}>
+        <TRPCProvider>
+          <NuqsAdapter>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              themes={["light", "dark"]}
+              disableTransitionOnChange
+            >
+              <BackgroundGraphic className="absolute top-0 right-0 -z-10 max-md:hidden" />
 
-            <SidebarProvider>
-              <Sidebar session={session} />
-              <div
-                className={cn(
-                  "w-full",
-                  "md:ml-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!ml-(--sidebar-width)",
-                  "transition-margin duration-100 ease-out",
-                )}
-              >
-                <div className="flex min-h-dvh flex-col">
-                  <Header initialSession={session} />
-                  <main
-                    className={cn(
-                      "content mx-auto mb-12 flex grow flex-col",
-                      "max-md:mt-(--header-height) max-md:pt-4",
-                    )}
-                  >
-                    {children}
-                  </main>
+              <SidebarProvider>
+                <Sidebar session={session} />
+                <div
+                  className={cn(
+                    "w-full",
+                    "md:ml-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!ml-(--sidebar-width)",
+                    "transition-margin duration-100 ease-out",
+                  )}
+                >
+                  <div className="flex min-h-dvh flex-col">
+                    <Header initialSession={session} />
+                    <main
+                      className={cn(
+                        "content mx-auto mb-12 flex grow flex-col",
+                        "max-md:mt-(--header-height) max-md:pt-4",
+                      )}
+                    >
+                      {children}
+                    </main>
+                  </div>
+                  <Footer />
+                  <Toaster />
                 </div>
-                <Footer />
-                <Toaster />
-              </div>
-            </SidebarProvider>
-          </ThemeProvider>
-        </body>
-      </TRPCProvider>
+              </SidebarProvider>
+            </ThemeProvider>
+          </NuqsAdapter>
+        </TRPCProvider>
+      </body>
     </html>
   );
 }

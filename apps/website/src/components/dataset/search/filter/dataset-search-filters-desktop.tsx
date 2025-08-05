@@ -1,13 +1,15 @@
 "use client";
 
+import { enumToArray } from "@packages/db/enum";
 import { ChevronsDownUpIcon, ChevronsUpDownIcon, CircleHelpIcon } from "lucide-react";
 import { useState } from "react";
 
+import { DatasetSearchFilter } from "@/components/hooks/use-dataet-search-filters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-import { DatasetSearchFiltersAccordion, searchFilters } from "./dataset-search-filters-accordion";
+import { DatasetSearchFiltersAccordion } from "./dataset-search-filters-accordion";
 
 export function DatasetSearchFiltersDesktop() {
   const [tooltipsOpen, setTooltipsOpen] = useState(false);
@@ -38,7 +40,7 @@ export function DatasetSearchFiltersDesktop() {
               onClick={() =>
                 anyExpanded
                   ? setExpandedFilters([])
-                  : setExpandedFilters(searchFilters.map(({ name }) => name))
+                  : setExpandedFilters(enumToArray(DatasetSearchFilter))
               }
             >
               {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
@@ -48,7 +50,7 @@ export function DatasetSearchFiltersDesktop() {
         </Tooltip>
       </div>
 
-      <Card className="w-72 overflow-hidden">
+      <Card className="w-72">
         <DatasetSearchFiltersAccordion
           type="multiple"
           value={expandedFilters}

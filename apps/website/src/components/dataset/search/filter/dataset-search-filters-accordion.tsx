@@ -1,42 +1,23 @@
 import type { ComponentProps } from "react";
 
 import { DatasetSearchPythonFilter } from "@/components/dataset/search/filter/items/dataset-search-python-filter";
-import { DatasetSearchSubjectAreaFilter } from "@/components/dataset/search/filter/items/dataset-search-subject-area-filter";
+import { DatasetSearchFilter } from "@/components/hooks/use-dataet-search-filters";
 import { Accordion } from "@/components/ui/accordion";
-
-import { DatasetSearchFilterAccordionItem } from "./items/dataset-search-filter-accordion-item";
+import { cn } from "@/lib/util/cn";
 
 type Props = ComponentProps<typeof Accordion> & {
   tooltipsOpen?: boolean;
 };
 
-export const searchFilters = [
-  {
-    name: "Subject Area",
-    tooltip: "The subject area of the dataset",
-    content: <DatasetSearchSubjectAreaFilter />,
-  },
-  {
-    name: "Python Availability",
-    tooltip: "Whether the dataset is available for import in Python",
-    content: <DatasetSearchPythonFilter />,
-  },
-];
-
-export function DatasetSearchFiltersAccordion({ tooltipsOpen, ...props }: Props) {
+export function DatasetSearchFiltersAccordion({ tooltipsOpen, className, ...props }: Props) {
   return (
-    <Accordion {...props}>
-      {searchFilters.map(({ name, tooltip, content }) => (
-        <DatasetSearchFilterAccordionItem
-          key={name}
-          name={name}
-          value={name}
-          tooltip={tooltip}
-          tooltipOpen={tooltipsOpen}
-        >
-          {content}
-        </DatasetSearchFilterAccordionItem>
-      ))}
+    <Accordion className={cn(className)} {...props}>
+      <DatasetSearchPythonFilter
+        name="Python Availability"
+        value={DatasetSearchFilter.Python}
+        tooltip="Whether the dataset is available for import in Python"
+        tooltipOpen={tooltipsOpen}
+      />
     </Accordion>
   );
 }
