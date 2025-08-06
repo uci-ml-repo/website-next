@@ -2,15 +2,15 @@ import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-fi
 import { SearchInput } from "@/components/ui/input";
 
 export function DatasetSearchFilterTitle() {
-  const { filterTitle, setFilterTitle } = useDatasetSearchFilters();
+  const { search, setSearch } = useDatasetSearchFilters();
 
   return (
     <div>
       <SearchInput
         placeholder="Search datasets"
         size="md"
-        value={filterTitle ?? ""}
-        setValue={setFilterTitle}
+        value={search ?? ""}
+        setValue={setSearch}
         aria-label="Search datasets by title"
       />
     </div>

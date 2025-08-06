@@ -58,6 +58,7 @@ const config = [
       import: importPlugin,
     },
     rules: {
+      "object-shorthand": ["error", "always"],
       "no-unused-expressions": ["error", { allowTernary: true, allowShortCircuit: true }],
       "import/first": "error",
       "import/no-duplicates": "error",

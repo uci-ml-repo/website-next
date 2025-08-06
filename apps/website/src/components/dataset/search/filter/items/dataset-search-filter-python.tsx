@@ -9,19 +9,21 @@ import { CheckboxLabeled } from "@/components/ui/checkbox";
 export function DatasetSearchFilterPython(
   props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
 ) {
-  const { filterPython, setFilterPython } = useDatasetSearchFilters();
+  const { isAvailablePython, setIsAvailablePython } = useDatasetSearchFilters();
 
   return (
     <DatasetSearchFilterAccordionItem
       {...props}
-      badge={filterPython}
-      clearFilter={() => setFilterPython(null)}
+      badge={isAvailablePython}
+      clearFilter={() => setIsAvailablePython(null)}
     >
       <CheckboxLabeled
-        checked={filterPython === true}
-        onCheckedChange={(checked) => setFilterPython(checked === true || null)}
+        checked={isAvailablePython === true}
+        onCheckedChange={(checked) => setIsAvailablePython(checked === true || null)}
         role="button"
-        aria-label={filterPython ? "Disable Python import filter" : "Enable Python import filter"}
+        aria-label={
+          isAvailablePython ? "Disable Python import filter" : "Enable Python import filter"
+        }
       >
         Available for Python import
       </CheckboxLabeled>

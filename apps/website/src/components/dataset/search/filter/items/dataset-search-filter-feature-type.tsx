@@ -8,38 +8,38 @@ import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-fi
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterSubjectArea(
+export function DatasetSearchFilterFeatureType(
   props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
 ) {
-  const { subjectAreas, setSubjectAreas } = useDatasetSearchFilters();
+  const { featureTypes, setFeatureTypes } = useDatasetSearchFilters();
 
-  const addSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
-    setSubjectAreas((prev) => [...(prev ?? []), subjectArea]);
+  const addFeatureType = (featureType: Enums.DatasetFeatureType) => {
+    setFeatureTypes((prev) => [...(prev ?? []), featureType]);
   };
-  const removeSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
-    setSubjectAreas((prev) => prev?.filter((area) => area !== subjectArea) ?? []);
+  const removeFeatureType = (featureType: Enums.DatasetFeatureType) => {
+    setFeatureTypes((prev) => prev?.filter((area) => area !== featureType) ?? []);
   };
 
   return (
     <DatasetSearchFilterAccordionItem
       {...props}
-      badge={subjectAreas?.length}
-      clearFilter={() => setSubjectAreas(null)}
+      badge={featureTypes?.length}
+      clearFilter={() => setFeatureTypes(null)}
     >
-      {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => {
-        const checked = !!subjectAreas?.includes(subjectArea);
-        const enumString = formatEnum(subjectArea);
+      {enumToArray(Enums.DatasetFeatureType).map((featureType) => {
+        const checked = !!featureTypes?.includes(featureType);
+        const enumString = formatEnum(featureType);
 
         return (
           <CheckboxLabeled
-            key={subjectArea}
+            key={featureType}
             className="py-1.5 first:pt-0 last:pb-0"
             checked={checked}
             onCheckedChange={(checked) =>
-              checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)
+              checked ? addFeatureType(featureType) : removeFeatureType(featureType)
             }
             role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} subject area filter`}
+            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} feature type filter`}
           >
             {enumString}
           </CheckboxLabeled>

@@ -2,18 +2,11 @@
 
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { trpc } from "@/server/trpc/query/client";
-import type { DatasetQueryInput } from "@/server/types/dataset/request";
 
 import { DatasetSearchFilterTitle } from "./filter/items/dataset-search-filter-title";
 
 export function DataSearchResults() {
-  const { filterPython, filterSubjectArea, filterTitle } = useDatasetSearchFilters();
-
-  const query: DatasetQueryInput = {
-    search: filterTitle,
-    isAvailablePython: filterPython,
-    subjectAreas: filterSubjectArea,
-  };
+  const query = useDatasetSearchFilters();
 
   const { data } = trpc.dataset.find.byQuery.useQuery(query, {
     placeholderData: (prev) => prev,

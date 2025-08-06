@@ -8,38 +8,38 @@ import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-fi
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterSubjectArea(
+export function DatasetSearchFilterDataType(
   props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
 ) {
-  const { subjectAreas, setSubjectAreas } = useDatasetSearchFilters();
+  const { dataTypes, setDataTypes } = useDatasetSearchFilters();
 
-  const addSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
-    setSubjectAreas((prev) => [...(prev ?? []), subjectArea]);
+  const addDataType = (dataType: Enums.DatasetDataType) => {
+    setDataTypes((prev) => [...(prev ?? []), dataType]);
   };
-  const removeSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
-    setSubjectAreas((prev) => prev?.filter((area) => area !== subjectArea) ?? []);
+  const removeDataType = (dataType: Enums.DatasetDataType) => {
+    setDataTypes((prev) => prev?.filter((area) => area !== dataType) ?? []);
   };
 
   return (
     <DatasetSearchFilterAccordionItem
       {...props}
-      badge={subjectAreas?.length}
-      clearFilter={() => setSubjectAreas(null)}
+      badge={dataTypes?.length}
+      clearFilter={() => setDataTypes(null)}
     >
-      {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => {
-        const checked = !!subjectAreas?.includes(subjectArea);
-        const enumString = formatEnum(subjectArea);
+      {enumToArray(Enums.DatasetDataType).map((dataType) => {
+        const checked = !!dataTypes?.includes(dataType);
+        const enumString = formatEnum(dataType);
 
         return (
           <CheckboxLabeled
-            key={subjectArea}
+            key={dataType}
             className="py-1.5 first:pt-0 last:pb-0"
             checked={checked}
             onCheckedChange={(checked) =>
-              checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)
+              checked ? addDataType(dataType) : removeDataType(dataType)
             }
             role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} subject area filter`}
+            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} data type filter`}
           >
             {enumString}
           </CheckboxLabeled>

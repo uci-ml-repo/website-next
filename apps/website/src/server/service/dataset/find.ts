@@ -1,7 +1,7 @@
 import { db } from "@packages/db";
 import { Enums } from "@packages/db/enum";
 import { dataset } from "@packages/db/schema";
-import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
+import { and, arrayOverlaps, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/dataset/request";
 import { datasetColumns } from "@/server/types/dataset/request";
@@ -30,12 +30,24 @@ function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     conditions.push(buildSearchQuery(query.search).searchCondition);
   }
 
-  if (query.isAvailablePython !== undefined) {
-    conditions.push(eq(dataset.isAvailablePython, query.isAvailablePython));
-  }
-
   if (query.subjectAreas) {
     conditions.push(inArray(dataset.subjectArea, query.subjectAreas));
+  }
+
+  if (query.tasks) {
+    conditions.push(arrayOverlaps(dataset.tasks, query.tasks));
+  }
+
+  if (query.dataTypes?.length) {
+    conditions.push(arrayOverlaps(dataset.dataTypes, query.dataTypes));
+  }
+
+  if (query.featureTypes) {
+    conditions.push(arrayOverlaps(dataset.featureTypes, query.featureTypes));
+  }
+
+  if (query.isAvailablePython !== undefined) {
+    conditions.push(eq(dataset.isAvailablePython, query.isAvailablePython));
   }
 
   return and(...conditions);
