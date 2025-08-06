@@ -24,6 +24,8 @@ export function DataSearchResults() {
 
   return (
     <div className="w-full">
+      <h1 className="h-10 text-2xl font-bold">Browse datasets</h1>
+
       <DatasetSearchFilterTitle />
       <div>{JSON.stringify(query)}</div>
       <div>{JSON.stringify(datasets?.map((d) => d.title))}</div>

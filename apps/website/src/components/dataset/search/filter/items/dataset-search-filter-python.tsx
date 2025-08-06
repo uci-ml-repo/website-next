@@ -18,8 +18,10 @@ export function DatasetSearchFilterPython(
       clearFilter={() => setFilterPython(null)}
     >
       <CheckboxLabeled
-        onClick={() => setFilterPython((prev) => (prev ? null : true))}
         checked={filterPython === true}
+        onCheckedChange={(checked) => setFilterPython(checked === true || null)}
+        role="button"
+        aria-label={filterPython ? "Disable Python import filter" : "Enable Python import filter"}
       >
         Available for Python import
       </CheckboxLabeled>

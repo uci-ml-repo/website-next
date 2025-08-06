@@ -49,6 +49,7 @@ export function DatasetSearchFiltersDesktop({
                     ? setExpandedFilters([])
                     : setExpandedFilters(enumToArray(DatasetSearchFilter))
                 }
+                aria-label={anyExpanded ? "Collapse all filters" : "Expand all filters"}
               >
                 {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
               </Button>

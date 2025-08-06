@@ -13,30 +13,38 @@ export function DatasetSearchFilterSubjectArea(
 ) {
   const { filterSubjectArea, setFilterSubjectArea } = useDatasetSearchFilters();
 
+  const addSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
+    setFilterSubjectArea((prev) => [...(prev ?? []), subjectArea]);
+  };
+  const removeSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
+    setFilterSubjectArea((prev) => prev?.filter((area) => area !== subjectArea) ?? []);
+  };
+
   return (
     <DatasetSearchFilterAccordionItem
       {...props}
       badge={filterSubjectArea?.length}
       clearFilter={() => setFilterSubjectArea(null)}
     >
-      <div className="space-y-1">
-        {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => (
+      {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => {
+        const checked = filterSubjectArea?.includes(subjectArea);
+        const enumString = formatEnum(subjectArea);
+
+        return (
           <CheckboxLabeled
             key={subjectArea}
-            className="py-1 first:pt-0 last:pb-0"
-            onClick={() =>
-              setFilterSubjectArea((prev) =>
-                prev?.includes(subjectArea)
-                  ? prev.filter((area) => area !== subjectArea)
-                  : [...(prev ?? []), subjectArea],
-              )
+            className="py-1.5 first:pt-0 last:pb-0"
+            checked={checked}
+            onCheckedChange={(checked) =>
+              checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)
             }
-            checked={filterSubjectArea?.includes(subjectArea)}
+            role="button"
+            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} subject area filter`}
           >
-            {formatEnum(subjectArea)}
+            {enumString}
           </CheckboxLabeled>
-        ))}
-      </div>
+        );
+      })}
     </DatasetSearchFilterAccordionItem>
   );
 }

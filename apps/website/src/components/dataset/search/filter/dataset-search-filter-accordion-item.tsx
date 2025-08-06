@@ -73,7 +73,9 @@ export function DatasetSearchFilterAccordionItem({
               )}
             </div>
           </AccordionTrigger>
-          <TooltipTrigger className="invisible absolute top-1/2 right-0" />
+          <TooltipTrigger className="invisible absolute top-1/2 right-0" asChild>
+            <div />
+          </TooltipTrigger>
         </div>
 
         <AccordionContent className="bg-accent p-4 select-none">{children}</AccordionContent>

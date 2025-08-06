@@ -1,7 +1,7 @@
 import { db } from "@packages/db";
 import { Enums } from "@packages/db/enum";
 import { dataset } from "@packages/db/schema";
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/dataset/request";
 import { datasetColumns } from "@/server/types/dataset/request";
@@ -41,7 +41,7 @@ function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   return and(...conditions);
 }
 
-function buildSearchQuery(search: string, minSimilarity = 0.04) {
+function buildSearchQuery(search: string, minSimilarity = 0.05) {
   const trigramSimilarity = sql`
     similarity (
       ${dataset.title},
@@ -51,7 +51,7 @@ function buildSearchQuery(search: string, minSimilarity = 0.04) {
 
   return {
     trigramSimilarity,
-    searchCondition: sql`${trigramSimilarity} > ${minSimilarity}`,
+    searchCondition: gt(trigramSimilarity, minSimilarity),
   };
 }
 

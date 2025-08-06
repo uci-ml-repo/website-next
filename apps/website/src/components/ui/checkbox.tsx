@@ -2,8 +2,8 @@
 
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "lucide-react";
+import type { ComponentProps, HTMLAttributes } from "react";
 import * as React from "react";
-import { type HTMLAttributes } from "react";
 
 import { cn } from "@/lib/util/cn";
 
@@ -33,23 +33,25 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
 
 function CheckboxLabeled({
   checked,
+  onCheckedChange,
   className,
   children,
   ...props
-}: HTMLAttributes<HTMLDivElement> & {
-  checked?: CheckboxPrimitive.CheckedState;
-}) {
+}: HTMLAttributes<HTMLLabelElement> &
+  Pick<ComponentProps<typeof Checkbox>, "checked" | "onCheckedChange">) {
   return (
-    <div
-      className={cn("group/checkgroup flex w-fit cursor-pointer items-center space-x-2", className)}
+    <label
+      className={cn("group/check flex w-fit cursor-pointer items-center gap-2", className)}
       {...props}
     >
       <Checkbox
         checked={checked}
-        className="ring-ring/50 data-[state=unchecked]:group-hover/checkgroup:ring-3"
+        onCheckedChange={onCheckedChange}
+        className="ring-ring/50 data-[state=unchecked]:group-hover/check:ring-3"
+        aria-label={props["aria-label"]}
       />
-      <div>{children}</div>
-    </div>
+      {children}
+    </label>
   );
 }
 

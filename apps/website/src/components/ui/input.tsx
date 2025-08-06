@@ -69,7 +69,12 @@ function SearchInput({
 
   return (
     <div className={cn(searchInputVariants({ size, className }))} {...props}>
-      <Input placeholder={placeholder} value={value} onChange={handleChange} />
+      <Input
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChange}
+        aria-label={props["aria-label"]}
+      />
       <SearchIcon data-icon="search" />
       {value && (
         <CircleXIcon

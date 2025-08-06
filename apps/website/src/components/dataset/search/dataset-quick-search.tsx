@@ -14,6 +14,7 @@ export function DatasetQuickSearch() {
         size="lg"
         value={searchValue}
         setValue={setSearchValue}
+        aria-label="Search datasets by title"
       />
       {searchValue}
     </div>

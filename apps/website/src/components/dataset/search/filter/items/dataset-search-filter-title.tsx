@@ -11,6 +11,7 @@ export function DatasetSearchFilterTitle() {
         size="md"
         value={filterTitle ?? ""}
         setValue={setFilterTitle}
+        aria-label="Search datasets by title"
       />
     </div>
   );
