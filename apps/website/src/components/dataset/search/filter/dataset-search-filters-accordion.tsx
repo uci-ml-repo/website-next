@@ -1,10 +1,12 @@
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterDataType } from "@/components/dataset/search/filter/items/dataset-search-filter-data-type";
-import { DatasetSearchFilterFeatureType } from "@/components/dataset/search/filter/items/dataset-search-filter-feature-type";
-import { DatasetSearchFilterPython } from "@/components/dataset/search/filter/items/dataset-search-filter-python";
-import { DatasetSearchFilterSubjectArea } from "@/components/dataset/search/filter/items/dataset-search-filter-subject-area";
-import { DatasetSearchFilterTask } from "@/components/dataset/search/filter/items/dataset-search-filter-task";
+import { DatasetSearchFilterDataType } from "@/components/dataset/search/filter/item/dataset-search-filter-data-type";
+import { DatasetSearchFilterFeatureCount } from "@/components/dataset/search/filter/item/dataset-search-filter-feature-count";
+import { DatasetSearchFilterFeatureType } from "@/components/dataset/search/filter/item/dataset-search-filter-feature-type";
+import { DatasetSearchFilterInstanceCount } from "@/components/dataset/search/filter/item/dataset-search-filter-instance-count";
+import { DatasetSearchFilterPython } from "@/components/dataset/search/filter/item/dataset-search-filter-python";
+import { DatasetSearchFilterSubjectArea } from "@/components/dataset/search/filter/item/dataset-search-filter-subject-area";
+import { DatasetSearchFilterTask } from "@/components/dataset/search/filter/item/dataset-search-filter-task";
 import { DatasetSearchFilter } from "@/components/hooks/use-dataet-search-filters";
 import { Accordion } from "@/components/ui/accordion";
 
@@ -23,26 +25,38 @@ export function DatasetSearchFiltersAccordion({ tooltipsOpen, ...props }: Props)
       />
       <DatasetSearchFilterTask
         name="Tasks"
-        value={DatasetSearchFilter.Task}
+        value={DatasetSearchFilter.Tasks}
         tooltip="The tasks that the dataset is suitable for"
         tooltipOpen={tooltipsOpen}
       />
       <DatasetSearchFilterSubjectArea
         name="Subject Areas"
-        value={DatasetSearchFilter.SubjectArea}
+        value={DatasetSearchFilter.SubjectAreas}
         tooltip="The subject area of the dataset"
         tooltipOpen={tooltipsOpen}
       />
       <DatasetSearchFilterDataType
         name="Data Types"
-        value={DatasetSearchFilter.DataType}
+        value={DatasetSearchFilter.DataTypes}
         tooltip="The types of data in the dataset"
         tooltipOpen={tooltipsOpen}
       />
       <DatasetSearchFilterFeatureType
         name="Feature Types"
-        value={DatasetSearchFilter.FeatureType}
+        value={DatasetSearchFilter.FeatureTypes}
         tooltip="The types of features in the dataset"
+        tooltipOpen={tooltipsOpen}
+      />
+      <DatasetSearchFilterInstanceCount
+        name="Number of Instances"
+        value={DatasetSearchFilter.InstanceCount}
+        tooltip="The number of instances (rows) in the dataset"
+        tooltipOpen={tooltipsOpen}
+      />
+      <DatasetSearchFilterFeatureCount
+        name="Number of Features"
+        value={DatasetSearchFilter.FeatureCount}
+        tooltip="The number of features (columns) in the dataset"
         tooltipOpen={tooltipsOpen}
       />
     </Accordion>

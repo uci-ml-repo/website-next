@@ -3,14 +3,12 @@
 import { Enums, enumToArray } from "@packages/db/enum";
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterAccordionItem } from "@/components/dataset/search/filter/dataset-search-filter-accordion-item";
+import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterDataType(
-  props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
-) {
+export function DatasetSearchFilterDataType(props: ComponentProps<typeof DatasetSearchFilterItem>) {
   const { dataTypes, setDataTypes } = useDatasetSearchFilters();
 
   const addDataType = (dataType: Enums.DatasetDataType) => {
@@ -21,7 +19,7 @@ export function DatasetSearchFilterDataType(
   };
 
   return (
-    <DatasetSearchFilterAccordionItem
+    <DatasetSearchFilterItem
       {...props}
       badge={dataTypes?.length}
       clearFilter={() => setDataTypes(null)}
@@ -45,6 +43,6 @@ export function DatasetSearchFilterDataType(
           </CheckboxLabeled>
         );
       })}
-    </DatasetSearchFilterAccordionItem>
+    </DatasetSearchFilterItem>
   );
 }

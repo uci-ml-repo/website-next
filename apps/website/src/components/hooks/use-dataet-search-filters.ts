@@ -1,35 +1,56 @@
+import { useDebouncedValue } from "@mantine/hooks";
 import { Enums } from "@packages/db/enum";
-import { parseAsArrayOf, parseAsBoolean, parseAsStringEnum, useQueryState } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsBoolean,
+  parseAsJson,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs";
+
+import { range } from "@/server/types/dataset/request";
 
 export enum DatasetSearchFilter {
   Python = "python",
-  SubjectArea = "subjectArea",
-  DataType = "dataType",
-  FeatureType = "featureType",
-  Task = "task",
+  SubjectAreas = "subjectAreas",
+  Tasks = "tasks",
+  DataTypes = "dataTypes",
+  FeatureTypes = "featureTypes",
+  InstanceCount = "instanceCount",
+  FeatureCount = "featureCount",
 }
 
 export function useDatasetSearchFilters() {
   const [search, setSearch] = useQueryState("title");
 
   const [subjectAreas, setSubjectAreas] = useQueryState(
-    DatasetSearchFilter.SubjectArea,
+    DatasetSearchFilter.SubjectAreas,
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetSubjectArea))),
   );
 
   const [tasks, setTasks] = useQueryState(
-    DatasetSearchFilter.Task,
+    DatasetSearchFilter.Tasks,
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetTask))),
   );
 
   const [dataTypes, setDataTypes] = useQueryState(
-    DatasetSearchFilter.DataType,
+    DatasetSearchFilter.DataTypes,
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetDataType))),
   );
 
   const [featureTypes, setFeatureTypes] = useQueryState(
-    DatasetSearchFilter.FeatureType,
+    DatasetSearchFilter.FeatureTypes,
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetFeatureType))),
+  );
+
+  const [instanceCount, setInstanceCount] = useQueryState(
+    DatasetSearchFilter.InstanceCount,
+    parseAsJson(range.parse),
+  );
+
+  const [featureCount, setFeatureCount] = useQueryState(
+    DatasetSearchFilter.FeatureCount,
+    parseAsJson(range.parse),
   );
 
   const [isAvailablePython, setIsAvailablePython] = useQueryState(
@@ -43,6 +64,8 @@ export function useDatasetSearchFilters() {
     dataTypes: dataTypes?.length ? dataTypes : undefined,
     featureTypes: featureTypes?.length ? featureTypes : undefined,
     isAvailablePython: isAvailablePython === true ? true : undefined,
+    instanceCount: instanceCount ?? undefined,
+    featureCount: featureCount ?? undefined,
   };
 
   const setNonSearchFilters = {
@@ -51,6 +74,8 @@ export function useDatasetSearchFilters() {
     setDataTypes,
     setFeatureTypes,
     setIsAvailablePython,
+    setInstanceCount,
+    setFeatureCount,
   };
 
   const filters = {
@@ -69,8 +94,19 @@ export function useDatasetSearchFilters() {
   const nonSearchFilterCount = Object.values(nonSearchFilters).filter(Boolean).length;
   const filterCount = Object.values(filters).filter(Boolean).length;
 
+  const [debouncedSearch] = useDebouncedValue(search, 100);
+  const [debouncedFeatureCount] = useDebouncedValue(featureCount, 100);
+  const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 100);
+
+  const debouncedFilters = {
+    debouncedSearch: debouncedSearch ?? undefined,
+    debouncedFeatureCount: debouncedFeatureCount ?? undefined,
+    debouncedInstanceCount: debouncedInstanceCount ?? undefined,
+  };
+
   return {
     ...filters,
+    ...debouncedFilters,
     ...setFilters,
     clearFilters,
     anyFilterActive,

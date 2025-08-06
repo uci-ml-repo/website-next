@@ -1,4 +1,4 @@
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, Loader2Icon, XIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -12,9 +12,10 @@ interface Props extends ComponentProps<typeof AccordionItem> {
   tooltip?: string;
   tooltipOpen?: boolean;
   clearFilter?: () => void;
+  isLoading?: boolean;
 }
 
-export function DatasetSearchFilterAccordionItem({
+export function DatasetSearchFilterItem({
   name,
   badge,
   children,
@@ -22,6 +23,7 @@ export function DatasetSearchFilterAccordionItem({
   tooltipOpen,
   clearFilter,
   className,
+  isLoading,
   ...props
 }: Props) {
   return (
@@ -34,7 +36,7 @@ export function DatasetSearchFilterAccordionItem({
           <AccordionTrigger
             className={cn(
               "px-4 text-base",
-              "hover:[&>svg]:scale-150 focus-visible:[&>svg]:scale-150 has-[div[role=button]:hover]:[&>svg]:scale-100",
+              "hover:[&>svg]:scale-[1.35] focus-visible:[&>svg]:scale-[1.35] has-[div[role=button]:hover]:[&>svg]:scale-100",
             )}
           >
             <div className="flex w-full items-center justify-between">
@@ -78,7 +80,15 @@ export function DatasetSearchFilterAccordionItem({
           </TooltipTrigger>
         </div>
 
-        <AccordionContent className="bg-accent p-4 select-none">{children}</AccordionContent>
+        <AccordionContent className="bg-accent/50 p-4 select-none">
+          {isLoading ? (
+            <div className="flex justify-center">
+              <Loader2Icon className="animate-spin" />
+            </div>
+          ) : (
+            children
+          )}
+        </AccordionContent>
       </AccordionItem>
       <TooltipContent
         side="right"

@@ -3,14 +3,22 @@
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { trpc } from "@/server/trpc/query/client";
 
-import { DatasetSearchFilterTitle } from "./filter/items/dataset-search-filter-title";
+import { DatasetSearchFilterTitle } from "./filter/item/dataset-search-filter-title";
 
 export function DataSearchResults() {
   const query = useDatasetSearchFilters();
 
-  const { data } = trpc.dataset.find.byQuery.useQuery(query, {
-    placeholderData: (prev) => prev,
-  });
+  const { data } = trpc.dataset.find.byQuery.useQuery(
+    {
+      ...query,
+      search: query.debouncedSearch,
+      featureCount: query.debouncedFeatureCount,
+      instanceCount: query.debouncedInstanceCount,
+    },
+    {
+      placeholderData: (prev) => prev,
+    },
+  );
 
   const datasets = data?.datasets;
   const count = data?.count;

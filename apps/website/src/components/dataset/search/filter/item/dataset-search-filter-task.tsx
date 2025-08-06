@@ -3,14 +3,12 @@
 import { Enums, enumToArray } from "@packages/db/enum";
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterAccordionItem } from "@/components/dataset/search/filter/dataset-search-filter-accordion-item";
+import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterTask(
-  props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
-) {
+export function DatasetSearchFilterTask(props: ComponentProps<typeof DatasetSearchFilterItem>) {
   const { tasks, setTasks } = useDatasetSearchFilters();
 
   const addTask = (task: Enums.DatasetTask) => {
@@ -21,11 +19,7 @@ export function DatasetSearchFilterTask(
   };
 
   return (
-    <DatasetSearchFilterAccordionItem
-      {...props}
-      badge={tasks?.length}
-      clearFilter={() => setTasks(null)}
-    >
+    <DatasetSearchFilterItem {...props} badge={tasks?.length} clearFilter={() => setTasks(null)}>
       {enumToArray(Enums.DatasetTask).map((task) => {
         const checked = !!tasks?.includes(task);
         const enumString = formatEnum(task);
@@ -43,6 +37,6 @@ export function DatasetSearchFilterTask(
           </CheckboxLabeled>
         );
       })}
-    </DatasetSearchFilterAccordionItem>
+    </DatasetSearchFilterItem>
   );
 }

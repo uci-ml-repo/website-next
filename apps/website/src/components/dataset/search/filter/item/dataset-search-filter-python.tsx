@@ -2,17 +2,15 @@
 
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterAccordionItem } from "@/components/dataset/search/filter/dataset-search-filter-accordion-item";
+import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 
-export function DatasetSearchFilterPython(
-  props: ComponentProps<typeof DatasetSearchFilterAccordionItem>,
-) {
+export function DatasetSearchFilterPython(props: ComponentProps<typeof DatasetSearchFilterItem>) {
   const { isAvailablePython, setIsAvailablePython } = useDatasetSearchFilters();
 
   return (
-    <DatasetSearchFilterAccordionItem
+    <DatasetSearchFilterItem
       {...props}
       badge={isAvailablePython}
       clearFilter={() => setIsAvailablePython(null)}
@@ -27,6 +25,6 @@ export function DatasetSearchFilterPython(
       >
         Available for Python import
       </CheckboxLabeled>
-    </DatasetSearchFilterAccordionItem>
+    </DatasetSearchFilterItem>
   );
 }
