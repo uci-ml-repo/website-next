@@ -21,6 +21,10 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     conditions.push(buildSearchQuery(query.search).searchCondition);
   }
 
+  if (query.keywords?.length) {
+    conditions.push(arrayOverlaps(dataset.keywords, query.keywords));
+  }
+
   if (query.subjectAreas) {
     conditions.push(inArray(dataset.subjectArea, query.subjectAreas));
   }

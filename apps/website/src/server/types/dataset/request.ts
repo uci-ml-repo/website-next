@@ -9,18 +9,19 @@ import { keysT } from "@/server/types/util/type";
 export const datasetColumns = getTableColumns(dataset);
 type DatasetColumn = keyof typeof datasetColumns;
 
-export const range = z.object({ min: z.int().optional(), max: z.int().optional() });
+export const range = z.object({ min: z.int(), max: z.int() });
 
 export const datasetQuery = z.object({
   order: order<DatasetColumn[]>(keysT(datasetColumns)).optional(),
   limit: z.number().int().optional().default(10),
   cursor: z.number().int().optional(),
   search: z.string().optional(),
+  keywords: z.array(z.string()).optional(),
   subjectAreas: z.array(z.enum(enumToArray(Enums.DatasetSubjectArea))).optional(),
   dataTypes: z.array(z.enum(enumToArray(Enums.DatasetDataType))).optional(),
   featureTypes: z.array(z.enum(enumToArray(Enums.DatasetFeatureType))).optional(),
-  featureCount: range.optional(),
-  instanceCount: range.optional(),
+  featureCount: range.partial().optional(),
+  instanceCount: range.partial().optional(),
   tasks: z.array(z.enum(enumToArray(Enums.DatasetTask))).optional(),
   isAvailablePython: z.boolean().optional(),
 });

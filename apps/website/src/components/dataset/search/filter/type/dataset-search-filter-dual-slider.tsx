@@ -19,7 +19,7 @@ export function DatasetSearchFilterDualSlider({
   exponential,
   ...props
 }: Props) {
-  const log = useCallback(
+  const exp = useCallback(
     (val: number) => {
       if (val === 0 || !max) {
         return 0;
@@ -27,14 +27,16 @@ export function DatasetSearchFilterDualSlider({
 
       if (!exponential) return val;
 
-      return Math.round(
-        Number(Math.round(Math.pow(max, Math.pow(val / max, exponential))).toPrecision(2)),
+      const expValue = Number(
+        Math.round(Math.pow(max, Math.pow(val / max, exponential))).toPrecision(2),
       );
+
+      return expValue > 0.9 * max ? max : expValue;
     },
     [max, exponential],
   );
 
-  const exp = useCallback(
+  const log = useCallback(
     (val: number) => {
       if (!max || max <= 1 || val <= 1 || !exponential) {
         return val;
@@ -53,12 +55,14 @@ export function DatasetSearchFilterDualSlider({
           className="my-6"
           min={min}
           max={max}
-          value={sliderValues.map(exp)}
-          onValueChange={(value) => {
-            if (onValueChange) onValueChange(value.map(log));
+          value={sliderValues.map(log)}
+          onValueChange={(values) => {
+            if (onValueChange) {
+              onValueChange(values.map(exp));
+            }
           }}
           step={max ? max / 100 : 1}
-          label={(label) => label && abbreviateDecimal(log(label))}
+          label={(label) => label && abbreviateDecimal(exp(label))}
         />
       </div>
     </DatasetSearchFilterItem>

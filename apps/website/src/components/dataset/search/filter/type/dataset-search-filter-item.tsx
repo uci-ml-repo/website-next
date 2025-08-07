@@ -80,7 +80,7 @@ export function DatasetSearchFilterItem({
           </TooltipTrigger>
         </div>
 
-        <AccordionContent className="bg-accent/50 p-4 select-none">
+        <AccordionContent className="bg-muted/50 [&_[data-slot=checkbox][data-state=unchecked]]:bg-card p-4 select-none">
           {isLoading ? (
             <div className="flex justify-center">
               <Loader2Icon className="animate-spin" />

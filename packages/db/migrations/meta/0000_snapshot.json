@@ -1,5 +1,5 @@
 {
-  "id": "5ebc3570-1777-4f43-af05-9871265480d7",
+  "id": "553c758e-50c9-4204-9577-fc1c1f4aafd6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -93,8 +93,12 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -164,8 +168,12 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -175,7 +183,9 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ]
         }
       },
       "policies": {},
@@ -382,6 +392,20 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "keywords": {
+          "name": "keywords",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "attributes": {
+          "name": "attributes",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
         }
       },
       "indexes": {
@@ -460,6 +484,36 @@
           "method": "btree",
           "with": {}
         },
+        "dataset_view_keywords_index": {
+          "name": "dataset_view_keywords_index",
+          "columns": [
+            {
+              "expression": "keywords",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "dataset_view_attributes_index": {
+          "name": "dataset_view_attributes_index",
+          "columns": [
+            {
+              "expression": "attributes",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
         "dataset_view_trgm_search_index": {
           "name": "dataset_view_trgm_search_index",
           "columns": [
@@ -481,8 +535,12 @@
           "name": "dataset_user_id_user_id_fk",
           "tableFrom": "dataset",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "set default",
           "onUpdate": "no action"
         }
@@ -492,7 +550,9 @@
         "dataset_slug_unique": {
           "name": "dataset_slug_unique",
           "nullsNotDistinct": false,
-          "columns": ["slug"]
+          "columns": [
+            "slug"
+          ]
         }
       },
       "policies": {},
@@ -514,6 +574,160 @@
           "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
         }
       },
+      "isRLSEnabled": false
+    },
+    "public.dataset_keyword": {
+      "name": "dataset_keyword",
+      "schema": "",
+      "columns": {
+        "keyword_id": {
+          "name": "keyword_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dataset_id": {
+          "name": "dataset_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "dataset_keyword_keyword_id_keyword_id_fk": {
+          "name": "dataset_keyword_keyword_id_keyword_id_fk",
+          "tableFrom": "dataset_keyword",
+          "tableTo": "keyword",
+          "columnsFrom": [
+            "keyword_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "dataset_keyword_dataset_id_dataset_id_fk": {
+          "name": "dataset_keyword_dataset_id_dataset_id_fk",
+          "tableFrom": "dataset_keyword",
+          "tableTo": "dataset",
+          "columnsFrom": [
+            "dataset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "dataset_keyword_keyword_id_dataset_id_pk": {
+          "name": "dataset_keyword_keyword_id_dataset_id_pk",
+          "columns": [
+            "keyword_id",
+            "dataset_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.keyword": {
+      "name": "keyword",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "status": {
+          "name": "status",
+          "type": "approval_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "keyword_trgm_search_index": {
+          "name": "keyword_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"name\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "keyword_name_index": {
+          "name": "keyword_name_index",
+          "columns": [
+            {
+              "expression": "name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "keyword_status_index": {
+          "name": "keyword_status_index",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "keyword_name_unique": {
+          "name": "keyword_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.user": {
@@ -581,7 +795,9 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -593,7 +809,12 @@
     "public.approval_status": {
       "name": "approval_status",
       "schema": "public",
-      "values": ["draft", "pending", "approved", "rejected"]
+      "values": [
+        "draft",
+        "pending",
+        "approved",
+        "rejected"
+      ]
     },
     "public.dataset_characteristic": {
       "name": "dataset_characteristic",
@@ -611,7 +832,15 @@
     "public.dataset_feature_type": {
       "name": "dataset_feature_type",
       "schema": "public",
-      "values": ["categorical", "integer", "continuous", "binary", "text", "date", "other"]
+      "values": [
+        "categorical",
+        "integer",
+        "continuous",
+        "binary",
+        "text",
+        "date",
+        "other"
+      ]
     },
     "public.dataset_subject_area": {
       "name": "dataset_subject_area",
@@ -634,12 +863,21 @@
     "public.dataset_task": {
       "name": "dataset_task",
       "schema": "public",
-      "values": ["classification", "regression", "clustering"]
+      "values": [
+        "classification",
+        "regression",
+        "clustering"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["admin", "librarian", "curator", "basic"]
+      "values": [
+        "admin",
+        "librarian",
+        "curator",
+        "basic"
+      ]
     }
   },
   "schemas": {},

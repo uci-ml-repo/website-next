@@ -61,6 +61,8 @@ export const dataset = pgTable(
       .default(defaultUUID)
       .notNull(),
     donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
+    keywords: text("keywords").array().default([]).notNull(),
+    attributes: text("attributes").array().default([]).notNull(),
   },
   (t) => [
     index("dataset_view_view_count_index").on(t.viewCount),
@@ -68,6 +70,8 @@ export const dataset = pgTable(
     index("dataset_view_instance_count_index").on(t.instanceCount),
     index("dataset_view_feature_count_index").on(t.featureCount),
     index("dataset_view_status_index").on(t.status),
+    index("dataset_view_keywords_index").using("gin", t.keywords),
+    index("dataset_view_attributes_index").using("gin", t.attributes),
     index("dataset_view_trgm_search_index").using("gin", sql`${t.title} gin_trgm_ops`),
     check(
       "external_check",

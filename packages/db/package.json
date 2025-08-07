@@ -9,12 +9,12 @@
     "./env": "./env.ts"
   },
   "scripts": {
-    "db:generate": "drizzle-kit generate --name",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
     "format": "prettier --write .",
+    "generate": "drizzle-kit generate --name",
     "lint": "eslint --fix --max-warnings=0",
+    "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
     "tscheck": "tsc --noEmit"
   },
   "prettier": "@packages/prettier-config",

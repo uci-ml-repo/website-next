@@ -1,6 +1,5 @@
 "use client";
 
-import _ from "lodash";
 import type { ComponentProps } from "react";
 
 import { DatasetSearchFilterDualSlider } from "@/components/dataset/search/filter/type/dataset-search-filter-dual-slider";
@@ -20,7 +19,7 @@ export function DatasetSearchFilterFeatureCount(
   return (
     <DatasetSearchFilterDualSlider
       {...props}
-      badge={_.some(featureCount)}
+      badge={featureCount && (featureCount.min > 0 || featureCount.max < (max ?? 0))}
       clearFilter={() => setFeatureCount(null)}
       max={max}
       sliderValues={[featureCount?.min ?? 0, featureCount?.max ?? max ?? 0]}

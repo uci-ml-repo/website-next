@@ -17,16 +17,10 @@ type Props = ComponentProps<typeof Accordion> & {
 export function DatasetSearchFiltersAccordion({ tooltipsOpen, ...props }: Props) {
   return (
     <Accordion {...props}>
-      <DatasetSearchFilterPython
-        name="Python Availability"
-        value={DatasetSearchFilter.Python}
-        tooltip="Whether the dataset is available for import in Python"
-        tooltipOpen={tooltipsOpen}
-      />
-      <DatasetSearchFilterTask
-        name="Tasks"
-        value={DatasetSearchFilter.Tasks}
-        tooltip="The tasks that the dataset is suitable for"
+      <DatasetSearchFilterDataType
+        name="Data Types"
+        value={DatasetSearchFilter.DataTypes}
+        tooltip="The types of data in the dataset"
         tooltipOpen={tooltipsOpen}
       />
       <DatasetSearchFilterSubjectArea
@@ -35,16 +29,10 @@ export function DatasetSearchFiltersAccordion({ tooltipsOpen, ...props }: Props)
         tooltip="The subject area of the dataset"
         tooltipOpen={tooltipsOpen}
       />
-      <DatasetSearchFilterDataType
-        name="Data Types"
-        value={DatasetSearchFilter.DataTypes}
-        tooltip="The types of data in the dataset"
-        tooltipOpen={tooltipsOpen}
-      />
-      <DatasetSearchFilterFeatureType
-        name="Feature Types"
-        value={DatasetSearchFilter.FeatureTypes}
-        tooltip="The types of features in the dataset"
+      <DatasetSearchFilterTask
+        name="Tasks"
+        value={DatasetSearchFilter.Tasks}
+        tooltip="The tasks that the dataset is suitable for"
         tooltipOpen={tooltipsOpen}
       />
       <DatasetSearchFilterInstanceCount
@@ -57,6 +45,18 @@ export function DatasetSearchFiltersAccordion({ tooltipsOpen, ...props }: Props)
         name="Number of Features"
         value={DatasetSearchFilter.FeatureCount}
         tooltip="The number of features (columns) in the dataset"
+        tooltipOpen={tooltipsOpen}
+      />
+      <DatasetSearchFilterFeatureType
+        name="Feature Types"
+        value={DatasetSearchFilter.FeatureTypes}
+        tooltip="The types of features in the dataset"
+        tooltipOpen={tooltipsOpen}
+      />
+      <DatasetSearchFilterPython
+        name="Python Availability"
+        value={DatasetSearchFilter.Python}
+        tooltip="Whether the dataset is available for import in Python"
         tooltipOpen={tooltipsOpen}
       />
     </Accordion>
