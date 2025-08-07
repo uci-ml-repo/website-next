@@ -12,4 +12,4 @@ fi
 echo "DB dump created at: ${DUMP_FILE}"
 echo "Copying dump file from $REMOTE_HOST:${DUMP_FILE} to local machine..."
 
-scp "$REMOTE_HOST:${DUMP_FILE}" ../data/dump.sql
+scp "$REMOTE_HOST:${DUMP_FILE}" "$DATA_PATH"/dump.sql

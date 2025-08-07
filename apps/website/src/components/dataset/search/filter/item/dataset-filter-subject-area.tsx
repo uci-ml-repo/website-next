@@ -1,27 +1,25 @@
 "use client";
 
 import { Enums, enumToArray } from "@packages/db/enum";
+import { without } from "lodash";
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
+import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterSubjectArea(
-  props: ComponentProps<typeof DatasetSearchFilterItem>,
-) {
+export function DatasetFilterSubjectArea(props: ComponentProps<typeof DatasetFilterItem>) {
   const { subjectAreas, setSubjectAreas } = useDatasetSearchFilters();
 
-  const addSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
+  const addSubjectArea = (subjectArea: Enums.DatasetSubjectArea) =>
     setSubjectAreas((prev) => [...(prev ?? []), subjectArea]);
-  };
-  const removeSubjectArea = (subjectArea: Enums.DatasetSubjectArea) => {
-    setSubjectAreas((prev) => prev?.filter((area) => area !== subjectArea) ?? []);
-  };
+
+  const removeSubjectArea = (subjectArea: Enums.DatasetSubjectArea) =>
+    setSubjectAreas((prev) => (prev ? without(prev, subjectArea) : []));
 
   return (
-    <DatasetSearchFilterItem
+    <DatasetFilterItem
       {...props}
       badge={subjectAreas?.length}
       clearFilter={() => setSubjectAreas(null)}
@@ -45,6 +43,6 @@ export function DatasetSearchFilterSubjectArea(
           </CheckboxLabeled>
         );
       })}
-    </DatasetSearchFilterItem>
+    </DatasetFilterItem>
   );
 }

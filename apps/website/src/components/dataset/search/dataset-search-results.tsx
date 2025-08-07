@@ -3,9 +3,9 @@
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { trpc } from "@/server/trpc/query/client";
 
-import { DatasetSearchFilterTitle } from "./filter/item/dataset-search-filter-title";
+import { DatasetFilterTitle } from "./filter/item/dataset-filter-title";
 
-export function DataSearchResults() {
+export function DatasetSearchResults() {
   const query = useDatasetSearchFilters();
 
   const { data } = trpc.dataset.find.byQuery.useQuery(
@@ -27,7 +27,7 @@ export function DataSearchResults() {
     <div className="w-full">
       <h1 className="h-10 text-2xl font-bold">Browse datasets</h1>
 
-      <DatasetSearchFilterTitle />
+      <DatasetFilterTitle />
       <div>{JSON.stringify(query)}</div>
       <div>{JSON.stringify(datasets?.map((d) => d.title))}</div>
       <div>{JSON.stringify(count)}</div>

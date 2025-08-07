@@ -93,12 +93,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -168,12 +164,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -183,9 +175,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -535,12 +525,8 @@
           "name": "dataset_user_id_user_id_fk",
           "tableFrom": "dataset",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set default",
           "onUpdate": "no action"
         }
@@ -550,9 +536,7 @@
         "dataset_slug_unique": {
           "name": "dataset_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -599,12 +583,8 @@
           "name": "dataset_keyword_keyword_id_keyword_id_fk",
           "tableFrom": "dataset_keyword",
           "tableTo": "keyword",
-          "columnsFrom": [
-            "keyword_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["keyword_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -612,12 +592,8 @@
           "name": "dataset_keyword_dataset_id_dataset_id_fk",
           "tableFrom": "dataset_keyword",
           "tableTo": "dataset",
-          "columnsFrom": [
-            "dataset_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["dataset_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -625,10 +601,7 @@
       "compositePrimaryKeys": {
         "dataset_keyword_keyword_id_dataset_id_pk": {
           "name": "dataset_keyword_keyword_id_dataset_id_pk",
-          "columns": [
-            "keyword_id",
-            "dataset_id"
-          ]
+          "columns": ["keyword_id", "dataset_id"]
         }
       },
       "uniqueConstraints": {},
@@ -721,9 +694,7 @@
         "keyword_name_unique": {
           "name": "keyword_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -795,9 +766,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -809,12 +778,7 @@
     "public.approval_status": {
       "name": "approval_status",
       "schema": "public",
-      "values": [
-        "draft",
-        "pending",
-        "approved",
-        "rejected"
-      ]
+      "values": ["draft", "pending", "approved", "rejected"]
     },
     "public.dataset_characteristic": {
       "name": "dataset_characteristic",
@@ -832,15 +796,7 @@
     "public.dataset_feature_type": {
       "name": "dataset_feature_type",
       "schema": "public",
-      "values": [
-        "categorical",
-        "integer",
-        "continuous",
-        "binary",
-        "text",
-        "date",
-        "other"
-      ]
+      "values": ["categorical", "integer", "continuous", "binary", "text", "date", "other"]
     },
     "public.dataset_subject_area": {
       "name": "dataset_subject_area",
@@ -863,21 +819,12 @@
     "public.dataset_task": {
       "name": "dataset_task",
       "schema": "public",
-      "values": [
-        "classification",
-        "regression",
-        "clustering"
-      ]
+      "values": ["classification", "regression", "clustering"]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": [
-        "admin",
-        "librarian",
-        "curator",
-        "basic"
-      ]
+      "values": ["admin", "librarian", "curator", "basic"]
     }
   },
   "schemas": {},

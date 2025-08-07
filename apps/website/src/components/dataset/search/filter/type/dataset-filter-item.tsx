@@ -15,7 +15,7 @@ interface Props extends ComponentProps<typeof AccordionItem> {
   isLoading?: boolean;
 }
 
-export function DatasetSearchFilterItem({
+export function DatasetFilterItem({
   name,
   badge,
   children,
@@ -36,7 +36,8 @@ export function DatasetSearchFilterItem({
           <AccordionTrigger
             className={cn(
               "px-4 text-base",
-              "hover:[&>svg]:scale-[1.35] focus-visible:[&>svg]:scale-[1.35] has-[div[role=button]:hover]:[&>svg]:scale-100",
+              "hover:[&>svg]:scale-[1.35] focus-visible:[&>svg]:scale-[1.35]",
+              "has-[div[role=button]:hover]:[&>svg]:scale-100",
             )}
           >
             <div className="flex w-full items-center justify-between">
@@ -47,8 +48,8 @@ export function DatasetSearchFilterItem({
                     <Badge
                       variant="blue"
                       className={cn(
-                        "group/clear flex size-5.5 items-center justify-center p-0 transition-none",
-                        "hover:bg-destructive focus-visible:bg-destructive hover:border-destructive focus-visible:border-destructive",
+                        "group/clear flex min-w-5.5 items-center justify-center px-0.5 py-0 transition-none",
+                        "hover:bg-accent focus-visible:bg-accent hover:border-accent focus-visible:border-accent",
                       )}
                       onClick={(event) => {
                         if (clearFilter) clearFilter();
@@ -80,7 +81,7 @@ export function DatasetSearchFilterItem({
           </TooltipTrigger>
         </div>
 
-        <AccordionContent className="bg-muted/50 [&_[data-slot=checkbox][data-state=unchecked]]:bg-card p-4 select-none">
+        <AccordionContent className="bg-muted [&_[data-slot=checkbox][data-state=unchecked]]:bg-card p-4 select-none has-[input]:px-2">
           {isLoading ? (
             <div className="flex justify-center">
               <Loader2Icon className="animate-spin" />

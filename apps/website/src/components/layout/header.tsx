@@ -3,7 +3,6 @@
 import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { toast } from "sonner";
 
 import { useHasScrolledX } from "@/components/hooks/use-has-scrolled";

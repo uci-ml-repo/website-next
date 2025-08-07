@@ -1,11 +1,12 @@
 import * as SwitchPrimitive from "@radix-ui/react-switch";
-import React from "react";
+import type { ComponentPropsWithoutRef } from "react";
+import { forwardRef } from "react";
 
 import { cn } from "@/lib/util/cn";
 
-type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>;
+type SwitchProps = ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>;
 
-export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
+export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ({ className, children, ...props }, ref) => (
     <SwitchPrimitive.Root
       ref={ref}

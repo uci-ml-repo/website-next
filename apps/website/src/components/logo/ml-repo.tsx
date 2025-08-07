@@ -2,7 +2,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Montserrat } from "next/font/google";
 import Link from "next/link";
 import type { HTMLAttributes } from "react";
-import React from "react";
 
 import { cn } from "@/lib/util/cn";
 

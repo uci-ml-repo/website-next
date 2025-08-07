@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import React from "react";
+import type { ReactNode } from "react";
 
 import { BackgroundGraphic } from "@/components/layout/background/background-graphic";
 import { Footer } from "@/components/layout/footer";
@@ -43,7 +43,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -75,7 +75,7 @@ export default async function RootLayout({
                     <Header initialSession={session} />
                     <main
                       className={cn(
-                        "content mx-auto mb-12 flex grow flex-col",
+                        "content mx-auto mb-14 flex grow flex-col",
                         "max-md:mt-(--header-height) max-md:pt-4",
                       )}
                     >

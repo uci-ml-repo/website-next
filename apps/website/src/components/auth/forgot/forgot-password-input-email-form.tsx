@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon } from "lucide-react";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 

@@ -11,7 +11,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./data/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ${DATA_PATH}/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
 
@@ -114,4 +114,4 @@ services:
       '
     volumes:
       - ./migrate:/migrate
-      - ./data:/output
+      - ${DATA_PATH}:/output

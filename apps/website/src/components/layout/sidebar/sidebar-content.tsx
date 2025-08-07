@@ -7,7 +7,6 @@ import {
   UserIcon,
 } from "lucide-react";
 import type { HTMLAttributes, RefObject } from "react";
-import React from "react";
 
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
 import { SidebarHoverExpandable } from "@/components/layout/sidebar/sidebar-hover-expandable";

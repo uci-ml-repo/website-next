@@ -26,17 +26,24 @@ function Input({ className, type, ...props }: ComponentProps<"input">) {
 }
 
 const searchInputVariants = cva(
-  cn("bg-background relative rounded-full", "[&_svg]:text-muted-foreground [&_svg]:absolute"),
+  cn(
+    "relative",
+    "[&_svg]:text-muted-foreground [&_svg]:absolute [&_svg]:top-1/4 [&_svg:not([class*='size-'])]:h-1/2",
+  ),
   {
     variants: {
       size: {
+        sm: cn(
+          "[&_input]:h-8 [&_input]:py-1 [&_input]:pl-8 [&_input]:!text-sm [&_input]:placeholder:text-sm",
+          "[&_svg[data-icon=clear]]:right-1.5 [&_svg[data-icon=search]]:left-1.5",
+        ),
         md: cn(
-          "[&_input]:h-10 [&_input]:py-1.5 [&_input]:pl-10 [&_input]:!text-base [&_input]:placeholder:text-base [&_svg]:top-2",
-          "[&_svg:not([class*='size-'])]:size-6 [&_svg[data-icon=clear]]:right-3 [&_svg[data-icon=search]]:left-3",
+          "[&_input]:h-10 [&_input]:py-1.5 [&_input]:pl-10 [&_input]:!text-base [&_input]:placeholder:text-base",
+          "[&_svg[data-icon=clear]]:right-3 [&_svg[data-icon=search]]:left-3",
         ),
         lg: cn(
-          "[&_input]:h-12 [&_input]:py-4 [&_input]:pl-11 [&_input]:!text-xl [&_input]:placeholder:text-xl [&_svg]:top-3",
-          "[&_svg:not([class*='size-'])]:size-6 [&_svg[data-icon=clear]]:right-3.5 [&_svg[data-icon=search]]:left-3.5",
+          "[&_input]:h-12 [&_input]:py-4 [&_input]:pl-11 [&_input]:!text-xl [&_input]:placeholder:text-xl",
+          "[&_svg[data-icon=clear]]:right-3.5 [&_svg[data-icon=search]]:left-3.5",
         ),
       },
     },
@@ -48,6 +55,7 @@ const searchInputVariants = cva(
 
 function SearchInput({
   className,
+  wrapperClassName,
   placeholder,
   size,
   value,
@@ -56,24 +64,27 @@ function SearchInput({
 }: HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof searchInputVariants> & {
     setValue: (value: string) => void;
-    value: string;
+    value: string | undefined;
     placeholder?: string;
+    wrapperClassName?: string;
   }) {
   const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      setValue(newValue);
-    },
+    (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
     [setValue],
   );
 
+  const ariaProps = Object.fromEntries(
+    Object.entries(props).filter(([key]) => key.startsWith("aria-")),
+  );
+
   return (
-    <div className={cn(searchInputVariants({ size, className }))} {...props}>
+    <div className={cn(searchInputVariants({ size, className: wrapperClassName }))} {...props}>
       <Input
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        aria-label={props["aria-label"]}
+        className={className}
+        {...ariaProps}
       />
       <SearchIcon data-icon="search" />
       {value && (
@@ -81,8 +92,9 @@ function SearchInput({
           data-icon="clear"
           className="hover:text-muted-foreground/75 cursor-pointer transition-colors"
           onClick={(e) => {
-            e.preventDefault();
             if (setValue) setValue("");
+            e.preventDefault();
+            e.stopPropagation();
           }}
           aria-label="Clear search"
           role="button"

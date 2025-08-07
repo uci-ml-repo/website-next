@@ -4,61 +4,52 @@ import {
   parseAsArrayOf,
   parseAsBoolean,
   parseAsJson,
+  parseAsString,
   parseAsStringEnum,
   useQueryState,
 } from "nuqs";
 
 import { range } from "@/server/types/dataset/request";
 
-export enum DatasetSearchFilter {
-  Python = "python",
-  SubjectAreas = "subjectAreas",
-  Tasks = "tasks",
-  DataTypes = "dataTypes",
-  FeatureTypes = "featureTypes",
-  InstanceCount = "instanceCount",
-  FeatureCount = "featureCount",
-}
-
 export function useDatasetSearchFilters() {
   const [search, setSearch] = useQueryState("title");
 
+  const [keywords, setKeywords] = useQueryState("keywords", parseAsArrayOf(parseAsString));
+
+  const [attributes, setAttributes] = useQueryState("attributes", parseAsArrayOf(parseAsString));
+
   const [subjectAreas, setSubjectAreas] = useQueryState(
-    DatasetSearchFilter.SubjectAreas,
+    "subjectAreas",
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetSubjectArea))),
   );
 
   const [tasks, setTasks] = useQueryState(
-    DatasetSearchFilter.Tasks,
+    "tasks",
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetTask))),
   );
 
   const [dataTypes, setDataTypes] = useQueryState(
-    DatasetSearchFilter.DataTypes,
+    "dataTypes",
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetDataType))),
   );
 
   const [featureTypes, setFeatureTypes] = useQueryState(
-    DatasetSearchFilter.FeatureTypes,
+    "featureTypes",
     parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetFeatureType))),
   );
 
   const [instanceCount, setInstanceCount] = useQueryState(
-    DatasetSearchFilter.InstanceCount,
+    "instanceCount",
     parseAsJson(range.parse),
   );
 
-  const [featureCount, setFeatureCount] = useQueryState(
-    DatasetSearchFilter.FeatureCount,
-    parseAsJson(range.parse),
-  );
+  const [featureCount, setFeatureCount] = useQueryState("featureCount", parseAsJson(range.parse));
 
-  const [isAvailablePython, setIsAvailablePython] = useQueryState(
-    DatasetSearchFilter.Python,
-    parseAsBoolean,
-  );
+  const [isAvailablePython, setIsAvailablePython] = useQueryState("python", parseAsBoolean);
 
   const nonSearchFilters = {
+    keywords: keywords?.length ? keywords : undefined,
+    attributes: attributes?.length ? attributes : undefined,
     subjectAreas: subjectAreas?.length ? subjectAreas : undefined,
     tasks: tasks?.length ? tasks : undefined,
     dataTypes: dataTypes?.length ? dataTypes : undefined,
@@ -69,6 +60,8 @@ export function useDatasetSearchFilters() {
   };
 
   const setNonSearchFilters = {
+    setKeywords,
+    setAttributes,
     setSubjectAreas,
     setTasks,
     setDataTypes,

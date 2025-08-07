@@ -57,3 +57,5 @@ export function TRPCProvider(
     </trpc.Provider>
   );
 }
+
+export const skipBatch = { trpc: { context: { skipBatch: true } } };

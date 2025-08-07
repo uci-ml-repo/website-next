@@ -1,17 +1,17 @@
 import type { ComponentProps } from "react";
 import { useCallback } from "react";
 
-import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
+import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { DualRangeSlider } from "@/components/ui/dual-slider";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 
-type Props = ComponentProps<typeof DatasetSearchFilterItem> &
+type Props = ComponentProps<typeof DatasetFilterItem> &
   Pick<ComponentProps<typeof DualRangeSlider>, "max" | "min" | "onValueChange"> & {
     exponential?: number;
     sliderValues: [number, number];
   };
 
-export function DatasetSearchFilterDualSlider({
+export function DatasetFilterDualSlider({
   min,
   max,
   sliderValues,
@@ -49,7 +49,7 @@ export function DatasetSearchFilterDualSlider({
   );
 
   return (
-    <DatasetSearchFilterItem {...props}>
+    <DatasetFilterItem {...props}>
       <div className="mx-2">
         <DualRangeSlider
           className="my-6"
@@ -65,6 +65,6 @@ export function DatasetSearchFilterDualSlider({
           label={(label) => label && abbreviateDecimal(exp(label))}
         />
       </div>
-    </DatasetSearchFilterItem>
+    </DatasetFilterItem>
   );
 }

@@ -3,7 +3,6 @@
 import { Loader2Icon } from "lucide-react";
 import type { ComponentProps, MouseEvent, ReactNode } from "react";
 import { useState } from "react";
-import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 

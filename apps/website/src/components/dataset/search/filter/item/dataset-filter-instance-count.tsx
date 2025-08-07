@@ -2,22 +2,21 @@
 
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterDualSlider } from "@/components/dataset/search/filter/type/dataset-search-filter-dual-slider";
-import type { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
+import { DatasetFilterDualSlider } from "@/components/dataset/search/filter/type/dataset-filter-dual-slider";
+import type { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
-import { trpc } from "@/server/trpc/query/client";
+import { skipBatch, trpc } from "@/server/trpc/query/client";
 
-export function DatasetSearchFilterInstanceCount(
-  props: ComponentProps<typeof DatasetSearchFilterItem>,
-) {
+export function DatasetFilterInstanceCount(props: ComponentProps<typeof DatasetFilterItem>) {
   const { instanceCount, setInstanceCount } = useDatasetSearchFilters();
 
-  const { data: max, isLoading } = trpc.dataset.stat.maxInstanceCount.useQuery(undefined, {
-    trpc: { context: { skipBatch: true } },
-  });
+  const { data: max, isLoading } = trpc.dataset.stat.maxInstanceCount.useQuery(
+    undefined,
+    skipBatch,
+  );
 
   return (
-    <DatasetSearchFilterDualSlider
+    <DatasetFilterDualSlider
       {...props}
       badge={instanceCount && (instanceCount.min > 0 || instanceCount.max < (max ?? 0))}
       clearFilter={() => setInstanceCount(null)}

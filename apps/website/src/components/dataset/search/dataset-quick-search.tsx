@@ -8,7 +8,7 @@ export function DatasetQuickSearch() {
   const [searchValue, setSearchValue] = useState("");
 
   return (
-    <div>
+    <div className="blur-background">
       <SearchInput
         placeholder="Search datasets"
         size="lg"

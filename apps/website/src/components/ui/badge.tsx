@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type { HTMLAttributes } from "react";
 
 import { cn } from "@/lib/util/cn";
 
@@ -19,6 +19,7 @@ const badgeVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent",
         outline: "text-foreground",
         blue: "border-blue bg-blue text-blue-foreground shadow",
+        "blue-ghost": "border-blue bg-blue/5 text-blue shadow",
       },
     },
     defaultVariants: {
@@ -28,7 +29,7 @@ const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {
   asChild?: boolean;
 }

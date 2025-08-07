@@ -1,27 +1,25 @@
 "use client";
 
 import { Enums, enumToArray } from "@packages/db/enum";
+import { without } from "lodash";
 import type { ComponentProps } from "react";
 
-import { DatasetSearchFilterItem } from "@/components/dataset/search/filter/type/dataset-search-filter-item";
+import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 import { formatEnum } from "@/server/types/util/enum";
 
-export function DatasetSearchFilterFeatureType(
-  props: ComponentProps<typeof DatasetSearchFilterItem>,
-) {
+export function DatasetFilterFeatureType(props: ComponentProps<typeof DatasetFilterItem>) {
   const { featureTypes, setFeatureTypes } = useDatasetSearchFilters();
 
-  const addFeatureType = (featureType: Enums.DatasetFeatureType) => {
+  const addFeatureType = (featureType: Enums.DatasetFeatureType) =>
     setFeatureTypes((prev) => [...(prev ?? []), featureType]);
-  };
-  const removeFeatureType = (featureType: Enums.DatasetFeatureType) => {
-    setFeatureTypes((prev) => prev?.filter((area) => area !== featureType) ?? []);
-  };
+
+  const removeFeatureType = (featureType: Enums.DatasetFeatureType) =>
+    setFeatureTypes((prev) => (prev ? without(prev, featureType) : []));
 
   return (
-    <DatasetSearchFilterItem
+    <DatasetFilterItem
       {...props}
       badge={featureTypes?.length}
       clearFilter={() => setFeatureTypes(null)}
@@ -45,6 +43,6 @@ export function DatasetSearchFilterFeatureType(
           </CheckboxLabeled>
         );
       })}
-    </DatasetSearchFilterItem>
+    </DatasetFilterItem>
   );
 }

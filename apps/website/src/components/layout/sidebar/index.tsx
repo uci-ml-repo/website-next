@@ -1,7 +1,6 @@
 "use client";
 
 import { useClickOutside } from "@mantine/hooks";
-import React from "react";
 
 import { SidebarContent } from "@/components/layout/sidebar/sidebar-content";
 import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
