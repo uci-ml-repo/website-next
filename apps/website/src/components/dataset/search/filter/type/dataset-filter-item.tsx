@@ -49,7 +49,8 @@ export function DatasetFilterItem({
                       variant="blue"
                       className={cn(
                         "group/clear flex h-5.5 min-w-5.5 items-center justify-center px-0.5 py-0 transition-none",
-                        "hover:bg-accent focus-visible:bg-accent hover:border-accent focus-visible:border-accent",
+                        "hover:bg-accent hover:border-accent hover:text-accent-foreground",
+                        "focus-visible:border-accent focus-visible:bg-accent focus-visible:text-accent-foreground",
                       )}
                       onClick={(event) => {
                         if (clearFilter) clearFilter();
@@ -65,7 +66,7 @@ export function DatasetFilterItem({
                       tabIndex={0}
                       role="button"
                     >
-                      <div className="text-sm font-normal group-hover/clear:hidden group-focus-visible/clear:hidden">
+                      <div className="text-xs font-normal group-hover/clear:hidden group-focus-visible/clear:hidden">
                         {badge === true ? <CheckIcon className="size-3.5" /> : badge}
                       </div>
                       <XIcon className="hidden size-3.5 group-hover/clear:block group-focus-visible/clear:block" />

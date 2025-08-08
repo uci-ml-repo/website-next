@@ -36,6 +36,11 @@ const filters = [
     tooltip: "The tasks that the dataset is suitable for",
   },
   {
+    component: DatasetFilterFeatureType,
+    name: "Feature Types",
+    tooltip: "The types of features in the dataset",
+  },
+  {
     component: DatasetFilterInstanceCount,
     name: "Number of Instances",
     tooltip: "The number of instances (rows) in the dataset",
@@ -44,11 +49,6 @@ const filters = [
     component: DatasetFilterFeatureCount,
     name: "Number of Features",
     tooltip: "The number of features (columns) in the dataset",
-  },
-  {
-    component: DatasetFilterFeatureType,
-    name: "Feature Types",
-    tooltip: "The types of features in the dataset",
   },
   {
     component: DatasetFilterPython,

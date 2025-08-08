@@ -27,7 +27,7 @@ export function DatasetFilterDataType(props: ComponentProps<typeof DatasetFilter
         return (
           <CheckboxLabeled
             key={dataType}
-            className="py-1.5 first:pt-0 last:pb-0"
+            className="py-1 first:pt-0 last:pb-0"
             checked={checked}
             onCheckedChange={(checked) =>
               checked ? addDataType(dataType) : removeDataType(dataType)

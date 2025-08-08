@@ -31,7 +31,7 @@ export function DatasetFilterSubjectArea(props: ComponentProps<typeof DatasetFil
         return (
           <CheckboxLabeled
             key={subjectArea}
-            className="py-1.5 first:pt-0 last:pb-0"
+            className="py-1 first:pt-0 last:pb-0"
             checked={checked}
             onCheckedChange={(checked) =>
               checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)

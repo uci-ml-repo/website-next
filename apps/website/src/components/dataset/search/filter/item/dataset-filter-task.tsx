@@ -26,7 +26,7 @@ export function DatasetFilterTask(props: ComponentProps<typeof DatasetFilterItem
         return (
           <CheckboxLabeled
             key={task}
-            className="py-1.5 first:pt-0 last:pb-0"
+            className="py-1 first:pt-0 last:pb-0"
             checked={checked}
             onCheckedChange={(checked) => (checked ? addTask(task) : removeTask(task))}
             role="button"
