@@ -7,21 +7,23 @@ import { DatasetFilterMultiselect } from "@/components/dataset/search/filter/typ
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
-export function DatasetFilterKeywords(props: ComponentProps<typeof DatasetFilterItem>) {
-  const { data: allKeywords, isLoading } = trpc.keyword.find.approved.useQuery(
-    undefined,
+export function DatasetFilterFeatures(props: ComponentProps<typeof DatasetFilterItem>) {
+  const query = useDatasetSearchFilters();
+
+  const { data: remainingFilters, isLoading } = trpc.feature.find.remainingFilters.useQuery(
+    { ...query, search: undefined },
     skipBatch,
   );
 
-  const { keywords, setKeywords } = useDatasetSearchFilters();
+  const { features, setFeatures } = useDatasetSearchFilters();
 
   return (
     <DatasetFilterMultiselect
-      values={allKeywords}
-      selectedValues={keywords}
-      setSelectedValues={setKeywords}
-      placeholder="Search keywords"
-      empty="No keywords found"
+      values={remainingFilters}
+      selectedValues={features}
+      setSelectedValues={setFeatures}
+      placeholder="Search features"
+      empty="No features found"
       isLoading={isLoading}
       {...props}
     />

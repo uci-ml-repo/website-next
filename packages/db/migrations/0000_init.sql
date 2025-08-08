@@ -1,4 +1,4 @@
-CREATE EXTENSION pg_trgm;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 --> statement-breakpoint
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
@@ -43,6 +43,9 @@ CREATE TYPE "public"."dataset_subject_area" AS ENUM(
 
 --> statement-breakpoint
 CREATE TYPE "public"."dataset_task" AS ENUM('classification', 'regression', 'clustering');
+
+--> statement-breakpoint
+CREATE TYPE "public"."dataset_feature_role" AS ENUM('id', 'feature', 'target', 'other');
 
 --> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('admin', 'librarian', 'curator', 'basic');
@@ -112,7 +115,7 @@ CREATE TABLE "dataset" (
   "user_id" UUID DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "keywords" TEXT[] DEFAULT '{}' NOT NULL,
-  "attributes" TEXT[] DEFAULT '{}' NOT NULL,
+  "features" TEXT[] DEFAULT '{}' NOT NULL,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
   CONSTRAINT "external_check" CHECK (
     (
@@ -168,6 +171,19 @@ CREATE TABLE "dataset" (
 );
 
 --> statement-breakpoint
+CREATE TABLE "feature" (
+  "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
+  "name" TEXT NOT NULL,
+  "role" "dataset_feature_role" NOT NULL,
+  "type" "dataset_feature_type" NOT NULL,
+  "missing_values" BOOLEAN NOT NULL,
+  "description" TEXT,
+  "units" TEXT,
+  "dataset_id" INTEGER NOT NULL,
+  CONSTRAINT "feature_dataset_id_name_unique" UNIQUE ("dataset_id", "name")
+);
+
+--> statement-breakpoint
 CREATE TABLE "dataset_keyword" (
   "keyword_id" UUID NOT NULL,
   "dataset_id" INTEGER NOT NULL,
@@ -209,6 +225,10 @@ ALTER TABLE "dataset"
 ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE NO ACTION;
 
 --> statement-breakpoint
+ALTER TABLE "feature"
+ADD CONSTRAINT "feature_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--> statement-breakpoint
 ALTER TABLE "dataset_keyword"
 ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_id") REFERENCES "public"."keyword" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
@@ -235,7 +255,7 @@ CREATE INDEX "dataset_view_status_index" ON "dataset" USING btree ("status");
 CREATE INDEX "dataset_view_keywords_index" ON "dataset" USING gin ("keywords");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_attributes_index" ON "dataset" USING gin ("attributes");
+CREATE INDEX "dataset_view_features_index" ON "dataset" USING gin ("features");
 
 --> statement-breakpoint
 CREATE INDEX "dataset_view_trgm_search_index" ON "dataset" USING gin ("title" gin_trgm_ops);

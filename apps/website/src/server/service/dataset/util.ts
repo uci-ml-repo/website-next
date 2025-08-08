@@ -1,6 +1,6 @@
 import { Enums } from "@packages/db/enum";
 import { dataset } from "@packages/db/schema";
-import { and, arrayOverlaps, eq, gt, inArray, lt, sql } from "drizzle-orm";
+import { and, arrayContains, arrayOverlaps, eq, gt, inArray, lt, sql } from "drizzle-orm";
 
 import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/dataset/request";
 
@@ -23,6 +23,10 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
 
   if (query.keywords?.length) {
     conditions.push(arrayOverlaps(dataset.keywords, query.keywords));
+  }
+
+  if (query.features?.length) {
+    conditions.push(arrayContains(dataset.features, query.features));
   }
 
   if (query.subjectAreas) {

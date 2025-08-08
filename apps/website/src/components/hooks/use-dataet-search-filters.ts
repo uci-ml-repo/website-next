@@ -16,7 +16,7 @@ export function useDatasetSearchFilters() {
 
   const [keywords, setKeywords] = useQueryState("keywords", parseAsArrayOf(parseAsString));
 
-  const [attributes, setAttributes] = useQueryState("attributes", parseAsArrayOf(parseAsString));
+  const [features, setFeatures] = useQueryState("features", parseAsArrayOf(parseAsString));
 
   const [subjectAreas, setSubjectAreas] = useQueryState(
     "subjectAreas",
@@ -49,7 +49,7 @@ export function useDatasetSearchFilters() {
 
   const nonSearchFilters = {
     keywords: keywords?.length ? keywords : undefined,
-    attributes: attributes?.length ? attributes : undefined,
+    features: features?.length ? features : undefined,
     subjectAreas: subjectAreas?.length ? subjectAreas : undefined,
     tasks: tasks?.length ? tasks : undefined,
     dataTypes: dataTypes?.length ? dataTypes : undefined,
@@ -61,7 +61,7 @@ export function useDatasetSearchFilters() {
 
   const setNonSearchFilters = {
     setKeywords,
-    setAttributes,
+    setFeatures,
     setSubjectAreas,
     setTasks,
     setDataTypes,
@@ -103,6 +103,7 @@ export function useDatasetSearchFilters() {
     ...setFilters,
     clearFilters,
     anyFilterActive,
+    nonSearchFilters,
     nonSearchFilterCount,
     filterCount,
   };

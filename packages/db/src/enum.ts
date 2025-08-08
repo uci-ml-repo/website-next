@@ -53,6 +53,13 @@ export namespace Enums {
     DATE = "date",
     OTHER = "other",
   }
+
+  export enum DatasetFeatureRole {
+    ID = "id",
+    FEATURE = "feature",
+    TARGET = "target",
+    OTHER = "other",
+  }
 }
 
 export type UserRole = (typeof Enums.UserRole)[keyof typeof Enums.UserRole];

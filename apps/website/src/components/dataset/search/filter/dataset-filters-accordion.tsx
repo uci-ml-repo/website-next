@@ -3,6 +3,7 @@ import type { ComponentProps } from "react";
 import { DatasetFilterDataType } from "@/components/dataset/search/filter/item/dataset-filter-data-type";
 import { DatasetFilterFeatureCount } from "@/components/dataset/search/filter/item/dataset-filter-feature-count";
 import { DatasetFilterFeatureType } from "@/components/dataset/search/filter/item/dataset-filter-feature-type";
+import { DatasetFilterFeatures } from "@/components/dataset/search/filter/item/dataset-filter-features";
 import { DatasetFilterInstanceCount } from "@/components/dataset/search/filter/item/dataset-filter-instance-count";
 import { DatasetFilterKeywords } from "@/components/dataset/search/filter/item/dataset-filter-keywords";
 import { DatasetFilterPython } from "@/components/dataset/search/filter/item/dataset-filter-python";
@@ -19,6 +20,11 @@ const filters = [
     component: DatasetFilterKeywords,
     name: "Keywords",
     tooltip: "Keywords that describe the dataset",
+  },
+  {
+    component: DatasetFilterFeatures,
+    name: "Features",
+    tooltip: "The features (variables) of the dataset",
   },
   {
     component: DatasetFilterDataType,

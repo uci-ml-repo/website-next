@@ -1,5 +1,5 @@
 {
-  "id": "553c758e-50c9-4204-9577-fc1c1f4aafd6",
+  "id": "a07cf9e5-c7f1-4c95-a3c9-ad5f153d9262",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -390,8 +390,8 @@
           "notNull": true,
           "default": "'{}'"
         },
-        "attributes": {
-          "name": "attributes",
+        "features": {
+          "name": "features",
           "type": "text[]",
           "primaryKey": false,
           "notNull": true,
@@ -489,11 +489,11 @@
           "method": "gin",
           "with": {}
         },
-        "dataset_view_attributes_index": {
-          "name": "dataset_view_attributes_index",
+        "dataset_view_features_index": {
+          "name": "dataset_view_features_index",
           "columns": [
             {
-              "expression": "attributes",
+              "expression": "features",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -558,6 +558,86 @@
           "value": "\n        (\n          \"dataset\".\"file_count\" IS NULL\n          AND \"dataset\".\"size\" IS NULL\n        )\n        OR (\n          \"dataset\".\"file_count\" IS NOT NULL\n          AND \"dataset\".\"size\" IS NOT NULL\n        )\n      "
         }
       },
+      "isRLSEnabled": false
+    },
+    "public.feature": {
+      "name": "feature",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "dataset_feature_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "dataset_feature_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "missing_values": {
+          "name": "missing_values",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "units": {
+          "name": "units",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dataset_id": {
+          "name": "dataset_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "feature_dataset_id_dataset_id_fk": {
+          "name": "feature_dataset_id_dataset_id_fk",
+          "tableFrom": "feature",
+          "tableTo": "dataset",
+          "columnsFrom": ["dataset_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "feature_dataset_id_name_unique": {
+          "name": "feature_dataset_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["dataset_id", "name"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.dataset_keyword": {
@@ -820,6 +900,11 @@
       "name": "dataset_task",
       "schema": "public",
       "values": ["classification", "regression", "clustering"]
+    },
+    "public.dataset_feature_role": {
+      "name": "dataset_feature_role",
+      "schema": "public",
+      "values": ["id", "feature", "target", "other"]
     },
     "public.user_role": {
       "name": "user_role",

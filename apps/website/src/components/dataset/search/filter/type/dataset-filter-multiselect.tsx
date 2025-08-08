@@ -1,26 +1,25 @@
 "use client";
 
-import { CommandEmpty } from "cmdk";
 import { without } from "lodash";
-import { CheckIcon, Loader2Icon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { FixedSizeList } from "react-window";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { Badge } from "@/components/ui/badge";
-import { Command, CommandItem, CommandList } from "@/components/ui/command";
-import { SearchInput } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CommandItem } from "@/components/ui/command";
+import { SearchPopover } from "@/components/ui/search-popover";
 import { cn } from "@/lib/util/cn";
 
 type Props = ComponentProps<typeof DatasetFilterItem> & {
   isLoading?: boolean;
   placeholder?: string;
-  values?: string[] | Map<string, ReactNode>;
+  values?: string[] | Map<string, number>;
   selectedValues?: string[];
   setSelectedValues: (value: string[] | ((old: string[] | null) => string[] | null) | null) => void;
+  empty?: ReactNode;
 };
 
 export function DatasetFilterMultiselect({
@@ -29,15 +28,13 @@ export function DatasetFilterMultiselect({
   setSelectedValues,
   isLoading,
   placeholder,
+  empty,
   ...props
 }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const [searchValue, setSearchValue] = useState<string>("");
-  const [searchOpen, setSearchOpen] = useState<boolean>(false);
 
   const _values = useMemo(
-    () => (values ? (values instanceof Map ? Object.keys(values) : values) : []),
+    () => (values ? (values instanceof Map ? [...values.keys()] : values) : []),
     [values],
   );
 
@@ -50,10 +47,9 @@ export function DatasetFilterMultiselect({
 
   const onSelect = useCallback(
     (value: string) => {
-      setSelectedValues((prev) => {
-        const curr = prev ?? [];
-        return selectedSet.has(value) ? curr.filter((v) => v !== value) : [...curr, value];
-      });
+      setSelectedValues((prev) =>
+        selectedSet.has(value) ? without(prev, value) : [...(prev ?? []), value],
+      );
     },
     [setSelectedValues, selectedSet],
   );
@@ -61,16 +57,20 @@ export function DatasetFilterMultiselect({
   const Row = memo(function Row({ index, style }: { index: number; style: CSSProperties }) {
     const value = matches[index];
     const selected = selectedSet.has(value);
-    const right = values instanceof Map ? values.get(value) : undefined;
+    const count = values instanceof Map ? values.get(value) : undefined;
 
     return (
       <div style={style}>
-        <CommandItem value={value} onSelect={() => onSelect(value)} className="h-7 cursor-pointer">
-          {selected ? <CheckIcon className="shrink-0" /> : <span className="w-4" />}
-          {right ? (
-            <div className="flex w-full items-center justify-between space-x-2">
+        <CommandItem
+          value={value}
+          onSelect={() => onSelect(value)}
+          className="h-7 max-w-full cursor-pointer gap-0.5"
+        >
+          {selected ? <CheckIcon className="size-4 shrink-0" /> : <span className="w-4 shrink-0" />}
+          {count ? (
+            <div className="flex min-w-0 grow items-center justify-between space-x-2">
               <div className="truncate">{value}</div>
-              <div className="shrink-0">{right}</div>
+              <div className="text-muted-foreground min-w-fit shrink-0">{count}</div>
             </div>
           ) : (
             <div className="truncate">{value}</div>
@@ -110,54 +110,27 @@ export function DatasetFilterMultiselect({
           ))}
         </div>
       )}
-      <div ref={containerRef}>
-        <Popover open={searchOpen} onOpenChange={setSearchOpen}>
-          <PopoverTrigger asChild onClick={(e) => e.preventDefault()}>
-            <SearchInput
-              setValue={setSearchValue}
-              value={searchValue}
-              placeholder={placeholder}
-              size="sm"
-              className="rounded-lg"
-              wrapperClassName="bg-background rounded-lg"
-              onClick={() => setSearchOpen(true)}
-              onInput={() => setSearchOpen(true)}
-              onBlur={(e) => {
-                if (!containerRef.current?.contains(e.relatedTarget)) setSearchOpen(false);
-              }}
-            />
-          </PopoverTrigger>
-          <PopoverContent
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            className="w-68 p-0"
-            avoidCollisions={false}
-            portal={false}
+      <SearchPopover
+        setSearchValue={setSearchValue}
+        searchValue={searchValue}
+        size="sm"
+        placeholder={placeholder}
+        empty={empty}
+        isLoading={isLoading}
+      >
+        {!!matches.length && (
+          <FixedSizeList
+            itemCount={matches.length}
+            itemSize={28}
+            height={Math.min(matches.length * 28, 240)}
+            overscanCount={10}
+            width="100%"
+            className="focus-visible:ring-ring/50 rounded-lg ring-offset-2 outline-none focus-visible:ring-4"
           >
-            {isLoading ? (
-              <div className="flex justify-center">
-                <Loader2Icon className="animate-spin" />
-              </div>
-            ) : (
-              <Command>
-                <CommandList>
-                  <CommandEmpty>No keywords found</CommandEmpty>
-                  {matches.length && (
-                    <FixedSizeList
-                      itemCount={matches.length}
-                      itemSize={28}
-                      height={240}
-                      overscanCount={5}
-                      width="100%"
-                    >
-                      {Row}
-                    </FixedSizeList>
-                  )}
-                </CommandList>
-              </Command>
-            )}
-          </PopoverContent>
-        </Popover>
-      </div>
+            {Row}
+          </FixedSizeList>
+        )}
+      </SearchPopover>
     </DatasetFilterItem>
   );
 }

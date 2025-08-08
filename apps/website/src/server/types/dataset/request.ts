@@ -17,6 +17,7 @@ export const datasetQuery = z.object({
   cursor: z.number().int().optional(),
   search: z.string().optional(),
   keywords: z.array(z.string()).optional(),
+  features: z.array(z.string()).optional(),
   subjectAreas: z.array(z.enum(enumToArray(Enums.DatasetSubjectArea))).optional(),
   dataTypes: z.array(z.enum(enumToArray(Enums.DatasetDataType))).optional(),
   featureTypes: z.array(z.enum(enumToArray(Enums.DatasetFeatureType))).optional(),
