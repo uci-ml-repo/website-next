@@ -48,7 +48,7 @@ export function DatasetFilterItem({
                     <Badge
                       variant="blue"
                       className={cn(
-                        "group/clear flex min-w-5.5 items-center justify-center px-0.5 py-0 transition-none",
+                        "group/clear flex h-5.5 min-w-5.5 items-center justify-center px-0.5 py-0 transition-none",
                         "hover:bg-accent focus-visible:bg-accent hover:border-accent focus-visible:border-accent",
                       )}
                       onClick={(event) => {

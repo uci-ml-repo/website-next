@@ -4,9 +4,9 @@ import { CommandEmpty } from "cmdk";
 import { without } from "lodash";
 import { CheckIcon, Loader2Icon } from "lucide-react";
 import { matchSorter } from "match-sorter";
-import { motion } from "motion/react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { FixedSizeList } from "react-window";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { Badge } from "@/components/ui/badge";
@@ -58,29 +58,25 @@ export function DatasetFilterMultiselect({
     [setSelectedValues, selectedSet],
   );
 
-  const Row = memo(function Row({
-    value,
-    selected,
-    right,
-    onSelect,
-  }: {
-    value: string;
-    selected: boolean;
-    right?: ReactNode;
-    onSelect: (v: string) => void;
-  }) {
+  const Row = memo(function Row({ index, style }: { index: number; style: CSSProperties }) {
+    const value = matches[index];
+    const selected = selectedSet.has(value);
+    const right = values instanceof Map ? values.get(value) : undefined;
+
     return (
-      <CommandItem value={value} onSelect={() => onSelect(value)} className="cursor-pointer">
-        {selected ? <CheckIcon className="shrink-0" /> : <span className="w-4" />}
-        {right ? (
-          <div className="flex w-full items-center justify-between space-x-2">
+      <div style={style}>
+        <CommandItem value={value} onSelect={() => onSelect(value)} className="h-7 cursor-pointer">
+          {selected ? <CheckIcon className="shrink-0" /> : <span className="w-4" />}
+          {right ? (
+            <div className="flex w-full items-center justify-between space-x-2">
+              <div className="truncate">{value}</div>
+              <div className="shrink-0">{right}</div>
+            </div>
+          ) : (
             <div className="truncate">{value}</div>
-            <div className="shrink-0">{right}</div>
-          </div>
-        ) : (
-          <div className="truncate">{value}</div>
-        )}
-      </CommandItem>
+          )}
+        </CommandItem>
+      </div>
     );
   });
 
@@ -93,25 +89,24 @@ export function DatasetFilterMultiselect({
       {selectedValues && (
         <div className="mb-2 flex flex-wrap gap-1">
           {selectedValues.map((value) => (
-            <motion.button
+            <button
               key={value}
-              layout
-              transition={{ duration: 0.2, ease: "easeInOut" }}
               className="group max-w-full overflow-hidden rounded-full"
               onClick={() => setSelectedValues((prev) => without(prev, value))}
             >
               <Badge
                 variant="blue-ghost"
                 className={cn(
-                  "max-w-full cursor-pointer",
-                  "animate-in fade-in-0 zoom-in-75",
+                  "animate-in fade-in-0 zoom-in-75 max-w-full cursor-pointer",
                   "group-hover:border-muted-foreground group-hover:bg-muted group-hover:text-muted-foreground",
                   "group-focus-visible:border-muted-foreground group-focus-visible:bg-muted group-focus-visible:text-muted-foreground",
                 )}
               >
-                <div className="truncate decoration-2 group-hover:line-through">{value}</div>
+                <div className="truncate decoration-2 group-hover:line-through group-focus-visible:line-through">
+                  {value}
+                </div>
               </Badge>
-            </motion.button>
+            </button>
           ))}
         </div>
       )}
@@ -124,7 +119,7 @@ export function DatasetFilterMultiselect({
               placeholder={placeholder}
               size="sm"
               className="rounded-lg"
-              wrapperClassName="bg-background"
+              wrapperClassName="bg-background rounded-lg"
               onClick={() => setSearchOpen(true)}
               onInput={() => setSearchOpen(true)}
               onBlur={(e) => {
@@ -146,15 +141,17 @@ export function DatasetFilterMultiselect({
               <Command>
                 <CommandList>
                   <CommandEmpty>No keywords found</CommandEmpty>
-                  {matches.map((value) => (
-                    <Row
-                      key={value}
-                      value={value}
-                      selected={selectedSet.has(value)}
-                      right={values instanceof Map ? values.get(value) : undefined}
-                      onSelect={onSelect}
-                    />
-                  ))}
+                  {matches.length && (
+                    <FixedSizeList
+                      itemCount={matches.length}
+                      itemSize={28}
+                      height={240}
+                      overscanCount={5}
+                      width="100%"
+                    >
+                      {Row}
+                    </FixedSizeList>
+                  )}
                 </CommandList>
               </Command>
             )}
