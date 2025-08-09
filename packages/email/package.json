@@ -19,7 +19,7 @@
     "dotenv": "17.2.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "zod": "4.0.15"
+    "zod": "4.0.17"
   },
   "devDependencies": {
     "@react-email/preview-server": "4.2.8",

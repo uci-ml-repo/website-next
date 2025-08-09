@@ -18,8 +18,8 @@
     }
   ],
   "scripts": {
-    "format": "pnpm -r --parallel format --log-level error",
-    "lint": "pnpm -r --parallel lint",
+    "format": "pnpm -r format --log-level error",
+    "lint": "pnpm -r lint",
     "prepare": "husky",
     "tscheck": "pnpm -r --parallel tscheck"
   },
@@ -36,6 +36,8 @@
     "@packages/prettier-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@types/node": "24.2.1",
+    "prettier": "3.6.2",
+    "eslint": "9.33.0",
     "husky": "9.1.7",
     "typescript": "5.9.2"
   },
