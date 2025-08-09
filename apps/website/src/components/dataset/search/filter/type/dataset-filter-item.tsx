@@ -49,8 +49,8 @@ export function DatasetFilterItem({
                       variant="blue"
                       className={cn(
                         "group/clear flex h-5.5 min-w-5.5 items-center justify-center px-0.5 py-0 transition-none",
-                        "hover:bg-accent hover:border-accent hover:text-accent-foreground",
-                        "focus-visible:border-accent focus-visible:bg-accent focus-visible:text-accent-foreground",
+                        "hover:bg-secondary hover:border-secondary hover:text-secondary-foreground",
+                        "focus-visible:border-secondary focus-visible:bg-secondary focus-visible:text-secondary-foreground",
                       )}
                       onClick={(event) => {
                         if (clearFilter) clearFilter();

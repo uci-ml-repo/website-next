@@ -5,8 +5,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { DatasetCard } from "@/components/dataset/dataset-card/dataset-card";
-import { DatasetCardSkeleton } from "@/components/dataset/dataset-card/dataset-card-skeleton";
+import { DatasetCard } from "@/components/dataset/preview/dataset-card";
+import { DatasetCardSkeleton } from "@/components/dataset/preview/dataset-card-skeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { CarouselApi } from "@/components/ui/carousel";
@@ -89,7 +89,7 @@ export function DatasetCardCarousel({ icon, heading, seeAllHref, datasets }: Pro
           <CarouselPrevious className="max-md:hidden" />
           <CarouselNext className="max-md:hidden" />
         </Carousel>
-        {datasets ? <CarouselScrollDots api={api} /> : <div className="h-4" />}
+        {datasets?.length ? <CarouselScrollDots api={api} /> : <div className="h-4" />}
       </div>
     </div>
   );

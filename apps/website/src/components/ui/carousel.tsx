@@ -3,7 +3,14 @@
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { ComponentProps, HTMLAttributes, KeyboardEvent } from "react";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/util/cn";
@@ -237,44 +244,52 @@ const CarouselScrollDots = ({
   api,
   className,
   ...props
-}: HTMLAttributes<HTMLDivElement> & {
-  api: CarouselApi;
-}) => {
+}: HTMLAttributes<HTMLDivElement> & { api: CarouselApi }) => {
   const [slideNodes, setSlideNodes] = useState<HTMLElement[]>([]);
   const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
-  const minSlide = slidesInView[0];
-  const maxSlide = slidesInView[slidesInView.length - 1];
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!api) return;
 
-    api.on("init", () => {
+    const handleInit = () => {
       setSlideNodes(api.slideNodes());
-      setSlidesInView(api.slidesInView());
-    });
+      if (api.slidesInView().length) setSlidesInView(api.slidesInView());
+    };
 
-    api.on("slidesChanged", () => {
+    const handleSlidesChanged = () => {
       setSlideNodes(api.slideNodes());
+      if (api.slidesInView().length) setSlidesInView(api.slidesInView());
+    };
+    const handleSlidesInView = () => {
       setSlidesInView(api.slidesInView());
-    });
+    };
 
-    api.on("slidesInView", () => {
-      setSlidesInView(api.slidesInView());
-    });
+    handleInit();
+
+    api.on("init", handleInit);
+    api.on("slidesChanged", handleSlidesChanged);
+    api.on("slidesInView", handleSlidesInView);
+
+    return () => {
+      api.off("init", handleInit);
+      api.off("slidesChanged", handleSlidesChanged);
+      api.off("slidesInView", handleSlidesInView);
+    };
   }, [api]);
 
   const SHOW_NODES_SIDES = 3;
+  const minSlide = slidesInView[0];
+  const maxSlide = slidesInView[slidesInView.length - 1];
 
   return (
     <div className={cn("flex h-4 items-end justify-center", className)} {...props}>
+      {/*{JSON.stringify(hasInit.current)}*/}
       {!!slidesInView.length && (
         <div className="animate-in fade-in-0 flex items-center justify-center space-x-1 transition-opacity">
           {slideNodes.map((_, index) => {
             if (index < minSlide - SHOW_NODES_SIDES || index > maxSlide + SHOW_NODES_SIDES) {
               return null;
             }
-
             return (
               <div
                 key={index}

@@ -16,7 +16,7 @@ async function byId(id: number) {
 async function byQuery(query: DatasetQuery) {
   const orderBy = query.order
     ? entriesT(query.order).map(([field, sort]) => sortMap[sort ?? "asc"](dataset[field]))
-    : [desc(dataset.viewCount)];
+    : [];
 
   const datasets = await db
     .select({
@@ -27,7 +27,13 @@ async function byQuery(query: DatasetQuery) {
     })
     .from(dataset)
     .where(buildQuery(query))
-    .orderBy((t) => (t.similarity ? [desc(t.similarity), ...orderBy] : orderBy))
+    .orderBy((t) =>
+      t.similarity
+        ? [...orderBy, desc(t.similarity)]
+        : orderBy.length
+          ? orderBy
+          : desc(dataset.viewCount),
+    )
     .offset(query.cursor ?? 0)
     .limit(query.limit + 1);
 

@@ -69,6 +69,7 @@ export const dataset = pgTable(
     index("dataset_view_donated_at_index").on(t.donatedAt),
     index("dataset_view_instance_count_index").on(t.instanceCount),
     index("dataset_view_feature_count_index").on(t.featureCount),
+    index("dataset_view_feature_count_nulls_last_index").on(t.featureCount.nullsLast()),
     index("dataset_view_status_index").on(t.status),
     index("dataset_view_keywords_index").using("gin", t.keywords),
     index("dataset_view_features_index").using("gin", t.features),

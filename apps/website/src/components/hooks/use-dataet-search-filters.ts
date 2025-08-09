@@ -1,51 +1,55 @@
 import { useDebouncedValue } from "@mantine/hooks";
 import { Enums } from "@packages/db/enum";
+import { useQueryState } from "nuqs";
 import {
+  createSerializer,
   parseAsArrayOf,
   parseAsBoolean,
   parseAsJson,
   parseAsString,
   parseAsStringEnum,
-  useQueryState,
-} from "nuqs";
+} from "nuqs/server";
 
-import { range } from "@/server/types/dataset/request";
+import { datasetOrder, range } from "@/server/types/dataset/request";
+
+const parser = {
+  search: parseAsString,
+  keywords: parseAsArrayOf(parseAsString),
+  features: parseAsArrayOf(parseAsString),
+  subjectAreas: parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetSubjectArea))),
+  tasks: parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetTask))),
+  dataTypes: parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetDataType))),
+  featureTypes: parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetFeatureType))),
+  instanceCount: parseAsJson(range.parse),
+  featureCount: parseAsJson(range.parse),
+  python: parseAsBoolean,
+  order: parseAsJson(datasetOrder.parse),
+};
+
+export const serializeDatasetFilters = createSerializer(parser);
 
 export function useDatasetSearchFilters() {
-  const [search, setSearch] = useQueryState("title");
+  const [search, setSearch] = useQueryState("search", parser.search);
 
-  const [keywords, setKeywords] = useQueryState("keywords", parseAsArrayOf(parseAsString));
+  const [keywords, setKeywords] = useQueryState("keywords", parser.keywords);
 
-  const [features, setFeatures] = useQueryState("features", parseAsArrayOf(parseAsString));
+  const [features, setFeatures] = useQueryState("features", parser.features);
 
-  const [subjectAreas, setSubjectAreas] = useQueryState(
-    "subjectAreas",
-    parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetSubjectArea))),
-  );
+  const [subjectAreas, setSubjectAreas] = useQueryState("subjectAreas", parser.subjectAreas);
 
-  const [tasks, setTasks] = useQueryState(
-    "tasks",
-    parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetTask))),
-  );
+  const [tasks, setTasks] = useQueryState("tasks", parser.tasks);
 
-  const [dataTypes, setDataTypes] = useQueryState(
-    "dataTypes",
-    parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetDataType))),
-  );
+  const [dataTypes, setDataTypes] = useQueryState("dataTypes", parser.dataTypes);
 
-  const [featureTypes, setFeatureTypes] = useQueryState(
-    "featureTypes",
-    parseAsArrayOf(parseAsStringEnum(Object.values(Enums.DatasetFeatureType))),
-  );
+  const [featureTypes, setFeatureTypes] = useQueryState("featureTypes", parser.featureTypes);
 
-  const [instanceCount, setInstanceCount] = useQueryState(
-    "instanceCount",
-    parseAsJson(range.parse),
-  );
+  const [instanceCount, setInstanceCount] = useQueryState("instanceCount", parser.instanceCount);
 
-  const [featureCount, setFeatureCount] = useQueryState("featureCount", parseAsJson(range.parse));
+  const [featureCount, setFeatureCount] = useQueryState("featureCount", parser.featureCount);
 
-  const [isAvailablePython, setIsAvailablePython] = useQueryState("python", parseAsBoolean);
+  const [isAvailablePython, setIsAvailablePython] = useQueryState("python", parser.python);
+
+  const [order, setOrder] = useQueryState("order", parser.order);
 
   const nonSearchFilters = {
     keywords: keywords?.length ? keywords : undefined,
@@ -74,11 +78,13 @@ export function useDatasetSearchFilters() {
   const filters = {
     ...nonSearchFilters,
     search: search?.length ? search : undefined,
+    order: order ?? undefined,
   };
 
   const setFilters = {
     ...setNonSearchFilters,
     setSearch,
+    setOrder,
   };
 
   const clearFilters = () => Object.values(setNonSearchFilters).forEach((set) => set(null));
@@ -87,9 +93,9 @@ export function useDatasetSearchFilters() {
   const nonSearchFilterCount = Object.values(nonSearchFilters).filter(Boolean).length;
   const filterCount = Object.values(filters).filter(Boolean).length;
 
-  const [debouncedSearch] = useDebouncedValue(search, 100);
-  const [debouncedFeatureCount] = useDebouncedValue(featureCount, 100);
-  const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 100);
+  const [debouncedSearch] = useDebouncedValue(search, 300);
+  const [debouncedFeatureCount] = useDebouncedValue(featureCount, 300);
+  const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 300);
 
   const debouncedFilters = {
     debouncedSearch: debouncedSearch ?? undefined,

@@ -1,7 +1,7 @@
 "use client";
 
 import { without } from "lodash";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, Loader2Icon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { memo, useCallback, useMemo, useState } from "react";
@@ -64,7 +64,7 @@ export function DatasetFilterMultiselect({
         <CommandItem
           value={value}
           onSelect={() => onSelect(value)}
-          className="h-7 max-w-full cursor-pointer gap-0.5"
+          className="h-7 max-w-full cursor-pointer gap-0.5 rounded-none"
         >
           {selected ? <CheckIcon className="size-4 shrink-0" /> : <span className="w-4 shrink-0" />}
           {count ? (
@@ -111,12 +111,23 @@ export function DatasetFilterMultiselect({
         </div>
       )}
       <SearchPopover
-        setSearchValue={setSearchValue}
-        searchValue={searchValue}
+        setValue={setSearchValue}
+        value={searchValue}
         size="sm"
         placeholder={placeholder}
-        empty={empty}
-        isLoading={isLoading}
+        empty={
+          <div className="text-muted-foreground flex min-h-10 items-center justify-center">
+            {empty}
+          </div>
+        }
+        loading={
+          isLoading && (
+            <div className="flex h-10 items-center justify-center">
+              <Loader2Icon className="animate-spin" />
+            </div>
+          )
+        }
+        className="bg-background rounded-lg"
       >
         {!!matches.length && (
           <FixedSizeList
@@ -125,7 +136,7 @@ export function DatasetFilterMultiselect({
             height={Math.min(matches.length * 28, 240)}
             overscanCount={10}
             width="100%"
-            className="focus-visible:ring-ring/50 rounded-lg ring-offset-2 outline-none focus-visible:ring-4"
+            className="focus-visible:ring-ring/50"
           >
             {Row}
           </FixedSizeList>

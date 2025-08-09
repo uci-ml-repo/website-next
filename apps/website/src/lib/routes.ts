@@ -1,12 +1,15 @@
 import path from "path";
 
+import { serializeDatasetFilters } from "@/components/hooks/use-dataet-search-filters";
+import type { DatasetQueryInput } from "@/server/types/dataset/request";
+
 export const ROUTES = {
   HOME: "/",
   ABOUT: "/about",
   CONTACT: "/contact",
   PRIVACY_POLICY: "/privacy",
 
-  SEARCH: "/datasets",
+  SEARCH: (query?: DatasetQueryInput) => `/datasets${query ? serializeDatasetFilters(query) : ""}`,
 
   AUTH: {
     ROOT: "/auth",

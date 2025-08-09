@@ -15,7 +15,11 @@ export function DatasetFilterFeatureCount(props: ComponentProps<typeof DatasetFi
   return (
     <DatasetFilterDualSlider
       {...props}
-      badge={featureCount && (featureCount.min > 0 || featureCount.max < (max ?? 0))}
+      badge={
+        featureCount &&
+        ((featureCount.min && featureCount.min > 0) ||
+          (featureCount.max && featureCount.max < (max ?? 0)))
+      }
       clearFilter={() => setFeatureCount(null)}
       max={max}
       sliderValues={[featureCount?.min ?? 0, featureCount?.max ?? max ?? 0]}

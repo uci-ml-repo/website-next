@@ -1,29 +1,30 @@
 import { CommandEmpty } from "cmdk";
-import { Loader2Icon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { useRef, useState } from "react";
 
 import { Command, CommandList } from "@/components/ui/command";
 import { SearchInput } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/util/cn";
 
-type Props = Pick<ComponentProps<typeof SearchInput>, "size"> & {
-  searchValue: string;
-  setSearchValue: (value: string) => void;
-  isLoading?: boolean;
+type Props = ComponentProps<typeof SearchInput> & {
+  value: string;
+  setValue: (value: string) => void;
   placeholder?: string;
+  loading?: ReactNode;
   empty?: ReactNode;
   children?: ReactNode;
+  contentClassName?: string;
 };
 
 export function SearchPopover({
   placeholder,
-  searchValue,
-  setSearchValue,
-  isLoading,
+  loading,
   empty,
   children,
   size,
+  contentClassName,
+  ...props
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,35 +35,27 @@ export function SearchPopover({
       <Popover open={searchOpen} onOpenChange={setSearchOpen}>
         <PopoverTrigger asChild onClick={(e) => e.preventDefault()}>
           <SearchInput
-            setValue={setSearchValue}
-            value={searchValue}
             placeholder={placeholder}
             size={size}
-            className="rounded-lg"
-            wrapperClassName="bg-background rounded-lg"
             onClick={() => setSearchOpen(true)}
             onInput={() => setSearchOpen(true)}
             onBlur={(e) => {
               if (!containerRef.current?.contains(e.relatedTarget)) setSearchOpen(false);
             }}
+            {...props}
           />
         </PopoverTrigger>
         <PopoverContent
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="w-68 p-0"
+          className={cn("overflow-hidden p-0", contentClassName)}
           avoidCollisions={false}
           portal={false}
+          style={{ width: "var(--radix-popover-trigger-width)" }}
         >
-          {isLoading ? (
-            <div className="flex h-10 items-center justify-center">
-              <Loader2Icon className="animate-spin" />
-            </div>
-          ) : (
-            <Command className="overflow-visible">
-              <CommandList className="overflow-visible">
-                <CommandEmpty className="text-muted-foreground flex h-10 items-center justify-center">
-                  {empty ?? "No results found"}
-                </CommandEmpty>
+          {loading || (
+            <Command>
+              <CommandList>
+                <CommandEmpty>{empty ?? "No results found"}</CommandEmpty>
                 {children}
               </CommandList>
             </Command>

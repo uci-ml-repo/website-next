@@ -1,14 +1,14 @@
 import type { ComponentProps } from "react";
 
-import { DatasetFilterDataType } from "@/components/dataset/search/filter/item/dataset-filter-data-type";
-import { DatasetFilterFeatureCount } from "@/components/dataset/search/filter/item/dataset-filter-feature-count";
-import { DatasetFilterFeatureType } from "@/components/dataset/search/filter/item/dataset-filter-feature-type";
-import { DatasetFilterFeatures } from "@/components/dataset/search/filter/item/dataset-filter-features";
-import { DatasetFilterInstanceCount } from "@/components/dataset/search/filter/item/dataset-filter-instance-count";
-import { DatasetFilterKeywords } from "@/components/dataset/search/filter/item/dataset-filter-keywords";
-import { DatasetFilterPython } from "@/components/dataset/search/filter/item/dataset-filter-python";
-import { DatasetFilterSubjectArea } from "@/components/dataset/search/filter/item/dataset-filter-subject-area";
-import { DatasetFilterTask } from "@/components/dataset/search/filter/item/dataset-filter-task";
+import { DatasetFilterDataType } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-data-type";
+import { DatasetFilterFeatureCount } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-feature-count";
+import { DatasetFilterFeatureType } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-feature-type";
+import { DatasetFilterFeatures } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-features";
+import { DatasetFilterInstanceCount } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-instance-count";
+import { DatasetFilterKeywords } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-keywords";
+import { DatasetFilterPython } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-python";
+import { DatasetFilterSubjectArea } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-subject-area";
+import { DatasetFilterTask } from "@/components/dataset/search/filter/item/collapsible/dataset-filter-task";
 import { Accordion } from "@/components/ui/accordion";
 
 type Props = ComponentProps<typeof Accordion> & {

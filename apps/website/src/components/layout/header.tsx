@@ -44,7 +44,7 @@ export function Header({ initialSession }: { initialSession: Session | null }) {
       className={cn(
         "z-40 h-(--header-height) overflow-y-hidden transition-shadow",
         "max-md:bg-background max-md:fixed max-md:top-0 max-md:right-0 max-md:left-0",
-        { "border-b max-md:shadow-sm": hasScrolled },
+        { "max-md:border-b max-md:shadow-sm": hasScrolled },
       )}
     >
       <div className="flex items-center justify-between">

@@ -53,7 +53,7 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
           </SidebarNavLink>
 
           {/* Datasets */}
-          <SidebarNavLink href={ROUTES.SEARCH} activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}>
+          <SidebarNavLink href={ROUTES.SEARCH()} activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}>
             <DatabaseIcon />
             <div>Datasets</div>
           </SidebarNavLink>

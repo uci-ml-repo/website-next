@@ -1,14 +1,19 @@
 "use client";
 
+import { AlertCircleIcon, Loader2Icon } from "lucide-react";
+import type { HTMLAttributes } from "react";
+
+import { DatasetRow } from "@/components/dataset/preview/dataset-row";
+import { DatasetRowSkeleton } from "@/components/dataset/preview/dataset-row-skeleton";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { cn } from "@/lib/util/cn";
 import { trpc } from "@/server/trpc/query/client";
 
-import { DatasetFilterTitle } from "./filter/item/dataset-filter-title";
-
 export function DatasetSearchResults() {
-  const query = useDatasetSearchFilters();
+  const { nonSearchFilterCount, ...query } = useDatasetSearchFilters();
 
-  const { data } = trpc.dataset.find.byQuery.useQuery(
+  const { data, isFetching, error } = trpc.dataset.find.byQuery.useQuery(
     {
       ...query,
       search: query.debouncedSearch,
@@ -20,17 +25,83 @@ export function DatasetSearchResults() {
     },
   );
 
-  const datasets = data?.datasets;
-  const count = data?.count;
+  return (
+    <div>
+      {!data ? (
+        <div className="divide-y">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <DatasetRowSkeleton key={index} />
+          ))}
+        </div>
+      ) : data.datasets.length ? (
+        <>
+          <SearchMessage
+            datasetCount={data.count}
+            filterCount={nonSearchFilterCount}
+            search={query.search}
+            isFetching={isFetching}
+            error={error?.message}
+            className="max-md:hidden"
+          />
+          <div className="divide-y">
+            {data.datasets &&
+              data.datasets.map((dataset) => <DatasetRow key={dataset.id} dataset={dataset} />)}
+          </div>
+        </>
+      ) : (
+        <div>None</div>
+      )}
+    </div>
+  );
+}
+
+function SearchMessage({
+  datasetCount,
+  filterCount,
+  search,
+  isFetching,
+  error,
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & {
+  datasetCount: number;
+  filterCount: number;
+  search?: string;
+  isFetching: boolean;
+  error?: string;
+}) {
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircleIcon />
+        <AlertTitle>Search Failed</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  const countMessage = (
+    <>
+      {isFetching ? (
+        <Loader2Icon className="inline size-5 -translate-y-0.5 animate-spin" />
+      ) : (
+        datasetCount.toLocaleString()
+      )}{" "}
+      dataset{datasetCount !== 1 && "s"}
+    </>
+  );
+
+  const searchMessage =
+    search && `for "${search.length > 30 ? search.slice(0, 30) + "..." : search}"`;
+
+  const filterMessage =
+    !!filterCount && `matching ${filterCount} filter${filterCount !== 1 ? "s" : ""}`;
 
   return (
-    <div className="w-full">
-      <h1 className="h-10 text-2xl font-bold">Browse datasets</h1>
-
-      <DatasetFilterTitle />
-      <div>{JSON.stringify(query)}</div>
-      <div>{JSON.stringify(datasets?.map((d) => d.title))}</div>
-      <div>{JSON.stringify(count)}</div>
-    </div>
+    (filterCount || search) && (
+      <div className={cn("text-muted-foreground px-2 text-lg wrap-anywhere", className)} {...props}>
+        Found {countMessage} {searchMessage} {filterMessage}
+      </div>
+    )
   );
 }

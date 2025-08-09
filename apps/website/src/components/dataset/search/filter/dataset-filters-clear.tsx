@@ -8,12 +8,7 @@ export function DatasetFiltersClear() {
 
   return (
     anyFilterActive && (
-      <Button
-        variant="secondary"
-        size="xs"
-        onClick={clearFilters}
-        className="hover:bg-accent focus:bg-accent"
-      >
+      <Button variant="secondary" size="xs" onClick={clearFilters}>
         <XIcon />
         Clear Filters
       </Button>

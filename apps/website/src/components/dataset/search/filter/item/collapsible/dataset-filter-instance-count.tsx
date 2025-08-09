@@ -18,7 +18,11 @@ export function DatasetFilterInstanceCount(props: ComponentProps<typeof DatasetF
   return (
     <DatasetFilterDualSlider
       {...props}
-      badge={instanceCount && (instanceCount.min > 0 || instanceCount.max < (max ?? 0))}
+      badge={
+        instanceCount &&
+        ((instanceCount.min && instanceCount.min > 0) ||
+          (instanceCount.max && instanceCount.max < (max ?? 0)))
+      }
       clearFilter={() => setInstanceCount(null)}
       max={max}
       sliderValues={[instanceCount?.min ?? 0, instanceCount?.max ?? max ?? 0]}

@@ -8,14 +8,12 @@ import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-fi
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
 export function DatasetFilterFeatures(props: ComponentProps<typeof DatasetFilterItem>) {
-  const query = useDatasetSearchFilters();
+  const { features, setFeatures } = useDatasetSearchFilters();
 
   const { data: remainingFilters, isLoading } = trpc.feature.find.remainingFilters.useQuery(
-    { ...query, search: undefined },
+    { features },
     skipBatch,
   );
-
-  const { features, setFeatures } = useDatasetSearchFilters();
 
   return (
     <DatasetFilterMultiselect

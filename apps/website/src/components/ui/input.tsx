@@ -34,15 +34,15 @@ const searchInputVariants = cva(
     variants: {
       size: {
         sm: cn(
-          "[&_input]:h-8 [&_input]:py-1 [&_input]:pl-8 [&_input]:!text-sm [&_input]:placeholder:text-sm",
+          "[&_input]:h-8 [&_input]:px-8 [&_input]:py-1 [&_input]:!text-sm [&_input]:placeholder:text-sm",
           "[&_svg[data-icon=clear]]:right-1.5 [&_svg[data-icon=search]]:left-1.5",
         ),
         md: cn(
-          "[&_input]:h-10 [&_input]:py-1.5 [&_input]:pl-10 [&_input]:!text-base [&_input]:placeholder:text-base",
+          "[&_input]:h-10 [&_input]:px-10 [&_input]:py-1.5 [&_input]:!text-base [&_input]:placeholder:text-base",
           "[&_svg[data-icon=clear]]:right-3 [&_svg[data-icon=search]]:left-3",
         ),
         lg: cn(
-          "[&_input]:h-12 [&_input]:py-4 [&_input]:pl-11 [&_input]:!text-xl [&_input]:placeholder:text-xl",
+          "[&_input]:h-12 [&_input]:px-11 [&_input]:py-4 [&_input]:!text-xl [&_input]:placeholder:text-xl",
           "[&_svg[data-icon=clear]]:right-3.5 [&_svg[data-icon=search]]:left-3.5",
         ),
       },
@@ -55,7 +55,6 @@ const searchInputVariants = cva(
 
 function SearchInput({
   className,
-  wrapperClassName,
   placeholder,
   size,
   value,
@@ -63,10 +62,9 @@ function SearchInput({
   ...props
 }: HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof searchInputVariants> & {
-    setValue: (value: string) => void;
     value: string | undefined;
+    setValue: (value: string) => void;
     placeholder?: string;
-    wrapperClassName?: string;
   }) {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
@@ -78,7 +76,7 @@ function SearchInput({
   );
 
   return (
-    <div className={cn(searchInputVariants({ size, className: wrapperClassName }))} {...props}>
+    <div className={cn(searchInputVariants({ size }))} {...props}>
       <Input
         placeholder={placeholder}
         value={value}
