@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebouncedValue, useMounted } from "@mantine/hooks";
+import { useDebouncedValue } from "@mantine/hooks";
 import { Enums } from "@packages/db/enum";
 import { parseAsInteger, useQueryState } from "nuqs";
 import {
@@ -108,14 +108,11 @@ export function useDatasetSearchFilters() {
     instanceCount: debouncedInstanceCount ?? undefined,
   };
 
-  const mounted = useMounted();
   const nonPaginationFiltersString = JSON.stringify(nonPaginationFilters);
 
   useEffect(() => {
-    if (mounted) {
-      setCursor(0);
-    }
-  }, [mounted, nonPaginationFiltersString, setCursor]);
+    setCursor((prev) => (prev ? 0 : null));
+  }, [nonPaginationFiltersString, setCursor]);
 
   return {
     ...filters,

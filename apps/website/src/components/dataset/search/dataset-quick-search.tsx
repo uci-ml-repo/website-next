@@ -48,7 +48,7 @@ export function DatasetQuickSearch() {
         size="lg"
         contentClassName="rounded-xl shadow-xl"
         aria-label="Search datasets by title"
-        empty={empty} // todo
+        empty={empty}
         loading={((searchValue && !debouncedSearchValue) || isLoading) && loading}
       >
         {searchValue && !!datasets?.length && (

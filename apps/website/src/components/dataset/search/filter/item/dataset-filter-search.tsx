@@ -3,7 +3,7 @@
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { SearchInput } from "@/components/ui/input";
 
-export function DatasetFilterTitle() {
+export function DatasetFilterSearch() {
   const { search, setSearch } = useDatasetSearchFilters();
 
   return (

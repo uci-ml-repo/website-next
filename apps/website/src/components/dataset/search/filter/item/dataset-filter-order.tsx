@@ -81,15 +81,14 @@ export function DatasetFilterOrder() {
   }
 
   useEffect(() => {
-    if (search && !order) {
+    if (search) {
       setValue("relevance");
       setOrder(null);
     } else if (value === "relevance") {
       setValue({ viewCount: "desc" });
       setOrder(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, setOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Select value={JSON.stringify(value)} onValueChange={onValueChange}>
