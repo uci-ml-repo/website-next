@@ -97,7 +97,7 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
             <>
               {dataset.fileCount !== null && dataset.size !== null ? (
                 <div className="flex items-center space-x-1">
-                  <span className="@4xs:block hidden">
+                  <span className="@max-4xs:hidden">
                     {dataset.fileCount === 1 ? "1 File" : `${dataset.fileCount} Files`} &middot;
                   </span>
                   <span>{abbreviateFileSize(dataset.size)}</span>

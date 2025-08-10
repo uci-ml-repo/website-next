@@ -3,16 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
 import type { DatasetSelect } from "@/server/types/dataset/response";
 
+import { DatasetHoverCard } from "./dataset-hover-card";
+
 type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   dataset: DatasetSelect;
+  hoverCard?: boolean;
 };
 
-export function DatasetRow({ dataset, className, ...props }: Props) {
+export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
   const datasetStats = [
     {
       icon: <Columns3Icon />,
@@ -30,7 +34,7 @@ export function DatasetRow({ dataset, className, ...props }: Props) {
     },
   ];
 
-  return (
+  const row = (
     <Link
       className={cn(
         "group @container flex w-full !cursor-pointer items-center space-x-3 !p-4",
@@ -77,5 +81,16 @@ export function DatasetRow({ dataset, className, ...props }: Props) {
         )}
       </div>
     </Link>
+  );
+
+  return hoverCard ? (
+    <HoverCard openDelay={800} closeDelay={100}>
+      <HoverCardTrigger asChild>{row}</HoverCardTrigger>
+      <HoverCardContent align="end" side="top" asChild>
+        <DatasetHoverCard dataset={dataset} className="w-[50dvw] max-w-xl min-w-64 !p-0" />
+      </HoverCardContent>
+    </HoverCard>
+  ) : (
+    row
   );
 }

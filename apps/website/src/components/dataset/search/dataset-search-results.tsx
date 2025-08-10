@@ -42,7 +42,9 @@ export function DatasetSearchResults() {
       <div className="space-y-4">
         <div className="divide-y border-b">
           {data.datasets &&
-            data.datasets.map((dataset) => <DatasetRow key={dataset.id} dataset={dataset} />)}
+            data.datasets.map((dataset) => (
+              <DatasetRow key={dataset.id} dataset={dataset} hoverCard />
+            ))}
         </div>
 
         <PaginationNav
