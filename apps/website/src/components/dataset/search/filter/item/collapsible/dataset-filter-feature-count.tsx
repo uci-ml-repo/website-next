@@ -23,7 +23,11 @@ export function DatasetFilterFeatureCount(props: ComponentProps<typeof DatasetFi
       clearFilter={() => setFeatureCount(null)}
       max={max}
       sliderValues={[featureCount?.min ?? 0, featureCount?.max ?? max ?? 0]}
-      onValueChange={(values) => setFeatureCount({ min: values[0], max: values[1] })}
+      onValueChange={(values) =>
+        setFeatureCount(
+          values[0] === 0 && values[1] === max ? null : { min: values[0], max: values[1] },
+        )
+      }
       exponential={0.5}
       isLoading={isLoading}
     />

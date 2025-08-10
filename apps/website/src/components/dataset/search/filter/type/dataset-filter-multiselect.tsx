@@ -4,7 +4,7 @@ import { without } from "lodash";
 import { CheckIcon, Loader2Icon } from "lucide-react";
 import { matchSorter } from "match-sorter";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FixedSizeList } from "react-window";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
@@ -53,6 +53,14 @@ export function DatasetFilterMultiselect({
     },
     [setSelectedValues, selectedSet],
   );
+
+  const listRef = useRef<FixedSizeList>(null);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo(0);
+    }
+  }, [searchValue]);
 
   const Row = memo(function Row({ index, style }: { index: number; style: CSSProperties }) {
     const value = matches[index];
@@ -131,6 +139,7 @@ export function DatasetFilterMultiselect({
       >
         {!!matches.length && (
           <FixedSizeList
+            ref={listRef}
             itemCount={matches.length}
             itemSize={28}
             height={Math.min(matches.length * 28, 240)}

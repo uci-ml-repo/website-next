@@ -32,7 +32,10 @@ export function DatasetRow({ dataset }: Props) {
   return (
     <Link
       href={ROUTES.DATASET.DATASET(dataset)}
-      className="group hover:bg-accent @container flex w-full items-center space-x-3 p-4"
+      className={cn(
+        "group @container flex w-full items-center space-x-3 p-4",
+        "hover:bg-accent focus-visible:bg-accent",
+      )}
     >
       <Image
         src={ROUTES.DATASET.THUMBNAIL(dataset)}
@@ -43,7 +46,7 @@ export function DatasetRow({ dataset }: Props) {
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
         <div className="min-w-0">
-          <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus:underline">
+          <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus-visible:underline">
             {dataset.title}
           </div>
           <div className="text-muted-foreground truncate text-sm">

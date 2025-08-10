@@ -1,6 +1,8 @@
-import { useDebouncedValue } from "@mantine/hooks";
+"use client";
+
+import { useDebouncedValue, useMounted } from "@mantine/hooks";
 import { Enums } from "@packages/db/enum";
-import { useQueryState } from "nuqs";
+import { parseAsInteger, useQueryState } from "nuqs";
 import {
   createSerializer,
   parseAsArrayOf,
@@ -9,6 +11,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from "nuqs/server";
+import { useEffect } from "react";
 
 import { datasetOrder, range } from "@/server/types/dataset/request";
 
@@ -24,32 +27,26 @@ const parser = {
   featureCount: parseAsJson(range.parse),
   python: parseAsBoolean,
   order: parseAsJson(datasetOrder.parse),
+  limit: parseAsInteger,
+  cursor: parseAsInteger,
 };
 
 export const serializeDatasetFilters = createSerializer(parser);
 
 export function useDatasetSearchFilters() {
   const [search, setSearch] = useQueryState("search", parser.search);
-
   const [keywords, setKeywords] = useQueryState("keywords", parser.keywords);
-
   const [features, setFeatures] = useQueryState("features", parser.features);
-
   const [subjectAreas, setSubjectAreas] = useQueryState("subjectAreas", parser.subjectAreas);
-
   const [tasks, setTasks] = useQueryState("tasks", parser.tasks);
-
   const [dataTypes, setDataTypes] = useQueryState("dataTypes", parser.dataTypes);
-
   const [featureTypes, setFeatureTypes] = useQueryState("featureTypes", parser.featureTypes);
-
   const [instanceCount, setInstanceCount] = useQueryState("instanceCount", parser.instanceCount);
-
   const [featureCount, setFeatureCount] = useQueryState("featureCount", parser.featureCount);
-
   const [isAvailablePython, setIsAvailablePython] = useQueryState("python", parser.python);
-
   const [order, setOrder] = useQueryState("order", parser.order);
+  const [limit, setLimit] = useQueryState("limit", parser.limit);
+  const [cursor, setCursor] = useQueryState("cursor", parser.cursor);
 
   const nonSearchFilters = {
     keywords: keywords?.length ? keywords : undefined,
@@ -63,13 +60,19 @@ export function useDatasetSearchFilters() {
     featureCount: featureCount ?? undefined,
   };
 
-  const filters = {
+  const nonPaginationFilters = {
     ...nonSearchFilters,
     search: search?.length ? search : undefined,
-    order: order ?? undefined,
   };
 
-  const setFilters = {
+  const filters = {
+    ...nonPaginationFilters,
+    order: order ?? undefined,
+    limit: limit ?? 10,
+    cursor: cursor ?? undefined,
+  };
+
+  const nonPaginationSetFilters = {
     setKeywords,
     setFeatures,
     setSubjectAreas,
@@ -80,16 +83,22 @@ export function useDatasetSearchFilters() {
     setInstanceCount,
     setFeatureCount,
     setSearch,
-    setOrder,
   };
 
-  const clearFilters = () => Object.values(setFilters).forEach((set) => set(null));
-  const anyFilterActive = Object.values(filters).some(Boolean);
+  const setFilters = {
+    ...nonPaginationSetFilters,
+    setOrder,
+    setLimit,
+    setCursor,
+  };
+
+  const clearFilters = () => Object.values(nonPaginationSetFilters).forEach((set) => set(null));
+  const anyFilterActive = Object.values(nonPaginationFilters).some(Boolean);
 
   const nonSearchFilterCount = Object.values(nonSearchFilters).filter(Boolean).length;
   const filterCount = Object.values(filters).filter(Boolean).length;
 
-  const [debouncedSearch] = useDebouncedValue(search, 300);
+  const [debouncedSearch] = useDebouncedValue(search, 500);
   const [debouncedFeatureCount] = useDebouncedValue(featureCount, 300);
   const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 300);
 
@@ -98,6 +107,15 @@ export function useDatasetSearchFilters() {
     featureCount: debouncedFeatureCount ?? undefined,
     instanceCount: debouncedInstanceCount ?? undefined,
   };
+
+  const mounted = useMounted();
+  const nonPaginationFiltersString = JSON.stringify(nonPaginationFilters);
+
+  useEffect(() => {
+    if (mounted) {
+      setCursor(0);
+    }
+  }, [mounted, nonPaginationFiltersString, setCursor]);
 
   return {
     ...filters,

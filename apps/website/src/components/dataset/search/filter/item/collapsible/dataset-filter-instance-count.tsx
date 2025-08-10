@@ -26,7 +26,11 @@ export function DatasetFilterInstanceCount(props: ComponentProps<typeof DatasetF
       clearFilter={() => setInstanceCount(null)}
       max={max}
       sliderValues={[instanceCount?.min ?? 0, instanceCount?.max ?? max ?? 0]}
-      onValueChange={(values) => setInstanceCount({ min: values[0], max: values[1] })}
+      onValueChange={(values) =>
+        setInstanceCount(
+          values[0] === 0 && values[1] === max ? null : { min: values[0], max: values[1] },
+        )
+      }
       exponential={0.5}
       isLoading={isLoading}
     />

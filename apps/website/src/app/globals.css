@@ -37,8 +37,10 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --container-8xl: 96rem;
+  --breakpoint-xs: 32rem;
+
   --container-9xl: 140rem;
+  --container-8xl: 96rem;
   --container-4xs: 14rem;
 
   --shadow-sidebar: 0px 0px 16px 8px rgba(0, 0, 0, 0.1);

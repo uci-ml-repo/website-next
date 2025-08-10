@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
+import Link from "next/link";
 import type { ComponentProps } from "react";
 
 import type { Button } from "@/components/ui/button";
@@ -33,20 +34,30 @@ function PaginationItem({ ...props }: ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean;
-} & Pick<ComponentProps<typeof Button>, "size"> &
-  ComponentProps<"a">;
+  disabled?: boolean;
+} & Pick<ComponentProps<typeof Button>, "size" | "variant"> &
+  ComponentProps<typeof Link>;
 
-function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
+function PaginationLink({
+  className,
+  isActive,
+  disabled,
+  size = "icon",
+  variant,
+  ...props
+}: PaginationLinkProps) {
   return (
-    <a
+    <Link
       aria-current={isActive ? "page" : undefined}
+      aria-disabled={disabled}
       data-slot="pagination-link"
       data-active={isActive}
       className={cn(
         buttonVariants({
-          variant: isActive ? "outline" : "ghost",
+          variant: variant ?? (isActive ? "default" : "outline"),
           size,
         }),
+        "aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=false]:transition-none",
         className,
       )}
       {...props}
@@ -54,29 +65,35 @@ function PaginationLink({ className, isActive, size = "icon", ...props }: Pagina
   );
 }
 
-function PaginationPrevious({ className, ...props }: ComponentProps<typeof PaginationLink>) {
+function PaginationPrevious({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
-      size="default"
+      size={children ? "default" : "icon"}
+      variant="ghost"
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
+      {children}
     </PaginationLink>
   );
 }
 
-function PaginationNext({ className, ...props }: ComponentProps<typeof PaginationLink>) {
+function PaginationNext({ className, children, ...props }: ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
       aria-label="Go to next page"
-      size="default"
+      size={children ? "default" : "icon"}
+      variant="ghost"
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">Next</span>
+      {children}
       <ChevronRightIcon />
     </PaginationLink>
   );
