@@ -1,17 +1,18 @@
 import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ComponentProps } from "react";
 
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
 import type { DatasetSelect } from "@/server/types/dataset/response";
 
-type Props = {
+type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   dataset: DatasetSelect;
 };
 
-export function DatasetRow({ dataset }: Props) {
+export function DatasetRow({ dataset, className, ...props }: Props) {
   const datasetStats = [
     {
       icon: <Columns3Icon />,
@@ -31,11 +32,13 @@ export function DatasetRow({ dataset }: Props) {
 
   return (
     <Link
-      href={ROUTES.DATASET.DATASET(dataset)}
       className={cn(
-        "group @container flex w-full items-center space-x-3 p-4",
+        "group @container flex w-full !cursor-pointer items-center space-x-3 !p-4",
         "hover:bg-accent focus-visible:bg-accent",
+        className,
       )}
+      {...props}
+      href={ROUTES.DATASET.DATASET(dataset)}
     >
       <Image
         src={ROUTES.DATASET.THUMBNAIL(dataset)}

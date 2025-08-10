@@ -98,7 +98,7 @@ export function useDatasetSearchFilters() {
   const nonSearchFilterCount = Object.values(nonSearchFilters).filter(Boolean).length;
   const filterCount = Object.values(filters).filter(Boolean).length;
 
-  const [debouncedSearch] = useDebouncedValue(search, 500);
+  const [debouncedSearch] = useDebouncedValue(search, 300);
   const [debouncedFeatureCount] = useDebouncedValue(featureCount, 300);
   const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 300);
 
