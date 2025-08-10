@@ -8,20 +8,19 @@ import { DatasetRowSkeleton } from "@/components/dataset/preview/dataset-row-ske
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/util/cn";
-import { trpc } from "@/server/trpc/query/client";
+import { skipBatch, trpc } from "@/server/trpc/query/client";
 
 export function DatasetSearchResults() {
-  const { nonSearchFilterCount, ...query } = useDatasetSearchFilters();
+  const { nonSearchFilterCount, debouncedFilters, filters, search } = useDatasetSearchFilters();
 
   const { data, isFetching, error } = trpc.dataset.find.byQuery.useQuery(
     {
-      ...query,
-      search: query.debouncedSearch,
-      featureCount: query.debouncedFeatureCount,
-      instanceCount: query.debouncedInstanceCount,
+      ...filters,
+      ...debouncedFilters,
     },
     {
       placeholderData: (prev) => prev,
+      ...skipBatch,
     },
   );
 
@@ -38,7 +37,7 @@ export function DatasetSearchResults() {
           <SearchMessage
             datasetCount={data.count}
             filterCount={nonSearchFilterCount}
-            search={query.search}
+            search={search}
             isFetching={isFetching}
             error={error?.message}
             className="max-md:hidden"

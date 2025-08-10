@@ -63,7 +63,13 @@ export function useDatasetSearchFilters() {
     featureCount: featureCount ?? undefined,
   };
 
-  const setNonSearchFilters = {
+  const filters = {
+    ...nonSearchFilters,
+    search: search?.length ? search : undefined,
+    order: order ?? undefined,
+  };
+
+  const setFilters = {
     setKeywords,
     setFeatures,
     setSubjectAreas,
@@ -73,22 +79,12 @@ export function useDatasetSearchFilters() {
     setIsAvailablePython,
     setInstanceCount,
     setFeatureCount,
-  };
-
-  const filters = {
-    ...nonSearchFilters,
-    search: search?.length ? search : undefined,
-    order: order ?? undefined,
-  };
-
-  const setFilters = {
-    ...setNonSearchFilters,
     setSearch,
     setOrder,
   };
 
-  const clearFilters = () => Object.values(setNonSearchFilters).forEach((set) => set(null));
-  const anyFilterActive = Object.values(nonSearchFilters).some(Boolean);
+  const clearFilters = () => Object.values(setFilters).forEach((set) => set(null));
+  const anyFilterActive = Object.values(filters).some(Boolean);
 
   const nonSearchFilterCount = Object.values(nonSearchFilters).filter(Boolean).length;
   const filterCount = Object.values(filters).filter(Boolean).length;
@@ -98,15 +94,16 @@ export function useDatasetSearchFilters() {
   const [debouncedInstanceCount] = useDebouncedValue(instanceCount, 300);
 
   const debouncedFilters = {
-    debouncedSearch: debouncedSearch ?? undefined,
-    debouncedFeatureCount: debouncedFeatureCount ?? undefined,
-    debouncedInstanceCount: debouncedInstanceCount ?? undefined,
+    search: debouncedSearch ?? undefined,
+    featureCount: debouncedFeatureCount ?? undefined,
+    instanceCount: debouncedInstanceCount ?? undefined,
   };
 
   return {
     ...filters,
-    ...debouncedFilters,
     ...setFilters,
+    filters,
+    debouncedFilters,
     clearFilters,
     anyFilterActive,
     nonSearchFilters,
