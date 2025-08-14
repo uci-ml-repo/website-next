@@ -4,9 +4,9 @@ import { forbidden, notFound, permanentRedirect, unauthorized } from "next/navig
 import type { ReactNode } from "react";
 import { cache } from "react";
 
+import { DatasetViewHeader } from "@/components/dataset/view/dataset-view-header";
 import { ROUTES } from "@/lib/routes";
 import { HydrateClient, trpc } from "@/server/trpc/query/server";
-import { DatasetViewHeader } from "@/components/dataset/view/dataset-view-header";
 
 const getDataset = cache(async (id: number) => {
   return trpc.dataset.find.byId({ id });
@@ -61,8 +61,10 @@ export default async function Layout({
 
   return (
     <HydrateClient>
-      <DatasetViewHeader id={id} />
-      {children}
+      <div className="blur-background">
+        <DatasetViewHeader id={id} />
+        {children}
+      </div>
     </HydrateClient>
   );
 }

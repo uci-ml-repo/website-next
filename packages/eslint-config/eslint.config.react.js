@@ -1,4 +1,4 @@
-import mdxPlugin from "eslint-plugin-mdx";
+import * as mdxPlugin from "eslint-plugin-mdx";
 import reactPlugin from "eslint-plugin-react";
 
 import defaultConfig from "./eslint.config.js";

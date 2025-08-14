@@ -49,6 +49,8 @@
 
   --header-height: 4rem;
   --dataset-card-height: 22rem;
+
+  --shadow-glow: 0 0 40px 20px var(--background);
 }
 
 :root {
@@ -129,11 +131,7 @@
 }
 
 .blur-background {
-  @apply relative;
-}
-
-.blur-background::before {
-  @apply bg-background absolute -z-10 size-full blur-lg content-[''];
+  @apply bg-background shadow-glow;
 }
 
 .lift {
