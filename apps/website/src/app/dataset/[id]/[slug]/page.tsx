@@ -1,10 +1,7 @@
-import { DatasetViewHeader } from "@/components/dataset/view/dataset-view-header";
-import { HydrateClient, trpc } from "@/server/trpc/query/server";
+import { DatasetViewAbout } from "@/components/dataset/view/about/dataset-view-about";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const id = Number((await params).id);
 
-  await trpc.dataset.find.byId.prefetch({ id });
-
-  return <div>CONTENT</div>;
+  return <DatasetViewAbout id={id} />;
 }

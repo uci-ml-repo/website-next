@@ -18,6 +18,14 @@
     "studio": "drizzle-kit studio",
     "tscheck": "tsc --noEmit"
   },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix --max-warnings=0"
+    ]
+  },
   "prettier": "@packages/prettier-config",
   "dependencies": {
     "@t3-oss/env-core": "0.13.8",
@@ -29,13 +37,5 @@
   "devDependencies": {
     "@types/pg": "8.15.5",
     "drizzle-kit": "0.31.4"
-  },
-  "lint-staged": {
-    "*": [
-      "prettier --write"
-    ],
-    "*.{js,ts}": [
-      "eslint --fix --max-warnings=0"
-    ]
   }
 }

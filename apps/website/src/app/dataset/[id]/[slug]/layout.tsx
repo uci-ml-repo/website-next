@@ -59,6 +59,8 @@ export default async function Layout({
 
   if (dataset.slug !== decodeURIComponent(slug)) permanentRedirect(ROUTES.DATASET(dataset));
 
+  await trpc.dataset.find.byId.prefetch({ id });
+
   return (
     <HydrateClient>
       <div className="blur-background">
