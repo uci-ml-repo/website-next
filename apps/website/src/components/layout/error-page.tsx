@@ -50,6 +50,7 @@ export function ErrorPage({ code, header, children }: ErrorGraphicProps) {
               className="drop-shadow-xl"
               width={200}
               height={200}
+              priority
             />
           </motion.div>
         </div>

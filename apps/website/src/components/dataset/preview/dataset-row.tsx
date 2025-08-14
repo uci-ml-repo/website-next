@@ -42,7 +42,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
         className,
       )}
       {...props}
-      href={ROUTES.DATASET.DATASET(dataset)}
+      href={ROUTES.DATASET(dataset)}
     >
       <Image
         src={ROUTES.DATASET.THUMBNAIL(dataset)}

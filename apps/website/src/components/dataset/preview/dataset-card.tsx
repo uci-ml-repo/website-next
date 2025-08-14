@@ -47,7 +47,7 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
   ];
 
   return (
-    <Link href={ROUTES.DATASET.DATASET(dataset)} className="lift block rounded-2xl">
+    <Link href={ROUTES.DATASET(dataset)} className="lift block rounded-2xl">
       <Card
         className={cn("group flex h-(--dataset-card-height) flex-col overflow-hidden", className)}
         {...props}

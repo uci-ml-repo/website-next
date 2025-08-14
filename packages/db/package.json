@@ -9,6 +9,7 @@
     "./env": "./env.ts"
   },
   "scripts": {
+    "_reset": "docker compose down && docker compose up -d --build && rm -rf ./migrations && pnpm generate init && sed -i '1iCREATE EXTENSION IF NOT EXISTS pg_trgm;\\n' ./migrations/0000_init.sql && sed -i '2i\\' ./migrations/0000_init.sql && pnpm migrate",
     "format": "prettier --write .",
     "generate": "drizzle-kit generate --name",
     "lint": "eslint --fix --max-warnings=0",

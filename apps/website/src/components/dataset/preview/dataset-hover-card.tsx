@@ -71,7 +71,7 @@ export function DatasetHoverCard({ dataset, className, ...props }: Props) {
         <div className="space-y-2">
           <CardTitle>
             <Link
-              href={ROUTES.DATASET.DATASET(dataset)}
+              href={ROUTES.DATASET(dataset)}
               className="line-clamp-2 w-fit decoration-2 hover:underline"
             >
               {dataset.title}
@@ -106,7 +106,7 @@ export function DatasetHoverCard({ dataset, className, ...props }: Props) {
         </CardDescription>
       </CardContent>
       <CardFooter className="@container flex h-10 items-center justify-between border-t py-2.5">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3.5">
           <div className="flex items-center space-x-1">
             <EyeIcon className="size-5" />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>

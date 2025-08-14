@@ -13,7 +13,7 @@ export const ROUTES = {
 
   AUTH: {
     ROOT: "/auth",
-    SIGN_IN: "/auth/login",
+    SIGN_IN: `/auth/login`,
     FORGOT_PASSWORD: "/auth/forgot",
     RESET_PASSWORD: "/auth/reset",
     VERIFY: "/auth/verify",
@@ -42,15 +42,14 @@ export const ROUTES = {
     DONATION_FORM: "/contribute/donation/form",
   },
 
-  DATASET: {
-    ROOT: "/dataset",
-
-    DATASET: ({ id, slug }: { id: number; slug: string }) =>
+  DATASET: Object.assign(
+    ({ id, slug }: { id: number; slug: string }) =>
       path.join(ROUTES.DATASET.ROOT, String(id), slug),
-
-    FILE: `https://${process.env.NEXT_PUBLIC_BUCKET_URL}/`,
-
-    THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
-      path.join(ROUTES.DATASET.FILE, hasGraphics ? String(id) : "default", "thumbnail.png"),
-  },
+    {
+      ROOT: "/dataset",
+      FILE: `https://${process.env.NEXT_PUBLIC_BUCKET_URL}/`,
+      THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
+        path.join(ROUTES.DATASET.FILE, hasGraphics ? String(id) : "default", "thumbnail.png"),
+    },
+  ),
 };

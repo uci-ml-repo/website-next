@@ -1,6 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
---> statement-breakpoint
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
 
 --> statement-breakpoint
@@ -88,6 +87,13 @@ CREATE TABLE "verification" (
   "expires_at" TIMESTAMP NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+--> statement-breakpoint
+CREATE TABLE "bookmark" (
+  "user_id" UUID NOT NULL,
+  "dataset_id" INTEGER NOT NULL,
+  CONSTRAINT "bookmark_user_id_dataset_id_pk" PRIMARY KEY ("user_id", "dataset_id")
 );
 
 --> statement-breakpoint
@@ -221,6 +227,14 @@ ALTER TABLE "session"
 ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--> statement-breakpoint
+ALTER TABLE "bookmark"
+ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--> statement-breakpoint
 ALTER TABLE "dataset"
 ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE NO ACTION;
 
@@ -237,28 +251,37 @@ ALTER TABLE "dataset_keyword"
 ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_view_count_index" ON "dataset" USING btree ("view_count");
+CREATE INDEX "bookmark_user_id_index" ON "bookmark" USING btree ("user_id");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_donated_at_index" ON "dataset" USING btree ("donated_at");
+CREATE INDEX "bookmark_dataset_id_index" ON "bookmark" USING btree ("dataset_id");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_instance_count_index" ON "dataset" USING btree ("instance_count");
+CREATE INDEX "dataset_status_index" ON "dataset" USING btree ("status");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_feature_count_index" ON "dataset" USING btree ("feature_count");
+CREATE INDEX "dataset_view_count_index" ON "dataset" USING btree ("view_count");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_status_index" ON "dataset" USING btree ("status");
+CREATE INDEX "dataset_donated_at_index" ON "dataset" USING btree ("donated_at");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_keywords_index" ON "dataset" USING gin ("keywords");
+CREATE INDEX "dataset_instance_count_index" ON "dataset" USING btree ("instance_count");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_features_index" ON "dataset" USING gin ("features");
+CREATE INDEX "dataset_feature_count_index" ON "dataset" USING btree ("feature_count");
 
 --> statement-breakpoint
-CREATE INDEX "dataset_view_trgm_search_index" ON "dataset" USING gin ("title" gin_trgm_ops);
+CREATE INDEX "dataset_feature_count_nulls_last_index" ON "dataset" USING btree ("feature_count");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_keywords_index" ON "dataset" USING gin ("keywords");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_features_index" ON "dataset" USING gin ("features");
+
+--> statement-breakpoint
+CREATE INDEX "dataset_trgm_search_index" ON "dataset" USING gin ("title" gin_trgm_ops);
 
 --> statement-breakpoint
 CREATE INDEX "keyword_trgm_search_index" ON "keyword" USING gin ("name" gin_trgm_ops);

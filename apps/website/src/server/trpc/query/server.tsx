@@ -10,9 +10,7 @@ import { makeQueryClient } from "./query-client";
 
 export const getQueryClient = cache(makeQueryClient);
 
-export const caller = createCallerFactory(appRouter)(createContext);
-
 export const { trpc, HydrateClient } = createHydrationHelpers<typeof appRouter>(
-  caller,
+  createCallerFactory(appRouter)(createContext),
   getQueryClient,
 );

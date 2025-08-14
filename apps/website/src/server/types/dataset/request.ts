@@ -1,4 +1,4 @@
-import { Enums, enumToArray } from "@packages/db/enum";
+import { Enums } from "@packages/db/enum";
 import { dataset } from "@packages/db/schema";
 import { getTableColumns } from "drizzle-orm";
 import { z } from "zod";
@@ -21,12 +21,12 @@ export const datasetQuery = z.object({
   search: z.string().optional(),
   keywords: z.array(z.string()).optional(),
   features: z.array(z.string()).optional(),
-  subjectAreas: z.array(z.enum(enumToArray(Enums.DatasetSubjectArea))).optional(),
-  dataTypes: z.array(z.enum(enumToArray(Enums.DatasetDataType))).optional(),
-  featureTypes: z.array(z.enum(enumToArray(Enums.DatasetFeatureType))).optional(),
+  subjectAreas: z.array(z.enum(Enums.DatasetSubjectArea)).optional(),
+  dataTypes: z.array(z.enum(Enums.DatasetDataType)).optional(),
+  featureTypes: z.array(z.enum(Enums.DatasetFeatureType)).optional(),
   featureCount: range.optional(),
   instanceCount: range.optional(),
-  tasks: z.array(z.enum(enumToArray(Enums.DatasetTask))).optional(),
+  tasks: z.array(z.enum(Enums.DatasetTask)).optional(),
   isAvailablePython: z.boolean().optional(),
 });
 
@@ -34,7 +34,7 @@ export type DatasetQueryInput = z.input<typeof datasetQuery>;
 export type DatasetQuery = z.infer<typeof datasetQuery>;
 
 export const privilegedDatasetQuery = datasetQuery.extend({
-  status: z.enum(enumToArray(Enums.ApprovalStatus)).array().optional(),
+  status: z.enum(Enums.ApprovalStatus).array().optional(),
   userId: z.uuid().optional(),
 });
 
