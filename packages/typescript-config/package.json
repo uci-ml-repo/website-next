@@ -4,5 +4,10 @@
   "scripts": {
     "format": "prettier --write ."
   },
-  "prettier": "@packages/prettier-config"
+  "prettier": "@packages/prettier-config",
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ]
+  }
 }

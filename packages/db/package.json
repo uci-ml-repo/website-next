@@ -29,5 +29,13 @@
   "devDependencies": {
     "@types/pg": "8.15.5",
     "drizzle-kit": "0.31.4"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix --max-warnings=0"
+    ]
   }
 }

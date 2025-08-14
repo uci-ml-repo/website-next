@@ -6,9 +6,5 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   await trpc.dataset.find.byId.prefetch({ id });
 
-  return (
-    <HydrateClient>
-      <DatasetViewHeader id={id} />
-    </HydrateClient>
-  );
+  return <div>CONTENT</div>;
 }

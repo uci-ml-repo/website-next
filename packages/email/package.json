@@ -25,5 +25,13 @@
     "@react-email/preview-server": "4.2.8",
     "@types/react": "19.1.10",
     "react-email": "4.2.8"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts,tsx}": [
+      "eslint --fix --max-warnings=0"
+    ]
   }
 }

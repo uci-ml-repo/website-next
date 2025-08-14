@@ -86,5 +86,13 @@
     "@types/react-window": "1.8.8",
     "tailwindcss": "4.1.11",
     "tw-animate-css": "1.3.6"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts,tsx,mdx}": [
+      "eslint --fix --max-warnings=0"
+    ]
   }
 }

@@ -12,7 +12,7 @@ interface Props {
 export function DatasetViewHeader({ id }: Props) {
   const { data: dataset } = trpc.dataset.find.byId.useQuery({ id });
 
-  if (!dataset) throw new Error();
+  if (!dataset) throw new Error("Dataset should be prefetched");
 
   return (
     <div className="flex items-center gap-x-8">

@@ -20,20 +20,13 @@
   "scripts": {
     "format": "pnpm -r format --log-level error",
     "lint": "pnpm -r lint",
+    "lint-staged": "pnpm -r exec lint-staged",
     "prepare": "husky",
     "tscheck": "pnpm -r --parallel tscheck"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
-  },
-  "lint-staged": {
-    "*": [
-      "prettier --write"
-    ],
-    "*.{js,ts,jsx,tsx,mdx}": [
-      "eslint --fix --max-warnings=0"
     ]
   },
   "prettier": "@packages/prettier-config",

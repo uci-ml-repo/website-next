@@ -11,6 +11,14 @@
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0"
   },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.js": [
+      "eslint --fix --max-warnings=0"
+    ]
+  },
   "prettier": "@packages/prettier-config",
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
