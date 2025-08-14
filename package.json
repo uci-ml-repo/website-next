@@ -28,6 +28,14 @@
       "@commitlint/config-conventional"
     ]
   },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts,jsx,tsx,mdx}": [
+      "eslint --fix --max-warnings=0"
+    ]
+  },
   "prettier": "@packages/prettier-config",
   "devDependencies": {
     "@commitlint/cli": "19.8.1",
@@ -36,9 +44,10 @@
     "@packages/prettier-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@types/node": "24.2.1",
-    "prettier": "3.6.2",
     "eslint": "9.33.0",
     "husky": "9.1.7",
+    "lint-staged": "16.1.5",
+    "prettier": "3.6.2",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@10.14.0",

@@ -1,3 +1,4 @@
+import mdxPlugin from "eslint-plugin-mdx";
 import reactPlugin from "eslint-plugin-react";
 
 import defaultConfig from "./eslint.config.js";
@@ -20,6 +21,7 @@ const config = [
       },
     },
   },
+  mdxPlugin.flat,
 ];
 
 export default config;

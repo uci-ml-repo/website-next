@@ -1,6 +1,3 @@
 #!/bin/sh
 
-pnpm format
-pnpm lint
-pnpm tscheck
-pnpm audit --audit-level=high
+pnpm lint-staged
