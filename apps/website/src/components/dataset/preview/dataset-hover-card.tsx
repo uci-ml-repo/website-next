@@ -66,7 +66,7 @@ const datasetStats = (dataset: DatasetSelect) => [
 
 export function DatasetHoverCard({ dataset, className, ...props }: Props) {
   return (
-    <Card className={cn("border-b-gold border-b-2 p-1", className)} {...props}>
+    <Card className={cn("border-b-gold !border-b-2 !p-0", className)} {...props}>
       <CardContent className="space-y-3 p-4 pb-2">
         <div className="space-y-2">
           <CardTitle>

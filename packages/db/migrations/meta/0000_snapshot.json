@@ -1,5 +1,5 @@
 {
-  "id": "f0806dfd-bb19-4042-ba34-8aa0a9565da0",
+  "id": "797f99f7-5920-4dc6-8c70-0bd735be3ae2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -343,6 +343,12 @@
         },
         "description": {
           "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "citation": {
+          "name": "citation",
           "type": "text",
           "primaryKey": false,
           "notNull": false

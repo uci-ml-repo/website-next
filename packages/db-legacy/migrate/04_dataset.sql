@@ -24,11 +24,11 @@ DO $$
             dq.otherinfo,
             CASE WHEN dq.preprocessingdescription IS NOT NULL THEN 'Preprocessing description: ' || dq.preprocessingdescription END,
             CASE WHEN dq.sensitiveinfo IS NOT NULL THEN 'This dataset contains sensitive information: ' || regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '') END,
-            CASE WHEN dq.datasetcitation IS NOT NULL THEN 'Citation information: ' || dq.datasetcitation END,
             CASE WHEN vi.classlabels IS NOT NULL THEN 'Variables Info:' || E'\n' || vi.otherinfo END,
             CASE WHEN vi.otherinfo IS NOT NULL THEN 'Class labels:' || E'\n\n' || vi.classlabels END
           )
         )                                                             AS description,
+        dq.datasetcitation                                            AS citation,
         REPLACE(REPLACE(LOWER(area), ' ', '_'), 'physical_science', 'physics_and_chemistry')::dataset_subject_area AS subject_area,
         numinstances                                                  AS instance_count,
         numfeatures                                                   AS feature_count,
@@ -82,6 +82,7 @@ DO $$
              year_created,
              title,
              description,
+             citation,
              subject_area,
              instance_count,
              feature_count,
@@ -106,6 +107,7 @@ DO $$
             rec.year_created,
             rec.title,
             rec.description,
+            rec.citation,
             rec.subject_area,
             rec.instance_count,
             rec.feature_count,

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { DatasetViewHeaderDownloadButton } from "@/components/dataset/view/header/button/dataset-view-header-download-button";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
@@ -19,7 +20,7 @@ export function DatasetViewHeader({ id }: Props) {
       <div className="w-full space-y-2">
         <h1 className="text-3xl font-bold">{dataset.title}</h1>
         <div className="flex gap-x-4">
-          <div>X</div>
+          <DatasetViewHeaderDownloadButton dataset={dataset} />
           <div>X</div>
           <div>X</div>
         </div>

@@ -7,5 +7,10 @@ export function DatasetViewAbout({ id }: { id: number }) {
 
   if (!dataset) throw new Error();
 
-  return <div>{dataset.description}</div>;
+  return (
+    <div className="space-y-2">
+      <div className="text-2xl font-bold">About</div>
+      <div>{dataset.description}</div>
+    </div>
+  );
 }

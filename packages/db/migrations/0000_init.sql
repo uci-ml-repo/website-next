@@ -103,6 +103,7 @@ CREATE TABLE "dataset" (
   "year_created" INTEGER,
   "doi" TEXT,
   "description" TEXT,
+  "citation" TEXT,
   "subject_area" "dataset_subject_area",
   "instance_count" INTEGER,
   "feature_count" INTEGER,

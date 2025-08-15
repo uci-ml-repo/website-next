@@ -4,7 +4,8 @@ import { forbidden, notFound, permanentRedirect, unauthorized } from "next/navig
 import type { ReactNode } from "react";
 import { cache } from "react";
 
-import { DatasetViewHeader } from "@/components/dataset/view/dataset-view-header";
+import { DatasetViewTabs } from "@/components/dataset/view/dataset-view-tabs";
+import { DatasetViewHeader } from "@/components/dataset/view/header/dataset-view-header";
 import { ROUTES } from "@/lib/routes";
 import { HydrateClient, trpc } from "@/server/trpc/query/server";
 
@@ -65,6 +66,7 @@ export default async function Layout({
     <HydrateClient>
       <div className="blur-background">
         <DatasetViewHeader id={id} />
+        <DatasetViewTabs />
         {children}
       </div>
     </HydrateClient>

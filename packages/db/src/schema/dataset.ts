@@ -41,6 +41,7 @@ export const dataset = pgTable(
     yearCreated: integer("year_created"),
     doi: text("doi"),
     description: text("description"),
+    citation: text("citation"),
     subjectArea: datasetSubjectArea("subject_area"),
     instanceCount: integer("instance_count"),
     featureCount: integer("feature_count"),

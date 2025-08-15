@@ -87,7 +87,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
     <HoverCard openDelay={800} closeDelay={100}>
       <HoverCardTrigger asChild>{row}</HoverCardTrigger>
       <HoverCardContent align="end" side="top" asChild>
-        <DatasetHoverCard dataset={dataset} className="w-[50dvw] max-w-xl min-w-64 !p-0" />
+        <DatasetHoverCard dataset={dataset} className="w-[50dvw] max-w-xl min-w-64" />
       </HoverCardContent>
     </HoverCard>
   ) : (
