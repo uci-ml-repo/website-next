@@ -41,7 +41,7 @@
     "@packages/eslint-config": "workspace:*",
     "@packages/prettier-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@types/node": "24.2.1",
+    "@types/node": "24.3.0",
     "eslint": "9.33.0",
     "husky": "9.1.7",
     "lint-staged": "16.1.5",
@@ -50,7 +50,7 @@
   },
   "packageManager": "pnpm@10.14.0",
   "engines": {
-    "node": "24.2.0",
+    "node": "24.6.0",
     "pnpm": "10.14.0"
   }
 }
