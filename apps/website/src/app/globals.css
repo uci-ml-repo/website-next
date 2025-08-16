@@ -50,7 +50,7 @@
   --header-height: 4rem;
   --dataset-card-height: 22rem;
 
-  --shadow-glow: 0 0 35px 25px var(--background);
+  --shadow-glow: 0 0 35px 35px var(--background);
 }
 
 :root {

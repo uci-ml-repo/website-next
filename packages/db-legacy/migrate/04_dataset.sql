@@ -15,7 +15,7 @@ DO $$
         dd.id,
         LOWER(REPLACE(status, 'FAILED', 'rejected'))::approval_status          AS status,
         COALESCE(datedonated, CURRENT_TIMESTAMP)                               AS donated_at,
-        COALESCE(yearcreated, EXTRACT(YEAR FROM CURRENT_TIMESTAMP)::INTEGER)  AS year_created,
+        COALESCE(yearcreated, EXTRACT(YEAR FROM CURRENT_TIMESTAMP)::INTEGER)   AS year_created,
         name                                                                   AS title,
         TRIM(
           CONCAT_WS(

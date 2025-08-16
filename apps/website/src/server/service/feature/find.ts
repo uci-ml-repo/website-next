@@ -8,32 +8,28 @@ import type { DatasetQuery } from "@/server/types/dataset/request";
 async function remainingFilters(query: DatasetQuery) {
   const existingFeatureFilters = query.features ?? [];
 
+  const feature = sql<string>`feature`;
+
   const remainingFeatures = await db
     .select({
-      feature: sql<string>`feature`,
+      feature,
       count: count(),
     })
-    .from(sql`
-      ${dataset}
-      CROSS JOIN LATERAL UNNEST(${dataset.features}) AS feature
-    `)
+    .from(dataset)
+    .crossJoinLateral(sql`UNNEST(${dataset.features}) AS ${feature}`)
     .where(
       and(
         buildQuery(query),
-        notInArray(sql`feature`, existingFeatureFilters),
-        notIlike(sql`feature`, "attribute%"),
-        notIlike(sql`feature`, "variable%"),
+        notInArray(feature, existingFeatureFilters),
+        notIlike(feature, "attribute%"),
+        notIlike(feature, "variable%"),
       ),
     )
-    .groupBy(sql`feature`)
+    .groupBy(feature)
     .having(gt(count(), 1))
     .orderBy((t) => desc(t.count));
 
-  const attributeCountMap = new Map<string, number>(
-    remainingFeatures.map(({ feature, count }) => [feature, count]),
-  );
-
-  return attributeCountMap;
+  return new Map<string, number>(remainingFeatures.map(({ feature, count }) => [feature, count]));
 }
 export const featureFindService = {
   remainingFilters,

@@ -17,7 +17,6 @@ export function DatasetViewAbout({ id }: { id: number }) {
   return (
     <div className="space-y-8">
       <AboutSection title="About" text={dataset.description} />
-      {dataset.citation && <AboutSection title="Citation" text={dataset.citation} />}
     </div>
   );
 }

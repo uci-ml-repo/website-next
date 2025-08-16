@@ -16,7 +16,7 @@ export const CodeBlock = ({ code, language }: { code: string; language?: string 
       <pre>
         <code className={cn("text-sm", language)}>{code}</code>
       </pre>
-      <CopyButton copyText={code} className="absolute top-1.5 right-1.5 bg-[#0d1117]" />
+      <CopyButton copyText={code} className="dark absolute top-1.5 right-1.5 bg-[#0d1117]" />
     </div>
   );
 };

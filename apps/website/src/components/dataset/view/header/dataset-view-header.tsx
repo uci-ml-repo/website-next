@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { DatasetCitationButton } from "@/components/dataset/view/header/button/dataset-citation-button";
 import { DatasetDownloadButton } from "@/components/dataset/view/header/button/dataset-download-button";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
@@ -28,7 +29,7 @@ export function DatasetViewHeader({ id }: Props) {
           ) : (
             <DatasetDownloadButton dataset={dataset} />
           )}
-          <div>X</div>
+          <DatasetCitationButton dataset={dataset} />
           {dataset.isAvailablePython && <DatasetPythonButton dataset={dataset} />}
         </div>
       </div>

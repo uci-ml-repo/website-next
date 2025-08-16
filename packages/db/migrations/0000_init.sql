@@ -90,6 +90,16 @@ CREATE TABLE "verification" (
 );
 
 --> statement-breakpoint
+CREATE TABLE "author" (
+  "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
+  "first_name" TEXT NOT NULL,
+  "last_name" TEXT NOT NULL,
+  "email" TEXT,
+  "institution" TEXT,
+  "dataset_id" INTEGER
+);
+
+--> statement-breakpoint
 CREATE TABLE "bookmark" (
   "user_id" UUID NOT NULL,
   "dataset_id" INTEGER NOT NULL,
@@ -102,7 +112,7 @@ CREATE TABLE "dataset" (
   "title" TEXT NOT NULL,
   "year_created" INTEGER,
   "doi" TEXT,
-  "description" TEXT,
+  "description" TEXT NOT NULL,
   "citation" TEXT,
   "subject_area" "dataset_subject_area",
   "instance_count" INTEGER,
@@ -228,6 +238,10 @@ ALTER TABLE "session"
 ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --> statement-breakpoint
+ALTER TABLE "author"
+ADD CONSTRAINT "author_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--> statement-breakpoint
 ALTER TABLE "bookmark"
 ADD CONSTRAINT "bookmark_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
@@ -250,6 +264,9 @@ ADD CONSTRAINT "dataset_keyword_keyword_id_keyword_id_fk" FOREIGN KEY ("keyword_
 --> statement-breakpoint
 ALTER TABLE "dataset_keyword"
 ADD CONSTRAINT "dataset_keyword_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") REFERENCES "public"."dataset" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--> statement-breakpoint
+CREATE INDEX "author_dataset_id_index" ON "author" USING btree ("dataset_id");
 
 --> statement-breakpoint
 CREATE INDEX "bookmark_user_id_index" ON "bookmark" USING btree ("user_id");

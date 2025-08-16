@@ -15,14 +15,14 @@ export function DatasetDownloadButton({ dataset, ...props }: Props) {
     <Button size="lg" aria-label={`Download ${dataset.title}`} asChild {...props}>
       <a href={ROUTES.DATASET.FILE(dataset)} download>
         <DownloadIcon />
-        <div>
-          <span>Download</span>
+        <span>
+          Download
           {dataset.size && (
             <span className="text-blue-foreground/80 ml-1 text-sm">
               ({abbreviateFileSize(dataset.size)})
             </span>
           )}
-        </div>
+        </span>
       </a>
     </Button>
   );

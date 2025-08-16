@@ -25,7 +25,7 @@ export function CopyButton({ copyText, className }: CopyProps) {
     <Button
       variant="ghost"
       size="icon"
-      className={cn("z-10 rounded-md", className)}
+      className={cn("z-10 rounded-md !opacity-100", className)}
       onClick={copy}
       aria-label="Copy text"
       disabled={copied}
