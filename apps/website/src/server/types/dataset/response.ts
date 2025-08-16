@@ -1,3 +1,7 @@
-import type { RouterOutput } from "@/server/trpc/router";
+import { dataset } from "@packages/db/schema";
+import { createSelectSchema } from "drizzle-zod";
+import type { z } from "zod";
 
-export type DatasetSelect = RouterOutput["dataset"]["find"]["byQuery"]["datasets"][number];
+export const datasetSelectSchema = createSelectSchema(dataset);
+
+export type DatasetSelect = z.infer<typeof datasetSelectSchema>;

@@ -22,8 +22,8 @@ DO $$
             E'\n\n',
             abstract,
             dq.otherinfo,
-            CASE WHEN dq.preprocessingdescription IS NOT NULL THEN 'Preprocessing description: ' || dq.preprocessingdescription END,
-            CASE WHEN dq.sensitiveinfo IS NOT NULL THEN 'This dataset contains sensitive information: ' || regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '') END,
+            CASE WHEN dq.preprocessingdescription IS NOT NULL THEN 'Preprocessing description:' || E'\n' || dq.preprocessingdescription END,
+            CASE WHEN dq.sensitiveinfo IS NOT NULL THEN 'Does this dataset contains sensitive information?:' || E'\n' || regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '') END,
             CASE WHEN vi.classlabels IS NOT NULL THEN 'Variables Info:' || E'\n' || vi.otherinfo END,
             CASE WHEN vi.otherinfo IS NOT NULL THEN 'Class labels:' || E'\n\n' || vi.classlabels END
           )

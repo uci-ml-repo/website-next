@@ -40,7 +40,7 @@ export const dataset = pgTable(
     title: text("title").notNull(),
     yearCreated: integer("year_created"),
     doi: text("doi"),
-    description: text("description"),
+    description: text("description").notNull(),
     citation: text("citation"),
     subjectArea: datasetSubjectArea("subject_area"),
     instanceCount: integer("instance_count"),

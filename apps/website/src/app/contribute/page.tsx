@@ -3,5 +3,9 @@
 import Contribution from "./contribution.mdx";
 
 export default function Page() {
-  return <Contribution />;
+  return (
+    <div className="blur-background">
+      <Contribution />
+    </div>
+  );
 }

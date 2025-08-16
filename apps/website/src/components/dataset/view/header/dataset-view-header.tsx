@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 
-import { DatasetViewHeaderDownloadButton } from "@/components/dataset/view/header/button/dataset-view-header-download-button";
+import { DatasetDownloadButton } from "@/components/dataset/view/header/button/dataset-download-button";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
+
+import { DatasetExternalLinkButton } from "./button/dataset-external-link-button";
+import { DatasetPythonButton } from "./button/dataset-python-button";
 
 interface Props {
   id: number;
@@ -16,13 +19,17 @@ export function DatasetViewHeader({ id }: Props) {
   if (!dataset) throw new Error("Dataset should be prefetched");
 
   return (
-    <div className="flex items-center gap-x-8">
-      <div className="w-full space-y-2">
-        <h1 className="text-3xl font-bold">{dataset.title}</h1>
+    <div className="flex gap-x-8">
+      <div className="w-full space-y-4">
+        <h1 className="line-clamp-2 text-3xl font-bold">{dataset.title}</h1>
         <div className="flex gap-x-4">
-          <DatasetViewHeaderDownloadButton dataset={dataset} />
+          {dataset.externalLink ? (
+            <DatasetExternalLinkButton dataset={dataset} />
+          ) : (
+            <DatasetDownloadButton dataset={dataset} />
+          )}
           <div>X</div>
-          <div>X</div>
+          {dataset.isAvailablePython && <DatasetPythonButton dataset={dataset} />}
         </div>
       </div>
       {dataset.hasGraphics && (

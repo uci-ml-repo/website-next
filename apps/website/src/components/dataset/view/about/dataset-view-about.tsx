@@ -7,10 +7,17 @@ export function DatasetViewAbout({ id }: { id: number }) {
 
   if (!dataset) throw new Error();
 
-  return (
+  const AboutSection = ({ title, text }: { title: string; text: string }) => (
     <div className="space-y-2">
-      <div className="text-2xl font-bold">About</div>
-      <div>{dataset.description}</div>
+      <div className="text-xl font-bold">{title}</div>
+      <div className="whitespace-pre-wrap">{text}</div>
+    </div>
+  );
+
+  return (
+    <div className="space-y-8">
+      <AboutSection title="About" text={dataset.description} />
+      {dataset.citation && <AboutSection title="Citation" text={dataset.citation} />}
     </div>
   );
 }

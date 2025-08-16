@@ -10,7 +10,7 @@ type Props = ComponentProps<typeof Button> & {
   dataset: DatasetSelect;
 };
 
-export function DatasetViewHeaderDownloadButton({ dataset, ...props }: Props) {
+export function DatasetDownloadButton({ dataset, ...props }: Props) {
   return (
     <Button size="lg" aria-label={`Download ${dataset.title}`} asChild {...props}>
       <a href={ROUTES.DATASET.FILE(dataset)} download>
@@ -18,7 +18,9 @@ export function DatasetViewHeaderDownloadButton({ dataset, ...props }: Props) {
         <div>
           <span>Download</span>
           {dataset.size && (
-            <span className="ml-1 text-sm">({abbreviateFileSize(dataset.size)})</span>
+            <span className="text-blue-foreground/80 ml-1 text-sm">
+              ({abbreviateFileSize(dataset.size)})
+            </span>
           )}
         </div>
       </a>

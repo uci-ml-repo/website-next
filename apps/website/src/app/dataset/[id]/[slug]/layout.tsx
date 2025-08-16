@@ -64,7 +64,7 @@ export default async function Layout({
 
   return (
     <HydrateClient>
-      <div className="blur-background">
+      <div className="blur-background space-y-6">
         <DatasetViewHeader id={id} />
         <DatasetViewTabs />
         {children}
