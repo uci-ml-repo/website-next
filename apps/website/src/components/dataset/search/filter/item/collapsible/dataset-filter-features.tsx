@@ -21,6 +21,7 @@ export function DatasetFilterFeatures(props: ComponentProps<typeof DatasetFilter
       selectedValues={features}
       setSelectedValues={setFeatures}
       placeholder="Search features"
+      aria-label="Search features"
       empty="No features found"
       isLoading={isLoading}
       {...props}

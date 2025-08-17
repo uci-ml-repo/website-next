@@ -20,25 +20,27 @@ export function DatasetFilterDataType(props: ComponentProps<typeof DatasetFilter
 
   return (
     <DatasetFilterItem {...props} badge={dataTypes?.length} clearFilter={() => setDataTypes(null)}>
-      {enumToArray(Enums.DatasetDataType).map((dataType) => {
-        const checked = !!dataTypes?.includes(dataType);
-        const enumString = formatEnum(dataType);
+      <ul>
+        {enumToArray(Enums.DatasetDataType).map((dataType) => {
+          const checked = !!dataTypes?.includes(dataType);
+          const enumString = formatEnum(dataType);
 
-        return (
-          <CheckboxLabeled
-            key={dataType}
-            className="py-1 first:pt-0 last:pb-0"
-            checked={checked}
-            onCheckedChange={(checked) =>
-              checked ? addDataType(dataType) : removeDataType(dataType)
-            }
-            role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} data type filter`}
-          >
-            {enumString}
-          </CheckboxLabeled>
-        );
-      })}
+          return (
+            <li key={dataType} className="py-1 first:pt-0 last:pb-0">
+              <CheckboxLabeled
+                checked={checked}
+                onCheckedChange={(checked) =>
+                  checked ? addDataType(dataType) : removeDataType(dataType)
+                }
+                role="button"
+                aria-label={`${checked ? "Disable" : "Enable"} ${enumString} data type filter`}
+              >
+                {enumString}
+              </CheckboxLabeled>
+            </li>
+          );
+        })}
+      </ul>
     </DatasetFilterItem>
   );
 }

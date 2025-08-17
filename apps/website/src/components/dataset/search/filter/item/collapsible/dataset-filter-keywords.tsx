@@ -21,6 +21,7 @@ export function DatasetFilterKeywords(props: ComponentProps<typeof DatasetFilter
       selectedValues={keywords}
       setSelectedValues={setKeywords}
       placeholder="Search keywords"
+      aria-label="Search keywords"
       empty="No keywords found"
       isLoading={isLoading}
       {...props}

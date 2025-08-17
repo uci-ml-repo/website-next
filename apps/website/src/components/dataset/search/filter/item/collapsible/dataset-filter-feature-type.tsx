@@ -24,25 +24,27 @@ export function DatasetFilterFeatureType(props: ComponentProps<typeof DatasetFil
       badge={featureTypes?.length}
       clearFilter={() => setFeatureTypes(null)}
     >
-      {enumToArray(Enums.DatasetFeatureType).map((featureType) => {
-        const checked = !!featureTypes?.includes(featureType);
-        const enumString = formatEnum(featureType);
+      <ul>
+        {enumToArray(Enums.DatasetFeatureType).map((featureType) => {
+          const checked = !!featureTypes?.includes(featureType);
+          const enumString = formatEnum(featureType);
 
-        return (
-          <CheckboxLabeled
-            key={featureType}
-            className="py-1 first:pt-0 last:pb-0"
-            checked={checked}
-            onCheckedChange={(checked) =>
-              checked ? addFeatureType(featureType) : removeFeatureType(featureType)
-            }
-            role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} feature type filter`}
-          >
-            {enumString}
-          </CheckboxLabeled>
-        );
-      })}
+          return (
+            <li key={featureType} className="py-1 first:pt-0 last:pb-0">
+              <CheckboxLabeled
+                checked={checked}
+                onCheckedChange={(checked) =>
+                  checked ? addFeatureType(featureType) : removeFeatureType(featureType)
+                }
+                role="button"
+                aria-label={`${checked ? "Disable" : "Enable"} ${enumString} feature type filter`}
+              >
+                {enumString}
+              </CheckboxLabeled>
+            </li>
+          );
+        })}
+      </ul>
     </DatasetFilterItem>
   );
 }

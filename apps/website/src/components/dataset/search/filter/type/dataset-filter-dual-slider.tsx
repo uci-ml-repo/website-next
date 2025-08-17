@@ -31,7 +31,7 @@ export function DatasetFilterDualSlider({
         Math.round(Math.pow(max, Math.pow(val / max, exponential))).toPrecision(2),
       );
 
-      return expValue > 0.9 * max ? max : expValue;
+      return expValue > 0.95 * max ? max : expValue;
     },
     [max, exponential],
   );
@@ -61,7 +61,7 @@ export function DatasetFilterDualSlider({
               onValueChange(values.map(exp));
             }
           }}
-          step={max ? max / 100 : 1}
+          step={max ? max / 50 : 1}
           label={(label) => label && abbreviateDecimal(exp(label))}
         />
       </div>

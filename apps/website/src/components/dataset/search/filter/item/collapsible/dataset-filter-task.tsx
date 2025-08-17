@@ -19,23 +19,25 @@ export function DatasetFilterTask(props: ComponentProps<typeof DatasetFilterItem
 
   return (
     <DatasetFilterItem {...props} badge={tasks?.length} clearFilter={() => setTasks(null)}>
-      {enumToArray(Enums.DatasetTask).map((task) => {
-        const checked = !!tasks?.includes(task);
-        const enumString = formatEnum(task);
+      <ul>
+        {enumToArray(Enums.DatasetTask).map((task) => {
+          const checked = !!tasks?.includes(task);
+          const enumString = formatEnum(task);
 
-        return (
-          <CheckboxLabeled
-            key={task}
-            className="py-1 first:pt-0 last:pb-0"
-            checked={checked}
-            onCheckedChange={(checked) => (checked ? addTask(task) : removeTask(task))}
-            role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} task filter`}
-          >
-            {enumString}
-          </CheckboxLabeled>
-        );
-      })}
+          return (
+            <li key={task} className="py-1 first:pt-0 last:pb-0">
+              <CheckboxLabeled
+                checked={checked}
+                onCheckedChange={(checked) => (checked ? addTask(task) : removeTask(task))}
+                role="button"
+                aria-label={`${checked ? "Disable" : "Enable"} ${enumString} task filter`}
+              >
+                {enumString}
+              </CheckboxLabeled>
+            </li>
+          );
+        })}
+      </ul>
     </DatasetFilterItem>
   );
 }

@@ -3,6 +3,7 @@
 import { useDebouncedValue } from "@mantine/hooks";
 import { Loader2Icon, SearchIcon } from "lucide-react";
 import Link from "next/link";
+import type { HTMLAttributes } from "react";
 import { useState } from "react";
 
 import { DatasetRow } from "@/components/dataset/preview/dataset-row";
@@ -10,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { CommandItem } from "@/components/ui/command";
 import { SearchPopover } from "@/components/ui/search-popover";
 import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/util/cn";
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
-export function DatasetQuickSearch() {
+export function DatasetQuickSearch({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   const [searchValue, setSearchValue] = useState("");
 
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
@@ -40,7 +42,7 @@ export function DatasetQuickSearch() {
   );
 
   return (
-    <div className="blur-background">
+    <div className={cn("blur-background", className)} {...props}>
       <SearchPopover
         value={searchValue}
         setValue={setSearchValue}

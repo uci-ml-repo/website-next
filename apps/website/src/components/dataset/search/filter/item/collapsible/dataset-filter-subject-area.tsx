@@ -24,25 +24,27 @@ export function DatasetFilterSubjectArea(props: ComponentProps<typeof DatasetFil
       badge={subjectAreas?.length}
       clearFilter={() => setSubjectAreas(null)}
     >
-      {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => {
-        const checked = !!subjectAreas?.includes(subjectArea);
-        const enumString = formatEnum(subjectArea);
+      <ul>
+        {enumToArray(Enums.DatasetSubjectArea).map((subjectArea) => {
+          const checked = !!subjectAreas?.includes(subjectArea);
+          const enumString = formatEnum(subjectArea);
 
-        return (
-          <CheckboxLabeled
-            key={subjectArea}
-            className="py-1 first:pt-0 last:pb-0"
-            checked={checked}
-            onCheckedChange={(checked) =>
-              checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)
-            }
-            role="button"
-            aria-label={`${checked ? "Disable" : "Enable"} ${enumString} subject area filter`}
-          >
-            {enumString}
-          </CheckboxLabeled>
-        );
-      })}
+          return (
+            <li key={subjectArea} className="py-1 first:pt-0 last:pb-0">
+              <CheckboxLabeled
+                checked={checked}
+                onCheckedChange={(checked) =>
+                  checked ? addSubjectArea(subjectArea) : removeSubjectArea(subjectArea)
+                }
+                role="button"
+                aria-label={`${checked ? "Disable" : "Enable"} ${enumString} subject area filter`}
+              >
+                {enumString}
+              </CheckboxLabeled>
+            </li>
+          );
+        })}
+      </ul>
     </DatasetFilterItem>
   );
 }

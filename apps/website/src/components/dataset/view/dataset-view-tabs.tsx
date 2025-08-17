@@ -2,11 +2,13 @@
 
 import { LayoutGroup } from "motion/react";
 
+const _tabs = [{ name: "About", href: "/about" }];
+
 export function DatasetViewTabs() {
   return (
-    <nav>
+    <nav aria-label="Dataset tabs">
       <LayoutGroup id="sliding-tabs">
-        <ul>X</ul>
+        <ul />
       </LayoutGroup>
     </nav>
   );
