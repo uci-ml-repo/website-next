@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUpIcon } from "lucide-react";
+import { SparklesIcon } from "lucide-react";
 
 import { DatasetCardCarousel } from "@/components/dataset/carousel/dataset-carousel";
 import { ROUTES } from "@/lib/routes";
@@ -14,9 +14,9 @@ export function DatasetCarouselNew() {
 
   return (
     <DatasetCardCarousel
-      heading="Popular Datasets"
+      heading="New Datasets"
       datasets={data?.datasets}
-      icon={<TrendingUpIcon />}
+      icon={<SparklesIcon />}
       seeAllHref={ROUTES.SEARCH({ order: { donatedAt: "desc" } })}
     />
   );
