@@ -1,3 +1,4 @@
+import { auth } from "@packages/auth/auth";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -6,7 +7,6 @@ import { VerifyForm } from "@/components/auth/verify/verify-form";
 import { VerifyInvalidEmailAlert } from "@/components/auth/verify/verify-invalid-email-alert";
 import { MLRepoLogo } from "@/components/logo/ml-repo";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { auth } from "@/lib/auth/auth";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/server";
 

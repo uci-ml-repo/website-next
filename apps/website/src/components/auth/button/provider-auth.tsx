@@ -1,9 +1,9 @@
 "use client";
 
+import { authClient } from "@packages/auth/auth-client";
 import { type ReactNode, useState } from "react";
 
 import { AuthButton } from "@/components/auth/button/auth-button";
-import { authClient } from "@/lib/auth/auth-client";
 
 interface Props {
   children?: ReactNode;

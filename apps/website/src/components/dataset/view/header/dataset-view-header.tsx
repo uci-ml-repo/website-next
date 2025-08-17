@@ -40,6 +40,7 @@ export function DatasetViewHeader({ id }: Props) {
           width={275}
           alt="Thumbnail"
           className="h-[6rem] w-[16rem] shrink-0 rounded-2xl object-cover object-center max-xl:hidden"
+          priority
         />
       )}
     </div>

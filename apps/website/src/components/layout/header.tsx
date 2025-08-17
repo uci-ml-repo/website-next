@@ -1,5 +1,7 @@
 "use client";
 
+import type { Session } from "@packages/auth/auth";
+import { authClient } from "@packages/auth/auth-client";
 import { CircleUserRoundIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,8 +19,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Session } from "@/lib/auth/auth";
-import { authClient } from "@/lib/auth/auth-client";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
 

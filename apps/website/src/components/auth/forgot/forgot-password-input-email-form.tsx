@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@packages/auth/auth-client";
 import { Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { authClient } from "@/lib/auth/auth-client";
 import { ROUTES } from "@/lib/routes";
 
 const formSchema = z.object({

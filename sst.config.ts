@@ -15,7 +15,7 @@ export default $config({
 
     const vpc = new sst.aws.Vpc("Vpc", { bastion: true, nat: "ec2" });
 
-    const rds = new sst.aws.Postgres("Database", {
+    const database = new sst.aws.Postgres("Database", {
       vpc,
       proxy: true,
       dev: {
@@ -27,7 +27,7 @@ export default $config({
     });
 
     new sst.x.DevCommand("Studio", {
-      link: [rds],
+      link: [database],
       dev: {
         command: "npx drizzle-kit studio",
         directory: "packages/db",
@@ -40,7 +40,7 @@ export default $config({
     });
 
     const router = new sst.aws.Router("Router");
-    router.routeBucket("/files", bucket);
+    router.routeBucket("/", bucket);
 
     const googleClientId = new sst.Secret("GOOGLE_CLIENT_ID");
     const googleClientSecret = new sst.Secret("GOOGLE_CLIENT_SECRET");
@@ -58,7 +58,7 @@ export default $config({
 
     new sst.aws.Nextjs("Website", {
       path: "apps/website",
-      link: [rds, email, bucket, ...secrets],
+      link: [database, bucket, email, ...secrets],
       vpc,
       environment: { NEXT_PUBLIC_CDN_URL: router.url },
     });

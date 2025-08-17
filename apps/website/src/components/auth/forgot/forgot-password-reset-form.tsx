@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@packages/auth/auth-client";
 import { AlertCircleIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth/auth-client";
 import { ROUTES } from "@/lib/routes";
 
 const formSchema = z

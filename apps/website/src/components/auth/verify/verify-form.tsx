@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@packages/auth/auth-client";
 import { AlertCircleIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
-import { authClient } from "@/lib/auth/auth-client";
 import { ROUTES } from "@/lib/routes";
 
 const OTP_LENGTH = 6;

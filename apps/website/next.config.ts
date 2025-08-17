@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "avatars.githubusercontent.com" },
       { hostname: "lh3.googleusercontent.com" },
-      { hostname: "**.amazonaws.com" },
       { hostname: "**.cloudfront.net" },
     ],
   },

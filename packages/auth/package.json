@@ -1,13 +1,12 @@
 {
-  "name": "@packages/email",
+  "name": "@packages/auth",
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    "./emails": "./emails/index.ts",
-    ".": "./index.ts"
+    "./auth": "./src/auth.ts",
+    "./auth-client": "./src/auth-client.ts"
   },
   "scripts": {
-    "dev": "email dev",
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0",
     "tscheck": "tsc --noEmit"
@@ -16,21 +15,19 @@
     "*": [
       "prettier --write"
     ],
-    "*.{js,ts,tsx}": [
+    "*.ts": [
       "eslint --fix --max-warnings=0"
     ]
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
-    "@aws-sdk/client-sesv2": "3.864.0",
-    "@react-email/components": "0.5.0",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "zod": "4.0.17"
+    "@packages/db": "workspace:*",
+    "@packages/email": "workspace:*",
+    "bcrypt": "6.0.0",
+    "better-auth": "1.3.6",
+    "uuid": "11.1.0"
   },
   "devDependencies": {
-    "@react-email/preview-server": "4.2.8",
-    "@types/react": "19.1.10",
-    "react-email": "4.2.8"
+    "@types/bcrypt": "6.0.0"
   }
 }

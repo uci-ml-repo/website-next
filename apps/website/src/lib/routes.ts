@@ -3,6 +3,8 @@ import path from "path";
 import { serializeDatasetFilters } from "@/components/hooks/use-dataet-search-filters";
 import type { DatasetQueryInput } from "@/server/types/dataset/request";
 
+if (!process.env.NEXT_PUBLIC_CDN_URL) throw new Error();
+
 export const ROUTES = {
   HOME: "/",
   ABOUT: "/about",
@@ -47,7 +49,7 @@ export const ROUTES = {
       path.join(ROUTES.DATASET.ROOT, String(id), slug),
     {
       ROOT: "/dataset",
-      CDN: process.env.NEXT_PUBLIC_CDN_URL + "/files",
+      CDN: process.env.NEXT_PUBLIC_CDN_URL,
       THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
         path.join(ROUTES.DATASET.CDN, hasGraphics ? String(id) : "default", "thumbnail.png"),
       FILE: ({ id, slug }: { id: number; slug: string }) =>

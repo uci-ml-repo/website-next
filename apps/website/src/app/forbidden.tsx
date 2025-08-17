@@ -1,8 +1,8 @@
+import { auth } from "@packages/auth/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 
 import { ErrorPage } from "@/components/layout/error-page";
-import { auth } from "@/lib/auth/auth";
 import { ROUTES } from "@/lib/routes";
 
 export default async function Forbidden() {

@@ -1,8 +1,8 @@
+import { auth } from "@packages/auth/auth";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/lib/auth/auth";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = {

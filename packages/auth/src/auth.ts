@@ -11,6 +11,7 @@ import { v7 as uuid } from "uuid";
 
 export const auth = betterAuth({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  secret: Resource.AUTH_SECRET.value,
   database: drizzleAdapter(db, {
     provider: "pg",
   }),

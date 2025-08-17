@@ -1,3 +1,4 @@
+import type { Session } from "@packages/auth/auth";
 import {
   DatabaseIcon,
   HomeIcon,
@@ -17,7 +18,6 @@ import { SidebarTrigger } from "@/components/layout/sidebar/sidebar-trigger";
 import { MLRepoLogo } from "@/components/logo/ml-repo";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import type { Session } from "@/lib/auth/auth";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
