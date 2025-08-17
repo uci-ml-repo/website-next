@@ -2,16 +2,16 @@ import { Head, Html, Img, Tailwind, Text } from "@react-email/components";
 import * as path from "path";
 import type { ReactNode } from "react";
 
-import { env } from "./env";
-
 export function EmailLayout({ name, children }: { name?: string; children: ReactNode }) {
+  if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error();
+
   return (
     <Html lang="en">
       <Tailwind>
         <Head />
         <body className="mx-auto">
           <header className="bg-gray-300 p-4">
-            <Img height={50} src={path.join(env.NEXT_PUBLIC_BASE_URL, "img", "logo.png")} />
+            <Img height={50} src={path.join(process.env.NEXT_PUBLIC_BASE_URL, "img", "logo.png")} />
           </header>
           <main>
             <div className="bg-gray-100 p-4 pb-8">

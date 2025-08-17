@@ -13,10 +13,11 @@ import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { SidebarProvider } from "@/components/layout/sidebar/sidebar-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { env } from "@/env";
 import { auth } from "@/lib/auth/auth";
 import { cn } from "@/lib/util/cn";
 import { TRPCProvider } from "@/server/trpc/query/client";
+
+if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error();
 
 export const metadata: Metadata = {
   title: {
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   },
   description:
     "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
-  metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
   openGraph: {
     images: [
       {

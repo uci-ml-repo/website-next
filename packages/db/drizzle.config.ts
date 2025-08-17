@@ -1,14 +1,16 @@
-import "dotenv/config";
-
 import { defineConfig } from "drizzle-kit";
-
-import { env } from "./env";
+import { Resource } from "sst";
 
 export default defineConfig({
   out: "./migrations",
   schema: "./src/schema",
   dialect: "postgresql",
   dbCredentials: {
-    url: env.DATABASE_URL,
+    host: Resource.Database.host,
+    port: Number(Resource.Database.port),
+    user: Resource.Database.username,
+    password: Resource.Database.password,
+    database: Resource.Database.database,
+    ssl: process.env.SST_STAGE === "production",
   },
 });

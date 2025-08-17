@@ -23,7 +23,7 @@ export function DatasetViewHeader({ id }: Props) {
     <div className="flex gap-x-8">
       <div className="w-full space-y-4">
         <h1 className="line-clamp-2 text-3xl font-bold">{dataset.title}</h1>
-        <div className="flex gap-x-4">
+        <div className="flex gap-x-2 gap-y-3 max-sm:flex-wrap max-sm:*:w-full">
           {dataset.externalLink ? (
             <DatasetExternalLinkButton dataset={dataset} />
           ) : (
@@ -39,7 +39,7 @@ export function DatasetViewHeader({ id }: Props) {
           height={100}
           width={275}
           alt="Thumbnail"
-          className="max-2lg:hidden h-[6rem] w-[16rem] shrink-0 rounded-2xl object-cover object-center"
+          className="h-[6rem] w-[16rem] shrink-0 rounded-2xl object-cover object-center max-xl:hidden"
         />
       )}
     </div>

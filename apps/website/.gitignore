@@ -11,8 +11,5 @@ credentials.json
 # typescript
 next-env.d.ts
 
-# sst
-.sst
-
 # open-next
 .open-next

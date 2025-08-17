@@ -47,11 +47,11 @@ export const ROUTES = {
       path.join(ROUTES.DATASET.ROOT, String(id), slug),
     {
       ROOT: "/dataset",
-      BUCKET: `https://${process.env.NEXT_PUBLIC_BUCKET_URL}/`,
+      CDN: process.env.NEXT_PUBLIC_CDN_URL + "/files",
       THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
-        path.join(ROUTES.DATASET.BUCKET, hasGraphics ? String(id) : "default", "thumbnail.png"),
+        path.join(ROUTES.DATASET.CDN, hasGraphics ? String(id) : "default", "thumbnail.png"),
       FILE: ({ id, slug }: { id: number; slug: string }) =>
-        path.join(ROUTES.DATASET.BUCKET, String(id), slug + ".zip"),
+        path.join(ROUTES.DATASET.CDN, String(id), slug + ".zip"),
     },
   ),
 };

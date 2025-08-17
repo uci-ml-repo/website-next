@@ -18,6 +18,7 @@
     }
   ],
   "scripts": {
+    "dev": "sst dev",
     "format": "pnpm -r format --log-level error",
     "lint": "pnpm -r lint",
     "lint-staged": "pnpm -r --workspace-concurrency=1 exec lint-staged",
@@ -42,10 +43,12 @@
     "@packages/prettier-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@types/node": "24.3.0",
+    "dotenv": "17.2.1",
     "eslint": "9.33.0",
     "husky": "9.1.7",
     "lint-staged": "16.1.5",
     "prettier": "3.6.2",
+    "sst": "3.17.10",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@10.14.0",

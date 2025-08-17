@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       { hostname: "avatars.githubusercontent.com" },
       { hostname: "lh3.googleusercontent.com" },
       { hostname: "**.amazonaws.com" },
+      { hostname: "**.cloudfront.net" },
     ],
   },
   turbopack: {},

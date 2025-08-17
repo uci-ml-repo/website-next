@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "next build",
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
     "lint": "next lint --fix --max-warnings=0",
     "prepare": "sst install",
-    "sst:dev": "sst dev",
-    "start": "next start",
     "tscheck": "tsc --noEmit --excludeDirectories '.next'"
   },
   "lint-staged": {
@@ -23,7 +20,6 @@
   "prettier": "@packages/prettier-config",
   "dependencies": {
     "@aws-sdk/client-s3": "3.864.0",
-    "@aws-sdk/client-sesv2": "3.864.0",
     "@hookform/resolvers": "5.2.1",
     "@mantine/hooks": "8.2.4",
     "@mdx-js/loader": "3.1.0",
@@ -80,7 +76,6 @@
     "react-window": "1.8.11",
     "server-only": "0.0.1",
     "sonner": "2.0.7",
-    "sst": "3.17.10",
     "superjson": "2.2.2",
     "tailwind-merge": "3.3.1",
     "uuid": "11.1.0",

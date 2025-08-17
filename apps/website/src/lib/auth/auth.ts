@@ -1,17 +1,16 @@
 import { db } from "@packages/db";
 import { Enums, enumToArray } from "@packages/db/enum";
-import { resetPassword, verifyEmail } from "@packages/email";
+import { sendEmail } from "@packages/email";
+import { resetPassword, verifyEmail } from "@packages/email/emails";
 import bcrypt from "bcrypt";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { emailOTP } from "better-auth/plugins";
+import { Resource } from "sst";
 import { v7 as uuid } from "uuid";
 
-import { env } from "@/env";
-import { sendEmail } from "@/lib/mail";
-
 export const auth = betterAuth({
-  baseURL: env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
@@ -40,12 +39,12 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
+      clientId: Resource.GITHUB_CLIENT_ID.value,
+      clientSecret: Resource.GOOGLE_CLIENT_SECRET.value,
     },
     google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: Resource.GOOGLE_CLIENT_ID.value,
+      clientSecret: Resource.GOOGLE_CLIENT_SECRET.value,
     },
   },
   account: {
@@ -77,6 +76,7 @@ export const auth = betterAuth({
       },
     }),
   ],
+  telemetry: { enabled: false },
 });
 
 export type Session = typeof auth.$Infer.Session;
