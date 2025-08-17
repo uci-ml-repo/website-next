@@ -53,13 +53,17 @@ export function LoginCredentialsForm() {
       password,
     });
 
-    if (error?.code === "EMAIL_NOT_VERIFIED") {
-      router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
-    } else if (data) {
+    if (data) {
       toast.success(`Signed in as: ${data.user.name}`);
       router.push(ROUTES.HOME);
+    } else if (error?.code === "EMAIL_NOT_VERIFIED") {
+      router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
     } else {
-      setError(error?.message);
+      if (error?.message) {
+        setError(error.message);
+      } else {
+        toast.error("Failed to sign in. Please try again.");
+      }
       setIsPending(false);
     }
   }

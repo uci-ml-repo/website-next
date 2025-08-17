@@ -28,7 +28,7 @@ export default function Page() {
               <TabsTrigger value="register">Register</TabsTrigger>
             </TabsList>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <TabsContent value="signIn">
               <LoginContent setTab={setTab} />
             </TabsContent>

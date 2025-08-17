@@ -2,6 +2,7 @@
 
 import { authClient } from "@packages/auth/auth-client";
 import { type ReactNode, useState } from "react";
+import { toast } from "sonner";
 
 import { AuthButton } from "@/components/auth/button/auth-button";
 
@@ -16,12 +17,16 @@ export function ProviderAuth({ children, icon, provider }: Props) {
 
   async function providerAuth() {
     setPending(true);
-    const { data } = await authClient.signIn.social({
+    const { data, error } = await authClient.signIn.social({
       provider,
     });
 
     if (!data) {
       setPending(false);
+    }
+
+    if (error) {
+      toast.error(`Failed to authenticate with ${provider}`);
     }
   }
 

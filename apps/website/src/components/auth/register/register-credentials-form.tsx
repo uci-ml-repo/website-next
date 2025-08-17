@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { AuthButton } from "@/components/auth/button/auth-button";
@@ -70,8 +71,10 @@ export function RegisterCredentialsForm() {
 
     if (data) {
       router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
+    } else if (error?.message) {
+      setError(error.message);
     } else {
-      setError(error?.message);
+      toast.error("Failed to register. Please try again.");
     }
   }
 
