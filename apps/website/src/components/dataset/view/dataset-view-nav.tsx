@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ROUTES } from "@/lib/routes";
 
-export function DatasetViewTabs({ dataset }: { dataset: DatasetSelect }) {
+export function DatasetViewNav({ dataset }: { dataset: DatasetSelect }) {
   const tabs = [
     { name: "About", href: ROUTES.DATASET(dataset) },
     { name: "Files", href: ROUTES.DATASET.FILES(dataset) },
