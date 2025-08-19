@@ -1,3 +1,4 @@
+import type { DatasetSelect } from "@packages/db/types";
 import { CalendarDaysIcon, Columns3Icon, EyeIcon, MicroscopeIcon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +10,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal, abbreviateFileSize } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
-import type { DatasetSelect } from "@/server/types/dataset/response";
 import { formatEnum } from "@/server/types/util/enum";
 
 interface Props extends ComponentProps<typeof Card> {

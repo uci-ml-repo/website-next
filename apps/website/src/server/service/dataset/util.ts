@@ -29,11 +29,11 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     conditions.push(arrayContains(dataset.features, query.features));
   }
 
-  if (query.subjectAreas) {
+  if (query.subjectAreas?.length) {
     conditions.push(inArray(dataset.subjectArea, query.subjectAreas));
   }
 
-  if (query.tasks) {
+  if (query.tasks?.length) {
     conditions.push(arrayOverlaps(dataset.tasks, query.tasks));
   }
 
@@ -41,7 +41,7 @@ export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
     conditions.push(arrayOverlaps(dataset.dataTypes, query.dataTypes));
   }
 
-  if (query.featureTypes) {
+  if (query.featureTypes?.length) {
     conditions.push(arrayOverlaps(dataset.featureTypes, query.featureTypes));
   }
 

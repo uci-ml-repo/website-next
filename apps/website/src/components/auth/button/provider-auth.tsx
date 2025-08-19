@@ -26,7 +26,7 @@ export function ProviderAuth({ children, icon, provider }: Props) {
     }
 
     if (error) {
-      toast.error(`Failed to authenticate with ${provider}`);
+      toast.error(`Failed to authenticate with ${provider}. Please try again.`);
     }
   }
 

@@ -1,11 +1,11 @@
 import { db } from "@packages/db";
 import { author, dataset } from "@packages/db/schema";
+import type { AuthorSelect } from "@packages/db/types";
+import { datasetColumns } from "@packages/db/types";
 import { desc, eq } from "drizzle-orm";
 
 import { buildQuery, buildSearchQuery } from "@/server/service/dataset/util";
-import type { AuthorSelect } from "@/server/types/author/response";
 import type { DatasetQuery } from "@/server/types/dataset/request";
-import { datasetColumns } from "@/server/types/dataset/request";
 import { sortMap } from "@/server/types/util/order";
 import { entriesT } from "@/server/types/util/type";
 

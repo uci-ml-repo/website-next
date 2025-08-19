@@ -1,4 +1,4 @@
-import type { AuthorSelect } from "@/server/types/author/response";
+import type { AuthorSelect } from "@packages/db/types";
 
 export class Citation {
   private static readonly source = "UCI Machine Learning Repository";

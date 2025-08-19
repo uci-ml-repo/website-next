@@ -1,8 +1,8 @@
+import type { DatasetSelect } from "@packages/db/types";
 import { ExternalLinkIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 
 import { Button } from "@/components/ui/button";
-import type { DatasetSelect } from "@/server/types/dataset/response";
 
 type Props = ComponentProps<typeof Button> & {
   dataset: DatasetSelect;

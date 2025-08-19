@@ -49,11 +49,16 @@ export const ROUTES = {
       path.join(ROUTES.DATASET.ROOT, String(id), slug),
     {
       ROOT: "/dataset",
+
       CDN: process.env.NEXT_PUBLIC_CDN_URL,
+
       THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
         path.join(ROUTES.DATASET.CDN, hasGraphics ? String(id) : "default", "thumbnail.png"),
-      FILE: ({ id, slug }: { id: number; slug: string }) =>
+
+      ZIP: ({ id, slug }: { id: number; slug: string }) =>
         path.join(ROUTES.DATASET.CDN, String(id), slug + ".zip"),
+
+      FILES: (dataset: { id: number; slug: string }) => path.join(ROUTES.DATASET(dataset), "files"),
     },
   ),
 };

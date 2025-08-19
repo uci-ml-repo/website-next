@@ -49,12 +49,12 @@ const filters = [
   {
     component: DatasetFilterInstanceCount,
     name: "Number of Instances",
-    tooltip: "The number of instances (rows) in the dataset",
+    tooltip: "The number of instances (data points) in the dataset",
   },
   {
     component: DatasetFilterFeatureCount,
     name: "Number of Features",
-    tooltip: "The number of features (columns) in the dataset",
+    tooltip: "The number of features (attributes) in the dataset",
   },
   {
     component: DatasetFilterPython,

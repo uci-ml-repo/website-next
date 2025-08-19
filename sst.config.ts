@@ -11,56 +11,25 @@ export default $config({
     };
   },
   async run() {
-    const email = sst.aws.Email.get("Email", "uci-ics-mlr-prod.aws.uci.edu");
+    const { email } = await import("./infra/email");
+    const { vpc, database } = await import("./infra/database");
+    const { bucketRouter } = await import("./infra/cdn");
+    const { apiRouter } = await import("./infra/api-router");
+    const { secrets } = await import("./infra/secrets");
 
-    const vpc = new sst.aws.Vpc("Vpc", { bastion: true, nat: "ec2" });
-
-    const database = new sst.aws.Postgres("Database", {
-      vpc,
-      proxy: true,
-      dev: {
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        port: Number(process.env.DB_PORT),
-      },
-    });
-
-    new sst.x.DevCommand("Studio", {
-      link: [database],
-      dev: {
-        command: "npx drizzle-kit studio",
-        directory: "packages/db",
-        autostart: false,
-      },
-    });
-
-    const bucket = new sst.aws.Bucket("Bucket", {
-      access: "cloudfront",
-    });
-
-    const router = new sst.aws.Router("Router");
-    router.routeBucket("/", bucket);
-
-    const googleClientId = new sst.Secret("GOOGLE_CLIENT_ID");
-    const googleClientSecret = new sst.Secret("GOOGLE_CLIENT_SECRET");
-    const githubClientId = new sst.Secret("GITHUB_CLIENT_ID");
-    const githubClientSecret = new sst.Secret("GITHUB_CLIENT_SECRET");
-    const authSecret = new sst.Secret("AUTH_SECRET");
-
-    const secrets = [
-      googleClientId,
-      googleClientSecret,
-      githubClientId,
-      githubClientSecret,
-      authSecret,
-    ];
-
-    new sst.aws.Nextjs("Website", {
+    const website = new sst.aws.Nextjs("Website", {
       path: "apps/website",
-      link: [database, bucket, email, ...secrets],
+      link: [database, email, ...secrets],
       vpc,
-      environment: { NEXT_PUBLIC_CDN_URL: router.url },
+      environment: {
+        NEXT_PUBLIC_CDN_URL: bucketRouter.url,
+      },
+    });
+
+    new sst.aws.Function("Api", {
+      link: [database, website],
+      url: { router: { instance: apiRouter } },
+      handler: "apps/api/src/index.handler",
     });
   },
 });

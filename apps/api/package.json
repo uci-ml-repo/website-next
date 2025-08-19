@@ -1,0 +1,27 @@
+{
+  "name": "@apps/api",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint --fix --max-warnings=0",
+    "tscheck": "tsc --noEmit"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix --max-warnings=0"
+    ]
+  },
+  "prettier": "@packages/prettier-config",
+  "dependencies": {
+    "@hono/zod-openapi": "1.1.0",
+    "@packages/db": "workspace:*",
+    "@scalar/hono-api-reference": "0.9.13",
+    "drizzle-orm": "0.44.4",
+    "hono": "4.9.2",
+    "zod": "4.0.17"
+  }
+}

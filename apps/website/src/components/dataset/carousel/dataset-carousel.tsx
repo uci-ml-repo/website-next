@@ -1,5 +1,6 @@
 "use client";
 
+import type { DatasetSelect } from "@packages/db/types";
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -19,7 +20,6 @@ import {
   CarouselScrollDots,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/util/cn";
-import type { DatasetSelect } from "@/server/types/dataset/response";
 
 interface Props {
   heading: string;

@@ -1,13 +1,10 @@
 import { Enums } from "@packages/db/enum";
-import { dataset } from "@packages/db/schema";
-import { getTableColumns } from "drizzle-orm";
+import type { DatasetColumn } from "@packages/db/types";
+import { datasetColumns } from "@packages/db/types";
 import { z } from "zod";
 
 import { order } from "@/server/types/util/order";
 import { keysT } from "@/server/types/util/type";
-
-export const datasetColumns = getTableColumns(dataset);
-type DatasetColumn = keyof typeof datasetColumns;
 
 export const range = z.object({ min: z.int(), max: z.int() }).partial();
 
@@ -19,14 +16,14 @@ export const datasetQuery = z.object({
   limit: z.number().int().optional().default(10),
   cursor: z.number().int().optional(),
   search: z.string().optional(),
-  keywords: z.array(z.string()).optional(),
-  features: z.array(z.string()).optional(),
-  subjectAreas: z.array(z.enum(Enums.DatasetSubjectArea)).optional(),
-  dataTypes: z.array(z.enum(Enums.DatasetDataType)).optional(),
-  featureTypes: z.array(z.enum(Enums.DatasetFeatureType)).optional(),
+  keywords: z.string().array().optional(),
+  features: z.string().array().optional(),
+  subjectAreas: z.enum(Enums.DatasetSubjectArea).array().optional(),
+  dataTypes: z.enum(Enums.DatasetDataType).array().optional(),
+  featureTypes: z.enum(Enums.DatasetFeatureType).array().optional(),
+  tasks: z.enum(Enums.DatasetTask).array().optional(),
   featureCount: range.optional(),
   instanceCount: range.optional(),
-  tasks: z.array(z.enum(Enums.DatasetTask)).optional(),
   isAvailablePython: z.boolean().optional(),
 });
 

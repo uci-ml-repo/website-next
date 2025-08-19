@@ -1,3 +1,4 @@
+import type { DatasetSelect } from "@packages/db/types";
 import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
-import type { DatasetSelect } from "@/server/types/dataset/response";
 
 import { DatasetHoverCard } from "./dataset-hover-card";
 

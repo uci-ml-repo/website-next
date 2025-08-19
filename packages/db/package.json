@@ -5,6 +5,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema/index.ts",
+    "./types": "./src/types/index.ts",
     "./enum": "./src/enum.ts",
     "./env": "./env.ts"
   },
@@ -26,6 +27,7 @@
   "prettier": "@packages/prettier-config",
   "dependencies": {
     "drizzle-orm": "0.44.4",
+    "drizzle-zod": "0.8.3",
     "pg": "8.16.3",
     "zod": "4.0.17"
   },

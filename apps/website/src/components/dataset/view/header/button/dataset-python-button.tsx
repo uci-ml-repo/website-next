@@ -1,3 +1,4 @@
+import type { DatasetSelect } from "@packages/db/types";
 import { ExternalLinkIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { FaPython } from "react-icons/fa6";
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { DatasetSelect } from "@/server/types/dataset/response";
 
 type Props = ComponentProps<typeof Button> & {
   dataset: DatasetSelect;

@@ -7,12 +7,11 @@
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
     "lint": "next lint --fix --max-warnings=0",
-    "prepare": "sst install",
     "tscheck": "tsc --noEmit --excludeDirectories '.next'"
   },
   "lint-staged": {
     "*": [
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ],
     "*.{js,ts,tsx,mdx}": [
       "eslint --fix --max-warnings=0"
@@ -58,7 +57,6 @@
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "drizzle-orm": "0.44.4",
-    "drizzle-zod": "0.8.3",
     "embla-carousel-react": "8.6.0",
     "highlight.js": "11.11.1",
     "input-otp": "1.4.2",
