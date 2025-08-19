@@ -135,7 +135,7 @@ export function DatasetFilterMultiselect({
             </div>
           )
         }
-        className="bg-background rounded-lg"
+        className="!bg-background rounded-lg"
         aria-label={props["aria-label"]}
       >
         {!!matches.length && (

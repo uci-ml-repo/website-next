@@ -1,6 +1,7 @@
 "use client";
 
 import type { DatasetSelect } from "@packages/db/types";
+import { SettingsIcon } from "lucide-react";
 import { LayoutGroup } from "motion/react";
 import Link from "next/link";
 
@@ -9,7 +10,8 @@ import { ROUTES } from "@/lib/routes";
 export function DatasetViewNav({ dataset }: { dataset: DatasetSelect }) {
   const tabs = [
     { name: "About", href: ROUTES.DATASET(dataset) },
-    { name: "Files", href: ROUTES.DATASET.FILES(dataset) },
+    ...(dataset.externalLink ? [] : [{ name: "Files", href: ROUTES.DATASET.FILES(dataset) }]),
+    { name: <SettingsIcon />, href: ROUTES.DATASET.SETTINGS(dataset) },
   ];
 
   return (
@@ -17,7 +19,7 @@ export function DatasetViewNav({ dataset }: { dataset: DatasetSelect }) {
       <LayoutGroup id="sliding-tabs">
         <ul className="flex space-x-2">
           {tabs.map(({ name, href }) => (
-            <Link key={name} href={href}>
+            <Link key={href} href={href}>
               {name}
             </Link>
           ))}

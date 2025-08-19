@@ -9,6 +9,7 @@ export function CurrentDevelopers() {
         avatar="https://avatars.githubusercontent.com/u/143981491"
         github="andrew-wang0"
       />
+      <div />
     </div>
   );
 }

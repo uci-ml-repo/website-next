@@ -4,6 +4,7 @@ import { forbidden, notFound, permanentRedirect, unauthorized } from "next/navig
 import type { ReactNode } from "react";
 import { cache } from "react";
 
+import { DatasetInteractions } from "@/components/dataset/view/dataset-interactions";
 import { DatasetViewNav } from "@/components/dataset/view/dataset-view-nav";
 import { DatasetViewHeader } from "@/components/dataset/view/header/dataset-view-header";
 import { ROUTES } from "@/lib/routes";
@@ -66,7 +67,10 @@ export default async function Layout({
     <HydrateClient>
       <div className="blur-background space-y-6">
         <DatasetViewHeader id={id} />
-        <DatasetViewNav dataset={dataset} />
+        <div className="flex items-end justify-between border-b">
+          <DatasetViewNav dataset={dataset} />
+          <DatasetInteractions dataset={dataset} />
+        </div>
         {children}
       </div>
     </HydrateClient>

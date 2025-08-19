@@ -59,6 +59,10 @@ export const ROUTES = {
         path.join(ROUTES.DATASET.CDN, String(id), slug + ".zip"),
 
       FILES: (dataset: { id: number; slug: string }) => path.join(ROUTES.DATASET(dataset), "files"),
+
+      SETTINGS: (dataset: { id: number; slug: string }) => {
+        return path.join(ROUTES.DATASET(dataset), "settings");
+      },
     },
   ),
 };
