@@ -2,12 +2,10 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import { MenuIcon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
 
-import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/util/cn";
 
 export const Sheet = DialogPrimitive.Root;
@@ -30,30 +28,6 @@ export const SheetOverlay = forwardRef<
   />
 ));
 SheetOverlay.displayName = DialogPrimitive.Overlay.displayName;
-
-const SidebarTrigger = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof Button>>(
-  ({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useSidebar();
-
-    return (
-      <Button
-        ref={ref}
-        variant="ghost"
-        size="icon"
-        className={cn("m-2 size-12 shrink-0", className)}
-        onClick={(event) => {
-          onClick?.(event);
-          toggleSidebar();
-        }}
-        aria-label="Toggle sidebar"
-        {...props}
-      >
-        <MenuIcon className="!size-6" />
-      </Button>
-    );
-  },
-);
-SidebarTrigger.displayName = "SidebarTrigger";
 
 const sheetVariants = cva(
   cn(

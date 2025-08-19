@@ -38,7 +38,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
     <Link
       className={cn(
         "group @container flex w-full !cursor-pointer items-center space-x-3 !p-4",
-        "hover:bg-accent focus-visible:bg-accent",
+        "hover:bg-accent/60 focus-visible:bg-accent/60",
         className,
       )}
       {...props}
@@ -63,9 +63,8 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
         {datasetStats.some((stat) => !!stat.text) && (
           <div
             className={cn(
-              "text-muted-foreground grid w-36 shrink-0 grid-cols-1 grid-rows-2 gap-x-4 gap-y-1",
+              "text-muted-foreground w-36 shrink-0 @max-2xl:hidden",
               "[&_svg]:size-4 [&_svg]:shrink-0",
-              "hidden @xl:block",
             )}
           >
             {datasetStats.map(
@@ -73,7 +72,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
                 stat.text && (
                   <div key={i} className="flex items-center space-x-1">
                     {stat.icon}
-                    <span className="text-nowrap">{stat.text}</span>
+                    <span className="text-base text-nowrap">{stat.text}</span>
                   </div>
                 ),
             )}
