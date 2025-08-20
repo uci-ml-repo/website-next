@@ -7,7 +7,7 @@ interface Props {
   otp: string;
 }
 
-export default function VerifyEmail({ otp }: Props) {
+function VerifyEmail({ otp }: Props) {
   return (
     <EmailLayout>
       <Text>Your One Time Passcode for email verification is:</Text>

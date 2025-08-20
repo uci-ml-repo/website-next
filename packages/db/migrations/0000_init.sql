@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
+--> statement-breakpoint
 CREATE TYPE "public"."approval_status" AS ENUM('draft', 'pending', 'approved', 'rejected');
 
 --> statement-breakpoint
@@ -103,6 +104,7 @@ CREATE TABLE "author" (
 CREATE TABLE "bookmark" (
   "user_id" UUID NOT NULL,
   "dataset_id" INTEGER NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   CONSTRAINT "bookmark_user_id_dataset_id_pk" PRIMARY KEY ("user_id", "dataset_id")
 );
 
@@ -273,6 +275,9 @@ CREATE INDEX "bookmark_user_id_index" ON "bookmark" USING btree ("user_id");
 
 --> statement-breakpoint
 CREATE INDEX "bookmark_dataset_id_index" ON "bookmark" USING btree ("dataset_id");
+
+--> statement-breakpoint
+CREATE INDEX "bookmark_created_at_index" ON "bookmark" USING btree ("created_at");
 
 --> statement-breakpoint
 CREATE INDEX "dataset_status_index" ON "dataset" USING btree ("status");

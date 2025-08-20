@@ -17,17 +17,22 @@ interface Props {
 }
 
 export function DatasetBookmarkButton({ dataset, session }: Props) {
+  const userId = session?.user.id ?? "";
+
   const { data: initialBookmarked } = trpc.bookmark.find.isDatasetBookmarked.useQuery(
-    { datasetId: dataset.id, userId: session?.user.id ?? "" },
+    { datasetId: dataset.id, userId },
     { enabled: !!session?.user },
   );
 
   const [bookmarked, setBookmarked] = useState(initialBookmarked);
 
+  const utils = trpc.useUtils();
+
   const removeBookmark = trpc.bookmark.delete.removeBookmark.useMutation({
     onMutate: () => setBookmarked(false),
     onSuccess: () => {
       toast.success("Removed bookmark");
+      utils.bookmark.find.byUserId.invalidate({ userId });
     },
     onError: () => {
       setBookmarked(true);
@@ -36,7 +41,10 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
   });
   const addBookmark = trpc.bookmark.insert.addBookmark.useMutation({
     onMutate: () => setBookmarked(true),
-    onSuccess: () => toast.success("Added bookmark"),
+    onSuccess: () => {
+      toast.success("Added bookmark");
+      utils.bookmark.find.byUserId.invalidate({ userId });
+    },
     onError: () => {
       setBookmarked(false);
       toast.error("Failed to add bookmark. Please try again.");
@@ -45,9 +53,9 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
 
   async function toggleBookmark() {
     if (bookmarked) {
-      removeBookmark.mutate({ datasetId: dataset.id, userId: session?.user.id ?? "" });
+      removeBookmark.mutate({ datasetId: dataset.id, userId });
     } else {
-      addBookmark.mutate({ datasetId: dataset.id, userId: session?.user.id ?? "" });
+      addBookmark.mutate({ datasetId: dataset.id, userId });
     }
   }
 

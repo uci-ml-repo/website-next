@@ -2,21 +2,21 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { ReactNode } from "react";
 
 import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";
-import { Sidebar, SidebarContent, SidebarTitle } from "@/components/ui/sidebar";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/util/cn";
 
 export function SidebarMobileSheet({ children, ...props }: { children: ReactNode }) {
   const { mobileState, setMobileState } = useSidebar();
 
   return (
-    <Sidebar
+    <Sheet
       open={mobileState === "expanded"}
       onOpenChange={() =>
         setMobileState((prev) => (prev === "expanded" ? "collapsed" : "expanded"))
       }
       {...props}
     >
-      <SidebarContent
+      <SheetContent
         aria-describedby={undefined}
         side="left"
         className={cn(
@@ -26,11 +26,11 @@ export function SidebarMobileSheet({ children, ...props }: { children: ReactNode
         closeButton={false}
       >
         <VisuallyHidden>
-          <SidebarTitle>Sidebar</SidebarTitle>
+          <SheetTitle>Sidebar</SheetTitle>
         </VisuallyHidden>
 
         {children}
-      </SidebarContent>
-    </Sidebar>
+      </SheetContent>
+    </Sheet>
   );
 }

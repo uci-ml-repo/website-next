@@ -8,7 +8,7 @@ interface Props {
   url: string;
 }
 
-export default function ResetPassword({ name, url }: Props) {
+function ResetPassword({ name, url }: Props) {
   return (
     <EmailLayout name={name}>
       <Text>

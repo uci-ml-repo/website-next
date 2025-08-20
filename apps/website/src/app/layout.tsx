@@ -69,7 +69,7 @@ export default async function RootLayout({
                   className={cn(
                     "w-full",
                     "md:ml-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!ml-(--sidebar-width)",
-                    "transition-margin duration-100 ease-out",
+                    "transition-margin duration-150 ease-out",
                   )}
                 >
                   <div className="flex min-h-dvh flex-col">

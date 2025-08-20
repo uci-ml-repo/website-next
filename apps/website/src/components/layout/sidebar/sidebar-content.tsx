@@ -10,6 +10,7 @@ import {
 import type { HTMLAttributes, RefObject } from "react";
 
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
+import { SidebarBookmarks } from "@/components/layout/sidebar/sidebar-bookmarks";
 import { SidebarHoverExpandable } from "@/components/layout/sidebar/sidebar-hover-expandable";
 import { SidebarNav, SidebarNavLink } from "@/components/layout/sidebar/sidebar-nav";
 import { SidebarOpenVisible } from "@/components/layout/sidebar/sidebar-open-visible";
@@ -33,7 +34,7 @@ export function SidebarContent({ className, session: _session, ...props }: Props
   const session = useSessionWithInitial(_session);
 
   return (
-    <div className={cn("flex h-full flex-col", className)} {...props}>
+    <div className={cn("flex h-full flex-col overflow-y-hidden", className)} {...props}>
       <div className="flex items-center">
         <SidebarTrigger />
         <MLRepoLogo
@@ -45,7 +46,7 @@ export function SidebarContent({ className, session: _session, ...props }: Props
 
       <SidebarHoverExpandable className="flex grow flex-col">
         {/* Navigation Menu */}
-        <SidebarNav className="grow">
+        <SidebarNav>
           {/* Home */}
           <SidebarNavLink href={ROUTES.HOME}>
             <HomeIcon />
@@ -105,6 +106,14 @@ export function SidebarContent({ className, session: _session, ...props }: Props
             </SidebarNavLink>
           )}
         </SidebarNav>
+
+        {session?.user && (
+          <SidebarOpenVisible className="min-h-0 grow overflow-y-auto p-2">
+            <div className="h-full [@media_(max-height:32rem)]:hidden">
+              <SidebarBookmarks session={session} />
+            </div>
+          </SidebarOpenVisible>
+        )}
 
         <SidebarOpenVisible className="flex items-center justify-between p-4">
           <div className="text-muted-foreground text-sm">Theme</div>
