@@ -6,7 +6,6 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal, abbreviateFileSize } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
@@ -16,33 +15,26 @@ interface Props extends ComponentProps<typeof Card> {
   dataset: DatasetSelect;
 }
 
-type DatasetStat = {
-  icon: ReactNode;
-  text: string | null;
-  tooltip: string;
-};
-
 export function DatasetCard({ dataset, className, ...props }: Props) {
-  const datasetStats: DatasetStat[] = [
+  const datasetStats: {
+    icon: ReactNode;
+    text: string | null;
+  }[] = [
     {
       icon: <MicroscopeIcon />,
       text: dataset.tasks ? formatEnum(dataset.tasks) : null,
-      tooltip: "Dataset Tasks",
     },
     {
       icon: <Columns3Icon />,
       text: dataset.featureCount ? `${abbreviateDecimal(dataset.featureCount)} Features` : null,
-      tooltip: "Number of Features",
     },
     {
       icon: <Rows3Icon />,
       text: dataset.instanceCount ? `${abbreviateDecimal(dataset.instanceCount)} Instances` : null,
-      tooltip: "Number of Instances",
     },
     {
       icon: <CalendarDaysIcon />,
       text: dataset.yearCreated ? dataset.yearCreated.toString() : null,
-      tooltip: "Year Created",
     },
   ];
 
@@ -67,23 +59,15 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
             </CardDescription>
           </div>
           <CardDescription className="space-y-1">
-            <TooltipProvider>
-              {datasetStats.map(
-                (stat, i) =>
-                  stat.text && (
-                    <Tooltip key={i}>
-                      <TooltipTrigger
-                        className="flex cursor-pointer items-center space-x-2 [&_svg]:size-4"
-                        tabIndex={-1}
-                      >
-                        {stat.icon}
-                        <span className="truncate text-sm">{stat.text}</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="left">{stat.tooltip}</TooltipContent>
-                    </Tooltip>
-                  ),
-              )}
-            </TooltipProvider>
+            {datasetStats.map(
+              (stat) =>
+                stat.text && (
+                  <div key={stat.text} className="flex items-center space-x-2 [&_svg]:size-4">
+                    {stat.icon}
+                    <span className="truncate text-sm">{stat.text}</span>
+                  </div>
+                ),
+            )}
           </CardDescription>
         </CardContent>
         <CardFooter className="@container h-9 justify-between border-t py-2.5">

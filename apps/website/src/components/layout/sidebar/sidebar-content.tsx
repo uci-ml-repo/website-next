@@ -28,13 +28,13 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   ref?: RefObject<HTMLDivElement>;
 }
 
-export function SidebarContent({ className, session: _session, ...props }: Props) {
+export function SidebarContent({ session: _session, className, ...props }: Props) {
   const { currentState } = useSidebar();
 
   const session = useSessionWithInitial(_session);
 
   return (
-    <div className={cn("flex h-full flex-col overflow-y-hidden", className)} {...props}>
+    <div className={cn("flex h-full flex-col", className)} {...props}>
       <div className="flex items-center">
         <SidebarTrigger />
         <MLRepoLogo
@@ -44,7 +44,7 @@ export function SidebarContent({ className, session: _session, ...props }: Props
         />
       </div>
 
-      <SidebarHoverExpandable className="flex grow flex-col">
+      <SidebarHoverExpandable>
         {/* Navigation Menu */}
         <SidebarNav>
           {/* Home */}
@@ -106,15 +106,23 @@ export function SidebarContent({ className, session: _session, ...props }: Props
             </SidebarNavLink>
           )}
         </SidebarNav>
+      </SidebarHoverExpandable>
 
-        {session?.user && (
-          <SidebarOpenVisible className="min-h-0 grow overflow-y-auto p-2">
-            <div className="h-full [@media_(max-height:32rem)]:hidden">
-              <SidebarBookmarks session={session} />
-            </div>
+      <SidebarHoverExpandable className="min-h-0 flex-1 overflow-hidden">
+        {session && (
+          <SidebarOpenVisible
+            className={cn(
+              "animate-in fade-in flex h-full flex-col",
+              "not-has-data-[slot=dataset-bookmarks]:hidden [@media_(max-height:32rem)]:hidden",
+            )}
+          >
+            <div className="text-muted-foreground p-2">Bookmarks</div>
+            <SidebarBookmarks session={session} className="min-h-0 flex-1 overflow-y-auto p-2" />
           </SidebarOpenVisible>
         )}
+      </SidebarHoverExpandable>
 
+      <SidebarHoverExpandable>
         <SidebarOpenVisible className="flex items-center justify-between p-4">
           <div className="text-muted-foreground text-sm">Theme</div>
           <ThemeToggle />

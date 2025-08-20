@@ -15,10 +15,8 @@ export function SidebarOpenVisible({
     (view !== "mobile" && desktopState !== "collapsed");
 
   return (
-    isOpen && (
-      <div className={cn("animate-in fade-in-0", className)} {...props}>
-        {children}
-      </div>
-    )
+    <div className={cn("animate-in fade-in-0", !isOpen && "!hidden", className)} {...props}>
+      {children}
+    </div>
   );
 }
