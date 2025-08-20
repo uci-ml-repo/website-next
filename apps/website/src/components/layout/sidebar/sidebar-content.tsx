@@ -23,14 +23,14 @@ import { cn } from "@/lib/util/cn";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  initialSession: Session | null;
+  session: Session | null;
   ref?: RefObject<HTMLDivElement>;
 }
 
-export function SidebarContent({ className, initialSession, ...props }: Props) {
+export function SidebarContent({ className, session: _session, ...props }: Props) {
   const { currentState } = useSidebar();
 
-  const session = useSessionWithInitial(initialSession);
+  const session = useSessionWithInitial(_session);
 
   return (
     <div className={cn("flex h-full flex-col", className)} {...props}>
@@ -95,9 +95,9 @@ export function SidebarContent({ className, initialSession, ...props }: Props) {
           ) : (
             // Sign In
             <SidebarNavLink
-              href={ROUTES.AUTH.SIGN_IN}
+              href={ROUTES.AUTH.SIGN_IN()}
               activePath={RegExp(
-                `^(${ROUTES.AUTH.SIGN_IN}|${ROUTES.AUTH.FORGOT_PASSWORD}|${ROUTES.AUTH.VERIFY})`,
+                `^(${ROUTES.AUTH.SIGN_IN()}|${ROUTES.AUTH.FORGOT_PASSWORD}|${ROUTES.AUTH.VERIFY})`,
               )}
             >
               <LogInIcon />

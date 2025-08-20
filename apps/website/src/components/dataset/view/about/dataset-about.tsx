@@ -2,8 +2,8 @@
 
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetViewAbout({ id }: { id: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ id });
+export function DatasetAbout({ id }: { id: number }) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
 
   if (!dataset) throw new Error();
 

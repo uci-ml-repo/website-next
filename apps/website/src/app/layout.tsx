@@ -57,7 +57,7 @@ export default async function RootLayout({
           <NuqsAdapter>
             <ThemeProvider
               attribute="class"
-              defaultTheme="light"
+              defaultTheme="system"
               themes={["light", "dark"]}
               disableTransitionOnChange
             >
@@ -73,7 +73,7 @@ export default async function RootLayout({
                   )}
                 >
                   <div className="flex min-h-dvh flex-col">
-                    <Header initialSession={session} />
+                    <Header session={session} />
                     <main
                       className={cn(
                         "content mx-auto mb-14 flex grow flex-col",

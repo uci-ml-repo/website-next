@@ -1,5 +1,6 @@
 "use client";
 
+import type { Session } from "@packages/auth/auth";
 import type { DatasetSelect } from "@packages/db/types";
 import { SettingsIcon } from "lucide-react";
 import { LayoutGroup } from "motion/react";
@@ -7,7 +8,12 @@ import Link from "next/link";
 
 import { ROUTES } from "@/lib/routes";
 
-export function DatasetViewNav({ dataset }: { dataset: DatasetSelect }) {
+interface Props {
+  dataset: DatasetSelect;
+  session: Session | null;
+}
+
+export function DatasetNav({ dataset, session: _session }: Props) {
   const tabs = [
     { name: "About", href: ROUTES.DATASET(dataset) },
     ...(dataset.externalLink ? [] : [{ name: "Files", href: ROUTES.DATASET.FILES(dataset) }]),

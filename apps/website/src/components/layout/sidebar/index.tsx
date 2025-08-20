@@ -20,12 +20,12 @@ export function Sidebar({ session }: { session: Session | null }) {
 
   return view === "mobile" ? (
     <SidebarMobileSheet>
-      <SidebarContent initialSession={session} />
+      <SidebarContent session={session} />
     </SidebarMobileSheet>
   ) : (
     <SidebarContent
       ref={ref}
-      initialSession={session}
+      session={session}
       className={cn(
         "max-md:hidden",
         "peer fixed top-0 bottom-0 left-0 z-50 transition-[shadow,width] duration-100 ease-out",

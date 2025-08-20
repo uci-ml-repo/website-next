@@ -1,6 +1,7 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { router } from "@/server/trpc";
+import { bookmarkRouter } from "@/server/trpc/router/bookmark";
 import { datasetRouter } from "@/server/trpc/router/dataset";
 import { featureRouter } from "@/server/trpc/router/feature";
 import { keywordRouter } from "@/server/trpc/router/keyword";
@@ -10,6 +11,7 @@ export const appRouter = router({
   dataset: datasetRouter,
   keyword: keywordRouter,
   feature: featureRouter,
+  bookmark: bookmarkRouter,
   user: userRouter,
 });
 

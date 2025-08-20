@@ -15,7 +15,8 @@ export const ROUTES = {
 
   AUTH: {
     ROOT: "/auth",
-    SIGN_IN: `/auth/login`,
+    SIGN_IN: (options?: { callback?: string }) =>
+      `/auth/login${options?.callback ? `?callback=${options.callback}` : ""}`,
     FORGOT_PASSWORD: "/auth/forgot",
     RESET_PASSWORD: "/auth/reset",
     VERIFY: "/auth/verify",

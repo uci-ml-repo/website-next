@@ -22,11 +22,15 @@ import {
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
 
-export function Header({ initialSession }: { initialSession: Session | null }) {
+interface Props {
+  session: Session | null;
+}
+
+export function Header({ session: _session }: Props) {
   const router = useRouter();
   const hasScrolled = useHasScrolledX();
 
-  const session = useSessionWithInitial(initialSession);
+  const session = useSessionWithInitial(_session);
 
   function signOut() {
     authClient.signOut({

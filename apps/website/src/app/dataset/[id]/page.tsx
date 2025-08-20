@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (isNaN(id)) return notFound();
 
   try {
-    const dataset = await trpc.dataset.find.byId({ id });
+    const dataset = await trpc.dataset.find.byId({ datasetId: id });
     return permanentRedirect(ROUTES.DATASET(dataset));
   } catch (error) {
     if (error instanceof TRPCError) {

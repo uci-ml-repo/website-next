@@ -1,7 +1,10 @@
-import { authClient } from "@packages/auth/auth-client";
+import { auth } from "@packages/auth/auth";
+import { headers } from "next/headers";
 
 export async function createContext() {
-  const { data: session } = await authClient.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return { session };
 }

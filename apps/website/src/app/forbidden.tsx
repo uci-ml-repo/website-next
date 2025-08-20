@@ -14,7 +14,7 @@ export default async function Forbidden() {
         {session?.user ? (
           <button>Try signing in with another account</button>
         ) : (
-          <Link href={ROUTES.AUTH.SIGN_IN} className="text-link hover:underline">
+          <Link href={ROUTES.AUTH.SIGN_IN()} className="text-link hover:underline">
             Sign in
           </Link>
         )}

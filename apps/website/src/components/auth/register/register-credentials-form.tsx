@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@packages/auth/auth-client";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,9 +46,10 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function RegisterCredentialsForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [formOpen, setFormOpen] = useState(false);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string>();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -67,7 +68,11 @@ export function RegisterCredentialsForm() {
       name,
       email,
       password,
+      callbackURL: searchParams.get("callback") ?? undefined,
     });
+
+    console.log(data);
+    console.log(error);
 
     if (data) {
       router.push(ROUTES.AUTH.VERIFY_EMAIL(email));

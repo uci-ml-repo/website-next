@@ -46,7 +46,7 @@ export function VerifyForm({ email }: { email: string }) {
 
     if (data) {
       toast.success(`Email successfully verified`);
-      router.replace(ROUTES.AUTH.SIGN_IN);
+      router.replace(ROUTES.AUTH.SIGN_IN());
     }
 
     switch (error?.code) {

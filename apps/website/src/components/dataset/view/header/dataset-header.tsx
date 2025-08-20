@@ -14,8 +14,8 @@ interface Props {
   id: number;
 }
 
-export function DatasetViewHeader({ id }: Props) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ id });
+export function DatasetHeader({ id }: Props) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
 
   if (!dataset) throw new Error("Dataset should be prefetched");
 

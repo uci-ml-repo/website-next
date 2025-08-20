@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient } from "@packages/auth/auth-client";
+import { useSearchParams } from "next/navigation";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
 
@@ -13,12 +14,15 @@ interface Props {
 }
 
 export function ProviderAuth({ children, icon, provider }: Props) {
+  const searchParams = useSearchParams();
+
   const [pending, setPending] = useState(false);
 
   async function providerAuth() {
     setPending(true);
     const { data, error } = await authClient.signIn.social({
       provider,
+      callbackURL: searchParams.get("callback") ?? undefined,
     });
 
     if (!data) {

@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
         <CardHeader>
           <MLRepoLogo variant="logo" className="text-wrap" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           {user && !user.emailVerified ? <VerifyForm email={email} /> : <VerifyInvalidEmailAlert />}
         </CardContent>
       </Card>

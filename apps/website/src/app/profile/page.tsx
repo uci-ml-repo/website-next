@@ -15,7 +15,7 @@ export default async function Page() {
   });
 
   if (!session?.user) {
-    redirect(ROUTES.AUTH.SIGN_IN);
+    redirect(ROUTES.AUTH.SIGN_IN());
   }
 
   return <div>PROFILE</div>;

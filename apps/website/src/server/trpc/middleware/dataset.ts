@@ -1,34 +1,36 @@
 import { Enums } from "@packages/db/enum";
-import { initTRPC, TRPCError } from "@trpc/server";
-import transformer from "superjson";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { service } from "@/server/service";
-import type { createContext } from "@/server/trpc/context";
+import { procedure } from "@/server/trpc";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
 
-const t = initTRPC.context<typeof createContext>().create({ transformer });
-
-export const datasetAccessProcedure = t.procedure
-  .input(z.object({ id: z.number() }))
+export const datasetAccessProcedure = procedure
+  .input(z.object({ datasetId: z.number() }))
   .use(async ({ input, ctx, next }) => {
-    const dataset = await service.dataset.find.byId(input.id);
+    const dataset = await service.dataset.find.byId(input.datasetId);
 
     if (!dataset) {
-      throw new TRPCError({ code: "NOT_FOUND" });
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Dataset not found",
+      });
     }
 
     if (dataset.status !== Enums.ApprovalStatus.APPROVED) {
       if (!ctx.session?.user) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "User must be authorized to access unapproved datasets",
+        });
       } else if (!isPriviliged(ctx.session.user.role) && dataset.userId !== ctx.session.user.id) {
-        throw new TRPCError({ code: "FORBIDDEN" });
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Use is forbidden from accessing unapproved datasets",
+        });
       }
     }
 
-    return next({
-      ctx: {
-        dataset,
-      },
-    });
+    return next({ ctx: { dataset } });
   });

@@ -1,17 +1,19 @@
+import { auth } from "@packages/auth/auth";
 import { TRPCError } from "@trpc/server";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { forbidden, notFound, permanentRedirect, unauthorized } from "next/navigation";
 import type { ReactNode } from "react";
 import { cache } from "react";
 
-import { DatasetInteractions } from "@/components/dataset/view/dataset-interactions";
-import { DatasetViewNav } from "@/components/dataset/view/dataset-view-nav";
-import { DatasetViewHeader } from "@/components/dataset/view/header/dataset-view-header";
+import { DatasetHeader } from "@/components/dataset/view/header/dataset-header";
+import { DatasetInteractions } from "@/components/dataset/view/header/dataset-interactions";
+import { DatasetNav } from "@/components/dataset/view/header/dataset-nav";
 import { ROUTES } from "@/lib/routes";
 import { HydrateClient, trpc } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return trpc.dataset.find.byId({ id });
+  return trpc.dataset.find.byId({ datasetId: id });
 });
 
 export async function generateMetadata({
@@ -19,11 +21,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string; slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { id: _id, slug } = await params;
+  const id = Number(_id);
 
   try {
-    const dataset = await getDataset(Number(id));
-    return { title: dataset.title };
+    const dataset = await getDataset(id);
+    return { title: dataset.title, alternates: { canonical: ROUTES.DATASET({ id, slug }) } };
   } catch {
     return { title: "Not Found" };
   }
@@ -61,15 +64,26 @@ export default async function Layout({
 
   if (dataset.slug !== decodeURIComponent(slug)) permanentRedirect(ROUTES.DATASET(dataset));
 
-  await trpc.dataset.find.byId.prefetch({ id });
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  await trpc.dataset.find.byId.prefetch({ datasetId: id });
+
+  if (session?.user) {
+    await trpc.bookmark.find.isDatasetBookmarked.prefetch({
+      userId: session.user.id,
+      datasetId: id,
+    });
+  }
 
   return (
     <HydrateClient>
       <div className="blur-background space-y-6">
-        <DatasetViewHeader id={id} />
+        <DatasetHeader id={id} />
         <div className="flex items-end justify-between border-b">
-          <DatasetViewNav dataset={dataset} />
-          <DatasetInteractions dataset={dataset} />
+          <DatasetNav dataset={dataset} session={session} />
+          <DatasetInteractions dataset={dataset} session={session} />
         </div>
         {children}
       </div>

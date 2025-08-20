@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@packages/auth/auth-client";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -32,6 +32,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function LoginCredentialsForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -51,6 +52,7 @@ export function LoginCredentialsForm() {
     const { data, error } = await authClient.signIn.email({
       email,
       password,
+      callbackURL: searchParams.get("callback") ?? undefined,
     });
 
     if (data) {

@@ -12,7 +12,7 @@ export function VerifyInvalidEmailAlert() {
         <AlertTitle>Invalid email</AlertTitle>
       </Alert>
       <div className="text-center">
-        <Link href={ROUTES.AUTH.SIGN_IN} className="text-link underline">
+        <Link href={ROUTES.AUTH.SIGN_IN()} className="text-link underline">
           Return to sign in page
         </Link>
       </div>
