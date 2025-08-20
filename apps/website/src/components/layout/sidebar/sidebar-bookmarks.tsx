@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { HTMLAttributes } from "react";
+import { useRef } from "react";
 
+import { useScrollEdges } from "@/components/hooks/use-scroll-edges";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
@@ -16,6 +18,10 @@ type Props = HTMLAttributes<HTMLUListElement> & {
 };
 
 export function SidebarBookmarks({ session, className, ...props }: Props) {
+  const scrollRef = useRef<HTMLUListElement>(null);
+
+  const { isAtTop, isAtBottom } = useScrollEdges(scrollRef);
+
   const pathName = usePathname();
   const { data: bookmarks } = trpc.bookmark.find.byUserId.useQuery(
     { userId: session?.user.id ?? "" },
@@ -23,7 +29,17 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
   );
 
   return !!bookmarks?.length ? (
-    <ul className={cn("space-y-1", className)} data-slot="dataset-bookmarks" {...props}>
+    <ul
+      className={cn(
+        "space-y-1",
+        !isAtTop && "mask-t-from-[calc(100%-8px)] mask-t-to-100%",
+        !isAtBottom && "mask-b-from-[calc(100%-8px)] mask-b-to-100%",
+        className,
+      )}
+      data-slot="dataset-bookmarks"
+      ref={scrollRef}
+      {...props}
+    >
       <TooltipProvider>
         {bookmarks.map(({ dataset }) => {
           const isActive = pathName.startsWith(ROUTES.DATASET(dataset));

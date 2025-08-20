@@ -150,7 +150,7 @@ function CarouselContent({
     <div
       ref={carouselRef}
       className={cn("overflow-hidden", {
-        "-m-4 -mb-6 mask-x-from-[calc(100%-1rem)] mask-x-to-100% p-4 pb-6": gutter,
+        "-m-4 -mb-6 mask-x-from-[calc(100%-16px)] mask-x-to-100% p-4 pb-6": gutter,
       })}
       data-slot="carousel-content "
     >
