@@ -11,6 +11,19 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const config = [...compat.extends("next/core-web-vitals", "next/typescript"), ...reactConfig];
+const config = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...reactConfig,
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      ".open-next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
+];
 
 export default config;

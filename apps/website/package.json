@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev --turbopack",
     "format": "prettier --write .",
-    "lint": "next lint --fix --max-warnings=0",
+    "lint": "eslint --fix --max-warnings=0",
     "tscheck": "tsc --noEmit --excludeDirectories '.next'"
   },
   "lint-staged": {
