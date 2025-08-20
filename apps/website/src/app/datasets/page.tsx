@@ -19,15 +19,17 @@ export default function Page() {
       <DatasetFiltersDesktop className="max-xl:hidden" />
       <div className="flex grow flex-col">
         <div className="space-y-2">
-          <div className="flex items-end space-x-3">
+          <div className="flex items-end gap-3 max-md:flex-col">
             <div className="w-full">
               <h1 className="h-10 text-2xl font-bold">Browse datasets</h1>
               <DatasetFilterSearch />
             </div>
-            <DatasetFiltersMobile />
-            <div className="space-y-1">
-              <div className="text-muted-foreground">Order by:</div>
-              <DatasetFilterOrder />
+            <div className="flex items-end justify-between gap-x-3 max-md:w-full">
+              <DatasetFiltersMobile />
+              <div className="flex flex-col gap-1 max-md:flex-row max-md:items-center">
+                <div className="text-muted-foreground">Order by:</div>
+                <DatasetFilterOrder />
+              </div>
             </div>
           </div>
 

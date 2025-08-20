@@ -53,7 +53,7 @@ export function DatasetFiltersDesktop({ className, ...props }: HTMLAttributes<HT
         <DatasetFiltersClear />
       </div>
 
-      <Card className="w-72">
+      <Card className="bg-card/50 w-72">
         <DatasetFiltersAccordion
           type="multiple"
           value={expandedFilters}

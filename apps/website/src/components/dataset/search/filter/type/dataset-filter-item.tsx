@@ -82,7 +82,7 @@ export function DatasetFilterItem({
           </TooltipTrigger>
         </div>
 
-        <AccordionContent className="bg-muted [&_[data-slot=checkbox][data-state=unchecked]]:bg-card p-4 select-none has-[input]:px-2">
+        <AccordionContent className="bg-muted/50 [&_[data-slot=checkbox][data-state=unchecked]]:bg-card p-4 select-none has-[input]:px-2">
           {isLoading ? (
             <div className="flex justify-center">
               <Loader2Icon className="animate-spin" />

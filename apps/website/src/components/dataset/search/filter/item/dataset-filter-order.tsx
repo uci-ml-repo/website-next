@@ -92,7 +92,7 @@ export function DatasetFilterOrder() {
 
   return (
     <Select value={JSON.stringify(value)} onValueChange={onValueChange}>
-      <SelectTrigger className="bg-background !h-10 w-40">
+      <SelectTrigger className="bg-background mb-0 !h-10 w-40">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
