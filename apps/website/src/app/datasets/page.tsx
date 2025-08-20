@@ -27,7 +27,7 @@ export default function Page() {
             <div className="flex items-end justify-between gap-x-3 max-md:w-full">
               <DatasetFiltersMobile />
               <div className="flex flex-col gap-1 max-md:flex-row max-md:items-center">
-                <div className="text-muted-foreground">Order by:</div>
+                <div className="text-muted-foreground max-2xs:hidden">Order by:</div>
                 <DatasetFilterOrder />
               </div>
             </div>

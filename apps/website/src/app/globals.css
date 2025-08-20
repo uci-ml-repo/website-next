@@ -38,6 +38,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   --breakpoint-xs: 32rem;
+  --breakpoint-2xs: 26rem;
 
   --container-9xl: 140rem;
   --container-8xl: 96rem;

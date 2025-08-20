@@ -21,7 +21,7 @@ export function DatasetFiltersMobile(props: ComponentProps<typeof SheetTrigger>)
           {!!filterCount && <Badge className="text-blue pointer-events-none">{filterCount}</Badge>}
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[90dvh]">
+      <SheetContent side="bottom" className="h-[85dvh]">
         <div className="flex items-center gap-x-4 p-4 pb-1">
           <SheetTitle>Filters</SheetTitle>
           {!!filterCount && <div className="text-muted-foreground">{filterCount} active</div>}
