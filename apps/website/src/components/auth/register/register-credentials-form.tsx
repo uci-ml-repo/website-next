@@ -50,6 +50,7 @@ export function RegisterCredentialsForm() {
   const callbackURL = searchParams.get("callback")?.replaceAll(" ", "+");
 
   const [formOpen, setFormOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string>();
 
   const form = useForm<FormSchema>({
@@ -64,6 +65,7 @@ export function RegisterCredentialsForm() {
 
   async function onSubmit({ name, email, password }: FormSchema) {
     setError(undefined);
+    setIsSubmitting(true);
 
     const { data, error } = await authClient.signUp.email({
       name,
@@ -73,11 +75,14 @@ export function RegisterCredentialsForm() {
     });
 
     if (data) {
-      router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
-    } else if (error?.message) {
-      setError(error.message);
+      return router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
     } else {
-      toast.error("Failed to register. Please try again.");
+      if (error?.message) {
+        setError(error.message);
+      } else {
+        toast.error("Failed to register. Please try again.");
+      }
+      setIsSubmitting(false);
     }
   }
 
@@ -156,7 +161,7 @@ export function RegisterCredentialsForm() {
             </div>
           </motion.div>
 
-          <AuthButton icon={<MailIcon />} type="submit" pending={form.formState.isSubmitting}>
+          <AuthButton icon={<MailIcon />} type="submit" pending={isSubmitting}>
             Register with Email
           </AuthButton>
         </form>
