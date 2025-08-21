@@ -89,7 +89,7 @@ export function DatasetCitationButton({ dataset }: { dataset: DatasetFull }) {
 }
 
 const CitationBlock = ({ text }: { text: string }) => (
-  <div className="bg-muted relative min-h-11 overflow-x-auto rounded-lg p-2">
+  <div className="bg-muted/70 relative min-h-11 overflow-x-auto rounded-lg p-2">
     <pre className="pr-10 text-sm whitespace-pre-wrap">{text}</pre>
     <CopyButton copyText={text} className="absolute top-1.5 right-1.5" />
   </div>

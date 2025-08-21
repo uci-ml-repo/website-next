@@ -53,7 +53,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
         <div className="min-w-0">
-          <div className="truncate text-xl font-bold decoration-2 group-hover:underline group-focus-visible:underline">
+          <div className="truncate text-xl font-semibold decoration-2 group-hover:underline group-focus-visible:underline">
             {dataset.title}
           </div>
           <div className="text-muted-foreground truncate text-sm">
