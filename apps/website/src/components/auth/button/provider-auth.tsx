@@ -15,6 +15,7 @@ interface Props {
 
 export function ProviderAuth({ children, icon, provider }: Props) {
   const searchParams = useSearchParams();
+  const callbackURL = searchParams.get("callback")?.replaceAll(" ", "+");
 
   const [pending, setPending] = useState(false);
 
@@ -22,7 +23,7 @@ export function ProviderAuth({ children, icon, provider }: Props) {
     setPending(true);
     const { data, error } = await authClient.signIn.social({
       provider,
-      callbackURL: searchParams.get("callback") ?? undefined,
+      callbackURL,
     });
 
     if (!data) {

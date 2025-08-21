@@ -47,6 +47,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export function RegisterCredentialsForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const callbackURL = searchParams.get("callback")?.replaceAll(" ", "+");
 
   const [formOpen, setFormOpen] = useState(false);
   const [error, setError] = useState<string>();
@@ -68,11 +69,8 @@ export function RegisterCredentialsForm() {
       name,
       email,
       password,
-      callbackURL: searchParams.get("callback") ?? undefined,
+      callbackURL,
     });
-
-    console.log(data);
-    console.log(error);
 
     if (data) {
       router.push(ROUTES.AUTH.VERIFY_EMAIL(email));

@@ -51,6 +51,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "NEXT_PUBLIC_BASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Router": {
       "type": "sst.aws.Router"
       "url": string

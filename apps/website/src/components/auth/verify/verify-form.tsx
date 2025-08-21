@@ -28,6 +28,7 @@ export function VerifyForm({ email }: { email: string }) {
   const router = useRouter();
 
   const [error, setError] = useState<string | undefined>(undefined);
+  const [resending, setResending] = useState(false);
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -37,8 +38,10 @@ export function VerifyForm({ email }: { email: string }) {
   });
 
   async function resend() {
+    setResending(true);
     await authClient.sendVerificationEmail({ email });
     toast.success(`Resent verification email.`);
+    setResending(false);
   }
 
   async function onSubmit({ otp }: FormSchema) {
@@ -114,7 +117,11 @@ export function VerifyForm({ email }: { email: string }) {
 
       <div className="text-muted-foreground w-full space-x-1 text-center text-sm">
         <span>Didn't receive an email?</span>
-        <button className="text-foreground cursor-pointer hover:underline" onClick={resend}>
+        <button
+          className="text-foreground cursor-pointer hover:underline"
+          onClick={resend}
+          disabled={resending}
+        >
           Resend
         </button>
       </div>

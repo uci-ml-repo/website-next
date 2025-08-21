@@ -10,11 +10,5 @@ export const env = createEnv({
     EZID_PASSWORD: z.string(),
     EZID_SHOULDER: z.string(),
   },
-  client: {
-    NEXT_PUBLIC_BASE_URL: z.string(),
-  },
-
-  experimental__runtimeEnv: {
-    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-  },
+  experimental__runtimeEnv: process.env,
 });

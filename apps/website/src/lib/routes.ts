@@ -1,3 +1,4 @@
+import { encodeURIPath } from "next/dist/shared/lib/encode-uri-path";
 import path from "path";
 
 import { serializeDatasetFilters } from "@/components/hooks/use-dataet-search-filters";
@@ -46,7 +47,7 @@ export const ROUTES = {
   },
 
   CDN: (...pathParts: string[]) =>
-    new URL(path.join(...pathParts), process.env.NEXT_PUBLIC_CDN_URL).toString(),
+    new URL(encodeURIPath(path.join(...pathParts)), process.env.NEXT_PUBLIC_CDN_URL).toString(),
 
   DATASET: Object.assign(
     ({ id, slug }: { id: number; slug: string }) =>

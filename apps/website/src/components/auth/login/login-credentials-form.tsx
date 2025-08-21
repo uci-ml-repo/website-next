@@ -33,6 +33,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export function LoginCredentialsForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const callbackURL = searchParams.get("callback")?.replaceAll(" ", "+");
 
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -52,7 +53,7 @@ export function LoginCredentialsForm() {
     const { data, error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: searchParams.get("callback") ?? undefined,
+      callbackURL,
     });
 
     if (data) {
