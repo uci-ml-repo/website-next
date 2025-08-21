@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { ReactNode } from "react";
+import { Resource } from "sst";
 
 import { BackgroundGraphic } from "@/components/layout/background/background-graphic";
 import { Footer } from "@/components/layout/footer";
@@ -17,8 +18,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/util/cn";
 import { TRPCProvider } from "@/server/trpc/query/client";
 
-if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error();
-
 export const metadata: Metadata = {
   title: {
     template: "%s - UCI Machine Learning Repository",
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
   },
   description:
     "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
+  metadataBase: new URL(Resource.BASE_URL.value),
   openGraph: {
     images: [
       {

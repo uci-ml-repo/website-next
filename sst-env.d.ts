@@ -14,6 +14,10 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "BASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Bucket": {
       "name": string
       "type": "sst.aws.Bucket"
@@ -48,10 +52,6 @@ declare module "sst" {
       "value": string
     }
     "GOOGLE_CLIENT_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "NEXT_PUBLIC_BASE_URL": {
       "type": "sst.sst.Secret"
       "value": string
     }

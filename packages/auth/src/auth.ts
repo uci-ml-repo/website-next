@@ -10,7 +10,7 @@ import { Resource } from "sst";
 import { v7 as uuid } from "uuid";
 
 export const auth = betterAuth({
-  baseURL: Resource.NEXT_PUBLIC_BASE_URL.value,
+  baseURL: Resource.BASE_URL.value,
   secret: Resource.AUTH_SECRET.value,
   database: drizzleAdapter(db, { provider: "pg" }),
   advanced: {

@@ -23,7 +23,7 @@ export default $config({
 
     const website = new sst.aws.Nextjs("Website", {
       path: "apps/website",
-      link: [database, email, ...secrets],
+      link: [database, email, bucket, ...secrets],
       vpc,
       router: { instance: router, domain },
       environment: {

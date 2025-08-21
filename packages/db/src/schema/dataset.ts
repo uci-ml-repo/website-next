@@ -75,6 +75,7 @@ export const dataset = pgTable(
     index("dataset_keywords_index").using("gin", t.keywords),
     index("dataset_features_index").using("gin", t.features),
     index("dataset_trgm_search_index").using("gin", sql`${t.title} gin_trgm_ops`),
+    check("title_check", sql`${t.title} !~ '[%]'`),
     check(
       "external_check",
       sql`
