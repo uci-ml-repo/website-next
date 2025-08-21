@@ -62,7 +62,7 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
   return (
     <RequireAuth
       dialog={{
-        title: "Sign In Required",
+        title: "Account Required",
         description: "To bookmark datasets and access other features, please sign in.",
       }}
     >
