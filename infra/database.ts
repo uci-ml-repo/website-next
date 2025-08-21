@@ -14,6 +14,25 @@ const database = new sst.aws.Postgres("Database", {
   },
 });
 
+const migrator = new sst.aws.Function("DatabaseMigrator", {
+  handler: "packages/db/migrator.handler",
+  link: [database],
+  vpc,
+  copyFiles: [
+    {
+      from: "packages/db/migrations",
+      to: "./migrations",
+    },
+  ],
+});
+
+if (!$dev) {
+  new aws.lambda.Invocation("DatabaseMigratorInvocation", {
+    input: Date.now().toString(),
+    functionName: migrator.name,
+  });
+}
+
 new sst.x.DevCommand("Studio", {
   link: [database],
   dev: {

@@ -1,5 +1,7 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+const region = "us-east-1";
+
 export default $config({
   app(input) {
     return {
@@ -7,28 +9,34 @@ export default $config({
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",
-      providers: { aws: { region: "us-east-1" } },
+      providers: { aws: { region } },
     };
   },
   async run() {
     const { email } = await import("./infra/email");
     const { vpc, database } = await import("./infra/database");
-    const { bucketRouter } = await import("./infra/cdn");
-    const { apiRouter } = await import("./infra/api-router");
+    const { bucket } = await import("./infra/bucket");
     const { secrets } = await import("./infra/secrets");
+    const { router, domain } = await import("./infra/router");
+
+    const cdnUrl = `cdn.${domain}`;
+
+    router.routeBucket(cdnUrl, bucket);
 
     const website = new sst.aws.Nextjs("Website", {
       path: "apps/website",
       link: [database, email, ...secrets],
       vpc,
+      router: { instance: router, domain },
       environment: {
-        NEXT_PUBLIC_CDN_URL: bucketRouter.url,
+        NEXT_PUBLIC_CDN_URL: `https://${cdnUrl}`,
       },
     });
 
     new sst.aws.Function("Api", {
       link: [database, website],
-      url: { router: { instance: apiRouter } },
+      vpc,
+      url: { router: { instance: router, domain: `api.${domain}` } },
       handler: "apps/api/src/index.handler",
     });
   },

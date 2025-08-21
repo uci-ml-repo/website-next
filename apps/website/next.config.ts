@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "avatars.githubusercontent.com" },
       { hostname: "lh3.googleusercontent.com" },
-      { hostname: "**.cloudfront.net" },
+      { hostname: "**.aws.uci.edu" },
     ],
   },
   turbopack: {},

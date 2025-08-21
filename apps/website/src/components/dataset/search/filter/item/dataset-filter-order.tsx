@@ -72,26 +72,25 @@ const options: { value: DatasetOrder; label: ReactNode }[] = [
 export function DatasetFilterOrder() {
   const { order, setOrder, search } = useDatasetSearchFilters();
 
-  const [value, setValue] = useState<"relevance" | DatasetOrder>(order ?? { viewCount: "desc" });
+  const [displayValue, setDisplayValue] = useState<"relevance" | DatasetOrder>(
+    order ?? { viewCount: "desc" },
+  );
 
   function onValueChange(value: string) {
     const _value = value === JSON.stringify("relevance") ? null : JSON.parse(value);
-    setOrder(_value);
-    setValue(JSON.parse(value));
+    setOrder(_value).then(() => setDisplayValue(JSON.parse(value)));
   }
 
   useEffect(() => {
     if (search) {
-      setValue("relevance");
-      setOrder(null);
-    } else if (value === "relevance") {
-      setValue({ viewCount: "desc" });
-      setOrder(null);
+      setOrder(null).then(() => setDisplayValue("relevance"));
+    } else if (displayValue === "relevance") {
+      setOrder(null).then(() => setDisplayValue({ viewCount: "desc" }));
     }
   }, [search, setOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Select value={JSON.stringify(value)} onValueChange={onValueChange}>
+    <Select value={JSON.stringify(displayValue)} onValueChange={onValueChange}>
       <SelectTrigger className="bg-background mb-0 !h-10 w-40">
         <SelectValue />
       </SelectTrigger>

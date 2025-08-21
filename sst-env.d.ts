@@ -14,17 +14,9 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
-    "ApiRouter": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
     "Bucket": {
       "name": string
       "type": "sst.aws.Bucket"
-    }
-    "BucketRouter": {
-      "type": "sst.aws.Router"
-      "url": string
     }
     "Database": {
       "database": string
@@ -33,6 +25,10 @@ declare module "sst" {
       "port": number
       "type": "sst.aws.Postgres"
       "username": string
+    }
+    "DatabaseMigrator": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "Email": {
       "configSet": string
@@ -54,6 +50,10 @@ declare module "sst" {
     "GOOGLE_CLIENT_SECRET": {
       "type": "sst.sst.Secret"
       "value": string
+    }
+    "Router": {
+      "type": "sst.aws.Router"
+      "url": string
     }
     "Vpc": {
       "bastion": string
