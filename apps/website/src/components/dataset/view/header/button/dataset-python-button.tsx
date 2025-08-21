@@ -66,7 +66,7 @@ export function DatasetPythonButton({ dataset, ...props }: Props) {
 
 function pythonCode({ id, slug }: DatasetSelect) {
   let variableName = slug.replace(/[^a-zA-Z0-9]/g, "_");
-  variableName = variableName.substring(0, variableName.indexOf("_", 25));
+  variableName = variableName.substring(0, variableName.indexOf("_", 25)) || variableName;
 
   return `from ucimlrepo import fetch_ucirepo 
   
