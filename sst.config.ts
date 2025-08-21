@@ -19,9 +19,7 @@ export default $config({
     const { secrets } = await import("./infra/secrets");
     const { router, domain } = await import("./infra/router");
 
-    const cdnUrl = `cdn.${domain}`;
-
-    router.routeBucket(cdnUrl, bucket);
+    router.routeBucket(`cdn.${domain}`, bucket);
 
     const website = new sst.aws.Nextjs("Website", {
       path: "apps/website",
@@ -29,7 +27,7 @@ export default $config({
       vpc,
       router: { instance: router, domain },
       environment: {
-        NEXT_PUBLIC_CDN_URL: `https://${cdnUrl}`,
+        NEXT_PUBLIC_CDN_URL: `https://cdn.${domain}`,
       },
     });
 

@@ -8,4 +8,6 @@ const secrets = [
   new sst.Secret("AUTH_SECRET"),
 ];
 
+secrets.forEach((s) => s.name.apply((k) => s.value.apply((v) => console.log(`${k}=${v}`))));
+
 export { secrets };

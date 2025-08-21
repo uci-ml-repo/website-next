@@ -14,7 +14,7 @@ export function DatasetExternalLinkButton({ dataset, ...props }: Props) {
   }
 
   return (
-    <Button size="lg" aria-label={`Download ${dataset.title}`} asChild {...props}>
+    <Button size="lg" aria-label={`Visit ${dataset.title}`} asChild {...props}>
       <a href={dataset.externalLink} target="_blank" rel="noreferrer">
         <ExternalLinkIcon />
         View External

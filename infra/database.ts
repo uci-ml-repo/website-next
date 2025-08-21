@@ -1,6 +1,10 @@
 /// <reference path="../.sst/platform/config.d.ts" />
 
-const vpc = new sst.aws.Vpc("Vpc", { bastion: true, nat: "ec2" });
+const vpc = new sst.aws.Vpc("Vpc", {
+  bastion: true,
+  nat: "ec2",
+  az: $app.stage === "production" ? 2 : 1,
+});
 
 const database = new sst.aws.Postgres("Database", {
   vpc,
@@ -19,10 +23,8 @@ const migrator = new sst.aws.Function("DatabaseMigrator", {
   link: [database],
   vpc,
   copyFiles: [
-    {
-      from: "packages/db/migrations",
-      to: "./migrations",
-    },
+    { from: "packages/db/migrations", to: "./migrations" },
+    { from: process.env.DB_SEED_PATH, to: "./seed.sql" },
   ],
 });
 

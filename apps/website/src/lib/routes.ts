@@ -45,7 +45,8 @@ export const ROUTES = {
     DONATION_FORM: "/contribute/donation/form",
   },
 
-  CDN: process.env.NEXT_PUBLIC_CDN_URL,
+  CDN: (...pathParts: string[]) =>
+    new URL(path.join(...pathParts), process.env.NEXT_PUBLIC_CDN_URL).toString(),
 
   DATASET: Object.assign(
     ({ id, slug }: { id: number; slug: string }) =>
@@ -54,10 +55,9 @@ export const ROUTES = {
       ROOT: "/dataset",
 
       THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
-        path.join(ROUTES.CDN, hasGraphics ? String(id) : "default", "thumbnail.png"),
+        ROUTES.CDN(hasGraphics ? String(id) : "default", "thumbnail.png"),
 
-      ZIP: ({ id, slug }: { id: number; slug: string }) =>
-        path.join(ROUTES.CDN, String(id), slug + ".zip"),
+      ZIP: ({ id, slug }: { id: number; slug: string }) => ROUTES.CDN(String(id), slug + ".zip"),
 
       FILES: (dataset: { id: number; slug: string }) => path.join(ROUTES.DATASET(dataset), "files"),
 
