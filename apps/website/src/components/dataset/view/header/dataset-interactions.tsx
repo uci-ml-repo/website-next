@@ -39,13 +39,13 @@ export function DatasetInteractions({ dataset, session: _session }: Props) {
   ];
 
   return (
-    <div className="flex items-center gap-x-6 py-2">
+    <div className="flex items-center gap-x-6 pt-2 pb-1">
       <TooltipProvider>
         {datasetStats.map(
           ({ icon, value, tooltip }) =>
             value !== null && (
               <Tooltip key={tooltip}>
-                <TooltipTrigger className="flex items-center gap-x-1 [&_svg]:size-5">
+                <TooltipTrigger className="flex items-center gap-x-1 text-sm [&_svg]:size-5">
                   {icon}
                   {abbreviateDecimal(value)}
                 </TooltipTrigger>
@@ -64,7 +64,7 @@ export function DatasetInteractions({ dataset, session: _session }: Props) {
       </TooltipProvider>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" aria-label="Dataset additional options dropdown">
             <EllipsisVerticalIcon />
           </Button>
         </DropdownMenuTrigger>

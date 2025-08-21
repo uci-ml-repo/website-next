@@ -117,7 +117,7 @@ export function SidebarContent({ session: _session, className, ...props }: Props
             )}
           >
             <Separator orientation="horizontal" className="mx-4 my-2 w-auto" />
-            <div className="text-muted-foreground p-2">Bookmarks</div>
+            <div className="text-muted-foreground ml-4 py-0.5">Bookmarks</div>
             <SidebarBookmarks session={session} className="min-h-0 flex-1 overflow-y-auto p-2" />
           </SidebarOpenVisible>
         )}

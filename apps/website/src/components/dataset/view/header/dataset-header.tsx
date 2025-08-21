@@ -39,7 +39,7 @@ export function DatasetHeader({ id }: Props) {
           height={100}
           width={275}
           alt="Thumbnail"
-          className="h-[6rem] w-[16rem] shrink-0 rounded-2xl object-cover object-center max-xl:hidden"
+          className="h-[5.5rem] w-[16rem] shrink-0 rounded-2xl object-cover object-center max-xl:hidden"
           priority
         />
       )}

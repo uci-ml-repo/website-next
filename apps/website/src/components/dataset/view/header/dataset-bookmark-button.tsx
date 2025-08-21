@@ -66,7 +66,12 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
         description: "To bookmark datasets and access other features, please sign in.",
       }}
     >
-      <Button variant="ghost" size="icon" onClick={toggleBookmark}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleBookmark}
+        aria-label={bookmarked ? "Remove Bookmark" : "Add Bookmark"}
+      >
         <BookmarkIcon className={cn({ "fill-gold": bookmarked })} />
       </Button>
     </RequireAuth>

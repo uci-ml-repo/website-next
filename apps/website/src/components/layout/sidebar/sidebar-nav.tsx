@@ -33,6 +33,7 @@ export const SidebarNavLink = forwardRef<
       ref={ref}
       href={href}
       data-active={isActive}
+      aria-current={isActive ? "page" : undefined}
       className={cn(
         "flex h-12 w-full items-center gap-[1.375rem] p-2 pl-[22px] text-lg font-semibold",
         "ring-ring outline-none ring-inset focus-visible:ring-2",
