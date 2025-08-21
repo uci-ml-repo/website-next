@@ -80,10 +80,18 @@ export default async function Layout({
   return (
     <HydrateClient>
       <div className="blur-background space-y-6">
-        <DatasetHeader id={id} />
-        <div className="flex items-end justify-between border-b">
-          <DatasetNav dataset={dataset} session={session} />
-          <DatasetInteractions dataset={dataset} session={session} />
+        <DatasetHeader dataset={dataset} session={session} />
+        <div className="flex max-w-full items-end justify-between space-x-4 overflow-x-auto overflow-y-hidden border-b">
+          <DatasetNav
+            dataset={dataset}
+            session={session}
+            className="flex-1 overflow-x-auto overflow-y-hidden"
+          />
+          <DatasetInteractions
+            dataset={dataset}
+            session={session}
+            className="flex-shrink-0 pt-2 pb-1 max-sm:hidden"
+          />
         </div>
         {children}
       </div>

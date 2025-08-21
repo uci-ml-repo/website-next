@@ -3,6 +3,7 @@
 import type { Session } from "@packages/auth/auth";
 import type { DatasetSelect } from "@packages/db/types";
 import { DownloadIcon, EllipsisVerticalIcon, EyeIcon, Link2Icon } from "lucide-react";
+import type { HTMLAttributes } from "react";
 
 import { DatasetBookmarkButton } from "@/components/dataset/view/header/dataset-bookmark-button";
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
@@ -16,13 +17,14 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
+import { cn } from "@/lib/util/cn";
 
-interface Props {
+type Props = HTMLAttributes<HTMLDivElement> & {
   dataset: DatasetSelect;
   session: Session | null;
-}
+};
 
-export function DatasetInteractions({ dataset, session: _session }: Props) {
+export function DatasetInteractions({ dataset, session: _session, className, ...props }: Props) {
   const session = useSessionWithInitial(_session);
 
   const datasetStats = [
@@ -39,7 +41,7 @@ export function DatasetInteractions({ dataset, session: _session }: Props) {
   ];
 
   return (
-    <div className="flex items-center gap-x-6 pt-2 pb-1">
+    <div className={cn("flex items-center gap-x-6", className)} {...props}>
       <TooltipProvider>
         {datasetStats.map(
           ({ icon, value, tooltip }) =>

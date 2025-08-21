@@ -1,23 +1,32 @@
 "use client";
 
+import type { Session } from "@packages/auth/auth";
+import type { DatasetSelect } from "@packages/db/types";
 import Image from "next/image";
+import type { HTMLAttributes } from "react";
 
 import { DatasetCitationButton } from "@/components/dataset/view/header/button/dataset-citation-button";
 import { DatasetDownloadButton } from "@/components/dataset/view/header/button/dataset-download-button";
+import { DatasetInteractions } from "@/components/dataset/view/header/dataset-interactions";
+import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
+import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 import { DatasetExternalLinkButton } from "./button/dataset-external-link-button";
 import { DatasetPythonButton } from "./button/dataset-python-button";
 
-interface Props {
-  id: number;
-}
+type Props = HTMLAttributes<HTMLDivElement> & {
+  dataset: DatasetSelect;
+  session: Session | null;
+};
 
-export function DatasetHeader({ id }: Props) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
+export function DatasetHeader({ dataset: _dataset, session: _session }: Props) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: _dataset.id });
 
-  if (!dataset) throw new Error("Dataset should be prefetched");
+  if (!dataset) throw new Error("dataset should be prefetched");
+
+  const session = useSessionWithInitial(_session);
 
   return (
     <div className="flex gap-x-8">
@@ -31,6 +40,13 @@ export function DatasetHeader({ id }: Props) {
           )}
           <DatasetCitationButton dataset={dataset} />
           {dataset.isAvailablePython && <DatasetPythonButton dataset={dataset} />}
+          <Card className="rounded-full sm:hidden">
+            <DatasetInteractions
+              dataset={dataset}
+              session={session}
+              className="justify-around px-2 py-0.5"
+            />
+          </Card>
         </div>
       </div>
       {dataset.hasGraphics && (

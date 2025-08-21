@@ -6,18 +6,18 @@ import { SettingsIcon } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
 import { ROUTES } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
 
-interface Props {
+type Props = HTMLAttributes<HTMLElement> & {
   dataset: DatasetSelect;
   session: Session | null;
-}
+};
 
-export function DatasetNav({ dataset, session: _session }: Props) {
+export function DatasetNav({ dataset, session: _session, ...props }: Props) {
   const session = useSessionWithInitial(_session);
 
   const pathname = usePathname();
@@ -34,12 +34,12 @@ export function DatasetNav({ dataset, session: _session }: Props) {
     tabs.push({
       name: <SettingsIcon className="size-5.5" />,
       path: ROUTES.DATASET.SETTINGS(dataset),
-      aria: "Settings",
+      aria: "Dataset settings",
     });
   }
 
   return (
-    <nav aria-label="Dataset tabs">
+    <nav aria-label="Dataset tabs" {...props}>
       <LayoutGroup>
         <ul className="flex space-x-4">
           {tabs.map(({ name, path, aria }) => {
