@@ -115,15 +115,11 @@ export function VerifyForm({ email }: { email: string }) {
 
       <Separator />
 
-      <div className="text-muted-foreground w-full space-x-1 text-center text-sm">
+      <div className="text-muted-foreground w-full space-x-2 text-center text-sm">
         <span>Didn't receive an email?</span>
-        <button
-          className="text-foreground cursor-pointer hover:underline"
-          onClick={resend}
-          disabled={resending}
-        >
+        <Button variant="link" className="px-0" onClick={resend} disabled={resending}>
           Resend
-        </button>
+        </Button>
       </div>
     </div>
   );
