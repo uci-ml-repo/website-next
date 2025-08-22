@@ -7,19 +7,26 @@ export type FileEntry = {
   key: string;
   size?: number;
   lastModified?: Date;
-  kind: "file" | "dir";
+  kind: "file";
 };
+
+export type DirectoryEntry = {
+  key: string;
+  kind: "directory";
+};
+
+export type Entry = FileEntry | DirectoryEntry;
 
 function stripPrefix(fullKey: string, prefix: string) {
   return fullKey.startsWith(prefix) ? fullKey.slice(prefix.length) : fullKey;
 }
 
-async function list({ id, slug }: { id: number; slug: string }): Promise<FileEntry[] | undefined> {
+async function list({ id, slug }: { id: number; slug: string }): Promise<Entry[] | undefined> {
   const rootPrefix = `${id}/${slug}/`;
 
-  const entries: FileEntry[] = [];
-  const seenDirs = new Set<string>(); // avoid duplicate dir entries
-  const toVisit: string[] = [rootPrefix]; // queue of prefixes to traverse (BFS)
+  const entries: Entry[] = [];
+  const seenDirs = new Set<string>();
+  const toVisit: string[] = [rootPrefix];
 
   while (toVisit.length > 0) {
     const currentPrefix = toVisit.shift();
@@ -40,7 +47,7 @@ async function list({ id, slug }: { id: number; slug: string }): Promise<FileEnt
           if (!commonPrefix?.Prefix) continue;
           const relativeDir = stripPrefix(commonPrefix.Prefix, rootPrefix).replace(/\/$/, "");
           if (relativeDir.length > 0 && !seenDirs.has(relativeDir)) {
-            entries.push({ key: relativeDir, kind: "dir" });
+            entries.push({ key: relativeDir, kind: "directory" });
             seenDirs.add(relativeDir);
           }
           toVisit.push(commonPrefix.Prefix);

@@ -26,6 +26,10 @@ export function DatasetNav({ dataset, session: _session, ...props }: Props) {
     { name: "About", path: ROUTES.DATASET(dataset) },
   ];
 
+  if (dataset.features.length) {
+    tabs.push({ name: "Features", path: ROUTES.DATASET.FEATURES(dataset) });
+  }
+
   if (!dataset.externalLink) {
     tabs.push({ name: "Files", path: ROUTES.DATASET.FILES(dataset) });
   }

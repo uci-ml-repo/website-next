@@ -3,7 +3,6 @@
 const vpc = new sst.aws.Vpc("Vpc", {
   bastion: true,
   nat: "ec2",
-  az: $app.stage === "production" ? 2 : 1,
 });
 
 const database = new sst.aws.Postgres("Database", {

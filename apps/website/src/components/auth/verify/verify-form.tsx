@@ -48,7 +48,7 @@ export function VerifyForm({ email }: { email: string }) {
     const { data, error } = await authClient.emailOtp.verifyEmail({ email, otp });
 
     if (data) {
-      toast.success(`Email successfully verified`);
+      toast.success(`Email successfully verified. Please sign in`);
       router.replace(ROUTES.AUTH.SIGN_IN());
     }
 

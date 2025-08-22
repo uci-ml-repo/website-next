@@ -46,8 +46,11 @@ export const ROUTES = {
     DONATION_FORM: "/contribute/donation/form",
   },
 
-  CDN: (...pathParts: string[]) =>
-    new URL(encodeURIPath(path.join(...pathParts)), process.env.NEXT_PUBLIC_CDN_URL).toString(),
+  CDN: (...pathParts: (string | number)[]) =>
+    new URL(
+      encodeURIPath(path.join(...pathParts.map((p) => p.toString()))),
+      process.env.NEXT_PUBLIC_CDN_URL,
+    ).toString(),
 
   DATASET: Object.assign(
     ({ id, slug }: { id: number; slug: string }) =>
@@ -61,6 +64,9 @@ export const ROUTES = {
       ZIP: ({ id, slug }: { id: number; slug: string }) => ROUTES.CDN(String(id), slug + ".zip"),
 
       FILES: (dataset: { id: number; slug: string }) => path.join(ROUTES.DATASET(dataset), "files"),
+
+      FEATURES: (dataset: { id: number; slug: string }) =>
+        path.join(ROUTES.DATASET(dataset), "features"),
 
       SETTINGS: (dataset: { id: number; slug: string }) => {
         return path.join(ROUTES.DATASET(dataset), "settings");

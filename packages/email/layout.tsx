@@ -1,5 +1,4 @@
 import { Head, Html, Img, Tailwind, Text } from "@react-email/components";
-import * as path from "path";
 import type { ReactNode } from "react";
 import { Resource } from "sst";
 
@@ -10,7 +9,7 @@ export function EmailLayout({ name, children }: { name?: string; children: React
         <Head />
         <body className="mx-auto">
           <header className="bg-gray-300 p-4">
-            <Img height={50} src={path.join(Resource.BASE_URL.value, "img", "logo.png")} />
+            <Img height={50} src={Resource.BASE_URL.value + "/img/logo.png"} />
           </header>
           <main>
             <div className="bg-gray-100 p-4 pb-8">

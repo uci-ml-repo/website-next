@@ -5,7 +5,7 @@ import { trpc } from "@/server/trpc/query/client";
 export function DatasetAbout({ id }: { id: number }) {
   const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
 
-  if (!dataset) throw new Error();
+  if (!dataset) throw new Error("Dataset should be prefetched");
 
   const AboutSection = ({ title, text }: { title: string; text: string }) => (
     <div className="space-y-2">

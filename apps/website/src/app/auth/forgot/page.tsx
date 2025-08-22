@@ -23,7 +23,7 @@ export default async function Page({
         <CardHeader>
           <MLRepoLogo variant="logo" className="text-wrap" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-2">
           {token ? (
             <ForgotPasswordResetForm token={token} />
           ) : error ? (
