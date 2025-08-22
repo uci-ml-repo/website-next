@@ -22,7 +22,7 @@
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
-    "@aws-sdk/client-sesv2": "3.872.0",
+    "@aws-sdk/client-sesv2": "3.873.0",
     "@react-email/components": "0.5.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 import type { Entry } from "@/server/service/file/find";
@@ -17,6 +17,8 @@ interface DatasetFilesBrowserContextProps {
   back: () => void;
   forwardHistory: string[];
   forward: () => void;
+  searching: boolean;
+  setSearching: Dispatch<SetStateAction<boolean>>;
 }
 
 const DatasetFilesBrowserContext = createContext<DatasetFilesBrowserContextProps | undefined>(
@@ -45,9 +47,10 @@ export function DatasetFilesBrowserProvider({
     return map;
   }, [entries]);
 
-  const [currentPath, setCurrentPath] = useState<string>("/");
+  const [currentPath, setCurrentPath] = useState("/");
   const [history, setHistory] = useState<string[]>([]);
   const [forwardHistory, setForwardHistory] = useState<string[]>([]);
+  const [searching, setSearching] = useState(false);
 
   const back = useCallback(() => {
     if (history.length) {
@@ -91,6 +94,8 @@ export function DatasetFilesBrowserProvider({
         forwardHistory,
         back,
         forward,
+        searching,
+        setSearching,
       }}
     >
       {children}

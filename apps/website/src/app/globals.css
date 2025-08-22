@@ -43,6 +43,7 @@
   --container-9xl: 140rem;
   --container-8xl: 96rem;
   --container-4xs: 14rem;
+  --container-5xs: 12rem;
 
   --shadow-sidebar: 0px 0px 16px 8px rgba(0, 0, 0, 0.1);
   --sidebar-width: 16rem;

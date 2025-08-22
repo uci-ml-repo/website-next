@@ -21,7 +21,7 @@
     "@packages/db": "workspace:*",
     "@scalar/hono-api-reference": "0.9.13",
     "drizzle-orm": "0.44.4",
-    "hono": "4.9.2",
+    "hono": "4.9.4",
     "zod": "4.0.17"
   }
 }
