@@ -53,44 +53,43 @@ const searchInputVariants = cva(
   },
 );
 
+type Props = HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof searchInputVariants> & {
+    value: string | undefined;
+    setValue: (value: string) => void;
+    placeholder?: string;
+    inputProps?: ComponentProps<typeof Input>;
+    onClear?: () => void;
+    alwaysShowClear?: boolean;
+  };
+
 function SearchInput({
   className,
   placeholder,
   size,
   value,
   setValue,
+  inputProps,
+  onClear,
+  alwaysShowClear,
   ...props
-}: HTMLAttributes<HTMLDivElement> &
-  VariantProps<typeof searchInputVariants> & {
-    value: string | undefined;
-    setValue: (value: string) => void;
-    placeholder?: string;
-  }) {
+}: Props) {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
     [setValue],
   );
 
-  const ariaProps = Object.fromEntries(
-    Object.entries(props).filter(([key]) => key.startsWith("aria-")),
-  );
-
   return (
-    <div className={cn(searchInputVariants({ size }))} {...props}>
-      <Input
-        placeholder={placeholder}
-        value={value}
-        onChange={handleChange}
-        className={className}
-        {...ariaProps}
-      />
+    <div className={cn(searchInputVariants({ size }), className)} {...props}>
+      <Input placeholder={placeholder} value={value} onChange={handleChange} {...inputProps} />
       <SearchIcon data-icon="search" />
-      {value && (
+      {(alwaysShowClear || value) && (
         <CircleXIcon
           data-icon="clear"
           className="hover:text-muted-foreground/75 cursor-pointer transition-colors"
           onClick={(e) => {
-            if (setValue) setValue("");
+            setValue("");
+            onClear?.();
             e.preventDefault();
             e.stopPropagation();
           }}

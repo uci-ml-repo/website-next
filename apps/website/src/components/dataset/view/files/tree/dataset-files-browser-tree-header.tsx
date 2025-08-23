@@ -6,7 +6,9 @@ import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-
 import { Button } from "@/components/ui/button";
 
 export function DatasetFilesBrowserTreeHeader() {
-  const { entries, searching, setSearching } = useDatasetFilesBrowser();
+  const { entries, search, setSearch } = useDatasetFilesBrowser();
+
+  const isSearching = search !== undefined;
 
   return (
     <div className="@container flex h-11 items-center justify-between gap-x-2 border-b p-2">
@@ -18,11 +20,11 @@ export function DatasetFilesBrowserTreeHeader() {
       </div>
       <Button
         variant="ghost"
-        onClick={() => setSearching((prev) => !prev)}
-        aria-selected={searching}
+        onClick={() => setSearch(isSearching ? undefined : "")}
+        aria-selected={isSearching}
         className="hover:bg-accent-strong aria-[selected=true]:bg-accent-strong size-8 rounded-sm"
         size="icon"
-        aria-label="Search files"
+        aria-label={isSearching ? "Cancel search" : "Search files"}
       >
         <SearchIcon className="size-4" />
       </Button>

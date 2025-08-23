@@ -21,6 +21,7 @@ export function DatasetFilesBrowser({ entries, dataset }: Props) {
         sizes={[20, 80]}
         minSize={[150, 250]}
         className={cn(
+          "max-lg:hidden",
           "animate-in fade-in flex h-[calc(100dvh-20rem)] min-h-[600px] overflow-hidden rounded-sm border [&_.gutter]:cursor-col-resize",
           "[&_.gutter]:flex [&_.gutter]:items-center [&_.gutter]:justify-center",
           "[&_.gutter]:after:text-muted-foreground [&_.gutter]:active:after:text-blue-foreground [&_.gutter]:after:content-['⋮']",
@@ -30,6 +31,11 @@ export function DatasetFilesBrowser({ entries, dataset }: Props) {
         <DatasetFilesBrowserTree className="bg-muted" />
         <DatasetFilesBrowserInspect dataset={dataset} className="bg-muted/50" />
       </Split>
+
+      <DatasetFilesBrowserInspect
+        dataset={dataset}
+        className="bg-muted/50 animate-in fade-in h-[calc(100dvh-20rem)] min-h-[600px] lg:hidden"
+      />
     </DatasetFilesBrowserProvider>
   );
 }

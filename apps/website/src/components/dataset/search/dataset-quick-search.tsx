@@ -49,7 +49,7 @@ export function DatasetQuickSearch({ className, ...props }: HTMLAttributes<HTMLD
         placeholder="Search datasets"
         size="lg"
         contentClassName="rounded-xl shadow-xl"
-        aria-label="Search datasets by title"
+        inputProps={{ "aria-label": "Search datasets by title" }}
         empty={empty}
         loading={((searchValue && !debouncedSearchValue) || isLoading) && loading}
       >

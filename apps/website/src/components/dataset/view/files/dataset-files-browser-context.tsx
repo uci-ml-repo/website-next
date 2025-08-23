@@ -7,13 +7,13 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 import type { Entry } from "@/server/service/file/find";
 
-type PathMap = Record<string, Entry | Entry[]>;
+type DirectoryMap = Record<string, Entry[]>;
 
 type DirectoryViewType = "rows" | "grid";
 
 interface DatasetFilesBrowserContextProps {
   entries: Entry[];
-  entryMap: PathMap;
+  directoryMap: DirectoryMap;
   currentPath: string;
   currentEntryType: "file" | "directory";
   setCurrentPath: (path: string) => void;
@@ -21,8 +21,8 @@ interface DatasetFilesBrowserContextProps {
   back: () => void;
   forwardHistory: string[];
   forward: () => void;
-  searching: boolean;
-  setSearching: Dispatch<SetStateAction<boolean>>;
+  search: string | undefined;
+  setSearch: Dispatch<SetStateAction<string | undefined>>;
   directoryViewType: DirectoryViewType;
   setDirectoryViewType: Dispatch<SetStateAction<DirectoryViewType>>;
 }
@@ -38,8 +38,8 @@ export function DatasetFilesBrowserProvider({
   entries: Entry[];
   children: ReactNode;
 }) {
-  const entryMap = useMemo(() => {
-    const map: PathMap = { "/": [] };
+  const directoryMap = useMemo(() => {
+    const map: DirectoryMap = { "/": [] };
 
     for (const directory of entries.filter((p) => p.kind === "directory")) {
       map[directory.key] = [];
@@ -47,7 +47,7 @@ export function DatasetFilesBrowserProvider({
 
     for (const path of entries) {
       const parentPath = path.key.substring(0, path.key.lastIndexOf("/")) || "/";
-      (map[parentPath] as Entry[]).push(path);
+      map[parentPath].push(path);
     }
 
     return map;
@@ -58,7 +58,7 @@ export function DatasetFilesBrowserProvider({
   const [currentPath, setCurrentPath] = useQueryState("path", parseAsString.withDefault("/"));
   const [history, setHistory] = useState<string[]>([]);
   const [forwardHistory, setForwardHistory] = useState<string[]>([]);
-  const [searching, setSearching] = useState(false);
+  const [search, setSearch] = useState<string>();
   const [directoryViewType, setDirectoryViewType] = useState<DirectoryViewType>("rows");
 
   useEffect(() => {
@@ -87,6 +87,8 @@ export function DatasetFilesBrowserProvider({
 
   const setCurrentPathWithHistory = useCallback(
     (path: string) => {
+      setSearch(undefined);
+
       if (path === currentPath) return;
 
       setHistory((prev) => [...prev, currentPath]);
@@ -97,15 +99,15 @@ export function DatasetFilesBrowserProvider({
   );
 
   const currentEntryType = useMemo(
-    () => (Array.isArray(entryMap[currentPath]) ? "directory" : "file"),
-    [currentPath, entryMap],
+    () => (directoryMap[currentPath] ? "directory" : "file"),
+    [currentPath, directoryMap],
   );
 
   return (
     <DatasetFilesBrowserContext.Provider
       value={{
         entries,
-        entryMap,
+        directoryMap,
         currentPath,
         currentEntryType,
         setCurrentPath: setCurrentPathWithHistory,
@@ -113,8 +115,8 @@ export function DatasetFilesBrowserProvider({
         forwardHistory,
         back,
         forward,
-        searching,
-        setSearching,
+        search,
+        setSearch,
         directoryViewType,
         setDirectoryViewType,
       }}

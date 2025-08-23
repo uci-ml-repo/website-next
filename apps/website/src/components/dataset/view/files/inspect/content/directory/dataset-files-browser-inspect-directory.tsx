@@ -1,6 +1,5 @@
 "use client";
 
-import { useInViewport } from "@mantine/hooks";
 import { useEffect, useMemo, useState } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
@@ -8,13 +7,14 @@ import type { FileSort } from "@/components/dataset/view/files/inspect/content/d
 import { DatasetFilesBrowserInspectDirectoryColumnHeaders } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-column-headers";
 import { DatasetFilesBrowserInspectDirectoryGridEntry } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-grid-entry";
 import { DatasetFilesBrowserInspectDirectoryRowEntry } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-row-entry";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useScrollEdges } from "@/components/hooks/use-scroll-edges";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";
 import type { Entry } from "@/server/service/file/find";
 
 export function DatasetFilesBrowserInspectDirectory() {
-  const { currentPath, entryMap, directoryViewType } = useDatasetFilesBrowser();
-  const { ref: topRef, inViewport: isAtTop } = useInViewport();
+  const { currentPath, directoryMap, directoryViewType } = useDatasetFilesBrowser();
+  const { ref, edges } = useScrollEdges<HTMLDivElement>();
 
   const [sort, setSort] = useState<FileSort>({ orderBy: "name", order: "asc" });
 
@@ -27,7 +27,7 @@ export function DatasetFilesBrowserInspectDirectory() {
   const entries = useMemo(() => {
     const size = (entry: Entry) => {
       if (entry.kind === "file") return entry.size ?? 0;
-      return (entryMap[entry.key] as Entry[]).length;
+      return directoryMap[entry.key].length;
     };
 
     const compareName = (a: Entry, b: Entry) =>
@@ -38,7 +38,7 @@ export function DatasetFilesBrowserInspectDirectory() {
 
     const compareSize = (a: Entry, b: Entry) => (size(a) ?? 0) - (size(b) ?? 0);
 
-    return (entryMap[currentPath] as Entry[]).toSorted((a, b) => {
+    return directoryMap[currentPath].toSorted((a, b) => {
       const aIsDir = a.kind === "directory";
       const bIsDir = b.kind === "directory";
 
@@ -56,19 +56,18 @@ export function DatasetFilesBrowserInspectDirectory() {
 
       return compare;
     });
-  }, [entryMap, currentPath, sort.orderBy, sort.order]);
+  }, [directoryMap, currentPath, sort.orderBy, sort.order]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {directoryViewType === "rows" && (
         <DatasetFilesBrowserInspectDirectoryColumnHeaders
-          className={cn(!isAtTop && "border-b")}
+          className={cn(!edges.atTop && "border-b")}
           sort={sort}
           setSort={setSort}
         />
       )}
-      <ScrollArea className="min-h-0 flex-1 *:*:!block" type="auto">
-        <div ref={topRef} />
+      <ScrollArea className="min-h-0 flex-1 *:*:!block" type="auto" viewportRef={ref} vertical>
         <div
           className={cn(
             "space-y-1 p-2 pt-0",
@@ -84,7 +83,6 @@ export function DatasetFilesBrowserInspectDirectory() {
             ),
           )}
         </div>
-        <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>
   );

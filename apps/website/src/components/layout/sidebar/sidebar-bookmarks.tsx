@@ -1,13 +1,13 @@
 "use client";
 
-import { useInViewport } from "@mantine/hooks";
 import type { Session } from "@packages/auth/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { HTMLAttributes } from "react";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useScrollEdges } from "@/components/hooks/use-scroll-edges";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
@@ -18,8 +18,7 @@ type Props = HTMLAttributes<HTMLUListElement> & {
 };
 
 export function SidebarBookmarks({ session, className, ...props }: Props) {
-  const { ref: topRef, inViewport: isAtTop } = useInViewport();
-  const { ref: bottomRef, inViewport: isAtBottom } = useInViewport();
+  const { ref, edges } = useScrollEdges<HTMLDivElement>();
 
   const pathName = usePathname();
   const { data: bookmarks } = trpc.bookmark.find.byUserId.useQuery(
@@ -29,13 +28,16 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
 
   return !!bookmarks?.length ? (
     <ScrollArea
-      className={cn(
-        "min-h-0 *:*:!block",
-        !isAtTop && "mask-t-from-[calc(100%-12px)] mask-t-to-100%",
-        !isAtBottom && "mask-b-from-[calc(100%-12px)] mask-b-to-100%",
+      className="min-h-0"
+      viewportClassName={cn(
+        "*:!block",
+        !edges.atTop && "mask-t-from-[calc(100%-12px)] mask-t-to-100%",
+        !edges.atBottom && "mask-b-from-[calc(100%-12px)] mask-b-to-100%",
       )}
+      type="hover"
+      viewportRef={ref}
+      vertical
     >
-      <div ref={topRef} />
       <ul
         className={cn("min-h-0 flex-1 space-y-1 p-2", className)}
         data-slot="dataset-bookmarks"
@@ -78,8 +80,6 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
           })}
         </TooltipProvider>
       </ul>
-      <div ref={bottomRef} />
-      <ScrollBar orientation="vertical" />
     </ScrollArea>
   ) : null;
 }

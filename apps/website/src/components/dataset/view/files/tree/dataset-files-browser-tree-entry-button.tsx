@@ -20,7 +20,7 @@ export function DatasetFilesBrowserTreeEntryButton({
   onClick,
   ...props
 }: Props) {
-  const { setCurrentPath } = useDatasetFilesBrowser();
+  const { setCurrentPath, search } = useDatasetFilesBrowser();
 
   return (
     <div className="relative">
@@ -31,8 +31,8 @@ export function DatasetFilesBrowserTreeEntryButton({
         style={{ paddingLeft: level * 10 + 12 }}
         className={cn(
           "h-8 min-w-full cursor-default justify-start gap-1 rounded-sm font-normal",
-          "aria-[current=true]:bg-accent-strong hover:bg-accent-strong transition-[border-radius]",
-          active && "rounded-l-none",
+          "hover:bg-accent-strong transition-[border-radius]",
+          active && search === undefined && "bg-accent-strong rounded-l-none",
           className,
         )}
         onClick={(e) => {
@@ -43,7 +43,7 @@ export function DatasetFilesBrowserTreeEntryButton({
       >
         {children}
       </Button>
-      {active && (
+      {active && search === undefined && (
         <div className="bg-link animate-in fade-in absolute top-0 -left-0.5 h-full w-[3px] rounded-full" />
       )}
     </div>

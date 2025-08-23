@@ -8,13 +8,12 @@ import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-
 import type { FileBrowserEntryProps } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry";
 import { DatasetFilesBrowserTreeEntry } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry";
 import { DatasetFilesBrowserTreeEntryButton } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry-button";
-import type { Entry } from "@/server/service/file/find";
 
 export function DatasetFilesBrowserTreeEntryDirectory({ entry, level }: FileBrowserEntryProps) {
-  const { entryMap, currentPath } = useDatasetFilesBrowser();
+  const { directoryMap, currentPath } = useDatasetFilesBrowser();
   const [open, setOpen] = useState(currentPath.startsWith(entry.key));
 
-  const children = useMemo(() => entryMap[entry.key] as Entry[], [entryMap, entry.key]);
+  const children = useMemo(() => directoryMap[entry.key], [directoryMap, entry.key]);
 
   const [active, setActive] = useState(currentPath === entry.key);
 

@@ -6,7 +6,8 @@ import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-
 import { DatasetFilesBrowserInspectDirectory } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory";
 import { DatasetFilesBrowserInspectFile } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file";
 import { DatasetFilesBrowserInspectHeader } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-header";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { DatasetFilesBrowserInspectSearchResults } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-search-results";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -14,19 +15,19 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Props) {
-  const { currentEntryType } = useDatasetFilesBrowser();
+  const { currentEntryType, search } = useDatasetFilesBrowser();
 
   return (
     <div className={cn("flex size-full flex-col overflow-hidden", className)} {...props}>
       <DatasetFilesBrowserInspectHeader dataset={dataset} />
 
-      {currentEntryType === "directory" ? (
+      {search !== undefined ? (
+        <DatasetFilesBrowserInspectSearchResults />
+      ) : currentEntryType === "directory" ? (
         <DatasetFilesBrowserInspectDirectory />
       ) : (
-        <ScrollArea className="size-full min-h-0" type="auto">
+        <ScrollArea className="size-full min-h-0" type="auto" vertical horizontal>
           <DatasetFilesBrowserInspectFile />
-          <ScrollBar orientation="vertical" />
-          <ScrollBar orientation="horizontal" />
         </ScrollArea>
       )}
     </div>

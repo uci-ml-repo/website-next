@@ -14,7 +14,7 @@ export function DatasetFilterSearch() {
         value={search ?? ""}
         setValue={setSearch}
         className="bg-background"
-        aria-label="Search datasets by title"
+        inputProps={{ "aria-label": "Search datasets by title" }}
       />
     </div>
   );

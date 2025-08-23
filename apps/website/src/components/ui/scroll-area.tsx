@@ -1,15 +1,24 @@
 "use client";
 
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import type { ComponentProps } from "react";
+import type { ComponentProps, RefObject } from "react";
 
 import { cn } from "@/lib/util/cn";
 
 function ScrollArea({
   className,
   children,
+  vertical,
+  horizontal,
+  viewportRef,
+  viewportClassName,
   ...props
-}: ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: ComponentProps<typeof ScrollAreaPrimitive.Root> & {
+  viewportClassName?: string;
+  viewportRef?: RefObject<HTMLDivElement>;
+  vertical?: boolean;
+  horizontal?: boolean;
+}) {
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
@@ -17,12 +26,18 @@ function ScrollArea({
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
+        ref={viewportRef}
         data-slot="scroll-area-viewport"
-        className="focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1"
+        className={cn(
+          "focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1",
+          viewportClassName,
+        )}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
       <ScrollAreaPrimitive.Corner />
+      {vertical && <ScrollBar orientation="vertical" />}
+      {horizontal && <ScrollBar orientation="horizontal" />}
     </ScrollAreaPrimitive.Root>
   );
 }
@@ -46,7 +61,7 @@ function ScrollBar({
     >
       <ScrollAreaPrimitive.ScrollAreaThumb
         data-slot="scroll-area-thumb"
-        className="bg-border relative flex-1 rounded-full"
+        className="bg-border hover:bg-foreground/20 relative flex-1 rounded-full"
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   );
