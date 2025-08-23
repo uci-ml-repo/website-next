@@ -8,8 +8,7 @@ const domain =
 const router = new sst.aws.Router("Router", {
   domain: {
     name: domain,
-    redirects: [`www.${domain}`],
-    aliases: [`*.${domain}`, ...($app.stage === "production" ? ["archive-beta.ics.uci.edu"] : [])],
+    aliases: [`*.${domain}`],
   },
 });
 

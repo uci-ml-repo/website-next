@@ -1,7 +1,7 @@
 import type { z } from "@hono/zod-openapi";
 import { db } from "@packages/db";
 import { Enums } from "@packages/db/enum";
-import { dataset } from "@packages/db/schema";
+import { dataset, feature } from "@packages/db/schema";
 import { and, arrayContains, arrayOverlaps, asc, eq, gt, inArray, lt } from "drizzle-orm";
 
 import type { datasetsQuerySchema } from "@/schema";
@@ -11,12 +11,18 @@ function withUrl(dataset: { id: number; slug: string }) {
 }
 
 async function byId(id: number) {
-  const [res] = await db
+  const res = await db
     .select()
     .from(dataset)
+    .leftJoin(feature, eq(dataset.id, feature.datasetId))
     .where(and(eq(dataset.id, id), eq(dataset.status, Enums.ApprovalStatus.APPROVED)));
 
-  return withUrl(res);
+  if (!res.length) return null;
+
+  return {
+    ...withUrl({ ...res[0].dataset }),
+    features: res.map((r) => r.feature).filter((f) => f),
+  };
 }
 
 async function byQuery(query: z.infer<typeof datasetsQuerySchema>) {

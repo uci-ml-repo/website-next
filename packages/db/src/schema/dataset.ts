@@ -15,6 +15,7 @@ import {
 
 import { Enums, enumToArray } from "../enum";
 import { defaultUUID } from "../util/uuid";
+import { datasetFeatureType } from "./feature";
 import { user } from "./user";
 
 export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
@@ -27,11 +28,6 @@ export const datasetSubjectArea = pgEnum(
 export const datasetTask = pgEnum("dataset_task", enumToArray(Enums.DatasetTask));
 
 export const datasetDataType = pgEnum("dataset_characteristic", enumToArray(Enums.DatasetDataType));
-
-export const datasetFeatureType = pgEnum(
-  "dataset_feature_type",
-  enumToArray(Enums.DatasetFeatureType),
-);
 
 export const dataset = pgTable(
   "dataset",

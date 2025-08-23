@@ -7,7 +7,7 @@ export default $config({
     return {
       name: "mlrepo",
       removal: input?.stage === "production" ? "retain" : "remove",
-      // protect: ["production"].includes(input?.stage),
+      protect: ["production"].includes(input?.stage),
       home: "aws",
       providers: { aws: { region } },
     };
