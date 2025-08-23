@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
 import { Button } from "@/components/ui/button";
 
-export function DatasetFileBrowserInspectHistory() {
+export function DatasetFilesBrowserInspectHistory() {
   const { history, forwardHistory, back, forward } = useDatasetFilesBrowser();
 
   return (

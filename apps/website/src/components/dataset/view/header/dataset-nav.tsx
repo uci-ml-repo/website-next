@@ -55,7 +55,11 @@ export function DatasetNav({ dataset, session: _session, ...props }: Props) {
                 className="group relative flex items-center"
                 aria-current={isActive ? "page" : undefined}
               >
-                <Link href={path} className="p-2 text-lg" aria-label={aria}>
+                <Link
+                  href={path}
+                  className="focus-visible:bg-accent p-2 text-lg -outline-offset-2"
+                  aria-label={aria}
+                >
                   {name}
                 </Link>
                 {isActive && (

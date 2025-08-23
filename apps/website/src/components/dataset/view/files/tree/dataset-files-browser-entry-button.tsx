@@ -31,7 +31,7 @@ export function DatasetFilesBrowserEntryButton({
         style={{ paddingLeft: level * 10 + 12 }}
         className={cn(
           "h-8 min-w-full justify-start gap-1 rounded-sm font-normal",
-          active && "bg-accent",
+          "aria-[current=true]:bg-accent-strong hover:bg-accent-strong transition-none",
           className,
         )}
         onClick={(e) => {

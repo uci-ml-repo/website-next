@@ -70,6 +70,8 @@ export function DatasetFilesBrowserProvider({
 
   const setCurrentPathWithHistory = useCallback(
     (path: string) => {
+      if (path === currentPath) return;
+
       setHistory((prev) => [...prev, currentPath]);
       setCurrentPath(path);
       setForwardHistory([]);

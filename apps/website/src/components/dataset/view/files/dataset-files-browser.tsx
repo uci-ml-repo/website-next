@@ -21,18 +21,14 @@ export function DatasetFilesBrowser({ entries, dataset }: Props) {
         sizes={[20, 80]}
         minSize={[150, 250]}
         className={cn(
-          "animate-in fade-in flex h-[calc(100dvh-20rem)] [&_.gutter]:cursor-col-resize",
+          "animate-in fade-in flex h-[calc(100dvh-20rem)] overflow-hidden rounded-sm border [&_.gutter]:cursor-col-resize",
           "[&_.gutter]:flex [&_.gutter]:items-center [&_.gutter]:justify-center",
           "[&_.gutter]:after:text-muted-foreground [&_.gutter]:active:after:text-blue-foreground [&_.gutter]:after:content-['⋮']",
-          "[&_.gutter]:active:bg-blue/50 [&_.gutter]:bg-accent [&_.gutter]:transition-colors",
+          "[&_.gutter]:active:bg-blue/50 [&_.gutter]:bg-accent-strong [&_.gutter]:transition-colors",
         )}
       >
-        <div className="bg-muted/70 overflow-hidden rounded-l-sm">
-          <DatasetFilesBrowserTree />
-        </div>
-        <div className="bg-muted/70 overflow-hidden rounded-r-sm">
-          <DatasetFilesBrowserInspect dataset={dataset} />
-        </div>
+        <DatasetFilesBrowserTree className="bg-muted" />
+        <DatasetFilesBrowserInspect dataset={dataset} className="bg-muted/50" />
       </Split>
     </DatasetFilesBrowserProvider>
   );

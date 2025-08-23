@@ -37,8 +37,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
   const row = (
     <Link
       className={cn(
-        "group @container flex w-full !cursor-pointer items-center space-x-3 !p-4",
-        "hover:bg-accent/60 focus-visible:bg-accent/60",
+        "group hover:bg-accent/50 focus-visible:bg-accent/50 @container flex w-full !cursor-pointer items-center space-x-3 !p-4",
         className,
       )}
       {...props}

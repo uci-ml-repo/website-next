@@ -2,7 +2,7 @@
 
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import type { ComponentProps, ComponentRef, ReactNode } from "react";
-import { forwardRef, Fragment, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/util/cn";
 
@@ -36,33 +36,32 @@ const DualRangeSlider = forwardRef<ComponentRef<typeof SliderPrimitive.Root>, Du
         value={value}
         {...props}
       >
-        <SliderPrimitive.Track className="bg-muted-foreground/15 relative h-2 w-full grow overflow-hidden rounded-full">
+        <SliderPrimitive.Track className="bg-accent-strong relative h-2 w-full grow overflow-hidden rounded-full">
           <SliderPrimitive.Range className="bg-blue absolute h-full" />
         </SliderPrimitive.Track>
         {initialValue.map((value, index) => (
-          <Fragment key={index}>
-            <SliderPrimitive.Thumb
-              className={cn(
-                "border-blue bg-background ring-offset-background focus-visible:ring-ring relative block size-4 cursor-pointer rounded-full border-2 transition-colors",
-                "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
-            >
-              {label && (
-                <span
-                  ref={index === 0 ? labelRef0 : labelRef1}
-                  className={cn(
-                    "absolute flex w-full justify-center",
-                    labelPosition === "top" && "-top-7",
-                    labelPosition === "bottom" && "top-4",
-                    overlap && index === 1 && "translate-y-12",
-                  )}
-                >
-                  {label(value)}
-                </span>
-              )}
-            </SliderPrimitive.Thumb>
-          </Fragment>
+          <SliderPrimitive.Thumb
+            key={index}
+            className={cn(
+              "border-blue bg-background ring-offset-background focus-visible:ring-ring relative block size-4 cursor-pointer rounded-full border-2 transition-colors",
+              "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+              "disabled:pointer-events-none disabled:opacity-50",
+            )}
+          >
+            {label && (
+              <span
+                ref={index === 0 ? labelRef0 : labelRef1}
+                className={cn(
+                  "absolute flex w-full justify-center",
+                  labelPosition === "top" && "-top-7",
+                  labelPosition === "bottom" && "top-4",
+                  overlap && index === 1 && "translate-y-12",
+                )}
+              >
+                {label(value)}
+              </span>
+            )}
+          </SliderPrimitive.Thumb>
         ))}
       </SliderPrimitive.Root>
     );
