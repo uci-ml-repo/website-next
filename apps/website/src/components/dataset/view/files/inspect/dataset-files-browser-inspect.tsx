@@ -3,8 +3,8 @@
 import type { HTMLAttributes } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
-import { DatasetFilesBrowserInspectDirectory } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory";
-import { DatasetFilesBrowserInspectFile } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-file";
+import { DatasetFilesBrowserInspectDirectory } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory";
+import { DatasetFilesBrowserInspectFile } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file";
 import { DatasetFilesBrowserInspectHeader } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-header";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";

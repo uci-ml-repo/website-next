@@ -4,10 +4,10 @@ import { useInViewport } from "@mantine/hooks";
 import { useEffect, useMemo, useState } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
-import type { FileSort } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory-column-headers";
-import { DatasetFilesBrowserInspectDirectoryColumnHeaders } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory-column-headers";
-import { DatasetFilesBrowserInspectDirectoryGridEntry } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory-grid-entry";
-import { DatasetFilesBrowserInspectDirectoryRowEntry } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory-row-entry";
+import type { FileSort } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-column-headers";
+import { DatasetFilesBrowserInspectDirectoryColumnHeaders } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-column-headers";
+import { DatasetFilesBrowserInspectDirectoryGridEntry } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-grid-entry";
+import { DatasetFilesBrowserInspectDirectoryRowEntry } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-row-entry";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";
 import type { Entry } from "@/server/service/file/find";
@@ -67,7 +67,7 @@ export function DatasetFilesBrowserInspectDirectory() {
           setSort={setSort}
         />
       )}
-      <ScrollArea className="min-h-0 flex-1" type="auto">
+      <ScrollArea className="min-h-0 flex-1 *:*:!block" type="auto">
         <div ref={topRef} />
         <div
           className={cn(

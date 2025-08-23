@@ -28,17 +28,15 @@ function extensionToLogo(extension: string) {
     case "mp3":
     case "wav":
       return "audio.png";
+
     case "r":
       return "code.png";
+
     case "pdf":
     case "doc":
     case "docx":
       return "doc.png";
-    case "html":
-    case "xml":
-      return "markup.png";
-    case "md":
-      return "markdown.png";
+
     case "png":
     case "jpg":
     case "jpeg":
@@ -48,18 +46,35 @@ function extensionToLogo(extension: string) {
     case "svg":
     case "webp":
       return "image.png";
+
+    case "html":
+    case "xml":
+      return "markup.png";
+
+    case "md":
+      return "markdown.png";
+
     case "py":
       return "python.png";
+
     case "csv":
     case "tsv":
     case "xls":
     case "xlsx":
       return "tabular.png";
+
     case "txt":
       return "text.png";
+
     case "mp4":
     case "mov":
       return "video.png";
+
+    case "zip":
+    case "gz":
+    case "7z":
+      return "zip.png";
+
     default:
       return "empty.png";
   }

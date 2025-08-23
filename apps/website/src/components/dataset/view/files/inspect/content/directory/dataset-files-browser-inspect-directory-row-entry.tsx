@@ -1,8 +1,8 @@
 "use client";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
-import { DatasetFilesBrowserInspectDirectoryLogo } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-directory-logo";
-import { DatasetFilesBrowserInspectFileLogo } from "@/components/dataset/view/files/inspect/content/dataset-files-browser-inspect-file-logo";
+import { DatasetFilesBrowserInspectDirectoryLogo } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-logo";
+import { DatasetFilesBrowserInspectFileLogo } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file-logo";
 import { abbreviateFileSize } from "@/lib/util/abbreviate";
 import type { Entry } from "@/server/service/file/find";
 
@@ -24,7 +24,7 @@ export function DatasetFilesBrowserInspectDirectoryRowEntry({ entry }: { entry: 
           className="size-4.5"
         />
       )}
-      <span className="flex flex-1">{entry.basename}</span>
+      <span className="min-w-0 flex-1 basis-0 truncate text-left">{entry.basename}</span>
       <span className="text-muted-foreground w-20 text-left">
         {entry.kind === "directory"
           ? `${(entryMap[entry.key] as Entry[]).length} items`
