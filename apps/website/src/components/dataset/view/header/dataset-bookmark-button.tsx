@@ -29,9 +29,11 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
   const utils = trpc.useUtils();
 
   const removeBookmark = trpc.bookmark.delete.removeBookmark.useMutation({
-    onMutate: () => setBookmarked(false),
-    onSuccess: () => {
+    onMutate: () => {
+      setBookmarked(false);
       toast.success("Removed bookmark");
+    },
+    onSuccess: () => {
       utils.bookmark.find.byUserId.invalidate({ userId });
     },
     onError: () => {
@@ -40,9 +42,11 @@ export function DatasetBookmarkButton({ dataset, session }: Props) {
     },
   });
   const addBookmark = trpc.bookmark.insert.addBookmark.useMutation({
-    onMutate: () => setBookmarked(true),
-    onSuccess: () => {
+    onMutate: () => {
+      setBookmarked(true);
       toast.success("Added bookmark");
+    },
+    onSuccess: () => {
       utils.bookmark.find.byUserId.invalidate({ userId });
     },
     onError: () => {

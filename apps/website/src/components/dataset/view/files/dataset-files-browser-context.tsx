@@ -53,7 +53,7 @@ export function DatasetFilesBrowserProvider({
     return map;
   }, [entries]);
 
-  const validPaths = useMemo(() => new Set(entries.map((e) => e.key)), [entries]);
+  const validPaths = useMemo(() => new Set(["/", ...entries.map((e) => e.key)]), [entries]);
 
   const [currentPath, setCurrentPath] = useQueryState("path", parseAsString.withDefault("/"));
   const [history, setHistory] = useState<string[]>([]);

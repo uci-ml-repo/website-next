@@ -13,7 +13,9 @@ export function DatasetFilesBrowserInspectHistory() {
         size="icon"
         disabled={!history.length}
         onClick={back}
-        aria-label="Go back in file history"
+        aria-label={
+          "Go back in file history" + (history.length ? ` to ${history[history.length - 1]}` : "")
+        }
       >
         <ChevronLeftIcon className="size-4" />
       </Button>
@@ -22,7 +24,9 @@ export function DatasetFilesBrowserInspectHistory() {
         size="icon"
         disabled={!forwardHistory.length}
         onClick={forward}
-        aria-label="Go forward in file history"
+        aria-label={
+          "Go forward in file history" + (forwardHistory.length ? ` to ${forwardHistory[0]}` : "")
+        }
       >
         <ChevronRightIcon className="size-4" />
       </Button>

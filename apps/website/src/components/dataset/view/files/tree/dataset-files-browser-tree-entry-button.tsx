@@ -11,7 +11,7 @@ type Props = ComponentProps<typeof Button> & {
   active: boolean;
 };
 
-export function DatasetFilesBrowserEntryButton({
+export function DatasetFilesBrowserTreeEntryButton({
   level,
   active,
   className,

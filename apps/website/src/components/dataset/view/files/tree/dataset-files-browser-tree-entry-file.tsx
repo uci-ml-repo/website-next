@@ -3,8 +3,8 @@
 import { FileIcon } from "@primer/octicons-react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
-import { DatasetFilesBrowserEntryButton } from "@/components/dataset/view/files/tree/dataset-files-browser-entry-button";
 import type { FileBrowserEntryProps } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry";
+import { DatasetFilesBrowserTreeEntryButton } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry-button";
 
 export function DatasetFilesBrowserTreeEntryFile({ entry, level, parent }: FileBrowserEntryProps) {
   const { currentPath } = useDatasetFilesBrowser();
@@ -12,8 +12,12 @@ export function DatasetFilesBrowserTreeEntryFile({ entry, level, parent }: FileB
   const displayName = parent ? entry.key.substring(parent.key.length + 1) : entry.key;
 
   return (
-    <DatasetFilesBrowserEntryButton entry={entry} active={currentPath === entry.key} level={level}>
+    <DatasetFilesBrowserTreeEntryButton
+      entry={entry}
+      level={level}
+      active={currentPath === entry.key}
+    >
       <FileIcon className="text-muted-foreground" /> {displayName}
-    </DatasetFilesBrowserEntryButton>
+    </DatasetFilesBrowserTreeEntryButton>
   );
 }

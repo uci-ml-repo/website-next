@@ -5,7 +5,7 @@ import { HomeIcon } from "lucide-react";
 import { Fragment } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
-import { DatasetFilesBrowserInspectBreadcrumbsButton } from "@/components/dataset/view/files/inspect/dataset-files-browser-inspect-breadcrumbs-button";
+import { DatasetFilesBrowserInspectBreadcrumbsButton } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-breadcrumbs-button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";
 

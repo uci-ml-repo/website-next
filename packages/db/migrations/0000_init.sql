@@ -136,7 +136,6 @@ CREATE TABLE "dataset" (
   "keywords" TEXT[] DEFAULT '{}' NOT NULL,
   "features" TEXT[] DEFAULT '{}' NOT NULL,
   CONSTRAINT "dataset_slug_unique" UNIQUE ("slug"),
-  CONSTRAINT "title_check" CHECK ("dataset"."title" !~ '[%]'),
   CONSTRAINT "external_check" CHECK (
     (
       "dataset"."external_link" IS NULL
