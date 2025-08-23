@@ -12,20 +12,18 @@ export function DatasetFilesBrowserInspectDownload({ dataset }: Props) {
   const { currentPath, currentEntryType } = useDatasetFilesBrowser();
 
   return (
-    <div className="flex w-8 justify-end">
-      {currentEntryType === "file" && (
-        <Button
-          variant="outline"
-          className="size-8 rounded-sm"
-          size="icon"
-          aria-label={`Download ${currentPath}`}
-          asChild
-        >
-          <a download href={ROUTES.CDN(dataset.id, dataset.slug, currentPath)}>
-            <DownloadIcon className="size-4" />
-          </a>
-        </Button>
-      )}
-    </div>
+    currentEntryType === "file" && (
+      <Button
+        variant="outline"
+        className="mr-1 size-8 rounded-sm"
+        size="icon"
+        aria-label={`Download ${currentPath}`}
+        asChild
+      >
+        <a download href={ROUTES.CDN(dataset.id, dataset.slug, currentPath)}>
+          <DownloadIcon className="size-4" />
+        </a>
+      </Button>
+    )
   );
 }

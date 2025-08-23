@@ -10,7 +10,7 @@ interface Props {
 
 export function DatasetFilesBrowserInspectHeader({ dataset }: Props) {
   return (
-    <div className="flex h-11 items-center justify-between gap-x-2 border-b px-2">
+    <div className="flex h-11 items-center justify-between gap-x-2 border-b px-1">
       <DatasetFilesBrowserInspectHistory />
       <DatasetFilesBrowserInspectBreadcrumbs />
       <DatasetFilesBrowserInspectDownload dataset={dataset} />

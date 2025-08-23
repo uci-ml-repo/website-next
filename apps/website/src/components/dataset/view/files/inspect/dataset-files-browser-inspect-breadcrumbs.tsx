@@ -1,7 +1,8 @@
 "use client";
 
+import { useInViewport } from "@mantine/hooks";
 import { HomeIcon } from "@primer/octicons-react";
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
 import { DatasetFilesBrowserInspectBreadcrumbsButton } from "@/components/dataset/view/files/inspect/dataset-files-browser-inspect-breadcrumbs-button";
@@ -10,20 +11,21 @@ import { cn } from "@/lib/util/cn";
 
 export function DatasetFilesBrowserInspectBreadcrumbs() {
   const { currentPath, setCurrentPath } = useDatasetFilesBrowser();
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const pathParts = currentPath.split("/");
+
+  const { ref: leftRef, inViewport: isAtLeft } = useInViewport();
+  const { ref: rightRef, inViewport: isAtRight } = useInViewport();
 
   return (
     <ScrollArea
       className={cn(
         "bg-accent/80 h-8 min-w-0 flex-1 rounded-sm",
-        !isAtLeft && "mask-l-from-[calc(100%-8px)] mask-l-to-100%",
-        !isAtRight && "mask-r-from-[calc(100%-8px)] mask-r-to-100%",
+        !isAtLeft && "mask-l-from-[calc(100%-16px)] mask-l-to-100%",
+        !isAtRight && "mask-r-from-[calc(100%-16px)] mask-r-to-100%",
       )}
     >
-      <div className="inline-flex w-max items-center whitespace-nowrap" ref={scrollRef}>
+      <div className="inline-flex w-max items-center">
+        <div ref={leftRef} />
         <DatasetFilesBrowserInspectBreadcrumbsButton
           aria-label="Go to root directory"
           current={currentPath === "/"}
@@ -50,6 +52,7 @@ export function DatasetFilesBrowserInspectBreadcrumbs() {
             </Fragment>
           );
         })}
+        <div ref={rightRef} />
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

@@ -1,7 +1,5 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-const region = "us-east-1";
-
 export default $config({
   app(input) {
     return {
@@ -9,7 +7,7 @@ export default $config({
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",
-      providers: { aws: { region } },
+      providers: { aws: { region: "us-east-1" } },
     };
   },
   async run() {

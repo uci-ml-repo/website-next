@@ -30,7 +30,7 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
   return !!bookmarks?.length ? (
     <ScrollArea
       className={cn(
-        "[&_data-[slot]:!bg-destructive min-h-0",
+        "min-h-0 *:*:!block",
         !isAtTop && "mask-t-from-[calc(100%-12px)] mask-t-to-100%",
         !isAtBottom && "mask-b-from-[calc(100%-12px)] mask-b-to-100%",
       )}
