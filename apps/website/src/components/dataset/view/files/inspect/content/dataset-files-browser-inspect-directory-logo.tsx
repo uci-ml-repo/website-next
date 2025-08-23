@@ -12,7 +12,7 @@ export function DatasetFilesBrowserInspectDirectoryLogo({ className, ...props }:
     <Image
       src="/img/mimetype/folder.png"
       alt="Folder thumbnail"
-      className={cn("pointer-events-none select-none", className)}
+      className={cn("pointer-events-none drop-shadow-sm", className)}
       {...props}
     />
   );

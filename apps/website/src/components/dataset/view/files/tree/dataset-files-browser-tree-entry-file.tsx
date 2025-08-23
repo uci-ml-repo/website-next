@@ -6,10 +6,8 @@ import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-
 import type { FileBrowserEntryProps } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry";
 import { DatasetFilesBrowserTreeEntryButton } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry-button";
 
-export function DatasetFilesBrowserTreeEntryFile({ entry, level, parent }: FileBrowserEntryProps) {
+export function DatasetFilesBrowserTreeEntryFile({ entry, level }: FileBrowserEntryProps) {
   const { currentPath } = useDatasetFilesBrowser();
-
-  const displayName = parent ? entry.key.substring(parent.key.length + 1) : entry.key;
 
   return (
     <DatasetFilesBrowserTreeEntryButton
@@ -17,7 +15,7 @@ export function DatasetFilesBrowserTreeEntryFile({ entry, level, parent }: FileB
       level={level}
       active={currentPath === entry.key}
     >
-      <FileIcon className="text-muted-foreground" /> {displayName}
+      <FileIcon className="text-muted-foreground" /> {entry.basename}
     </DatasetFilesBrowserTreeEntryButton>
   );
 }

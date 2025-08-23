@@ -17,7 +17,7 @@ export function DatasetFilesBrowserInspectFileLogo({ fileName, className, ...pro
     <Image
       src={`/img/mimetype/${extensionToLogo(extension)}`}
       alt="File thumbnail"
-      className={cn("pointer-events-none select-none", className)}
+      className={cn("pointer-events-none drop-shadow-[0_0_0.5px_var(--foreground)]", className)}
       {...props}
     />
   );

@@ -15,9 +15,11 @@ export function DatasetFilesBrowserInspectHeader({ dataset }: Props) {
   const { currentEntryType } = useDatasetFilesBrowser();
 
   return (
-    <div className="flex h-11 shrink-0 items-center justify-between gap-x-2 border-b p-1">
+    <div className="flex h-11 shrink-0 items-center justify-between gap-x-2 p-1">
       <DatasetFilesBrowserInspectHistory />
+
       <DatasetFilesBrowserInspectBreadcrumbs />
+
       {currentEntryType === "directory" ? (
         <DatasetFilesBrowserInspectDirectoryViewType />
       ) : (

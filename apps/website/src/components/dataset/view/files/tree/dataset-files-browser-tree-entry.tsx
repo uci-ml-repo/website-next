@@ -7,7 +7,6 @@ import type { Entry } from "@/server/service/file/find";
 export type FileBrowserEntryProps = {
   entry: Entry;
   level: number;
-  parent?: Entry;
 };
 
 export function DatasetFilesBrowserTreeEntry(props: FileBrowserEntryProps) {

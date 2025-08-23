@@ -8,11 +8,13 @@ export type FileEntry = {
   size?: number;
   lastModified?: Date;
   kind: "file";
+  basename: string;
 };
 
 export type DirectoryEntry = {
   key: string;
   kind: "directory";
+  basename: string;
 };
 
 export type Entry = FileEntry | DirectoryEntry;
@@ -47,7 +49,11 @@ async function list({ id, slug }: { id: number; slug: string }): Promise<Entry[]
           if (!commonPrefix?.Prefix) continue;
           const relativeDir = stripPrefix(commonPrefix.Prefix, rootPrefix).replace(/\/$/, "");
           if (relativeDir.length > 0 && !seenDirs.has(relativeDir)) {
-            entries.push({ key: relativeDir, kind: "directory" });
+            entries.push({
+              key: relativeDir,
+              kind: "directory",
+              basename: relativeDir.split("/").pop() || relativeDir,
+            });
             seenDirs.add(relativeDir);
           }
           toVisit.push(commonPrefix.Prefix);
@@ -65,6 +71,7 @@ async function list({ id, slug }: { id: number; slug: string }): Promise<Entry[]
             size: obj.Size,
             lastModified: obj.LastModified,
             kind: "file",
+            basename: relative.split("/").pop() || relative,
           });
         }
       }

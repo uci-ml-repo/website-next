@@ -21,10 +21,7 @@ export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Pro
       <DatasetFilesBrowserInspectHeader dataset={dataset} />
 
       {currentEntryType === "directory" ? (
-        <ScrollArea className="size-full min-h-0" type="auto">
-          <DatasetFilesBrowserInspectDirectory />
-          <ScrollBar orientation="vertical" />
-        </ScrollArea>
+        <DatasetFilesBrowserInspectDirectory />
       ) : (
         <ScrollArea className="size-full min-h-0" type="auto">
           <DatasetFilesBrowserInspectFile />

@@ -30,7 +30,7 @@ export function DatasetFilesBrowserTreeEntryButton({
         aria-level={level}
         style={{ paddingLeft: level * 10 + 12 }}
         className={cn(
-          "h-8 min-w-full justify-start gap-1 rounded-sm font-normal",
+          "h-8 min-w-full cursor-default justify-start gap-1 rounded-sm font-normal",
           "aria-[current=true]:bg-accent-strong hover:bg-accent-strong transition-[border-radius]",
           active && "rounded-l-none",
           className,

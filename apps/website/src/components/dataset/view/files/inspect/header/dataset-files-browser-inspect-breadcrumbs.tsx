@@ -24,7 +24,7 @@ export function DatasetFilesBrowserInspectBreadcrumbs() {
           !isAtRight && "mask-r-from-[calc(100%-16px)] mask-r-to-100%",
         )}
       >
-        <div className="flex items-center">
+        <div className="flex items-center select-none">
           <div ref={leftRef} />
           <DatasetFilesBrowserInspectBreadcrumbsButton
             aria-label="Go to root directory"

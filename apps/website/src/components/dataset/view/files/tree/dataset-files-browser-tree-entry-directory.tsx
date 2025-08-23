@@ -10,20 +10,11 @@ import { DatasetFilesBrowserTreeEntry } from "@/components/dataset/view/files/tr
 import { DatasetFilesBrowserTreeEntryButton } from "@/components/dataset/view/files/tree/dataset-files-browser-tree-entry-button";
 import type { Entry } from "@/server/service/file/find";
 
-export function DatasetFilesBrowserTreeEntryDirectory({
-  entry,
-  level,
-  parent,
-}: FileBrowserEntryProps) {
+export function DatasetFilesBrowserTreeEntryDirectory({ entry, level }: FileBrowserEntryProps) {
   const { entryMap, currentPath } = useDatasetFilesBrowser();
   const [open, setOpen] = useState(currentPath.startsWith(entry.key));
 
   const children = useMemo(() => entryMap[entry.key] as Entry[], [entryMap, entry.key]);
-
-  const displayName = useMemo(
-    () => (parent ? entry.key.substring(parent.key.length + 1) : entry.key),
-    [parent, entry.key],
-  );
 
   const [active, setActive] = useState(currentPath === entry.key);
 
@@ -58,17 +49,12 @@ export function DatasetFilesBrowserTreeEntryDirectory({
         ) : (
           <FileDirectoryFillIcon className="text-muted-foreground" />
         )}
-        {displayName}
+        {entry.basename}
       </DatasetFilesBrowserTreeEntryButton>
       {open && (
         <div className="relative w-max min-w-full">
           {children?.map((child) => (
-            <DatasetFilesBrowserTreeEntry
-              key={child.key}
-              entry={child}
-              parent={entry}
-              level={level + 1}
-            />
+            <DatasetFilesBrowserTreeEntry key={child.key} entry={child} level={level + 1} />
           ))}
           <div className="bg-border absolute top-0 h-full w-[1px]" style={{ left: level * 10 }} />
         </div>
