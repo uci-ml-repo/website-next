@@ -11,7 +11,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
-import { trpc } from "@/server/trpc/query/client";
+import { skipBatch, trpc } from "@/server/trpc/query/client";
 
 type Props = HTMLAttributes<HTMLUListElement> & {
   session: Session | null;
@@ -24,7 +24,7 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
   const pathName = usePathname();
   const { data: bookmarks } = trpc.bookmark.find.byUserId.useQuery(
     { userId: session?.user.id ?? "" },
-    { enabled: !!session?.user },
+    { enabled: !!session?.user, ...skipBatch },
   );
 
   return !!bookmarks?.length ? (

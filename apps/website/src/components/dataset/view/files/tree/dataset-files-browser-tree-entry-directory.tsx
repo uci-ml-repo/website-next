@@ -16,7 +16,7 @@ export function DatasetFilesBrowserTreeEntryDirectory({
   parent,
 }: FileBrowserEntryProps) {
   const { entryMap, currentPath } = useDatasetFilesBrowser();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(currentPath.startsWith(entry.key));
 
   const children = entryMap[entry.key] as Entry[];
   const displayName = parent ? entry.key.substring(parent.key.length + 1) : entry.key;

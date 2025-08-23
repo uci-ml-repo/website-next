@@ -11,7 +11,7 @@ export function DatasetFiles({ id, slug }: { id: number; slug: string }) {
 
   if (!dataset) throw new Error("Dataset should be prefetched");
 
-  const { data: files, error } = trpc.file.find.list.useQuery(
+  const { data: entries, error } = trpc.file.find.list.useQuery(
     { datasetId: id, slug: decodeURIComponent(slug) },
     { retry: false },
   );
@@ -32,8 +32,8 @@ export function DatasetFiles({ id, slug }: { id: number; slug: string }) {
     );
   }
 
-  return files !== undefined ? (
-    <DatasetFilesBrowser entries={files} dataset={dataset} />
+  return entries !== undefined ? (
+    <DatasetFilesBrowser entries={entries} dataset={dataset} />
   ) : (
     <div className="w-ful text-muted-foreground flex h-20 items-center justify-center space-x-2">
       <Loader2Icon className="animate-spin" />

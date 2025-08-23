@@ -1,11 +1,15 @@
 "use client";
 
+import { useQueryState } from "nuqs";
+import { parseAsString } from "nuqs/server";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import type { Entry } from "@/server/service/file/find";
 
 type PathMap = Record<string, Entry | Entry[]>;
+
+type DirectoryViewType = "rows" | "grid";
 
 interface DatasetFilesBrowserContextProps {
   entries: Entry[];
@@ -19,6 +23,8 @@ interface DatasetFilesBrowserContextProps {
   forward: () => void;
   searching: boolean;
   setSearching: Dispatch<SetStateAction<boolean>>;
+  directoryViewType: DirectoryViewType;
+  setDirectoryViewType: Dispatch<SetStateAction<DirectoryViewType>>;
 }
 
 const DatasetFilesBrowserContext = createContext<DatasetFilesBrowserContextProps | undefined>(
@@ -47,10 +53,21 @@ export function DatasetFilesBrowserProvider({
     return map;
   }, [entries]);
 
-  const [currentPath, setCurrentPath] = useState("/");
+  const validPaths = useMemo(() => new Set(entries.map((e) => e.key)), [entries]);
+
+  const [currentPath, setCurrentPath] = useQueryState("path", parseAsString.withDefault("/"));
   const [history, setHistory] = useState<string[]>([]);
   const [forwardHistory, setForwardHistory] = useState<string[]>([]);
   const [searching, setSearching] = useState(false);
+  const [directoryViewType, setDirectoryViewType] = useState<DirectoryViewType>("rows");
+
+  useEffect(() => {
+    if (!validPaths.has(currentPath)) {
+      setCurrentPath("/");
+      setHistory([]);
+      setForwardHistory([]);
+    }
+  }, [currentPath, setCurrentPath, validPaths]);
 
   const back = useCallback(() => {
     if (history.length) {
@@ -58,7 +75,7 @@ export function DatasetFilesBrowserProvider({
       setCurrentPath(history[history.length - 1]);
       setHistory((prev) => prev.slice(0, -1));
     }
-  }, [currentPath, history]);
+  }, [currentPath, history, setCurrentPath]);
 
   const forward = useCallback(() => {
     if (forwardHistory.length) {
@@ -66,7 +83,7 @@ export function DatasetFilesBrowserProvider({
       setCurrentPath(forwardHistory[forwardHistory.length - 1]);
       setForwardHistory((prev) => prev.slice(0, -1));
     }
-  }, [currentPath, forwardHistory]);
+  }, [currentPath, forwardHistory, setCurrentPath]);
 
   const setCurrentPathWithHistory = useCallback(
     (path: string) => {
@@ -76,7 +93,7 @@ export function DatasetFilesBrowserProvider({
       setCurrentPath(path);
       setForwardHistory([]);
     },
-    [currentPath],
+    [currentPath, setCurrentPath],
   );
 
   const currentEntryType = useMemo(
@@ -98,6 +115,8 @@ export function DatasetFilesBrowserProvider({
         forward,
         searching,
         setSearching,
+        directoryViewType,
+        setDirectoryViewType,
       }}
     >
       {children}

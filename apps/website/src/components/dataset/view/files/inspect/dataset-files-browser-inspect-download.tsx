@@ -15,7 +15,7 @@ export function DatasetFilesBrowserInspectDownload({ dataset }: Props) {
     currentEntryType === "file" && (
       <Button
         variant="outline"
-        className="mr-1 size-8 rounded-sm"
+        className="size-8 rounded-sm"
         size="icon"
         aria-label={`Download ${currentPath}`}
         asChild

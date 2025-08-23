@@ -16,7 +16,7 @@ export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Pro
   return (
     <div className={cn("overflow-hidden", className)} {...props}>
       <DatasetFilesBrowserInspectHeader dataset={dataset} />
-      <div>{JSON.stringify(currentPath)}</div>
+      <div>{currentPath}</div>
     </div>
   );
 }

@@ -67,7 +67,7 @@ export default async function RootLayout({
                 <div
                   className={cn(
                     "w-full",
-                    "md:ml-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!ml-(--sidebar-width)",
+                    "md:pl-(--sidebar-width-collapsed) peer-data-[state=expanded]:xl:!pl-(--sidebar-width)",
                     "transition-margin duration-150 ease-out",
                   )}
                 >
