@@ -17,7 +17,7 @@ export function DatasetFilesBrowserTree({ className, ...props }: HTMLAttributes<
     <div className={cn("flex size-full flex-col overflow-hidden", className)} {...props}>
       <DatasetFilesBrowserTreeHeader />
       <ScrollArea className="size-full min-h-0" type="auto" vertical horizontal>
-        <div className="p-1">
+        <div className="p-1 pb-6">
           {rootEntries.map((entry) => (
             <DatasetFilesBrowserTreeEntry key={entry.key} entry={entry} level={1} />
           ))}

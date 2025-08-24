@@ -63,7 +63,7 @@ export function DatasetFilesBrowserInspectFileText() {
         <div ref={bottomRef} />
       ) : (
         data && (
-          <div className="text-muted-foreground bg-accent-strong border-t p-1 text-sm not-group-has-data-[slot='scroll-area-scrollbar']:hidden">
+          <div className="text-muted-foreground bg-accent-strong border-t p-1 text-sm not-group-has-[[data-slot='scroll-area-scrollbar'][data-orientation='vertical']]:hidden">
             End of file
           </div>
         )

@@ -2,6 +2,7 @@
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
 import { DatasetFilesBrowserInspectFileImage } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-image";
+import { DatasetFilesBrowserInspectFilePdf } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-pdf";
 import { DatasetFilesBrowserInspectFileText } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-text";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -24,6 +25,9 @@ export function DatasetFilesBrowserInspectFile() {
     case "svg":
     case "webp":
       return <DatasetFilesBrowserInspectFileImage />;
+
+    case "pdf":
+      return <DatasetFilesBrowserInspectFilePdf />;
 
     default:
       return (
