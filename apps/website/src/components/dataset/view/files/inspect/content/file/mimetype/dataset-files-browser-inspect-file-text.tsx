@@ -1,19 +1,18 @@
 "use client";
 
 import { useInViewport } from "@mantine/hooks";
-import { Loader2Icon } from "lucide-react";
+import { AlertCircleIcon, Loader2Icon } from "lucide-react";
 import { useEffect } from "react";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
 import { DatasetFilesBrowserInspectFileInfoSize } from "@/components/dataset/view/files/inspect/content/file/mimetype/info/dataset-files-browser-inspect-file-info-size";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
 export function DatasetFilesBrowserInspectFileText() {
   const { currentPath, dataset } = useDatasetFilesBrowser();
 
-  const { ref: bottomRef, inViewport: bottomInViewport } = useInViewport();
-
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, isLoading } =
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, isLoading, error } =
     trpc.file.read.readBytes.useInfiniteQuery(
       {
         datasetId: dataset.id,
@@ -26,11 +25,25 @@ export function DatasetFilesBrowserInspectFileText() {
       },
     );
 
+  const { ref: bottomRef, inViewport: bottomInViewport } = useInViewport();
+
   useEffect(() => {
     if (!isFetchingNextPage && bottomInViewport) {
       fetchNextPage();
     }
   }, [bottomInViewport, fetchNextPage, isFetchingNextPage]);
+
+  if (error) {
+    return (
+      <div className="p-2">
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>Failed to read file</AlertTitle>
+          <AlertDescription>{error.message || "An unknown error occurred."}</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

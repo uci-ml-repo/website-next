@@ -11,7 +11,7 @@ export function DatasetFilesBrowserInspectFileInfoSize() {
 
   return (
     <div
-      className="bg-accent-strong/90 absolute right-0 bottom-0 mr-2.5 flex max-w-[80%] items-center space-x-1 rounded-t-sm border-x border-t p-1 text-sm"
+      className="bg-accent-strong/90 absolute right-0 bottom-0 mr-2.5 flex max-w-[80%] items-center space-x-1 rounded-t-sm border-x border-t px-2 py-1 text-sm"
       data-slot="file-info"
     >
       <span className="flex-1 truncate overflow-hidden">{currentEntry.basename}</span>
