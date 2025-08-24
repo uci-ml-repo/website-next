@@ -1,6 +1,7 @@
 "use client";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
+import { DatasetFilesBrowserInspectFileAudio } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-audio";
 import { DatasetFilesBrowserInspectFileImage } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-image";
 import { DatasetFilesBrowserInspectFilePdf } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-pdf";
 import { DatasetFilesBrowserInspectFileText } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-text";
@@ -28,6 +29,10 @@ export function DatasetFilesBrowserInspectFile() {
 
     case "pdf":
       return <DatasetFilesBrowserInspectFilePdf />;
+
+    case "wav":
+    case "mp3":
+      return <DatasetFilesBrowserInspectFileAudio />;
 
     default:
       return (
