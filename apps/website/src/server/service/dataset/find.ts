@@ -1,31 +1,21 @@
 import { db } from "@packages/db";
-import { author, dataset } from "@packages/db/schema";
-import type { AuthorSelect } from "@packages/db/types";
+import { dataset } from "@packages/db/schema";
 import { datasetColumns } from "@packages/db/types";
-import { desc, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 
 import { buildQuery, buildSearchQuery } from "@/server/service/dataset/util";
 import type { DatasetQuery } from "@/server/types/dataset/request";
 import { sortMap } from "@/server/types/util/order";
 import { entriesT } from "@/server/types/util/type";
 
-async function byId(id: number) {
-  const results = await db
-    .select()
-    .from(dataset)
-    .leftJoin(author, eq(dataset.id, author.datasetId))
-    .where(eq(dataset.id, id));
-
-  const authors = results.reduce<AuthorSelect[]>((acc, r) => {
-    if (r.author) acc.push(r.author);
-    return acc;
-  }, []);
-
-  return {
-    ...results[0].dataset,
-    authors,
-  };
-}
+const byId = (id: number) =>
+  db.query.dataset.findFirst({
+    where: (ds, { eq }) => eq(ds.id, id),
+    with: {
+      authors: true,
+      features: true,
+    },
+  });
 
 async function byQuery(query: DatasetQuery) {
   const orderBy = query.order

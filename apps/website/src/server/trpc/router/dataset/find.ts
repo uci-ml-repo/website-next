@@ -4,7 +4,7 @@ import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
 import { datasetQuery } from "@/server/types/dataset/request";
 
 export const datasetFindRouter = router({
-  byId: datasetAccessProcedure.query(({ ctx }) => ctx.dataset),
+  byId: datasetAccessProcedure.query(({ ctx }) => service.dataset.find.byId(ctx.dataset.id)),
 
   byQuery: procedure.input(datasetQuery).query(({ input }) => service.dataset.find.byQuery(input)),
 });

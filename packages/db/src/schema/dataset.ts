@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   boolean,
@@ -15,7 +15,10 @@ import {
 
 import { Enums, enumToArray } from "../enum";
 import { defaultUUID } from "../util/uuid";
-import { datasetFeatureType } from "./feature";
+import { author } from "./author";
+import { bookmark } from "./bookmark";
+import { datasetFeatureType, feature } from "./feature";
+import { keyword } from "./keyword";
 import { user } from "./user";
 
 export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
@@ -136,3 +139,14 @@ export const dataset = pgTable(
     ),
   ],
 );
+
+export const datasetRelations = relations(dataset, ({ one, many }) => ({
+  user: one(user, {
+    fields: [dataset.userId],
+    references: [user.id],
+  }),
+  features: many(feature),
+  keywords: many(keyword),
+  bookmarks: many(bookmark),
+  authors: many(author),
+}));

@@ -6,15 +6,12 @@ import { DatasetFilesBrowser } from "@/components/dataset/view/files/dataset-fil
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFiles({ id }: { id: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
+export function DatasetFiles({ datasetId }: { datasetId: number }) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId });
 
   if (!dataset) throw new Error("Dataset should be prefetched");
 
-  const { data: entries, error } = trpc.file.find.list.useQuery(
-    { datasetId: id },
-    { retry: false },
-  );
+  const { data: entries, error } = trpc.file.find.list.useQuery({ datasetId }, { retry: false });
 
   if (error) {
     return error.message === "NOT_FOUND" ? (

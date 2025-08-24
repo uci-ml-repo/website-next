@@ -1,7 +1,19 @@
-import { sql } from "drizzle-orm";
-import { index, integer, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
+import {
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 
-import { approvalStatus, dataset } from "./dataset";
+import { Enums, enumToArray } from "../enum";
+import { dataset } from "./dataset";
+
+export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
 
 export const keyword = pgTable(
   "keyword",
@@ -18,6 +30,10 @@ export const keyword = pgTable(
   ],
 );
 
+export const keywordRelations = relations(keyword, ({ many }) => ({
+  datasetKeywords: many(datasetKeyword),
+}));
+
 export const datasetKeyword = pgTable(
   "dataset_keyword",
   {
@@ -30,3 +46,14 @@ export const datasetKeyword = pgTable(
   },
   (t) => [primaryKey({ columns: [t.keywordId, t.datasetId] })],
 );
+
+export const datasetKeywordRelations = relations(datasetKeyword, ({ one }) => ({
+  keyword: one(keyword, {
+    fields: [datasetKeyword.keywordId],
+    references: [keyword.id],
+  }),
+  dataset: one(dataset, {
+    fields: [datasetKeyword.datasetId],
+    references: [dataset.id],
+  }),
+}));

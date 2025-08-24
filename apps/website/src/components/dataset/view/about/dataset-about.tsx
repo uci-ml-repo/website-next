@@ -2,8 +2,8 @@
 
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetAbout({ id }: { id: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: id });
+export function DatasetAbout({ datasetId }: { datasetId: number }) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId });
 
   if (!dataset) throw new Error("Dataset should be prefetched");
 

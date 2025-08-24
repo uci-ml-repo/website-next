@@ -4,5 +4,5 @@ export default async function Page({ params }: { params: Promise<{ id: string; s
   const { id: _id } = await params;
   const id = Number(_id);
 
-  return <DatasetFiles id={id} />;
+  return <DatasetFiles datasetId={id} />;
 }

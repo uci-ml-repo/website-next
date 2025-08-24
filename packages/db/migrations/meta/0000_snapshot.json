@@ -740,10 +740,6 @@
       },
       "policies": {},
       "checkConstraints": {
-        "title_check": {
-          "name": "title_check",
-          "value": "\"dataset\".\"title\" !~ '[%]'"
-        },
         "external_check": {
           "name": "external_check",
           "value": "\n        (\n          \"dataset\".\"external_link\" IS NULL\n          AND \"dataset\".\"download_count\" IS NOT NULL\n        )\n        OR (\n          \"dataset\".\"external_link\" IS NOT NULL\n          AND \"dataset\".\"external_link\" ~* '^https?://'\n          AND \"dataset\".\"download_count\" IS NULL\n        )\n      "

@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { boolean, integer, pgEnum, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 
 import { Enums, enumToArray } from "../enum";
@@ -29,3 +30,10 @@ export const feature = pgTable(
   },
   (t) => [unique().on(t.datasetId, t.name)],
 );
+
+export const featureRelations = relations(feature, ({ one }) => ({
+  dataset: one(dataset, {
+    fields: [feature.datasetId],
+    references: [dataset.id],
+  }),
+}));

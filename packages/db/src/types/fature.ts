@@ -1,5 +1,7 @@
-import { getTableColumns } from "drizzle-orm";
+import { createSelectSchema } from "drizzle-zod";
+import type { z } from "zod";
 
 import { feature } from "../schema";
 
-export const featureColumns = getTableColumns(feature);
+export const featureSelectSchema = createSelectSchema(feature);
+export type FeatureSelect = z.infer<typeof featureSelectSchema>;
