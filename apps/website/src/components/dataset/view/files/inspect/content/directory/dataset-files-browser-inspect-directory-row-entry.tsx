@@ -1,8 +1,8 @@
 "use client";
 
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
+import { DatasetFilesBrowserInspectDirectoryFileLogo } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-file-logo";
 import { DatasetFilesBrowserInspectDirectoryLogo } from "@/components/dataset/view/files/inspect/content/directory/dataset-files-browser-inspect-directory-logo";
-import { DatasetFilesBrowserInspectFileLogo } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file-logo";
 import { abbreviateFileSize } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
 import type { Entry } from "@/server/service/file/find";
@@ -26,8 +26,8 @@ export function DatasetFilesBrowserInspectDirectoryRowEntry({
       {entry.kind === "directory" ? (
         <DatasetFilesBrowserInspectDirectoryLogo height={100} width={100} className="size-4.5" />
       ) : (
-        <DatasetFilesBrowserInspectFileLogo
-          fileName={entry.basename}
+        <DatasetFilesBrowserInspectDirectoryFileLogo
+          basename={entry.basename}
           height={100}
           width={100}
           className="size-4.5"

@@ -22,6 +22,6 @@
     "@scalar/hono-api-reference": "0.9.15",
     "drizzle-orm": "0.44.4",
     "hono": "4.9.4",
-    "zod": "4.0.17"
+    "zod": "4.1.1"
   }
 }

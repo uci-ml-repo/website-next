@@ -7,13 +7,13 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 import type { Entry } from "@/server/service/file/find";
 
-type DirectoryMap = Record<string, Entry[]>;
-
 type DirectoryViewType = "rows" | "grid";
 
 interface DatasetFilesBrowserContextProps {
+  dataset: { id: number; slug: string };
   entries: Entry[];
-  directoryMap: DirectoryMap;
+  directoryMap: Record<string, Entry[]>;
+  entryMap: Record<string, Entry>;
   currentPath: string;
   currentEntryType: "file" | "directory";
   setCurrentPath: (path: string) => void;
@@ -33,13 +33,15 @@ const DatasetFilesBrowserContext = createContext<DatasetFilesBrowserContextProps
 
 export function DatasetFilesBrowserProvider({
   entries,
+  dataset,
   children,
 }: {
   entries: Entry[];
+  dataset: { id: number; slug: string };
   children: ReactNode;
 }) {
   const directoryMap = useMemo(() => {
-    const map: DirectoryMap = { "/": [] };
+    const map: Record<string, Entry[]> = { "/": [] };
 
     for (const directory of entries.filter((p) => p.kind === "directory")) {
       map[directory.key] = [];
@@ -50,6 +52,14 @@ export function DatasetFilesBrowserProvider({
       map[parentPath].push(path);
     }
 
+    return map;
+  }, [entries]);
+
+  const entryMap = useMemo(() => {
+    const map: Record<string, Entry> = {};
+    for (const entry of entries) {
+      map[entry.key] = entry;
+    }
     return map;
   }, [entries]);
 
@@ -106,8 +116,10 @@ export function DatasetFilesBrowserProvider({
   return (
     <DatasetFilesBrowserContext.Provider
       value={{
+        dataset,
         entries,
         directoryMap,
+        entryMap,
         currentPath,
         currentEntryType,
         setCurrentPath: setCurrentPathWithHistory,

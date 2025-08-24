@@ -7,7 +7,6 @@ import { DatasetFilesBrowserInspectDirectory } from "@/components/dataset/view/f
 import { DatasetFilesBrowserInspectFile } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file";
 import { DatasetFilesBrowserInspectHeader } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-header";
 import { DatasetFilesBrowserInspectSearchResults } from "@/components/dataset/view/files/inspect/header/dataset-files-browser-inspect-search-results";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/util/cn";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -26,9 +25,7 @@ export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Pro
       ) : currentEntryType === "directory" ? (
         <DatasetFilesBrowserInspectDirectory />
       ) : (
-        <ScrollArea className="size-full min-h-0" type="auto" vertical horizontal>
-          <DatasetFilesBrowserInspectFile />
-        </ScrollArea>
+        <DatasetFilesBrowserInspectFile />
       )}
     </div>
   );

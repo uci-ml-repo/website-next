@@ -3,15 +3,19 @@
 import Image from "next/image";
 import type { ComponentProps } from "react";
 
+import { basenameToExtension } from "@/components/dataset/view/files/inspect/content/file/dataset-files-browser-inspect-file";
 import { cn } from "@/lib/util/cn";
 
 type Props = Omit<ComponentProps<typeof Image>, "src" | "alt"> & {
-  fileName: string;
+  basename: string;
 };
 
-export function DatasetFilesBrowserInspectFileLogo({ fileName, className, ...props }: Props) {
-  const extensionIndex = fileName.lastIndexOf(".") + 1;
-  const extension = extensionIndex ? fileName.slice(extensionIndex).toLowerCase() : "";
+export function DatasetFilesBrowserInspectDirectoryFileLogo({
+  basename,
+  className,
+  ...props
+}: Props) {
+  const extension = basenameToExtension(basename);
 
   return (
     <Image
@@ -42,7 +46,6 @@ function extensionToLogo(extension: string) {
     case "jpeg":
     case "gif":
     case "bmp":
-    case "tiff":
     case "svg":
     case "webp":
       return "image.png";

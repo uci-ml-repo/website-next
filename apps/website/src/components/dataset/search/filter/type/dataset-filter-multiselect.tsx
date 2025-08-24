@@ -10,6 +10,7 @@ import { FixedSizeList } from "react-window";
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { Badge } from "@/components/ui/badge";
 import { CommandItem } from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { SearchPopover } from "@/components/ui/search-popover";
 import { cn } from "@/lib/util/cn";
 
@@ -139,17 +140,19 @@ export function DatasetFilterMultiselect({
         inputProps={{ "aria-label": props["aria-label"] }}
       >
         {!!matches.length && (
-          <FixedSizeList
-            ref={listRef}
-            itemCount={matches.length}
-            itemSize={28}
-            height={Math.min(matches.length * 28, 240)}
-            overscanCount={10}
-            width="100%"
-            className="focus-visible:ring-ring/50"
-          >
-            {Row}
-          </FixedSizeList>
+          <ScrollArea vertical>
+            <FixedSizeList
+              ref={listRef}
+              itemCount={matches.length}
+              itemSize={28}
+              height={Math.min(matches.length * 28, 240)}
+              overscanCount={10}
+              width="100%"
+              className="focus-visible:ring-ring/50"
+            >
+              {Row}
+            </FixedSizeList>
+          </ScrollArea>
         )}
       </SearchPopover>
     </DatasetFilterItem>

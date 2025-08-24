@@ -13,7 +13,7 @@ interface Props {
 
 export function DatasetFilesBrowser({ entries, dataset }: Props) {
   return (
-    <DatasetFilesBrowserProvider entries={entries}>
+    <DatasetFilesBrowserProvider entries={entries} dataset={dataset}>
       <Split
         direction="horizontal"
         gutterSize={6}
