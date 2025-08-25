@@ -1,19 +1,8 @@
 import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  integer,
-  pgEnum,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { index, integer, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-import { Enums, enumToArray } from "../enum";
 import { dataset } from "./dataset";
-
-export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
+import { approvalStatus } from "./enum";
 
 export const keyword = pgTable(
   "keyword",

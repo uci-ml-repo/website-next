@@ -5,7 +5,6 @@ import {
   check,
   index,
   integer,
-  pgEnum,
   pgTable,
   serial,
   text,
@@ -13,24 +12,20 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-import { Enums, enumToArray } from "../enum";
+import { Enums } from "../types/enum";
 import { defaultUUID } from "../util/uuid";
 import { author } from "./author";
 import { bookmark } from "./bookmark";
-import { datasetFeatureType, feature } from "./feature";
+import {
+  approvalStatus,
+  datasetDataType,
+  datasetFeatureType,
+  datasetSubjectArea,
+  datasetTask,
+} from "./enum";
+import { feature } from "./feature";
 import { keyword } from "./keyword";
 import { user } from "./user";
-
-export const approvalStatus = pgEnum("approval_status", enumToArray(Enums.ApprovalStatus));
-
-export const datasetSubjectArea = pgEnum(
-  "dataset_subject_area",
-  enumToArray(Enums.DatasetSubjectArea),
-);
-
-export const datasetTask = pgEnum("dataset_task", enumToArray(Enums.DatasetTask));
-
-export const datasetDataType = pgEnum("dataset_characteristic", enumToArray(Enums.DatasetDataType));
 
 export const dataset = pgTable(
   "dataset",

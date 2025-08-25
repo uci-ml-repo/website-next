@@ -6,7 +6,7 @@
     ".": "./src/index.ts",
     "./schema": "./src/schema/index.ts",
     "./types": "./src/types/index.ts",
-    "./enum": "./src/enum.ts",
+    "./enum": "./src/types/enum.ts",
     "./env": "./env.ts"
   },
   "scripts": {

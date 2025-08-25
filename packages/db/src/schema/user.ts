@@ -1,8 +1,7 @@
-import { boolean, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-import { Enums, enumToArray } from "../enum";
-
-export const userRole = pgEnum("user_role", enumToArray(Enums.UserRole));
+import { Enums } from "../types/enum";
+import { userRole } from "./enum";
 
 export const user = pgTable("user", {
   id: uuid("id").primaryKey(),

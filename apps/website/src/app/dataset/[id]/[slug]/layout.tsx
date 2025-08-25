@@ -13,7 +13,7 @@ import { ROUTES } from "@/lib/routes";
 import { HydrateClient, trpc } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return trpc.dataset.find.byId({ datasetId: id });
+  return trpc.dataset.find.simpleById({ datasetId: id });
 });
 
 export async function generateMetadata({

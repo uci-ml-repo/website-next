@@ -9,6 +9,7 @@ const database = new sst.aws.Postgres("Database", {
   vpc,
   proxy: true,
   version: "17.6",
+  password: $dev ? new sst.Secret("PROD_DB_PASSWORD").value : undefined,
   dev: {
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,

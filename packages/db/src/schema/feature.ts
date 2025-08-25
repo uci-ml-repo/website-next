@@ -1,18 +1,8 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, pgEnum, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 
-import { Enums, enumToArray } from "../enum";
 import { dataset } from "./dataset";
-
-export const datasetFeatureRole = pgEnum(
-  "dataset_feature_role",
-  enumToArray(Enums.DatasetFeatureRole),
-);
-
-export const datasetFeatureType = pgEnum(
-  "dataset_feature_type",
-  enumToArray(Enums.DatasetFeatureType),
-);
+import { datasetFeatureRole, datasetFeatureType } from "./enum";
 
 export const feature = pgTable(
   "feature",

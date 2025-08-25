@@ -9,6 +9,4 @@ const secrets = [
   new sst.Secret("BASE_URL"),
 ];
 
-secrets.forEach((s) => s.name.apply((k) => s.value.apply((v) => console.log(`${k}=${v}`))));
-
 export { secrets };
