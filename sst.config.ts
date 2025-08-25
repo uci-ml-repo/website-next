@@ -23,7 +23,7 @@ export default $config({
       path: "apps/website",
       link: [database, email, bucket, ...secrets],
       vpc,
-      router: { instance: router, domain },
+      router: { instance: router },
       environment: {
         NEXT_PUBLIC_CDN_URL: `https://cdn.${domain}`,
       },

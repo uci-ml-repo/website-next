@@ -143,3 +143,7 @@
   @apply cursor-pointer transition-transform duration-[250ms] will-change-transform hover:scale-[1.02] hover:shadow-md focus-visible:scale-[1.02] focus-visible:shadow-md;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+.animate-spin {
+  @apply animation-duration-[600ms] animate-spin;
+}

@@ -55,6 +55,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "PROD_DB_PASSWORD": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Router": {
       "type": "sst.aws.Router"
       "url": string
