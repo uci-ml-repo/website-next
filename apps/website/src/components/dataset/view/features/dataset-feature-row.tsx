@@ -47,16 +47,16 @@ export function DatasetFeatureRow({ feature, expanded, onToggle }: Props) {
       </TableRow>
 
       {expandable && (
-        <tr aria-hidden={!expanded}>
-          <td className="p-0" colSpan={6}>
+        <tr aria-hidden={!expanded} className={cn(expanded && "border-b")}>
+          <td colSpan={6}>
             <motion.div
               initial={false}
               animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
               style={{ overflow: "hidden" }}
               transition={{ duration: 0.15 }}
-              className="bg-muted border-b"
+              className="bg-muted"
             >
-              <div className="p-3 whitespace-pre-wrap">{feature.description}</div>
+              <div className="p-2 text-sm whitespace-pre-wrap">{feature.description}</div>
             </motion.div>
           </td>
         </tr>

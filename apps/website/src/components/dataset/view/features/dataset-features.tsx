@@ -50,7 +50,7 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
         </div>
       </div>
 
-      <div className="rounded-lg border">
+      <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
