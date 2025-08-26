@@ -17,9 +17,12 @@ function simpleById(id: number) {
 async function byId(id: number) {
   return db.query.dataset.findFirst({
     where: (ds, { eq }) => eq(ds.id, id),
+    columns: {
+      features: false,
+    },
     with: {
       authors: true,
-      featureObjects: true,
+      features: true,
     },
   });
 }

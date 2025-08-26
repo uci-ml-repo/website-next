@@ -1,13 +1,13 @@
-import type { DatasetSelect } from "@packages/db/types";
 import { DownloadIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
 import { abbreviateFileSize } from "@/lib/util/abbreviate";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 type Props = ComponentProps<typeof Button> & {
-  dataset: DatasetSelect;
+  dataset: DatasetFull;
 };
 
 export function DatasetDownloadButton({ dataset, ...props }: Props) {

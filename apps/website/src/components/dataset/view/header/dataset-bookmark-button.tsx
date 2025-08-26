@@ -1,7 +1,6 @@
 "use client";
 
 import type { Session } from "@packages/auth/auth";
-import type { DatasetSelect } from "@packages/db/types";
 import { BookmarkIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -10,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { RequireAuth } from "@/components/ui/require-auth";
 import { cn } from "@/lib/util/cn";
 import { trpc } from "@/server/trpc/query/client";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 interface Props {
-  dataset: DatasetSelect;
+  dataset: DatasetFull;
   session: Session | null;
 }
 

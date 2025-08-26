@@ -13,9 +13,9 @@ import type { DatasetFull } from "@/server/types/dataset/response";
 export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
-  const describable = useMemo(
-    () => dataset.featureObjects.filter((f) => !!f.description),
-    [dataset.featureObjects],
+  const hasDescription = useMemo(
+    () => dataset.features.filter((f) => !!f.description),
+    [dataset.features],
   );
 
   const anyExpanded = expanded.size > 0;
@@ -29,7 +29,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
     });
   };
 
-  const expandAll = () => setExpanded(new Set(describable.map((f) => f.name)));
+  const expandAll = () => setExpanded(new Set(hasDescription.map((f) => f.name)));
   const collapseAll = () => setExpanded(new Set());
 
   return (
@@ -37,50 +37,58 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="text-xl font-bold">Features</div>
 
-        <div className="flex items-center gap-2">
-          <CopyButton copyText={featuresToCsv(dataset.featureObjects)} variant="outline" size="sm">
-            Copy CSV
-          </CopyButton>
+        {!!dataset.features.length && (
+          <div className="flex items-center gap-2">
+            <CopyButton copyText={featuresToCsv(dataset.features)} variant="outline" size="sm">
+              Copy CSV
+            </CopyButton>
+          </div>
+        )}
+      </div>
+
+      {!!dataset.features.length ? (
+        <div className="overflow-hidden rounded-lg border">
+          <Table>
+            <TableHeader className="bg-muted">
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Units</TableHead>
+                <TableHead>Missing Values</TableHead>
+                <TableHead className="flex items-center justify-end gap-x-1">
+                  <span>Description</span>
+                  <Button
+                    size="icon-sm"
+                    variant="ghost"
+                    className="hover:bg-accent-strong"
+                    onClick={anyExpanded ? collapseAll : expandAll}
+                    disabled={hasDescription.length === 0}
+                    aria-label={
+                      anyExpanded ? "Collapse all descriptions" : "Expand all descriptions"
+                    }
+                  >
+                    {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
+                  </Button>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {dataset.features.map((feature) => (
+                <DatasetAboutFeatureRow
+                  key={feature.name}
+                  feature={feature}
+                  expanded={expanded.has(feature.name)}
+                  onToggle={() => toggleOne(feature.name)}
+                />
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      </div>
-
-      <div className="overflow-hidden rounded-lg border">
-        <Table>
-          <TableHeader className="bg-muted">
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Units</TableHead>
-              <TableHead>Missing Values</TableHead>
-              <TableHead className="flex items-center justify-end gap-x-1">
-                <span>Description</span>
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  className="hover:bg-accent-strong"
-                  onClick={anyExpanded ? collapseAll : expandAll}
-                  disabled={describable.length === 0}
-                  aria-label={anyExpanded ? "Collapse all descriptions" : "Expand all descriptions"}
-                >
-                  {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
-                </Button>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {dataset.featureObjects.map((feature) => (
-              <DatasetAboutFeatureRow
-                key={feature.name}
-                feature={feature}
-                expanded={expanded.has(feature.name)}
-                onToggle={() => toggleOne(feature.name)}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      ) : (
+        <div className="text-muted-foreground/60">&ndash;</div>
+      )}
     </div>
   );
 }

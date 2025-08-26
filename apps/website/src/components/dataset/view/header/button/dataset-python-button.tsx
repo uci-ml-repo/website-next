@@ -1,4 +1,3 @@
-import type { DatasetSelect } from "@packages/db/types";
 import { ExternalLinkIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { FaPython } from "react-icons/fa6";
@@ -12,9 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 type Props = ComponentProps<typeof Button> & {
-  dataset: DatasetSelect;
+  dataset: DatasetFull;
 };
 
 export function DatasetPythonButton({ dataset, ...props }: Props) {
@@ -64,7 +64,7 @@ export function DatasetPythonButton({ dataset, ...props }: Props) {
   );
 }
 
-function pythonCode({ id, slug }: DatasetSelect) {
+function pythonCode({ id, slug }: { id: number; slug: string }) {
   let variableName = slug.replace(/[^a-zA-Z0-9]/g, "_");
   variableName = variableName.substring(0, variableName.indexOf("_", 25)) || variableName;
 

@@ -1,7 +1,6 @@
 "use client";
 
 import type { Session } from "@packages/auth/auth";
-import type { DatasetSelect } from "@packages/db/types";
 import { DownloadIcon, EllipsisVerticalIcon, EyeIcon, Link2Icon } from "lucide-react";
 import type { HTMLAttributes } from "react";
 
@@ -18,13 +17,22 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
+import { trpc } from "@/server/trpc/query/client";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  dataset: DatasetSelect;
+  dataset: { id: number };
   session: Session | null;
 };
 
-export function DatasetInteractions({ dataset, session: _session, className, ...props }: Props) {
+export function DatasetInteractions({
+  dataset: _dataset,
+  session: _session,
+  className,
+  ...props
+}: Props) {
+  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: _dataset.id });
+  if (!dataset) throw new Error("dataset should be prefetched");
+
   const session = useSessionWithInitial(_session);
 
   const datasetStats = [

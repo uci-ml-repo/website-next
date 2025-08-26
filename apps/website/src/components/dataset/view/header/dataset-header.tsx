@@ -1,7 +1,6 @@
 "use client";
 
 import type { Session } from "@packages/auth/auth";
-import type { DatasetSelect } from "@packages/db/types";
 import Image from "next/image";
 import type { HTMLAttributes } from "react";
 
@@ -17,13 +16,12 @@ import { DatasetExternalLinkButton } from "./button/dataset-external-link-button
 import { DatasetPythonButton } from "./button/dataset-python-button";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  dataset: DatasetSelect;
+  dataset: { id: number };
   session: Session | null;
 };
 
 export function DatasetHeader({ dataset: _dataset, session: _session }: Props) {
   const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: _dataset.id });
-
   if (!dataset) throw new Error("dataset should be prefetched");
 
   const session = useSessionWithInitial(_session);
