@@ -6,12 +6,12 @@ type Props = {
 };
 
 export function DatasetAboutSideDatum({ title, children }: Props) {
-  const blank = <div className="text-muted-foreground">&ndash;</div>;
+  const blank = <div className="text-muted-foreground/60">&ndash;</div>;
 
   return (
     <div className="space-y-1">
       <div className="font-bold">{title}</div>
-      {children ?? <div>{blank}</div>}
+      {children ? children : <div>{blank}</div>}
     </div>
   );
 }
