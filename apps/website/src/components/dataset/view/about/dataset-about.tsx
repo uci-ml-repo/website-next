@@ -1,6 +1,7 @@
 "use client";
 
 import { DatasetAboutFeatures } from "@/components/dataset/view/about/features/dataset-about-features";
+import { DatasetAboutStats } from "@/components/dataset/view/about/stats/dataset-about-stats";
 import { trpc } from "@/server/trpc/query/client";
 
 import { DatasetAboutSideData } from "./side/dataset-about-side-data";
@@ -17,6 +18,7 @@ export function DatasetAbout({ datasetId }: { datasetId: number }) {
           <div className="text-xl font-bold">About</div>
           <div className="whitespace-pre-wrap">{dataset.description}</div>
         </div>
+        <DatasetAboutStats dataset={dataset} />
 
         <DatasetAboutFeatures dataset={dataset} />
       </div>

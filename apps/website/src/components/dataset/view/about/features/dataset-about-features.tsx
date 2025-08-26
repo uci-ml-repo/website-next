@@ -35,10 +35,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="space-x-2 text-xl font-bold">
-          <span>Features</span>
-          <span className="text-muted-foreground font-normal">({dataset.features.length})</span>
-        </div>
+        <div className="text-xl font-bold">Features</div>
 
         <div className="flex items-center gap-2">
           <CopyButton copyText={featuresToCsv(dataset.featureObjects)} variant="outline" size="sm">
