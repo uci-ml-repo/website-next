@@ -4,16 +4,13 @@ import type { FeatureSelect } from "@packages/db/types";
 import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { DatasetFeatureRow } from "@/components/dataset/view/features/dataset-feature-row";
+import { DatasetAboutFeatureRow } from "@/components/dataset/view/about/features/dataset-about-feature-row";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { trpc } from "@/server/trpc/query/client";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
-export function DatasetFeatures({ datasetId }: { datasetId: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId });
-  if (!dataset) throw new Error("Dataset should be prefetched");
-
+export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const describable = useMemo(
@@ -37,14 +34,14 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="space-x-2 text-xl font-bold">
           <span>Features</span>
           <span className="text-muted-foreground font-normal">({dataset.features.length})</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <CopyButton copyText={featuresToCsv(dataset.featureObjects)} variant="outline">
+          <CopyButton copyText={featuresToCsv(dataset.featureObjects)} variant="outline" size="sm">
             Copy CSV
           </CopyButton>
         </div>
@@ -77,7 +74,7 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
 
           <TableBody>
             {dataset.featureObjects.map((feature) => (
-              <DatasetFeatureRow
+              <DatasetAboutFeatureRow
                 key={feature.name}
                 feature={feature}
                 expanded={expanded.has(feature.name)}

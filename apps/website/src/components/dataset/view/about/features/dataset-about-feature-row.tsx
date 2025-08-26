@@ -14,7 +14,7 @@ interface Props {
   onToggle: () => void;
 }
 
-export function DatasetFeatureRow({ feature, expanded, onToggle }: Props) {
+export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
   const expandable = !!feature.description;
 
   return (
@@ -41,7 +41,7 @@ export function DatasetFeatureRow({ feature, expanded, onToggle }: Props) {
         <TableCell>{feature.missingValues ? "Yes" : "No"}</TableCell>
         <TableCell className="flex justify-end">
           {expandable && (
-            <ChevronRightIcon className="text-muted-foreground transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
+            <ChevronRightIcon className="text-muted-foreground shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
           )}
         </TableCell>
       </TableRow>
