@@ -17,6 +17,19 @@ while IFS=$'\t' read -r dataset_id slug; do
     continue
   fi
 
+  # Skip if folder already exists in S3
+  if aws s3 ls "${s3_dest}/" --recursive | head -n1 | grep -q .; then
+    echo "[$dataset_id] S3 folder exists, skipping: ${s3_dest}/"
+    continue
+  fi
+
+  # Check uncompressed size without unzipping; skip if > 5GB
+  size_bytes=$(unzip -l -- "$zip_path" | awk '/^[[:space:]]*[0-9]+[[:space:]]/{s+=$1} END{print s+0}')
+  if ((size_bytes > 5368709120)); then
+    echo "[$dataset_id] Zip would expand > 5GB, skipping: ${zip_path}"
+    continue
+  fi
+
   echo "[$dataset_id] Found zip: ${zip_path}"
 
   # Clean any previous leftover unzipped folder (to avoid mixing versions)
