@@ -37,7 +37,7 @@ export const SidebarNavLink = forwardRef<
       className={cn(
         "flex h-12 w-full items-center gap-[1.375rem] p-2 pl-[22px] text-lg font-semibold",
         "ring-ring outline-none ring-inset focus-visible:ring-2",
-        "active:bg-accent data-[active=true]:bg-sidebar-accent data-[active=false]:hover:bg-sidebar-accent/60 border-gold data-[active=true]:border-r-4",
+        "data-[active=true]:bg-sidebar-accent data-[active=false]:hover:bg-sidebar-accent border-gold data-[active=true]:border-r-4",
         "disabled:pointer-events-none disabled:opacity-50",
         "[&_*]:text-nowrap [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:stroke-[2.5px]",
         className,
