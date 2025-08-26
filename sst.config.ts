@@ -32,7 +32,12 @@ export default $config({
     new sst.aws.Function("Api", {
       link: [database, website],
       vpc,
-      url: { router: { instance: router, domain: `api.${domain}` } },
+      url: {
+        router: {
+          instance: router,
+          domain: $app.stage === "production" ? `api.archive-beta.ics.uci.edu` : `api.${domain}`,
+        },
+      },
       handler: "apps/api/src/index.handler",
     });
   },
