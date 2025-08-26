@@ -13,7 +13,7 @@ export function DatasetAbout({ datasetId }: { datasetId: number }) {
 
   return (
     <div className="flex gap-x-12 gap-y-10 max-lg:flex-col">
-      <div className="space-y-10">
+      <div className="space-y-12">
         <div className="space-y-2">
           <div className="text-xl font-bold">About</div>
           <div className="whitespace-pre-wrap">{dataset.description}</div>

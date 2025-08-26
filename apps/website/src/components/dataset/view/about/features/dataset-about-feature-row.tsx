@@ -41,7 +41,7 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
         <TableCell>{feature.missingValues ? "Yes" : "No"}</TableCell>
         <TableCell className="flex justify-end">
           {expandable && (
-            <ChevronRightIcon className="text-muted-foreground shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
+            <ChevronRightIcon className="text-muted-foreground size-5 shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
           )}
         </TableCell>
       </TableRow>
@@ -54,7 +54,7 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
               animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
               style={{ overflow: "hidden" }}
               transition={{ duration: 0.15 }}
-              className="bg-muted"
+              className="bg-muted/60"
             >
               <div className="p-2 text-sm whitespace-pre-wrap">{feature.description}</div>
             </motion.div>

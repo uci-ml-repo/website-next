@@ -56,7 +56,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
               <TableHead className="flex items-center justify-end gap-x-1">
                 <span>Description</span>
                 <Button
-                  size="icon"
+                  size="icon-sm"
                   variant="ghost"
                   className="hover:bg-accent-strong"
                   onClick={anyExpanded ? collapseAll : expandAll}
