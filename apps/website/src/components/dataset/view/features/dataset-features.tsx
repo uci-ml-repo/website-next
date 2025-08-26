@@ -17,8 +17,8 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const describable = useMemo(
-    () => dataset.features.filter((f) => !!f.description),
-    [dataset.features],
+    () => dataset.featureObjects.filter((f) => !!f.description),
+    [dataset.featureObjects],
   );
 
   const anyExpanded = expanded.size > 0;
@@ -44,7 +44,7 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <CopyButton copyText={featuresToCsv(dataset.features)} variant="outline">
+          <CopyButton copyText={featuresToCsv(dataset.featureObjects)} variant="outline">
             Copy CSV
           </CopyButton>
         </div>
@@ -76,7 +76,7 @@ export function DatasetFeatures({ datasetId }: { datasetId: number }) {
           </TableHeader>
 
           <TableBody>
-            {dataset.features.map((feature) => (
+            {dataset.featureObjects.map((feature) => (
               <DatasetFeatureRow
                 key={feature.name}
                 feature={feature}

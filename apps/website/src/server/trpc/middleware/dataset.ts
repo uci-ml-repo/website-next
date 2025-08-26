@@ -9,7 +9,7 @@ import { isPriviliged } from "@/server/trpc/middleware/util/role";
 export const datasetAccessProcedure = procedure
   .input(z.object({ datasetId: z.number() }))
   .use(async ({ input, ctx, next }) => {
-    const dataset = await service.dataset.find.byId(input.datasetId);
+    const dataset = await service.dataset.find.simpleById(input.datasetId);
 
     if (!dataset) {
       throw new TRPCError({

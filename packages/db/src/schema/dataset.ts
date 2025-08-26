@@ -140,7 +140,7 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
     fields: [dataset.userId],
     references: [user.id],
   }),
-  features: many(feature),
+  featureObjects: many(feature),
   keywords: many(keyword),
   bookmarks: many(bookmark),
   authors: many(author),

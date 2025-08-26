@@ -8,15 +8,21 @@ import type { DatasetQuery } from "@/server/types/dataset/request";
 import { sortMap } from "@/server/types/util/order";
 import { entriesT } from "@/server/types/util/type";
 
-const byId = (id: number) =>
-  db.query.dataset.findFirst({
+function simpleById(id: number) {
+  return db.query.dataset.findFirst({
     where: (ds, { eq }) => eq(ds.id, id),
-    columns: { features: false },
+  });
+}
+
+async function byId(id: number) {
+  return db.query.dataset.findFirst({
+    where: (ds, { eq }) => eq(ds.id, id),
     with: {
       authors: true,
-      features: true,
+      featureObjects: true,
     },
   });
+}
 
 async function byQuery(query: DatasetQuery) {
   const orderBy = query.order
@@ -53,4 +59,4 @@ async function byQuery(query: DatasetQuery) {
   return { datasets, count, nextCursor };
 }
 
-export const datasetFindService = { byId, byQuery };
+export const datasetFindService = { byId, byQuery, simpleById };
