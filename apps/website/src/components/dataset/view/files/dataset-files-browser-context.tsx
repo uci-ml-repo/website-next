@@ -109,7 +109,7 @@ export function DatasetFilesBrowserProvider({
   );
 
   const currentEntryType = useMemo(
-    () => (directoryMap[currentPath] ? "directory" : "file"),
+    () => (currentPath in directoryMap ? "directory" : "file"),
     [currentPath, directoryMap],
   );
 

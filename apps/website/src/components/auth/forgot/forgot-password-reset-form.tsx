@@ -64,7 +64,7 @@ export function ForgotPasswordResetForm({ token }: { token: string }) {
       toast.success("Password reset successfully");
       router.replace(ROUTES.AUTH.SIGN_IN());
     } else {
-      setError(error?.message);
+      setError(error.message);
       setSubmitting(false);
     }
   }

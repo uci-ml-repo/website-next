@@ -22,7 +22,7 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
   }[] = [
     {
       icon: <MicroscopeIcon />,
-      text: dataset.tasks ? formatEnum(dataset.tasks) : null,
+      text: formatEnum(dataset.tasks),
     },
     {
       icon: <Columns3Icon />,
@@ -55,7 +55,7 @@ export function DatasetCard({ dataset, className, ...props }: Props) {
           <div className="flex grow flex-col space-y-2">
             <CardTitle className="line-clamp-2 group-hover:underline">{dataset.title}</CardTitle>
             <CardDescription className="line-clamp-2 text-sm">
-              {dataset.description?.slice(0, 300)}
+              {dataset.description.slice(0, 300)}
             </CardDescription>
           </div>
           <CardDescription className="space-y-1">

@@ -8,11 +8,7 @@ import { cn } from "@/lib/util/cn";
 function Table({ className, ...props }: ComponentProps<"table">) {
   return (
     <div data-slot="table-container" className="relative w-full overflow-x-auto">
-      <table
-        data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
-        {...props}
-      />
+      <table data-slot="table" className={cn("w-full caption-bottom", className)} {...props} />
     </div>
   );
 }
@@ -46,7 +42,7 @@ function TableRow({ className, ...props }: ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        "hover:bg-muted/60 data-[state=selected]:bg-muted border-b transition-colors",
         className,
       )}
       {...props}

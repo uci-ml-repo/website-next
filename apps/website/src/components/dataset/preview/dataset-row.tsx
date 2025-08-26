@@ -56,7 +56,7 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
             {dataset.title}
           </div>
           <div className="text-muted-foreground truncate text-sm">
-            {dataset.description?.slice(0, 400)}
+            {dataset.description.slice(0, 400)}
           </div>
         </div>
         {datasetStats.some((stat) => !!stat.text) && (

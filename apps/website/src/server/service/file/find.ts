@@ -46,7 +46,7 @@ async function list({ id, slug }: { id: number; slug: string }): Promise<Entry[]
 
       if (out.CommonPrefixes) {
         for (const commonPrefix of out.CommonPrefixes) {
-          if (!commonPrefix?.Prefix) continue;
+          if (!commonPrefix.Prefix) continue;
           const relativeDir = stripPrefix(commonPrefix.Prefix, rootPrefix).replace(/\/$/, "");
           if (relativeDir.length > 0 && !seenDirs.has(relativeDir)) {
             entries.push({

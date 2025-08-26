@@ -26,7 +26,7 @@ export const SidebarNavLink = forwardRef<
 
   const pattern = activePath ?? RegExp(`^${href}$`);
 
-  const isActive = isActiveProp || (pattern?.test(pathname) ?? false);
+  const isActive = isActiveProp || pattern.test(pathname);
 
   return (
     <Link

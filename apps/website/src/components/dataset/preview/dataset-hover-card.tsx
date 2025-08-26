@@ -34,7 +34,7 @@ const datasetStats = (dataset: DatasetSelect) => [
   },
   {
     icon: <MicroscopeIcon />,
-    text: dataset.tasks ? formatEnum(dataset.tasks) : null,
+    text: formatEnum(dataset.tasks),
     tooltip: "Dataset Tasks",
     mobileExclude: true,
   },
@@ -53,7 +53,7 @@ const datasetStats = (dataset: DatasetSelect) => [
   },
   {
     icon: <VariableIcon />,
-    text: dataset.featureTypes ? formatEnum(dataset.featureTypes) : null,
+    text: formatEnum(dataset.featureTypes),
     tooltip: "Feature Types",
     mobileExclude: true,
   },
@@ -78,7 +78,7 @@ export function DatasetHoverCard({ dataset, className, ...props }: Props) {
             </Link>
           </CardTitle>
           <CardDescription className="line-clamp-4 text-base">
-            {dataset.description?.slice(0, 1000)}
+            {dataset.description.slice(0, 1000)}
           </CardDescription>
         </div>
         <CardDescription className="flex items-end">

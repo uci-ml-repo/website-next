@@ -15,7 +15,7 @@ import { makeQueryClient } from "./query-client";
 
 export const trpc = createTRPCReact<AppRouter>();
 
-let clientQueryClientSingleton: QueryClient;
+let clientQueryClientSingleton: QueryClient | undefined;
 
 function getQueryClient() {
   if (typeof window === "undefined") {

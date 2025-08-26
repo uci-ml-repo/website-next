@@ -59,10 +59,10 @@ export function LoginCredentialsForm() {
     if (data) {
       toast.success(`Signed in as: ${data.user.name}`);
       router.push(ROUTES.HOME);
-    } else if (error?.code === "EMAIL_NOT_VERIFIED") {
+    } else if (error.code === "EMAIL_NOT_VERIFIED") {
       router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
     } else {
-      if (error?.message) {
+      if (error.message) {
         setError(error.message);
       } else {
         toast.error("Failed to sign in. Please try again.");

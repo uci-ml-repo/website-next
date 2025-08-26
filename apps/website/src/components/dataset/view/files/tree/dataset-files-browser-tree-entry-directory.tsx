@@ -52,7 +52,7 @@ export function DatasetFilesBrowserTreeEntryDirectory({ entry, level }: FileBrow
       </DatasetFilesBrowserTreeEntryButton>
       {open && (
         <div className="relative w-max min-w-full">
-          {children?.map((child) => (
+          {children.map((child) => (
             <DatasetFilesBrowserTreeEntry key={child.key} entry={child} level={level + 1} />
           ))}
           <div className="bg-border absolute top-0 h-full w-[1px]" style={{ left: level * 10 }} />

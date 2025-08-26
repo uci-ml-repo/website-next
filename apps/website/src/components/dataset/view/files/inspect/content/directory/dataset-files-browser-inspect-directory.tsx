@@ -36,7 +36,7 @@ export function DatasetFilesBrowserInspectDirectory() {
         sensitivity: "base",
       });
 
-    const compareSize = (a: Entry, b: Entry) => (size(a) ?? 0) - (size(b) ?? 0);
+    const compareSize = (a: Entry, b: Entry) => size(a) - size(b);
 
     return directoryMap[currentPath].toSorted((a, b) => {
       const aIsDir = a.kind === "directory";
@@ -44,10 +44,10 @@ export function DatasetFilesBrowserInspectDirectory() {
 
       if (aIsDir !== bIsDir) return aIsDir ? -1 : 1;
 
-      let compare = 0;
+      let compare: number;
       if (sort.orderBy === "name") {
         compare = compareName(a, b);
-      } else if (sort.orderBy === "size") {
+      } else {
         compare = compareSize(a, b);
       }
 

@@ -77,7 +77,7 @@ export function RegisterCredentialsForm() {
     if (data) {
       return router.push(ROUTES.AUTH.VERIFY_EMAIL(email));
     } else {
-      if (error?.message) {
+      if (error.message) {
         setError(error.message);
       } else {
         toast.error("Failed to register. Please try again.");
