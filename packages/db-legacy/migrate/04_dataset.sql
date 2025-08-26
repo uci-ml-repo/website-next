@@ -14,7 +14,14 @@ DO $$
       SELECT
         dd.id,
         LOWER(REPLACE(status, 'FAILED', 'rejected'))::approval_status          AS status,
-        COALESCE(datedonated, CURRENT_TIMESTAMP)                               AS donated_at,
+        COALESCE(
+          datedonated,
+          MAKE_DATE(
+            COALESCE(yearcreated::INT, EXTRACT(YEAR FROM CURRENT_TIMESTAMP)::INTEGER),
+            1,
+            1
+          )
+        )                                                                      AS donated_at,
         COALESCE(yearcreated, EXTRACT(YEAR FROM CURRENT_TIMESTAMP)::INTEGER)   AS year_created,
         name                                                                   AS title,
         TRIM(
