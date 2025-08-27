@@ -39,11 +39,9 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
         <TableCell>{formatEnum(feature.type)}</TableCell>
         <TableCell>{feature.units || <span className="text-muted-foreground">-</span>}</TableCell>
         <TableCell>{feature.missingValues ? "Yes" : "No"}</TableCell>
-        {expandable && (
-          <TableCell className="flex justify-end">
-            <ChevronRightIcon className="text-muted-foreground size-5 shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
-          </TableCell>
-        )}
+        <TableCell className={cn("flex justify-end", !expandable && "invisible")}>
+          <ChevronRightIcon className="text-muted-foreground size-5 shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
+        </TableCell>
       </TableRow>
 
       {expandable && (
