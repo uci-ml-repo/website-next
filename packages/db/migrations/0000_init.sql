@@ -239,7 +239,6 @@ CREATE TABLE "paper" (
   "authors" TEXT[] NOT NULL,
   "venue" TEXT NOT NULL,
   "year" INTEGER NOT NULL,
-  "citation_count" INTEGER,
   "url" TEXT NOT NULL
 );
 

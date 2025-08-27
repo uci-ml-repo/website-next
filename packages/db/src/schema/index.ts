@@ -5,4 +5,5 @@ export * from "./dataset";
 export * from "./enum";
 export * from "./feature";
 export * from "./keyword";
+export * from "./paper";
 export * from "./user";

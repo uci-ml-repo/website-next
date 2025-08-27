@@ -138,8 +138,14 @@ export const dataset = pgTable(
 );
 
 export const datasetRelations = relations(dataset, ({ one, many }) => ({
-  user: one(user),
-  paper: one(paper),
+  user: one(user, {
+    fields: [dataset.userId],
+    references: [user.id],
+  }),
+  paper: one(paper, {
+    fields: [dataset.paperId],
+    references: [paper.id],
+  }),
   features: many(feature),
   keywords: many(keyword),
   bookmarks: many(bookmark),

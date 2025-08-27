@@ -1,5 +1,5 @@
 {
-  "id": "40eb4923-7d7d-41e7-b128-1243edbe48db",
+  "id": "68780dd6-5c56-4c64-b435-e0783de0aaff",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1101,12 +1101,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "citation_count": {
-          "name": "citation_count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
         },
         "url": {
           "name": "url",

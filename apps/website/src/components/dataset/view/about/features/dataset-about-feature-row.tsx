@@ -12,9 +12,10 @@ interface Props {
   feature: FeatureSelect;
   expanded: boolean;
   onToggle: () => void;
+  showDescription?: boolean;
 }
 
-export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
+export function DatasetAboutFeatureRow({ feature, expanded, onToggle, showDescription }: Props) {
   const expandable = !!feature.description;
 
   return (
@@ -39,9 +40,11 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle }: Props) {
         <TableCell>{formatEnum(feature.type)}</TableCell>
         <TableCell>{feature.units || <span className="text-muted-foreground">-</span>}</TableCell>
         <TableCell>{feature.missingValues ? "Yes" : "No"}</TableCell>
-        <TableCell className={cn("flex justify-end", !expandable && "invisible")}>
-          <ChevronRightIcon className="text-muted-foreground size-5 shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
-        </TableCell>
+        {showDescription && (
+          <TableCell className={cn("flex justify-end", !expandable && "invisible")}>
+            <ChevronRightIcon className="text-muted-foreground size-5 shrink-0 transition-all duration-150 group-aria-[expanded=true]:rotate-90" />
+          </TableCell>
+        )}
       </TableRow>
 
       {expandable && (

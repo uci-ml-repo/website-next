@@ -35,7 +35,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xl font-bold">Features</div>
+        <h2 className="text-xl font-bold">Features</h2>
 
         {!!dataset.features.length && (
           <div className="flex items-center gap-2">
@@ -83,6 +83,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
                   feature={feature}
                   expanded={expanded.has(feature.name)}
                   onToggle={() => toggleOne(feature.name)}
+                  showDescription={!!hasDescription.length}
                 />
               ))}
             </TableBody>

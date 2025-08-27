@@ -12,10 +12,7 @@ export const datasetFindRouter = router({
     const dataset = await service.dataset.find.byId(ctx.dataset.id);
 
     if (!dataset) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Dataset not found",
-      });
+      throw new TRPCError({ code: "NOT_FOUND", message: "Dataset not found" });
     }
 
     return dataset;

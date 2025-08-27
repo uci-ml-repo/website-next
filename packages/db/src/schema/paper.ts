@@ -9,10 +9,12 @@ export const paper = pgTable("paper", {
   authors: text("authors").array().notNull(),
   venue: text("venue").notNull(),
   year: integer("year").notNull(),
-  citationCount: integer("citation_count"),
   url: text("url").notNull(),
 });
 
 export const paperRelations = relations(paper, ({ one }) => ({
-  dataset: one(dataset),
+  dataset: one(dataset, {
+    fields: [paper.id],
+    references: [dataset.paperId],
+  }),
 }));

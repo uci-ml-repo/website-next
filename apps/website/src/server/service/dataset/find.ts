@@ -1,7 +1,7 @@
 import { db } from "@packages/db";
 import { dataset } from "@packages/db/schema";
 import { datasetColumns } from "@packages/db/types";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 import { buildQuery, buildSearchQuery } from "@/server/service/dataset/util";
 import type { DatasetQuery } from "@/server/types/dataset/request";
@@ -10,19 +10,21 @@ import { entriesT } from "@/server/types/util/type";
 
 function simpleById(id: number) {
   return db.query.dataset.findFirst({
-    where: (ds, { eq }) => eq(ds.id, id),
+    where: eq(dataset.id, id),
   });
 }
 
 async function byId(id: number) {
   return db.query.dataset.findFirst({
-    where: (ds, { eq }) => eq(ds.id, id),
+    where: eq(dataset.id, id),
     columns: {
       features: false,
     },
     with: {
+      user: true,
       authors: true,
       features: true,
+      paper: true,
     },
   });
 }
