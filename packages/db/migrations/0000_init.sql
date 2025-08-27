@@ -15,6 +15,9 @@ CREATE TYPE "public"."dataset_characteristic" AS ENUM(
 );
 
 --> statement-breakpoint
+CREATE TYPE "public"."dataset_feature_role" AS ENUM('id', 'feature', 'target', 'other');
+
+--> statement-breakpoint
 CREATE TYPE "public"."dataset_feature_type" AS ENUM(
   'categorical',
   'integer',
@@ -43,9 +46,6 @@ CREATE TYPE "public"."dataset_subject_area" AS ENUM(
 
 --> statement-breakpoint
 CREATE TYPE "public"."dataset_task" AS ENUM('classification', 'regression', 'clustering');
-
---> statement-breakpoint
-CREATE TYPE "public"."dataset_feature_role" AS ENUM('id', 'feature', 'target', 'other');
 
 --> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('admin', 'librarian', 'curator', 'basic');
@@ -132,6 +132,7 @@ CREATE TABLE "dataset" (
   "size" BIGINT,
   "file_count" INTEGER,
   "user_id" UUID DEFAULT '00000000-0000-0000-0000-000000000000' NOT NULL,
+  "paper_id" UUID,
   "donated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "keywords" TEXT[] DEFAULT '{}' NOT NULL,
   "features" TEXT[] DEFAULT '{}' NOT NULL,
@@ -232,6 +233,17 @@ CREATE TABLE "user" (
 );
 
 --> statement-breakpoint
+CREATE TABLE "paper" (
+  "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
+  "title" TEXT NOT NULL,
+  "authors" TEXT[] NOT NULL,
+  "venue" TEXT NOT NULL,
+  "year" INTEGER NOT NULL,
+  "citation_count" INTEGER,
+  "url" TEXT NOT NULL
+);
+
+--> statement-breakpoint
 ALTER TABLE "account"
 ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
@@ -254,6 +266,10 @@ ADD CONSTRAINT "bookmark_dataset_id_dataset_id_fk" FOREIGN KEY ("dataset_id") RE
 --> statement-breakpoint
 ALTER TABLE "dataset"
 ADD CONSTRAINT "dataset_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE SET DEFAULT ON UPDATE NO ACTION;
+
+--> statement-breakpoint
+ALTER TABLE "dataset"
+ADD CONSTRAINT "dataset_paper_id_paper_id_fk" FOREIGN KEY ("paper_id") REFERENCES "public"."paper" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --> statement-breakpoint
 ALTER TABLE "feature"

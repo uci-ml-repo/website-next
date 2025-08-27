@@ -1,5 +1,5 @@
 {
-  "id": "8aa9dde8-9590-4c4b-812e-aee9c138523d",
+  "id": "40eb4923-7d7d-41e7-b128-1243edbe48db",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -560,6 +560,12 @@
           "notNull": true,
           "default": "'00000000-0000-0000-0000-000000000000'"
         },
+        "paper_id": {
+          "name": "paper_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "donated_at": {
           "name": "donated_at",
           "type": "timestamp",
@@ -727,6 +733,15 @@
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "set default",
+          "onUpdate": "no action"
+        },
+        "dataset_paper_id_paper_id_fk": {
+          "name": "dataset_paper_id_paper_id_fk",
+          "tableFrom": "dataset",
+          "tableTo": "paper",
+          "columnsFrom": ["paper_id"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -1051,6 +1066,62 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "public.paper": {
+      "name": "paper",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "authors": {
+          "name": "authors",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "venue": {
+          "name": "venue",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "citation_count": {
+          "name": "citation_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -1071,6 +1142,11 @@
         "image",
         "spatiotemporal"
       ]
+    },
+    "public.dataset_feature_role": {
+      "name": "dataset_feature_role",
+      "schema": "public",
+      "values": ["id", "feature", "target", "other"]
     },
     "public.dataset_feature_type": {
       "name": "dataset_feature_type",
@@ -1099,11 +1175,6 @@
       "name": "dataset_task",
       "schema": "public",
       "values": ["classification", "regression", "clustering"]
-    },
-    "public.dataset_feature_role": {
-      "name": "dataset_feature_role",
-      "schema": "public",
-      "values": ["id", "feature", "target", "other"]
     },
     "public.user_role": {
       "name": "user_role",

@@ -10,10 +10,10 @@ import { DatasetHeader } from "@/components/dataset/view/header/dataset-header";
 import { DatasetInteractions } from "@/components/dataset/view/header/dataset-interactions";
 import { DatasetNav } from "@/components/dataset/view/header/dataset-nav";
 import { ROUTES } from "@/lib/routes";
-import { HydrateClient, trpc } from "@/server/trpc/query/server";
+import { trpc } from "@/server/trpc/query/server";
 
 const getDataset = cache(async (id: number) => {
-  return trpc.dataset.find.simpleById({ datasetId: id });
+  return trpc.dataset.find.byId({ datasetId: id });
 });
 
 export async function generateMetadata({
@@ -68,8 +68,6 @@ export default async function Layout({
     headers: await headers(),
   });
 
-  await trpc.dataset.find.byId.prefetch({ datasetId: id });
-
   if (session?.user) {
     await trpc.bookmark.find.isDatasetBookmarked.prefetch({
       userId: session.user.id,
@@ -78,25 +76,23 @@ export default async function Layout({
   }
 
   return (
-    <HydrateClient>
-      <div className="blur-background space-y-6">
-        <div className="space-y-6">
-          <DatasetHeader dataset={dataset} session={session} />
-          <div className="flex max-w-full items-end justify-between space-x-4 overflow-x-auto overflow-y-hidden border-b">
-            <DatasetNav
-              dataset={dataset}
-              session={session}
-              className="flex-1 overflow-x-auto overflow-y-hidden"
-            />
-            <DatasetInteractions
-              dataset={dataset}
-              session={session}
-              className="flex-shrink-0 pt-2 pb-1 max-sm:hidden"
-            />
-          </div>
+    <div className="blur-background space-y-6">
+      <div className="space-y-6">
+        <DatasetHeader dataset={dataset} session={session} />
+        <div className="flex max-w-full items-end justify-between space-x-4 overflow-x-auto overflow-y-hidden border-b">
+          <DatasetNav
+            dataset={dataset}
+            session={session}
+            className="flex-1 overflow-x-auto overflow-y-hidden"
+          />
+          <DatasetInteractions
+            dataset={dataset}
+            session={session}
+            className="flex-shrink-0 pt-2 pb-1 max-sm:hidden"
+          />
         </div>
-        {children}
       </div>
-    </HydrateClient>
+      {children}
+    </div>
   );
 }

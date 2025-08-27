@@ -25,6 +25,7 @@ import {
 } from "./enum";
 import { feature } from "./feature";
 import { keyword } from "./keyword";
+import { paper } from "./paper";
 import { user } from "./user";
 
 export const dataset = pgTable(
@@ -55,6 +56,7 @@ export const dataset = pgTable(
       .references(() => user.id, { onDelete: "set default" })
       .default(defaultUUID)
       .notNull(),
+    paperId: uuid("paper_id").references(() => paper.id, { onDelete: "set null" }),
     donatedAt: timestamp("donated_at", { mode: "date" }).defaultNow().notNull(),
     keywords: text("keywords").array().default([]).notNull(),
     features: text("features").array().default([]).notNull(),
@@ -136,10 +138,8 @@ export const dataset = pgTable(
 );
 
 export const datasetRelations = relations(dataset, ({ one, many }) => ({
-  user: one(user, {
-    fields: [dataset.userId],
-    references: [user.id],
-  }),
+  user: one(user),
+  paper: one(paper),
   features: many(feature),
   keywords: many(keyword),
   bookmarks: many(bookmark),

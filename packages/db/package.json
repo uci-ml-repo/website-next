@@ -10,6 +10,7 @@
     "./env": "./env.ts"
   },
   "scripts": {
+    "_reset": "rm -rf ./migrations && pnpm db generate -- --name=init && sed -i '1iCREATE EXTENSION IF NOT EXISTS pg_trgm;--> statement-breakpoint\\n' ./migrations/0000_init.sql && sed -i '2i\\' ./migrations/0000_init.sql",
     "db": "sst shell drizzle-kit",
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0",

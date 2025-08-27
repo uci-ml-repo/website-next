@@ -11,6 +11,7 @@ import { useSessionWithInitial } from "@/components/hooks/use-session-with-initi
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -60,7 +61,9 @@ export function RequireAuth({ children, session: _session, onRequireAuth, dialog
           </DialogHeader>
           <DialogDescription>{dialog?.description}</DialogDescription>
           <DialogFooter>
-            <Button variant="secondary">Cancel</Button>
+            <DialogClose asChild>
+              <Button variant="secondary">Cancel</Button>
+            </DialogClose>
             <Button variant="gold" asChild>
               <Link href={ROUTES.AUTH.SIGN_IN({ callback: pathname })}>
                 <LogInIcon />

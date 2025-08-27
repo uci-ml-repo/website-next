@@ -22,10 +22,8 @@ const migrator = new sst.aws.Function("DatabaseMigrator", {
   handler: "packages/db/migrator.handler",
   link: [database],
   vpc,
-  copyFiles: [
-    { from: "packages/db/migrations", to: "./migrations" },
-    ...(process.env.DB_SEED_PATH ? [{ from: process.env.DB_SEED_PATH, to: "./seed.sql" }] : []),
-  ],
+  copyFiles: [{ from: "packages/db/migrations", to: "./migrations" }],
+  timeout: "5 minutes",
 });
 
 if (!$dev) {

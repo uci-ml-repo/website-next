@@ -6,11 +6,7 @@ import { DatasetFilesBrowser } from "@/components/dataset/view/files/dataset-fil
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { trpc } from "@/server/trpc/query/client";
 
-export function DatasetFiles({ datasetId }: { datasetId: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId });
-
-  if (!dataset) throw new Error("Dataset should be prefetched");
-
+export function DatasetFiles({ datasetId, slug }: { datasetId: number; slug: string }) {
   const { data: entries, error } = trpc.file.find.list.useQuery({ datasetId }, { retry: false });
 
   if (error) {
@@ -30,7 +26,7 @@ export function DatasetFiles({ datasetId }: { datasetId: number }) {
   }
 
   return entries !== undefined ? (
-    <DatasetFilesBrowser entries={entries} dataset={dataset} />
+    <DatasetFilesBrowser entries={entries} dataset={{ id: datasetId, slug }} />
   ) : (
     <div className="w-ful text-muted-foreground flex h-20 items-center justify-center space-x-2">
       <Loader2Icon className="animate-spin" />

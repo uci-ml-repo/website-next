@@ -1,7 +1,6 @@
 "use client";
 
 import type { Session } from "@packages/auth/auth";
-import type { DatasetSelect } from "@packages/db/types";
 import { SettingsIcon } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import Link from "next/link";
@@ -11,9 +10,10 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
 import { ROUTES } from "@/lib/routes";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 type Props = HTMLAttributes<HTMLElement> & {
-  dataset: DatasetSelect;
+  dataset: DatasetFull;
   session: Session | null;
 };
 

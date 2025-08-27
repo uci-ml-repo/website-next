@@ -2,15 +2,11 @@
 
 import { DatasetAboutFeatures } from "@/components/dataset/view/about/features/dataset-about-features";
 import { DatasetAboutStats } from "@/components/dataset/view/about/stats/dataset-about-stats";
-import { trpc } from "@/server/trpc/query/client";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 import { DatasetAboutSideData } from "./side/dataset-about-side-data";
 
-export function DatasetAbout({ datasetId }: { datasetId: number }) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId });
-
-  if (!dataset) throw new Error("Dataset should be prefetched");
-
+export function DatasetAbout({ dataset }: { dataset: DatasetFull }) {
   return (
     <div className="flex gap-x-12 gap-y-10 max-lg:flex-col">
       <div className="space-y-12">

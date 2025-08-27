@@ -10,20 +10,17 @@ import { DatasetInteractions } from "@/components/dataset/view/header/dataset-in
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
 import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/routes";
-import { trpc } from "@/server/trpc/query/client";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 import { DatasetExternalLinkButton } from "./button/dataset-external-link-button";
 import { DatasetPythonButton } from "./button/dataset-python-button";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  dataset: { id: number };
+  dataset: DatasetFull;
   session: Session | null;
 };
 
-export function DatasetHeader({ dataset: _dataset, session: _session }: Props) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: _dataset.id });
-  if (!dataset) throw new Error("dataset should be prefetched");
-
+export function DatasetHeader({ dataset, session: _session }: Props) {
   const session = useSessionWithInitial(_session);
 
   return (

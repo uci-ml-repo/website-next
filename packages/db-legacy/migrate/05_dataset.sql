@@ -6,6 +6,19 @@ FROM
   legacy.users lu
   JOIN "user" u ON lu."user" = u.email;
 
+CREATE TEMP TABLE paper_dataset_map AS
+SELECT
+  p.id AS paper_id,
+  dd.id AS donated_dataset_id
+FROM
+  paper p
+  INNER JOIN legacy.native_papers np ON np.url = p.url
+  INNER JOIN legacy.dataset_papers dp ON dp.nativepaperid = np.id
+  INNER JOIN legacy.donated_datasets dd ON dd.intropaperid = dp.datasetpapersid
+WHERE
+  dd.status = 'APPROVED'
+  AND np.url IS NOT NULL;
+
 DO $$
   DECLARE rec RECORD;
 
@@ -45,6 +58,7 @@ DO $$
         numdownloads                                                  AS download_count,
         slug,
         uim.new_id                                                    AS user_id,
+        pdm.paper_id                                                  AS paper_id,
         COALESCE(
           (SELECT ARRAY_AGG(x::dataset_characteristic)
            FROM UNNEST(STRING_TO_ARRAY(LOWER(dd.types), ', ')) x
@@ -77,6 +91,7 @@ DO $$
           LEFT JOIN legacy.descriptive_questions dq ON dd.id = dq.datasetid
           LEFT JOIN legacy.variable_info vi ON dd.id = vi.datasetid
           LEFT JOIN user_id_map uim ON dd.userid = uim.old_id
+          LEFT JOIN paper_dataset_map pdm ON dd.id = pdm.donated_dataset_id
       WHERE slug NOTNULL
 
       LOOP
@@ -99,6 +114,7 @@ DO $$
              download_count,
              slug,
              user_id,
+             paper_id,
              data_types,
              tasks,
              feature_types,
@@ -124,6 +140,7 @@ DO $$
             CASE WHEN rec.external_link IS NOT NULL THEN NULL ELSE rec.download_count END,
             rec.slug,
             rec.user_id,
+            rec.paper_id,
             rec.data_types,
             rec.tasks,
             rec.feature_types,

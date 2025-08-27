@@ -17,22 +17,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
-import { trpc } from "@/server/trpc/query/client";
+import type { DatasetFull } from "@/server/types/dataset/response";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  dataset: { id: number };
+  dataset: DatasetFull;
   session: Session | null;
 };
 
-export function DatasetInteractions({
-  dataset: _dataset,
-  session: _session,
-  className,
-  ...props
-}: Props) {
-  const { data: dataset } = trpc.dataset.find.byId.useQuery({ datasetId: _dataset.id });
-  if (!dataset) throw new Error("dataset should be prefetched");
-
+export function DatasetInteractions({ dataset, session: _session, className, ...props }: Props) {
   const session = useSessionWithInitial(_session);
 
   const datasetStats = [

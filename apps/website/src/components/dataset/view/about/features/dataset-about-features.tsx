@@ -56,21 +56,23 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
                 <TableHead>Type</TableHead>
                 <TableHead>Units</TableHead>
                 <TableHead>Missing Values</TableHead>
-                <TableHead className="flex items-center justify-end gap-x-1">
-                  <span>Description</span>
-                  <Button
-                    size="icon-sm"
-                    variant="ghost"
-                    className="hover:bg-accent-strong"
-                    onClick={anyExpanded ? collapseAll : expandAll}
-                    disabled={hasDescription.length === 0}
-                    aria-label={
-                      anyExpanded ? "Collapse all descriptions" : "Expand all descriptions"
-                    }
-                  >
-                    {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
-                  </Button>
-                </TableHead>
+                {!!hasDescription.length && (
+                  <TableHead className="flex items-center justify-end gap-x-1">
+                    <span>Description</span>
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      className="hover:bg-accent-strong"
+                      onClick={anyExpanded ? collapseAll : expandAll}
+                      disabled={hasDescription.length === 0}
+                      aria-label={
+                        anyExpanded ? "Collapse all descriptions" : "Expand all descriptions"
+                      }
+                    >
+                      {anyExpanded ? <ChevronsDownUpIcon /> : <ChevronsUpDownIcon />}
+                    </Button>
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
