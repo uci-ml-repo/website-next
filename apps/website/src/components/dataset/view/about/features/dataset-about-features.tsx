@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { DatasetAboutFeatureRow } from "@/components/dataset/view/about/features/dataset-about-feature-row";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/copy-button";
+import { ShowMore } from "@/components/ui/show-more";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { DatasetFull } from "@/server/types/dataset/response";
 
@@ -47,7 +48,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
       </div>
 
       {!!dataset.features.length ? (
-        <div className="overflow-hidden rounded-lg border">
+        <ShowMore className="rounded-lg border">
           <Table>
             <TableHeader className="bg-muted">
               <TableRow>
@@ -88,7 +89,7 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </ShowMore>
       ) : (
         <div className="text-muted-foreground/60">&ndash;</div>
       )}
