@@ -26,7 +26,7 @@ export function ProfileHeader({ session }: { session: Session }) {
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex justify-between">
       <div className="flex items-center gap-x-4">
         <Avatar className="size-20">
           {session.user.image && <AvatarImage src={session.user.image} />}

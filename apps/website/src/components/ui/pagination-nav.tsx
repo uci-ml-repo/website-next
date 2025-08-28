@@ -94,7 +94,7 @@ export function PaginationNav({
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                href={currentPage === 1 ? "#" : pageHref(currentPage - 1)}
+                href={currentPage === 1 ? "" : pageHref(currentPage - 1)}
                 disabled={currentPage === 1}
               />
             </PaginationItem>
@@ -112,7 +112,7 @@ export function PaginationNav({
             ))}
             <PaginationItem>
               <PaginationNext
-                href={currentPage === totalPages ? "#" : pageHref(currentPage + 1)}
+                href={currentPage === totalPages ? "" : pageHref(currentPage + 1)}
                 disabled={currentPage === totalPages}
               />
             </PaginationItem>

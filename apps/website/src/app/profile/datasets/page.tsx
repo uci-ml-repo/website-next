@@ -1,7 +1,7 @@
 import { auth } from "@packages/auth/auth";
 import { headers } from "next/headers";
 
-import { ProfileBookmarks } from "@/components/profile/bookmarks/profile-bookmarks";
+import { ProfileDatasets } from "@/components/profile/datasets/profile-datasets";
 
 export default async function Page() {
   const session = await auth.api.getSession({
@@ -10,5 +10,5 @@ export default async function Page() {
 
   if (!session) throw new Error();
 
-  return <ProfileBookmarks session={session} />;
+  return <ProfileDatasets session={session} />;
 }

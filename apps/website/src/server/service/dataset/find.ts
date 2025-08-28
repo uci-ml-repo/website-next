@@ -14,7 +14,7 @@ function simpleById(id: number) {
   });
 }
 
-async function byId(id: number) {
+function byId(id: number) {
   return db.query.dataset.findFirst({
     where: eq(dataset.id, id),
     columns: {
@@ -26,6 +26,13 @@ async function byId(id: number) {
       features: true,
       paper: true,
     },
+  });
+}
+
+async function byUserId(userId: string) {
+  return db.query.dataset.findMany({
+    where: eq(dataset.userId, userId),
+    orderBy: [desc(dataset.donatedAt)],
   });
 }
 
@@ -64,4 +71,4 @@ async function byQuery(query: DatasetQuery) {
   return { datasets, count, nextCursor };
 }
 
-export const datasetFindService = { byId, byQuery, simpleById };
+export const datasetFindService = { byId, byQuery, simpleById, byUserId };

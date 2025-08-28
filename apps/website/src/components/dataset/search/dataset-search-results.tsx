@@ -26,7 +26,7 @@ export function DatasetSearchResults() {
 
   return !data ? (
     <div className="divide-y">
-      {Array.from({ length: 10 }).map((_, index) => (
+      {Array.from({ length: filters.limit }).map((_, index) => (
         <DatasetRowSkeleton key={index} />
       ))}
     </div>
@@ -40,7 +40,7 @@ export function DatasetSearchResults() {
       />
 
       <div className="space-y-4">
-        <div className="divide-y border-b">
+        <div className="divide-y">
           {data.datasets.map((dataset) => (
             <DatasetRow key={dataset.id} dataset={dataset} hoverCard />
           ))}

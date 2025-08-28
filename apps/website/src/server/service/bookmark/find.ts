@@ -8,7 +8,8 @@ async function byUserId({ userId }: { userId: string }) {
     .from(dataset)
     .innerJoin(bookmark, eq(bookmark.datasetId, dataset.id))
     .where(eq(bookmark.userId, userId))
-    .orderBy(desc(bookmark.createdAt));
+    .orderBy(desc(bookmark.createdAt))
+    .then((rows) => rows.map((row) => row.dataset));
 }
 
 async function isDatasetBookmarked({ userId, datasetId }: { userId: string; datasetId: number }) {

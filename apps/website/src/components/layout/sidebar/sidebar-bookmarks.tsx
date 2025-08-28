@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import type { HTMLAttributes } from "react";
 
 import { useScrollEdges } from "@/components/hooks/use-scroll-edges";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes";
@@ -26,6 +27,8 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
     { enabled: !!session?.user, ...skipBatch },
   );
 
+  const maxShow = 30;
+
   return !!bookmarks?.length ? (
     <ScrollArea
       className="min-h-0"
@@ -44,7 +47,7 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
         {...props}
       >
         <TooltipProvider>
-          {bookmarks.map(({ dataset }) => {
+          {bookmarks.slice(0, maxShow).map((dataset) => {
             const isActive = pathName.startsWith(ROUTES.DATASET(dataset));
 
             return (
@@ -66,7 +69,7 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
                           width={100}
                           className="size-8 rounded-sm object-cover object-center"
                         />
-                        <div className="truncate font-semibold">{dataset.title}</div>
+                        <div className="truncate font-medium">{dataset.title}</div>
                       </div>
                       {isActive && <div className="bg-foreground size-1.5 shrink-0 rounded-full" />}
                     </Link>
@@ -79,6 +82,13 @@ export function SidebarBookmarks({ session, className, ...props }: Props) {
             );
           })}
         </TooltipProvider>
+        {bookmarks.length > maxShow && (
+          <li className="mx-2">
+            <Button variant="outline" size="sm" className="w-full rounded-sm">
+              <Link href={ROUTES.PROFILE.ROOT}>View all bookmarks</Link>
+            </Button>
+          </li>
+        )}
       </ul>
     </ScrollArea>
   ) : null;

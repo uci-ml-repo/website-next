@@ -37,7 +37,7 @@ export function NavTabs({ tabs, ...props }: Props) {
                   <motion.div
                     layoutId="tab-underline"
                     className="bg-foreground absolute right-0 -bottom-px left-0 h-[3px] rounded-t-full"
-                    transition={{ type: "spring", duration: 0.3, bounce: 0.1 }}
+                    transition={{ type: "spring", duration: 0.25, bounce: 0.1 }}
                   />
                 )}
                 <div className="bg-foreground/25 animate-in fade-in absolute right-0 -bottom-px left-0 h-[3px] rounded-t-full backdrop-blur not-group-hover:hidden" />
