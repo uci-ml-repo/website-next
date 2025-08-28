@@ -34,7 +34,6 @@ export const ROUTES = {
   PROFILE: {
     ROOT: "/profile",
     SETTINGS: "/profile/settings",
-    BOOKMARKS: "/profile/bookmarks",
     DATASETS: "/profile/datasets",
   },
 

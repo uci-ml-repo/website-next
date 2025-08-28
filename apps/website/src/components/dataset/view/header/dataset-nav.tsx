@@ -2,13 +2,15 @@
 
 import type { Session } from "@packages/auth/auth";
 import { SettingsIcon } from "lucide-react";
-import { LayoutGroup, motion } from "motion/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 
+import { useScrollEdges } from "@/components/hooks/use-scroll-edges";
 import { useSessionWithInitial } from "@/components/hooks/use-session-with-initial";
+import type { NavTab } from "@/components/ui/nav-tabs";
+import { NavTabs } from "@/components/ui/nav-tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/util/cn";
 import { isPriviliged } from "@/server/trpc/middleware/util/role";
 import type { DatasetFull } from "@/server/types/dataset/response";
 
@@ -20,57 +22,33 @@ type Props = HTMLAttributes<HTMLElement> & {
 export function DatasetNav({ dataset, session: _session, ...props }: Props) {
   const session = useSessionWithInitial(_session);
 
-  const pathname = usePathname();
-
-  const tabs: { name: ReactNode; path: string; aria?: string }[] = [
-    { name: "About", path: ROUTES.DATASET(dataset) },
-  ];
+  const tabs: NavTab[] = [{ display: "About", path: ROUTES.DATASET(dataset) }];
 
   if (!dataset.externalLink) {
-    tabs.push({ name: "Files", path: ROUTES.DATASET.FILES(dataset) });
+    tabs.push({ display: "Files", path: ROUTES.DATASET.FILES(dataset) });
   }
 
   if (session && (session.user.id === dataset.userId || isPriviliged(session.user.role))) {
     tabs.push({
-      name: <SettingsIcon className="size-5.5" />,
+      display: <SettingsIcon className="size-5.5" aria-label="Dataset settings" />,
       path: ROUTES.DATASET.SETTINGS(dataset),
-      aria: "Dataset settings",
     });
   }
 
-  return (
-    <nav aria-label="Dataset tabs" {...props}>
-      <LayoutGroup>
-        <ul className="flex space-x-4">
-          {tabs.map(({ name, path, aria }) => {
-            const isActive = pathname === path;
+  const { ref, edges } = useScrollEdges<HTMLDivElement>(2);
 
-            return (
-              <li
-                key={path}
-                className="group relative flex items-center"
-                aria-current={isActive ? "page" : undefined}
-              >
-                <Link
-                  href={path}
-                  className="focus-visible:bg-accent p-2 text-lg -outline-offset-2"
-                  aria-label={aria}
-                >
-                  {name}
-                </Link>
-                {isActive && (
-                  <motion.div
-                    layoutId="tab-underline"
-                    className="bg-foreground absolute right-0 -bottom-px left-0 h-[3px] rounded-t-full"
-                    transition={{ type: "spring", duration: 0.3, bounce: 0.1 }}
-                  />
-                )}
-                <div className="bg-foreground/25 animate-in fade-in absolute right-0 -bottom-px left-0 h-[3px] rounded-t-full backdrop-blur not-group-hover:hidden" />
-              </li>
-            );
-          })}
-        </ul>
-      </LayoutGroup>
-    </nav>
+  return (
+    <ScrollArea
+      horizontal
+      className={cn(
+        "min-w-0 flex-1",
+        !edges.atLeft && "mask-l-from-[calc(100%-16px)] mask-l-to-100%",
+        !edges.atRight && "mask-r-from-[calc(100%-16px)] mask-r-to-100%",
+      )}
+      type="always"
+      viewportRef={ref}
+    >
+      <NavTabs aria-label="Dataset tabs" tabs={tabs} {...props} />{" "}
+    </ScrollArea>
   );
 }
