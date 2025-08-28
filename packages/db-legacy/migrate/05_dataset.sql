@@ -1,7 +1,10 @@
 CREATE TEMP TABLE user_id_map AS
 SELECT
   lu.id AS old_id,
-  u.id AS new_id
+  CASE
+    WHEN u.email = 'dwjiang@uci.edu' THEN '00000000-0000-0000-0000-000000000000'
+    ELSE u.id
+  END AS new_id
 FROM
   legacy.users lu
   JOIN "user" u ON lu."user" = u.email;
@@ -43,7 +46,7 @@ DO $$
             abstract,
             dq.otherinfo,
             CASE WHEN dq.preprocessingdescription IS NOT NULL THEN 'Preprocessing description:' || E'\n' || dq.preprocessingdescription END,
-            CASE WHEN dq.sensitiveinfo IS NOT NULL THEN 'Does this dataset contains sensitive information?:' || E'\n' || regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '') END,
+            CASE WHEN dq.sensitiveinfo IS NOT NULL THEN 'Does this dataset contain sensitive information?:' || E'\n' || regexp_replace(dq.sensitiveinfo, '^Yes\.?\s*', '') END,
             CASE WHEN vi.classlabels IS NOT NULL THEN 'Variables Info:' || E'\n' || vi.otherinfo END,
             CASE WHEN vi.otherinfo IS NOT NULL THEN 'Class labels:' || E'\n\n' || vi.classlabels END
           )

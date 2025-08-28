@@ -2,7 +2,7 @@
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import type { HTMLAttributes } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/util/cn";
@@ -17,7 +17,7 @@ export function ShowMore({ height = 400, className, ...props }: Props) {
   const [needsTruncation, setNeedsTruncation] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!contentRef.current) return;
 
     const observer = new ResizeObserver((entries) => {

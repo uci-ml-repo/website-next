@@ -1,6 +1,7 @@
 "use client";
 
 import { DatasetAboutFeatures } from "@/components/dataset/view/about/features/dataset-about-features";
+import { DatasetAboutAdditionalMetadata } from "@/components/dataset/view/about/metadata/dataset-about-additional-metadata";
 import { DatasetAboutPaper } from "@/components/dataset/view/about/paper/dataset-about-paper";
 import { DatasetAboutStats } from "@/components/dataset/view/about/stats/dataset-about-stats";
 import { ShowMore } from "@/components/ui/show-more";
@@ -21,6 +22,8 @@ export function DatasetAbout({ dataset }: { dataset: DatasetFull }) {
         <DatasetAboutFeatures dataset={dataset} />
 
         <DatasetAboutPaper dataset={dataset} />
+
+        <DatasetAboutAdditionalMetadata dataset={dataset} />
       </div>
 
       <div className="shrink-0 lg:w-56">

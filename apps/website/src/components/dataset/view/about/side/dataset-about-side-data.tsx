@@ -65,16 +65,6 @@ export function DatasetAboutSideData({ dataset }: { dataset: DatasetFull }) {
           CC BY 4.0
         </Link>
       </DatasetAboutSideDatum>
-
-      <DatasetAboutSideDatum title="Donated On">
-        <div>
-          {dataset.donatedAt.toLocaleString("en-GB", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
-        </div>
-      </DatasetAboutSideDatum>
     </div>
   );
 }
