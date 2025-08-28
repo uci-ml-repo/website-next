@@ -13,6 +13,7 @@ import type { DatasetFull } from "@/server/types/dataset/response";
 
 export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [showingMore, setShowingMore] = useState(false);
 
   const hasDescription = useMemo(
     () => dataset.features.filter((f) => !!f.description),
@@ -30,7 +31,10 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
     });
   };
 
-  const expandAll = () => setExpanded(new Set(hasDescription.map((f) => f.name)));
+  const expandAll = () => {
+    setExpanded(new Set(hasDescription.map((f) => f.name)));
+    setShowingMore(true);
+  };
   const collapseAll = () => setExpanded(new Set());
 
   return (
@@ -48,7 +52,11 @@ export function DatasetAboutFeatures({ dataset }: { dataset: DatasetFull }) {
       </div>
 
       {!!dataset.features.length ? (
-        <ShowMore className="rounded-lg border">
+        <ShowMore
+          className="rounded-lg border"
+          expanded={showingMore}
+          onExpandedChange={setShowingMore}
+        >
           <Table>
             <TableHeader className="bg-muted">
               <TableRow>

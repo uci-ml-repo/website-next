@@ -9,37 +9,39 @@ import { cn } from "@/lib/util/cn";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   height?: number;
-  gradientHeight?: number;
+  expanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
 };
 
-export function ShowMore({ height = 400, className, ...props }: Props) {
-  const [isExpanded, setIsExpanded] = useState(false);
+export function ShowMore({ height = 400, expanded, onExpandedChange, className, ...props }: Props) {
+  const [uncontrolled, setUncontrolled] = useState(false);
+  const isControlled = expanded !== undefined;
+  const isExpanded = isControlled ? expanded : uncontrolled;
   const [needsTruncation, setNeedsTruncation] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (!contentRef.current) return;
-
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target.scrollHeight > height + 20) {
-          setNeedsTruncation(true);
-        } else {
-          setNeedsTruncation(false);
-        }
-      }
-    });
-
-    observer.observe(contentRef.current);
-    return () => observer.disconnect();
+    const el = contentRef.current;
+    const check = () => setNeedsTruncation(el.scrollHeight > height + 20);
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    check();
+    return () => ro.disconnect();
   }, [height]);
+
+  const toggle = () => {
+    const next = !isExpanded;
+    if (!isControlled) setUncontrolled(next);
+    onExpandedChange?.(next);
+  };
 
   return (
     <div>
       <div
         ref={contentRef}
         className={cn(
-          `overflow-y-hidden`,
+          "overflow-y-hidden",
           !isExpanded && needsTruncation && "mask-b-from-80%",
           className,
         )}
@@ -47,11 +49,7 @@ export function ShowMore({ height = 400, className, ...props }: Props) {
         {...props}
       />
       {needsTruncation && (
-        <Button
-          variant="link"
-          onClick={() => setIsExpanded((prev) => !prev)}
-          className="text-link !p-0"
-        >
+        <Button variant="link" onClick={toggle} className="text-link !p-0">
           {isExpanded ? (
             <>
               <ChevronUpIcon /> Show Less

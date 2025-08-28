@@ -55,9 +55,12 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle, showDescri
               animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
               style={{ overflow: "hidden" }}
               transition={{ duration: 0.1 }}
-              className="bg-muted/60"
+              className="bg-muted/60 flex gap-x-1"
             >
-              <div className="p-2 text-sm whitespace-pre-wrap">{feature.description}</div>
+              <div className="text-muted-foreground/50 py-2 pl-2 select-none">&#9492;</div>
+              <div className="py-2 pr-2 pl-1 text-sm whitespace-pre-wrap">
+                {feature.description}
+              </div>
             </motion.div>
           </td>
         </tr>
