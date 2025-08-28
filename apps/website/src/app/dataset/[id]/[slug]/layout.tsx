@@ -26,7 +26,11 @@ export async function generateMetadata({
 
   try {
     const dataset = await getDataset(id);
-    return { title: dataset.title, alternates: { canonical: ROUTES.DATASET({ id, slug }) } };
+    return {
+      title: dataset.title,
+      alternates: { canonical: ROUTES.DATASET({ id, slug }) },
+      description: dataset.description,
+    };
   } catch {
     return { title: "Not Found" };
   }
