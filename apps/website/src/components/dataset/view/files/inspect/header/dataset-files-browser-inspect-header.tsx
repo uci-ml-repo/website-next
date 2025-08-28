@@ -14,13 +14,13 @@ interface Props {
 }
 
 export function DatasetFilesBrowserInspectHeader({ dataset }: Props) {
-  const { currentEntryType, search } = useDatasetFilesBrowser();
+  const { currentEntry, search } = useDatasetFilesBrowser();
 
   return (
     <div
       className={cn(
         "flex h-11 shrink-0 items-center justify-between gap-x-2 p-1",
-        currentEntryType === "file" && "border-b",
+        currentEntry.kind === "file" && "border-b",
       )}
     >
       <DatasetFilesBrowserInspectHistory />
@@ -32,7 +32,7 @@ export function DatasetFilesBrowserInspectHeader({ dataset }: Props) {
       )}
 
       {search === undefined &&
-        (currentEntryType === "directory" ? (
+        (currentEntry.kind === "directory" ? (
           <DatasetFilesBrowserInspectDirectoryViewType />
         ) : (
           <DatasetFilesBrowserInspectDownload dataset={dataset} />

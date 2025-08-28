@@ -15,7 +15,7 @@ interface DatasetFilesBrowserContextProps {
   directoryMap: Record<string, Entry[]>;
   entryMap: Record<string, Entry>;
   currentPath: string;
-  currentEntryType: "file" | "directory";
+  currentEntry: Entry;
   setCurrentPath: (path: string) => void;
   history: string[];
   back: () => void;
@@ -71,6 +71,14 @@ export function DatasetFilesBrowserProvider({
   const [search, setSearch] = useState<string>();
   const [directoryViewType, setDirectoryViewType] = useState<DirectoryViewType>("rows");
 
+  const currentEntry = useMemo(() => {
+    if (currentPath === "/") {
+      return { key: "/", kind: "directory", basename: "" } as const;
+    }
+
+    return entryMap[currentPath];
+  }, [entryMap, currentPath]);
+
   useEffect(() => {
     if (!validPaths.has(currentPath)) {
       setCurrentPath("/");
@@ -108,11 +116,6 @@ export function DatasetFilesBrowserProvider({
     [currentPath, setCurrentPath],
   );
 
-  const currentEntryType = useMemo(
-    () => (currentPath in directoryMap ? "directory" : "file"),
-    [currentPath, directoryMap],
-  );
-
   return (
     <DatasetFilesBrowserContext.Provider
       value={{
@@ -121,7 +124,7 @@ export function DatasetFilesBrowserProvider({
         directoryMap,
         entryMap,
         currentPath,
-        currentEntryType,
+        currentEntry,
         setCurrentPath: setCurrentPathWithHistory,
         history,
         forwardHistory,

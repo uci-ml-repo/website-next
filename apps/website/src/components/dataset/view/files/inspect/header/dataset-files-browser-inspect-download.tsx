@@ -9,10 +9,10 @@ interface Props {
 }
 
 export function DatasetFilesBrowserInspectDownload({ dataset }: Props) {
-  const { currentPath, currentEntryType } = useDatasetFilesBrowser();
+  const { currentPath, currentEntry } = useDatasetFilesBrowser();
 
   return (
-    currentEntryType === "file" && (
+    currentEntry.kind === "file" && (
       <Button
         variant="outline"
         className="size-8 rounded-sm"

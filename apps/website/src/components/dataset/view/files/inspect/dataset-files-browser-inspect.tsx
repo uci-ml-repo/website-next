@@ -14,7 +14,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Props) {
-  const { currentEntryType, search } = useDatasetFilesBrowser();
+  const { currentEntry, search } = useDatasetFilesBrowser();
 
   return (
     <div className={cn("flex size-full flex-col overflow-hidden", className)} {...props}>
@@ -22,7 +22,7 @@ export function DatasetFilesBrowserInspect({ dataset, className, ...props }: Pro
 
       {search !== undefined ? (
         <DatasetFilesBrowserInspectSearchResults />
-      ) : currentEntryType === "directory" ? (
+      ) : currentEntry.kind === "directory" ? (
         <DatasetFilesBrowserInspectDirectory />
       ) : (
         <DatasetFilesBrowserInspectFile />

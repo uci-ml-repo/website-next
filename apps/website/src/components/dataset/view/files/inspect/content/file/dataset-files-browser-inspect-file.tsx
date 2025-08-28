@@ -3,6 +3,7 @@
 import { useDatasetFilesBrowser } from "@/components/dataset/view/files/dataset-files-browser-context";
 import { DatasetFilesBrowserInspectFileAudio } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-audio";
 import { DatasetFilesBrowserInspectFileImage } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-image";
+import { DatasetFilesBrowserInspectFileNoDisplay } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-no-display";
 import { DatasetFilesBrowserInspectFilePdf } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-pdf";
 import { DatasetFilesBrowserInspectFileText } from "@/components/dataset/view/files/inspect/content/file/mimetype/dataset-files-browser-inspect-file-text";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -33,6 +34,13 @@ export function DatasetFilesBrowserInspectFile() {
     case "wav":
     case "mp3":
       return <DatasetFilesBrowserInspectFileAudio />;
+
+    case "xlsx":
+    case "xls":
+    case "mp4":
+    case "mox":
+    case "zip":
+      return <DatasetFilesBrowserInspectFileNoDisplay />;
 
     default:
       return (

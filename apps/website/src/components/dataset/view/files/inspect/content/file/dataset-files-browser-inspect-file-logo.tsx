@@ -10,11 +10,7 @@ type Props = Omit<ComponentProps<typeof Image>, "src" | "alt"> & {
   basename: string;
 };
 
-export function DatasetFilesBrowserInspectDirectoryFileLogo({
-  basename,
-  className,
-  ...props
-}: Props) {
+export function DatasetFilesBrowserInspectFileLogo({ basename, className, ...props }: Props) {
   const extension = basenameToExtension(basename);
 
   return (
