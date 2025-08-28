@@ -54,7 +54,7 @@ export function DatasetAboutFeatureRow({ feature, expanded, onToggle, showDescri
               initial={false}
               animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
               style={{ overflow: "hidden" }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.1 }}
               className="bg-muted/60"
             >
               <div className="p-2 text-sm whitespace-pre-wrap">{feature.description}</div>
