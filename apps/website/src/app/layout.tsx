@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     default: "UCI Machine Learning Repository",
   },
   description:
-    "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research.",
+    "The UCI Machine Learning Repository hosts hundreds of datasets for machine learning research used by millions of people worldwide.",
   metadataBase: new URL(Resource.BASE_URL.value),
   openGraph: {
     images: [

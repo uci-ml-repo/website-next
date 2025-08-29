@@ -3,9 +3,10 @@
 import { without } from "lodash";
 import { CheckIcon, Loader2Icon } from "lucide-react";
 import { matchSorter } from "match-sorter";
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FixedSizeList } from "react-window";
+import type { ComponentProps, ReactNode } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import type { RowComponentProps } from "react-window";
+import { List, useListRef } from "react-window";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
 import { Badge } from "@/components/ui/badge";
@@ -55,15 +56,15 @@ export function DatasetFilterMultiselect({
     [setSelectedValues, selectedSet],
   );
 
-  const listRef = useRef<FixedSizeList>(null);
+  const listRef = useListRef(null);
 
   useEffect(() => {
     if (listRef.current) {
-      listRef.current.scrollTo(0);
+      listRef.current.scrollToRow({ index: 0 });
     }
-  }, [searchValue]);
+  }, [listRef, searchValue]);
 
-  const Row = memo(function Row({ index, style }: { index: number; style: CSSProperties }) {
+  const Row = memo(function Row({ index, style }: RowComponentProps) {
     const value = matches[index];
     const selected = selectedSet.has(value);
     const count = values instanceof Map ? values.get(value) : undefined;
@@ -141,17 +142,15 @@ export function DatasetFilterMultiselect({
       >
         {!!matches.length && (
           <ScrollArea vertical>
-            <FixedSizeList
-              ref={listRef}
-              itemCount={matches.length}
-              itemSize={28}
-              height={Math.min(matches.length * 28, 240)}
-              overscanCount={10}
-              width="100%"
-              className="focus-visible:ring-ring/50"
-            >
-              {Row}
-            </FixedSizeList>
+            <List
+              rowCount={matches.length}
+              rowHeight={28}
+              overscanCount={20}
+              className="focus-visible:ring-ring/50 h-60"
+              rowComponent={Row}
+              rowProps={{}}
+              listRef={listRef}
+            />
           </ScrollArea>
         )}
       </SearchPopover>
