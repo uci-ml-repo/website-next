@@ -4,7 +4,6 @@ INSERT INTO
     first_name,
     last_name,
     institution,
-    email,
     dataset_id
   )
 SELECT
@@ -12,7 +11,6 @@ SELECT
   c.firstname,
   c.lastname,
   c.institution,
-  c.email,
   d.id
 FROM
   legacy.creators c

@@ -9,7 +9,6 @@ export const author = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     firstName: text("first_name").notNull(),
     lastName: text("last_name").notNull(),
-    email: text("email"),
     institution: text("institution"),
     datasetId: integer("dataset_id").references(() => dataset.id, {
       onDelete: "cascade",

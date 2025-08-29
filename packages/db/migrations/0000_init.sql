@@ -95,7 +95,6 @@ CREATE TABLE "author" (
   "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
   "first_name" TEXT NOT NULL,
   "last_name" TEXT NOT NULL,
-  "email" TEXT,
   "institution" TEXT,
   "dataset_id" INTEGER
 );
@@ -220,6 +219,16 @@ CREATE TABLE "keyword" (
 );
 
 --> statement-breakpoint
+CREATE TABLE "paper" (
+  "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
+  "title" TEXT NOT NULL,
+  "authors" TEXT[] NOT NULL,
+  "venue" TEXT NOT NULL,
+  "year" INTEGER NOT NULL,
+  "url" TEXT NOT NULL
+);
+
+--> statement-breakpoint
 CREATE TABLE "user" (
   "id" UUID PRIMARY KEY NOT NULL,
   "name" TEXT NOT NULL,
@@ -230,16 +239,6 @@ CREATE TABLE "user" (
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   CONSTRAINT "user_email_unique" UNIQUE ("email")
-);
-
---> statement-breakpoint
-CREATE TABLE "paper" (
-  "id" UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID() NOT NULL,
-  "title" TEXT NOT NULL,
-  "authors" TEXT[] NOT NULL,
-  "venue" TEXT NOT NULL,
-  "year" INTEGER NOT NULL,
-  "url" TEXT NOT NULL
 );
 
 --> statement-breakpoint

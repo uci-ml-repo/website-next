@@ -92,6 +92,42 @@ export const datasetByIdResponseSchema = z.object({
       }),
     })
     .array(),
+  authors: z
+    .object({
+      firstName: z.string().openapi({
+        example: "Ronald Aylmer",
+        description: "The fist name of the author, may be abbreviated",
+      }),
+      lastName: z.string().openapi({
+        example: "Fisher",
+        description: "The last name of the author",
+      }),
+      institution: z.string().nullable().openapi({
+        example: "University College, London",
+        description: "The institution of the author",
+      }),
+    })
+    .array(),
+  paper: z
+    .object({
+      title: z.string().openapi({
+        example: "The Iris data set: In search of the source of virginica",
+        description: "The title of the paper",
+      }),
+      authors: z
+        .string()
+        .array()
+        .openapi({ example: ["A. Unwin", "K. Kleinman"], description: "The authors of the paper" }),
+      venue: z
+        .string()
+        .openapi({ example: "Significance", description: "The venue the paper was published in" }),
+      year: z.int().openapi({ example: 2021, description: "The year the paper was published" }),
+      url: z.string().openapi({
+        example: "https://www.semanticscholar.org/paper/4599862ea877863669a6a8e63a3c707a787d5d7e",
+        description: "The external URL that directs to the paper",
+      }),
+    })
+    .nullable(),
   fileCount: z.int().nullable().openapi({
     example: 4,
     description: "The number of files in the dataset, or null if the dataset is external",
@@ -173,5 +209,14 @@ export const datasetsQuerySchema = z.object({
 });
 
 export const datasetQueryResponseSchema = datasetByIdResponseSchema
-  .omit({ description: true, features: true, keywords: true })
+  .omit({ description: true, features: true, keywords: true, authors: true, paper: true })
+  .extend({
+    features: z
+      .string()
+      .array()
+      .openapi({
+        example: ["class", "petal length", "petal width", "sepal length", "sepal width"],
+        description: "The feature names in the dataset",
+      }),
+  })
   .array();
