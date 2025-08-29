@@ -176,19 +176,19 @@ export const datasetsQuerySchema = z.object({
     description: "Include datasets containing all of the given features, comma-separated",
   }),
   featureCountMin: z.int().min(0).optional().openapi({
-    example: 100,
+    example: 0,
     description: "The minimum number of features",
   }),
   featureCountMax: z.int().min(0).optional().openapi({
-    example: 1_000,
+    example: 100_000,
     description: "The maximum number of features",
   }),
   instanceCountMin: z.int().min(0).optional().openapi({
-    example: 100,
+    example: 0,
     description: "The minimum number of instances",
   }),
   instanceCountMax: z.int().min(0).optional().openapi({
-    example: 1_000,
+    example: 100_000,
     description: "The maximum number of instances",
   }),
   take: z.coerce
