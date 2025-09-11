@@ -15,7 +15,7 @@ export function DatasetFilesBrowserTreeHeader() {
       <div className="space-x-2">
         <span>Files</span>
         <span className="text-muted-foreground @max-5xs:hidden text-sm">
-          ({entries.length} items)
+          ({entries.length} item{entries.length !== 1 ? "s" : ""})
         </span>
       </div>
       <Button

@@ -20,7 +20,7 @@ export function DatasetFilesBrowserInspectDownload({ dataset }: Props) {
         aria-label={`Download ${currentPath}`}
         asChild
       >
-        <a download href={ROUTES.CDN(dataset.id, dataset.slug, currentPath)}>
+        <a download href={ROUTES.CDN(dataset.id, dataset.slug, currentPath.replace(" ", "+"))}>
           <DownloadIcon className="size-4" />
         </a>
       </Button>
