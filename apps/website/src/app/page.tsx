@@ -1,10 +1,11 @@
-import { SearchIcon } from "lucide-react";
+import { InfoIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 
 import { DatasetCarouselNew } from "@/components/dataset/carousel/dataset-carousel-new";
 import { DatasetCarouselPopular } from "@/components/dataset/carousel/dataset-carousel-popular";
 import { DatasetQuickSearch } from "@/components/dataset/search/dataset-quick-search";
 import { MLRepoLogo } from "@/components/logo/ml-repo";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
 
@@ -12,6 +13,12 @@ export default function Page() {
   return (
     <div className="space-y-10">
       <MLRepoLogo variant="hero" />
+
+      <Alert variant="blue">
+        <InfoIcon />
+        <AlertTitle>This website is currently in beta</AlertTitle>
+        <AlertDescription>Some features may be unavailable</AlertDescription>
+      </Alert>
 
       <div className="blur-background space-y-12">
         <div className="space-y-10">
