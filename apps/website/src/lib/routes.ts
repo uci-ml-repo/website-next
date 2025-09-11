@@ -59,7 +59,8 @@ export const ROUTES = {
       THUMBNAIL: ({ id, hasGraphics }: { id: number; hasGraphics: boolean }) =>
         ROUTES.CDN(hasGraphics ? String(id) : "default", "thumbnail.png"),
 
-      ZIP: ({ id, slug }: { id: number; slug: string }) => ROUTES.CDN(String(id), slug + ".zip"),
+      ZIP: ({ id, slug }: { id: number; slug: string }) =>
+        ROUTES.CDN(String(id), encodeURIComponent(slug) + ".zip"),
 
       FILES: (dataset: { id: number; slug: string }) => path.join(ROUTES.DATASET(dataset), "files"),
 
