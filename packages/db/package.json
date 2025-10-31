@@ -26,13 +26,13 @@
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
-    "drizzle-orm": "0.44.5",
+    "drizzle-orm": "0.44.7",
     "drizzle-zod": "0.8.3",
     "pg": "8.16.3",
-    "zod": "4.1.7"
+    "zod": "4.1.12"
   },
   "devDependencies": {
-    "@types/pg": "8.15.5",
-    "drizzle-kit": "0.31.4"
+    "@types/pg": "8.15.6",
+    "drizzle-kit": "0.31.6"
   }
 }
