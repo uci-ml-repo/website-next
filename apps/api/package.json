@@ -19,7 +19,7 @@
   "dependencies": {
     "@hono/zod-openapi": "1.1.4",
     "@packages/db": "workspace:*",
-    "@scalar/hono-api-reference": "0.9.22",
+    "@scalar/hono-api-reference": "0.9.24",
     "drizzle-orm": "0.44.7",
     "hono": "4.10.4",
     "zod": "4.1.12"
