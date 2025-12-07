@@ -3,9 +3,8 @@
 import { without } from "lodash";
 import { CheckIcon, Loader2Icon } from "lucide-react";
 import { matchSorter } from "match-sorter";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactElement, ReactNode } from "react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import type { RowComponentProps } from "react-window";
 import { List, useListRef } from "react-window";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
@@ -22,6 +21,11 @@ type Props = ComponentProps<typeof DatasetFilterItem> & {
   selectedValues?: string[];
   setSelectedValues: (value: string[] | ((old: string[] | null) => string[] | null) | null) => void;
   empty?: ReactNode;
+};
+
+type RowProps = {
+  index: number;
+  style: CSSProperties;
 };
 
 export function DatasetFilterMultiselect({
@@ -64,7 +68,7 @@ export function DatasetFilterMultiselect({
     }
   }, [listRef, searchValue]);
 
-  const Row = memo(function Row({ index, style }: RowComponentProps) {
+  const Row = memo(function Row({ index, style }: RowProps): ReactElement {
     const value = matches[index];
     const selected = selectedSet.has(value);
     const count = values instanceof Map ? values.get(value) : undefined;
@@ -147,7 +151,7 @@ export function DatasetFilterMultiselect({
               rowHeight={28}
               overscanCount={20}
               className="focus-visible:ring-ring/50 h-60"
-              rowComponent={Row}
+              rowComponent={({ index, style }) => <Row index={index} style={style} />}
               rowProps={{}}
               listRef={listRef}
             />

@@ -21,7 +21,14 @@ const config = [
       },
     },
   },
-  mdxPlugin.flat,
+  {
+    files: ["**/*.mdx"],
+    ...mdxPlugin.flat,
+    rules: {
+      ...mdxPlugin.flat.rules,
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
 ];
 
 export default config;

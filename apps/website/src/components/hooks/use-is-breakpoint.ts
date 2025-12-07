@@ -13,19 +13,24 @@ type Breakpoint = keyof typeof BREAKPOINTS;
 export function useIsBreakpoint(breakpoint: number | Breakpoint) {
   const [isBreakpoint, setIsBreakpoint] = useState<boolean | undefined>(undefined);
 
-  if (typeof breakpoint === "string") {
-    breakpoint = BREAKPOINTS[breakpoint];
-  }
+  const numericBreakpoint = typeof breakpoint === "string" ? BREAKPOINTS[breakpoint] : breakpoint;
 
   useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    if (typeof window === "undefined") return;
+
+    const mql = window.matchMedia(`(max-width: ${numericBreakpoint - 1}px)`);
+
     const onChange = () => {
-      setIsBreakpoint(window.innerWidth < breakpoint);
+      setIsBreakpoint(window.innerWidth < numericBreakpoint);
     };
+
     mql.addEventListener("change", onChange);
-    setIsBreakpoint(window.innerWidth < breakpoint);
-    return () => mql.removeEventListener("change", onChange);
-  }, [breakpoint]);
+    setIsBreakpoint(window.innerWidth < numericBreakpoint);
+
+    return () => {
+      mql.removeEventListener("change", onChange);
+    };
+  }, [numericBreakpoint]);
 
   return !!isBreakpoint;
 }

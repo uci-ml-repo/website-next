@@ -1,29 +1,24 @@
-import { FlatCompat } from "@eslint/eslintrc";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
 import reactConfig from "./eslint.config.react.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const config = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default defineConfig([
+  ...nextCoreWebVitals,
+  ...nextTypescript,
   ...reactConfig,
   {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      ".open-next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-    ],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
   },
-];
-
-export default config;
+  globalIgnores([
+    "node_modules/**",
+    ".next/**",
+    ".open-next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);

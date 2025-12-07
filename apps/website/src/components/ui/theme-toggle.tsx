@@ -1,27 +1,24 @@
 "use client";
 
+import { useMounted } from "@mantine/hooks";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/util/cn";
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
+  const { setTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   if (!mounted) {
     return null;
   }
 
-  const isDark = theme === "dark";
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <div className={cn("flex items-center space-x-1.5 [&>svg]:size-4", "fade-in animate-in")}>
+    <div className="fade-in animate-in flex items-center space-x-1.5 [&>svg]:size-4">
       <Switch
         onCheckedChange={() => setTheme(isDark ? "light" : "dark")}
         checked={isDark}
