@@ -17,11 +17,11 @@
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
-    "@hono/zod-openapi": "1.1.5",
+    "@hono/zod-openapi": "1.2.0",
     "@packages/db": "workspace:*",
-    "@scalar/hono-api-reference": "0.9.26",
-    "drizzle-orm": "0.45.0",
-    "hono": "4.10.7",
-    "zod": "4.1.13"
+    "@scalar/hono-api-reference": "0.9.35",
+    "drizzle-orm": "0.45.1",
+    "hono": "4.11.5",
+    "zod": "4.3.5"
   }
 }
