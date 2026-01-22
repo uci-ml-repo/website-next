@@ -15,21 +15,18 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 24.13.0
+          cache: pnpm
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
-          run_install: false
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          run_install: |
+            args:
+              - --frozen-lockfile
 
       - name: SST deploy
         run: pnpm sst deploy --stage production
