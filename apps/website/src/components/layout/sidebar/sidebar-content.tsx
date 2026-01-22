@@ -29,9 +29,12 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function SidebarContent({ session: _session, className, ...props }: Props) {
-  const { currentState } = useSidebar();
-
+  const { currentState, view, setMobileState } = useSidebar();
   const session = useSessionWithInitial(_session);
+
+  const closeMobileSheet = () => {
+    if (view === "mobile") setMobileState("collapsed");
+  };
 
   return (
     <div className={cn("flex h-full flex-col", className)} {...props}>
@@ -47,22 +50,26 @@ export function SidebarContent({ session: _session, className, ...props }: Props
       <SidebarHoverExpandable>
         {/* Navigation Menu */}
         <SidebarNav>
-          {/* Home */}
-          <SidebarNavLink href={ROUTES.HOME}>
+          <SidebarNavLink href={ROUTES.HOME} onClick={closeMobileSheet}>
             <HomeIcon />
             <div>Home</div>
           </SidebarNavLink>
 
           {/* Datasets */}
-          <SidebarNavLink href={ROUTES.SEARCH()} activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}>
+          <SidebarNavLink
+            href={ROUTES.SEARCH()}
+            activePath={RegExp(`^${ROUTES.DATASET.ROOT}`)}
+            onClick={closeMobileSheet}
+          >
             <DatabaseIcon />
             <div>Datasets</div>
           </SidebarNavLink>
 
-          {/*Contribute*/}
+          {/* Contribute */}
           <SidebarNavLink
             href={ROUTES.CONTRIBUTE.ROOT}
             activePath={RegExp(`^${ROUTES.CONTRIBUTE.ROOT}`)}
+            onClick={closeMobileSheet}
           >
             <PlusIcon />
             <div>Contribute</div>
@@ -76,6 +83,7 @@ export function SidebarContent({ session: _session, className, ...props }: Props
               <SidebarNavLink
                 href={ROUTES.PROFILE.ROOT}
                 activePath={RegExp(`^${ROUTES.PROFILE.ROOT}`)}
+                onClick={closeMobileSheet}
               >
                 <UserIcon />
                 <div>Profile</div>
@@ -87,6 +95,7 @@ export function SidebarContent({ session: _session, className, ...props }: Props
                   href={ROUTES.ADMIN.ROOT}
                   activePath={RegExp(`^${ROUTES.ADMIN.ROOT}`)}
                   className="text-destructive"
+                  onClick={closeMobileSheet}
                 >
                   <LayoutDashboardIcon />
                   <div>Admin</div>
@@ -100,6 +109,7 @@ export function SidebarContent({ session: _session, className, ...props }: Props
               activePath={RegExp(
                 `^(${ROUTES.AUTH.SIGN_IN()}|${ROUTES.AUTH.FORGOT_PASSWORD}|${ROUTES.AUTH.VERIFY})`,
               )}
+              onClick={closeMobileSheet}
             >
               <LogInIcon />
               <div>Sign In</div>
