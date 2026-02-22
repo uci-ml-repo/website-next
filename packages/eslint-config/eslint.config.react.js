@@ -14,6 +14,7 @@ const config = [
       "react/no-unescaped-entities": "off",
       "react/self-closing-comp": "error",
       "react/jsx-curly-brace-presence": "error",
+      "react-hooks/set-state-in-effect": "off",
     },
     settings: {
       react: {
