@@ -29,16 +29,12 @@ export function DatasetFilterItem({
   return (
     <Tooltip open={tooltipOpen}>
       <AccordionItem
-        className={cn("last:[&>[data-slot=accordion-content]]:rounded-b-2xl", className)}
+        className={cn("last:*:data-[slot=accordion-content]:rounded-b-2xl", className)}
         {...props}
       >
         <div className="relative">
           <AccordionTrigger
-            className={cn(
-              "px-4 text-base",
-              "hover:[&>svg]:scale-[1.35] focus-visible:[&>svg]:scale-[1.35]",
-              "has-[div[role=button]:hover]:[&>svg]:scale-100",
-            )}
+            className={cn("px-4 text-base", "has-[div[role=button]:hover]:[&>svg]:scale-100")}
           >
             <div className="flex w-full items-center justify-between">
               <div>{name}</div>

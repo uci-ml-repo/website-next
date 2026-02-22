@@ -34,6 +34,7 @@ function AccordionTrigger({
           "disabled:pointer-events-none disabled:opacity-50",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
           "[&[data-state=open]>svg]:rotate-180",
+          "hover:[&>svg]:scale-[1.35] focus-visible:[&>svg]:scale-[1.35]",
           className,
         )}
         {...props}
