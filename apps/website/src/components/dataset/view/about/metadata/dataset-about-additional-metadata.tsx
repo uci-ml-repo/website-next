@@ -27,10 +27,12 @@ export function DatasetAboutAdditionalMetadata({ dataset }: { dataset: DatasetFu
                       <div>
                         {author.firstName} {author.lastName}
                       </div>
-                      <div className="text-muted-foreground text-sm">
-                        <span>Institution: </span>
-                        {author.institution ? author.institution : blank}
-                      </div>
+                      {author.institution && (
+                        <div className="text-muted-foreground text-sm">
+                          <span>Institution: </span>
+                          {author.institution}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))
