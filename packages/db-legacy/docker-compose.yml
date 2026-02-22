@@ -17,7 +17,7 @@ services:
 
   postgres-current:
     container_name: postgres-current
-    image: postgres:alpine
+    image: postgres:17.6
     restart: no
     environment:
       POSTGRES_USER: postgres
@@ -33,7 +33,7 @@ services:
 
   postgres-legacy:
     container_name: postgres-legacy
-    image: postgres:alpine
+    image: postgres:17.6
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -92,7 +92,7 @@ services:
 
   migrator:
     container_name: migrator
-    image: postgres:alpine
+    image: postgres:17.6
     depends_on:
       postgres-current:
         condition: service_healthy
