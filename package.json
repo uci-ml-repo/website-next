@@ -19,8 +19,8 @@
   ],
   "scripts": {
     "dev": "sst dev",
-    "format": "pnpm -r format --log-level error",
-    "lint": "pnpm -r lint",
+    "format": "pnpm -r --parallel format --log-level error",
+    "lint": "pnpm -r --parallel lint",
     "lint-staged": "pnpm -r --workspace-concurrency=1 exec lint-staged",
     "prepare": "husky && sst install && sst telemetry disable",
     "tscheck": "pnpm -r --parallel tscheck"
