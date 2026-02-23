@@ -9,7 +9,7 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0",
-    "tscheck": "tsc --noEmit"
+    "tscheck": "tsc"
   },
   "lint-staged": {
     "*": [
