@@ -7,17 +7,14 @@ import type { HTMLAttributes } from "react";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { Card } from "@/components/ui/card";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
+import { FiltersSheet } from "@/components/ui/filters-sheet";
 import { cn } from "@/lib/util/cn";
 import { formatEnum } from "@/server/types/util/enum";
 
 const ADMIN_DATASET_STATUSES = [Enums.ApprovalStatus.PENDING, Enums.ApprovalStatus.REJECTED];
 const DEFAULT_ADMIN_STATUS = [Enums.ApprovalStatus.PENDING];
 
-function AdminDatasetStatusCheckboxes({
-  className,
-  orientation = "vertical",
-  ...props
-}: HTMLAttributes<HTMLUListElement> & { orientation?: "vertical" | "horizontal" }) {
+function AdminDatasetStatusCheckboxes({ className, ...props }: HTMLAttributes<HTMLUListElement>) {
   const { status, setStatus } = useDatasetSearchFilters();
   const selectedStatuses = status ?? DEFAULT_ADMIN_STATUS;
 
@@ -33,19 +30,13 @@ function AdminDatasetStatusCheckboxes({
   }
 
   return (
-    <ul
-      className={cn(orientation === "horizontal" && "flex items-center gap-x-4", className)}
-      {...props}
-    >
+    <ul className={className} {...props}>
       {ADMIN_DATASET_STATUSES.map((approvalStatus) => {
         const checked = selectedStatuses.includes(approvalStatus);
         const enumString = formatEnum(approvalStatus);
 
         return (
-          <li
-            key={approvalStatus}
-            className={orientation === "vertical" ? "py-1 first:pt-0 last:pb-0" : undefined}
-          >
+          <li key={approvalStatus} className="py-1 first:pt-0 last:pb-0">
             <CheckboxLabeled
               checked={checked}
               onCheckedChange={(checked) =>
@@ -81,15 +72,16 @@ export function AdminDatasetFiltersDesktop({
   );
 }
 
-export function AdminDatasetFiltersMobile({
-  className,
-  ...props
-}: HTMLAttributes<HTMLUListElement>) {
+export function AdminDatasetFiltersMobile() {
+  const { status } = useDatasetSearchFilters();
+  const selectedStatuses = status ?? DEFAULT_ADMIN_STATUS;
+  const filterCount = isDefaultAdminStatus(selectedStatuses) ? 0 : 1;
+
   return (
-    <AdminDatasetStatusCheckboxes
-      orientation="horizontal"
-      className={cn("h-10 xl:hidden", className)}
-      {...props}
-    />
+    <FiltersSheet filterCount={filterCount} contentClassName="h-auto max-h-[85dvh]">
+      <div className="p-4 pt-2">
+        <AdminDatasetStatusCheckboxes />
+      </div>
+    </FiltersSheet>
   );
 }

@@ -1,3 +1,5 @@
+import { AdminUsers } from "@/components/admin/admin-users";
+
 export default function Page() {
-  return null;
+  return <AdminUsers />;
 }

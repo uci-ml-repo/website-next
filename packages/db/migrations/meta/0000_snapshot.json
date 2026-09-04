@@ -87,14 +87,34 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "account_user_id_index": {
+          "name": "account_user_id_index",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -164,8 +184,12 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -175,7 +199,9 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ]
         }
       },
       "policies": {},
@@ -291,8 +317,12 @@
           "name": "author_dataset_id_dataset_id_fk",
           "tableFrom": "author",
           "tableTo": "dataset",
-          "columnsFrom": ["dataset_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "dataset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -379,8 +409,12 @@
           "name": "bookmark_user_id_user_id_fk",
           "tableFrom": "bookmark",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -388,8 +422,12 @@
           "name": "bookmark_dataset_id_dataset_id_fk",
           "tableFrom": "bookmark",
           "tableTo": "dataset",
-          "columnsFrom": ["dataset_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "dataset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -397,7 +435,10 @@
       "compositePrimaryKeys": {
         "bookmark_user_id_dataset_id_pk": {
           "name": "bookmark_user_id_dataset_id_pk",
-          "columns": ["user_id", "dataset_id"]
+          "columns": [
+            "user_id",
+            "dataset_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -724,8 +765,12 @@
           "name": "dataset_user_id_user_id_fk",
           "tableFrom": "dataset",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "set default",
           "onUpdate": "no action"
         },
@@ -733,8 +778,12 @@
           "name": "dataset_paper_id_paper_id_fk",
           "tableFrom": "dataset",
           "tableTo": "paper",
-          "columnsFrom": ["paper_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "paper_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -744,7 +793,9 @@
         "dataset_slug_unique": {
           "name": "dataset_slug_unique",
           "nullsNotDistinct": false,
-          "columns": ["slug"]
+          "columns": [
+            "slug"
+          ]
         }
       },
       "policies": {},
@@ -830,8 +881,12 @@
           "name": "feature_dataset_id_dataset_id_fk",
           "tableFrom": "feature",
           "tableTo": "dataset",
-          "columnsFrom": ["dataset_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "dataset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -841,7 +896,10 @@
         "feature_dataset_id_name_unique": {
           "name": "feature_dataset_id_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["dataset_id", "name"]
+          "columns": [
+            "dataset_id",
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -871,8 +929,12 @@
           "name": "dataset_keyword_keyword_id_keyword_id_fk",
           "tableFrom": "dataset_keyword",
           "tableTo": "keyword",
-          "columnsFrom": ["keyword_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "keyword_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -880,8 +942,12 @@
           "name": "dataset_keyword_dataset_id_dataset_id_fk",
           "tableFrom": "dataset_keyword",
           "tableTo": "dataset",
-          "columnsFrom": ["dataset_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "dataset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -889,7 +955,10 @@
       "compositePrimaryKeys": {
         "dataset_keyword_keyword_id_dataset_id_pk": {
           "name": "dataset_keyword_keyword_id_dataset_id_pk",
-          "columns": ["keyword_id", "dataset_id"]
+          "columns": [
+            "keyword_id",
+            "dataset_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -982,7 +1051,9 @@
         "keyword_name_unique": {
           "name": "keyword_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -1097,14 +1168,83 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_created_at_id_index": {
+          "name": "user_created_at_id_index",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_role_index": {
+          "name": "user_role_index",
+          "columns": [
+            {
+              "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_name_trgm_search_index": {
+          "name": "user_name_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"name\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "user_email_trgm_search_index": {
+          "name": "user_email_trgm_search_index",
+          "columns": [
+            {
+              "expression": "\"email\" gin_trgm_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -1116,7 +1256,12 @@
     "public.approval_status": {
       "name": "approval_status",
       "schema": "public",
-      "values": ["draft", "pending", "approved", "rejected"]
+      "values": [
+        "draft",
+        "pending",
+        "approved",
+        "rejected"
+      ]
     },
     "public.dataset_characteristic": {
       "name": "dataset_characteristic",
@@ -1134,12 +1279,25 @@
     "public.dataset_feature_role": {
       "name": "dataset_feature_role",
       "schema": "public",
-      "values": ["id", "feature", "target", "other"]
+      "values": [
+        "id",
+        "feature",
+        "target",
+        "other"
+      ]
     },
     "public.dataset_feature_type": {
       "name": "dataset_feature_type",
       "schema": "public",
-      "values": ["categorical", "integer", "continuous", "binary", "text", "date", "other"]
+      "values": [
+        "categorical",
+        "integer",
+        "continuous",
+        "binary",
+        "text",
+        "date",
+        "other"
+      ]
     },
     "public.dataset_subject_area": {
       "name": "dataset_subject_area",
@@ -1162,12 +1320,21 @@
     "public.dataset_task": {
       "name": "dataset_task",
       "schema": "public",
-      "values": ["classification", "regression", "clustering"]
+      "values": [
+        "classification",
+        "regression",
+        "clustering"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["admin", "librarian", "curator", "basic"]
+      "values": [
+        "admin",
+        "librarian",
+        "curator",
+        "basic"
+      ]
     }
   },
   "schemas": {},

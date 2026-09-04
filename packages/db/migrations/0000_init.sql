@@ -328,3 +328,18 @@ CREATE INDEX "keyword_name_index" ON "keyword" USING btree ("name");
 
 --> statement-breakpoint
 CREATE INDEX "keyword_status_index" ON "keyword" USING btree ("status");
+
+--> statement-breakpoint
+CREATE INDEX "account_user_id_index" ON "account" USING btree ("user_id");
+
+--> statement-breakpoint
+CREATE INDEX "user_created_at_id_index" ON "user" USING btree ("created_at", "id");
+
+--> statement-breakpoint
+CREATE INDEX "user_role_index" ON "user" USING btree ("role");
+
+--> statement-breakpoint
+CREATE INDEX "user_name_trgm_search_index" ON "user" USING gin ("name" gin_trgm_ops);
+
+--> statement-breakpoint
+CREATE INDEX "user_email_trgm_search_index" ON "user" USING gin ("email" gin_trgm_ops);
