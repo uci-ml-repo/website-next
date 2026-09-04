@@ -4,6 +4,7 @@ import {
   ArrowDownAZIcon,
   ClockIcon,
   Columns3Icon,
+  HistoryIcon,
   Rows3Icon,
   SearchIcon,
   TrendingUpIcon,
@@ -21,7 +22,10 @@ import {
 } from "@/components/ui/select";
 import type { DatasetOrder } from "@/server/types/dataset/request";
 
-const options: { value: DatasetOrder; label: ReactNode }[] = [
+export const DEFAULT_DATASET_ORDER: DatasetOrder = { viewCount: "desc" };
+export const ADMIN_DATASET_ORDER: DatasetOrder = { donatedAt: "desc" };
+
+const defaultOptions: { value: DatasetOrder; label: ReactNode }[] = [
   {
     value: { viewCount: "desc" },
     label: (
@@ -69,11 +73,42 @@ const options: { value: DatasetOrder; label: ReactNode }[] = [
   },
 ];
 
-export function DatasetFilterOrder() {
+export const adminDatasetOrderOptions: { value: DatasetOrder; label: ReactNode }[] = [
+  {
+    value: { donatedAt: "desc" },
+    label: (
+      <>
+        <ClockIcon />
+        Newest
+      </>
+    ),
+  },
+  {
+    value: { donatedAt: "asc" },
+    label: (
+      <>
+        <HistoryIcon />
+        Oldest
+      </>
+    ),
+  },
+];
+
+type Props = {
+  options?: { value: DatasetOrder; label: ReactNode }[];
+  defaultOrder?: DatasetOrder;
+  enableRelevance?: boolean;
+};
+
+export function DatasetFilterOrder({
+  options = defaultOptions,
+  defaultOrder = DEFAULT_DATASET_ORDER,
+  enableRelevance = true,
+}: Props) {
   const { order, setOrder, search } = useDatasetSearchFilters();
 
   const [displayValue, setDisplayValue] = useState<"relevance" | DatasetOrder>(
-    order ?? { viewCount: "desc" },
+    order ?? defaultOrder,
   );
 
   function onValueChange(value: string) {
@@ -82,10 +117,12 @@ export function DatasetFilterOrder() {
   }
 
   useEffect(() => {
+    if (!enableRelevance) return;
+
     if (search) {
       setOrder(null).then(() => setDisplayValue("relevance"));
     } else if (displayValue === "relevance") {
-      setOrder(null).then(() => setDisplayValue({ viewCount: "desc" }));
+      setOrder(null).then(() => setDisplayValue(defaultOrder));
     }
   }, [search, setOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -95,7 +132,7 @@ export function DatasetFilterOrder() {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        {search && (
+        {enableRelevance && search && (
           <SelectItem value={JSON.stringify("relevance")}>
             <SearchIcon />
             Relevance

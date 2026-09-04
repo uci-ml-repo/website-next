@@ -4,7 +4,7 @@ import { datasetColumns } from "@packages/db/types";
 import { desc, eq } from "drizzle-orm";
 
 import { buildQuery, buildSearchQuery } from "@/server/service/dataset/util";
-import type { DatasetQuery } from "@/server/types/dataset/request";
+import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/dataset/request";
 import { sortMap } from "@/server/types/util/order";
 import { entriesT } from "@/server/types/util/type";
 
@@ -36,7 +36,7 @@ async function byUserId(userId: string) {
   });
 }
 
-async function byQuery(query: DatasetQuery) {
+async function byQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   const orderBy = query.order
     ? entriesT(query.order).map(([field, sort]) => sortMap[sort ?? "asc"](dataset[field]))
     : [];

@@ -26,6 +26,7 @@ const parser = {
   instanceCount: parseAsJson(range.parse),
   featureCount: parseAsJson(range.parse),
   python: parseAsBoolean,
+  status: parseAsArrayOf(parseAsStringEnum(Object.values(Enums.ApprovalStatus))),
   order: parseAsJson(datasetOrder.parse),
   limit: parseAsInteger,
   cursor: parseAsInteger,
@@ -44,6 +45,7 @@ export function useDatasetSearchFilters() {
   const [instanceCount, setInstanceCount] = useQueryState("instanceCount", parser.instanceCount);
   const [featureCount, setFeatureCount] = useQueryState("featureCount", parser.featureCount);
   const [isAvailablePython, setIsAvailablePython] = useQueryState("python", parser.python);
+  const [status, setStatus] = useQueryState("status", parser.status);
   const [order, setOrder] = useQueryState("order", parser.order);
   const [limit, setLimit] = useQueryState("limit", parser.limit);
   const [cursor, setCursor] = useQueryState("cursor", parser.cursor);
@@ -108,7 +110,7 @@ export function useDatasetSearchFilters() {
     instanceCount: debouncedInstanceCount ?? undefined,
   };
 
-  const nonPaginationFiltersString = JSON.stringify(nonPaginationFilters);
+  const nonPaginationFiltersString = JSON.stringify({ ...nonPaginationFilters, status });
 
   useEffect(() => {
     setCursor((prev) => (prev ? 0 : null));
@@ -117,6 +119,8 @@ export function useDatasetSearchFilters() {
   return {
     ...filters,
     ...setFilters,
+    status,
+    setStatus,
     filters,
     debouncedFilters,
     clearFilters,

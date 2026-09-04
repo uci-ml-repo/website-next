@@ -31,7 +31,7 @@ export type DatasetQueryInput = z.input<typeof datasetQuery>;
 export type DatasetQuery = z.infer<typeof datasetQuery>;
 
 export const privilegedDatasetQuery = datasetQuery.extend({
-  status: z.enum(Enums.ApprovalStatus).array().optional(),
+  status: z.enum(Enums.ApprovalStatus).array().optional().default([Enums.ApprovalStatus.PENDING]),
   userId: z.uuid().optional(),
 });
 

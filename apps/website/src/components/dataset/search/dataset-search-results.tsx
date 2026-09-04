@@ -1,28 +1,46 @@
 "use client";
 
+import { Enums } from "@packages/db/enum";
 import { Undo2Icon } from "lucide-react";
 
 import { DatasetRow } from "@/components/dataset/preview/dataset-row";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/dataset-row-skeleton";
 import { DatasetSearchMessage } from "@/components/dataset/search/dataset-search-message";
+import { ADMIN_DATASET_ORDER } from "@/components/dataset/search/filter/item/dataset-filter-order";
 import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { Button } from "@/components/ui/button";
 import { PaginationNav } from "@/components/ui/pagination-nav";
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
-export function DatasetSearchResults() {
-  const { debouncedFilters, filters, setLimit, clearFilters } = useDatasetSearchFilters();
+const ADMIN_DEFAULT_STATUS = [Enums.ApprovalStatus.PENDING];
 
-  const { data, isFetching, error } = trpc.dataset.find.byQuery.useQuery(
-    {
-      ...filters,
-      ...debouncedFilters,
-    },
-    {
-      placeholderData: (prev) => prev,
-      ...skipBatch,
-    },
-  );
+export function DatasetSearchResults({ privileged = false }: { privileged?: boolean }) {
+  const { debouncedFilters, filters, setLimit, clearFilters, status } = useDatasetSearchFilters();
+
+  const publicInput = {
+    ...filters,
+    ...debouncedFilters,
+  };
+
+  const privilegedInput = {
+    ...publicInput,
+    status: status ?? ADMIN_DEFAULT_STATUS,
+    order: filters.order ?? ADMIN_DATASET_ORDER,
+  };
+
+  const publicQuery = trpc.dataset.find.byQuery.useQuery(publicInput, {
+    placeholderData: (prev) => prev,
+    enabled: !privileged,
+    ...skipBatch,
+  });
+
+  const privilegedQuery = trpc.dataset.find.privilegedByQuery.useQuery(privilegedInput, {
+    placeholderData: (prev) => prev,
+    enabled: privileged,
+    ...skipBatch,
+  });
+
+  const { data, isFetching, error } = privileged ? privilegedQuery : publicQuery;
 
   return !data ? (
     <div className="divide-y">
@@ -42,7 +60,7 @@ export function DatasetSearchResults() {
       <div className="space-y-4">
         <div className="divide-y">
           {data.datasets.map((dataset) => (
-            <DatasetRow key={dataset.id} dataset={dataset} hoverCard />
+            <DatasetRow key={dataset.id} dataset={dataset} hoverCard showStatus={privileged} />
           ))}
         </div>
 

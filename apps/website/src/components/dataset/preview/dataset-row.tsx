@@ -1,22 +1,26 @@
+import { Enums } from "@packages/db/enum";
 import type { DatasetSelect } from "@packages/db/types";
 import { Columns3Icon, Rows3Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { ROUTES } from "@/lib/routes";
 import { abbreviateDecimal } from "@/lib/util/abbreviate";
 import { cn } from "@/lib/util/cn";
+import { formatEnum } from "@/server/types/util/enum";
 
 import { DatasetHoverCard } from "./dataset-hover-card";
 
 type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   dataset: DatasetSelect;
   hoverCard?: boolean;
+  showStatus?: boolean;
 };
 
-export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
+export function DatasetRow({ dataset, className, hoverCard, showStatus, ...props }: Props) {
   const datasetStats = [
     {
       icon: <Columns3Icon />,
@@ -52,8 +56,18 @@ export function DatasetRow({ dataset, className, hoverCard, ...props }: Props) {
       />
       <div className="flex w-full items-center justify-between space-x-4 overflow-hidden">
         <div className="min-w-0">
-          <div className="truncate text-xl font-semibold decoration-2 group-hover:underline group-focus-visible:underline">
-            {dataset.title}
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="min-w-0 truncate text-xl font-semibold decoration-2 group-hover:underline group-focus-visible:underline">
+              {dataset.title}
+            </div>
+            {showStatus && (
+              <Badge
+                variant={dataset.status === Enums.ApprovalStatus.REJECTED ? "destructive" : "blue"}
+                className="shrink-0"
+              >
+                {formatEnum(dataset.status)}
+              </Badge>
+            )}
           </div>
           <div className="text-muted-foreground truncate text-sm">
             {dataset.description.slice(0, 400)}

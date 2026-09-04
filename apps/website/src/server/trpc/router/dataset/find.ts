@@ -3,8 +3,9 @@ import { TRPCError } from "@trpc/server";
 import { service } from "@/server/service";
 import { procedure, router } from "@/server/trpc";
 import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
+import { privilegedProcedure } from "@/server/trpc/middleware/privileged";
 import { userAccessProcedure } from "@/server/trpc/middleware/user";
-import { datasetQuery } from "@/server/types/dataset/request";
+import { datasetQuery, privilegedDatasetQuery } from "@/server/types/dataset/request";
 
 export const datasetFindRouter = router({
   simpleById: datasetAccessProcedure.query(({ ctx }) => ctx.dataset),
@@ -22,4 +23,8 @@ export const datasetFindRouter = router({
   byUserId: userAccessProcedure.query(({ input }) => service.dataset.find.byUserId(input.userId)),
 
   byQuery: procedure.input(datasetQuery).query(({ input }) => service.dataset.find.byQuery(input)),
+
+  privilegedByQuery: privilegedProcedure
+    .input(privilegedDatasetQuery)
+    .query(({ input }) => service.dataset.find.byQuery(input)),
 });

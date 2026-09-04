@@ -7,8 +7,8 @@ import type { DatasetQuery, PrivilegedDatasetQuery } from "@/server/types/datase
 export function buildQuery(query: DatasetQuery | PrivilegedDatasetQuery) {
   const conditions = [];
 
-  if ("status" in query && query.status) {
-    conditions.push(inArray(dataset.status, query.status));
+  if ("status" in query) {
+    conditions.push(query.status.length ? inArray(dataset.status, query.status) : sql`FALSE`);
   } else {
     conditions.push(eq(dataset.status, Enums.ApprovalStatus.APPROVED));
   }
