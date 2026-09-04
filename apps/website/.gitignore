@@ -5,7 +5,7 @@
 # production
 /build
 
-# credentails
+# credentials
 credentials.json
 
 # typescript

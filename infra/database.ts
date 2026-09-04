@@ -8,7 +8,7 @@ const vpc = new sst.aws.Vpc("Vpc", {
 const database = new sst.aws.Postgres("Database", {
   vpc,
   proxy: true,
-  version: "17.6",
+  version: "17.9",
   password: $dev ? undefined : new sst.Secret("PROD_DB_PASSWORD").value,
   dev: {
     username: process.env.POSTGRES_USER,
