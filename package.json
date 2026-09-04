@@ -57,12 +57,12 @@
     "runtime": {
       "name": "node",
       "version": "^26",
-      "onFail": "download"
+      "onFail": "error"
     },
     "packageManager": {
       "name": "pnpm",
       "version": "^11",
-      "onFail": "download"
+      "onFail": "error"
     }
   }
 }
