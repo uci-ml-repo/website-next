@@ -5,7 +5,7 @@ import type { ComponentProps } from "react";
 
 import { DatasetFiltersAccordion } from "@/components/dataset/search/filter/dataset-filters-accordion";
 import { DatasetFiltersClear } from "@/components/dataset/search/filter/dataset-filters-clear";
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";

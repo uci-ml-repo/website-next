@@ -11,7 +11,7 @@ import { NavTabs } from "@/components/ui/nav-tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
-import { isPriviliged } from "@/server/trpc/middleware/util/role";
+import { isPrivileged } from "@/server/trpc/middleware/util/role";
 import type { DatasetFull } from "@/server/types/dataset/response";
 
 type Props = HTMLAttributes<HTMLElement> & {
@@ -28,7 +28,7 @@ export function DatasetNav({ dataset, session: _session, ...props }: Props) {
     tabs.push({ display: "Files", path: ROUTES.DATASET.FILES(dataset) });
   }
 
-  if (session && (session.user.id === dataset.userId || isPriviliged(session.user.role))) {
+  if (session && (session.user.id === dataset.userId || isPrivileged(session.user.role))) {
     tabs.push({
       display: <SettingsIcon className="size-5.5" aria-label="Dataset settings" />,
       path: ROUTES.DATASET.SETTINGS(dataset),

@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { service } from "@/server/service";
 import { procedure } from "@/server/trpc";
-import { isPriviliged } from "@/server/trpc/middleware/util/role";
+import { isPrivileged } from "@/server/trpc/middleware/util/role";
 
 export const datasetAccessProcedure = procedure
   .input(z.object({ datasetId: z.number() }))
@@ -24,7 +24,7 @@ export const datasetAccessProcedure = procedure
           code: "UNAUTHORIZED",
           message: "User must be authorized to access unapproved datasets",
         });
-      } else if (!isPriviliged(ctx.session.user.role) && dataset.userId !== ctx.session.user.id) {
+      } else if (!isPrivileged(ctx.session.user.role) && dataset.userId !== ctx.session.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "Use is forbidden from accessing unapproved datasets",

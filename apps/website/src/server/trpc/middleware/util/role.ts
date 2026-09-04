@@ -11,6 +11,6 @@ export const PRIVILEGED_ROLES = [
  *
  * @param role the user role to check
  */
-export function isPriviliged(role?: Enums.UserRole) {
+export function isPrivileged(role?: Enums.UserRole) {
   return role && PRIVILEGED_ROLES.includes(role);
 }

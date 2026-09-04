@@ -3,7 +3,7 @@
 import type { ComponentProps } from "react";
 
 import { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { CheckboxLabeled } from "@/components/ui/checkbox";
 
 export function DatasetFilterPython(props: ComponentProps<typeof DatasetFilterItem>) {

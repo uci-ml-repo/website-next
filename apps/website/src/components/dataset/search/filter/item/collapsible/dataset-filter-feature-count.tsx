@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 
 import { DatasetFilterDualSlider } from "@/components/dataset/search/filter/type/dataset-filter-dual-slider";
 import type { DatasetFilterItem } from "@/components/dataset/search/filter/type/dataset-filter-item";
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { skipBatch, trpc } from "@/server/trpc/query/client";
 
 export function DatasetFilterFeatureCount(props: ComponentProps<typeof DatasetFilterItem>) {

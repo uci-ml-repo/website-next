@@ -3,7 +3,7 @@
 import { AlertCircleIcon, Loader2Icon } from "lucide-react";
 import type { HTMLAttributes } from "react";
 
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/util/cn";
 

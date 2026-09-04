@@ -21,7 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/util/cn";
-import { isPriviliged } from "@/server/trpc/middleware/util/role";
+import { isPrivileged } from "@/server/trpc/middleware/util/role";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   session: Session | null;
@@ -90,7 +90,7 @@ export function SidebarContent({ session: _session, className, ...props }: Props
               </SidebarNavLink>
 
               {/* Admin */}
-              {isPriviliged(session.user.role) && (
+              {isPrivileged(session.user.role) && (
                 <SidebarNavLink
                   href={ROUTES.ADMIN.ROOT}
                   activePath={RegExp(`^${ROUTES.ADMIN.ROOT}`)}

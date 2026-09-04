@@ -11,7 +11,7 @@ import {
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import {
   Select,
   SelectContent,

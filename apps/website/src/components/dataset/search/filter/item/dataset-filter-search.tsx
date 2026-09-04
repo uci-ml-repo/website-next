@@ -1,6 +1,6 @@
 "use client";
 
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { SearchInput } from "@/components/ui/input";
 
 export function DatasetFilterSearch() {

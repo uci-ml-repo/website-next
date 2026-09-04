@@ -5,7 +5,7 @@ import { Undo2Icon } from "lucide-react";
 import { DatasetRow } from "@/components/dataset/preview/dataset-row";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/dataset-row-skeleton";
 import { DatasetSearchMessage } from "@/components/dataset/search/dataset-search-message";
-import { useDatasetSearchFilters } from "@/components/hooks/use-dataet-search-filters";
+import { useDatasetSearchFilters } from "@/components/hooks/use-dataset-search-filters";
 import { Button } from "@/components/ui/button";
 import { PaginationNav } from "@/components/ui/pagination-nav";
 import { skipBatch, trpc } from "@/server/trpc/query/client";

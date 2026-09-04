@@ -1,6 +1,6 @@
 import path from "path";
 
-import { serializeDatasetFilters } from "@/components/hooks/use-dataet-search-filters";
+import { serializeDatasetFilters } from "@/components/hooks/use-dataset-search-filters";
 import type { DatasetQueryInput } from "@/server/types/dataset/request";
 
 if (!process.env.NEXT_PUBLIC_CDN_URL) throw new Error();
