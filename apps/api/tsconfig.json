@@ -1,7 +1,6 @@
 {
   "extends": "@packages/typescript-config",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/graphql": ["./src/graphql/index.ts"],
       "@/hooks": ["./src/hooks/index.ts"],

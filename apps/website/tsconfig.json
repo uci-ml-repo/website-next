@@ -1,13 +1,12 @@
 {
   "extends": "@packages/typescript-config",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@/app/*": ["src/app/*"],
-      "@/components/*": ["src/components/*"],
-      "@/lib/*": ["src/lib/*"],
-      "@/server/*": ["src/server/*"],
-      "@/env": ["env.ts"]
+      "@/app/*": ["./src/app/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/server/*": ["./src/server/*"],
+      "@/env": ["./env.ts"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "preserve",

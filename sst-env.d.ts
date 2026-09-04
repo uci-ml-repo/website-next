@@ -6,71 +6,8 @@
 
 declare module "sst" {
   export interface Resource {
-    "AUTH_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "Api": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "BASE_URL": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "Bucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
-    "Database": {
-      "database": string
-      "host": string
-      "password": string
-      "port": number
-      "type": "sst.aws.Postgres"
-      "username": string
-    }
-    "DatabaseMigrator": {
-      "name": string
-      "type": "sst.aws.Function"
-    }
-    "Email": {
-      "configSet": string
-      "sender": string
-      "type": "sst.aws.Email"
-    }
-    "GITHUB_CLIENT_ID": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "GITHUB_CLIENT_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "GOOGLE_CLIENT_ID": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "GOOGLE_CLIENT_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "Router": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
-    "Vpc": {
-      "bastion": string
-      "type": "sst.aws.Vpc"
-    }
-    "Website": {
-      "type": "sst.aws.Nextjs"
-      "url": string
-    }
   }
 }
-/// <reference path="sst-env.d.ts" />
 
 import "sst"
 export {}

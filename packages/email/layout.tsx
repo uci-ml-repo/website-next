@@ -1,5 +1,5 @@
-import { Head, Html, Img, Tailwind, Text } from "@react-email/components";
 import type { ReactNode } from "react";
+import { Head, Html, Img, Tailwind, Text } from "react-email";
 import { Resource } from "sst";
 
 export function EmailLayout({ name, children }: { name?: string; children: ReactNode }) {

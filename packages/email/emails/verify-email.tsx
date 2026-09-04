@@ -1,5 +1,5 @@
-import type { Options } from "@react-email/components";
-import { render, Text } from "@react-email/components";
+import type { Options } from "react-email";
+import { render, Text } from "react-email";
 
 import { EmailLayout } from "../layout";
 
