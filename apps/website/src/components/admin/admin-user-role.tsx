@@ -26,7 +26,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { isAdmin } from "@/server/trpc/middleware/util/role";
+import { cn } from "@/lib/util/cn";
+import { isAdmin, isHigherRole } from "@/server/trpc/middleware/util/role";
 import { trpc } from "@/server/trpc/query/client";
 import type { RouterOutput } from "@/server/trpc/router";
 import { formatEnum } from "@/server/types/util/enum";
@@ -39,8 +40,8 @@ export function AdminUserRole({ user }: { user: AdminUser }) {
 
   return (
     <div className="flex items-center gap-1">
-      <Badge variant="secondary">{formatEnum(user.role)}</Badge>
       {canEditRoles && <AdminUserRoleEdit user={user} />}
+      <Badge variant="secondary">{formatEnum(user.role)}</Badge>
     </div>
   );
 }
@@ -79,7 +80,7 @@ function AdminUserRoleEdit({ user }: { user: AdminUser }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="inline-flex">
+          <span className={cn("inline-flex", !verified && "cursor-not-allowed")}>
             <Button
               type="button"
               variant="ghost"
@@ -125,7 +126,7 @@ function AdminUserRoleEdit({ user }: { user: AdminUser }) {
           </SelectContent>
         </Select>
 
-        {role !== Enums.UserRole.BASIC && (
+        {isHigherRole(role, user.role) && (
           <Alert variant="destructive" className="animate-in fade-in">
             <AlertCircleIcon />
             <AlertTitle>Elevated permissions</AlertTitle>

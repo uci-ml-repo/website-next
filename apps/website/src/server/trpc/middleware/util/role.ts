@@ -23,3 +23,17 @@ export function isPrivileged(role?: Enums.UserRole) {
 export function isAdmin(role?: Enums.UserRole) {
   return role === Enums.UserRole.ADMIN;
 }
+
+const ROLE_RANK: Record<Enums.UserRole, number> = {
+  [Enums.UserRole.BASIC]: 0,
+  [Enums.UserRole.CURATOR]: 1,
+  [Enums.UserRole.LIBRARIAN]: 2,
+  [Enums.UserRole.ADMIN]: 3,
+};
+
+/**
+ * Returns true if `role` is strictly higher than `currentRole`.
+ */
+export function isHigherRole(role: Enums.UserRole, currentRole: Enums.UserRole) {
+  return ROLE_RANK[role] > ROLE_RANK[currentRole];
+}
