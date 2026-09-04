@@ -32,7 +32,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <NavTabs
           aria-label="Admin tabs"
           tabs={[
-            { display: "Datasets", path: ROUTES.ADMIN.DATASETS },
+            { display: "Datasets", path: ROUTES.ADMIN.ROOT },
             { display: "Edits", path: ROUTES.ADMIN.EDITS },
             { display: "Users", path: ROUTES.ADMIN.USERS },
           ]}

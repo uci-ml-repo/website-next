@@ -25,7 +25,6 @@ export const ROUTES = {
 
   ADMIN: {
     ROOT: "/admin",
-    DATASETS: "/admin/datasets",
     EDITS: "/admin/edits",
     USERS: "/admin/users",
   },
