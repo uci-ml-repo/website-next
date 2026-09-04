@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@packages/auth/auth-client";
+import { authClient } from "@packages/auth/client";
 import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";

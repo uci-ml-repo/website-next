@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { auth } from "@packages/auth/auth";
+import { auth } from "@packages/auth";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";

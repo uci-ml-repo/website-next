@@ -1,6 +1,6 @@
 "use client";
 
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 

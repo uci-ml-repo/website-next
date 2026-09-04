@@ -1,7 +1,7 @@
 "use client";
 
-import type { Session } from "@packages/auth/auth";
-import { authClient } from "@packages/auth/auth-client";
+import type { Session } from "@packages/auth";
+import { authClient } from "@packages/auth/client";
 import { SignOutIcon } from "@primer/octicons-react";
 import { CircleUserRoundIcon } from "lucide-react";
 import { useRouter } from "next/navigation";

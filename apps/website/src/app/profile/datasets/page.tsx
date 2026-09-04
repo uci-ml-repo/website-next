@@ -1,4 +1,4 @@
-import { auth } from "@packages/auth/auth";
+import { auth } from "@packages/auth";
 import { headers } from "next/headers";
 
 import { ProfileDatasets } from "@/components/profile/datasets/profile-datasets";

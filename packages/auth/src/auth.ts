@@ -5,6 +5,7 @@ import { resetPassword, verifyEmail } from "@packages/email/emails";
 import bcrypt from "bcrypt";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { toNextJsHandler } from "better-auth/next-js";
 import { emailOTP } from "better-auth/plugins";
 import { Resource } from "sst";
 import { v7 as uuid } from "uuid";
@@ -77,5 +78,7 @@ export const auth = betterAuth({
   ],
   telemetry: { enabled: false },
 });
+
+export const { GET, POST } = toNextJsHandler(auth);
 
 export type Session = typeof auth.$Infer.Session;

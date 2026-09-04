@@ -1,6 +1,6 @@
 "use client";
 
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 import { BookmarkIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

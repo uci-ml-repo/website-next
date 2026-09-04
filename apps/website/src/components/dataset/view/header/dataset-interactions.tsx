@@ -1,6 +1,6 @@
 "use client";
 
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 import { DownloadIcon, EllipsisVerticalIcon, EyeIcon, Link2Icon } from "lucide-react";
 import type { HTMLAttributes } from "react";
 

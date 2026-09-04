@@ -1,6 +1,6 @@
 "use client";
 
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

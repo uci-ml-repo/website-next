@@ -1,4 +1,4 @@
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 import {
   DatabaseIcon,
   HomeIcon,

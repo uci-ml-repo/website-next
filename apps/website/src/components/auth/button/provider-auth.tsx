@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@packages/auth/auth-client";
+import { authClient } from "@packages/auth/client";
 import { useSearchParams } from "next/navigation";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";

@@ -1,4 +1,4 @@
-import { auth } from "@packages/auth/auth";
+import { auth } from "@packages/auth";
 import { TRPCError } from "@trpc/server";
 import type { Metadata } from "next";
 import { headers } from "next/headers";

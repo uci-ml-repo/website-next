@@ -1,7 +1,7 @@
 "use client";
 
 import { useClickOutside } from "@mantine/hooks";
-import type { Session } from "@packages/auth/auth";
+import type { Session } from "@packages/auth";
 
 import { SidebarContent } from "@/components/layout/sidebar/sidebar-content";
 import { useSidebar } from "@/components/layout/sidebar/sidebar-provider";

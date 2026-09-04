@@ -1,4 +1,4 @@
-import { auth } from "@packages/auth/auth";
+import { auth } from "@packages/auth";
 import { headers } from "next/headers";
 
 import { ProfileBookmarks } from "@/components/profile/bookmarks/profile-bookmarks";
