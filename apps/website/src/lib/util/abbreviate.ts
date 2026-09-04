@@ -1,7 +1,7 @@
 export function abbreviateDecimal(value: number, significantDigits = 3) {
   const abbreviateDecimal = new Intl.NumberFormat("en-US", {
     style: "decimal",
-    notation: "compact",
+    notation: Math.abs(value) >= 1000 ? "compact" : "standard",
     maximumSignificantDigits: significantDigits,
     minimumSignificantDigits: 1,
   });

@@ -6,7 +6,7 @@ import { cn } from "@/lib/util/cn";
 
 const badgeVariants = cva(
   cn(
-    "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors",
+    "inline-flex items-center rounded-full border text-xs font-semibold transition-colors",
     "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
   ),
   {
@@ -21,9 +21,14 @@ const badgeVariants = cva(
         blue: "border-blue bg-blue text-blue-foreground shadow",
         "blue-ghost": "border-blue bg-blue/8 text-blue dark:text-blue-foreground shadow",
       },
+      size: {
+        default: "px-2.5 py-0.5",
+        sm: "h-5 min-w-5 justify-center px-1.5 py-0",
+      },
     },
     defaultVariants: {
       variant: "default",
+      size: "default",
     },
   },
 );
@@ -33,10 +38,10 @@ export interface BadgeProps
   asChild?: boolean;
 }
 
-function Badge({ className, variant, asChild, ...props }: BadgeProps) {
+function Badge({ className, variant, size, asChild, ...props }: BadgeProps) {
   const Comp = asChild ? Slot : "div";
 
-  return <Comp className={cn(badgeVariants({ variant }), className)} {...props} />;
+  return <Comp className={cn(badgeVariants({ variant, size }), className)} {...props} />;
 }
 
 export { Badge, badgeVariants };

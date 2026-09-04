@@ -23,4 +23,8 @@ async function maxFeatureCount() {
   return maxFeatureCount.max ?? 0;
 }
 
-export const datasetStatService = { maxFeatureCount, maxInstanceCount };
+async function pendingCount() {
+  return db.$count(dataset, eq(dataset.status, Enums.ApprovalStatus.PENDING));
+}
+
+export const datasetStatService = { maxFeatureCount, maxInstanceCount, pendingCount };

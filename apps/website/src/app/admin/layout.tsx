@@ -4,8 +4,10 @@ import { headers } from "next/headers";
 import { forbidden, redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { NavTabs } from "@/components/ui/nav-tabs";
 import { ROUTES } from "@/lib/routes";
+import { service } from "@/server/service";
 import { isPrivileged } from "@/server/trpc/middleware/util/role";
 
 export const metadata: Metadata = {
@@ -25,6 +27,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
     forbidden();
   }
 
+  const pendingCount = await service.dataset.stat.pendingCount();
+
   return (
     <div className="blur-background space-y-6">
       <div className="space-y-4">
@@ -32,7 +36,24 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <NavTabs
           aria-label="Admin tabs"
           tabs={[
-            { display: "Datasets", path: ROUTES.ADMIN.ROOT },
+            {
+              display: (
+                <span className="inline-flex items-center gap-1.5">
+                  Datasets
+                  {pendingCount > 0 && (
+                    <Badge
+                      variant="blue"
+                      size="sm"
+                      className="pointer-events-none tabular-nums"
+                      aria-label={`${pendingCount} pending`}
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </span>
+              ),
+              path: ROUTES.ADMIN.ROOT,
+            },
             { display: "Edits", path: ROUTES.ADMIN.EDITS },
             { display: "Users", path: ROUTES.ADMIN.USERS },
           ]}
