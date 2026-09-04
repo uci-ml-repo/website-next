@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { index, integer, pgTable, primaryKey, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { dataset } from "./dataset";
@@ -21,3 +22,14 @@ export const bookmark = pgTable(
     index().on(t.createdAt),
   ],
 );
+
+export const bookmarkRelations = relations(bookmark, ({ one }) => ({
+  user: one(user, {
+    fields: [bookmark.userId],
+    references: [user.id],
+  }),
+  dataset: one(dataset, {
+    fields: [bookmark.datasetId],
+    references: [dataset.id],
+  }),
+}));

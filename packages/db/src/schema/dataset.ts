@@ -24,7 +24,7 @@ import {
   datasetTask,
 } from "./enum";
 import { feature } from "./feature";
-import { keyword } from "./keyword";
+import { datasetKeyword } from "./keyword";
 import { paper } from "./paper";
 import { user } from "./user";
 
@@ -147,7 +147,7 @@ export const datasetRelations = relations(dataset, ({ one, many }) => ({
     references: [paper.id],
   }),
   features: many(feature),
-  keywords: many(keyword),
+  datasetKeywords: many(datasetKeyword),
   bookmarks: many(bookmark),
   authors: many(author),
 }));
