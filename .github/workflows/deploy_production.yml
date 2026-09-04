@@ -25,7 +25,6 @@ jobs:
         with:
           runtime: node@26.8.1
           cache: true
-          require-lockfile: true
 
       - name: SST deploy
         run: pnpm sst deploy --stage production
