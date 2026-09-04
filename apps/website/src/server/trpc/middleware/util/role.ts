@@ -14,3 +14,12 @@ export const PRIVILEGED_ROLES = [
 export function isPrivileged(role?: Enums.UserRole) {
   return role && PRIVILEGED_ROLES.includes(role);
 }
+
+/**
+ * Returns true if the user has the admin role.
+ *
+ * @param role the user role to check
+ */
+export function isAdmin(role?: Enums.UserRole) {
+  return role === Enums.UserRole.ADMIN;
+}

@@ -14,3 +14,10 @@ export const userQuery = z.object({
 
 export type UserQueryInput = z.input<typeof userQuery>;
 export type UserQuery = z.infer<typeof userQuery>;
+
+export const updateUserRole = z.object({
+  userId: z.uuid(),
+  role: z.enum(Enums.UserRole),
+});
+
+export type UpdateUserRole = z.infer<typeof updateUserRole>;

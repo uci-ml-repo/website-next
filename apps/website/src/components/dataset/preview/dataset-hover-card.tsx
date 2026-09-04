@@ -111,8 +111,8 @@ export function DatasetHoverCard({ dataset, className, ...props }: Props) {
             <EyeIcon className="size-5" />
             <div>{abbreviateDecimal(dataset.viewCount)}</div>
           </div>
-          {dataset.downloadCount && (
-            <div className="flex items-center space-x-1 @max-2xs:hidden">
+          {dataset.downloadCount != null && (
+            <div className="flex items-center space-x-1">
               <DownloadIcon className="size-5" />
               <div>{abbreviateDecimal(dataset.downloadCount)}</div>
             </div>

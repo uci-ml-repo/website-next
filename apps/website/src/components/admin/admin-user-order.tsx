@@ -1,6 +1,6 @@
 "use client";
 
-import { ClockIcon, HistoryIcon, ShieldIcon } from "lucide-react";
+import { ClockIcon, HistoryIcon, UserRoundKeyIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { useAdminUserFilters } from "@/components/hooks/use-admin-user-filters";
@@ -20,7 +20,7 @@ const options: { value: UserOrder; label: ReactNode }[] = [
     value: "role",
     label: (
       <>
-        <ShieldIcon />
+        <UserRoundKeyIcon />
         Role
       </>
     ),

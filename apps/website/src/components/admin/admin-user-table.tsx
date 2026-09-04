@@ -11,9 +11,9 @@ import {
 import type { ReactNode } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa6";
 
+import { AdminUserRole } from "@/components/admin/admin-user-role";
 import { useAdminUserFilters } from "@/components/hooks/use-admin-user-filters";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PaginationNav } from "@/components/ui/pagination-nav";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -116,7 +116,7 @@ function AdminUserTableHeader() {
           </Tooltip>
         </TableHead>
         <TableHead className="w-32">Created at</TableHead>
-        <TableHead className="w-28">Role</TableHead>
+        <TableHead className="w-40">Role</TableHead>
         <TableHead className="w-24">Accounts</TableHead>
       </TableRow>
     </TableHeader>
@@ -288,7 +288,7 @@ export function AdminUserTable() {
                 })}
               </TableCell>
               <TableCell className={CELL}>
-                <Badge variant="secondary">{formatEnum(user.role)}</Badge>
+                <AdminUserRole user={user} />
               </TableCell>
               <TableCell className={CELL}>
                 <AccountLogos accounts={user.accounts} />

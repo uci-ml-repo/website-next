@@ -1,12 +1,19 @@
 export function abbreviateDecimal(value: number, significantDigits = 3) {
-  const abbreviateDecimal = new Intl.NumberFormat("en-US", {
-    style: "decimal",
-    notation: Math.abs(value) >= 1000 ? "compact" : "standard",
+  if (!Number.isFinite(value) || value === 0) {
+    return "0";
+  }
+
+  if (Math.abs(value) < 1000) {
+    return new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 0,
+    }).format(value);
+  }
+
+  return new Intl.NumberFormat("en-US", {
+    notation: "compact",
     maximumSignificantDigits: significantDigits,
     minimumSignificantDigits: 1,
-  });
-
-  return abbreviateDecimal.format(value);
+  }).format(value);
 }
 
 export function abbreviateFileSize(bytes: number) {
