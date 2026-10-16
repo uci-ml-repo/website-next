@@ -1,6 +1,7 @@
 "use client";
 
 import { useDebouncedValue } from "@mantine/hooks";
+import { Enums } from "@packages/db/enum";
 import type { DatasetSelect } from "@packages/db/types";
 import Fuse from "fuse.js";
 import { parseAsInteger, useQueryState } from "nuqs";
@@ -12,14 +13,16 @@ import { DatasetRow } from "@/components/dataset/preview/dataset-row";
 import { DatasetRowSkeleton } from "@/components/dataset/preview/dataset-row-skeleton";
 import { SearchInput } from "@/components/ui/input";
 import { PaginationNav } from "@/components/ui/pagination-nav";
+import { ROUTES } from "@/lib/routes";
 
 interface Props {
   datasets?: DatasetSelect[];
   searchPlaceholder?: string;
   empty: ReactNode;
+  owned?: boolean;
 }
 
-export function ProfileDatasetSimpleSearch({ datasets, searchPlaceholder, empty }: Props) {
+export function ProfileDatasetSimpleSearch({ datasets, searchPlaceholder, empty, owned }: Props) {
   const [limit, setLimit] = useQueryState("limit", parseAsInteger.withDefault(10));
   const [cursor, _] = useQueryState("cursor", parseAsInteger.withDefault(0));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
@@ -69,7 +72,16 @@ export function ProfileDatasetSimpleSearch({ datasets, searchPlaceholder, empty 
 
       <div className="divide-y">
         {searchResults?.slice(cursor, cursor + limit).map((dataset) => (
-          <DatasetRow key={dataset.id} dataset={dataset} />
+          <DatasetRow
+            key={dataset.id}
+            dataset={dataset}
+            showStatus={owned}
+            href={
+              owned && dataset.status === Enums.ApprovalStatus.DRAFT
+                ? ROUTES.DATASET.SETTINGS(dataset)
+                : undefined
+            }
+          />
         ))}
       </div>
 

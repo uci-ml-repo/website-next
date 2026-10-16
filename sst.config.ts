@@ -13,7 +13,7 @@ export default $config({
   async run() {
     const { email } = await import("./infra/email");
     const { vpc, database } = await import("./infra/database");
-    const { bucket } = await import("./infra/bucket");
+    const { bucket, datasetUploads } = await import("./infra/bucket");
     const { secrets } = await import("./infra/secrets");
     const { router, domain } = await import("./infra/router");
 
@@ -21,11 +21,12 @@ export default $config({
 
     const website = new sst.aws.Nextjs("Website", {
       path: "apps/website",
-      link: [database, email, bucket, ...secrets],
+      link: [database, email, bucket, datasetUploads, ...secrets],
       vpc,
       router: { instance: router },
       environment: {
         NEXT_PUBLIC_CDN_URL: `https://cdn.${domain}`,
+        DATASET_UPLOAD_BUCKET: datasetUploads.name,
       },
     });
 

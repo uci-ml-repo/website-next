@@ -18,9 +18,10 @@ type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   dataset: DatasetSelect;
   hoverCard?: boolean;
   showStatus?: boolean;
+  href?: string;
 };
 
-export function DatasetRow({ dataset, className, hoverCard, showStatus, ...props }: Props) {
+export function DatasetRow({ dataset, className, hoverCard, showStatus, href, ...props }: Props) {
   const datasetStats = [
     {
       icon: <Columns3Icon />,
@@ -45,7 +46,7 @@ export function DatasetRow({ dataset, className, hoverCard, showStatus, ...props
         className,
       )}
       {...props}
-      href={ROUTES.DATASET(dataset)}
+      href={href ?? ROUTES.DATASET(dataset)}
     >
       <Image
         src={ROUTES.DATASET.THUMBNAIL(dataset)}
@@ -65,7 +66,9 @@ export function DatasetRow({ dataset, className, hoverCard, showStatus, ...props
                 variant={dataset.status === Enums.ApprovalStatus.REJECTED ? "destructive" : "blue"}
                 className="shrink-0"
               >
-                {formatEnum(dataset.status)}
+                {dataset.status === Enums.ApprovalStatus.PENDING
+                  ? "In review"
+                  : formatEnum(dataset.status)}
               </Badge>
             )}
           </div>

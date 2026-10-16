@@ -5,6 +5,9 @@ import { router } from "@/server/trpc";
 import { datasetAccessProcedure } from "@/server/trpc/middleware/dataset";
 
 export const fileReadRouter = router({
+  downloadArchive: datasetAccessProcedure.query(({ ctx }) =>
+    service.file.upload.download(ctx.dataset),
+  ),
   readBytes: datasetAccessProcedure
     .input(
       z.object({ key: z.string(), cursor: z.number().nullish(), take: z.number().max(65_536) }),

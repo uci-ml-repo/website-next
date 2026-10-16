@@ -43,6 +43,7 @@ export const dataset = pgTable(
     hasGraphics: boolean("has_graphics").default(false).notNull(),
     isAvailablePython: boolean("is_available_python").default(false).notNull(),
     externalLink: text("external_link"),
+    archiveKey: text("archive_key"),
     slug: text("slug").notNull().unique(),
     status: approvalStatus("status").default(Enums.ApprovalStatus.DRAFT).notNull(),
     viewCount: integer("view_count").default(0).notNull(),

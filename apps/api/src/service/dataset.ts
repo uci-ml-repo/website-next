@@ -12,7 +12,7 @@ function withUrl(dataset: { id: number; slug: string }) {
 
 async function byId(id: number) {
   const res = await db.query.dataset.findFirst({
-    where: eq(dataset.id, id),
+    where: and(eq(dataset.id, id), eq(dataset.status, Enums.ApprovalStatus.APPROVED)),
     columns: {
       features: false,
     },

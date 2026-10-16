@@ -11,7 +11,9 @@ import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/client";
 
 export function ProfileDatasets({ session }: { session: Session }) {
-  const { data: bookmarks } = trpc.dataset.find.byUserId.useQuery({ userId: session.user.id });
+  const { data: datasets, error } = trpc.dataset.find.byUserId.useQuery({
+    userId: session.user.id,
+  });
 
   const empty = (
     <Card>
@@ -26,5 +28,24 @@ export function ProfileDatasets({ session }: { session: Session }) {
     </Card>
   );
 
-  return <ProfileDatasetSimpleSearch datasets={bookmarks} empty={empty} />;
+  if (error)
+    return (
+      <p role="alert" className="text-destructive">
+        {error.message}
+      </p>
+    );
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        <Button variant="gold" asChild>
+          <Link href={ROUTES.CONTRIBUTE.DONATION_FORM}>
+            <PlusIcon />
+            Create a dataset draft
+          </Link>
+        </Button>
+      </div>
+      <ProfileDatasetSimpleSearch datasets={datasets} empty={empty} owned />
+    </div>
+  );
 }

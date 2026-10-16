@@ -1,6 +1,7 @@
 "use client";
 
 import type { Session } from "@packages/auth";
+import { Enums } from "@packages/db/enum";
 import Image from "next/image";
 import type { HTMLAttributes } from "react";
 
@@ -30,10 +31,12 @@ export function DatasetHeader({ dataset, session: _session }: Props) {
         <div className="flex gap-x-2 gap-y-3 max-sm:flex-wrap max-sm:*:w-full">
           {dataset.externalLink ? (
             <DatasetExternalLinkButton dataset={dataset} />
-          ) : (
+          ) : dataset.size && dataset.fileCount ? (
             <DatasetDownloadButton dataset={dataset} />
+          ) : null}
+          {dataset.status === Enums.ApprovalStatus.APPROVED && (
+            <DatasetCitationButton dataset={dataset} />
           )}
-          <DatasetCitationButton dataset={dataset} />
           {dataset.isAvailablePython && <DatasetPythonButton dataset={dataset} />}
           <Card className="rounded-full sm:hidden">
             <DatasetInteractions

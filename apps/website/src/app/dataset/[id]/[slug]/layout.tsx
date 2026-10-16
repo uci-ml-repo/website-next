@@ -1,7 +1,9 @@
 import { auth } from "@packages/auth";
+import { Enums } from "@packages/db/enum";
 import { TRPCError } from "@trpc/server";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import Link from "next/link";
 import { forbidden, notFound, permanentRedirect, unauthorized } from "next/navigation";
 import type { ReactNode } from "react";
 import { cache } from "react";
@@ -9,6 +11,7 @@ import { cache } from "react";
 import { DatasetHeader } from "@/components/dataset/view/header/dataset-header";
 import { DatasetInteractions } from "@/components/dataset/view/header/dataset-interactions";
 import { DatasetNav } from "@/components/dataset/view/header/dataset-nav";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ROUTES } from "@/lib/routes";
 import { trpc } from "@/server/trpc/query/server";
 
@@ -81,6 +84,29 @@ export default async function Layout({
 
   return (
     <div className="blur-background space-y-6">
+      {dataset.status !== Enums.ApprovalStatus.APPROVED && (
+        <Alert variant="blue">
+          <AlertTitle>
+            {dataset.status === Enums.ApprovalStatus.PENDING
+              ? "In review"
+              : dataset.status === Enums.ApprovalStatus.DRAFT
+                ? "Private draft"
+                : "Dataset not approved"}
+          </AlertTitle>
+          <AlertDescription>
+            This dataset is visible only to its owner and the repository team.
+            {dataset.status === Enums.ApprovalStatus.DRAFT &&
+              session?.user.id === dataset.userId && (
+                <Link
+                  href={ROUTES.DATASET.SETTINGS(dataset)}
+                  className="ml-1 underline underline-offset-4"
+                >
+                  Edit draft
+                </Link>
+              )}
+          </AlertDescription>
+        </Alert>
+      )}
       <div className="space-y-6">
         <DatasetHeader dataset={dataset} session={session} />
         <div className="flex items-end justify-between">
