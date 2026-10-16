@@ -22,14 +22,14 @@
   },
   "prettier": "@packages/prettier-config",
   "dependencies": {
-    "@aws-sdk/client-sesv2": "3.1125.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-email": "6.9.3",
-    "zod": "4.5.4"
+    "@aws-sdk/client-sesv2": "3.1152.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-email": "6.11.2",
+    "zod": "4.6.7"
   },
   "devDependencies": {
-    "@react-email/ui": "6.9.3",
-    "@types/react": "19.2.18"
+    "@react-email/ui": "6.11.2",
+    "@types/react": "19.3.0"
   }
 }

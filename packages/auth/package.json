@@ -24,9 +24,9 @@
     "@packages/db": "workspace:*",
     "@packages/email": "workspace:*",
     "bcrypt": "6.0.0",
-    "better-auth": "1.6.30",
-    "uuid": "14.0.2",
-    "zod": "4.5.4"
+    "better-auth": "1.7.9",
+    "uuid": "14.0.3",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/bcrypt": "6.0.0"

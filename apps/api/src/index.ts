@@ -1,6 +1,6 @@
+import { handle } from "@hono/aws-lambda";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
-import { handle } from "hono/aws-lambda";
 import { Resource } from "sst";
 
 import { openapiMeta } from "@/middleware";
